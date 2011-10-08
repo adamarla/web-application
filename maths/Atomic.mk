@@ -8,21 +8,31 @@ include ../../Variables.mk
 #	@convert -density 125 $(QUESTION_PS) $(QUESTION_JPEG)
 #	@convert dvips -density 125 $(ANSWER_PS) $(ANSWER_JPEG)
 
-$(QUESTION_PS) $(ANSWER_PS) ps : dvi $(QUESTION_DVI) $(ANSWER_DVI)
-	@echo "[$(PREFIX_STITCHED_FILES)] : DVI -> PS"
-	@dvips $(QUESTION_DVI) && dvips $(ANSWER_DVI)
+ps : dvi $(QUESTION_PS) $(ANSWER_PS) ;
+$(QUESTION_PS) : $(QUESTION_DVI)
+	@echo "[$(PREFIX_STITCHED_FILES)] : Question dvi -> ps"
+	@dvips $(QUESTION_DVI) 
+$(ANSWER_PS) : $(ANSWER_DVI)  
+	@echo "[$(PREFIX_STITCHED_FILES)] : Answer dvi -> ps"
+	dvips $(ANSWER_DVI)
 
-$(QUESTION_DVI) $(ANSWER_DVI) dvi : prepare_tex prepare_tex_with_answers $(QUESTION_TEX) $(ANSWER_TEX)
-	@echo "[$(PREFIX_STITCHED_FILES)] : TeX -> DVI" 
-	@latex $(QUESTION_TEX) && latex $(ANSWER_TEX)
+dvi : prepare_tex prepare_tex_with_answers $(QUESTION_DVI) $(ANSWER_DVI) ;
+$(QUESTION_DVI) : $(QUESTION_TEX)
+	@echo "[$(PREFIX_STITCHED_FILES)] : Question TeX -> dvi" 
+	@latex $(QUESTION_TEX)
+$(ANSWER_DVI) : $(ANSWER_TEX)
+	@echo "[$(PREFIX_STITCHED_FILES)] : Answer TeX -> dvi" 
+	@latex $(ANSWER_TEX)
 
-$(ANSWER_TEX) prepare_tex_with_answers : plot $(STITCH_WITH_ANSWERS) 
+
+prepare_tex prepare_tex_with_answers : plot $(QUESTION_TEX) $(ANSWER_TEX) ;
+$(QUESTION_TEX) : $(STITCH_WO_ANSWERS) 
+	@echo "[$(PREFIX_STITCHED_FILES)] : Preparing Question Tex" 
+	@cat $(STITCH_WO_ANSWERS) > $(QUESTION_TEX)
+$(ANSWER_TEX) : $(STITCH_WITH_ANSWERS) 
 	@echo "[$(PREFIX_STITCHED_FILES)] : Preparing Answer TeX" 
 	@cat $(STITCH_WITH_ANSWERS) > $(ANSWER_TEX)
 
-$(QUESTION_TEX) prepare_tex : plot $(STITCH_WO_ANSWERS) 
-	@echo "[$(PREFIX_STITCHED_FILES)] : Preparing Question Tex" 
-	@cat $(STITCH_WO_ANSWERS) > $(QUESTION_TEX)
 	
 
 # [IMP] : Unlike normal C/C++ compilation where one .c/.cpp generates one .o, 
