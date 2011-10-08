@@ -1,0 +1,16 @@
+The sub-folders of this folder represent live, on-going 
+sessions. 
+
+Each sub-folder starts with an initial question selection made 
+for the teacher. The teacher can then modify this selection
+by adding or dropping questions. She can also select the students
+for whom the question paper is to be made. By default, we assume
+that the question paper is to be made for the whole class.
+
+Once done, the sub-folder is moved (copied?) to the staging area.
+The sub-folder now represents the teachers final selection
+and we can now proceed with creating a composite document 
+with student specific QR codes for each question
+
+
+
