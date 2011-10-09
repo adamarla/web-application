@@ -69,4 +69,4 @@ endif
 	
 # Delete all generated files - but not the containing folder
 clean : 
-	@rm -f $(FOLDER_NAME)*
+	@rm -f $(FOLDER_NAME)* && rm -f *.table
