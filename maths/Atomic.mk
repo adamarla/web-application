@@ -1,4 +1,4 @@
-include ../../Variables.mk
+include $(VTA_ROOT)/Variables.mk 
 
 # Public targets : Only these should be called from the command line
 .PHONY : plot prepare dvi ps pdf clean

@@ -1,6 +1,6 @@
 # Variable definitions for various folders 
 
-QBANK_HOME = $(HOME)/qbank
+QBANK_HOME = $(VTA_ROOT)
 QBANK_MATHS = $(QBANK_HOME)/maths
 QBANK_PHYSICS = $(QBANK_HOME)/physics
 QBANK_CHEMISTRY = $(QBANK_HOME)/chemistry
