@@ -1,0 +1,26 @@
+    \question[5] Calculate the volume generated when the curve 
+    $y=2x-x^2$ is rotated around the line $x=4$ as shown in the 
+    figure
+      \insertQR{P334B02AB54D}
+      \begin{marginfigure}[1cm]
+         \begin{tikzpicture}[>=latex]
+            \drawaxis{-0.5}{4.5}{-0.5}{3} ;
+            \draw[dashed] (4,-0.5) -- (4,3) node[right]{$x=4$} ; 
+            \draw[color=black!70,thick] plot[smooth] file{../../q3/curve.table} ;
+      
+            % Label some nodes 
+            \path (0,0) node[below left]{$(0,0)$} ;
+            \path (2,0) node[below right] {$(2,0)$} ;
+            \path (1,1) node[above right] {$y=2x-x^2$} ; 
+          \end{tikzpicture}     
+       \end{marginfigure} 
+       
+       \begin{solution}[\halfpage]
+         \begin{align}
+             \ud V &= \overbrace{(2x-x^2)\ud x}^{\texttt{Cross-sectional Area}}\cdot 
+             \underbrace{2\pi (4-x)}_{\texttt{Perimeter}} \\ 
+              \Rightarrow V &= 2\pi\int_0^2(2x-x^2)\cdot(4-x)\ud x \\
+              &= 2\pi\int_0^2 (x^3-6x^2+8x)\ud x \\
+              &= 2\pi\cdot\left[ \frac{x^4}{4}-2x^3+4x^2\right]_{0}^{2} \\ &= 8\pi
+         \end{align} 
+       \end{solution} 
