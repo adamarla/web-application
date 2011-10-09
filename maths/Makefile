@@ -5,14 +5,14 @@ QUESTIONS := $(wildcard math-*)
 .PHONY : subdirs $(QUESTIONS)
 
 # Public targets : Only these should be called from the command line
-.PHONY : plot prepare dvi ps clean
+.PHONY : plot prepare dvi ps pdf clean
 
 # NOTE : If 'make ps clean' is specified at this level, then 
 # given the way TARGET is defined, only 'make ps' will be 
 # called recursively and 'make clean' would in fact be ignored 
 TARGET := $(word 1,$(strip $(MAKECMDGOALS))) 
 
-subdirs clean plot prepare dvi ps : $(QUESTIONS) ; 
+subdirs clean plot prepare dvi ps pdf : $(QUESTIONS) ; 
 
 $(QUESTIONS) :
 	$(MAKE) $(TARGET) -C $@

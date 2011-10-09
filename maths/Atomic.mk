@@ -1,7 +1,7 @@
 include ../../Variables.mk
 
 # Public targets : Only these should be called from the command line
-.PHONY : plot prepare dvi ps clean
+.PHONY : plot prepare dvi ps pdf clean
 
 # Internal targets : Needed only to define 'public' targets
 .PHONY : prepare_ques_tex prepare_answer_tex 
@@ -13,31 +13,43 @@ include ../../Variables.mk
 #	@convert -density 125 $(QUESTION_PS) $(QUESTION_JPEG)
 #	@convert dvips -density 125 $(ANSWER_PS) $(ANSWER_JPEG)
 
+pdf : ps gen_ques_pdf gen_answer_pdf ;
 ps : dvi gen_ques_ps gen_answer_ps ;
 dvi : prepare gen_ques_dvi gen_answer_dvi ;
 prepare : plot prepare_ques_tex prepare_answer_tex ;
+
+# PS -> PDF 
+gen_ques_pdf : $(QUESTION_PDF) ;
+$(QUESTION_PDF) : $(QUESTION_PS) 
+	@echo "[$(FOLDER_NAME)] : Question ps -> pdf" 
+	@$(PS2PDF) $^ 
+
+gen_answer_pdf : $(ANSWER_PDF) ;
+$(ANSWER_PDF) : $(ANSWER_PS)
+	@echo "[$(FOLDER_NAME)] : Answer ps -> pdf" 
+	@$(PS2PDF) $^ 
 
 # DVI -> PS 
 gen_ques_ps : $(QUESTION_PS) ;
 $(QUESTION_PS) : $(QUESTION_DVI)
 	@echo "[$(FOLDER_NAME)] : Question dvi -> ps"
-	@$(DVIPS) $(QUESTION_DVI) 
+	@$(DVIPS) $^ 
 
 gen_answer_ps : $(ANSWER_PS) ;
 $(ANSWER_PS) : $(ANSWER_DVI)  
 	@echo "[$(FOLDER_NAME)] : Answer dvi -> ps"
-	$(DVIPS) $(ANSWER_DVI)
+	@$(DVIPS) $^ 
 
 # TeX -> DVI 
 gen_ques_dvi : $(QUESTION_DVI) ;
 $(QUESTION_DVI) : $(QUESTION_TEX)
 	@echo "[$(FOLDER_NAME)] : Question TeX -> dvi" 
-	@$(LATEX) $+
+	@$(LATEX) $+ 
 
 gen_answer_dvi : $(ANSWER_DVI) ;
 $(ANSWER_DVI) : $(ANSWER_TEX) 
 	@echo "[$(FOLDER_NAME)] : Answer TeX -> dvi" 
-	@$(LATEX) $+
+	@$(LATEX) $+ 
 
 # TeX Stitching ...
 prepare_ques_tex : $(QUESTION_TEX)
@@ -53,10 +65,11 @@ $(ANSWER_TEX) : $(STITCH_WITH_ANSWERS)
 	
 
 # [IMP] : Unlike normal C/C++ compilation where one .c/.cpp generates one .o, 
-# one .gnuplot can lead to the creation of multiple .table files. Moreover, the names
-# of the .table files are not derived from the .gnuplot but are specified -
-# at the developers discretion - within the .gnuplot file itself. Hence, it is 
-# not possible to define what the target files should be in the clause below
+# one .gnuplot can lead to the creation of multiple .table files. Moreover, 
+# the names of the .table files are not derived from the .gnuplot but are 
+# specified - at the developers discretion - within the .gnuplot file itself.
+# Hence, it is not possible to define what the target files should be in 
+# the clause below
 
 # Curve plotting, if needed ...
 plot : $(PLOT_FILES)

@@ -9,6 +9,7 @@ QBANK_COMMON = $(QBANK_HOME)/common
 # Commands 
 DVIPS = dvips -q 
 LATEX = latex
+PS2PDF = ps2pdf
 
 # Variable defs for various files types within a question folder
 PLOT_FILES = $(wildcard *.gnuplot)  
@@ -45,6 +46,9 @@ ANSWER_DVI = $(FOLDER_NAME)-answer.dvi
 
 QUESTION_PS = $(FOLDER_NAME).ps
 ANSWER_PS = $(FOLDER_NAME)-answer.ps
+
+QUESTION_PDF = $(FOLDER_NAME).pdf
+ANSWER_PDF = $(FOLDER_NAME)-answer.pdf
 
 QUESTION_JPEG = $(FOLDER_NAME).jpeg
 ANSWER_JPEG = $(FOLDER_NAME)-answer.jpeg
