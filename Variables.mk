@@ -6,6 +6,10 @@ QBANK_PHYSICS = $(QBANK_HOME)/physics
 QBANK_CHEMISTRY = $(QBANK_HOME)/chemistry
 QBANK_COMMON = $(QBANK_HOME)/common
 
+# Commands 
+DVIPS = dvips -q 
+LATEX = latex
+
 # Variable defs for various files types within a question folder
 PLOT_FILES = $(wildcard *.gnuplot)  
 PLOT_TABLES = 
