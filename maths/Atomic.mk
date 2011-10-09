@@ -60,7 +60,7 @@ $(ANSWER_TEX) : $(STITCH_WITH_ANSWERS)
 
 # Curve plotting, if needed ...
 plot : $(PLOT_FILES)
-ifneq ($(PLOT_FILES),"")
+ifneq ($(strip $(PLOT_FILES)),)
 	@echo "[$(PREFIX_STITCHED_FILES)] : Generating Plots" 
 	@gnuplot $+ 
 else 
