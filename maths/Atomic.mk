@@ -9,7 +9,7 @@ include ../../Variables.mk
 .PHONY : gen_ques_ps gen_answer_ps
 
 #$(QUESTION_JPEG) $(ANSWER_JPEG) jpeg : ps $(QUESTION_PS) $(ANSWER_PS) 
-#	@echo "[$(PREFIX_STITCHED_FILES)] : PS -> JPEG" 
+#	@echo "[$(FOLDER_NAME)] : PS -> JPEG" 
 #	@convert -density 125 $(QUESTION_PS) $(QUESTION_JPEG)
 #	@convert dvips -density 125 $(ANSWER_PS) $(ANSWER_JPEG)
 
@@ -20,34 +20,34 @@ prepare : plot prepare_ques_tex prepare_answer_tex ;
 # DVI -> PS 
 gen_ques_ps : $(QUESTION_PS) ;
 $(QUESTION_PS) : $(QUESTION_DVI)
-	@echo "[$(PREFIX_STITCHED_FILES)] : Question dvi -> ps"
+	@echo "[$(FOLDER_NAME)] : Question dvi -> ps"
 	@$(DVIPS) $(QUESTION_DVI) 
 
 gen_answer_ps : $(ANSWER_PS) ;
 $(ANSWER_PS) : $(ANSWER_DVI)  
-	@echo "[$(PREFIX_STITCHED_FILES)] : Answer dvi -> ps"
+	@echo "[$(FOLDER_NAME)] : Answer dvi -> ps"
 	$(DVIPS) $(ANSWER_DVI)
 
 # TeX -> DVI 
 gen_ques_dvi : $(QUESTION_DVI) ;
 $(QUESTION_DVI) : $(QUESTION_TEX)
-	@echo "[$(PREFIX_STITCHED_FILES)] : Question TeX -> dvi" 
+	@echo "[$(FOLDER_NAME)] : Question TeX -> dvi" 
 	@$(LATEX) $+
 
 gen_answer_dvi : $(ANSWER_DVI) ;
 $(ANSWER_DVI) : $(ANSWER_TEX) 
-	@echo "[$(PREFIX_STITCHED_FILES)] : Answer TeX -> dvi" 
+	@echo "[$(FOLDER_NAME)] : Answer TeX -> dvi" 
 	@$(LATEX) $+
 
 # TeX Stitching ...
 prepare_ques_tex : $(QUESTION_TEX)
 $(QUESTION_TEX) : $(STITCH_WO_ANSWERS) 
-	@echo "[$(PREFIX_STITCHED_FILES)] : Preparing Question Tex" 
+	@echo "[$(FOLDER_NAME)] : Preparing Question Tex" 
 	@cat $(STITCH_WO_ANSWERS) > $(QUESTION_TEX)
 
 prepare_answer_tex : $(ANSWER_TEX)
 $(ANSWER_TEX) : $(STITCH_WITH_ANSWERS) 
-	@echo "[$(PREFIX_STITCHED_FILES)] : Preparing Answer TeX" 
+	@echo "[$(FOLDER_NAME)] : Preparing Answer TeX" 
 	@cat $+ > $(ANSWER_TEX)
 
 	
@@ -61,9 +61,9 @@ $(ANSWER_TEX) : $(STITCH_WITH_ANSWERS)
 # Curve plotting, if needed ...
 plot : $(PLOT_FILES)
 ifneq ($(strip $(PLOT_FILES)),)
-	@echo "[$(PREFIX_STITCHED_FILES)] : Generating Plots" 
+	@echo "[$(FOLDER_NAME)] : Generating Plots" 
 	@gnuplot $+ 
 else 
-	@echo "[$(PREFIX_STITCHED_FILES)] : No Plots to Generate ($^) " 
+	@echo "[$(FOLDER_NAME)] : No Plots to Generate ($^) " 
 endif 
 	
