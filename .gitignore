@@ -1,0 +1,17 @@
+
+# The next 3 directives will ignore all generated .tex, .dvi, .ps, .pdf etc.
+# They work because we name generated files in a specific way in the Makefiles
+math-*
+physics-*
+chemistry-*
+
+# These other exclusions might overlap with those above. But they 
+# represent extensions that are rather commonly used by users when 
+# doing stuff on the command line
+
+*.log 
+*.aux
+*.out
+
+# There is no need to track .table files generated from .gnuplot
+*.table
