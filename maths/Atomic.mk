@@ -1,37 +1,54 @@
 include ../../Variables.mk
 
-#.PHONY : plot prepare_tex prepare_tex_with_answers dvi ps jpeg 
-.PHONY : plot prepare_tex prepare_tex_with_answers dvi ps
+# Public targets : Only these should be called from the command line
+.PHONY : plot prepare dvi ps 
+
+# Internal targets : Needed only to define 'public' targets
+.PHONY : prepare_ques_tex prepare_answer_tex 
+.PHONY : gen_ques_dvi gen_answer_dvi
+.PHONY : gen_ques_ps gen_answer_ps
 
 #$(QUESTION_JPEG) $(ANSWER_JPEG) jpeg : ps $(QUESTION_PS) $(ANSWER_PS) 
 #	@echo "[$(PREFIX_STITCHED_FILES)] : PS -> JPEG" 
 #	@convert -density 125 $(QUESTION_PS) $(QUESTION_JPEG)
 #	@convert dvips -density 125 $(ANSWER_PS) $(ANSWER_JPEG)
 
-ps : dvi $(QUESTION_PS) $(ANSWER_PS) ;
+ps : dvi gen_ques_ps gen_answer_ps ;
+dvi : prepare gen_ques_dvi gen_answer_dvi ;
+prepare : plot prepare_ques_tex prepare_answer_tex ;
+
+# DVI -> PS 
+gen_ques_ps : $(QUESTION_PS) ;
 $(QUESTION_PS) : $(QUESTION_DVI)
 	@echo "[$(PREFIX_STITCHED_FILES)] : Question dvi -> ps"
-	@dvips $(QUESTION_DVI) 
+	@$(DVIPS) $(QUESTION_DVI) 
+
+gen_answer_ps : $(ANSWER_PS) ;
 $(ANSWER_PS) : $(ANSWER_DVI)  
 	@echo "[$(PREFIX_STITCHED_FILES)] : Answer dvi -> ps"
-	dvips $(ANSWER_DVI)
+	$(DVIPS) $(ANSWER_DVI)
 
-dvi : prepare_tex prepare_tex_with_answers $(QUESTION_DVI) $(ANSWER_DVI) ;
+# TeX -> DVI 
+gen_ques_dvi : $(QUESTION_DVI) ;
 $(QUESTION_DVI) : $(QUESTION_TEX)
 	@echo "[$(PREFIX_STITCHED_FILES)] : Question TeX -> dvi" 
-	@latex $(QUESTION_TEX)
-$(ANSWER_DVI) : $(ANSWER_TEX)
+	@$(LATEX) $+
+
+gen_answer_dvi : $(ANSWER_DVI) ;
+$(ANSWER_DVI) : $(ANSWER_TEX) 
 	@echo "[$(PREFIX_STITCHED_FILES)] : Answer TeX -> dvi" 
-	@latex $(ANSWER_TEX)
+	@$(LATEX) $+
 
-
-prepare_tex prepare_tex_with_answers : plot $(QUESTION_TEX) $(ANSWER_TEX) ;
+# TeX Stitching ...
+prepare_ques_tex : $(QUESTION_TEX)
 $(QUESTION_TEX) : $(STITCH_WO_ANSWERS) 
 	@echo "[$(PREFIX_STITCHED_FILES)] : Preparing Question Tex" 
 	@cat $(STITCH_WO_ANSWERS) > $(QUESTION_TEX)
+
+prepare_answer_tex : $(ANSWER_TEX)
 $(ANSWER_TEX) : $(STITCH_WITH_ANSWERS) 
 	@echo "[$(PREFIX_STITCHED_FILES)] : Preparing Answer TeX" 
-	@cat $(STITCH_WITH_ANSWERS) > $(ANSWER_TEX)
+	@cat $+ > $(ANSWER_TEX)
 
 	
 
@@ -40,11 +57,13 @@ $(ANSWER_TEX) : $(STITCH_WITH_ANSWERS)
 # of the .table files are not derived from the .gnuplot but are specified -
 # at the developers discretion - within the .gnuplot file itself. Hence, it is 
 # not possible to define what the target files should be in the clause below
+
+# Curve plotting, if needed ...
 plot : $(PLOT_FILES)
-ifdef $(PLOT_FILES)
+ifneq ($(PLOT_FILES),"")
 	@echo "[$(PREFIX_STITCHED_FILES)] : Generating Plots" 
-	@gnuplot $(PLOT_FILES)
+	@gnuplot $+ 
 else 
-	@echo "[$(PREFIX_STITCHED_FILES)] : No Plots to Generate" 
+	@echo "[$(PREFIX_STITCHED_FILES)] : No Plots to Generate ($^) " 
 endif 
 	
