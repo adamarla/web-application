@@ -1,7 +1,7 @@
 include ../../Variables.mk
 
 # Public targets : Only these should be called from the command line
-.PHONY : plot prepare dvi ps 
+.PHONY : plot prepare dvi ps clean
 
 # Internal targets : Needed only to define 'public' targets
 .PHONY : prepare_ques_tex prepare_answer_tex 
@@ -67,3 +67,6 @@ else
 	@echo "[$(FOLDER_NAME)] : No Plots to Generate ($^) " 
 endif 
 	
+# Delete all generated files - but not the containing folder
+clean : 
+	@rm -f $(FOLDER_NAME)*
