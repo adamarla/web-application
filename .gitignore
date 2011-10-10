@@ -12,7 +12,7 @@
 *.table
 *.out
 *.tex
-! question.tex
+!question.tex
 
 session/
-! session/scripts/ session/*/README
+!session/scripts/ !session/*/README
