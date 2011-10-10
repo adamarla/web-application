@@ -13,3 +13,6 @@
 *.out
 *.tex
 ! question.tex
+
+session/
+! session/scripts/ session/*/README
