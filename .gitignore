@@ -16,3 +16,5 @@
 
 session/
 !session/scripts/ !session/*/README
+
+*.swp
