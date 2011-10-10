@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Create a folder in $PWD of the form : <random>-<date>
+mkdir `echo "\`openssl rand -hex 4\`-\`date +%b%d-%Y\`"`
