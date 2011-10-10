@@ -1,3 +1,3 @@
-include $(VTA_ROOT)/Variables.mk
-include $(QBANK_MATHS)/Atomic.mk 
+include $(VTA_ROOT)/Makefiles/Variables.mk
+include $(VTA_ROOT)/Makefiles/Atomic.mk 
 
