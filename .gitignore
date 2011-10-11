@@ -14,7 +14,10 @@
 *.tex
 !question.tex
 
-session/
-!session/scripts/ !session/*/README
+session/preview/session-*
+session/staging/session-*
+
+#!session/*/README 
+#!session/staging/Makefile
 
 *.swp
