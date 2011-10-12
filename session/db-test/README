@@ -1,0 +1,16 @@
+This folder contains dummy files that serve(d?) as proxies for 
+a DB in the early stages of development. 
+
+As I was not sure how things would stitch together, I started 
+build in a bottom-up manner, that is, developed the backend 
+before the front-end ( website ) to test some basic assumptions 
+about how customized LaTeX documents could be generated on the fly
+
+This meant that in the initial stages, I was working without a 
+a DB. And yet, I needed data to run my code over. So, I created
+proxy files on which to test the code - knowing full well that
+whilst the essence of the code being written will remain, 
+some details might change
+
+This folder should have *no* use when we go into production. But 
+that's just my guess at this time
