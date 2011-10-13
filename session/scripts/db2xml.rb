@@ -1,7 +1,7 @@
 
 # If one wants to allow users to change question and/or 
 # student selection, then one necessarily needs some way to 
-# capture the current selection so that they can later change it 
+# capture the current selection so that they can change it later
 
 # The way we propose to do it is by creating an XML file with
 # some initial selection drawn from the database. The user can
@@ -27,11 +27,13 @@ require "rexml/document"
 include REXML
 
 class Db2Xml
-  attr_reader :db_q, :db_std
+  attr_reader :db_q, :db_std, :question_paper
+  attr_reader :xml_q, :xml_std
 
   def initialize(session_id)
     @root = ENV["VTA_ROOT"] 
 
+    @session_id = session_id.split('-')[1].upcase 
     @target_dir = @root + "/session/staging/#{session_id}" 
     @xml_q = @target_dir + "/questions.xml" 
     @xml_std = @target_dir + "/students.xml" 
@@ -39,6 +41,11 @@ class Db2Xml
     @src_dir = @root + "/session/db-test/#{session_id}" 
     @db_q = @src_dir + "/questions.db" # question XML
     @db_std = @src_dir + "/students.db"  # student XML 
+
+    # Captures the final selection. But more importantly, the 
+    # tree structure reflects the order in which questions are to be
+    # laid out - with correct QR codes of course
+    @question_paper = @target_dir + "/question_paper.xml"
 
     Dir::mkdir @target_dir unless Dir::exists? @target_dir 
   end 
@@ -63,17 +70,17 @@ class Db2Xml
       next unless merge_scheme.has_key? key
 
       merge_these = merge_scheme[key][0]
-      puts "Merge_these : #{merge_these}"
+      # puts "Merge_these : #{merge_these}"
 
       merge_these.unshift key
-      puts "Modified merge_these : #{merge_these}"
+      # puts "Modified merge_these : #{merge_these}"
       
       merged_val = String.new  
       merge_these.each {|attr|
         merged_val += list[attr.to_s]
         merged_val += glue unless attr == merge_these.last
       }
-      puts "Merged value = #{merged_val}"
+      # puts "Merged value = #{merged_val}"
 
       h.store(merge_scheme[key][1], merged_val)
     }
@@ -102,7 +109,8 @@ class Db2Xml
     tokens = db_data.split(',')
     h = gen_attribute_hash(tokens)
 
-    merge_scheme = {:first => [[:last], 'name'], :grade => [[:section], 'group']}
+    merge_scheme = {:id => [[],'id'], :first => [[:last], 'name'], \
+                    :grade => [[:section], 'group']}
 
     xml = Element.new "student"
     h = merge_attributes(h,merge_scheme) 
@@ -119,7 +127,7 @@ class Db2Xml
     tokens = db_data.split(',')
     h = gen_attribute_hash(tokens)
 
-    merge_scheme = {:path => [[],'path'], :id => [[:mcq,:position],'QR']}
+    merge_scheme = {:path => [[],'path'], :id => [[:marks,:mcq,:position],'QR']}
 
     xml = Element.new "question"
     h = merge_attributes(h,merge_scheme,'x') 
@@ -128,7 +136,9 @@ class Db2Xml
   end 
   private:gen_question_xml_node
 
-  def parse_student_db
+  ####################################################################
+
+  def build_student_xml
     source = File.new(@db_std, 'r') 
     target = source.nil? ? nil : File.new(@xml_std,'w') 
 
@@ -138,12 +148,12 @@ class Db2Xml
 
       doc << XMLDecl.new 
       lines = source.readlines 
-      puts lines 
+      # puts lines 
 
       lines.each {|line| 
         line.chomp!
         xml = gen_student_xml_node(line)
-        puts xml
+        # puts xml
         root << xml 
       }
       doc << root 
@@ -154,7 +164,7 @@ class Db2Xml
     end 
   end 
 
-  def parse_question_db
+  def build_question_xml
     source = File.new(@db_q, 'r') 
     target = source.nil? ? nil : File.new(@xml_q,'w') 
 
@@ -164,12 +174,12 @@ class Db2Xml
 
       doc << XMLDecl.new 
       lines = source.readlines 
-      puts lines 
+      # puts lines 
 
       lines.each {|line| 
         line.chomp!
         xml = gen_question_xml_node(line) 
-        puts xml 
+        # puts xml 
         root << xml 
       }
       doc << root 
@@ -177,6 +187,50 @@ class Db2Xml
     ensure
       source.close unless source.nil? 
       target.close unless target.nil?
+    end 
+  end 
+
+  def build_question_paper
+    begin 
+      qp = File.new(@question_paper, 'w') 
+
+      doms = Document.new File.open(@xml_std) 
+      domq = Document.new File.open(@xml_q) 
+      the_dom = Document.new
+      
+      # Prepend XML header
+      the_dom << XMLDecl.new 
+
+      # <assignment date="October 5,2011" id="12ab45">...</assignment>
+      root = Element.new "assignment" 
+      root.attributes['date'] = Time.now.strftime('%B %d, %Y')
+      root.attributes['id'] = @session_id 
+
+      # For each student ....
+      doms.elements.each("students/student") { |s|
+         new_student = s.clone 
+         student_id = s.attributes['id']
+
+         # Add each question as a child with *updated* QR codes
+         domq.elements.each("questions/question") { |q|
+           new_q = q.clone 
+           # puts new_q
+           new_qr = q.attributes['QR'] + "-#{student_id}-#{@session_id}"
+           new_q.attributes['QR'] = new_qr 
+           
+           # Add *updated* question as a child of new_student
+           new_student << new_q
+         } 
+         # Add new_student as a child of root
+         root << new_student 
+      } 
+
+      # Time to write generated tree structure into the DOM
+      the_dom << root 
+      the_dom.write qp, 2
+
+    ensure
+      qp.close unless qp.nil? 
     end 
   end 
 
