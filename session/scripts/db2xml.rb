@@ -43,13 +43,15 @@ class Db2Xml
     Dir::mkdir @target_dir unless Dir::exists? @target_dir 
   end 
 
-  def merge_attributes(list,mapping,glue = ' ')
+  def merge_attributes(list,merge_scheme,glue = ' ')
     # List : Hash as returned by method 'gen_attribute_hash'
     #     (example) : {'id' => 'B56DF', 'first'=>'Steve', 'last'=>'Jobs'}
-    # Mapping : A hash. key = attribute that triggers merging, 
+    # Merge Scheme : A hash. key = attribute that triggers merging, 
     # value = 2-element array. First element = array of other attributes
     # to be merged. Second element = new name for merged attribute
     #  (example) {:first => [[:last],'name'], :qr => [[:id,:marks],'QR']}
+    #  NOTE: Keys that needn't be merged still need to be mentioned in 
+    #        the merging scheme. (example) {:key => [[],'key'}
     # Glue : character to put between values during merging
     #  (example) Glue = 'x'
     # Return Value : A new hash with new attribute names and (merged) values
@@ -58,9 +60,9 @@ class Db2Xml
     h = Hash.new 
     list.each {|key,value|
       key = key.to_sym
-      next unless mapping.has_key? key
+      next unless merge_scheme.has_key? key
 
-      merge_these = mapping[key][0]
+      merge_these = merge_scheme[key][0]
       puts "Merge_these : #{merge_these}"
 
       merge_these.unshift key
@@ -73,15 +75,15 @@ class Db2Xml
       }
       puts "Merged value = #{merged_val}"
 
-      h.store(mapping[key][1], merged_val)
+      h.store(merge_scheme[key][1], merged_val)
     }
     return h
   end 
   private:merge_attributes
 
   def gen_attribute_hash(token_list)
-    # Input (proxy) : Array of tokens of the form <key>:<value>
-    # Return : Hash
+    # Input (proxy) : Array of tokens of the form [<key>:<value>]
+    # Return : Hash of the form {<key> => <value>}
 
     h = Hash.new 
     token_list.each {|token|
@@ -100,14 +102,11 @@ class Db2Xml
     tokens = db_data.split(',')
     h = gen_attribute_hash(tokens)
 
-    skip_keys = [:last, :section]
-    merge_keys = {:first => [[:last], 'name'], :grade => [[:section], 'group']}
+    merge_scheme = {:first => [[:last], 'name'], :grade => [[:section], 'group']}
 
     xml = Element.new "student"
-    h = merge_attributes(h,merge_keys) 
-    h.each {|k,v| 
-      xml.attributes[k] = v
-    }
+    h = merge_attributes(h,merge_scheme) 
+    h.each {|k,v| xml.attributes[k] = v}
     return xml 
   end 
   private:gen_student_xml_node
@@ -120,8 +119,11 @@ class Db2Xml
     tokens = db_data.split(',')
     h = gen_attribute_hash(tokens)
 
+    merge_scheme = {:path => [[],'path'], :id => [[:mcq,:position],'QR']}
+
     xml = Element.new "question"
-    h.each {|key,value| xml.attributes[key] = value}
+    h = merge_attributes(h,merge_scheme,'x') 
+    h.each {|k,v| xml.attributes[k] = v}
     return xml
   end 
   private:gen_question_xml_node
