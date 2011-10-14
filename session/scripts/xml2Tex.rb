@@ -47,56 +47,41 @@ class Xml2Tex
     
     # Do the same for any .sk files 
 
-    # Then, start building the TeX files for the question paper and answer key
-    ['common/preamble.tex','common/doc_begin.tex'].each_with_index { |f, index|
-      append_to_tex @question_paper, f
-      append_to_tex @answer_key, f
-      append_to_tex @answer_key, nil, "\\printanswers" if index == 0
-    }
-
-    # For each student, append questions with their unique QR codes
     layout = Document.new @layout 
-    layout.elements.each("assignment/student") { |s|
-      finish_build = false 
 
-      s.elements.each("question") { |q|
-        # First, insert the question specific QR code
-        append_to_tex @question_paper,nil,"\\insertQR{#{q.attributes['QR']}}"
-
-        # Then, insert question.tex from the question-bank
-        question = q.attributes['path'] + '/question.tex'
-        [@question_paper, @answer_key].each { |f| 
-           append_to_tex f, question
-        } 
+    [@question_paper, @answer_key].each_with_index { |target, i|
+      # Everything until \begin{questions}
+      ['preamble.tex', 'printanswers.tex', 'doc_begin.tex'].each_with_index { |file, j| 
+        if j == 1 # printanswers?
+          append_to_tex target, "common/#{file}" if i == 1
+        else 
+          append_to_tex target, "common/#{file}" 
+        end 
       } 
 
-      [@question_paper, @answer_key].each_with_index { |f, index| 
-        # Insert a new page after every student 
-        append_to_tex f,nil, "\\newpage"
-        # Reset the page and question counters 
-        append_to_tex f,nil, "\\setcounter{question}{0}" # refer exam.cls
-        append_to_tex f,nil, "\\setcounter{page}{1}" # refer exam.cls
-        # Change header contents - namely - the student's name 
+      # Then, the questions 
+      layout.elements.each("assignment/student") { |student| 
+         student.elements.each("question") { |question| 
+            append_to_tex target,nil,"\\insertQR{#{question.attributes['QR']}}" if i == 0
+            tex = question.attributes['path'] + '/question.tex'
+            append_to_tex target, tex
+         } 
+         # There is no need to iterate over every student if generating the 
+         # answer key. For the same set of questions, the answer key is the 
+         # same for all students 
+         break if i == 1
 
-        # There is no need to iterate over all students when generating
-        # the answer key. For the same questions, the answers would be the same. 
-        # Hence, if generating the answer key, break after finishing with the
-        # first student 
-        finish_build = index == 1 ? true : false
-        break if finish_build 
-      } 
-      break if finish_build
+         # Otherwise, continue appending. Just make sure that page & question
+         # counters are reset
+         append_to_tex target,nil,"\\newpage"
+         append_to_tex target,nil,"\\setcounter{question}{0}" # refer exam.cls
+         append_to_tex target,nil,"\\setcounter{page}{1}" # refer exam.cls
+      }
+      # Now, close the document with \end{questions}\end{document} 
+      append_to_tex target, "common/doc_end.tex"
+      target.close unless target.nil?
     }
-
-    # Finally, close the document
-    [@question_paper, @answer_key].each { |f|
-      append_to_tex f, "common/doc_end.tex"  
-    } 
-
-    # And the file handles...
-    @question_paper.close unless @question_paper.nil? 
-    @answer_key.close unless @answer_key.nil?
-  end 
+  end # of build_tex
 
   private:link_gnuplot_files
   private:append_to_tex 
