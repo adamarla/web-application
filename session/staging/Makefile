@@ -1,10 +1,26 @@
 
+####################################################################
+# Given that session folders are deleted once the question paper
+# and answer key have been generated, it makes no sense to support 
+# recursive build in the 'staging' area. The only sensible 
+# use-case is building a specific session. Hence, we will enforce 
+# the following invocation only : make session=<session_id>
+#
+# Moreover, I do not foresee this Makefile being invoked manually 
+# from the command line ( other than for internal testing purposes ). 
+# It will almost always be called from within some controller in
+# the Rails application. If it is called manually, then make sure 
+# that any .gnuplot and .sk files are copied first into the right 
+# sessions folder ( tasks that the controller would do automatically )
+####################################################################
+
 # Commands we need for TeX -> PS -> PDF conversion
 
-DVIPS = dvips -q
-DVIPDF = dvipdf -q
-LATEX = latex
-PS2PDF = ps2pdf
+DVIPS := dvips -q
+DVIPDF := dvipdf -q
+LATEX := latex
+PS2PDF := ps2pdf
+RUBY := ruby
 
 # Shell commands of the type 'cat a/{b,c}.tex > X' are not supported
 # in the default make shell - sh. Hence, change the value of SHELL variable 
@@ -13,63 +29,26 @@ PS2PDF = ps2pdf
 SHELL := /bin/bash
 
 # Some useful variable definitions
+TARGET_SESSION = $(subst session=,,$(strip $(session)))
+DB_DIR := $(VTA_ROOT)/session/db-test/$(TARGET_SESSION)
+STAGING_DIR := $(VTA_ROOT)/session/staging/$(TARGET_SESSION)
+SCRIPTS_DIR := $(VTA_ROOT)/session/scripts
 
-QBANK_HOME := $(VTA_ROOT)
-QBANK_COMMON := $(VTA_ROOT)/common
-Q_SPACE_LIST := $(strip $(QLIST))
+PLOT_FILES := $(wildcard $(STAGING_DIR)/*.gnuplot) 
 
-# Spaces and commas require special handling when using $(subst ...)
-# The key is to define variables for space and comma and use these 
-# in calls to $(subst ...) 
+#.PHONY : xml2tex db2xml 
+.PHONY : plot dvi ps pdf $(PLOT_FILES)
 
-comma := ,
-empty :=
-space := $(empty) $(empty)
+pdf : ps 
+	@cd $(STAGING_DIR) && $(PS2PDF) question_paper.ps && $(PS2PDF) answer_key.ps
 
-# There should be no space at the end. Of what? $(Q_SPACE_LIST), you say?
-# Wrong !! At the end of this next variable declaration
+ps : dvi
+	@cd $(STAGING_DIR) && $(DVIPS) question_paper.dvi && $(DVIPS) answer_key.dvi
 
-Q_COMMA_LIST := $(subst $(space),$(comma),$(Q_SPACE_LIST))
+dvi : plot 
+	@cd $(STAGING_DIR) && $(LATEX) question_paper.tex && $(LATEX) answer_key.tex
 
-# Variables for output file names MINUS the extensions {.tex, .dvi etc} !!!! 
-# As above, make sure there is no space at the end of variable declaration 
+plot : $(PLOT_FILES) ;
 
-QFILE := Q-$(shell date +%b-%d-%Y)
-AFILE := A-$(shell date +%b-%d-%Y)
-
-QPATH := $(SESSION_ID)/$(QFILE)
-APATH := $(SESSION_ID)/$(AFILE)
-
-# List of all sessions in the staging area 
-SESSIONS = $(wildcard sessions-*)
-
-.PHONY : $(SESSION_ID) pull $(Q_SPACE_LIST) open_shells close_shells clean 
-
-$(SESSION_ID) : pull open_shells add_pearls close_shells compile ;
-
-open_shells : pull 
-	@echo $(QPATH).tex
-	@cat $(QBANK_COMMON)/{preamble,doc_begin}.tex >> $(QPATH).tex 
-	@cat $(QBANK_COMMON)/{preamble,printanswers,doc_begin}.tex >> $(APATH).tex
-
-add_pearls : open_shells 
-	@cat $(QBANK_HOME)/{$(Q_COMMA_LIST)}/question.tex >> $(QPATH).tex 
-	@cat $(QBANK_HOME)/{$(Q_COMMA_LIST)}/question.tex >> $(APATH).tex
-
-close_shells : add_pearls 
-	@cat $(QBANK_COMMON)/doc_end.tex >> $(QPATH).tex
-	@cat $(QBANK_COMMON)/doc_end.tex >> $(APATH).tex
-
-compile : close_shells
-	@cd $(SESSION_ID) && $(LATEX) $(QFILE).tex && $(DVIPS) $(QFILE).dvi && $(PS2PDF) $(QFILE).ps
-	@cd $(SESSION_ID) && $(LATEX) $(AFILE).tex && $(DVIPS) $(AFILE).dvi && $(PS2PDF) $(AFILE).ps
-
-pull : clean $(Q_SPACE_LIST) ; 
-
-$(Q_SPACE_LIST) : 
-	@$(MAKE) plot -C $(VTA_ROOT)/$@
-	@- cp $(VTA_ROOT)/$@/*.table $(SESSION_ID)
-	
-clean : 
-	-@cd $(SESSION_ID) && rm -f $(QFILE).{tex,aux,dvi,ps,pdf,out,log}
-	-@cd $(SESSION_ID) && rm -f $(AFILE).{tex,aux,dvi,ps,pdf,out,log}
+$(PLOT_FILES) : 
+	@cd $(STAGING_DIR) && gnuplot $@
