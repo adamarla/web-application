@@ -27,7 +27,7 @@ require "rexml/document"
 include REXML
 
 class Db2Xml
-  attr_reader :db_q, :db_std, :question_paper
+  attr_reader :db_q, :db_std, :layout
   attr_reader :xml_q, :xml_std
 
   def initialize(session_id)
@@ -35,8 +35,8 @@ class Db2Xml
 
     @session_id = session_id.split('-')[1].upcase 
     @target_dir = @root + "/session/staging/#{session_id}" 
-    @xml_q = @target_dir + "/questions.xml" 
-    @xml_std = @target_dir + "/students.xml" 
+    @xml_q = @target_dir + "/db_questions.xml" 
+    @xml_std = @target_dir + "/db_students.xml" 
  
     @src_dir = @root + "/session/db-test/#{session_id}" 
     @db_q = @src_dir + "/questions.db" # question XML
@@ -45,7 +45,7 @@ class Db2Xml
     # Captures the final selection. But more importantly, the 
     # tree structure reflects the order in which questions are to be
     # laid out - with correct QR codes of course
-    @question_paper = @target_dir + "/question_paper.xml"
+    @layout = @target_dir + "/layout.xml"
 
     Dir::mkdir @target_dir unless Dir::exists? @target_dir 
   end 
@@ -190,16 +190,16 @@ class Db2Xml
     end 
   end 
 
-  def build_question_paper
+  def build_layout
     begin 
-      qp = File.new(@question_paper, 'w') 
+      layout = File.new(@layout, 'w') 
 
       doms = Document.new File.open(@xml_std) 
       domq = Document.new File.open(@xml_q) 
-      the_dom = Document.new
+      assignment_dom = Document.new
       
       # Prepend XML header
-      the_dom << XMLDecl.new 
+      assignment_dom << XMLDecl.new 
 
       # <assignment date="October 5,2011" id="12ab45">...</assignment>
       root = Element.new "assignment" 
@@ -226,11 +226,11 @@ class Db2Xml
       } 
 
       # Time to write generated tree structure into the DOM
-      the_dom << root 
-      the_dom.write qp, 2
+      assignment_dom << root 
+      assignment_dom.write layout, 2
 
     ensure
-      qp.close unless qp.nil? 
+      layout.close unless layout.nil? 
     end 
   end 
 

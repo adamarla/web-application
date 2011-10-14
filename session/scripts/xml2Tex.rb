@@ -5,15 +5,15 @@ include REXML
 class Xml2Tex 
   def initialize( session_id )
     @root = ENV["VTA_ROOT"] 
-    @session_id = session_id.split('-')[1].upcase
+    @session_id = session_id.split('-')[1].upcase # session-xyz -> XYZ
     @staging_dir = @root + "/session/staging/#{session_id}"
-    @source = File.open(@staging_dir + "/question_paper.xml", 'r') 
+    @layout = File.open(@staging_dir + "/layout.xml", 'r') 
     @question_paper = File.open(@staging_dir + "/question_paper.tex", 'w')
     @answer_key = File.open(@staging_dir + "/answer_key.tex", 'w')
   end 
 
   def link_gnuplot_files
-    doc = Document.new File.open(@staging_dir + "/questions.xml") 
+    doc = Document.new File.open(@staging_dir + "/db_questions.xml") 
     doc.elements.each("questions/question") { |q| 
       path = q.attributes['path'] # (example) : maths/math-07
       qfolder = @root + "/#{path}" # (example) : $VTA_ROOT/maths/math-07
@@ -44,6 +44,8 @@ class Xml2Tex
     # First, create symbolic links within sessions folder 
     # to any required .gnuplot files
     link_gnuplot_files
+    
+    # Do the same for any .sk files 
 
     # Then, start building the TeX files for the question paper and answer key
     ['common/preamble.tex','common/doc_begin.tex'].each_with_index { |f, index|
@@ -53,8 +55,8 @@ class Xml2Tex
     }
 
     # For each student, append questions with their unique QR codes
-    doc = Document.new @source 
-    doc.elements.each("assignment/student") { |s|
+    layout = Document.new @layout 
+    layout.elements.each("assignment/student") { |s|
       finish_build = false 
 
       s.elements.each("question") { |q|
