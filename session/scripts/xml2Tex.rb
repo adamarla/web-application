@@ -33,6 +33,8 @@ class Xml2Tex
     # Now, for each student, append questions with their unique QR codes
     doc = Document.new @source 
     doc.elements.each("assignment/student") { |s|
+      finish_build = false 
+
       s.elements.each("question") { |q|
         # First, insert the question specific QR code
         append_to_tex @question_paper,nil,"\\insertQR{#{q.attributes['QR']}}"
@@ -44,14 +46,22 @@ class Xml2Tex
         } 
       } 
 
-      [@question_paper, @answer_key].each { |f| 
+      [@question_paper, @answer_key].each_with_index { |f, index| 
         # Insert a new page after every student 
         append_to_tex f,nil, "\\newpage"
         # Reset the page and question counters 
         append_to_tex f,nil, "\\setcounter{question}{0}" # refer exam.cls
         append_to_tex f,nil, "\\setcounter{page}{1}" # refer exam.cls
         # Change header contents - namely - the student's name 
+
+        # There is no need to iterate over all students when generating
+        # the answer key. For the same questions, the answers would be the same. 
+        # Hence, if generating the answer key, break after finishing with the
+        # first student 
+        finish_build = index == 1 ? true : false
+        break if finish_build 
       } 
+      break if finish_build
     }
 
     # Finally, close the document
