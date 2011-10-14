@@ -8,12 +8,14 @@
 \NeedsTeXFormat{LaTeX2e} 
 \ProvidesClass{tufte-exam}[2011/09/01 Exam class with Tufte layout] 
 
-% Load class before requiring 'tufte-common'. Otherwise, you will 
-% get multiple \undefined errors !! 
+% Load class before requiring 'tufte-common' (via tufte-tweaks) . 
+% Otherwise, you will get multiple \undefined errors !! 
+%
 % This is not a happy situation. Ideally, the code should be more 
 % robust than this. But the only way to make code more robust would
 % to re-write / re-organize substantional portions of 'exam.cls' 
-% and / or 'tufte-common.sty'. Not a battle that I want fight now
+% and / or 'tufte-common.sty'. Not a battle I want fight now
+
 \LoadClassWithOptions{exam} 
 \RequirePackage{tufte-tweaks}
 \RequirePackage{amsmath}  
