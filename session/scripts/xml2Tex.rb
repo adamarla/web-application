@@ -12,6 +12,23 @@ class Xml2Tex
     @answer_key = File.open(@staging_dir + "/answer_key.tex", 'w')
   end 
 
+  def link_gnuplot_files
+    doc = Document.new File.open(@staging_dir + "/questions.xml") 
+    doc.elements.each("questions/question") { |q| 
+      path = q.attributes['path'] # (example) : maths/math-07
+      qfolder = @root + "/#{path}" # (example) : $VTA_ROOT/maths/math-07
+      qtag = path.split('/')[1] # (example) : math-07
+
+      # puts "#{path} -> #{qfolder} -> #{qtag}"
+      to = "#{qfolder}/figure.gnuplot"
+      link = "#{@staging_dir}/#{qtag}.gnuplot"
+
+      if File.exists? to 
+          File.symlink(to,link) unless File.exists? link
+      end 
+    }
+  end 
+
   def append_to_tex(target_file, relative_path = nil, text = nil) # relative to @root
     # It is assumed that the target_file is open for appending.   
     begin 
@@ -24,13 +41,18 @@ class Xml2Tex
   end 
 
   def build_tex 
+    # First, create symbolic links within sessions folder 
+    # to any required .gnuplot files
+    link_gnuplot_files
+
+    # Then, start building the TeX files for the question paper and answer key
     ['common/preamble.tex','common/doc_begin.tex'].each_with_index { |f, index|
       append_to_tex @question_paper, f
       append_to_tex @answer_key, f
       append_to_tex @answer_key, nil, "\\printanswers" if index == 0
     }
 
-    # Now, for each student, append questions with their unique QR codes
+    # For each student, append questions with their unique QR codes
     doc = Document.new @source 
     doc.elements.each("assignment/student") { |s|
       finish_build = false 
@@ -73,4 +95,7 @@ class Xml2Tex
     @question_paper.close unless @question_paper.nil? 
     @answer_key.close unless @answer_key.nil?
   end 
+
+  private:link_gnuplot_files
+  private:append_to_tex 
 end # of class
