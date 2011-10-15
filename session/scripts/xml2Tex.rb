@@ -53,7 +53,11 @@ class Xml2Tex
       # Everything until \begin{questions}
       ['preamble.tex', 'printanswers.tex', 'doc_begin.tex'].each_with_index { |file, j| 
         if j == 1 # printanswers?
-          append_to_tex target, "common/#{file}" if i == 1
+          if i == 1 # @answer_key
+            append_to_tex target, "common/#{file}" 
+            # \DocAuthor = { student if question_paper, teacher if answer_key}
+            append_to_tex target, nil, "\\DocAuthor{#{layout.root.attributes['teacher']}}"
+          end 
         else 
           append_to_tex target, "common/#{file}" 
         end 

@@ -110,7 +110,7 @@ class Db2Xml
     h = gen_attribute_hash(tokens)
 
     merge_scheme = {:id => [[],'id'], :first => [[:last], 'name'], \
-                    :grade => [[:section], 'group']}
+                    :grade => [[:section], 'group'], :teacher => [[],'teacher']}
 
     xml = Element.new "student"
     h = merge_attributes(h,merge_scheme) 
@@ -210,6 +210,11 @@ class Db2Xml
       doms.elements.each("students/student") { |s|
          new_student = s.clone 
          student_id = s.attributes['id']
+
+         # OK, it makes no sense to iteratively set the same value on the
+         # node. But the code in this file is just a proxy for what will be 
+         # done eventually in a Rails controller. So, lets just let it be for now
+         root.attributes['teacher'] = s.attributes['teacher']
 
          # Add each question as a child with *updated* QR codes
          domq.elements.each("questions/question") { |q|
