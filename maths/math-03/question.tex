@@ -1,27 +1,25 @@
-
        \question[4] Find the value of $a$ and $b$ if $(x-1)$ and $(x-2)$
        are factors of $x^3-ax+b$ ?
+
        \ifprintanswers
-         \marginnote[2cm]{ We know that the unknown factor is of the form $(x-g)$
-         because the coefficient of $x^3$ in the original equation is 1 }
-         \marginnote{ Had the equation been $2x^3-ax+b$ or $3x^3-ax+b$, then the
-         unknown term would have been $(2x-g)$ or $(3x-g)$, as the case may be}
+         \marginnote{
+            Look at at it this way. 
+            $x^3-ax+b = (x-1)\cdot (x-2) \times\texttt{(something)}$.
+            Irrespective of what \texttt{(something)} is,\, substituting 
+            either $x=1$ or $x=2$ will turn $x^3-ax+b = 0$
+         } 
        \fi 
        \begin{solution}[\halfpage]
+          If $(x-1)$ and $(x-2)$ are factors of $x^3-ax+b$,\, 
+          then for $x=1$ and $x=2$,\,$x^3-ax+b = 0$
+
           \begin{align}
-            x^3-ax+b &= \overbrace{(x-1)\cdot(x-2)}^{\texttt{known factors}}\cdot
-            \overbrace{(x-g)}^{\texttt{unknown factor}} \\
-            &= (x^2-3x+2)\cdot(x-g) \\
-            &= x^3-(g+3)x^2+(3g+2)x-2g
-          \end{align}
-        Comparing coefficients on both sides, we get: 
+            \Rightarrow & \underbrace{1-a+b = 0}_{\texttt{$x=1$}} \\ 
+                        & \underbrace{8-2a+b = 0}_{\texttt{$x=2$}}
+          \end{align} 
+          Solving the above equations for $a$ and $b$ gives, 
           \begin{align}
-            g+3 &= 0 \Rightarrow g = -3\\ 
-            3g+2 &= -a \Rightarrow a = 7\\
-            -2g &= b  \Rightarrow b = 6
+            a &= 7 \\
+            b &= 6
           \end{align} 
        \end{solution} 
-       \ifprintanswers
-          \marginnote[-2cm]{The original equation is therefore $x^3-7x+6$ and the 
-          factors are $(x-1)$, $(x-2)$ and $(x+3)$}
-        \fi
