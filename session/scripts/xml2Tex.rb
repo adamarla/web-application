@@ -61,6 +61,9 @@ class Xml2Tex
 
       # Then, the questions 
       layout.elements.each("assignment/student") { |student| 
+         # \DocAuthor = { student if question_paper, teacher if answer_key}
+         append_to_tex target,nil,"\\DocAuthor{#{student.attributes['name']}}" if i == 0
+
          student.elements.each("question") { |question| 
             append_to_tex target,nil,"\\insertQR{#{question.attributes['QR']}}" if i == 0
             tex = question.attributes['path'] + '/question.tex'

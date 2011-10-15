@@ -17,6 +17,10 @@
 \providecommand{\fewlines}{0.2\textheight} 
 \providecommand{\nolines}{0\paperheight} 
 
+% DocAuthor = (document == question_paper) ? student : teacher
+\newcommand{\DocAuthor}[1]{\renewcommand{\plainauthor}{#1}}
+\newcommand{\School}[1]{\renewcommand{\plainpublisher}{#1}}
+
 %% Insert QR Codes only when generating question papers. There is no need 
 % for them in the answer key. 
 %% Also, when a question is initially written, we simply write \insertQR{}
