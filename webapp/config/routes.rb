@@ -1,4 +1,7 @@
 Webapp::Application.routes.draw do
+  root :to => "teachers#index"
+  get "teachers/index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
