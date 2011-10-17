@@ -8,6 +8,13 @@ gem 'rails', '3.0.6'
 gem 'sqlite3'
 gem 'haml-rails' # use haml as he default view generator
 
+gem 'haml'
+gem 'devise'
+
+group :development do
+  gem 'annotate','2.4.0'
+end 
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
