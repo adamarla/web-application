@@ -50,92 +50,6 @@ class Db2Xml
     Dir::mkdir @target_dir unless Dir::exists? @target_dir 
   end 
 
-  def merge_attributes(list,merge_scheme,glue = ' ')
-    # List : Hash as returned by method 'gen_attribute_hash'
-    #     (example) : {'id' => 'B56DF', 'first'=>'Steve', 'last'=>'Jobs'}
-    # Merge Scheme : A hash. key = attribute that triggers merging, 
-    # value = 2-element array. First element = array of other attributes
-    # to be merged. Second element = new name for merged attribute
-    #  (example) {:first => [[:last],'name'], :qr => [[:id,:marks],'QR']}
-    #  NOTE: Keys that needn't be merged still need to be mentioned in 
-    #        the merging scheme. (example) {:key => [[],'key'}
-    # Glue : character to put between values during merging
-    #  (example) Glue = 'x'
-    # Return Value : A new hash with new attribute names and (merged) values
-    #  (example) {'name' => 'StevexJobs', 'QR' => 'B56DFx5'}
-
-    h = Hash.new 
-    list.each {|key,value|
-      key = key.to_sym
-      next unless merge_scheme.has_key? key
-
-      merge_these = merge_scheme[key][0]
-      # puts "Merge_these : #{merge_these}"
-
-      merge_these.unshift key
-      # puts "Modified merge_these : #{merge_these}"
-      
-      merged_val = String.new  
-      merge_these.each {|attr|
-        merged_val += list[attr.to_s]
-        merged_val += glue unless attr == merge_these.last
-      }
-      # puts "Merged value = #{merged_val}"
-
-      h.store(merge_scheme[key][1], merged_val)
-    }
-    return h
-  end 
-  private:merge_attributes
-
-  def gen_attribute_hash(token_list)
-    # Input (proxy) : Array of tokens of the form [<key>:<value>]
-    # Return : Hash of the form {<key> => <value>}
-
-    h = Hash.new 
-    token_list.each {|token|
-      key, value = token.split(':')
-      h.store(key,value)
-    }
-    return h
-  end 
-  private:gen_attribute_hash
-
-  def gen_student_xml_node(db_data)
-    # Input (proxy) : One line from .db file 
-    # Input (eventually) : RoR student model object  
-    # Return value : <id="{DB_ID}" name="{first} {last}" group="{grade}-{section}">
-
-    tokens = db_data.split(',')
-    h = gen_attribute_hash(tokens)
-
-    merge_scheme = {:id => [[],'id'], :first => [[:last], 'name'], \
-                    :grade => [[:section], 'group'], :teacher => [[],'teacher']}
-
-    xml = Element.new "student"
-    h = merge_attributes(h,merge_scheme) 
-    h.each {|k,v| xml.attributes[k] = v}
-    return xml 
-  end 
-  private:gen_student_xml_node
-
-  def gen_question_xml_node(db_data)
-    # Input (proxy) : One line from .db file 
-    # Input (eventually) : RoR question model object  
-    # Return value : <id="{DB_ID}" marks={marks} mcq={T|F} position={in question paper}> 
-
-    tokens = db_data.split(',')
-    h = gen_attribute_hash(tokens)
-
-    merge_scheme = {:path => [[],'path'], :id => [[:marks,:mcq,:position],'QR']}
-
-    xml = Element.new "question"
-    h = merge_attributes(h,merge_scheme,'x') 
-    h.each {|k,v| xml.attributes[k] = v}
-    return xml
-  end 
-  private:gen_question_xml_node
-
   ####################################################################
 
   def build_student_xml
@@ -238,5 +152,92 @@ class Db2Xml
       layout.close unless layout.nil? 
     end 
   end 
+
+  ####################################################################
+
+  private 
+
+      def merge_attributes(list,merge_scheme,glue = ' ')
+        # List : Hash as returned by method 'gen_attribute_hash'
+        #     (example) : {'id' => 'B56DF', 'first'=>'Steve', 'last'=>'Jobs'}
+        # Merge Scheme : A hash. key = attribute that triggers merging, 
+        # value = 2-element array. First element = array of other attributes
+        # to be merged. Second element = new name for merged attribute
+        #  (example) {:first => [[:last],'name'], :qr => [[:id,:marks],'QR']}
+        #  NOTE: Keys that needn't be merged still need to be mentioned in 
+        #        the merging scheme. (example) {:key => [[],'key'}
+        # Glue : character to put between values during merging
+        #  (example) Glue = 'x'
+        # Return Value : A new hash with new attribute names and (merged) values
+        #  (example) {'name' => 'StevexJobs', 'QR' => 'B56DFx5'}
+
+        h = Hash.new 
+        list.each {|key,value|
+          key = key.to_sym
+          next unless merge_scheme.has_key? key
+
+          merge_these = merge_scheme[key][0]
+          # puts "Merge_these : #{merge_these}"
+
+          merge_these.unshift key
+          # puts "Modified merge_these : #{merge_these}"
+          
+          merged_val = String.new  
+          merge_these.each {|attr|
+            merged_val += list[attr.to_s]
+            merged_val += glue unless attr == merge_these.last
+          }
+          # puts "Merged value = #{merged_val}"
+
+          h.store(merge_scheme[key][1], merged_val)
+        }
+        return h
+      end 
+
+      def gen_attribute_hash(token_list)
+        # Input (proxy) : Array of tokens of the form [<key>:<value>]
+        # Return : Hash of the form {<key> => <value>}
+
+        h = Hash.new 
+        token_list.each {|token|
+          key, value = token.split(':')
+          h.store(key,value)
+        }
+        return h
+      end 
+
+      def gen_student_xml_node(db_data)
+        # Input (proxy) : One line from .db file 
+        # Input (eventually) : RoR student model object  
+        # Return value : <id="{DB_ID}" name="{first} {last}" group="{grade}-{section}">
+
+        tokens = db_data.split(',')
+        h = gen_attribute_hash(tokens)
+
+        merge_scheme = {:id => [[],'id'], :first => [[:last], 'name'], \
+                        :grade => [[:section], 'group'], :teacher => [[],'teacher']}
+
+        xml = Element.new "student"
+        h = merge_attributes(h,merge_scheme) 
+        h.each {|k,v| xml.attributes[k] = v}
+        return xml 
+      end 
+
+      def gen_question_xml_node(db_data)
+        # Input (proxy) : One line from .db file 
+        # Input (eventually) : RoR question model object  
+        # Return value : <id="{DB_ID}" marks={marks} mcq={T|F} 
+        # position={in question paper}> 
+
+        tokens = db_data.split(',')
+        h = gen_attribute_hash(tokens)
+
+        merge_scheme = {:path => [[],'path'], :id => [[:marks,:mcq,:position],'QR']}
+
+        xml = Element.new "question"
+        h = merge_attributes(h,merge_scheme,'x') 
+        h.each {|k,v| xml.attributes[k] = v}
+        return xml
+      end 
 
 end # of class 

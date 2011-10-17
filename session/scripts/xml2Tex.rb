@@ -12,34 +12,6 @@ class Xml2Tex
     @answer_key = File.open(@staging_dir + "/answer_key.tex", 'w')
   end 
 
-  def link_gnuplot_files
-    doc = Document.new File.open(@staging_dir + "/db_questions.xml") 
-    doc.elements.each("questions/question") { |q| 
-      path = q.attributes['path'] # (example) : maths/math-07
-      qfolder = @root + "/#{path}" # (example) : $VTA_ROOT/maths/math-07
-      qtag = path.split('/')[1] # (example) : math-07
-
-      # puts "#{path} -> #{qfolder} -> #{qtag}"
-      to = "#{qfolder}/figure.gnuplot"
-      link = "#{@staging_dir}/#{qtag}.gnuplot"
-
-      if File.exists? to 
-          File.symlink(to,link) unless File.exists? link
-      end 
-    }
-  end 
-
-  def append_to_tex(target_file, relative_path = nil, text = nil) # relative to @root
-    # It is assumed that the target_file is open for appending.   
-    begin 
-      src = File.open(@root + "/#{relative_path}", 'r') unless relative_path.nil?
-      buffer = src.nil? ? text : src.read(src.size)
-      target_file << buffer unless buffer.nil?
-    ensure
-      src.close unless src.nil?
-    end 
-  end 
-
   def build_tex 
     # First, create symbolic links within sessions folder 
     # to any required .gnuplot files
@@ -90,6 +62,35 @@ class Xml2Tex
     }
   end # of build_tex
 
-  private:link_gnuplot_files
-  private:append_to_tex 
+  ####################################################################
+  private 
+
+      def link_gnuplot_files
+        doc = Document.new File.open(@staging_dir + "/db_questions.xml") 
+        doc.elements.each("questions/question") { |q| 
+          path = q.attributes['path'] # (example) : maths/math-07
+          qfolder = @root + "/#{path}" # (example) : $VTA_ROOT/maths/math-07
+          qtag = path.split('/')[1] # (example) : math-07
+
+          # puts "#{path} -> #{qfolder} -> #{qtag}"
+          to = "#{qfolder}/figure.gnuplot"
+          link = "#{@staging_dir}/#{qtag}.gnuplot"
+
+          if File.exists? to 
+              File.symlink(to,link) unless File.exists? link
+          end 
+        }
+      end 
+
+      def append_to_tex(target_file, relative_path = nil, text = nil) # relative to @root
+        # It is assumed that the target_file is open for appending.   
+        begin 
+          src = File.open(@root + "/#{relative_path}", 'r') unless relative_path.nil?
+          buffer = src.nil? ? text : src.read(src.size)
+          target_file << buffer unless buffer.nil?
+        ensure
+          src.close unless src.nil?
+        end 
+      end 
+
 end # of class
