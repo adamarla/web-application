@@ -1,4 +1,6 @@
 Webapp::Application.routes.draw do
+  devise_for :accounts
+
   root :to => "teachers#index"
   get "teachers/index"
 
