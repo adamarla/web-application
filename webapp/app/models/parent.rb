@@ -10,4 +10,5 @@
 
 class Parent < ActiveRecord::Base
   has_many :students
+  has_one :account
 end

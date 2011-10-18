@@ -8,6 +8,7 @@
 #  email      :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  school_id  :integer
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
