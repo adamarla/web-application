@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111017190438) do
+ActiveRecord::Schema.define(:version => 20111018085700) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -31,6 +31,12 @@ ActiveRecord::Schema.define(:version => 20111017190438) do
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
 
+  create_table "parents", :force => true do |t|
+    t.boolean  "is_mother"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "questions", :force => true do |t|
     t.string   "folder"
     t.datetime "created_at"
@@ -39,6 +45,15 @@ ActiveRecord::Schema.define(:version => 20111017190438) do
 
   create_table "quizzes", :force => true do |t|
     t.integer  "teacher_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "students", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "school_id"
+    t.string   "first_name"
+    t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
