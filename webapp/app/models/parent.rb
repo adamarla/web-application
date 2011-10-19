@@ -9,6 +9,7 @@
 #
 
 class Parent < ActiveRecord::Base
-  has_many :students
-  has_one :account
+  # A parent is always a parent. If parent goes, so do the kids/students
+  has_many :students, :dependent => :destroy 
+  has_one :account, :dependent => :destroy
 end
