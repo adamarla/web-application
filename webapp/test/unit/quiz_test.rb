@@ -2,10 +2,13 @@
 #
 # Table name: quizzes
 #
-#  id         :integer         not null, primary key
-#  teacher_id :integer
-#  created_at :datetime
-#  updated_at :datetime
+#  id            :integer         not null, primary key
+#  teacher_id    :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#  uid           :string(255)
+#  num_students  :integer
+#  num_questions :integer
 #
 
 require 'test_helper'
