@@ -15,6 +15,8 @@ group :development do
   gem 'annotate','2.4.0'
 end 
 
+gem 'cancan' # Ryan Bate's gem for defining roles and role permissions
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
