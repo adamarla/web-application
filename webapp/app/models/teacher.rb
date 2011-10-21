@@ -16,6 +16,7 @@ class Teacher < ActiveRecord::Base
   has_many :questions, :through => :quizzes
   belongs_to :school 
   has_one :account
+  has_many :study_groups, :through => :faculty_rosters
 
   validates :first_name, :last_name, :presence => true  
 

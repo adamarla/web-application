@@ -15,6 +15,7 @@ class StudyGroup < ActiveRecord::Base
   validates :section, :presence => true 
 
   belongs_to :school
+  has_many :teachers, :through => :faculty_rosters
 
   def label? 
     return "#{self.grade.to_s}-#{self.section.upcase}"
