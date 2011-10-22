@@ -12,13 +12,14 @@
 #
 
 class Quiz < ActiveRecord::Base
-  belongs_to :teacher 
+  belongs_to :db_question, :teacher 
   has_many :questions 
 
   validates :teacher_id, :presence => true, :numericality => true
   validates :num_questions, :num_students,  \
             :numericality => {:only_integer => true, :greater_than => 0}, \
             :on => :create
+
   before_create :set_uid
 
   def prepare_for(students)
@@ -32,6 +33,13 @@ class Quiz < ActiveRecord::Base
   private 
 
     def set_uid 
-      self.uid = "#{self.id.to_s(36).upcase}.#{self.teacher_id.to_s(36).upcase}"
+      a = [self.id, self.teacher_id, self.num_questions, self.num_students] 
+      a.each { |b|
+        if self.uid.nil? 
+            self.uid = "#{b.to_s(36).upcase}"
+        else 
+            self.uid += "#{b.to_s(36).upcase}"
+        end 
+      }
     end 
 end

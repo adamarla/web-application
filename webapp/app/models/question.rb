@@ -12,11 +12,13 @@
 #
 
 class Question < ActiveRecord::Base
-  belongs_to :db_question, :teacher 
+  belongs_to :db_question, :teacher, :quiz
+
+  scope :favourited, where( :favourite => true )
 
   def favourite?
     return self.favourite
-  end 
+  end
 
   def path 
     return self.db_question.path
