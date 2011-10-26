@@ -52,5 +52,6 @@ ANSWER_PDF = $(FOLDER_NAME)-answer.pdf
 
 QUESTION_JPEG = $(FOLDER_NAME).jpeg
 ANSWER_JPEG = $(FOLDER_NAME)-answer.jpeg
+CONVERT_OPTIONS := 
 
 # Variable defs for files in other folders 

@@ -1,21 +1,24 @@
 
 # Public targets : Only these should be called from the command line
-.PHONY : plot prepare dvi ps pdf clean
+.PHONY : plot prepare dvi ps pdf jpeg clean
 
 # Internal targets : Needed only to define 'public' targets
 .PHONY : prepare_ques_tex prepare_answer_tex 
 .PHONY : gen_ques_dvi gen_answer_dvi
 .PHONY : gen_ques_ps gen_answer_ps
+.PHONY : gen_answer_jpeg
 
-#$(QUESTION_JPEG) $(ANSWER_JPEG) jpeg : ps $(QUESTION_PS) $(ANSWER_PS) 
-#	@echo "[$(FOLDER_NAME)] : PS -> JPEG" 
-#	@convert -density 125 $(QUESTION_PS) $(QUESTION_JPEG)
-#	@convert dvips -density 125 $(ANSWER_PS) $(ANSWER_JPEG)
-
+jpeg : ps gen_answer_jpeg ; 
 pdf : ps gen_ques_pdf gen_answer_pdf ;
 ps : dvi gen_ques_ps gen_answer_ps ;
 dvi : prepare gen_ques_dvi gen_answer_dvi ;
 prepare : plot prepare_ques_tex prepare_answer_tex ;
+
+# PS -> JPEG. As jpegs are generated only for previews, generate them only with answers. 
+gen_answer_jpeg : $(ANSWER_JPEG) ;
+$(ANSWER_JPEG) : $(ANSWER_PS)
+	@echo "[$(FOLDER_NAME)] : Answer ps -> jpeg"
+	@convert $^ $(CONVERT_OPTIONS) $@
 
 # PS -> PDF 
 gen_ques_pdf : $(QUESTION_PDF) ;

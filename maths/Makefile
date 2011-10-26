@@ -12,7 +12,7 @@ QUESTIONS := $(wildcard math-*)
 # called recursively and 'make clean' would in fact be ignored 
 TARGET := $(word 1,$(strip $(MAKECMDGOALS))) 
 
-subdirs clean plot prepare dvi ps pdf : $(QUESTIONS) ; 
+subdirs clean plot prepare dvi ps pdf jpeg : $(QUESTIONS) ; 
 
 $(QUESTIONS) :
 	$(MAKE) $(TARGET) -C $@
