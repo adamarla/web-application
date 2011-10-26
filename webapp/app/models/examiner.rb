@@ -10,5 +10,5 @@
 
 class Examiner < ActiveRecord::Base
   has_one :account 
-  has_many :questions 
+  has_many :db_questions 
 end

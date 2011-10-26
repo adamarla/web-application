@@ -12,7 +12,7 @@
 #
 
 class Question < ActiveRecord::Base
-  belongs_to :db_question, :teacher, :quiz, :examiner
+  belongs_to :db_question, :teacher, :quiz
 
   scope :favourited, where( :favourite => true )
 
