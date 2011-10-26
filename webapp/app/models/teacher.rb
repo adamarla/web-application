@@ -11,6 +11,9 @@
 #  school_id  :integer
 #
 
+require 'rexml/document'
+include REXML
+
 class Teacher < ActiveRecord::Base
   has_many :quizzes, :dependent => :destroy 
   has_many :questions, :through => :quizzes
@@ -27,11 +30,36 @@ class Teacher < ActiveRecord::Base
   # You never know, he/she might just get back to teaching. Moreover, the teacher's 
   # past record can be a good reference for the new school.
 
+  after_validation :setup_account, :if => :first_time_save?
   before_destroy :destroyable? 
 
+  def initialize (attributes = {})
+    super
+    @session = session_id
+    @session_folder = "#{ENV['VTA_ROOT']}/#{@session}"
+  end 
+
+  def build_xml(questions, students) 
+  end 
+
+  def build_tex 
+  end 
+
+  def compile_tex
+  end 
+
   private 
+
+    def setup_account 
+      self.build_account
+    end 
+
     def destroyable? 
       return false 
+    end 
+
+    def first_time_save? 
+      self.new_record? || !self.account
     end 
 
 end
