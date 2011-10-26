@@ -21,3 +21,4 @@ session/staging/session-*
 #!session/staging/Makefile
 
 *.swp
+*.jpeg
