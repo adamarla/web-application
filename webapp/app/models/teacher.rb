@@ -33,12 +33,6 @@ class Teacher < ActiveRecord::Base
   after_validation :setup_account, :if => :first_time_save?
   before_destroy :destroyable? 
 
-  def initialize (attributes = {})
-    super
-    @session = session_id
-    @session_folder = "#{ENV['VTA_ROOT']}/#{@session}"
-  end 
-
   def build_xml(questions, students) 
   end 
 
