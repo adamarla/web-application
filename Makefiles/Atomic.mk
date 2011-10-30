@@ -8,7 +8,7 @@
 .PHONY : gen_ques_ps gen_answer_ps
 .PHONY : gen_answer_jpeg
 
-jpeg : ps gen_answer_jpeg ; 
+jpeg : pdf ps gen_answer_jpeg ; 
 pdf : ps gen_ques_pdf gen_answer_pdf ;
 ps : dvi gen_ques_ps gen_answer_ps ;
 dvi : prepare gen_ques_dvi gen_answer_dvi ;
