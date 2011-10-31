@@ -15,7 +15,9 @@
 
 class School < ActiveRecord::Base
   has_one :account
-  has_many :students, :teachers, :study_groups
+  has_many :students
+  has_many :teachers
+  has_many :study_groups
 
   # Should we allow deletion of schools from the DB ? My view is, don't. 
   # Don't because whatever information you may have accumulated about the 

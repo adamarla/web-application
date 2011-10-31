@@ -2,17 +2,20 @@
 #
 # Table name: students
 #
-#  id         :integer         not null, primary key
-#  parent_id  :integer
-#  school_id  :integer
-#  first_name :string(255)
-#  last_name  :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id             :integer         not null, primary key
+#  guardian_id    :integer
+#  school_id      :integer
+#  first_name     :string(255)
+#  last_name      :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  study_group_id :integer
 #
 
 class Student < ActiveRecord::Base
-  belongs_to :guardian, :school, :study_group
+  belongs_to :guardian
+  belongs_to :school
+  belongs_to :study_group
   has_one :account, :dependent => :destroy
 
   # When should a student be destroyed? My guess, some fixed time after 

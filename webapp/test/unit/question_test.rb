@@ -9,6 +9,7 @@
 #  db_question_id :integer
 #  teacher_id     :integer
 #  times_used     :integer         default(0)
+#  quiz_id        :integer
 #
 
 require 'test_helper'

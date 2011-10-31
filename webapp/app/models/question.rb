@@ -9,10 +9,13 @@
 #  db_question_id :integer
 #  teacher_id     :integer
 #  times_used     :integer         default(0)
+#  quiz_id        :integer
 #
 
 class Question < ActiveRecord::Base
-  belongs_to :db_question, :teacher, :quiz
+  belongs_to :db_question 
+  belongs_to :teacher 
+  belongs_to :quiz
 
   scope :favourited, where( :favourite => true )
 

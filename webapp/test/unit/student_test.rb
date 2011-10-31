@@ -2,13 +2,14 @@
 #
 # Table name: students
 #
-#  id         :integer         not null, primary key
-#  parent_id  :integer
-#  school_id  :integer
-#  first_name :string(255)
-#  last_name  :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id             :integer         not null, primary key
+#  guardian_id    :integer
+#  school_id      :integer
+#  first_name     :string(255)
+#  last_name      :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  study_group_id :integer
 #
 
 require 'test_helper'
