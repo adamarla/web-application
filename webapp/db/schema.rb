@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111026183733) do
+ActiveRecord::Schema.define(:version => 20111031125203) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20111026183733) do
     t.datetime "updated_at"
   end
 
-  create_table "parents", :force => true do |t|
+  create_table "guardians", :force => true do |t|
     t.boolean  "is_mother"
     t.datetime "created_at"
     t.datetime "updated_at"

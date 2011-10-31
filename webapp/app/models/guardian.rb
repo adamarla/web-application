@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: parents
+# Table name: guardians
 #
 #  id         :integer         not null, primary key
 #  is_mother  :boolean
@@ -8,7 +8,7 @@
 #  updated_at :datetime
 #
 
-class Parent < ActiveRecord::Base
+class Guardian < ActiveRecord::Base
   has_many :students
   has_one :account, :dependent => :destroy
 end
