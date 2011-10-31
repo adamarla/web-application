@@ -12,7 +12,7 @@
 #
 
 class Student < ActiveRecord::Base
-  belongs_to :parent, :school, :study_group
+  belongs_to :guardian, :school, :study_group
   has_one :account, :dependent => :destroy
 
   # When should a student be destroyed? My guess, some fixed time after 
