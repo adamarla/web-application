@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111031130334) do
+ActiveRecord::Schema.define(:version => 20111031144537) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20111031130334) do
     t.integer  "db_question_id"
     t.integer  "teacher_id"
     t.integer  "times_used",     :default => 0
+    t.integer  "quiz_id"
   end
 
   create_table "quizzes", :force => true do |t|
