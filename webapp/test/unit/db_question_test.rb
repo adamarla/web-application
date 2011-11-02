@@ -9,6 +9,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  examiner_id :integer
+#  topic_id    :integer
 #
 
 require 'test_helper'
