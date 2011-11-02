@@ -3,10 +3,8 @@
 # Table name: syllabi
 #
 #  id         :integer         not null, primary key
-#  name       :string(255)
-#  board_id   :integer
-#  grade      :integer
-#  subject    :integer
+#  course_id  :integer
+#  topic_id   :integer
 #  created_at :datetime
 #  updated_at :datetime
 #

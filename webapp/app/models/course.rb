@@ -1,9 +1,12 @@
 # == Schema Information
 #
-# Table name: boards
+# Table name: courses
 #
 #  id         :integer         not null, primary key
 #  name       :string(255)
+#  board_id   :integer
+#  grade      :integer
+#  subject    :integer
 #  created_at :datetime
 #  updated_at :datetime
 #
@@ -15,7 +18,15 @@
 #    |__:belongs_to__|  |___:has_many___| |__:belongs_to__|
 #    
 
-class Board < ActiveRecord::Base
-  has_many :courses
+class Course < ActiveRecord::Base
+  belongs_to :board 
+
+  has_many :topics, :through => :syllabi
+  has_many :syllabi
+
   validates :name, :presence => true
+  validates :grade, :presence => true, \
+            :numericality => {:only_integer => true, :greater_than => 0}
+  validates :subject, :presence => true, \
+            :numericality => {:only_integer => true, :greater_than => 0}
 end
