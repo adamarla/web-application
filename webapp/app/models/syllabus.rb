@@ -19,4 +19,10 @@
 #    
 
 class Syllabus < ActiveRecord::Base
+  belongs_to :board 
+  validates :name, :presence => true
+  validates :grade, :presence => true, \
+            :numericality => {:only_integer => true, :greater_than => 0}
+  validates :subject, :presence => true, \
+            :numericality => {:only_integer => true, :greater_than => 0}
 end
