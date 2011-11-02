@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: syllabi
+#
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  board_id   :integer
+#  grade      :integer
+#  subject    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  board_id: 1
+  grade: 1
+  subject: 1
+
+two:
+  name: MyString
+  board_id: 1
+  grade: 1
+  subject: 1

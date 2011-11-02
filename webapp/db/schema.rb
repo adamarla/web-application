@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111031144537) do
+ActiveRecord::Schema.define(:version => 20111102165008) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -30,6 +30,12 @@ ActiveRecord::Schema.define(:version => 20111031144537) do
 
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
+
+  create_table "boards", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "db_questions", :force => true do |t|
     t.string   "path"
@@ -107,6 +113,15 @@ ActiveRecord::Schema.define(:version => 20111031144537) do
     t.datetime "updated_at"
   end
 
+  create_table "syllabi", :force => true do |t|
+    t.string   "name"
+    t.integer  "board_id"
+    t.integer  "grade"
+    t.integer  "subject"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "teachers", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -114,6 +129,12 @@ ActiveRecord::Schema.define(:version => 20111031144537) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
+  end
+
+  create_table "topics", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end
