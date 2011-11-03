@@ -11,8 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111103064747) do
-
+ActiveRecord::Schema.define(:version => 20111103210054) do
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
     t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
@@ -56,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20111103064747) do
     t.datetime "updated_at"
     t.integer  "examiner_id"
     t.integer  "topic_id"
+    t.integer  "teacher_id"
   end
 
   create_table "examiners", :force => true do |t|

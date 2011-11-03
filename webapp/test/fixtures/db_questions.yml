@@ -10,6 +10,7 @@
 #  updated_at  :datetime
 #  examiner_id :integer
 #  topic_id    :integer
+#  teacher_id  :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
