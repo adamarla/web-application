@@ -45,7 +45,7 @@ class Quiz < ActiveRecord::Base
       uid = "" 
 
       a.each { |b|
-        uid += "#{b.to_s(36).upcase}"
+        uid += "#{b.to_s(36).upcase}."
       }
       self.update_attribute :uid, uid
     end 
