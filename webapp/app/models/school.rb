@@ -14,7 +14,7 @@
 #
 
 class School < ActiveRecord::Base
-  has_one :account
+  has_one :account, :as => :loggable
   has_many :students
   has_many :teachers
   has_many :study_groups

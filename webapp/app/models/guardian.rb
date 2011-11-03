@@ -10,5 +10,5 @@
 
 class Guardian < ActiveRecord::Base
   has_many :students
-  has_one :account, :dependent => :destroy
+  has_one :account, :as => :loggable, :dependent => :destroy
 end

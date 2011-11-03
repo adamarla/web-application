@@ -16,7 +16,7 @@ class Student < ActiveRecord::Base
   belongs_to :guardian
   belongs_to :school
   belongs_to :study_group
-  has_one :account, :dependent => :destroy
+  has_one :account, :as => :loggable, :dependent => :destroy
 
   # When should a student be destroyed? My guess, some fixed time after 
   # he/she graduates. But as I haven't quite decided what that time should

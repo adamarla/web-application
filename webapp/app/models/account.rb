@@ -15,6 +15,8 @@
 #  last_sign_in_ip        :string(255)
 #  created_at             :datetime
 #  updated_at             :datetime
+#  loggable_id            :integer
+#  loggable_type          :string(255)
 #
 
 class Account < ActiveRecord::Base
@@ -25,4 +27,8 @@ class Account < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
+
+  # An account can be for a student, parent, teacher, school etc. 
+  # Hence, set up a polymorphic association 
+  belongs_to :loggable, :polymorphic => true
 end

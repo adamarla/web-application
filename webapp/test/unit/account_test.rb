@@ -15,6 +15,8 @@
 #  last_sign_in_ip        :string(255)
 #  created_at             :datetime
 #  updated_at             :datetime
+#  loggable_id            :integer
+#  loggable_type          :string(255)
 #
 
 require 'test_helper'

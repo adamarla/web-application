@@ -9,7 +9,7 @@
 #
 
 class Examiner < ActiveRecord::Base
-  has_one :account 
+  has_one :account, :as => :loggable
   has_many :db_questions 
 
   def provision_db_slot(attributes = {:subject => nil, :grade => nil, :flags => 0})
