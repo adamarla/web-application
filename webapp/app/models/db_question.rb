@@ -10,6 +10,7 @@
 #  updated_at  :datetime
 #  examiner_id :integer
 #  topic_id    :integer
+#  teacher_id  :integer
 #
 
 class DbQuestion < ActiveRecord::Base
@@ -22,5 +23,6 @@ class DbQuestion < ActiveRecord::Base
   has_many :questions # rather, instances of this question in various quizzes
   belongs_to :examiner
   belongs_to :topic
+  belongs_to :teacher
 
 end
