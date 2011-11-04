@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: db_questions
+# Table name: questions
 #
 #  id          :integer         not null, primary key
 #  path        :string(255)
