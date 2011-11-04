@@ -22,6 +22,7 @@ class Question < ActiveRecord::Base
   
   belongs_to :examiner
   belongs_to :topic
-  belongs_to :teacher
+  belongs_to :teacher # non-nil if question came from a teacher
+  has_many :quizzes, :through => :q_selections
 
 end

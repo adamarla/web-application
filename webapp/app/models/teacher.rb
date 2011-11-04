@@ -16,8 +16,6 @@ include REXML
 
 class Teacher < ActiveRecord::Base
   has_many :quizzes, :dependent => :destroy 
-  has_many :questions, :through => :quizzes
-  has_many :db_questions
   belongs_to :school 
   has_one :account, :as => :loggable
   has_many :study_groups, :through => :faculty_rosters

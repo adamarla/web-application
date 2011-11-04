@@ -13,7 +13,7 @@
 
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
-  has_many :questions 
+  has_many :questions, :through => :q_selections
 
   validates :teacher_id, :presence => true, :numericality => true
   validates :num_questions, :num_students,  \
