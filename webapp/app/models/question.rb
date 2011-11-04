@@ -40,4 +40,6 @@ class Question < ActiveRecord::Base
   has_many :quizzes, :through => :q_selections
   has_many :graded_responses
 
+  attr_accessible :path, :flags, :examiner_id, :topic_id, :teacher_id
+
 end
