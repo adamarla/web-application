@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111104065725) do
+ActiveRecord::Schema.define(:version => 20111104074112) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(:version => 20111104065725) do
     t.string   "scanned_image"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "examiner_id"
+    t.boolean  "contested",     :default => false
   end
 
   create_table "guardians", :force => true do |t|

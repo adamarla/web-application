@@ -12,6 +12,8 @@
 #  scanned_image :string(255)
 #  created_at    :datetime
 #  updated_at    :datetime
+#  examiner_id   :integer
+#  contested     :boolean         default(FALSE)
 #
 
 require 'test_helper'

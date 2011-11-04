@@ -10,7 +10,7 @@
 
 class Examiner < ActiveRecord::Base
   has_one :account, :as => :loggable
-  has_many :db_questions 
+  has_many :graded_responses
 
   def provision_db_slot(attributes = {:subject => nil, :grade => nil, :flags => 0})
     root = "#{ENV['VTA_ROOT']}/" 

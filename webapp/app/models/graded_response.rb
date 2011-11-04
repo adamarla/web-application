@@ -12,10 +12,13 @@
 #  scanned_image :string(255)
 #  created_at    :datetime
 #  updated_at    :datetime
+#  examiner_id   :integer
+#  contested     :boolean         default(FALSE)
 #
 
 class GradedResponse < ActiveRecord::Base
   belongs_to :quiz 
   belongs_to :question 
   belongs_to :student
+  belongs_to :examiner
 end
