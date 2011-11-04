@@ -38,5 +38,6 @@ class Question < ActiveRecord::Base
   belongs_to :topic
   belongs_to :teacher # non-nil if question came from a teacher
   has_many :quizzes, :through => :q_selections
+  has_many :graded_responses
 
 end
