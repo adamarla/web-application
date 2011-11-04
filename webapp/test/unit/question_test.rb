@@ -1,22 +1,22 @@
 # == Schema Information
 #
-# Table name: questions
+# Table name: db_questions
 #
-#  id             :integer         not null, primary key
-#  created_at     :datetime
-#  updated_at     :datetime
-#  favourite      :boolean         default(FALSE)
-#  db_question_id :integer
-#  teacher_id     :integer
-#  times_used     :integer         default(0)
-#  quiz_id        :integer
+#  id          :integer         not null, primary key
+#  path        :string(255)
+#  attempts    :integer         default(0)
+#  flags       :integer         default(0)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  examiner_id :integer
+#  topic_id    :integer
+#  teacher_id  :integer
 #
 
 require 'test_helper'
 
-class QuestionTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+class DbQuestionTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
 end
