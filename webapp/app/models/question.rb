@@ -31,7 +31,7 @@ class Question < ActiveRecord::Base
   
   # 'path' is relative to some root and should be of the form 'dir/dir/something'
   validates :path, :presence => true, 
-            :format => { :with => /\A([\/]?[-\w\d]+)*/, 
+            :format => { :with => /\A[\/\w\d]+\z/, 
                          :message => "Should be a valid UNIX path" }
   
   belongs_to :examiner
