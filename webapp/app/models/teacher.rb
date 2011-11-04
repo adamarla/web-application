@@ -11,6 +11,13 @@
 #  school_id  :integer
 #
 
+#     __:has_many_____     ___:has_many___  
+#    |                |   |               | 
+#  Teacher --------> Quizzes ---------> Questions 
+#    |                |   |               | 
+#    |__:belongs_to___|   |___:has_many___| 
+#    
+
 require 'rexml/document'
 include REXML
 

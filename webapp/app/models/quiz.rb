@@ -11,6 +11,13 @@
 #  num_questions :integer
 #
 
+#     __:has_many_____     ___:has_many___  
+#    |                |   |               | 
+#  Teacher --------> Quizzes ---------> Questions 
+#    |                |   |               | 
+#    |__:belongs_to___|   |___:has_many___| 
+#    
+
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
   has_many :questions, :through => :q_selections

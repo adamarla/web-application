@@ -13,6 +13,20 @@
 #  teacher_id  :integer
 #
 
+#     __:has_many___      __:has_many___   ____:has_many__
+#    |              |    |              | |               |
+#  Board --------> Courses ---------> Topics ---------> Questions
+#    |               |  |               | |               |
+#    |__:belongs_to__|  |___:has_many___| |__:belongs_to__|
+#    
+
+#     __:has_many_____     ___:has_many___  
+#    |                |   |               | 
+#  Teacher --------> Quizzes ---------> Questions 
+#    |                |   |               | 
+#    |__:belongs_to___|   |___:has_many___| 
+#    
+
 class Question < ActiveRecord::Base
   
   # 'path' is relative to some root and should be of the form 'dir/dir/something'
