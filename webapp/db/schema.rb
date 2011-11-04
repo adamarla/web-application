@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111104053034) do
+ActiveRecord::Schema.define(:version => 20111104055530) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -63,6 +63,14 @@ ActiveRecord::Schema.define(:version => 20111104053034) do
 
   create_table "guardians", :force => true do |t|
     t.boolean  "is_mother"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "q_selections", :force => true do |t|
+    t.integer  "quiz_id"
+    t.integer  "question_id"
+    t.integer  "page"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
