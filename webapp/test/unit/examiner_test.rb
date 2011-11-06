@@ -6,6 +6,7 @@
 #  num_contested :integer         default(0)
 #  created_at    :datetime
 #  updated_at    :datetime
+#  secret_key    :string(255)
 #
 
 require 'test_helper'
