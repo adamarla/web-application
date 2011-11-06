@@ -1,4 +1,6 @@
 Webapp::Application.routes.draw do
+  post "question/insert_new"
+
   devise_for :accounts
 
   root :to => "teachers#index"
