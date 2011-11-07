@@ -31,4 +31,23 @@ class Account < ActiveRecord::Base
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
   belongs_to :loggable, :polymorphic => true
-end
+
+  def role?(role) 
+    case role 
+      when :student 
+        return self.loggable_type == "Student"
+      when :teacher 
+        return self.loggable_type == "Teacher"
+      when :school 
+        return self.loggable_type == "School"
+      when :guardian 
+        return self.loggable_type == "Guardian"
+      when :examiner
+        return self.loggable_type == "Examiner"
+      when :admin
+        return self.loggable_type == "Admin"
+    end 
+    return false
+  end 
+
+end # of class 
