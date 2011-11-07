@@ -15,6 +15,9 @@ class StudyGroup < ActiveRecord::Base
   validates :section, :presence => true 
 
   belongs_to :school
+  has_many :students
+
+  has_many :faculty_rosters
   has_many :teachers, :through => :faculty_rosters
 
   def label? 
