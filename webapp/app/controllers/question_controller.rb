@@ -1,4 +1,6 @@
 class QuestionController < ApplicationController
+  before_filter :authenticate_account!, :except => [:insert_new]
+
   def insert_new
     # As of now, this action can be initiated only by the POST 
     # request sent by 'examiner' script. And the POST request sends 
