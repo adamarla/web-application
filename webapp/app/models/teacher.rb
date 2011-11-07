@@ -41,6 +41,18 @@ class Teacher < ActiveRecord::Base
   #after_validation :setup_account, :if => :first_time_save?
   before_destroy :destroyable? 
 
+  def teaches_student_with_id?(id)
+    groups = self.study_groups :select => :id
+    id_array = [] 
+
+    groups.each { |g| id_array << g.id }
+    id_array.include? id
+  end 
+
+  def teaches_student?(student) 
+    student.nil? ? false : self.teaches_student_with_id(student.id) 
+  end 
+
   def build_xml(questions, students) 
   end 
 
