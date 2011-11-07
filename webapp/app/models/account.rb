@@ -50,4 +50,16 @@ class Account < ActiveRecord::Base
     return false
   end 
 
+  def role
+    case self.loggable_type 
+      when "Student" then return :student
+      when "Guardian" then return :guardian
+      when "Teacher" then return :teacher
+      when "School" then return :school 
+      when "Examiner" then return :examiner
+      when "Admin" then return :admin
+    end 
+    return :guest 
+  end 
+
 end # of class 
