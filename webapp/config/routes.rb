@@ -1,6 +1,4 @@
 Webapp::Application.routes.draw do
-  get "examiner/load"
-
   post "question/insert_new"
 
   devise_for :accounts do 
@@ -8,8 +6,12 @@ Webapp::Application.routes.draw do
     get '/logout' => 'devise/sessions#destroy'
   end 
 
-  root :to => "teachers#index"
   get "teachers/index"
+
+  resource :examiner
+  resource :teacher 
+
+  root :to => "welcome#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
