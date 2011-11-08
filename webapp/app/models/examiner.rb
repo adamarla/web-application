@@ -7,6 +7,7 @@
 #  created_at    :datetime
 #  updated_at    :datetime
 #  secret_key    :string(255)
+#  is_admin      :boolean         default(FALSE)
 #
 
 class Examiner < ActiveRecord::Base

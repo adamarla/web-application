@@ -45,7 +45,7 @@ class Account < ActiveRecord::Base
       when :examiner
         return self.loggable_type == "Examiner"
       when :admin
-        return self.loggable_type == "Admin"
+        return (self.loggable_type == "Examiner" && self.is_admin)
     end 
     return false
   end 
@@ -56,8 +56,7 @@ class Account < ActiveRecord::Base
       when "Guardian" then return :guardian
       when "Teacher" then return :teacher
       when "School" then return :school 
-      when "Examiner" then return :examiner
-      when "Admin" then return :admin
+      when "Examiner" then return (self.is_admin ? :admin : :examiner)
     end 
     return :guest 
   end 
