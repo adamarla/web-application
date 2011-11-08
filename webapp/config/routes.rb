@@ -1,7 +1,12 @@
 Webapp::Application.routes.draw do
+  get "examiner/load"
+
   post "question/insert_new"
 
-  devise_for :accounts
+  devise_for :accounts do 
+    get '/login' => 'devise/sessions#new'
+    get '/logout' => 'devise/sessions#destroy'
+  end 
 
   root :to => "teachers#index"
   get "teachers/index"
