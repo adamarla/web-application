@@ -8,7 +8,7 @@
 #  student_id    :integer
 #  index_in_quiz :integer
 #  on_page       :integer
-#  grade         :integer
+#  grade_id      :integer
 #  scanned_image :string(255)
 #  created_at    :datetime
 #  updated_at    :datetime
@@ -21,4 +21,5 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :question 
   belongs_to :student
   belongs_to :examiner
+  belongs_to :grade
 end
