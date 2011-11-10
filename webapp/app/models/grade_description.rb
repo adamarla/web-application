@@ -13,4 +13,9 @@
 class GradeDescription < ActiveRecord::Base
   has_many :grades
   has_many :teachers, :through => :grades 
+
+  validates :annotation, :presence => true 
+  validates :default_allotment, :presence => true, 
+            :numericality => {:only_integer => true, 
+                              :less_than_or_equal_to => 100}
 end
