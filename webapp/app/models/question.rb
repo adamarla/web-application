@@ -58,4 +58,8 @@ class Question < ActiveRecord::Base
     return multi_part
   end 
 
+  def num_parts?
+    return (num.parts.nil? ? 0 : num_parts)
+  end 
+
 end
