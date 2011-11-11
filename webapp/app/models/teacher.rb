@@ -18,6 +18,13 @@
 #    |__:belongs_to___|   |___:has_many___| 
 #    
 
+#     ___:has_many____     __:belongs_to___  
+#    |                |   |                | 
+# Teacher ---------> Grade ---------> GradeDesc
+#    |                |   |                | 
+#    |__:belongs_to___|   |___:has_many____| 
+#    
+
 require 'rexml/document'
 include REXML
 

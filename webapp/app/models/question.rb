@@ -30,6 +30,13 @@
 #    |__:belongs_to___|   |___:has_many___| 
 #    
 
+#     __:belongs_to___     __:belongs_to___  
+#    |                |   |                | 
+# Question ---------> Grade ---------> GradeDesc
+#    |                |   |                | 
+#    |__:has_many_____|   |___:has_many____| 
+#    
+
 class Question < ActiveRecord::Base
   
   validates :multi_correct, :inclusion => {:in => [false], 
