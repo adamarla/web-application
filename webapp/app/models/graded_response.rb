@@ -22,4 +22,8 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
   belongs_to :grade
+
+  # [:all] ~> [:admin, :cron]
+  # [:grade_id] ~> [:examiner, :teacher]
+  #attr_accessible
 end

@@ -18,4 +18,7 @@
 class Board < ActiveRecord::Base
   has_many :courses
   validates :name, :presence => true
+
+  # [:name] ~> [:admin] 
+  #attr_accessible
 end

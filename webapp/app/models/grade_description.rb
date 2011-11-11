@@ -32,4 +32,6 @@ class GradeDescription < ActiveRecord::Base
   validates :default_allotment, :presence => true, 
             :numericality => {:only_integer => true, 
                               :less_than_or_equal_to => 100}
+  # [:all] ~> [:admin]
+  #attr_accessible
 end

@@ -14,7 +14,10 @@ class Examiner < ActiveRecord::Base
   has_one :account, :as => :loggable
   has_many :graded_responses
 
-  attr_accessible :num_contested
+  # [:all] ~> [:admin]
+  # [:secret_key] ~> [:examiner] 
+  # [:num_contested] ~> [:student]
+  #attr_accessible :num_contested
   before_create :set_secret_key
 
   private 

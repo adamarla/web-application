@@ -20,4 +20,7 @@
 class QSelection < ActiveRecord::Base
   belongs_to :quiz
   belongs_to :question
+
+  # [:all] ~> [:admin, :teacher]
+  #attr_accessible 
 end

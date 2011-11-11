@@ -12,4 +12,7 @@
 class FacultyRoster < ActiveRecord::Base
   belongs_to :teacher
   belongs_to :study_group
+
+  # [:all] ~> [:school, :admin, :teacher]
+  #attr_accessible 
 end
