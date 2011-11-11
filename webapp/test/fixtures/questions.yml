@@ -2,15 +2,18 @@
 #
 # Table name: questions
 #
-#  id          :integer         not null, primary key
-#  path        :string(255)
-#  attempts    :integer         default(0)
-#  flags       :integer         default(0)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  examiner_id :integer
-#  topic_id    :integer
-#  teacher_id  :integer
+#  id            :integer         not null, primary key
+#  path          :string(255)
+#  attempts      :integer         default(0)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  examiner_id   :integer
+#  topic_id      :integer
+#  teacher_id    :integer
+#  mcq           :boolean         default(FALSE)
+#  multi_correct :boolean         default(FALSE)
+#  multi_part    :boolean         default(FALSE)
+#  num_parts     :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

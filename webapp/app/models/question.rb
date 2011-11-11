@@ -2,15 +2,18 @@
 #
 # Table name: questions
 #
-#  id          :integer         not null, primary key
-#  path        :string(255)
-#  attempts    :integer         default(0)
-#  flags       :integer         default(0)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  examiner_id :integer
-#  topic_id    :integer
-#  teacher_id  :integer
+#  id            :integer         not null, primary key
+#  path          :string(255)
+#  attempts      :integer         default(0)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  examiner_id   :integer
+#  topic_id      :integer
+#  teacher_id    :integer
+#  mcq           :boolean         default(FALSE)
+#  multi_correct :boolean         default(FALSE)
+#  multi_part    :boolean         default(FALSE)
+#  num_parts     :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -40,6 +43,6 @@ class Question < ActiveRecord::Base
   has_many :quizzes, :through => :q_selections
   has_many :graded_responses
 
-  attr_accessible :path, :flags, :examiner_id, :topic_id, :teacher_id
+  attr_accessible :path, :examiner_id, :topic_id, :teacher_id
 
 end
