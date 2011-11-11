@@ -21,7 +21,9 @@
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
   has_many :questions, :through => :q_selections
+
   has_many :graded_responses
+  has_many :students, :through => :graded_responses
 
   validates :teacher_id, :presence => true, :numericality => true
   validates :num_questions, :num_students,  \
