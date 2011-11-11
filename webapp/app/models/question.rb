@@ -32,6 +32,11 @@
 
 class Question < ActiveRecord::Base
   
+  validates :multi_correct, :inclusion => {:in => [false], 
+  :message => "'multi_correct' has to false if mcq == false"}, :unless => :mcq?
+
+  validates :num_parts, :numericality => {:only_integer => true, :greater_than => 0}, :if => :multi_part?
+
   # 'path' is relative to some root and should be of the form 'dir/dir/something'
   validates :path, :presence => true, 
             :format => { :with => /\A[\/\w\d]+\z/, 
@@ -44,5 +49,13 @@ class Question < ActiveRecord::Base
   has_many :graded_responses
 
   attr_accessible :path, :examiner_id, :topic_id, :teacher_id
+
+  def mcq? 
+    return mcq
+  end 
+
+  def multi_part?
+    return multi_part
+  end 
 
 end
