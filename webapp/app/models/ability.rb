@@ -30,10 +30,6 @@ class Ability
       when :teacher 
         can [:create, :read], Quiz # let the teacher view quizzes by other teachers? 
         cannot [:update, :destroy], Quiz
-        can :update, GradedResponse do |response| # of only those students she teaches
-          teacher = Teacher.find account.loggable_id
-          teacher && teacher.teaches_student_with_id? response.student_id
-        end 
       when :guardian 
       when :admin 
         can :manage, :all 
