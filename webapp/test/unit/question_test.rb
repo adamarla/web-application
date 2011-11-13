@@ -14,6 +14,7 @@
 #  multi_correct :boolean         default(FALSE)
 #  multi_part    :boolean         default(FALSE)
 #  num_parts     :integer
+#  difficulty    :integer         default(0)
 #
 
 require 'test_helper'
