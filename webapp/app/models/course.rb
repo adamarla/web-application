@@ -6,7 +6,7 @@
 #  name       :string(255)
 #  board_id   :integer
 #  grade      :integer
-#  subject    :integer
+#  subject_id :integer
 #  created_at :datetime
 #  updated_at :datetime
 #
@@ -26,8 +26,6 @@ class Course < ActiveRecord::Base
 
   validates :name, :presence => true
   validates :grade, :presence => true, \
-            :numericality => {:only_integer => true, :greater_than => 0}
-  validates :subject, :presence => true, \
             :numericality => {:only_integer => true, :greater_than => 0}
   
   # [:name,:board_id,:grade,:subject] ~> [:admin] 
