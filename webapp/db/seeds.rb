@@ -6,6 +6,14 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
+SUBJECTS = [:maths, :physics, :chemistry, :computer_science, :biology]
+
+SUBJECTS.each { |subject| 
+  x = Subject.new 
+  x.accessible = [:name] # mass-assignment protection, remember ?? 
+  x.update_attribute :name, subject.to_s.humanize
+} 
+
 GRADE_STATES = {
                   1 => {:annotation => 'No Attempt',
                         :description => %{ Student either skipped 
@@ -116,6 +124,10 @@ GRADE_STATES.each { |k, state|
   b = state[:description].strip.split.join(' ')
   c = state[:default_allotment]
 
-  x = GradeDescription.create :annotation => a, :description => b, 
-                              :default_allotment => c
+  x = GradeDescription.new 
+  # mass-authorization protection (config/initializers/accessible_attributes.rb)
+  x.accessible = [:annotation, :description, :default_allotment] 
+  x = GradeDescription.update_attributes :annotation => a, 
+                                         :description => b, 
+                                         :default_allotment => c
 }
