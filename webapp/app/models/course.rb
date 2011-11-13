@@ -13,7 +13,7 @@
 
 #     __:has_many___      __:has_many___   ____:has_many__
 #    |              |    |              | |               |
-#  Board --------> Courses ---------> Topics ---------> Questions
+#  Board --------> Courses ---------> Sp.Topics ---------> Questions
 #    |               |  |               | |               |
 #    |__:belongs_to__|  |___:has_many___| |__:belongs_to__|
 #    
@@ -21,7 +21,7 @@
 class Course < ActiveRecord::Base
   belongs_to :board 
 
-  has_many :topics, :through => :syllabi
+  has_many :specific_topics, :through => :syllabi
   has_many :syllabi
 
   validates :name, :presence => true

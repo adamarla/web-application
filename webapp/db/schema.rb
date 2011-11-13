@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111113193410) do
+ActiveRecord::Schema.define(:version => 20111113201210) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -109,17 +109,17 @@ ActiveRecord::Schema.define(:version => 20111113193410) do
 
   create_table "questions", :force => true do |t|
     t.string   "path"
-    t.integer  "attempts",      :default => 0
+    t.integer  "attempts",          :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.integer  "topic_id"
+    t.integer  "specific_topic_id"
     t.integer  "teacher_id"
-    t.boolean  "mcq",           :default => false
-    t.boolean  "multi_correct", :default => false
-    t.boolean  "multi_part",    :default => false
+    t.boolean  "mcq",               :default => false
+    t.boolean  "multi_correct",     :default => false
+    t.boolean  "multi_part",        :default => false
     t.integer  "num_parts"
-    t.integer  "difficulty",    :default => 0
+    t.integer  "difficulty",        :default => 0
   end
 
   create_table "quizzes", :force => true do |t|
@@ -138,6 +138,12 @@ ActiveRecord::Schema.define(:version => 20111113193410) do
     t.string   "state"
     t.string   "zip_code"
     t.integer  "phone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "specific_topics", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -168,10 +174,10 @@ ActiveRecord::Schema.define(:version => 20111113193410) do
 
   create_table "syllabi", :force => true do |t|
     t.integer  "course_id"
-    t.integer  "topic_id"
+    t.integer  "specific_topic_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "difficulty", :default => 0
+    t.integer  "difficulty",        :default => 0
   end
 
   create_table "teachers", :force => true do |t|
@@ -181,12 +187,6 @@ ActiveRecord::Schema.define(:version => 20111113193410) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
-  end
-
-  create_table "topics", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end
