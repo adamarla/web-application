@@ -1,11 +1,12 @@
 # == Schema Information
 #
-# Table name: topics
+# Table name: specific_topics
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id             :integer         not null, primary key
+#  name           :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  broad_topic_id :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -20,4 +21,5 @@ class SpecificTopic < ActiveRecord::Base
 
   has_many :courses, :through => :syllabi
   has_many :syllabi
+  belongs_to :broad_topic
 end
