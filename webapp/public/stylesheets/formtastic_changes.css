@@ -1,0 +1,20 @@
+
+form.formtastic fieldset.inputs p.inline-hints {
+   font-size : 12px ; 
+   font-family : Helvetica ;
+   text-align : justify ;
+   float : left ; 
+   border-top : 1px solid gray ;
+} 
+
+form.formtastic fieldset.inputs label.label { 
+  font-size : 14px ;
+  font-variant : small-caps ;
+  width : 80% ;
+} 
+
+.narrow.pane { 
+  width : 400px ;
+  border : 2px solid black ;
+  padding : 15px ;
+}
