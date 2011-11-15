@@ -1,0 +1,14 @@
+
+%div#marking_scheme_pane.narrow.pane
+  = semantic_form_for me do |f| 
+    = f.inputs do 
+      - @grades.each do |grade| 
+        = f.semantic_fields_for grade do |g|
+          = g.input :allotment, 
+          :input_html => {:name => "teacher[grades][#{grade.id}]"}, 
+          :as => :select, :collection => 0.step(101, 10).to_a, 
+          :include_blank => false,
+          :wrapper_html => {:id => "grade_curve_#{grade.id}"}, 
+          :label => "#{grade.grade_description.annotation}",
+          :hint => "#{grade.grade_description.description}"
+    = f.buttons

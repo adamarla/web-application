@@ -6,10 +6,10 @@ Webapp::Application.routes.draw do
     get '/logout' => 'devise/sessions#destroy'
   end 
 
-  get "teachers/index"
+  #get "teachers/index"
 
-  resource :examiner
-  resource :teacher 
+  resource :examiner, :except => [:new,:create,:destroy]
+  resource :teacher, :only => [:show, :update] 
 
   root :to => "welcome#index"
 

@@ -1,0 +1,4 @@
+%h1 Teachers#show 
+%p= "#{@teacher.first_name} #{@teacher.last_name} (#{@teacher.account.email})"
+-#= render :partial => 'shared/account_pane', :locals => {:me => @teacher, :account => @teacher.account}
+= render :partial => 'marking_scheme_pane', :locals => {:me => @teacher}
