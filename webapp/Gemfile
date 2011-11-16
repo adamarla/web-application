@@ -12,10 +12,19 @@ gem 'haml'
 gem 'devise'
 
 group :development do
-  gem 'annotate','2.4.0'
+  gem 'annotate', '2.4.0' 
 end 
 
 gem 'cancan' # Ryan Bate's gem for defining roles and role permissions
+gem 'formtastic'
+
+# Gems used only for assets and not required in production 
+# environment by default (Railscast #282)
+group :assets do 
+  gem 'uglifier'
+end 
+
+gem 'jquery-rails'
 
 # Use unicorn as the web server
 # gem 'unicorn'

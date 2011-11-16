@@ -46,4 +46,12 @@ Webapp::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  # Railscast #282 
+  # Compress JavaScripts and CSS 
+  config.assets.compress = true 
+  config.assets.compile = true # change to false if precompiling
+  # Generate digests for assets URLs
+  config.assets.digest = true 
+
 end
