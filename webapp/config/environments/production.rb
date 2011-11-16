@@ -50,7 +50,7 @@ Webapp::Application.configure do
   # Railscast #282 
   # Compress JavaScripts and CSS 
   config.assets.compress = true 
-  config.assets.compile = true # change to false if precompiling
+  config.assets.compile = false # change to true if not precompiling
   # Generate digests for assets URLs
   config.assets.digest = true 
 
