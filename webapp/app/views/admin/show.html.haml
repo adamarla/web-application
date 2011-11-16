@@ -1,0 +1,22 @@
+
+%div#benchmark_grade_pane.narrow.pane
+  = semantic_form_for(@admin, :namespace => 'admin') do |f| 
+    = f.inputs do 
+      - @benchmarks.each do |b| 
+        = f.semantic_fields_for b do |benchmark| 
+          = benchmark.inputs :name => "Grade #{b.id}" do 
+            = benchmark.input :annotation, 
+                      :input_html => {:name => "annotations[#{b.id}]", 
+                                      :id => "input_annotation_#{b.id}"},
+                      :wrapper_html => {:id => "annotation_#{b.id}"}
+            = benchmark.input :description, :as => :text,  
+                      :input_html => {:name => "descriptions[#{b.id}]",
+                                      :id => "input_description_#{b.id}", 
+                                      :rows => 5, :columns => 50},
+                      :wrapper_html => {:id => "description_#{b.id}"}
+            = benchmark.input :default_allotment, :as => :select, 
+                      :collection => 0.step(101,10).to_a, 
+                      :wrapper_html => {:id => "allotment_#{b.id}"},
+                      :include_blank => false
+    = f.buttons
+

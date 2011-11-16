@@ -11,6 +11,8 @@ Webapp::Application.routes.draw do
   resource :examiner, :except => [:new,:create,:destroy]
   resource :teacher, :only => [:show, :update] 
 
+  resource :admin, :controller => :admin
+
   root :to => "welcome#index"
 
   # The priority is based upon order of creation:
