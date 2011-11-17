@@ -3,6 +3,10 @@ class AdminController < ApplicationController
 
   def show
     @admin = current_account.loggable
-	@benchmarks = GradeDescription.all 
+    @benchmarks = GradeDescription.all 
+  end 
+
+  def update_benchmarks 
+    redirect_to :back 
   end 
 end

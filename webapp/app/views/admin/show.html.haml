@@ -1,16 +1,25 @@
 
 %div#benchmark_grade_pane.narrow.pane
-  = semantic_form_for @admin do |f| 
+  = semantic_form_for @admin, :url => "/admin/update_benchmarks" do |f| 
     .accordion-form 
       - @benchmarks.each do |bmark| 
         .accordion-heading
-          %a{:href => "#"}= "#{bmark.annotation}"
+          %a.small-font{:href => "#"}= "#{bmark.annotation}"
         .accordion-content
           = f.semantic_fields_for bmark do |g| 
             = g.inputs do 
-              = g.input :annotation
+              = g.input :annotation, 
+                        :input_html => {:name => "annotations[#{bmark.id}]",
+                            :id => "input_benchmark_annotation_#{bmark.id}"},
+                        :wrapper_html => {:id => "edit_benchmark_annotation_#{bmark.id}"}
               = g.input :description, :as => :text,
-                        :input_html => { :rows => 6 }
+                        :input_html => { :rows => 6, :name => "descriptions[#{bmark.id}]",
+                                         :id => "input_benchmark_desc_#{bmark.id}"},
+                        :wrapper_html => {:id => "edit_benchmark_desc_#{bmark.id}"}
               = g.input :default_allotment, :as => :select, 
                         :collection => 0.step(101, 10).to_a, 
-                        :include_blank => false
+                        :include_blank => false, 
+                        :input_html => {:name => "defaults[#{bmark.id}]",
+                                        :id => "input_benchmark_defaults_#{bmark.id}"}
+    = f.buttons do 
+      = f.commit_button :button_html => {:value => 'Update Benchmarks'}

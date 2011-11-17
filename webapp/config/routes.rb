@@ -11,7 +11,9 @@ Webapp::Application.routes.draw do
   resource :examiner, :except => [:new,:create,:destroy]
   resource :teacher, :only => [:show, :update] 
 
-  resource :admin, :controller => :admin
+  resource :admin, :controller => :admin do 
+    put 'update_benchmarks', :on => :member 
+  end 
 
   root :to => "welcome#index"
 
