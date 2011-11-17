@@ -1,0 +1,23 @@
+.accordion-heading { 
+	font-size : 14px ;
+	font-variant : small-caps ; 
+	font-family : Helvetica "Trebuchet MS" Arial ;
+} 
+
+.accordion-textbox { 
+	border : none ; 
+	font-family : Arial Helvetica ;
+	font-size : 9px ;
+	background-color : inherit ;
+} 
+
+.narrow.pane { 
+  width : 400px ;
+  margin-left : 15px ;
+  max-width : 33% ;
+}
+
+.ui-accordion .ui-accordion-header a.small-font {
+	font-size : 13px ;
+} 
+

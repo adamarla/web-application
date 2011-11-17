@@ -10,16 +10,28 @@ form.formtastic fieldset.inputs p.inline-hints {
 form.formtastic fieldset.inputs label.label { 
   font-size : 14px ;
   font-variant : small-caps ;
-  width : 80% ;
+  font-weight : bold ;
+  width : 100% ;
 } 
 
 .narrow.pane { 
   width : 400px ;
-  border : 2px solid black ;
-  padding : 15px ;
 }
 
-fieldset.inputs textarea, input[type="text"] {
+fieldset.inputs textarea, fieldset.inputs input[type="text"] {
   font-family : Helvetica Arial ;
   font-size : 13px ;
+  border : none ; 
+  background : inherit ; 
+  font-style : sans-serif;
+  width : 100% ;
+  text-align : justify ;
+} 
+
+fieldset.inputs select {
+  font-size : 12px ;
+} 
+
+fieldset.buttons { 
+   margin-top : 10px ;
 } 
