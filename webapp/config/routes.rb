@@ -11,9 +11,8 @@ Webapp::Application.routes.draw do
   resource :examiner, :except => [:new,:create,:destroy]
   resource :teacher, :only => [:show, :update] 
 
-  resource :admin, :controller => :admin do 
-    resource :grade_description, :only => [:new, :create, :update], :as => :benchmarks
-  end 
+  resource :admin, :controller => :admin 
+  resource :grade_description, :only => [:create, :update], :as => :benchmark
 
   root :to => "welcome#index"
 
