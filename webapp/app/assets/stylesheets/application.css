@@ -2,4 +2,5 @@
 *= require formtastic 
 *= require tweaks 
 *= require formtastic_changes 
+*= require jquery-custom-theme/styling 
 */ 
