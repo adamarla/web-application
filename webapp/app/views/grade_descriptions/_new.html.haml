@@ -1,0 +1,12 @@
+
+#new-grade-description.new-entity
+  = semantic_form_for :grade_description do |f| 
+    = f.inputs do 
+      = f.input :annotation
+      = f.input :description, :as => :text, 
+                :input_html => {:rows => 7, :class => "full-width"}
+      = f.input :default_allotment, :as => :select, 
+                :collection => 0.step(101,10).to_a, :include_blank => false
+
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Update", :name => "commit"}

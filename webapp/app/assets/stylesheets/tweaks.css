@@ -30,3 +30,7 @@
 	display : none ;
 } 
 
+.full-width, .formtastic .text textarea.full-width { 
+   width : 100% ;
+} 
+
