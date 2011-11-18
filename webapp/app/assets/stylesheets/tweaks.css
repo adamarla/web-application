@@ -21,3 +21,12 @@
 	font-size : 13px ;
 } 
 
+.submit-buttons { 
+   margin-top : 7px ;
+   margin-left : 40% ;
+} 
+
+.hidden { 
+	display : none ;
+} 
+
