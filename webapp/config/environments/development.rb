@@ -30,5 +30,12 @@ Webapp::Application.configure do
   config.assets.compress = false 
   # Expands the lines which load the assets 
   config.assets.debug = true 
+
+  # Issue : AJAX requests were being issued twice in development mode. Why?  
+  # Coz everything was being included twice - once from app/assets and again from 
+  # public/assets 
+  # 
+  # Ref : http://stackoverflow.com/questions/7721502/rails-3-1-remote-requests-submitting-twice
+  config.serve_static_assets = false
 end
 
