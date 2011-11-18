@@ -9,17 +9,18 @@
           = f.semantic_fields_for bmark do |g| 
             = g.inputs do 
               = g.input :annotation, 
-                        :input_html => {:name => "annotations[#{bmark.id}]",
-                            :id => "input_benchmark_annotation_#{bmark.id}"},
-                        :wrapper_html => {:id => "edit_benchmark_annotation_#{bmark.id}"}
+                        :input_html => {:name => "benchmarks[#{bmark.id}][annotation]",
+                          :id => "input_benchmark_annotation_#{bmark.id}"},
+                          :wrapper_html => {:id => "edit_benchmark_annotation_#{bmark.id}"}
               = g.input :description, :as => :text,
-                        :input_html => { :rows => 6, :name => "descriptions[#{bmark.id}]",
+                        :input_html => { :rows => 6, 
+                                         :name => "benchmarks[#{bmark.id}][description]",
                                          :id => "input_benchmark_desc_#{bmark.id}"},
                         :wrapper_html => {:id => "edit_benchmark_desc_#{bmark.id}"}
               = g.input :default_allotment, :as => :select, 
                         :collection => 0.step(101, 10).to_a, 
                         :include_blank => false, 
-                        :input_html => {:name => "defaults[#{bmark.id}]",
-                                        :id => "input_benchmark_defaults_#{bmark.id}"}
+                        :input_html => { :name => "benchmarks[#{bmark.id}][default_allotment]",
+                            :id => "input_benchmark_defaults_#{bmark.id}"}
     = f.buttons do 
       = f.commit_button :button_html => {:value => 'Update Benchmarks'}

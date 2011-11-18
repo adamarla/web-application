@@ -6,7 +6,4 @@ class AdminController < ApplicationController
     @benchmarks = GradeDescription.all 
   end 
 
-  def update_benchmarks 
-    redirect_to :back 
-  end 
 end
