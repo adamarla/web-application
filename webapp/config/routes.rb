@@ -12,7 +12,8 @@ Webapp::Application.routes.draw do
   resource :teacher, :only => [:show, :update] 
 
   resource :admin, :controller => :admin do 
-    put 'update_benchmarks', :on => :member 
+    resource :grade_description, :only => [:new, :create, :update], :as => :benchmarks
+    # put 'update_benchmarks', :on => :member 
   end 
 
   root :to => "welcome#index"
