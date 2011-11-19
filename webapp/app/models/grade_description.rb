@@ -8,6 +8,8 @@
 #  default_allotment :integer
 #  created_at        :datetime
 #  updated_at        :datetime
+#  mcq               :boolean         default(FALSE)
+#  subpart           :boolean         default(FALSE)
 #
 
 #     __:belongs_to___     __:belongs_to___  
@@ -34,4 +36,10 @@ class GradeDescription < ActiveRecord::Base
                               :less_than_or_equal_to => 100}
   # [:all] ~> [:admin]
   #attr_accessible
+
+  def applies_to 
+    # Returns a string that can be used as further annotation somewhere
+    self.mcq ? (self.subpart ? "mcq, subpart" : "mcq") : 
+               (self.subpart ? "subpart" : "stand alone")
+  end 
 end

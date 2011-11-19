@@ -8,6 +8,8 @@
 #  default_allotment :integer
 #  created_at        :datetime
 #  updated_at        :datetime
+#  mcq               :boolean         default(FALSE)
+#  subpart           :boolean         default(FALSE)
 #
 
 require 'test_helper'
