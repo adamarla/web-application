@@ -20,6 +20,9 @@ class GradeDescriptionsController < ApplicationController
   end
 
   def create
+    new_grade = GradeDescription.new params[:grade_description] 
+    status = new_grade.save ? :ok : :bad_request 
+    head status 
   end
 
 end
