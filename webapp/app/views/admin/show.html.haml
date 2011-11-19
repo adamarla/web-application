@@ -1,6 +1,6 @@
 
-%div#benchmark_edit_pane.narrow.pane
-  = semantic_form_for @admin, :url => "/grade_description" do |f| 
+%div#benchmark_edit_pane.narrow.pane.as-accordion
+  = semantic_form_for @admin, :url => "/grade_description", :remote => true do |f| 
     .accordion-form 
       - @benchmarks.each do |bmark| 
         .accordion-heading
@@ -32,3 +32,6 @@
 
 #admin-forms.hidden
   = render :partial => 'grade_descriptions/new'
+
+#misc-stuff.hidden
+  = render :partial => 'shared/ajax_responses'

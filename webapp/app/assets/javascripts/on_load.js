@@ -6,6 +6,7 @@ $( function() {
     $('.submit-buttons').buttonset() ;
 
     // Bindings
+    applyCommonBindings() ;
     $('#new-benchmark-button').click( createNewBenchmarkDialog );
 
 }) ; 
