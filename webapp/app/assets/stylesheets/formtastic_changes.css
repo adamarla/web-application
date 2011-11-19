@@ -11,7 +11,7 @@ form.formtastic fieldset.inputs label.label {
   font-size : 14px ;
   font-variant : small-caps ;
   font-weight : bold ;
-  width : 100% ;
+  /*width : 100% ;*/
 } 
 
 .narrow.pane { 
