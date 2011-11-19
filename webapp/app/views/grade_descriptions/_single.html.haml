@@ -1,0 +1,23 @@
+
+.heading.accordion.small-font
+  %a{:href => "#"}= "#{grade.annotation}"
+.content.accordion.small-font
+  = form.semantic_fields_for grade do |g|
+    = g.inputs do 
+      = g.input :annotation, 
+        :input_html => {:name => "benchmarks[#{grade.id}][annotation]",
+        :id => "input_benchmark_annotation_#{grade.id}"},
+        :wrapper_html => {:id => "edit_benchmark_annotation_#{grade.id}"}
+      = g.input :description, :as => :text,
+        :input_html => { :rows => 6, 
+        :name => "benchmarks[#{grade.id}][description]",
+        :id => "input_benchmark_desc_#{grade.id}",
+        :class => "full-width"},
+        :wrapper_html => {:id => "edit_benchmark_desc_#{grade.id}"}
+      = g.input :default_allotment, :as => :select, 
+        :collection => 0.step(101, 10).to_a, 
+        :include_blank => false, 
+        :input_html => { :class => "full-width",
+        :name => "benchmarks[#{grade.id}][default_allotment]",
+        :id => "input_benchmark_defaults_#{grade.id}"}
+
