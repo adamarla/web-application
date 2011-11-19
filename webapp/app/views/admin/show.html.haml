@@ -2,7 +2,7 @@
 .visible-stuff 
   #grade-descriptions.narrow.pane 
     = semantic_form_for @admin, :url => "/grade_description", :remote => true do |f|
-      .form.accordion 
+      #grade-description-accordion.form.accordion 
         = render :partial => 'grade_descriptions/list', :locals => {:form => f, :list => @benchmarks}
         .submit-buttons
           %input.update{:type => :submit, :role => :button, 
