@@ -17,6 +17,10 @@
   max-width : 33% ;
 }
 
+.heading.accordion, .content.accordion { 
+	font-size : 14px ;
+} 
+
 .ui-accordion .ui-accordion-header a.small-font {
 	font-size : 13px ;
 } 
