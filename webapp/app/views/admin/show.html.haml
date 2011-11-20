@@ -1,7 +1,7 @@
 
 .visible-stuff 
   #yardsticks.narrow.pane 
-    = semantic_form_for @admin, :url => "/grade_description", :remote => true do |f|
+    = semantic_form_for @admin, :url => "/yardstick", :remote => true do |f|
       #yardstick-accordion.form.accordion 
         = render :partial => 'yardsticks/list', :locals => {:form => f, :list => @yardsticks}
         .submit-buttons
