@@ -33,7 +33,7 @@
 
 #     __:belongs_to___     __:belongs_to___  
 #    |                |   |                | 
-# Question ---------> Grade ---------> GradeDesc
+# Question ---------> Grade ---------> Yardstick
 #    |                |   |                | 
 #    |__:has_many_____|   |___:has_many____| 
 #    

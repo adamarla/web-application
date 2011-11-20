@@ -19,7 +19,7 @@
 
 #     ___:has_many____     __:belongs_to___  
 #    |                |   |                | 
-# Teacher ---------> Grade ---------> GradeDesc
+# Teacher ---------> Grade ---------> Yardstick
 #    |                |   |                | 
 #    |__:belongs_to___|   |___:has_many____| 
 #    

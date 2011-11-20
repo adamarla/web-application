@@ -12,14 +12,14 @@
 
 #     __:belongs_to___     __:belongs_to___  
 #    |                |   |                | 
-# Question ---------> Grade ---------> GradeDesc
+# Question ---------> Grade ---------> Yardstick
 #    |                |   |                | 
 #    |__:has_many_____|   |___:has_many____| 
 #    
 
 #     ___:has_many____     __:belongs_to___  
 #    |                |   |                | 
-# Teacher ---------> Grade ---------> GradeDesc
+# Teacher ---------> Grade ---------> Yardstick
 #    |                |   |                | 
 #    |__:belongs_to___|   |___:has_many____| 
 #    
