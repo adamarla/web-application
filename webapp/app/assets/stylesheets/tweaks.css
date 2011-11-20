@@ -42,3 +42,29 @@ p {
    width : 100% ;
 } 
 
+#main-panel { 
+  width : 100% ; 
+  height : 100px ;
+  background-color : #654b24 ;
+  -moz-border-radius : 10px ;
+  margin-bottom : 25px ;
+} 
+
+#links-panel {
+  margin-left : 55% ; 
+  margin-right : 5% ;
+  height : 100% ; 
+  /* border : 2px solid white ; */
+} 
+
+#links-panel a { 
+  text-decoration : none ;
+  color : white ;
+  font-weight : bold ;
+  font-size : 20px ;
+  text-transform : lowercase ;
+  margin-left : 5px ;
+  /*vertical-align : middle ;
+  border : 1px solid white ;*/
+  line-height : 5 ;
+} 

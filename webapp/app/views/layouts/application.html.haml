@@ -8,10 +8,12 @@
     = csrf_meta_tag
   
   %body 
-    - if current_account
-      %a#link-logout{ :href => '/logout' } Sign Out
-    - else 
-      %a#link-login{ :href => '/login' } Sign In
+    #main-panel 
+      #links-panel 
+        - if current_account
+          %a#link-logout{ :href => '/logout' } Sign Out
+        - else 
+          %a#link-login{ :href => '/login' } Sign In
     
     = yield
   
