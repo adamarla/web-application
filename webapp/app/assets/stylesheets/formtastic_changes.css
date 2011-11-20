@@ -35,3 +35,9 @@ fieldset.inputs select {
 fieldset.buttons { 
    margin-top : 10px ;
 } 
+
+.formtastic fieldset.boolean-flags li {
+    padding : 0px ; 
+    float : left ;
+    font-variant : small-caps ;
+} 

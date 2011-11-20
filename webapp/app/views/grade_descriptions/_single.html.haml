@@ -19,4 +19,9 @@
         :include_blank => false, 
         :input_html => { :name => "benchmarks[#{grade.id}][default_allotment]",
         :id => "input_benchmark_defaults_#{grade.id}"}
+    = g.inputs :class => "boolean-flags" do
+      = g.input :mcq, :input_html => {:name => "benchmarks[#{grade.id}][mcq]", 
+        :id => "input_benchmark_mcq_#{grade.id}" }, :label => "MCQ?"
+      = g.input :subpart, :input_html => {:name => "benchmarks[#{grade.id}][subpart]", 
+        :id => "input_benchmark_subpart_#{grade.id}" }, :label => "Sub-Part?"
 
