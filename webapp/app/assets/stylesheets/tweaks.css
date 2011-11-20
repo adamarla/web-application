@@ -1,14 +1,14 @@
 .accordion-heading { 
-	font-size : 14px ;
-	font-variant : small-caps ; 
-	font-family : Helvetica "Trebuchet MS" Arial ;
+    font-size : 14px ;
+    font-variant : small-caps ; 
+    font-family : Helvetica "Trebuchet MS" Arial ;
 } 
 
 .accordion-textbox { 
-	border : none ; 
-	font-family : Arial Helvetica ;
-	font-size : 9px ;
-	background-color : inherit ;
+    border : none ; 
+    font-family : Arial Helvetica ;
+    font-size : 9px ;
+    background-color : inherit ;
 } 
 
 .narrow.pane { 
@@ -18,11 +18,15 @@
 }
 
 .heading.accordion, .content.accordion { 
-	font-size : 14px ;
+    font-size : 14px ;
+} 
+
+p {
+    text-justify : justify;
 } 
 
 .ui-accordion .ui-accordion-header a.small-font {
-	font-size : 13px ;
+    font-size : 13px ;
 } 
 
 .submit-buttons { 
@@ -31,7 +35,7 @@
 } 
 
 .hidden { 
-	display : none ;
+    display : none ;
 } 
 
 .full-width, .formtastic .text textarea.full-width { 

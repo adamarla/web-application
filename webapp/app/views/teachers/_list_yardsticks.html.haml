@@ -1,0 +1,9 @@
+
+#yardstick-accordion.form.accordion 
+  = semantic_form_for :grade, :url => grade_path, :method => :put, :remote => true do |f| 
+    - grades.each do |grade| 
+      = render :partial => 'teachers/single_yardstick',  
+               :locals => {:form => f, :grade => grade}
+    .submit-buttons 
+      %input.update{:type => :submit, :role => :button, 
+                    :value => "Update", :name => "commit"}

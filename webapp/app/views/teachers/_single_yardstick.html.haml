@@ -1,0 +1,17 @@
+
+-# Admin can modify the underlying yardstick while a Teacher 
+-# can only modify the grades based on the yardsticks. Furthermore, 
+-# a Teacher can only modify :allotment - which is the percentage of 
+-# alloted marks she wants to give for a particular yardstick
+
+-# Passed :locals => {form, grade}
+
+.heading.accordion.small-font
+  %a{ :href => "#" }= "#{grade.yardstick.annotation}"
+.content.accordion.small-font 
+  %p= "#{grade.yardstick.description}"
+  = form.semantic_fields_for grade do |g| 
+    = g.inputs do 
+      = g.input :allotment, :as => :select, :collection => 0.step(101, 10).to_a,
+                :input_html => {:name => "grades[#{grade.id}]", :id => "grade_#{grade.id}"},
+                :include_blank => false
