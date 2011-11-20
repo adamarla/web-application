@@ -13,6 +13,7 @@ Webapp::Application.routes.draw do
 
   resource :admin, :controller => :admin 
   resource :grade_description, :only => [:create, :update], :as => :benchmark
+  resource :grade, :only => [:update]
 
   root :to => "welcome#index"
 
