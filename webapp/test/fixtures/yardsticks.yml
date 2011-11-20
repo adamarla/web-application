@@ -10,6 +10,7 @@
 #  updated_at        :datetime
 #  mcq               :boolean         default(FALSE)
 #  subpart           :boolean         default(FALSE)
+#  active            :boolean         default(TRUE)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

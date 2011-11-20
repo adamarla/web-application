@@ -10,6 +10,7 @@
 #  updated_at        :datetime
 #  mcq               :boolean         default(FALSE)
 #  subpart           :boolean         default(FALSE)
+#  active            :boolean         default(TRUE)
 #
 
 require 'test_helper'
