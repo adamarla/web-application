@@ -69,4 +69,12 @@ p {
   /*vertical-align : middle ;
   border : 1px solid white ;*/
   line-height : 5 ;
+  padding-bottom : 4px ;
+} 
+
+#links-panel a:hover {
+  /*background-color : #9b8767 ;
+  -moz-border-radius : 10px ;
+  border-radius : 10px ;*/
+  border-bottom : 5px solid #fd9105;
 } 
