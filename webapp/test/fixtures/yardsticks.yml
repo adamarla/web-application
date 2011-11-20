@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: grade_descriptions
+# Table name: yardsticks
 #
 #  id                :integer         not null, primary key
 #  annotation        :string(255)
