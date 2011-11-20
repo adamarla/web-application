@@ -55,7 +55,7 @@ p {
   margin-left : 55% ; 
   margin-right : 5% ;
   height : 100% ; 
-  font-family : "Trebuchet MS" Helvetica Arial ;
+  font-family : "Trebuchet MS" Helvetica Arial sans-serif;
   /* border : 2px solid white ; */
 } 
 
