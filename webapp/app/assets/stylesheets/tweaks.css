@@ -47,6 +47,7 @@ p {
   height : 100px ;
   background-color : #654b24 ;
   -moz-border-radius : 10px ;
+  border-radius : 10px ;
   margin-bottom : 25px ;
 } 
 
@@ -54,6 +55,7 @@ p {
   margin-left : 55% ; 
   margin-right : 5% ;
   height : 100% ; 
+  font-family : "Trebuchet MS" Helvetica Arial ;
   /* border : 2px solid white ; */
 } 
 
