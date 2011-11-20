@@ -1,0 +1,10 @@
+
+-# Admin can modify the underlying yardstick while a Teacher 
+-# can only modify the grades based on the yardsticks. Furthermore, 
+-# a Teacher can only modify :allotment - which is the percentage of 
+-# alloted marks she wants to give for a particular grade description
+
+.heading.accordion.small-font
+  %a{ :href => "#" }= "#{grade.yardstick.annotation}"
+.content.accordion.small-font 
+  - @grades.each do |grade| 

@@ -12,7 +12,7 @@ Webapp::Application.routes.draw do
   resource :teacher, :only => [:show, :update] 
 
   resource :admin, :controller => :admin 
-  resource :grade_description, :only => [:create, :update], :as => :benchmark
+  resource :yardstick, :only => [:create, :update]
   resource :grade, :only => [:update]
 
   root :to => "welcome#index"

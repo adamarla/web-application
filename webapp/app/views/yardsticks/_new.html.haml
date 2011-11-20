@@ -1,7 +1,7 @@
 
-- new_grade_description = GradeDescription.new 
-#new-grade-description.new-entity.close-on-submit
-  = semantic_form_for new_grade_description, :remote => true, :url => benchmark_path do |f| 
+- new_yardstick = Yardstick.new 
+#new-yardstick.new-entity.close-on-submit
+  = semantic_form_for new_yardstick, :remote => true, :url => yardstick_path do |f| 
     = f.inputs do 
       = f.input :annotation
       = f.input :description, :as => :text, 

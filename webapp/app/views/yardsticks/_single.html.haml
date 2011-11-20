@@ -1,0 +1,27 @@
+
+.heading.accordion.small-font
+  %a{:href => "#"}= "#{grade.annotation}"
+.content.accordion.small-font
+  = form.semantic_fields_for grade do |g|
+    = g.inputs do 
+      = g.input :annotation, 
+        :input_html => {:name => "yardsticks[#{grade.id}][annotation]",
+        :id => "input_yardstick_annotation_#{grade.id}"},
+        :wrapper_html => {:id => "edit_yardstick_annotation_#{grade.id}"}
+      = g.input :description, :as => :text,
+        :input_html => { :rows => 6, 
+        :name => "yardsticks[#{grade.id}][description]",
+        :id => "input_yardstick_desc_#{grade.id}",
+        :class => "full-width"},
+        :wrapper_html => {:id => "edit_yardstick_desc_#{grade.id}"}
+      = g.input :default_allotment, :as => :select, 
+        :collection => 0.step(101, 10).to_a, 
+        :include_blank => false, 
+        :input_html => { :name => "yardsticks[#{grade.id}][default_allotment]",
+        :id => "input_yardstick_defaults_#{grade.id}"}
+    = g.inputs :class => "boolean-flags" do
+      = g.input :mcq, :input_html => {:name => "yardsticks[#{grade.id}][mcq]", 
+        :id => "input_yardstick_mcq_#{grade.id}" }, :label => "MCQ?"
+      = g.input :subpart, :input_html => {:name => "yardsticks[#{grade.id}][subpart]", 
+        :id => "input_yardstick_subpart_#{grade.id}" }, :label => "Sub-Part?"
+

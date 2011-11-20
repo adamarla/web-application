@@ -14,7 +14,7 @@
 
 require 'test_helper'
 
-class GradeDescriptionTest < ActiveSupport::TestCase
+class YardstickTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

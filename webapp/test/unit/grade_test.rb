@@ -2,12 +2,12 @@
 #
 # Table name: grades
 #
-#  id                   :integer         not null, primary key
-#  allotment            :integer
-#  grade_description_id :integer
-#  teacher_id           :integer
-#  created_at           :datetime
-#  updated_at           :datetime
+#  id           :integer         not null, primary key
+#  allotment    :integer
+#  yardstick_id :integer
+#  teacher_id   :integer
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 require 'test_helper'

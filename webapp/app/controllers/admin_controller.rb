@@ -3,7 +3,7 @@ class AdminController < ApplicationController
 
   def show
     @admin = current_account.loggable
-    @benchmarks = GradeDescription.all 
+    @yardsticks = Yardstick.all 
   end 
 
 end

@@ -36,7 +36,7 @@ class Teacher < ActiveRecord::Base
   has_many :study_groups, :through => :faculty_rosters
 
   has_many :grades
-  has_many :grade_descriptions, :through => :grades
+  has_many :yardsticks, :through => :grades
 
   validates :first_name, :last_name, :presence => true  
 

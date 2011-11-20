@@ -1,0 +1,7 @@
+
+%div#account_pane.narrow.pane
+  = semantic_form_for me do |f| 
+    = semantic_fields_for :account do |a| 
+      = a.inputs do 
+        = a.input :email
+        = a.input :password

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111119224156) do
+ActiveRecord::Schema.define(:version => 20111120125824) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "", :null => false
@@ -69,16 +69,6 @@ ActiveRecord::Schema.define(:version => 20111119224156) do
     t.datetime "updated_at"
   end
 
-  create_table "grade_descriptions", :force => true do |t|
-    t.string   "annotation"
-    t.string   "description"
-    t.integer  "default_allotment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "mcq",               :default => false
-    t.boolean  "subpart",           :default => false
-  end
-
   create_table "graded_responses", :force => true do |t|
     t.integer  "quiz_id"
     t.integer  "question_id"
@@ -95,7 +85,7 @@ ActiveRecord::Schema.define(:version => 20111119224156) do
 
   create_table "grades", :force => true do |t|
     t.integer  "allotment"
-    t.integer  "grade_description_id"
+    t.integer  "yardstick_id"
     t.integer  "teacher_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -195,6 +185,16 @@ ActiveRecord::Schema.define(:version => 20111119224156) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
+  end
+
+  create_table "yardsticks", :force => true do |t|
+    t.string   "annotation"
+    t.string   "description"
+    t.integer  "default_allotment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "mcq",               :default => false
+    t.boolean  "subpart",           :default => false
   end
 
 end

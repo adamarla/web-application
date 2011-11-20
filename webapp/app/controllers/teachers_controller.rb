@@ -4,8 +4,8 @@ class TeachersController < ApplicationController
                                   Teacher.find(params[:id])
     if @teacher.grades.empty? 
       # Create default grades for this teacher
-      GradeDescription.all.each { |d| 
-        grade = @teacher.grades.new :grade_description_id => d.id,
+      Yardstick.all.each { |d| 
+        grade = @teacher.grades.new :yardstick_id => d.id,
                                     :allotment => d.default_allotment
         grade.save
       } 
@@ -14,7 +14,16 @@ class TeachersController < ApplicationController
   end 
 
   def update 
-    render :nothing => true 
+    head :ok 
+#    grades = params[:grades] 
+#    status = :ok 
+#
+#    grades.each { |id, allotment|
+#      grade = Grade.find(id) 
+#      status = (grade && grade.update_attribute(:allotment, allotment)) ? :ok : :bad_request
+#      break if status == :bad_request 
+#    } 
+#    head status 
   end 
 
 end # of class

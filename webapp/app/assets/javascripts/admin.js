@@ -2,10 +2,10 @@
 // All this logic will automatically be available in application.js.
 
 $( function() { 
-	$('#new-benchmark-button').click( function() { 
-		$('#new-grade-description').dialog({
+	$('#new-yardstick-button').click( function() { 
+		$('#new-yardstick').dialog({
 			modal : true, 
-			title : "Define New Benchmark",
+			title : "New Yardstick",
 			autoOpen : false 
 		}).dialog('open');
 	}) ;
