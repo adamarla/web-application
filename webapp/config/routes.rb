@@ -14,6 +14,7 @@ Webapp::Application.routes.draw do
   resource :admin, :controller => :admin 
   resource :yardstick, :only => [:create, :update]
   resource :grade, :only => [:update]
+  resource :board, :only => [:create, :update]
 
   root :to => "welcome#index"
 
