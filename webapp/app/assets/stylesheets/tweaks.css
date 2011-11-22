@@ -11,9 +11,12 @@
     background-color : inherit ;
 } 
 
-.narrow.pane { 
-  width : 400px ;
-  margin-left : 15px ;
+.pane { 
+  margin-left : 25px ; 
+  float : left ;
+} 
+
+.narrow { 
   max-width : 33% ;
 }
 
