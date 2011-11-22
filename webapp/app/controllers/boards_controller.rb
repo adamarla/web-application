@@ -1,4 +1,5 @@
 class BoardsController < ApplicationController
+  respond_to :json 
 
   def create 
     name = params[:board][:name]
@@ -17,6 +18,16 @@ class BoardsController < ApplicationController
 
   def update 
     head :ok
+  end 
+
+  def get_course_details
+    @board = Board.find params[:board_id]
+
+    unless @board.nil? 
+      respond_with @board
+    else
+      head :bad_request
+    end 
   end 
 
 end

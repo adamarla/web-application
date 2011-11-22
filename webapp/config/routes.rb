@@ -16,6 +16,8 @@ Webapp::Application.routes.draw do
   resource :grade, :only => [:update]
   resource :board, :only => [:create, :update]
 
+  match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
+
   root :to => "welcome#index"
 
   # The priority is based upon order of creation:
