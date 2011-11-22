@@ -18,6 +18,7 @@ $( function() {
 
     // Button-set for submit buttons
     $('.submit-buttons').buttonset() ;
+
 }) ; 
 
 

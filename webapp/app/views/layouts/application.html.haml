@@ -11,9 +11,12 @@
     #main-panel 
       #links-panel 
         - if current_account
+          - if current_account.role? :admin 
+            %a#new-school-board-link.first-element{ :href => '#' } New Board
           %a#link-logout{ :href => '/logout' } Sign Out
         - else 
           %a#link-login{ :href => '/login' } Sign In
+
     
     = yield
   
