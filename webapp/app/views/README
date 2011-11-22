@@ -3,7 +3,7 @@ Listed below are class atributes used in HAML files here
 and the meaning of those attributes : 
 
 1. in-line-forms : For forms that are rendered within some other form. 
-                   Applied to the "child" <form> element 
+                   Applied to the <form> element that will be inlined
 
 2. extractable : Marks the beginning of the sub-tree that can be extracted 
                  out from its parent and appended someplace else
@@ -14,3 +14,9 @@ and the meaning of those attributes :
 4. narrow : For elements that are to be rendered with width = 1/3 of parent 
 5. pane : Marks elements that are rendered as independent and persistent 
           "control panels" on a page
+
+6. appendable : The reverse of extractable. Marks the point in the DOM 
+                below which HTML sub-trees can be added 
+
+7. stub : Is the HTML sub-tree that is added within an appendable. Always
+          a child of an 'appendable' and always the parent of whatever new HTML is added
