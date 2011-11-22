@@ -1,0 +1,16 @@
+
+Listed below are class atributes used in HAML files here
+and the meaning of those attributes : 
+
+1. in-line-forms : For forms that are rendered within some other form. 
+                   Applied to the "child" <form> element 
+
+2. extractable : Marks the beginning of the sub-tree that can be extracted 
+                 out from its parent and appended someplace else
+
+3. new-entity : Marks any HTML node - usually <form> - that is used for 
+                collecting input to create a new record in the DB
+
+4. narrow : For elements that are to be rendered with width = 1/3 of parent 
+5. pane : Marks elements that are rendered as independent and persistent 
+          "control panels" on a page
