@@ -14,10 +14,6 @@ form.formtastic fieldset.inputs label.label {
   /*width : 100% ;*/
 } 
 
-.narrow.pane { 
-  width : 400px ;
-}
-
 fieldset.inputs textarea, fieldset.inputs input[type="text"] {
   font-family : Helvetica Arial ;
   font-size : 13px ;
