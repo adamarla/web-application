@@ -18,5 +18,10 @@ and the meaning of those attributes :
 6. appendable : The reverse of extractable. Marks the point in the DOM 
                 below which HTML sub-trees can be added 
 
-7. stub : Is the HTML sub-tree that is added within an appendable. Always
-          a child of an 'appendable' and always the parent of whatever new HTML is added
+7. stub : The HTML sub-tree that is added within an appendable. Always
+          a child of an 'appendable' and always the parent of whatever new 
+          HTML is added. Must have an attribute called 'index'
+
+8. cloneable : Similar to an 'extractable'. Only difference is that a 'cloneable' 
+               must be, well, cloned before it can be pasted as a 'stub' within
+               an appendable
