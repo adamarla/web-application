@@ -25,3 +25,18 @@ and the meaning of those attributes :
 8. cloneable : Similar to an 'extractable'. Only difference is that a 'cloneable' 
                must be, well, cloned before it can be pasted as a 'stub' within
                an appendable
+
+9. close-on-submit : Applied on <form>s that must close themselves right after their
+                     "Submit" button is clicked. Set on the parent <div> containing the <form> 
+                     and accessed from within JS
+
+10. flushable : Set on DOM element whose internals - children, grand-children etc - can 
+                be deleted to be replaced - perhaps - with some other content. Represents 
+                more "destructability" than 'extractable'
+
+11. vertical, horizontal : Specify the alignment of the <div> on which set
+12. action-panel : An area within which are housed <input>s, <button>s and the like for 
+                   initiating some action ( a search, addition/deletion of records etc )
+
+13. table, row, column : (self explanatory)
+                 
