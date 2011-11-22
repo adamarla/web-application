@@ -21,6 +21,7 @@
 
 class Course < ActiveRecord::Base
   belongs_to :board 
+  belongs_to :subject
 
   has_many :specific_topics, :through => :syllabi
   has_many :syllabi
@@ -32,4 +33,5 @@ class Course < ActiveRecord::Base
   
   # [:name,:board_id,:grade,:subject] ~> [:admin] 
   #attr_accessible 
+
 end
