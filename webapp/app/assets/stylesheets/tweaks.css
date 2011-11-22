@@ -85,3 +85,57 @@ p {
   border-radius : 10px ;*/
   border-bottom : 5px solid #fd9105;
 } 
+
+.action-panel { 
+  /* background-color : #654b24 ;*/
+  -moz-border-radius : 4px ;
+  border-radius : 4px ;
+  margin-bottom : 10px ;
+} 
+
+.horizontal { 
+  height : 30px ;
+  min-width : 60px ;
+} 
+
+.vertical { 
+  min-height : 60px ;
+  min-width : 30px ;
+} 
+
+.row .data { 
+  float : left ;
+} 
+
+.left { 
+  float : left ;
+} 
+
+#courses-table { 
+  margin-left : 30px ;
+} 
+
+.color { 
+  background-color: #654b24 ;
+  color : #fd9105 ;
+} 
+
+/*
+.table { 
+  color : #654b24 ;
+  font-family : "Trebuchet MS" Helvetica Arial sans-serif ;
+  font-size : 14px ;
+  -moz-border-radius : 7px ; 
+  border-radius : 7px ;
+  border : 1px dotted #654b24 ; 
+  float : left ;
+} 
+
+.headings { 
+  font-weight : bold ;
+} 
+
+.table .row, .headings .title { 
+  float : left ;
+} 
+*/

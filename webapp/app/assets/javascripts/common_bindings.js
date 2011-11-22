@@ -19,6 +19,43 @@ $( function() {
     // Button-set for submit buttons
     $('.submit-buttons').buttonset() ;
 
+    // $('#board-list').buttonset() ;
+    
+    $('.action-panel.vertical').each( function() {
+       alignVertical( $(this) ) ;
+    }) ;
+
+    $('#board-list input[type="radio"]').click( function() { 
+      var index = $(this).attr('index') ; 
+      var url = "/get_course_details/" + index ;
+
+      $.get(url, function(data){
+        var courses = data.board.courses ; 
+
+        $('#courses-table').empty() ;
+        $.each( courses, function(index, hash) { 
+           var course = hash.course ; 
+           var rowElements = [] ; 
+
+           rowElements.push(course.name) ; 
+           rowElements.push(course.subject.name) ; 
+           rowElements.push(course.grade) ; 
+           rowElements.push(course.active) ; 
+
+           var tableRow = createTableRow( rowElements ) ;
+
+           if (index % 2 == 0) { 
+             $(tableRow).addClass('color') ;
+           } 
+
+           // Now insert the row inside $('#courses-table') 
+           $('#courses-table').append( tableRow ).hide().fadeIn('slow') ;
+
+        }) ; 
+      }, "json") ;
+    }) ;
+    
+
 }) ; 
 
 
