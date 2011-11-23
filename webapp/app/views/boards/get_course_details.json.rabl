@@ -1,7 +1,7 @@
 object @board
 
 child :courses do 
-  attributes :name, :grade, :active
+  attributes :name, :grade, :active, :id
 
   child :subject do 
     attribute :name 
