@@ -1,12 +1,15 @@
+
+body {
+  font-family : "Trebuchet MS", Helvetica, Arial, sans-serif ; 
+} 
+
 .accordion-heading { 
     font-size : 14px ;
     font-variant : small-caps ; 
-    font-family : Helvetica "Trebuchet MS" Arial ;
 } 
 
 .accordion-textbox { 
     border : none ; 
-    font-family : Arial Helvetica ;
     font-size : 9px ;
     background-color : inherit ;
 } 
@@ -58,8 +61,6 @@ p {
   margin-left : 40% ; 
   margin-right : 5% ;
   height : 100% ; 
-  font-family : "Trebuchet MS" Helvetica Arial sans-serif;
-  /* border : 2px solid white ; */
 } 
 
 #links-panel a { 
@@ -123,7 +124,7 @@ p {
 /*
 .table { 
   color : #654b24 ;
-  font-family : "Trebuchet MS" Helvetica Arial sans-serif ;
+/*
   font-size : 14px ;
   -moz-border-radius : 7px ; 
   border-radius : 7px ;
