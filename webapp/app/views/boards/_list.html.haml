@@ -6,7 +6,7 @@
   #board-list.action-panel.vertical.left.transparent
     - boards.each do |board| 
       .radio-button
-        %input{ :type => :radio, :name => :radio, :id => "radio_#{board.id}", :index => "#{board.id}"} 
+        %input{ :type => :radio, :name => :radio, :id => "radio_#{board.id}", :marker => "#{board.id}"} 
         %label{ :for => "radio_#{board.id}" }= "#{board.name}"
 
   #courses-table.flushable.left.greedy

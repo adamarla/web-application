@@ -50,8 +50,8 @@ $( function() {
 
     // on-the-fly loading of Courses for a selected Board 
     $('#board-list input[type="radio"]').click( function() { 
-      var index = $(this).attr('index') ; 
-      var url = "/get_course_details/" + index ;
+      var marker = $(this).attr('marker') ; 
+      var url = "/get_course_details/" + marker ;
 
       $.get(url, function(data){
         var courses = data.board.courses ; 
