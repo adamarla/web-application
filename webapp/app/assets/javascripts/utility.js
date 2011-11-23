@@ -17,13 +17,14 @@ function alignVertical( radioButtons ) {
 } 
 
 function createTableRow( rowElements ) { 
-  // rowElements : An array of string 
+  // rowElements : An array of 2-element arrays. 
+  //    first element = value, second = wide | narrow | regular | boolean 
   // Return : A jQuery <div class=row>.... </div>
 
-  var row = $('<div class="row"></div>') ;
+  var row = $('<tr></tr>') ;
 
   $.each(rowElements, function(index, value){
-    $(row).append($('<div class="data">' + value + '</div>')) ;
+    $(row).append($('<td>' + value + '</td>')) ;
   }) ; 
   return row ;
 } 

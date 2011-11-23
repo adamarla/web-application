@@ -32,7 +32,8 @@ $( function() {
       $.get(url, function(data){
         var courses = data.board.courses ; 
 
-        $('#courses-table').empty() ;
+        $('#courses-table table .table.content').empty() ; // empty old table content
+
         $.each( courses, function(index, hash) { 
            var course = hash.course ; 
            var rowElements = [] ; 
@@ -44,12 +45,12 @@ $( function() {
 
            var tableRow = createTableRow( rowElements ) ;
 
-           if (index % 2 == 0) { 
+           if (index % 2 == 1) { 
              $(tableRow).addClass('color') ;
            } 
 
            // Now insert the row inside $('#courses-table') 
-           $('#courses-table').append( tableRow ).hide().fadeIn('slow') ;
+           $('#courses-table table tbody').append( tableRow ).hide().fadeIn('slow') ;
 
         }) ; 
       }, "json") ;
