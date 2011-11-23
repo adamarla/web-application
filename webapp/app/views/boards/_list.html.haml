@@ -13,6 +13,9 @@
     .table 
       .headings 
         .row 
-          - { :course => :wide, :subject => :regular, :grade => :narrow }.each do |title, width| 
-            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+          .cell.quick-link
+            %a{ :href => '#' }= "Add New" 
+          - { :course => :wide, :subject => :regular, 
+              :grade => :narrow }.each do |title, class_attr| 
+            .cell{ :class => "#{class_attr.to_s}" }= "#{title.to_s.humanize}"
       .data

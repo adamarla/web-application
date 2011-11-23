@@ -164,10 +164,23 @@ td {
   width : 15% ; 
 } 
 #courses-table .cell.regular {
-  width : 30% ;
+  width : 25% ;
 } 
 
 #courses-table .cell.wide {
-  width : 55% ;
+  width : 45% ;
 } 
+
+#courses-table .cell.quick-link {
+  font-size : 14px ;
+  width : 15% ;
+  font-variant : normal ;
+  text-transform : lowercase ;
+} 
+
+#courses-table .cell.quick-link > a {
+  text-decoration : none ;
+  color : #fd9105 ;
+} 
+
 

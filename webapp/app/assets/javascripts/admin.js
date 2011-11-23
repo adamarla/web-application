@@ -62,10 +62,16 @@ $( function() {
            var course = hash.course ; 
            var cells = [] ; 
 
-           cells.push([course.name, "wide"]) ; 
-           cells.push([course.subject.name, "regular"]) ; 
-           cells.push([course.grade, "narrow"]) ; 
+           // Push a triplet where : 
+           //   1st = display text
+           //   2nd = class attribute to set on table cell
+           //   3rd = some other relevant, non-display data
+           cells.push(["edit", "quick-link", course.id]) ;
+           cells.push([course.name, "wide", null]) ; 
+           cells.push([course.subject.name, "regular", null]) ; 
+           cells.push([course.grade, "narrow", null]) ; 
 
+           // alert(" Course ID = " + course.id) ;
            var tableRow = createTableRow( cells ) ;
 
            tableRow.addClass('greedy') ;
