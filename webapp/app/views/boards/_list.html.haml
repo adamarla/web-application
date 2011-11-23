@@ -9,12 +9,10 @@
         %input{ :type => :radio, :name => :radio, :id => "radio_#{board.id}", :index => "#{board.id}"} 
         %label{ :for => "radio_#{board.id}" }= "#{board.name}"
 
-  #courses-table.flushable.table.left.greedy
-    %table
-      %thead
-        %th= "Course" 
-        %th= "Subject" 
-        %th= "Grade" 
-        %th= "Active?" 
-
-      %tbody.table.content
+  #courses-table.flushable.left.greedy
+    .table 
+      .headings 
+        .row 
+          - { :course => :wide, :subject => :regular, :grade => :narrow }.each do |title, width| 
+            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+      .data

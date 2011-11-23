@@ -16,16 +16,27 @@ function alignVertical( radioButtons ) {
   }) ;
 } 
 
-function createTableRow( rowElements ) { 
+function createTableRow( cellsWithClass ) { 
   // rowElements : An array of 2-element arrays. 
   //    first element = value, second = wide | narrow | regular | boolean 
   // Return : A jQuery <div class=row>.... </div>
 
+  var row = $('<div class="row"></div>') ;
+
+  $.each(cellsWithClass, function(index, cell){
+    var value = cell[0] ; 
+    var classAttr = cell[1] ; 
+
+    $(row).append( $('<div class="cell ' + classAttr + '">' + value + '</div>') ) ;
+  }) ;
+
+  /*
   var row = $('<tr></tr>') ;
 
   $.each(rowElements, function(index, value){
     $(row).append($('<td>' + value + '</td>')) ;
-  }) ; 
+  }) ;
+  */
   return row ;
 } 
 

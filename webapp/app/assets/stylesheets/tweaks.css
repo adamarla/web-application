@@ -130,10 +130,44 @@ p {
 
 .color { 
   background-color: #654b24 ;
-  color : #fd9105 ;
+  color : #654b24 ;
+} 
+
+td { 
+  padding : 0px ;
 } 
 
 .transparent { 
   background-color : transparent ;
+} 
+
+
+.headings > .row { 
+  font-variant : small-caps ;
+  color : #654b24 ; 
+  font-weight : bold ; 
+  font-size : 17px ;
+} 
+
+.headings .row .cell { 
+  font-size : 16px ;
+} 
+
+.cell { 
+  float : left ; 
+  font-size : 14px ; 
+  text-align : center ; 
+  margin-top : 5px ;
+} 
+
+#courses-table .cell.narrow { 
+  width : 15% ; 
+} 
+#courses-table .cell.regular {
+  width : 30% ;
+} 
+
+#courses-table .cell.wide {
+  width : 55% ;
 } 
 

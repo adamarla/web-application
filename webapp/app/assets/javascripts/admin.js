@@ -21,16 +21,7 @@ $( function() {
         }).dialog('open') ;
     }) ;
 
-    /* New Course
-    $('#new-course-link').click( function() {
-        $('#new-course-form').dialog({
-          modal : true,
-          title : "New Course", 
-          autoOpen : false
-        }).dialog('open') ;
-    }) ;
-    */
-
+    // New Course with the option of simultaneously adding some Courses
     $('#new-course-link').click( function() {
         var appendable = $('#new-board-form .appendable') ;
         var next = parseInt($(appendable).attr('next')) + 1 ;
@@ -55,5 +46,39 @@ $( function() {
             $(this).attr('name', name) ;
         }) ;
     }) ; // of function
+
+
+    // on-the-fly loading of Courses for a selected Board 
+    $('#board-list input[type="radio"]').click( function() { 
+      var index = $(this).attr('index') ; 
+      var url = "/get_course_details/" + index ;
+
+      $.get(url, function(data){
+        var courses = data.board.courses ; 
+
+        $('#courses-table .data:first').empty() ; // empty old table content
+
+        $.each( courses, function(index, hash) { 
+           var course = hash.course ; 
+           var cells = [] ; 
+
+           cells.push([course.name, "wide"]) ; 
+           cells.push([course.subject.name, "regular"]) ; 
+           cells.push([course.grade, "narrow"]) ; 
+
+           var tableRow = createTableRow( cells ) ;
+
+           tableRow.addClass('greedy') ;
+           if (index % 2 == 1) { 
+             $(tableRow).addClass('color') ;
+           } 
+
+           // Now insert the row inside $('#courses-table') 
+           $('#courses-table .data:first').append( tableRow ).hide().fadeIn('slow') ;
+
+        }) ; 
+      }, "json") ;
+    }) ;
+
 
 }) 
