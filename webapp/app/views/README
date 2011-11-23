@@ -39,4 +39,10 @@ and the meaning of those attributes :
                    initiating some action ( a search, addition/deletion of records etc )
 
 13. table, row, column : (self explanatory)
+14. transparent : No background colour 
+
+15. greedy : The element would - via JS - expand to take all remaining space in its 
+             parent whilst maintaining the margins, paddings and borders. By default,
+             element will expand horizontally. However, if .greedy is paired with .vertical,
+             then the expansion will be vertical
                  

@@ -1,15 +1,15 @@
 
 - boards = Board.all 
 
-.wide.pane
+.wide.pane.greedy
   #top-panel.action-panel.horizontal
-  #board-list.action-panel.vertical.left
+  #board-list.action-panel.vertical.left.transparent
     - boards.each do |board| 
       .radio-button
         %input{ :type => :radio, :name => :radio, :id => "radio_#{board.id}", :index => "#{board.id}"} 
         %label{ :for => "radio_#{board.id}" }= "#{board.name}"
 
-  #courses-table.flushable.table.left
+  #courses-table.flushable.table.left.greedy
     %table
       %thead
         %th= "Course" 
@@ -17,4 +17,4 @@
         %th= "Grade" 
         %th= "Active?" 
 
-      %tbody.table.content 
+      %tbody.table.content

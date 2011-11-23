@@ -28,3 +28,14 @@ function createTableRow( rowElements ) {
   }) ; 
   return row ;
 } 
+
+function fitIntoWidth( widthInPx, object ){
+  // Returns newly calculated with value (in px). Maintains object's borders, 
+  // margins and paddings 
+
+  margin = $(object).outerWidth(true) - $(object).outerWidth(false) ; 
+  border = $(object).outerWidth(false) - $(object).innerWidth() ; 
+  padding = $(object).innerWidth() - $(object).width() ;
+
+  return (widthInPx - margin - border - padding) ;
+} 

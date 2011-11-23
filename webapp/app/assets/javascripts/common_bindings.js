@@ -25,35 +25,28 @@ $( function() {
        alignVertical( $(this) ) ;
     }) ;
 
-    $('#board-list input[type="radio"]').click( function() { 
-      var index = $(this).attr('index') ; 
-      var url = "/get_course_details/" + index ;
+    // Expand 'greedy' elements so that they take all remaining width in their parent
+    $('.greedy').each( function() {
+      var parentWidth = $(this).parent().width() ; // just the content
+      var taken = 0 ; 
 
-      $.get(url, function(data){
-        var courses = data.board.courses ; 
+      $(this).siblings().each( function() {
+        var widthWithMargins = $(this).outerWidth(true) ;
 
-        $('#courses-table table .table.content').empty() ; // empty old table content
+        if (widthWithMargins < parentWidth){ // ignore any siblings with width = 100%
+          taken += widthWithMargins ; 
+        }
+      }) ;
 
-        $.each( courses, function(index, hash) { 
-           var course = hash.course ; 
-           var rowElements = [] ; 
+      var remaining = parentWidth - taken ; 
+      var newWidth = fitIntoWidth(remaining, $(this)) - 1 ; // playing safe 
 
-           rowElements.push(course.name) ; 
-           rowElements.push(course.subject.name) ; 
-           rowElements.push(course.grade) ; 
-           rowElements.push(course.active) ; 
+      /*
+      alert("Me = " + $(this).attr('id') + "\nParent = " + $(this).parent().attr('id')
+      + "\nParent Width = " + parentWidth + "\nRemaining = " + remaining + "\nNew = " + newWidth) ;
+      */
 
-           var tableRow = createTableRow( rowElements ) ;
-
-           if (index % 2 == 1) { 
-             $(tableRow).addClass('color') ;
-           } 
-
-           // Now insert the row inside $('#courses-table') 
-           $('#courses-table table tbody').append( tableRow ).hide().fadeIn('slow') ;
-
-        }) ; 
-      }, "json") ;
+      $(this).outerWidth(newWidth) ;
     }) ;
     
 

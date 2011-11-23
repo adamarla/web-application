@@ -1,5 +1,5 @@
 
-.visible-stuff 
+.visible-stuff
   #yardsticks.narrow.pane 
     = semantic_form_for @admin, :url => "/yardstick", :remote => true do |f|
       #yardstick-accordion.form.accordion 
@@ -11,7 +11,7 @@
                                        :role => :button, :value => "Define New"} 
   
   -# Table of Boards and Courses therein
-  #school-boards.pane
+  #school-boards.pane.greedy
     = render :partial => 'boards/list'
 
 #admin-forms.hidden
