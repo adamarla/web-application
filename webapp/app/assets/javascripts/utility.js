@@ -41,7 +41,7 @@ function createTableRow( cellsWithClass ) {
       newElement.text(value) ;
     } else { 
       // <div class="cell quick-link"><a href="#" mark=3>Edit</a></div>
-      newElement.append( $('<a href="#" mark=' + other + '">Edit</a>') ) ;
+      newElement.append( $('<a href="#" marker="' + other + '">Edit</a>') ) ;
     } 
 
     $(row).append(newElement) ;

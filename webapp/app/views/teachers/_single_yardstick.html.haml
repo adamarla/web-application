@@ -13,5 +13,7 @@
   = form.semantic_fields_for grade do |g| 
     = g.inputs do 
       = g.input :allotment, :as => :select, :collection => 0.step(101, 10).to_a,
-                :input_html => {:name => "grades[#{grade.id}]", :id => "grade_#{grade.id}"},
+                :input_html => {:name => "grades[#{grade.id}]", 
+                                :id => "grade_#{grade.id}",
+                                :marker => "allotment"},
                 :include_blank => false

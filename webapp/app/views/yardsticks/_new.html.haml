@@ -3,14 +3,15 @@
 #new-yardstick.new-entity.close-on-submit
   = semantic_form_for new_yardstick, :remote => true, :url => yardstick_path do |f| 
     = f.inputs do 
-      = f.input :annotation
+      = f.input :annotation, :input_html => {:marker => "annotation"}
       = f.input :description, :as => :text, 
-                :input_html => {:rows => 7, :class => "full-width"}
+                :input_html => {:rows => 7, :class => "full-width", :marker => "description"}
       = f.input :default_allotment, :as => :select, 
-                :collection => 0.step(101,10).to_a, :include_blank => false
+                :collection => 0.step(101,10).to_a, :include_blank => false,
+                :input_html => {:marker => "default_allotment"}
     = f.inputs :class => "boolean-flags" do 
-      = f.input :mcq, :label => "mcq?"
-      = f.input :subpart, :label => "sub-part?"
+      = f.input :mcq, :label => "mcq?", :input_html => {:marker => "mcq"}
+      = f.input :subpart, :label => "sub-part?", :input_html => {:marker => "subpart"}
 
     .submit-buttons
       %input{:type => :submit, :role => :button, :value => "Create", :name => "commit"}

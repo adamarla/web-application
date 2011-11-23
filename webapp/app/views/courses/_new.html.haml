@@ -10,9 +10,10 @@
   = semantic_form_for :course do |f| 
     .extractable 
       = f.inputs do 
-        = f.input :name, :input_html => {:name => 'courses[*][name]'} 
+        = f.input :name, :input_html => {:name => 'courses[*][name]', :marker => "name"} 
         = f.input :grade, :as => :select, :collection => [*9..12], 
-                  :include_blank => false, :input_html => {:name => 'courses[*][grade]'}
+                  :include_blank => false, 
+                  :input_html => {:name => 'courses[*][grade]', :marker => "grade"}
         = f.input :subject_id, :label => 'subject', :include_blank => false,
                   :as => :select, :collection => name_id_mapping, 
-                  :input_html => {:name => 'courses[*][subject_id]'}
+                  :input_html => {:name => 'courses[*][subject_id]', :marker => "subject_id"}
