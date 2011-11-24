@@ -7,4 +7,4 @@
 //= require jquery-ui
 //= require utility
 //= require common_bindings
-//= require admin_on_load
+//= require_directory ./admin 
