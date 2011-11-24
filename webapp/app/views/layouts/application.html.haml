@@ -8,10 +8,4 @@
     = csrf_meta_tag
   
   %body 
-    #usable-area
-      #side-panel.vertical.left
-        = render :partial => 'admin/sidepanel'
-      #results-and-outputs.left.greedy 
-        = yield
-
-    = yield :hidden_stuff
+    = yield 
