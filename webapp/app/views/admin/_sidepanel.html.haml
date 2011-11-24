@@ -1,0 +1,20 @@
+
+- links = { :board => { :sublinks => [[:add],[:view]], :href => '#'},
+            :topics => {:sublinks => [[:view]], :href => '#'} }
+
+%ul
+  - links.each do |k,v| 
+    - main = k.to_s 
+    - sublinks = v[:sublinks] 
+    - href = v[:href].nil? || v[:href].empty? ? '#' : v[:href] 
+
+    %li{ :id => "new_#{main}_link", :class => "main-link" }
+      %a{ :href => "#{href}" }= "#{main.humanize}"
+
+    - sublinks.each do |w| 
+      - verb = w[0].to_s
+      - subhref = w[1].nil? ? '#' : w[1] 
+
+      %li{ :id => "#{verb}_#{main}_link", :class => "sub-link"} 
+        %a{ :href => "#{subhref}" }= "#{verb.humanize}"
+  
