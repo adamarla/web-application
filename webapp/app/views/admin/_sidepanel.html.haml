@@ -1,6 +1,13 @@
 
-- links = { :board => { :sublinks => [[:add],[:view]], :href => '#'},
-            :topics => {:sublinks => [[:view]], :href => '#'} }
+
+- if current_account 
+  - links = {:logout => {:href => '/logout', :sublinks => []} }
+- else 
+  - links = {:login => {:href => '/login', :sublinks => []} }
+
+- otherlinks = { :board => { :sublinks => [[:add],[:view]], :href => '#'},
+                 :topics => {:sublinks => [[:view]], :href => '#'} }
+- links.merge! otherlinks 
 
 %ul
   - links.each do |k,v| 
