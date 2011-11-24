@@ -8,16 +8,10 @@
     = csrf_meta_tag
   
   %body 
-    #main-panel 
-      #links-panel 
-        - if current_account
-          - if current_account.role? :admin 
-            %a#new-school-board-link.first-element{ :href => '#' } New Board
-          %a#link-logout{ :href => '/logout' } Sign Out
-        - else 
-          %a#link-login{ :href => '/login' } Sign In
+    #usable-area
+      #side-panel.vertical.left
+        = render :partial => 'admin/sidepanel'
+      #results-and-outputs.left.greedy 
+        = yield
 
-    
-    = yield
-  
-
+    = yield :hidden_stuff

@@ -1,23 +1,25 @@
 
-.visible-stuff
-  #yardsticks.narrow.pane 
-    = semantic_form_for @admin, :url => "/yardstick", :remote => true do |f|
-      #yardstick-accordion.form.accordion 
-        = render :partial => 'yardsticks/list', :locals => {:form => f, :list => @yardsticks}
-        .submit-buttons
-          %input.update{:type => :submit, :role => :button, 
-                        :value => "Update", :name => "commit"}
-          %input#new-yardstick-button{ :type => :button, 
-                                       :role => :button, :value => "Define New"} 
+- content_for :visible_stuff do 
+  .visible-stuff.left
+    #yardsticks.narrow.pane 
+      = semantic_form_for @admin, :url => "/yardstick", :remote => true do |f|
+        #yardstick-accordion.form.accordion 
+          = render :partial => 'yardsticks/list', :locals => {:form => f, :list => @yardsticks}
+          .submit-buttons
+            %input.update{:type => :submit, :role => :button, 
+                          :value => "Update", :name => "commit"}
+            %input#new-yardstick-button{ :type => :button, 
+                                         :role => :button, :value => "Define New"} 
   
-  -# Table of Boards and Courses therein
-  #school-boards.pane.greedy
-    = render :partial => 'boards/list'
+- content_for :hidden_stuff do 
+  #admin-forms.hidden
+    = render :partial => 'yardsticks/new'
+    = render :partial => 'boards/new'
 
-#admin-forms.hidden
-  = render :partial => 'yardsticks/new'
-  = render :partial => 'boards/new'
+  #misc-stuff.hidden
+    = render :partial => 'shared/ajax_responses'
+    = render :partial => 'courses/new'
 
-#misc-stuff.hidden
-  = render :partial => 'shared/ajax_responses'
-  = render :partial => 'courses/new'
+-# Table of Boards and Courses therein
+#school-boards.left.greedy
+  = render :partial => 'boards/list'

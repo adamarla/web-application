@@ -4,6 +4,19 @@ body {
   width : 1120px ;
 } 
 
+#usable-area { 
+  padding : 20px ; 
+  padding-top : 40px ;
+} 
+
+#new_logout_link, #new_login_link { 
+  margin-bottom : 60px ;
+} 
+
+#new_logout_link > a, #new_login_link > a { 
+  color : #fd9105 ;
+} 
+
 .accordion-heading { 
     font-size : 14px ;
     font-variant : small-caps ; 
@@ -50,43 +63,57 @@ p {
 } 
 
 #main-panel { 
-  /* width : 100% ;  */
-  height : 100px ;
-  background-color : #654b24 ;
-  -moz-border-radius : 10px ;
-  border-radius : 10px ;
+  /* width : 100% ;
+  height : 100px ; */
   margin-bottom : 25px ;
   padding-left : 25px ;
 } 
 
-#links-panel {
-  margin-left : 40% ; 
-  margin-right : 5% ;
-  height : 100% ; 
+li.main-link, li.sub-link { 
+  text-decoration : none ;
+  list-style-type : none ;
 } 
 
-#links-panel a { 
+li.main-link { 
+  font-size : 16px ;
+  font-variant : small-caps ;
+  text-align : left ;
+  font-weight : bold ; 
+  margin-bottom : 4px ;
+  margin-top : 4px ;
+} 
+
+li.sub-link { 
+  font-size : 14px ;
+  text-transform : lowercase ;
+  text-align : center ;
+} 
+
+#side-panel {
+  margin-left : 30px ; 
+  margin-right : 20px ;
+  background-color : #654b24 ;
+  -moz-border-radius : 5px ;
+  border-radius : 5px ;
+} 
+
+#side-panel a {
   text-decoration : none ;
   color : white ;
-  font-weight : bold ;
-  font-size : 20px ;
-  text-transform : lowercase ;
-  margin-left : 20px ;
-  /*vertical-align : middle ;
-  border : 1px solid white ;*/
+  /*margin-left : 20px ;
   line-height : 5 ;
-  padding-bottom : 4px ;
+  padding-bottom : 4px ;*/
 } 
 
-#links-panel a.first-element {
+#side-panel a.first-element {
   margin-left : 5px ;
 } 
 
-#links-panel a:hover {
+#side-panel a:hover {
   /*background-color : #9b8767 ;
   -moz-border-radius : 10px ;
   border-radius : 10px ;*/
-  border-bottom : 5px solid #fd9105;
+  border-bottom : 3px solid #fd9105;
 } 
 
 .action-panel { 
@@ -101,19 +128,10 @@ p {
   min-width : 60px ;
 } 
 
-#school-boards { 
-  float : left ;
-} 
-
-/*
-#school-boards > .wide.pane { 
-  width : 100% ;
-} 
-*/
-
 .vertical { 
-  min-height : 60px ;
-  min-width : 30px ;
+  width : 17% ;
+  height : auto ;
+  min-width : 60px ;
 } 
 
 .row .data { 
@@ -182,5 +200,3 @@ td {
   text-decoration : none ;
   color : #fd9105 ;
 } 
-
-
