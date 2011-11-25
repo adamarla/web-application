@@ -157,7 +157,6 @@ function setCellSizesIn( row ) {
 } // end  
 
 function resizeCellsIn( table ) {
-  alert (' wide = ' + table.attr('wide')) ;
   table.find('.headings > .row, .data > .row').each( function() {
     setCellSizesIn($(this)) ;
   }) ;
