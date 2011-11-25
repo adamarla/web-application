@@ -9,11 +9,11 @@ body {
   padding-top : 40px ;
 } 
 
-#new_logout_link, #new_login_link { 
+#logout_link, #login_link { 
   margin-bottom : 60px ;
 } 
 
-#new_logout_link > a, #new_login_link > a { 
+#logout_link > a, #login_link > a { 
   color : #fd9105 ;
 } 
 
@@ -69,23 +69,22 @@ p {
   padding-left : 25px ;
 } 
 
-li.main-link, li.sub-link { 
+li.main-link, li.sub-link, .sub-link { 
   text-decoration : none ;
   list-style-type : none ;
+  text-transform : lowercase ;
 } 
 
 li.main-link { 
   font-size : 16px ;
-  font-variant : small-caps ;
   text-align : left ;
   font-weight : bold ; 
   margin-bottom : 4px ;
   margin-top : 4px ;
 } 
 
-li.sub-link { 
+li.sub-link, .sublink { 
   font-size : 14px ;
-  text-transform : lowercase ;
   text-align : center ;
 } 
 
@@ -178,25 +177,25 @@ td {
   margin-top : 5px ;
 } 
 
-#courses-table .cell.narrow { 
+.cell.narrow { 
   width : 15% ; 
 } 
-#courses-table .cell.regular {
+.cell.regular {
   width : 25% ;
 } 
 
-#courses-table .cell.wide {
+.cell.wide {
   width : 45% ;
 } 
 
-#courses-table .cell.quick-link {
+.cell.quick-link {
   font-size : 14px ;
   width : 15% ;
   font-variant : normal ;
   text-transform : lowercase ;
 } 
 
-#courses-table .cell.quick-link > a {
+.cell.quick-link > a {
   text-decoration : none ;
   color : #fd9105 ;
 } 
