@@ -1,3 +1,13 @@
+/*
+  Define only those bindings here that would apply across all roles. 
+
+  These bindings would apply to HTML elements with class, id or other 
+  attributes that can occur across roles in the role-specific HTML.
+
+  HTML elements that are specific to a particular role should be bound
+  the role-specific .js file
+*/ 
+
 
 $( function() { 
     // Generally speaking, contain all forms first inside a <div> and call 
@@ -48,8 +58,32 @@ $( function() {
 
       $(this).outerWidth(newWidth) ;
     }) ;
-    
 
-}) ; 
+    /*
+      Load controls in the #control-panel when a link in the #side-panel is clicked.
+      However, logic for loading any relevant data into #data-panel would 
+      most probably be in the role-specific .js file and would require a separate 
+      binding to the same elements listed below
+    */
+
+    $('.main-link > a').click( function() { 
+      var controls = $(this).attr('load_on_click') ;
+
+      if (controls == null) return true ; 
+
+      // Move any previous controls from #control-panel to #controls.hidden 
+      var previous = $('#control-panel').children().first() ;
+
+      if (previous.length == 1){
+        previous = previous.detach() ; 
+        previous.appendTo($('#controls')) ;
+      } 
+
+      // Then move 'controls' to #control-panel w/ fade-in effect
+      $(controls).appendTo('#control-panel').hide().fadeIn('slow') ; 
+
+    }) ; // end 
+
+}) ; // end of file ...
 
 
