@@ -1,4 +1,17 @@
 
+- content_for :hidden_stuff do 
+  #admin-forms.hidden
+    = render :partial => 'yardsticks/new'
+    = render :partial => 'boards/new'
+
+  #misc-stuff.hidden
+    = render :partial => 'shared/ajax_responses'
+    = render :partial => 'courses/new'
+  
+  #controls.hidden 
+    = render :partial => 'boards/controls'
+    = render :partial => 'courses/controls'
+
 !!!5
 
 %html{html_attrs}
@@ -12,6 +25,8 @@
       #side-panel.vertical.left
         = render :partial => 'admin/sidepanel'
       #results-and-outputs.left.greedy 
-        = yield
+        #control-panel.action-panel.horizontal
+        #data-panel
+          = yield
 
     = yield :hidden_stuff
