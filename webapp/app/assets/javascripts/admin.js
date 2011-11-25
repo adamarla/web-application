@@ -6,5 +6,5 @@
 //= require jquery_ujs 
 //= require jquery-ui
 //= require utility
-//= require common_bindings
+//= require sharedBindings
 //= require_directory ./admin 
