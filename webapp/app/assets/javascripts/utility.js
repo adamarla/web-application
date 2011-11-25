@@ -16,34 +16,38 @@ function alignVertical( radioButtons ) {
   }) ;
 } 
 
-function createTableRow( cellsWithClass ) { 
-  // rowElements : A triplet where 
-  //   1st = display text
-  //   2nd = class attribute to set on table cell
-  //   3rd = some other relevant, non-display data
+function createTableRow( rowCells ) { 
+  // Each element in 'rowCells' is either a pair or a triplet, where : 
+  //   1st = display text (mandatory)
+  //   2nd = class attribute to set on table cell (mandatory) 
+  //   3rd = some other non-display data, set as marker=< something > (optional)
   // Return : A jQuery <div class=row>.... </div>
 
   var row = $('<div class="row"></div>') ;
 
-  $.each(cellsWithClass, function(index, cell){
+  $.each(rowCells, function(index, cell){
     var value = cell[0] ; 
     var classAttr = cell[1] ; 
-    var other = cell[2] ;
+    var marker = cell[2] ;
 
 
     // <div class="cell wide"></div>
     var str = '<div class="cell ' + classAttr + '"></div>' ; 
     var newElement = $(str) ;
-    //alert(str) ;
+
+    if (marker != nil){ 
+      newElement.attr('marker', marker) ;
+    } 
 
     if (classAttr != 'quick-link') {
       // <div class="cell wide">Something, something</div>
       newElement.text(value) ;
     } else { 
       // <div class="cell quick-link"><a href="#" mark=3>Edit</a></div>
-      newElement.append( $('<a href="#" marker="' + other + '">Edit</a>') ) ;
-    } 
+      var anchor = $('<a href="#" marker="' + marker + '">Edit</a>') ;
 
+      newElement.append(anchor) ;
+    } 
     $(row).append(newElement) ;
   }) ;
   return row ;
