@@ -1,27 +1,22 @@
 
 
 - if current_account 
-  - links = {:logout => {:href => '/logout', :sublinks => []} }
+  - links = {:logout => {:href => '/logout'} }
 - else 
-  - links = {:login => {:href => '/login', :sublinks => []} }
+  - links = {:login => {:href => '/login'} }
 
-- otherlinks = { :board => { :sublinks => [[:add],[:view]], :href => '#'},
-                 :topics => {:sublinks => [[:view]], :href => '#'} }
+- otherlinks = { :boards => {:href => '#', :load_controls => '#board-controls'}, 
+                 :courses => {:href => '#', :load_controls => '#course-controls'} }
 - links.merge! otherlinks 
 
 %ul
   - links.each do |k,v| 
     - main = k.to_s 
-    - sublinks = v[:sublinks] 
     - href = v[:href].nil? || v[:href].empty? ? '#' : v[:href] 
+    - controls = v[:load_controls] 
 
-    %li{ :id => "new_#{main}_link", :class => "main-link" }
-      %a{ :href => "#{href}" }= "#{main.humanize}"
-
-    - sublinks.each do |w| 
-      - verb = w[0].to_s
-      - subhref = w[1].nil? ? '#' : w[1] 
-
-      %li{ :id => "#{verb}_#{main}_link", :class => "sub-link"} 
-        %a{ :href => "#{subhref}" }= "#{verb.humanize}"
-  
+    %li{ :id => "#{main}_link", :class => "main-link" }
+      - if controls.nil? 
+        %a{ :href => "#{href}"}= "#{main.humanize}"
+      - else 
+        %a{ :href => "#{href}", :load_on_click => "#{controls}" }= "#{main.humanize}"
