@@ -91,6 +91,7 @@ $( function() {
         } 
         $(table).appendTo('#data-panel').hide().fadeIn('slow') ;
         makeGreedy( $(table) ) ;
+        resizeCellsIn( $(table).children('.table').first() ) ;
       } 
 
     }) ; // end 

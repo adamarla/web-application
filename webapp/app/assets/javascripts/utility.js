@@ -132,3 +132,34 @@ function makeGreedy(obj) {
   obj.outerWidth(newWidth) ;
 }
 
+function setCellSizesIn( row ) { 
+  var table = $(row).closest('.table') ; 
+  var parentWidth = $(row).parent().width() ; 
+
+  var wide = (parseInt(table.attr('wide')) * parentWidth/100) ;
+  var regular = (parseInt(table.attr('regular')) * parentWidth/100) ;
+  var narrow = (parseInt(table.attr('narrow')) * parentWidth/100) ;
+
+  // alert(" wide = " + wide + ", regular = " + regular + ", narrow = " + narrow) ;
+
+  $(row).children().each( function() { // should be just .cells
+    if ($(this).hasClass('wide')){
+      $(this).width(wide) ;
+    } else if ($(this).hasClass('regular')){
+      $(this).width(regular) ;
+    } else if ($(this).hasClass('narrow')) {
+      $(this).width(narrow) ;
+    } else { 
+      $(this).width(regular) ;
+    } 
+  }) ; 
+  
+} // end  
+
+function resizeCellsIn( table ) {
+  alert (' wide = ' + table.attr('wide')) ;
+  table.find('.headings > .row, .data > .row').each( function() {
+    setCellSizesIn($(this)) ;
+  }) ;
+} 
+
