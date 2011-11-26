@@ -55,21 +55,18 @@ $( function() {
     $('.main-link > a').click( function() { 
       var controls = $(this).attr('load_on_click') ;
       var table = $(this).attr('load_table') ;
-      
+
       /*
-        Move any previous controls in #control-panel to #controls.hidden.
+        Otherwise, move any previous controls in #control-panel to #controls.hidden.
         Then move 'controls' to #control-panel w/ fade-in effect
       */ 
       if (controls != null) { 
         var previous = $('#control-panel').children().first() ;
 
         if (previous.length == 1){
-          // previous.removeClass('greedy') ;
           previous = previous.detach() ; 
           previous.appendTo($('#controls')) ;
         } 
-        // $(controls).addClass('greedy') ;
-
         $(controls).appendTo('#control-panel').hide().fadeIn('slow') ; 
         makeGreedy( $(controls) ) ;
       }
@@ -85,12 +82,12 @@ $( function() {
         var previous = $('#data-panel').children().first() ;
 
         if (previous.length == 1) { 
-          previous.children('.data').first().empty() ; // empty only the data, not the headers
+          previous.find('.data:first').empty() ; // empty only the data, not the headers
           previous = previous.detach() ; 
           previous.appendTo($('#tables')) ;
         } 
         $(table).appendTo('#data-panel').hide().fadeIn('slow') ;
-        makeGreedy( $(table) ) ;
+        makeGreedy( $(table) ) ; 
         resizeCellsIn( $(table).children('.table').first() ) ;
       } 
 
