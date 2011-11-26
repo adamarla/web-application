@@ -14,10 +14,13 @@ Webapp::Application.routes.draw do
   resource :admin, :controller => :admin 
   resource :yardstick, :only => [:create, :update]
   resource :grade, :only => [:update]
-  resource :board, :only => [:create, :update]
 
+  resource :board, :only => [:create, :update]
   match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
   match 'boards/summary' => "boards#summary", :via => :get
+
+  resource :school, :only => [:create, :update]
+  match 'schools/list' => 'schools#list', :via => :get 
 
   root :to => "welcome#index"
 

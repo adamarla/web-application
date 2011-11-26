@@ -28,28 +28,17 @@ function createTableRow( rowCells ) {
   $.each(rowCells, function(index, cell){
     var value = cell[0] ; 
     var classAttr = cell[1] ; 
-    var marker = cell[2] ;
-
+    var marker = cell.length == 3 ? cell[2] : null ;
 
     // <div class="cell wide"></div>
-    var str = '<div class="cell ' + classAttr + '"></div>' ; 
-    var newElement = $(str) ;
+    var newCell = $('<div class="cell ' + classAttr + '"></div>') ; 
 
-    if (marker != nil){ 
-      newElement.attr('marker', marker) ;
-    } 
+    // <div class="cell wide">Something, something</div>
+    if (value != null) newCell.text(value) ;
 
-    if (classAttr != 'quick-link') {
-      // <div class="cell wide">Something, something</div>
-      newElement.text(value) ;
-    } else { 
-      // <div class="cell quick-link"><a href="#" mark=3>Edit</a></div>
-      var anchor = $('<a href="#" marker="' + marker + '">Edit</a>') ;
-
-      newElement.append(anchor) ;
-    } 
-    $(row).append(newElement) ;
+    $(row).append(newCell) ;
   }) ;
+
   return row ;
 } 
 
@@ -131,6 +120,12 @@ function makeGreedy(obj) {
 
   obj.outerWidth(newWidth) ;
 }
+
+/*
+  The next two functions can only be called on an existing row or table. 
+  For rows created on the fly but which aren't yet part of a table,  
+  hold calling these functions until they are
+*/ 
 
 function setCellSizesIn( row ) { 
   var table = $(row).closest('.table') ; 

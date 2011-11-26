@@ -5,7 +5,7 @@
 -# distinct names
 
 -# Example : 
--# <li href='#' id="boards_link" class="main-link" load_table="#boards-summary" load_controls="#boards_control">Boards</li>
+-# <li href='#' id="boards-link" class="main-link" load_table="#boards-summary" load_controls="#boards_control">Boards</li>
 
 - if current_account 
   - links = {:logout => {:href => '/logout'} }
@@ -17,7 +17,10 @@
                              :load_table => '#boards-summary'}, 
                  :courses => {:href => '#', 
                               :load_controls => '#course-controls', 
-                              :load_table => '#courses-summary'} }
+                              :load_table => '#courses-summary'},
+                 :schools => {:href => '#', 
+                              :load_controls => "#school-controls", 
+                              :load_table => '#schools-summary'} }
 - links.merge! otherlinks 
 
 %ul
@@ -27,7 +30,7 @@
     - controls = v[:load_controls] 
     - table = v[:load_table]
 
-    %li{ :id => "#{main}_link", :class => "main-link" }
+    %li{ :id => "#{main}-link", :class => "main-link" }
       - if controls.nil? 
         - if table.nil? 
           %a{ :href => "#{href}"}= "#{main.humanize}"

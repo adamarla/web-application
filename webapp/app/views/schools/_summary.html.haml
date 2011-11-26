@@ -1,0 +1,11 @@
+
+- columns = { :school => :regular, :address => :wide, :zip_code => :narrow, :phone => :narrow, :board => :regular}
+
+#schools-summary.left
+  .table 
+    .headings 
+      .row 
+        - columns.each do |title, width| 
+          .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+    .data 
+
