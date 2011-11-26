@@ -1,0 +1,12 @@
+
+- columns = { :board => :regular, :subject => :regular, :grade_9 => :narrow,
+              :grade_10 => :narrow, :grade_11 => :narrow, :grade_12 => :narrow}
+
+#boards-summary.left
+  .table 
+    .headings 
+      .row 
+        - columns.each do |title, width| 
+          .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+    .data 
+

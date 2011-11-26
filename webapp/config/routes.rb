@@ -17,6 +17,7 @@ Webapp::Application.routes.draw do
   resource :board, :only => [:create, :update]
 
   match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
+  match 'boards/summary' => "boards#summary", :via => :get
 
   root :to => "welcome#index"
 

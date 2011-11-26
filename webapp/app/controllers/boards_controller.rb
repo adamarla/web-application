@@ -20,6 +20,11 @@ class BoardsController < ApplicationController
     head :ok
   end 
 
+  def summary 
+    @boards = Board.all 
+    respond_with @boards 
+  end 
+
   def get_course_details
     @board = Board.find params[:board_id]
 

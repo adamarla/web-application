@@ -177,16 +177,22 @@ td {
   margin-top : 5px ;
 } 
 
+/*
 .cell.narrow { 
-  width : 15% ; 
+  max-width : 15% ; 
+  min-width : 50px ;
 } 
+
 .cell.regular {
-  width : 25% ;
+  max-width : 25% ;
+  min-width : 70px ;
 } 
 
 .cell.wide {
-  width : 45% ;
+  max-width : 45% ;
+  min-width : 100px ;
 } 
+*/
 
 .cell.quick-link {
   font-size : 14px ;
@@ -199,3 +205,13 @@ td {
   text-decoration : none ;
   color : #fd9105 ;
 } 
+
+#control-panel > .top-panel-controls { 
+  margin-top : 20px ;
+  margin-left : 60px ;
+} 
+
+#control-panel > .top-panel-controls > a { 
+  margin-right : 20px ;
+} 
+
