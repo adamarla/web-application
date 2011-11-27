@@ -34,6 +34,9 @@ $(function() {
         
         row.appendTo('#schools-summary .data:first') ; 
         setCellSizesIn(row) ;
+        if (index % 2 == 1) { 
+          row.addClass('colored') ;
+        } 
         row.hide().fadeIn('slow') ;
       }) ;
     }) ;
