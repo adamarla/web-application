@@ -28,7 +28,7 @@ $(function() {
         var school = hash.school ; 
         var columns = [[school.name,'regular'], [school.address,'wide'],
                        [school.zip_code,'narrow'],[school.phone,'narrow'],
-                       [null,'regular']] ;
+                       [null,'regular'],[school.email,'regular']] ;
 
         var row = createTableRow(columns) ;
         
