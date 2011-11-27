@@ -8,7 +8,7 @@
 #  city           :string(255)
 #  state          :string(255)
 #  zip_code       :string(255)
-#  phone          :integer
+#  phone          :string(255)
 #  created_at     :datetime
 #  updated_at     :datetime
 #
