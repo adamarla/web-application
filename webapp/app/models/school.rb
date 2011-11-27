@@ -19,6 +19,8 @@ class School < ActiveRecord::Base
   has_many :teachers
   has_many :study_groups
 
+  validates :name, :street_address, :city, :state, :zip_code, :presence => true 
+
   # Should we allow deletion of schools from the DB ? My view is, don't. 
   # Don't because whatever information you may have accumulated about the 
   # school and its students' performance is valuable. At most, disable the account.
