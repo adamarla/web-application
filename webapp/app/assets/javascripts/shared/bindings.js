@@ -113,6 +113,40 @@ $( function() {
       calculateColumnWidths($(this)) ;
     }) ; 
 
+    /*
+      In tables where rows have radio-buttons, clicking on one radio-button
+      should un-click all other radio buttons in the table. This what the 
+      function below does. However, it assumes that tables are created using
+      our standard structure, that is : 
+         .table 
+           .heading
+             .
+             . 
+           .data 
+             .row 
+               .cell 
+                 %input{ :type => :radio }
+       
+       Also, note that we are using what's called deferred binding. The radio buttons we 
+       click are not present when the document first loads. Hence, click() wouldn't work.
+       jQuery 1.7+ has a new, more efficient way of handling this using the new on() method
+    */ 
+
+    $('#data-panel').on('click', '.data > .row > .radio', function() { 
+      var uncles = $(this).parent().siblings() ; // ok, technically grand-uncles.. 
+
+      $(uncles).each( function() { 
+        var cousins = $(this).children('.radio') ; // there might be >1 radio buttons/row 
+
+        if (cousins.length == 0) return ;
+        $(cousins).each( function() {
+          $(this).children('input[type="radio"]:first').prop('checked', false) ;
+        }) ;
+      }) ;
+
+      $(this).children('input[type="radio"]:first').prop('checked', true) ;
+    }) ;
+
 }) ; // end of file ...
 
 
