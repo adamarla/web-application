@@ -19,7 +19,7 @@ Webapp::Application.routes.draw do
   match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
   match 'boards/summary' => "boards#summary", :via => :get
 
-  resource :school, :only => [:create, :update]
+  resource :school, :only => [:show, :create, :update]
   match 'schools/list' => 'schools#list', :via => :get 
 
   root :to => "welcome#index"

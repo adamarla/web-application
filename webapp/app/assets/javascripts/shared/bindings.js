@@ -14,7 +14,7 @@ $( function() {
     // close whenever the submit button is clicked ( if there is one and 
     // whatever it might be ), then assign class="close-on-submit" attribute to the <div>
 
-    $('.new-entity').each( function() { 
+    $('.new-entity, .update-entity').each( function() { 
       $(this).dialog({
         modal : true, 
         autoOpen : false

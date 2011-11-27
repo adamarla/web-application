@@ -68,4 +68,22 @@ $(function() {
     $('#view-teachers-link').attr('marker', marker) ;
   }) ;
 
+  $('#control-panel').on('click','#edit-school-link', function() { 
+    var marker = $(this).attr('marker') ; 
+    var url = 'school.json?id=' + marker ;
+    var form = $('#edit-school form.formtastic') ;
+
+    if (form.length == 0) { 
+        alert (' form not found ') ;
+        return ;
+    } 
+
+    $.get(url, function(data) {
+      loadFormWithJsonData( form, data.school ) ;
+      editFormAction('#edit-school', url, 'put') ;
+      $('#edit-school').dialog('open') ;
+    }) ;
+
+  }) ;
+
 }) ; // end of main 
