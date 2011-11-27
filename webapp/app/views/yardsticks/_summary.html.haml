@@ -1,0 +1,14 @@
+
+- columns = { :notitle => :radio, :state => :regular, :description => :wide, :mcq => :narrow, :subpart => :narrow }
+
+#yardsticks-summary.left
+  .table 
+    .headings 
+      .row 
+        - columns.each do |title, width| 
+          - if title != :notitle 
+            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+          - else 
+            .cell{ :class => "#{width.to_s}" }= " "
+    .data 
+

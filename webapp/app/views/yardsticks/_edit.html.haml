@@ -1,0 +1,12 @@
+
+#edit-yardstick.update-entity.close-on-submit
+  = semantic_form_for :yardstick, :remote => true do |f| 
+    = f.inputs do 
+      = f.input :annotation, :input_html => {:marker => :annotation} 
+      = f.input :description, :input_html => {:marker => :description} 
+      = f.input :mcq, :label => "MCQ ?", :as => :boolean ,:input_html => {:marker => :mcq} 
+      = f.input :subpart, :label => "About a subpart ?", :as => :boolean ,:input_html => {:marker => :subpart} 
+      = f.input :active, :label => "Active ?", :as => :boolean ,:input_html => {:marker => :active} 
+
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Update", :name => "commit"}
