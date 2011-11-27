@@ -17,6 +17,7 @@
 #  updated_at             :datetime
 #  loggable_id            :integer
 #  loggable_type          :string(255)
+#  active                 :boolean         default(TRUE)
 #
 
 class Account < ActiveRecord::Base
