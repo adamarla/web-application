@@ -1,4 +1,16 @@
 
+function editFormAction(formId, url, method) {
+  // JS has no native support for default arguments. So, this is what one does
+  method = (typeof method == 'undefined') ? 'post' : method ;
+
+  var form = $(formId).children('form.formtastic:first') ;
+
+  if (form.length == 1) { 
+    form.attr('action', url) ; 
+    form.attr('method', method) ;
+  }
+} 
+
 function alignVertical( radioButtons ) { 
   var bs = $(radioButtons).buttonset() ;
 

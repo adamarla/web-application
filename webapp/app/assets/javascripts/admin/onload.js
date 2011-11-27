@@ -3,6 +3,12 @@
 
 $( function() { 
 
+    /*
+	  Some of the forms generated using formtastic would need 
+	  their 'action' and/or 'method' attributes redefined. Do that now... 
+	*/ 
+	editFormAction('#new-school', '/school') ; 
+
     // New Yardstick 
     $('#new-yardstick-button').click( function() { 
         $('#new-yardstick').dialog({

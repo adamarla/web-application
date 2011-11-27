@@ -1,0 +1,13 @@
+
+#new-school.new-entity.close-on-submit
+  = semantic_form_for :school, :remote => true do |f| 
+    = f.inputs do 
+      = f.input :name 
+      = f.input :street_address, :label => "Address" 
+      = f.input :city
+      = f.input :state, :as => :select, :collection => ['DL', 'MH', 'HR','PB','RJ']
+      = f.input :zip_code 
+      = f.input :phone_number, :label => 'Phone #'
+
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Create", :name => "commit"}

@@ -11,7 +11,6 @@ $(function() {
     var url = 'boards/summary' ;
 
     $.get(url, function(data){
-      alert(" received summary ") ;
     }) ;
 
   }) ; 
@@ -40,5 +39,13 @@ $(function() {
     }) ;
 
   }) ;
+
+  /*
+    #add-school-link
+  */ 
+
+  $('#add-school-link').click( function() { 
+    $('#new-school').dialog({ title : 'Add School'}).dialog('open') ; 
+  }) ; 
 
 }) ; // end of main 
