@@ -28,3 +28,37 @@ function alignVertical( radioButtons ) {
   }) ;
 } 
 
+function loadFormWithJsonData( form, data ){ 
+  /* 
+     This function tries to fill any formtastic form with any JSON data by iterating 
+     over the form, matching keys in the JSON with field markers in the form
+
+     The only catch is that 'data' should be flat, that is, it should
+     not have any nesting. So, 'data' like below is OK : 
+       { x:y, a:b, m:n ..... } 
+     But something like {x:y, a:{b:c, d:e}, m:n ... } is not
+  */ 
+
+  var inputs = form.find('fieldset.inputs ol li') ;
+
+  $(inputs).each( function(){
+    var input = null ;  
+
+    if ($(this).hasClass('string')) {
+      input = $(this).children('input:first') ; 
+    } else if ($(this).hasClass('select')) { 
+      input = $(this).children('select:first') ;
+    } else if ($(this).hasClass('boolean')) { 
+      input = $(this).find('input[type="checkbox"]') ;
+    } 
+
+    var marker = (input != null) ? input.attr('marker') : null ;
+    if (marker != null) {
+        // alert(marker + ', ' + input.attr('id') + ', ' + data[marker]) ;
+        input.val(data[marker]) ;
+    } else {
+        alert (' input element not found for ' + $(this).attr('class')) ;
+    } 
+  }) ;
+} // end  
+
