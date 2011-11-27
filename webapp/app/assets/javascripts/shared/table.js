@@ -10,14 +10,18 @@ function createTableRow( rowCells ) {
 
   $.each(rowCells, function(index, cell){
     var value = cell[0] ; 
-    var classAttr = cell[1] ; 
-    var marker = cell.length == 3 ? cell[2] : null ;
+    var width = cell[1] ; 
+    var marker = cell[2] ; 
+    var newCell = $('<div class="cell ' + width + '"></div>') ;
 
+    if (width =='radio' || width === 'checkbox') {
+      newCell.append( $('<input type="' + width + '"></input>') ) ;
+    } 
     // <div class="cell wide"></div>
-    var newCell = $('<div class="cell ' + classAttr + '"></div>') ; 
 
     // <div class="cell wide">Something, something</div>
     if (value != null) newCell.text(value) ;
+    if (marker != null) newCell.attr('marker', marker) ;
 
     $(row).append(newCell) ;
   }) ;
@@ -53,7 +57,9 @@ function calculateColumnWidths(table) {
   var score = 0 ; 
 
   table.find('.headings .cell').each( function() { 
-     if ($(this).hasClass('wide')) {
+     if ($(this).hasClass('radio') || $(this).hasClass('checkbox')){
+       return ; // return from calling function to continue to next jQuery object 
+     } else if ($(this).hasClass('wide')) {
          score += 3 ;
      } else if ($(this).hasClass('regular')) {
          score += 2 ;
@@ -80,6 +86,12 @@ function setCellSizesIn( row ) {
   var table = $(row).closest('.table') ; 
   var parentWidth = $(row).parent().width() ; 
 
+  $(row).children().each( function() { 
+     if ($(this).hasClass('radio') || $(this).hasClass('checkbox')){
+       parentWidth -= 20 ;
+     }
+  }) ;
+
   var wide = (parseInt(table.attr('wide')) * parentWidth/100) ;
   var regular = (parseInt(table.attr('regular')) * parentWidth/100) ;
   var narrow = (parseInt(table.attr('narrow')) * parentWidth/100) ;
@@ -93,6 +105,8 @@ function setCellSizesIn( row ) {
       $(this).width(regular) ;
     } else if ($(this).hasClass('narrow')) {
       $(this).width(narrow) ;
+    } else if ($(this).hasClass('radio') || $(this).hasClass('checkbox')){
+      $(this).width(20) ;
     } else { 
       $(this).width(regular) ;
     } 

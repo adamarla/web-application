@@ -1,5 +1,5 @@
 
-- columns = { :school => :regular, :address => :wide, :zip_code => :narrow, 
+- columns = { :notitle => :radio, :school => :regular, :address => :wide, :zip_code => :narrow, 
               :phone => :narrow, :board => :regular, :email => :regular}
 
 #schools-summary.left
@@ -7,6 +7,9 @@
     .headings 
       .row 
         - columns.each do |title, width| 
-          .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+          - if title != :notitle 
+            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+          - else 
+            .cell{ :class => "#{width.to_s}" }= " "
     .data 
 

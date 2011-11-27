@@ -134,7 +134,7 @@ li.sub-link, .sublink {
 } 
 
 .table .row, .row > .cell { 
-  min-height : 20px ;
+  min-height : 25px ;
 } 
 
 /* Not sure about the settings below
