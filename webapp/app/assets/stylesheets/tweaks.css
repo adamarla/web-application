@@ -69,21 +69,23 @@ p {
   padding-left : 25px ;
 } 
 
-li.main-link, li.sub-link, .sub-link { 
+.main-link, .sub-link {
   text-decoration : none ;
   list-style-type : none ;
   text-transform : lowercase ;
+  color : white ;
 } 
 
-li.main-link { 
+.main-link { 
   font-size : 16px ;
   text-align : left ;
   font-weight : bold ; 
   margin-bottom : 4px ;
   margin-top : 4px ;
+  margin-right : 15px ;
 } 
 
-li.sub-link, .sublink { 
+.sub-link {
   font-size : 14px ;
   text-align : center ;
 } 
@@ -108,7 +110,8 @@ li.sub-link, .sublink {
   margin-left : 5px ;
 } 
 
-#side-panel a:hover {
+/*#side-panel a:hover { */
+.main-link:hover, .sub-link:hover {
   /*background-color : #9b8767 ;
   -moz-border-radius : 10px ;
   border-radius : 10px ;*/
