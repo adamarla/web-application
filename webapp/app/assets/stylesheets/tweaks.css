@@ -9,11 +9,11 @@ body {
   padding-top : 40px ;
 } 
 
-#logout_link, #login_link { 
+#logout-link, #login-link { 
   margin-bottom : 60px ;
 } 
 
-#logout_link > a, #login_link > a { 
+#logout-link > a, #login-link > a { 
   color : #fd9105 ;
 } 
 
@@ -131,6 +131,10 @@ li.sub-link, .sublink {
   width : 17% ;
   height : auto ;
   min-width : 60px ;
+} 
+
+.table .row, .row > .cell { 
+  min-height : 20px ;
 } 
 
 .row .data { 
