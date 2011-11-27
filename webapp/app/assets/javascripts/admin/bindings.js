@@ -55,4 +55,17 @@ $(function() {
     $('#new-school').dialog({ title : 'Add School'}).dialog('open') ; 
   }) ; 
 
+  /*
+    Part II : When radio buttons in #schools-summary are clicked, then they should update 
+    links in #control-panel using their 'marker' attribute. The base behaviour of de-selecting
+    other radio buttons is implemented in shared/bindings.js
+  */ 
+
+  $('#data-panel').on('click', '#schools-summary .data .row > .radio', function() { 
+    var marker = $(this).attr('marker') ;
+
+    $('#edit-school-link').attr('marker', marker) ;
+    $('#view-teachers-link').attr('marker', marker) ;
+  }) ;
+
 }) ; // end of main 
