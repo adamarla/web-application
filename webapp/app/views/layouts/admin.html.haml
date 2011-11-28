@@ -17,6 +17,12 @@
     = render :partial => 'boards/summary'
     = render :partial => 'schools/summary'
     = render :partial => 'yardsticks/summary'
+  
+  #toolbox.hidden
+    = render :partial => 'toolbox/board_select'
+    = render :partial => 'toolbox/difficulty_select'
+    = render :partial => 'toolbox/class_select'
+    = render :partial => 'toolbox/search_button'
 
 !!!5
 
@@ -32,6 +38,7 @@
         = render :partial => 'admin/sidepanel'
       #results-and-outputs.left.greedy 
         #control-panel.action-panel.horizontal
+          #search-box.right
         #data-panel
           = yield
 

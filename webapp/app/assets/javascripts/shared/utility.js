@@ -60,5 +60,54 @@ function loadFormWithJsonData( form, data ){
         alert (' input element not found for ' + $(this).attr('class')) ;
     } 
   }) ;
+
+  /* 
+    Returns the actual input element - be it a <select> or an <input> of 
+    type text, checkbox, radio or submit - from the toolbox with id = passed
+    argument
+
+    Note that most tools are generated using formtastic and hence have kinda
+    the same structure, namely : 
+    <div id = - argument - >
+      <li> 
+        <label> 
+        < - the actual element we want -> 
+      </li> 
+    </div>
+
+    For now, I am not taking the <label>. Only its sibling input element
+  */ 
+
+  function getInputElementFromToolBox( toolId ) { // toolId = CSS selector
+    var child = $(toolId).children().first() ; 
+    var me = null ;
+
+    if (child.hasClass('string')) {
+      me = child.children('input:first') ;
+    } else if (child.hasClass('select')) {
+      me = child.children('select:first') ;
+    } else if (child.hasClass('boolean')) { 
+      me = child.children('input[type="checkbox"]').first() ;
+    } else { 
+      me = child ;
+    } 
+    return me ;
+  } 
+
+  /*
+    Copy element X to Y. This needs to be done when - for example - one 
+    needs to make a search box by picking elements from the toolbox
+  */ 
+
+  function copyXtoY(X,Y) { // X,Y are CSS-selectors
+    var source = $(X) ; 
+    var target = $(Y) ;
+
+    if (source.length == 0 || target.length == 0) return false ;
+
+    source.clone().appendTo(target) ;
+    return true ;
+  } 
+
 } // end  
 
