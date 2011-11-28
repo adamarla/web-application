@@ -49,7 +49,7 @@ module ApplicationHelper
                                    :collection => collection
                    end 
     end 
-    return content_tag(:div, select_box, :id => "#{name.to_s.singularize}-dropdown", :class => 'left')
+    return content_tag(:div, select_box, :id => "#{name.to_s.singularize}-dropdown", :class => 'right dropdown')
   end 
 
 end # of helper class
