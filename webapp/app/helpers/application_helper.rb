@@ -12,10 +12,12 @@ module ApplicationHelper
     class_attr = args[:class].nil? ? 'main-link' : args[:class]
     href = args[:href].nil? ? '#' : args[:href]
     dynamic = args[:dynamic].nil? ? true : args[:dynamic]
+    singular = name.to_s.singularize
+    plural = name.to_s.pluralize
 
     if dynamic 
-      table = "##{name.to_s.pluralize}-summary"
-      panel = "##{name.to_s.singularize}-controls" 
+      table = "##{plural}-summary"
+      panel = "##{singular}-controls" 
 
       link = link_to name.to_s, href, :id => "#{name}-link", :class => class_attr, 
                                       'load-table' => table, 'load-controls' => panel
@@ -23,7 +25,7 @@ module ApplicationHelper
       link = link_to name.to_s, href, :id => "#{name}-link", :class => class_attr 
     end 
 
-    return link 
+    return content_tag(:li, link, :id => "#{singular}-anchor") 
   end 
 
 end

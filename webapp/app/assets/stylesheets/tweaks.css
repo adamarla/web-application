@@ -9,7 +9,7 @@ body {
   padding-top : 40px ;
 } 
 
-#logout-link, #login-link { 
+#logout-anchor, #login-anchor { 
   margin-bottom : 60px ;
 } 
 
