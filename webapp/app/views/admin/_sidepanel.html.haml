@@ -1,46 +1,15 @@
 
--# For each side-link, specify the href and the controls & default data-table 
--# to load on click. The tables are identified by their IDs. So, make sure that
--# wherever they are defined (most probably in some partial), they are given 
--# distinct names
+%ul.no-bullets
+  %li#logout-link
+    = side_panel_link :logout, :href => "/logout", :dynamic => false
+  %li 
+    = side_panel_link :boards  
+  %li 
+    = side_panel_link :schools  
+  %li 
+    = side_panel_link :courses 
+  %li 
+    = side_panel_link :teachers 
+  %li 
+    = side_panel_link :yardsticks 
 
--# Example : 
--# <li href='#' id="boards-link" class="main-link" load_table="#boards-summary" load_controls="#boards_control">Boards</li>
-
-- if current_account 
-  - links = {:logout => {:href => '/logout'} }
-- else 
-  - links = {:login => {:href => '/login'} }
-
-- otherlinks = { :boards => {:href => '#', 
-                             :load_controls => '#board-controls', 
-                             :load_table => '#boards-summary'}, 
-                 :courses => {:href => '#', 
-                              :load_controls => '#course-controls', 
-                              :load_table => '#courses-summary'},
-                 :schools => {:href => '#', 
-                              :load_controls => "#school-controls", 
-                              :load_table => '#schools-summary'}, 
-                 :yardsticks => {:href => '#', 
-                                 :load_controls => '#yardstick-controls',
-                                 :load_table => '#yardsticks-summary'} }
-- links.merge! otherlinks 
-
-%ul
-  - links.each do |k,v| 
-    - main = k.to_s 
-    - href = v[:href].nil? || v[:href].empty? ? '#' : v[:href] 
-    - controls = v[:load_controls] 
-    - table = v[:load_table]
-
-    %li{ :id => "#{main}-link", :class => "main-link" }
-      - if controls.nil? 
-        - if table.nil? 
-          %a{ :href => "#{href}"}= "#{main.humanize}"
-        - else 
-          %a{ :href => "#{href}", :load_table => "#{table}"}= "#{main.humanize}"
-      - else 
-        - if table.nil? 
-          %a{ :href => "#{href}", :load_on_click => "#{controls}" }= "#{main.humanize}"
-        - else 
-          %a{ :href => "#{href}", :load_on_click => "#{controls}", :load_table => "#{table}"}= "#{main.humanize}"

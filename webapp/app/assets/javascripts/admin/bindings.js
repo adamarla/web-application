@@ -19,7 +19,7 @@ $(function() {
     When the 'yardsticks' link in the side-panel is clicked 
   */ 
 
-  $('#yardsticks-link > a').click( function() { 
+  $('#yardsticks-link').click( function() { 
     var url = 'yardsticks/list' ; // Ref : views/yardsticks/list.json.rabl
 
     $.get(url, function(data) {
@@ -47,7 +47,7 @@ $(function() {
   /*
     When the 'schools' link in the side-panel is clicked
   */ 
-  $('#schools-link > a').click( function() { 
+  $('#schools-link').click( function() { 
     var url = 'schools/list' ; 
 
     // Refer : views/schools/list.json.rabl
