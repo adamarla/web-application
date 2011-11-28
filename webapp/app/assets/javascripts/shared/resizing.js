@@ -23,7 +23,7 @@ function makeGreedy(obj) {
   }) ;
 
   var remaining = parentWidth - taken ; 
-  var newWidth = fitIntoWidth(remaining, obj) - 1 ; // playing safe 
+  var newWidth = 0.99*fitIntoWidth(remaining, obj) ; 
   
   /*
   alert("Me = " + obj.attr('id') + "\nParent = " + obj.parent().attr('id')
