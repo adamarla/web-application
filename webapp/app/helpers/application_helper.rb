@@ -44,7 +44,7 @@ module ApplicationHelper
     end 
 
     unless collection.nil? || collection.empty?
-      select_box = semantic_fields_for name do |a| 
+      select_box = semantic_fields_for :criterion do |a| 
                      a.input name, :as => :select, :include_blank => false, 
                                    :collection => collection
                    end 
