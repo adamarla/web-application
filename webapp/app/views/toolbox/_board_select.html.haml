@@ -1,6 +1,0 @@
-
--# Creates a drop-down box for selecting school boards
-
-#board-dropdown.left
-  = semantic_fields_for :boards do |a| 
-    = a.input :name, :as => :select, :collection => Board.all, :include_blank => false

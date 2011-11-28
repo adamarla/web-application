@@ -19,10 +19,9 @@
     = render :partial => 'yardsticks/summary'
   
   #toolbox.hidden
-    = render :partial => 'toolbox/board_select'
-    = render :partial => 'toolbox/difficulty_select'
-    = render :partial => 'toolbox/class_select'
-    = render :partial => 'toolbox/search_button'
+    = drop_down_menu_for :boards 
+    = drop_down_menu_for :difficulty 
+    = drop_down_menu_for :classes 
 
 !!!5
 

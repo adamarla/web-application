@@ -28,4 +28,28 @@ module ApplicationHelper
     return content_tag(:li, link, :id => "#{singular}-anchor") 
   end 
 
-end
+  def drop_down_menu_for (name) 
+    collection = nil 
+    name = (name == :difficulty) ? name : name.to_s.pluralize.to_sym
+
+    case name
+      when :boards 
+        collection = Board.all 
+      when :classes 
+        collection = [*9..12] 
+      when :difficulty 
+        collection = {:introductory => 1, :intermediate => 2, :advanced => 3}
+      when :subjects 
+        collection = Subject.all
+    end 
+
+    unless collection.nil? || collection.empty?
+      select_box = semantic_fields_for name do |a| 
+                     a.input name, :as => :select, :include_blank => false, 
+                                   :collection => collection
+                   end 
+    end 
+    return content_tag(:div, select_box, :id => "#{name.to_s.singularize}-dropdown", :class => 'left')
+  end 
+
+end # of helper class
