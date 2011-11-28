@@ -1,5 +1,6 @@
 class YardsticksController < ApplicationController
   before_filter :authenticate_account! 
+  respond_to :json 
 
   def new
   end
@@ -32,5 +33,10 @@ class YardsticksController < ApplicationController
     status = new_yardstick.save ? :ok : :bad_request 
     head status 
   end
+
+  def list 
+    @yardsticks = Yardstick.all 
+	respond_with @yardsticks 
+  end 
 
 end

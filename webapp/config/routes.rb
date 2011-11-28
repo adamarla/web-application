@@ -12,7 +12,10 @@ Webapp::Application.routes.draw do
   resource :teacher, :only => [:show, :update] 
 
   resource :admin, :controller => :admin 
-  resource :yardstick, :only => [:create, :update]
+
+  resource :yardstick, :only => [:show, :create, :update]
+  match 'yardsticks/list' => 'yardsticks#list', :via => :get
+
   resource :grade, :only => [:update]
 
   resource :board, :only => [:create, :update]

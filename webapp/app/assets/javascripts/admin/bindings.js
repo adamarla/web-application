@@ -16,6 +16,35 @@ $(function() {
   }) ; 
 
   /*
+    When the 'yardsticks' link in the side-panel is clicked 
+  */ 
+
+  $('#yardsticks-link > a').click( function() { 
+    var url = 'yardsticks/list' ; // Ref : views/yardsticks/list.json.rabl
+
+    $.get(url, function(data) {
+      $.each(data.yardsticks, function(index, hash){
+        var yardstick = hash.yardstick ; 
+        var columns = [ [null,'radio',yardstick.id], 
+                        [yardstick.annotation,'regular'],
+                        [yardstick.description,'wide'],
+                        [yardstick.mcq, 'narrow'],
+                        [yardstick.subpart,'narrow'] ] ;
+
+        var row = createTableRow(columns) ; 
+
+        setCellSizesIn(row) ;
+        row.appendTo('#yardsticks-summary .data:first') ;
+        if (index % 2 == 1) { 
+          row.addClass('colored') ;
+        } 
+        row.hide().fadeIn('slow') ;
+      }) ;
+    }) ; 
+
+  }) ;
+
+  /*
     When the 'schools' link in the side-panel is clicked
   */ 
   $('#schools-link > a').click( function() { 
@@ -31,7 +60,6 @@ $(function() {
                         [school.address,'wide'],
                         [school.zip_code,'narrow'],
                         [school.phone,'narrow'],
-                        [null,'regular'],
                         [school.email,'regular'] ] ;
 
         var row = createTableRow(columns) ;
