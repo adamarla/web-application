@@ -173,6 +173,10 @@ p {
   font-weight : bold ;
 } 
 
+.small, .cell.small { 
+  font-size : 13px ;
+} 
+
 td { 
   padding : 0px ;
 } 
@@ -242,3 +246,6 @@ td {
   background-color : white ; 
 } 
 
+.overflow {
+  overflow-x : hidden ;
+} 

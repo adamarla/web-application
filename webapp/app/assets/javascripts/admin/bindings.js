@@ -60,7 +60,7 @@ $(function() {
                         [school.address,'wide'],
                         [school.zip_code,'narrow'],
                         [school.phone,'narrow'],
-                        [school.email,'regular'] ] ;
+                        [school.email,'regular overflow'] ] ;
 
         var row = createTableRow(columns) ;
         
