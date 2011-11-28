@@ -1,0 +1,8 @@
+
+-# Creates a drop-down box for difficulty levels - of questions and for 
+-# specific topics in syllabi (joint-table)
+
+#difficulty-dropdown.left
+  = semantic_fields_for :difficulty do |a| 
+    = a.input :level, :label => 'difficulty', :as => :select, :include_blank => false, 
+                      :collection => {'introductory' => 1, 'intermediate' => 2, 'advanced' => 3}

@@ -1,0 +1,6 @@
+
+-# Creates a standalone drop-down box for specifying class/grade/enrollment level
+
+#class-dropdown.left
+  = semantic_fields_for :classes do |a| 
+    = a.input :class, :as => :select, :collection => [*9..12], :include_blank => false
