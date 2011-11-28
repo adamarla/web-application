@@ -1,0 +1,14 @@
+
+- columns = {:notitle => :radio, :course => :wide, :board => :narrow, :class => :narrow, :difficulty => :narrow}
+
+#courses-summary.left
+  .table 
+    .headings 
+      .row 
+        - columns.each do |title, width| 
+          - if title != :notitle 
+            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+          - else 
+            .cell{ :class => "#{width.to_s}" }= " "
+    .data 
+
