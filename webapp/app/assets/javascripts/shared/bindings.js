@@ -59,9 +59,9 @@ $( function() {
       binding to the same elements listed below
     */
 
-    $('.main-link > a').click( function() { 
-      var controls = $(this).attr('load_on_click') ;
-      var table = $(this).attr('load_table') ;
+    $('#side-panel').on('click', '#side-panel a.main-link', function() {
+      var controls = $(this).attr('load-controls') ;
+      var table = $(this).attr('load-table') ;
 
       /*
         Otherwise, move any previous controls in #control-panel to #controls.hidden.
