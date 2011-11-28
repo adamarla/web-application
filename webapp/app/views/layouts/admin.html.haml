@@ -18,11 +18,6 @@
     = render :partial => 'schools/summary'
     = render :partial => 'yardsticks/summary'
   
-  #toolbox.hidden
-    = drop_down_menu_for :boards 
-    = drop_down_menu_for :difficulty 
-    = drop_down_menu_for :classes 
-
 !!!5
 
 %html{html_attrs}
@@ -37,7 +32,6 @@
         = render :partial => 'admin/sidepanel'
       #results-and-outputs.left.greedy 
         #control-panel.action-panel.horizontal
-          #search-box.right
         #data-panel
           = yield
 
