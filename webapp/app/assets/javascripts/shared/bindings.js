@@ -157,6 +157,8 @@ $( function() {
     $('.summary-table').ajaxSuccess( function(e, xhr, settings){
       var returnedJSON = $.parseJSON(xhr.responseText) ; 
 
+      $(this).find('.table > .data').empty() ; // clear existing data first
+
       /*
         There are > 1 summary tables and all of them catch the AJAX success event.
         However, the success event was generated in a context and therefore not all
