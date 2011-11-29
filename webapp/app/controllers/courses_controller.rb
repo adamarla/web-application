@@ -7,7 +7,12 @@ class CoursesController < ApplicationController
   end 
 
   def update 
-    head :ok 
+    course = Course.find params[:id] 
+    status = :ok
+    
+    status = course.nil? ? :bad_request : 
+            (course.update_attributes(params[:course]) ? :ok : :bad_request)
+    head status 
   end 
 
   def search 

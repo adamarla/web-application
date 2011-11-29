@@ -65,11 +65,13 @@ $(function() {
   }) ;
 
   /*
-    Part II : When radio buttons in #schools-summary are clicked, then they should update 
-    links in #control-panel using their 'marker' attribute. The base behaviour of de-selecting
-    other radio buttons is implemented in shared/bindings.js
+    Part II : When radio buttons in a summary table are clicked, then they 
+    should update links in #control-panel using their 'marker' attribute. The 
+    base behaviour of de-selecting other radio buttons is implemented in 
+    shared/bindings.js
   */ 
 
+  /* Schools */
   $('#data-panel').on('click', '#schools-summary .data .row > .radio', function() { 
     var marker = $(this).attr('marker') ;
 
@@ -94,5 +96,31 @@ $(function() {
     }) ;
 
   }) ;
+
+  /* Courses */
+  $('#data-panel').on('click', '#courses-summary .data .row > .radio', function() { 
+    var marker = $(this).attr('marker') ;
+
+    $('#edit-course-link').attr('marker', marker) ;
+  }) ;
+
+  $('#control-panel').on('click','#edit-course-link', function() { 
+    var marker = $(this).attr('marker') ; 
+    var url = 'course.json?id=' + marker ;
+    var form = $('#edit-course form.formtastic') ;
+
+    if (form.length == 0) { 
+        alert (' form not found ') ;
+        return ;
+    } 
+
+    $.get(url, function(data) {
+      loadFormWithJsonData( form, data.course ) ;
+      editFormAction('#edit-course', url, 'put') ;
+      $('#edit-course').dialog('open') ;
+    }) ;
+
+  }) ;
+
 
 }) ; // end of main 
