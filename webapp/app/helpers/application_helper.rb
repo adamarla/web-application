@@ -42,6 +42,8 @@ module ApplicationHelper
         collection = {:introductory => 1, :intermediate => 2, :advanced => 3}
       when :subjects 
         collection = Subject.all
+      when :states 
+        collection = ['DL','HR','PB','MH','WB','UP','TN']
     end 
 
     unless collection.nil? || collection.empty?
