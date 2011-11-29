@@ -30,9 +30,10 @@ module ApplicationHelper
 
   def drop_down_menu_for (name) 
     collection = nil 
-    name = (name == :difficulty) ? name : name.to_s.pluralize.to_sym
+    plural = (name == :difficulty) ? name : name.to_s.pluralize.to_sym
+    singular = plural.to_s.singularize
 
-    case name
+    case plural
       when :boards 
         collection = Board.all 
       when :classes 
@@ -45,10 +46,10 @@ module ApplicationHelper
 
     unless collection.nil? || collection.empty?
       select_box = semantic_fields_for :criterion do |a| 
-                     a.input name, :as => :select, :collection => collection
+                     a.input singular, :as => :select, :collection => collection
                    end 
     end 
-    return content_tag(:div, select_box, :id => "#{name.to_s.singularize}-dropdown", :class => 'left dropdown')
+    return content_tag(:div, select_box, :id => "#{singular}-dropdown", :class => 'left dropdown')
   end 
 
 end # of helper class
