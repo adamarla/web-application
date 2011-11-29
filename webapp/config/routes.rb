@@ -25,6 +25,8 @@ Webapp::Application.routes.draw do
   resource :school, :only => [:show, :create, :update]
   match 'schools/list' => 'schools#list', :via => :get 
 
+  match 'courses/search' => 'courses#search', :via => :get
+
   root :to => "welcome#index"
 
   # The priority is based upon order of creation:

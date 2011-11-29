@@ -1,6 +1,8 @@
 
 #course-controls.left.top-panel-controls
   %a#edit-course-link.sub-link= "Edit"
-  = drop_down_menu_for :subjects
-  = drop_down_menu_for :boards
-  = drop_down_menu_for :classes
+  = form_tag courses_search_path, :method => :get, :remote => true, :class => 'right' do |f| 
+    = drop_down_menu_for :subjects
+    = drop_down_menu_for :boards
+    = drop_down_menu_for :classes
+    = submit_tag 'Search'

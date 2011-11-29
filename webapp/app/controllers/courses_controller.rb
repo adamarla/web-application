@@ -9,4 +9,9 @@ class CoursesController < ApplicationController
   def update 
     head :ok 
   end 
+
+  def search 
+    head :ok
+  end 
+
 end
