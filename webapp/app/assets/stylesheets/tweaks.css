@@ -209,7 +209,7 @@ td {
   font-variant : small-caps ;
   color : #654b24 ; 
   font-weight : bold ; 
-  font-size : 17px ;
+  font-size : 14px ;
 } 
 
 .headings .row .cell { 
@@ -218,27 +218,9 @@ td {
 
 .cell { 
   float : left ; 
-  font-size : 14px ; 
-  text-align : center ; 
-  /* margin-top : 5px ; */
+  font-size : 13px ; 
+  text-align : left ; 
 } 
-
-/*
-.cell.narrow { 
-  max-width : 15% ; 
-  min-width : 50px ;
-} 
-
-.cell.regular {
-  max-width : 25% ;
-  min-width : 70px ;
-} 
-
-.cell.wide {
-  max-width : 45% ;
-  min-width : 100px ;
-} 
-*/
 
 .cell.quick-link {
   font-size : 14px ;
