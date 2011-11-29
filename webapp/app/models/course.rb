@@ -33,15 +33,15 @@ class Course < ActiveRecord::Base
 
   scope :for_klass, lambda { |g| (g.nil? || g[:klass].empty?) ? 
                              where('klass IS NOT NULL') : 
-                             where(:klass => g[:klass].to_i) } 
+                             where(:klass => g[:klass]) } 
 
   scope :for_subject, lambda { |g| (g.nil? || g[:subject].empty?) ? 
                                where('subject_id IS NOT NULL') : 
-                               where(:subject_id => g[:subject].to_i) }
+                               where(:subject_id => g[:subject]) }
 
   scope :in_board, lambda { |g| (g.nil? || g[:board].empty?) ? 
                              where('board_id IS NOT NULL') : 
-                             where(:board_id => g[:board].to_i) } 
+                             where(:board_id => g[:board]) } 
   
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
   #attr_accessible 
