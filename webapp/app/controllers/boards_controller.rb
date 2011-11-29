@@ -25,6 +25,7 @@ class BoardsController < ApplicationController
     respond_with @boards 
   end 
 
+=begin
   def get_course_details
     @board = Board.find params[:board_id]
 
@@ -34,5 +35,6 @@ class BoardsController < ApplicationController
       head :bad_request
     end 
   end 
+=end
 
 end
