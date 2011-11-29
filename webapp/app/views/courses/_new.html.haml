@@ -7,7 +7,7 @@
                 :collection => Board.all, :include_blank => false
       = f.input :subject_id, :label => 'Subject', :as => :select, 
                 :collection => Subject.all, :include_blank => false
-      = f.input :grade, :label => 'Class', :as => :select, 
+      = f.input :klass, :label => 'Class', :as => :select, 
                 :collection => [*9..12], :include_blank => false
 
     .submit-buttons
