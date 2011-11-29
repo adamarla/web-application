@@ -29,7 +29,7 @@ class Course < ActiveRecord::Base
   validates :name, :presence => true
   validates :grade, :presence => true, \
             :numericality => {:only_integer => true, :greater_than => 0}
-  validates :subject_id, :presence => true
+  validates :subject_id, :board_id, :presence => true
   
   # [:name,:board_id,:grade,:subject] ~> [:admin] 
   #attr_accessible 
