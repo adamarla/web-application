@@ -147,6 +147,25 @@ $( function() {
       $(this).children('input[type="radio"]:first').prop('checked', true) ;
     }) ;
 
+    /*
+      Updation of the same summary table can be triggered by many distinct events 
+      spread across multiple DOM elements. And hence, rather than bind the updation 
+      logic part to the triggering DOM element, it makes all the sense to bind 
+      the logic to the table itself
+    */ 
+
+    $('.summary-table').ajaxSuccess( function(e, xhr, settings){
+      var returnedJSON = $.parseJSON(xhr.responseText) ; 
+
+      if ($(this).attr('id') == 'schools-summary'){
+        if (settings.url == 'schools/list') {
+          updateSchoolSummary(returnedJSON) ;
+        } 
+      }
+
+    }) ;
+
+
 }) ; // end of file ...
 
 
