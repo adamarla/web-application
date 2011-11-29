@@ -14,4 +14,10 @@ class CoursesController < ApplicationController
     head :ok
   end 
 
+  def create 
+   new_course = Course.new params[:course] 
+   status = new_course.save ? :ok : :bad_request 
+   head status
+  end 
+
 end

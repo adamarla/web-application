@@ -55,12 +55,19 @@ $(function() {
   }) ;
 
   /*
-    #add-school-link
+    Add a new School to the DB 
   */ 
 
   $('#add-school-link').click( function() { 
     $('#new-school').dialog({ title : 'Add School'}).dialog('open') ; 
   }) ; 
+
+  /*
+    Add a new Course to the DB
+  */ 
+  $('#add-course-link').click( function() {
+    $('#new-course').dialog({ title : 'Add Course'}).dialog('open') ;
+  }) ;
 
   /*
     Part II : When radio buttons in #schools-summary are clicked, then they should update 

@@ -1,19 +1,14 @@
 
--# A course *cannot* be created in isolation. It necessarily needs its 
--# parent 'Board' at the time of creation. However, a course can be 
--# updated in isolation
+#new-course.new-entity.close-on-submit
+  = semantic_form_for :course, :remote => true do |f| 
+    = f.inputs do 
+      = f.input :name 
+      = f.input :board_id, :label => 'Board', :as => :select, 
+                :collection => Board.all, :include_blank => false
+      = f.input :subject_id, :label => 'Subject', :as => :select, 
+                :collection => Subject.all, :include_blank => false
+      = f.input :grade, :label => 'Class', :as => :select, 
+                :collection => [*9..12], :include_blank => false
 
-- name_id_mapping = {} 
-- Subject.all.each { |s| name_id_mapping["#{s.name}"] = "#{s.id}" }
-
-#new-course-form.inline-form.new-entity
-  = semantic_form_for :course do |f| 
-    .extractable 
-      = f.inputs do 
-        = f.input :name, :input_html => {:name => 'courses[*][name]', :marker => "name"} 
-        = f.input :grade, :as => :select, :collection => [*9..12], 
-                  :include_blank => false, 
-                  :input_html => {:name => 'courses[*][grade]', :marker => "grade"}
-        = f.input :subject_id, :label => 'subject', :include_blank => false,
-                  :as => :select, :collection => name_id_mapping, 
-                  :input_html => {:name => 'courses[*][subject_id]', :marker => "subject_id"}
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Add", :name => "commit"}

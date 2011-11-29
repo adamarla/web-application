@@ -3,12 +3,6 @@
 
 $( function() { 
 
-    /*
-	  Some of the forms generated using formtastic would need 
-	  their 'action' and/or 'method' attributes redefined. Do that now... 
-	*/ 
-	editFormAction('#new-school', '/school') ; 
-
     // New Yardstick 
     $('#new-yardstick-button').click( function() { 
         $('#new-yardstick').dialog({
@@ -26,6 +20,8 @@ $( function() {
             autoOpen : false
         }).dialog('open') ;
     }) ;
+
+	/*
 
     // New Course with the option of simultaneously adding some Courses
     $('#new-course-link').click( function() {
@@ -48,7 +44,7 @@ $( function() {
             var name = $(this).attr('name') ;
             // 'name' is of the form : courses[*][ grade | subject_id ... ]. The '*'
             // has to be replaced with the current 'next'
-            name = name.replace(/\*/g, next) ; 
+            name = name.replace(/\/g, next) ; 
             $(this).attr('name', name) ;
         }) ;
     }) ; // of function
@@ -91,5 +87,6 @@ $( function() {
         }) ; 
       }, "json") ;
     }) ; // end 
+	*/
 
 }) ; 
