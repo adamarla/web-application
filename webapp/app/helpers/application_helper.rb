@@ -45,8 +45,7 @@ module ApplicationHelper
 
     unless collection.nil? || collection.empty?
       select_box = semantic_fields_for :criterion do |a| 
-                     a.input name, :as => :select, :include_blank => false, 
-                                   :collection => collection
+                     a.input name, :as => :select, :collection => collection
                    end 
     end 
     return content_tag(:div, select_box, :id => "#{name.to_s.singularize}-dropdown", :class => 'left dropdown')
