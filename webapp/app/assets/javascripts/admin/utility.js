@@ -10,8 +10,8 @@ function updateSchoolSummary( data ) {
                     [school.name,'regular'], 
                     [school.address,'wide'],
                     [school.zip_code,'narrow'],
-                    [school.phone,'narrow'],
-                    [school.email,'regular overflow'] ] ;
+                    [school.phone,'regular'],
+                    [school.email,'wide overflow'] ] ;
 
     var row = createTableRow(columns) ;
     
