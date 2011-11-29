@@ -2,3 +2,7 @@
 #school-controls.left.top-panel-controls
   %a#add-school-link.sub-link.left{ :href => '#' }= "Add"
   %a#edit-school-link.sub-link.left{ :href => '#' }= "Edit"
+  %a#view-teachers-link.sub-link.left{ :href => '#' }= "Teachers"
+  = form_tag schools_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
+    = drop_down_menu_for :states
+    = submit_tag 'Search'

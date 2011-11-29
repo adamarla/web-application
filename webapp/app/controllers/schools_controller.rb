@@ -43,7 +43,8 @@ class SchoolsController < ApplicationController
   end 
 
   def list 
-    @schools = School.all 
+    search_criterion = params[:criterion]
+    @schools = School.state_matches(search_criterion).all
     respond_with @schools 
   end 
 

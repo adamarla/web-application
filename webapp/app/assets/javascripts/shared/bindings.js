@@ -157,8 +157,18 @@ $( function() {
     $('.summary-table').ajaxSuccess( function(e, xhr, settings){
       var returnedJSON = $.parseJSON(xhr.responseText) ; 
 
-      if ($(this).attr('id') == 'schools-summary'){
-        if (settings.url == 'schools/list') {
+      /*
+        There are > 1 summary tables and all of them catch the AJAX success event.
+        However, the success event was generated in a context and therefore not all
+        tables are supposed to respond to it
+
+        So that is what we do here. We check what the invoking URL was and then 
+        which summary table needs to process any returned JSON data. For all other 
+        tables, the execution should just fall through
+      */ 
+
+      if (settings.url.match(/schools\/list/) != null) { 
+        if ($(this).attr('id') == 'schools-summary'){ // the capturing DOM element
           updateSchoolSummary(returnedJSON) ;
         } 
       }

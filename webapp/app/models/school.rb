@@ -21,6 +21,9 @@ class School < ActiveRecord::Base
 
   validates :name, :street_address, :city, :state, :zip_code, :presence => true 
 
+  scope :state_matches, lambda { |criterion| (criterion.nil? || criterion[:state].nil?) ? 
+                              where('state IS NOT NULL') : where(:state => criterion[:state]) } 
+
   # Should we allow deletion of schools from the DB ? My view is, don't. 
   # Don't because whatever information you may have accumulated about the 
   # school and its students' performance is valuable. At most, disable the account.
