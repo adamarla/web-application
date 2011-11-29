@@ -23,3 +23,27 @@ function updateSchoolSummary( data ) {
     row.hide().fadeIn('slow') ;
   }) ;
 }
+
+/*
+  Update #courses-summary with the returned JSON data (data)
+*/ 
+
+function updateCourseSummary( data ) {
+  $.each(data.courses, function(index,hash){
+    var course = hash.course ; 
+    var columns = [ [null,'radio',course.id],
+                    [course.name,'wide'], 
+                    [course.board,'narrow'],
+                    [course.grade,'narrow'],
+                    [null,'narrow'] ] ;
+
+    var row = createTableRow(columns) ;
+    
+    row.appendTo('#courses-summary .data:first') ; 
+    setCellSizesIn(row) ;
+    if (index % 2 == 1) { 
+      row.addClass('colored') ;
+    } 
+    row.hide().fadeIn('slow') ;
+  }) ;
+}

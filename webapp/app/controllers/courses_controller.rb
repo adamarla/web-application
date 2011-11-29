@@ -20,4 +20,9 @@ class CoursesController < ApplicationController
    head status
   end 
 
+  def list
+    @courses = Course.all
+    respond_with @courses
+  end 
+
 end

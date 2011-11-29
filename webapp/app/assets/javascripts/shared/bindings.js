@@ -166,6 +166,7 @@ $( function() {
 
     $('.summary-table').ajaxSuccess( function(e, xhr, settings){
       var returnedJSON = $.parseJSON(xhr.responseText) ; 
+      // alert(xhr.responseText) ;
 
       $(this).find('.table > .data').empty() ; // clear existing data first
 
@@ -183,7 +184,11 @@ $( function() {
         if ($(this).attr('id') == 'schools-summary'){ // the capturing DOM element
           updateSchoolSummary(returnedJSON) ;
         } 
-      }
+      } else if (settings.url.match(/courses\/list/) != null) {
+        if ($(this).attr('id') == 'courses-summary'){ // the capturing DOM element
+          updateCourseSummary(returnedJSON) ;
+        } 
+      } 
 
     }) ;
 

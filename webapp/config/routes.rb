@@ -26,7 +26,7 @@ Webapp::Application.routes.draw do
   match 'schools/list' => 'schools#list', :via => :get 
 
   resource :course, :only => [:create, :update]
-  match 'courses/search' => 'courses#search', :via => :get
+  match 'courses/list' => 'courses#list', :via => :get
 
   root :to => "welcome#index"
 

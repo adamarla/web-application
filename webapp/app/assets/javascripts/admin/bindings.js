@@ -5,15 +5,10 @@
 $(function() { 
   
   /*
-    When the 'boards' link in the side-panel is clicked
+    When links in the #side-panel are clicked ... 
   */ 
-  $('#boards-link > a').click( function() { 
-    var url = 'boards/summary' ;
-
-    $.get(url, function(data){
-    }) ;
-
-  }) ; 
+  $('#boards-link > a').click( function() { $.get('boards/summary') ; }) ;
+  $('#courses-link').click( function() { $.get('courses/list') ; }) ;
 
   /*
     When the 'yardsticks' link in the side-panel is clicked 
