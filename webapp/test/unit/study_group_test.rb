@@ -4,7 +4,7 @@
 #
 #  id         :integer         not null, primary key
 #  school_id  :integer
-#  grade      :integer
+#  klass      :integer
 #  section    :string(255)
 #  created_at :datetime
 #  updated_at :datetime

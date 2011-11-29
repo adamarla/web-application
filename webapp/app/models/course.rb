@@ -5,7 +5,7 @@
 #  id         :integer         not null, primary key
 #  name       :string(255)
 #  board_id   :integer
-#  grade      :integer
+#  klass      :integer
 #  subject_id :integer
 #  created_at :datetime
 #  updated_at :datetime
@@ -27,13 +27,13 @@ class Course < ActiveRecord::Base
   has_many :syllabi
 
   validates :name, :presence => true
-  validates :grade, :presence => true, \
+  validates :klass, :presence => true, \
             :numericality => {:only_integer => true, :greater_than => 0}
   validates :subject_id, :board_id, :presence => true
 
   scope :for_klass, lambda { |g| (g.nil? || g[:klass].empty?) ? 
-                             where('grade IS NOT NULL') : 
-                             where(:grade => g[:klass].to_i) } 
+                             where('klass IS NOT NULL') : 
+                             where(:klass => g[:klass].to_i) } 
 
   scope :for_subject, lambda { |g| (g.nil? || g[:subject].empty?) ? 
                                where('subject_id IS NOT NULL') : 
@@ -43,7 +43,7 @@ class Course < ActiveRecord::Base
                              where('board_id IS NOT NULL') : 
                              where(:board_id => g[:board].to_i) } 
   
-  # [:name,:board_id,:grade,:subject] ~> [:admin] 
+  # [:name,:board_id,:klass,:subject] ~> [:admin] 
   #attr_accessible 
 
 end

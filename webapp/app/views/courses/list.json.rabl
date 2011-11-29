@@ -10,5 +10,4 @@ code :board do |m|
   m.board.name
 end 
 
-attributes :grade => :klass
-attribute :id
+attributes :klass, :id

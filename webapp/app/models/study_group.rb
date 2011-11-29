@@ -4,14 +4,14 @@
 #
 #  id         :integer         not null, primary key
 #  school_id  :integer
-#  grade      :integer
+#  klass      :integer
 #  section    :string(255)
 #  created_at :datetime
 #  updated_at :datetime
 #
 
 class StudyGroup < ActiveRecord::Base
-  validates :grade, :presence => true 
+  validates :klass, :presence => true 
   validates :section, :presence => true 
 
   belongs_to :school
@@ -21,7 +21,7 @@ class StudyGroup < ActiveRecord::Base
   has_many :teachers, :through => :faculty_rosters
 
   def label? 
-    return "#{self.grade.to_s}-#{self.section.upcase}"
+    return "#{self.klass.to_s}-#{self.section.upcase}"
   end 
 
 end
