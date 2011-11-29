@@ -21,7 +21,8 @@ class CoursesController < ApplicationController
   end 
 
   def list
-    @courses = Course.all
+    criterion = params[:criterion]
+    @courses = Course.for_klass(criterion).for_subject(criterion).in_board(criterion).all
     respond_with @courses
   end 
 

@@ -30,6 +30,18 @@ class Course < ActiveRecord::Base
   validates :grade, :presence => true, \
             :numericality => {:only_integer => true, :greater_than => 0}
   validates :subject_id, :board_id, :presence => true
+
+  scope :for_klass, lambda { |g| (g.nil? || g[:klass].empty?) ? 
+                             where('grade IS NOT NULL') : 
+                             where(:grade => g[:klass].to_i) } 
+
+  scope :for_subject, lambda { |g| (g.nil? || g[:subject].empty?) ? 
+                               where('subject_id IS NOT NULL') : 
+                               where(:subject_id => g[:subject].to_i) }
+
+  scope :in_board, lambda { |g| (g.nil? || g[:board].empty?) ? 
+                             where('board_id IS NOT NULL') : 
+                             where(:board_id => g[:board].to_i) } 
   
   # [:name,:board_id,:grade,:subject] ~> [:admin] 
   #attr_accessible 

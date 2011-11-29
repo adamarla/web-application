@@ -34,7 +34,7 @@ function updateCourseSummary( data ) {
     var columns = [ [null,'radio',course.id],
                     [course.name,'wide'], 
                     [course.board,'narrow'],
-                    [course.grade,'narrow'],
+                    [course.klass,'narrow'],
                     [null,'narrow'] ] ;
 
     var row = createTableRow(columns) ;

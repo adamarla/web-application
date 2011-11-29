@@ -36,7 +36,7 @@ module ApplicationHelper
     case plural
       when :boards 
         collection = Board.all 
-      when :classes 
+      when :klasses 
         collection = [*9..12] 
       when :difficulty 
         collection = {:introductory => 1, :intermediate => 2, :advanced => 3}
