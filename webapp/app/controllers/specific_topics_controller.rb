@@ -4,7 +4,7 @@ class SpecificTopicsController < ApplicationController
     options = params[:topic] 
     status = :ok 
 
-    unless options[:category].nil?
+    unless (options[:category].nil? || options[:category].empty?)
       new_topic = SpecificTopic.new :name => options[:name], :broad_topic_id => options[:category]
     else 
       new_topic = SpecificTopic.new :name => options[:name] 
