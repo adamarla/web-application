@@ -3,6 +3,7 @@
   %a#add-course-link.sub-link= "Add"
   %a#edit-course-link.sub-link= "Edit"
   %a#edit-syllabus-link.sub-link= "Syllabus"
+  %a#add-topic-link.sub-link= "New Topic"
   = form_tag courses_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
     = drop_down_menu_for :subjects
     = drop_down_menu_for :boards

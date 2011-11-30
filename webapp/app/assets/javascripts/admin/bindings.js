@@ -128,6 +128,7 @@ $(function() {
     var marker = $(this).attr('marker') ; 
     var table = $('#syllabus') ;
 
+    replaceControlPanelContentWith('#topic-controls') ;
     replaceDataPanelContentWith('#syllabus') ;
     makeGreedy(table) ;
     resizeCellsIn( table ) ; 

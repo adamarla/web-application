@@ -1,0 +1,11 @@
+
+#new-topic.new-entity.close-on-submit
+  = semantic_form_for :topic, :remote => true do |f| 
+    = f.inputs do 
+      = f.input :name 
+      = f.input :broad_topic_id, :label => 'Category', :as => :select, 
+                                 :collection => BroadTopic.all 
+      = f.input :broad_topic_new, :label => nil, 
+                                  :hint => 'Create a new category if none of the above apply'
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Add", :name => "commit"}
