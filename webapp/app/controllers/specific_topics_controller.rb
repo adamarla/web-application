@@ -1,7 +1,18 @@
 class SpecificTopicsController < ApplicationController
 
   def create 
-    head :ok 
+    options = params[:topic] 
+    status = :ok 
+
+    unless options[:category].nil?
+      new_topic = SpecificTopic.new :name => options[:name], :broad_topic_id => options[:category]
+    else 
+      new_topic = SpecificTopic.new :name => options[:name] 
+      new_category = new_topic.build_broad_topic :name => options[:new_category]
+    end 
+
+    status = new_topic.save ? :ok : :bad_request 
+    head status 
   end 
 
   def update 
