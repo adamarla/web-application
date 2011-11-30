@@ -88,25 +88,9 @@ $( function() {
         makeGreedy( $(controls) ) ;
       }
 
-      /* 
-        Similarly, move any previous table in #data-panel to #tables.hidden
-        and then the new 'table' to #data-panel. However, this time, empty 
-        the first table first before moving it to #tables.hidden. We don't 
-        want any residual data for next time
-      */ 
-
-      if (table != null) { 
-        var previous = $('#data-panel').children().first() ;
-
-        if (previous.length == 1) { 
-          previous.find('.data:first').empty() ; // empty only the data, not the headers
-          previous = previous.detach() ; 
-          previous.appendTo($('#tables')) ;
-        } 
-        $(table).appendTo('#data-panel').hide().fadeIn('slow') ;
-        makeGreedy( $(table) ) ; 
-        resizeCellsIn( $(table).children('.table').first() ) ;
-      } 
+      replaceDataPanelContentWith(table) ;
+      makeGreedy( $(table) ) ; 
+      resizeCellsIn( $(table).children('.table').first() ) ;
 
     }) ; // end 
 

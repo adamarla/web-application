@@ -60,6 +60,7 @@ function loadFormWithJsonData( form, data ){
         alert (' input element not found for ' + $(this).attr('class')) ;
     } 
   }) ;
+}
 
   /* 
     Returns the actual input element - be it a <select> or an <input> of 
@@ -109,5 +110,23 @@ function loadFormWithJsonData( form, data ){
     return true ;
   } 
 
+function replaceDataPanelContentWith( newStuff ) {
+  /* 
+  Move any previous table in #data-panel to #tables.hidden
+  and then the 'newStuff' to #data-panel. However, this time, empty 
+  the first table first before moving it to #tables.hidden. We don't 
+  want any residual data for next time
+  */ 
+
+  if (newStuff == null) return false ;
+
+  var previous = $('#data-panel').children().first() ;
+
+  if (previous.length == 1) { 
+    previous.find('.data:first').empty() ; // empty only the data, not the headers
+    previous = previous.detach() ; 
+    previous.appendTo($('#tables')) ;
+  } 
+  $(newStuff).appendTo('#data-panel').hide().fadeIn('slow') ;
 } // end  
 
