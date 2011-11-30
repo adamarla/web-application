@@ -92,9 +92,15 @@ function setCellSizesIn( row ) {
      }
   }) ;
 
-  var wide = (parseInt(table.attr('wide')) * parentWidth/100) ;
-  var regular = (parseInt(table.attr('regular')) * parentWidth/100) ;
-  var narrow = (parseInt(table.attr('narrow')) * parentWidth/100) ;
+  /*
+    Don't try to do an exact calculation and fit elements so tightly that they
+    take exactly 100% of the their parent's width. Rounding errors mean that 
+    sometimes a child element can get 1px more than it should have. And then, the
+    alignment gets screwed. Play safe and give a little less than expected
+  */ 
+  var wide = (parseInt(table.attr('wide')) * parentWidth/101) ;
+  var regular = (parseInt(table.attr('regular')) * parentWidth/101) ;
+  var narrow = (parseInt(table.attr('narrow')) * parentWidth/101) ;
 
   // alert(" wide = " + wide + ", regular = " + regular + ", narrow = " + narrow) ;
 
