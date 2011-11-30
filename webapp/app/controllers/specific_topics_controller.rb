@@ -1,4 +1,5 @@
 class SpecificTopicsController < ApplicationController
+  respond_to :json
 
   def create 
     options = params[:topic] 
@@ -18,4 +19,10 @@ class SpecificTopicsController < ApplicationController
   def update 
     head :ok
   end 
+
+  def list 
+    @categories = BroadTopic.order(:name).all 
+    respond_with @categories 
+  end 
+
 end
