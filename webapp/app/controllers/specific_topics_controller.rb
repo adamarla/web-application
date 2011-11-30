@@ -1,0 +1,2 @@
+class SpecificTopicsController < ApplicationController
+end
