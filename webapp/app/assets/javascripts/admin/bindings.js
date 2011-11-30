@@ -102,7 +102,7 @@ $(function() {
     var marker = $(this).attr('marker') ;
 
     $('#edit-course-link').attr('marker', marker) ;
-    $('#course-details-link').attr('marker', marker) ;
+    $('#edit-syllabus-link').attr('marker', marker) ;
   }) ;
 
   $('#control-panel').on('click','#edit-course-link', function() { 
@@ -121,6 +121,16 @@ $(function() {
       $('#edit-course').dialog('open') ;
     }) ;
 
+  }) ;
+
+  /* When #edit-syllabus-link is clicked */ 
+  $('#edit-syllabus-link').click( function() { 
+    var marker = $(this).attr('marker') ; 
+    var table = $('#syllabus') ;
+
+    replaceDataPanelContentWith('#syllabus') ;
+    makeGreedy(table) ;
+    resizeCellsIn( table ) ; 
   }) ;
 
 
