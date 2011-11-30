@@ -151,8 +151,13 @@ p {
   min-width : 60px ;
 } 
 
-.table .row, .row > .cell { 
+.table .row {
   min-height : 25px ;
+} 
+
+.row div { 
+  /* vertical-align : middle ; */
+  padding-top : 2px ;
 } 
 
 /* Not sure about the settings below
@@ -188,7 +193,12 @@ p {
 } 
 
 .colored { 
-  color : #654b24 ;
+  /*color : #654b24 ; */ 
+  color : white ; 
+   /* background-color : #91c6c9 ;*/ 
+  background-color : #6ca7ab  ;
+  -moz-border-radius : 10px ; 
+  border-radius : 10px ;
   font-weight : bold ;
 } 
 
