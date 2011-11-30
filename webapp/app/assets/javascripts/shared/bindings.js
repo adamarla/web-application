@@ -73,22 +73,9 @@ $( function() {
       var controls = $(this).attr('load-controls') ;
       var table = $(this).attr('load-table') ;
 
-      /*
-        Otherwise, move any previous controls in #control-panel to #controls.hidden.
-        Then move 'controls' to #control-panel w/ fade-in effect
-      */ 
-      if (controls != null) { 
-        var previous = $('#control-panel').children().first() ;
-
-        if (previous.length == 1){
-          previous = previous.detach() ; 
-          previous.appendTo($('#controls')) ;
-        } 
-        $(controls).appendTo('#control-panel').hide().fadeIn('slow') ; 
-        makeGreedy( $(controls) ) ;
-      }
-
+      replaceControlPanelContentWith(controls) ;
       replaceDataPanelContentWith(table) ;
+
       makeGreedy( $(table) ) ; 
       resizeCellsIn( $(table).children('.table').first() ) ;
 

@@ -54,10 +54,10 @@ function loadFormWithJsonData( form, data ){
 
     var marker = (input != null) ? input.attr('marker') : null ;
     if (marker != null) {
-        // alert(marker + ', ' + input.attr('id') + ', ' + data[marker]) ;
-        input.val(data[marker]) ;
+      // alert(marker + ', ' + input.attr('id') + ', ' + data[marker]) ;
+      input.val(data[marker]) ;
     } else {
-        alert (' input element not found for ' + $(this).attr('class')) ;
+      alert (' input element not found for ' + $(this).attr('class')) ;
     } 
   }) ;
 }
@@ -129,4 +129,22 @@ function replaceDataPanelContentWith( newStuff ) {
   } 
   $(newStuff).appendTo('#data-panel').hide().fadeIn('slow') ;
 } // end  
+
+
+function replaceControlPanelContentWith( newStuff ) {
+  /*
+    Move any previous controls in #control-panel to #controls.hidden.
+    Then move 'controls' to #control-panel w/ fade-in effect
+  */ 
+  if (newStuff == null) return false ; 
+
+  var previous = $('#control-panel').children().first() ;
+
+  if (previous.length == 1){
+    previous = previous.detach() ; 
+    previous.appendTo($('#controls')) ;
+  } 
+  $(newStuff).appendTo('#control-panel').hide().fadeIn('slow') ; 
+  makeGreedy( $(newStuff) ) ;
+} 
 
