@@ -2,6 +2,7 @@
 #course-controls.left.top-panel-controls
   %a#add-course-link.sub-link= "Add"
   %a#edit-course-link.sub-link= "Edit"
+  %a#course-details-link.sub-link= "Details"
   = form_tag courses_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
     = drop_down_menu_for :subjects
     = drop_down_menu_for :boards

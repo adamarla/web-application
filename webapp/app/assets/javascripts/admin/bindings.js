@@ -102,6 +102,7 @@ $(function() {
     var marker = $(this).attr('marker') ;
 
     $('#edit-course-link').attr('marker', marker) ;
+    $('#course-details-link').attr('marker', marker) ;
   }) ;
 
   $('#control-panel').on('click','#edit-course-link', function() { 
