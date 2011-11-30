@@ -9,10 +9,10 @@
 
 $( function() {
     /*
-	  Some of the forms generated using formtastic would need 
-	  their 'action' and/or 'method' attributes redefined. Do that now... 
-	*/ 
-	editFormAction('#new-school', '/school') ; 
-	editFormAction('#new-course', '/course') ;
-
+      Some of the forms generated using formtastic would need 
+      their 'action' and/or 'method' attributes redefined. Do that now... 
+    */ 
+    editFormAction('#new-school', '/school') ; 
+    editFormAction('#new-course', '/course') ;
+    editFormAction('#new-topic', '/specific_topic') ;
 }) ;

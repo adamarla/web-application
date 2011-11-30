@@ -134,5 +134,10 @@ $(function() {
     resizeCellsIn( table ) ; 
   }) ;
 
+  /* Add a new Specific Topic */ 
+  $('#add-topic-link').click( function() { 
+    $('#new-topic').dialog({ title : 'New Topic' }).dialog('open') ;
+  }) ; 
+
 
 }) ; // end of main 
