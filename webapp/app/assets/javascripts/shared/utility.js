@@ -55,6 +55,8 @@ function loadFormWithJsonData( form, data ){
     var marker = (input != null) ? input.attr('marker') : null ;
     if (marker != null) {
       // alert(marker + ', ' + input.attr('id') + ', ' + data[marker]) ;
+      // alert(data[marker]) ;
+      input.prop('checked', data[marker]) ;
       input.val(data[marker]) ;
     } else {
       alert (' input element not found for ' + $(this).attr('class')) ;

@@ -129,6 +129,23 @@ $( function() {
     }) ;
 
     /*
+      In any form with checkboxes, checking the checkbox should set its value
+      to true if previously false and to false if previously true. Note that for 
+      checkboxes (and radio-buttons), it is the 'value' attribute that is submitted. 
+      And the 'value' attribute can be anything - not just true or false. 
+    */ 
+
+    $('form').on('click', "input[type='checkbox']", function() { 
+      var value = $(this).val() ; 
+
+      if (value == 'false') { 
+        $(this).val('true') ; 
+      } else { 
+        $(this).val('false') ;
+      } 
+    }) ;
+
+    /*
       Updation of the same summary table can be triggered by many distinct events 
       spread across multiple DOM elements. And hence, rather than bind the updation 
       logic part to the triggering DOM element, it makes all the sense to bind 
