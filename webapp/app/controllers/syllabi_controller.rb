@@ -1,0 +1,2 @@
+class SyllabiController < ApplicationController
+end

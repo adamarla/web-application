@@ -30,6 +30,8 @@ Webapp::Application.routes.draw do
 
   resource :specific_topic, :only => [:create, :update]
 
+  resource :syllabus, :only => [:update]
+
   root :to => "welcome#index"
 
   # The priority is based upon order of creation:
