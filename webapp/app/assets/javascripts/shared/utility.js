@@ -150,3 +150,24 @@ function replaceControlPanelContentWith( newStuff ) {
   makeGreedy( $(newStuff) ) ;
 } 
 
+function uncheckAllCheckBoxesWithin( element ) { 
+  var checkBoxes = $(element).find('input[type="checkbox"]') ;
+
+  checkBoxes.each( function() { 
+    var isChecked = $(this).prop('checked') ; 
+
+    if (!isChecked) return true ;
+    $(this).prop('checked', false) ;
+  }) ; 
+} 
+
+function disableAllSelectsWithin( element ) { 
+  var selects = $(element).find('select') ; 
+
+  selects.each( function() {
+    var disabled = $(this).prop('disabled') ;
+
+    if (disabled) return true ; 
+    $(this).prop('disabled', true) ;
+  }) ;
+} 
