@@ -34,6 +34,7 @@ module ApplicationHelper
     singular = plural.to_s.singularize
     disabled = options[:disabled].nil? ? false : options[:disabled]
     include_blank = options[:include_blank].nil? ? true : options[:include_blank]
+    prefix = options[:prefix].nil? ? :criterion : options[:prefix]
 
     case plural
       when :boards 
@@ -49,7 +50,7 @@ module ApplicationHelper
     end 
 
     unless collection.nil? || collection.empty?
-      select_box = semantic_fields_for :criterion do |a| 
+      select_box = semantic_fields_for prefix do |a| 
                      a.input singular, :as => :select, :collection => collection, 
                      :include_blank => include_blank,
                      :input_html => { :disabled => disabled }
