@@ -132,8 +132,8 @@ $(function() {
       return ; 
     } 
 
-    // #course-summary .radio -> #edit-syllabus-link -> #edit-syllabi-megatable
-    $('#edit-syllabi-megatable').attr('marker', marker) ;
+    // #course-summary .radio -> #edit-syllabus-link -> #edit-syllabi-megatable -> hidden <input>
+    $('#edit-syllabi-megatable > form > input.hidden:first').val(marker) ;
     $(this).attr('marker', null) ; 
     // reset to force re-clicking of radio button in #course-summary
 
