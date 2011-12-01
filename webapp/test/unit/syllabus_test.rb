@@ -7,7 +7,7 @@
 #  specific_topic_id :integer
 #  created_at        :datetime
 #  updated_at        :datetime
-#  difficulty        :integer         default(0)
+#  difficulty        :integer         default(1)
 #
 
 require 'test_helper'

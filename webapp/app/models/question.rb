@@ -14,7 +14,7 @@
 #  multi_correct     :boolean         default(FALSE)
 #  multi_part        :boolean         default(FALSE)
 #  num_parts         :integer
-#  difficulty        :integer         default(0)
+#  difficulty        :integer         default(1)
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
