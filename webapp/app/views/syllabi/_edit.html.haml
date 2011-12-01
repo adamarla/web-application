@@ -34,6 +34,7 @@
         %div{ :marker => "#{topic.id}" } 
           = nofrills_checkbox
           .label.small.left= "#{topic.name}"
-          = drop_down_menu_for :difficulty, :float => :right, :disabled => true
+          = drop_down_menu_for :difficulty, :float => :right, :disabled => true,
+                               :include_blank => false
   #first.column.left 
   #second.column.left
