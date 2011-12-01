@@ -138,9 +138,22 @@ $(function() {
     // reset to force re-clicking of radio button in #course-summary
 
     replaceControlPanelContentWith('#topic-controls') ;
-
     replaceDataPanelContentWith('#edit-syllabi-megatable') ;
     arrangeDumpIntoColumns('#edit-syllabi-megatable') ;
+    
+    /*
+      Now, get syllabus information for the course. Code for updation - 
+      using the returned data - is in admin/utility.js
+    */ 
+    var url = 'syllabus.json?course_id=' + marker ; 
+    $.get(url) ;
+  }) ;
+
+  $('#edit-syllabi-megatable').ajaxSuccess( function(e,xhr,settings) {
+    if (settings.url.match(/syllabus\.json\?course_id/) == null) return ;
+
+    var json = $.parseJSON(xhr.responseText) ;
+    var syllabi = json.syllabi ;
   }) ;
 
   /* Add a new Specific Topic */ 
@@ -154,16 +167,9 @@ $(function() {
   */ 
 
   $('#edit-syllabi-megatable').on('click', '.column input[type="checkbox"]', function() {
-    var value = $(this).val() ; 
     var dropDown = $(this).parent().siblings('.dropdown:first').find('select:first') ;
-    var disabled = (dropDown.prop('disabled') == null) ? true : dropDown.prop('disabled') ;
-    
-    if (disabled) {
-      dropDown.prop('disabled', false) ; 
-    } else {
-      dropDown.prop('disabled', true) ;
-    } 
 
+    dropDown.prop('disabled', !($(this).prop('checked')) ) ;
   }) ;
 
 
