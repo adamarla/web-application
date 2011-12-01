@@ -135,7 +135,7 @@ $( function() {
       And the 'value' attribute can be anything - not just true or false. 
     */ 
 
-    $('form').on('click', "input[type='checkbox']", function() { 
+    $('form, .mapping.form').on('click', "input[type='checkbox']", function() { 
       var value = $(this).val() ; 
 
       if (value == 'false') { 
