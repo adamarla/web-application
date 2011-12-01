@@ -28,7 +28,7 @@ module ApplicationHelper
     return content_tag(:li, link, :id => "#{singular}-anchor") 
   end 
 
-  def drop_down_menu_for (name, id = nil) 
+  def drop_down_menu_for (name, options = {}) 
     collection = nil 
     plural = (name == :difficulty) ? name : name.to_s.pluralize.to_sym
     singular = plural.to_s.singularize
@@ -52,14 +52,20 @@ module ApplicationHelper
                    end 
     end # submitted by params as : criterion => {:state => "MH", :difficulty => "2"}
 
-    if id.nil? 
+    class_attr = options[:float].nil? ? 'left dropdown' : 
+                      (options[:float] == :right ? 'right dropdown' : 'left dropdown')
+
+    if options[:id].nil? 
       content_tag(:div, select_box, :id => "#{singular}-dropdown", 
-                  :class => 'left dropdown')
+                  :class => class_attr)
     else 
       content_tag(:div, select_box, :id => "#{singular}-dropdown", 
-                  :class => 'left dropdown', :marker => "#{id}")
+                  :class => class_attr, :marker => "#{id}")
     end 
-
   end # of helper  
+
+  def nofrills_checkbox
+    content_tag(:div, tag(:input, :type => 'checkbox'), :class => 'left checkbox')
+  end 
 
 end # of helper class
