@@ -26,15 +26,20 @@
 - categories = BroadTopic.order(:name).all 
 
 #edit-syllabi-megatable.mapping.form
-  #dump
-    - categories.each do |category| 
-      .label.large.left= "#{category.name}"
-      - topics = SpecificTopic.where(:broad_topic_id => category.id).order(:name).all 
-      - topics.each do |topic| 
-        %div{ :marker => "#{topic.id}" } 
-          = nofrills_checkbox
-          .label.small.left= "#{topic.name}"
-          = drop_down_menu_for :difficulty, :float => :right, :disabled => true,
-                               :include_blank => false
-  #first.column.left 
-  #second.column.left
+  = form_tag '/syllabus', :method => :put, :remote => true do |f| 
+    = submit_tag "Update"
+    = tag(:input, :name => 'syllabi[course_id]', :class => 'hidden')
+
+    #dump
+      - categories.each do |category| 
+        .label.large.left= "#{category.name}"
+        - topics = SpecificTopic.where(:broad_topic_id => category.id).order(:name).all 
+        - topics.each do |topic| 
+          %div{ :marker => "#{topic.id}" } 
+            = nofrills_checkbox
+            .label.small.left= "#{topic.name}"
+            = drop_down_menu_for :difficulty, :float => :right, :disabled => true,
+                                 :include_blank => false, :prefix => "syllabi[#{topic.id}]"
+    #first.column.left 
+    #second.column.left
+    = submit_tag "Update"
