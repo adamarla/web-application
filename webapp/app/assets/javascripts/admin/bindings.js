@@ -126,7 +126,16 @@ $(function() {
   /* When #edit-syllabus-link is clicked */ 
   $('#edit-syllabus-link').click( function() { 
     var marker = $(this).attr('marker') ; 
-    var table = $('#syllabus') ;
+
+    if (marker == null) { 
+      alert (" Please select a course first " ) ;
+      return ; 
+    } 
+
+    // #course-summary .radio -> #edit-syllabus-link -> #edit-syllabi-megatable
+    $('#edit-syllabi-megatable').attr('marker', marker) ;
+    $(this).attr('marker', null) ; 
+    // reset to force re-clicking of radio button in #course-summary
 
     replaceControlPanelContentWith('#topic-controls') ;
 
