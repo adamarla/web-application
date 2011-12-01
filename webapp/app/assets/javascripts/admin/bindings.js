@@ -129,9 +129,9 @@ $(function() {
     var table = $('#syllabus') ;
 
     replaceControlPanelContentWith('#topic-controls') ;
-    replaceDataPanelContentWith('#syllabus') ;
-    makeGreedy(table) ;
-    resizeCellsIn( table ) ; 
+
+    replaceDataPanelContentWith('#edit-syllabi-megatable') ;
+    arrangeDumpIntoColumns('#edit-syllabi-megatable') ;
   }) ;
 
   /* Add a new Specific Topic */ 

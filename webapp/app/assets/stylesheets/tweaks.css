@@ -111,6 +111,7 @@ p {
   background-color : #654b24 ;
   -moz-border-radius : 5px ;
   border-radius : 5px ;
+  min-height : 400px ;
 } 
 
 #side-panel a {
@@ -119,6 +120,10 @@ p {
   /*margin-left : 20px ;
   line-height : 5 ;
   padding-bottom : 4px ;*/
+} 
+
+#side-panel li:not(id='login-anchor') {
+  margin-bottom : 20px ;
 } 
 
 #side-panel a.first-element {
@@ -259,4 +264,10 @@ td {
 
 .overflow {
   overflow-x : hidden ;
+} 
+
+.mapping .column > div {
+  width : 100% ;
+  float : none ;
+  min-height : 30px ;
 } 
