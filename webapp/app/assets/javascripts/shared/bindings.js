@@ -9,6 +9,11 @@
 */ 
 
 $( function() { 
+    /*
+      Stylized buttons throughout  
+    */ 
+    $('input[type="submit"]').button() ;
+
     /* 
       Generally speaking, contain all forms first inside a <div class="new-entity"> 
       and call .dialog() only on this <div>. And if you want the resulting dialog to 
