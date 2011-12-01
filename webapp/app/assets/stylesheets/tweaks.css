@@ -220,7 +220,7 @@ td {
 } 
 
 
-.headings > .row { 
+.headings > .row, .mapping.form .column .label.large { 
   font-variant : small-caps ;
   color : #654b24 ; 
   font-weight : bold ; 
@@ -270,4 +270,8 @@ td {
   width : 100% ;
   float : none ;
   min-height : 30px ;
+} 
+
+.mapping .column > div > div { 
+  vertical-align : middle ;
 } 
