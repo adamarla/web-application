@@ -28,7 +28,7 @@ module ApplicationHelper
     return content_tag(:li, link, :id => "#{singular}-anchor") 
   end 
 
-  def drop_down_menu_for (name) 
+  def drop_down_menu_for (name, id = nil) 
     collection = nil 
     plural = (name == :difficulty) ? name : name.to_s.pluralize.to_sym
     singular = plural.to_s.singularize
@@ -50,8 +50,16 @@ module ApplicationHelper
       select_box = semantic_fields_for :criterion do |a| 
                      a.input singular, :as => :select, :collection => collection
                    end 
+    end # submitted by params as : criterion => {:state => "MH", :difficulty => "2"}
+
+    if id.nil? 
+      content_tag(:div, select_box, :id => "#{singular}-dropdown", 
+                  :class => 'left dropdown')
+    else 
+      content_tag(:div, select_box, :id => "#{singular}-dropdown", 
+                  :class => 'left dropdown', :marker => "#{id}")
     end 
-    return content_tag(:div, select_box, :id => "#{singular}-dropdown", :class => 'left dropdown')
-  end 
+
+  end # of helper  
 
 end # of helper class
