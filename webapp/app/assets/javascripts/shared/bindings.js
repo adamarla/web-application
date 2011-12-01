@@ -129,20 +129,14 @@ $( function() {
     }) ;
 
     /*
-      In any form with checkboxes, checking the checkbox should set its value
-      to true if previously false and to false if previously true. Note that for 
-      checkboxes (and radio-buttons), it is the 'value' attribute that is submitted. 
-      And the 'value' attribute can be anything - not just true or false. 
+      In our forms, if a checkbox is checked, then it should submit 'true', 
+      else 'false'. Note, that this is just how we interpret checkboxes. 
+      The value really does not have to be only true/false. It could be 
+      anything - my name, your name etc. etc.
     */ 
 
     $('form, .mapping.form').on('click', "input[type='checkbox']", function() { 
-      var value = $(this).val() ; 
-
-      if (value == 'false') { 
-        $(this).val('true') ; 
-      } else { 
-        $(this).val('false') ;
-      } 
+      $(this).val( $(this).prop('checked') ) ;
     }) ;
 
     /*
