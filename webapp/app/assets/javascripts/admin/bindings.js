@@ -139,5 +139,23 @@ $(function() {
     $('#new-topic').dialog({ title : 'New Topic' }).dialog('open') ;
   }) ; 
 
+  /* 
+    In #edit-syllabi-megatable, enable drop downs ONLY IF the sibling
+    checkbox is checked 
+  */ 
+
+  $('#edit-syllabi-megatable').on('click', '.column input[type="checkbox"]', function() {
+    var value = $(this).val() ; 
+    var dropDown = $(this).parent().siblings('.dropdown:first').find('select:first') ;
+    var disabled = (dropDown.prop('disabled') == null) ? true : dropDown.prop('disabled') ;
+    
+    if (disabled) {
+      dropDown.prop('disabled', false) ; 
+    } else {
+      dropDown.prop('disabled', true) ;
+    } 
+
+  }) ;
+
 
 }) ; // end of main 
