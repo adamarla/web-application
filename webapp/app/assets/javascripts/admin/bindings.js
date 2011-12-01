@@ -138,6 +138,10 @@ $(function() {
     // reset to force re-clicking of radio button in #course-summary
 
     replaceControlPanelContentWith('#topic-controls') ;
+
+    uncheckAllCheckBoxesWithin('#edit-syllabi-megatable') ;
+    disableAllSelectsWithin('#edit-syllabi-megatable') ;
+
     replaceDataPanelContentWith('#edit-syllabi-megatable') ;
     arrangeDumpIntoColumns('#edit-syllabi-megatable > form') ;
     
