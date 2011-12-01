@@ -139,7 +139,7 @@ $(function() {
 
     replaceControlPanelContentWith('#topic-controls') ;
     replaceDataPanelContentWith('#edit-syllabi-megatable') ;
-    arrangeDumpIntoColumns('#edit-syllabi-megatable') ;
+    arrangeDumpIntoColumns('#edit-syllabi-megatable > form') ;
     
     /*
       Now, get syllabus information for the course. Code for updation - 
