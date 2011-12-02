@@ -78,7 +78,7 @@ module ApplicationHelper
   def nofrills_checkbox(options = {}) 
     name = options[:name].nil? ? nil : options[:name]
     float = options[:float].nil? ? :left : options[:float]
-    class_attr = (float == :none) ? 'checkbox' : ('checkbox' + float.to_s)
+    class_attr = (float == :none) ? 'checkbox' : ('checkbox ' + float.to_s)
 
     content_tag(:div, tag(:input, :type => 'checkbox', :name => name), :class => class_attr)
   end 
