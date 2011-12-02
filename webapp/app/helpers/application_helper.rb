@@ -79,8 +79,18 @@ module ApplicationHelper
     name = options[:name].nil? ? nil : options[:name]
     float = options[:float].nil? ? :left : options[:float]
     class_attr = (float == :none) ? 'checkbox' : ('checkbox ' + float.to_s)
-
-    content_tag(:div, tag(:input, :type => 'checkbox', :name => name), :class => class_attr)
+    label = options[:label].nil? ? false : options[:label]
+    
+    unless label 
+      c = content_tag(:div, tag(:input, :type => 'checkbox', :name => name), :class => class_attr)
+    else
+      random_id = rand(27**3).to_s(36).upcase
+      c = content_tag :div, :class => class_attr do 
+            tag(:input, :type => 'checkbox', :name => name, :id => random_id) + 
+            content_tag(:label, label, :for => random_id, :class => 'small')
+          end 
+    end 
+    return c 
   end 
 
 end # of helper class
