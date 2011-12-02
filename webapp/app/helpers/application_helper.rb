@@ -28,15 +28,15 @@ module ApplicationHelper
     return content_tag(:li, link, :id => "#{singular}-anchor") 
   end 
 
-  def drop_down_menu_for (name, options = {}) 
+  def drop_down_menu_for (sth, options = {}) 
     collection = nil 
 
-    plural = (name == :difficulty) ? name : name.to_s.pluralize.to_sym
+    plural = (sth == :difficulty) ? sth : sth.to_s.pluralize.to_sym
     singular = plural.to_s.singularize
 
     disabled = options[:disabled].nil? ? false : options[:disabled]
     include_blank = options[:include_blank].nil? ? true : options[:include_blank]
-    name = options[:name].nil? ? :criterion : options[:name]
+    prefix = options[:name].nil? ? :criterion : options[:name]
     slider = options[:slider].nil? ? false : ((plural == :percentages) && options[:slider]) 
 
     case plural
@@ -55,7 +55,7 @@ module ApplicationHelper
     end 
 
     unless collection.nil? || collection.empty?
-      select_box = semantic_fields_for name do |a| 
+      select_box = semantic_fields_for prefix do |a| 
                      a.input singular, :as => :select, :collection => collection, 
                      :include_blank => include_blank,
                      :input_html => { :disabled => disabled,
@@ -77,7 +77,10 @@ module ApplicationHelper
 
   def nofrills_checkbox(options = {}) 
     name = options[:name].nil? ? nil : options[:name]
-    content_tag(:div, tag(:input, :type => 'checkbox', :name => name), :class => 'left checkbox')
+    float = options[:float].nil? ? :left : options[:float]
+    class_attr = (float == :none) ? 'checkbox' : ('checkbox' + float.to_s)
+
+    content_tag(:div, tag(:input, :type => 'checkbox', :name => name), :class => class_attr)
   end 
 
 end # of helper class
