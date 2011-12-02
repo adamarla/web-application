@@ -30,11 +30,14 @@ module ApplicationHelper
 
   def drop_down_menu_for (name, options = {}) 
     collection = nil 
+
     plural = (name == :difficulty) ? name : name.to_s.pluralize.to_sym
     singular = plural.to_s.singularize
+
     disabled = options[:disabled].nil? ? false : options[:disabled]
     include_blank = options[:include_blank].nil? ? true : options[:include_blank]
     name = options[:name].nil? ? :criterion : options[:name]
+    slider = options[:slider].nil? ? false : ((plural == :percentages) && options[:slider]) 
 
     case plural
       when :boards 
@@ -47,13 +50,16 @@ module ApplicationHelper
         collection = Subject.all
       when :states 
         collection = ['DL','HR','PB','MH','WB','UP','TN']
+      when :percentages 
+        collection = [*0..100]
     end 
 
     unless collection.nil? || collection.empty?
       select_box = semantic_fields_for name do |a| 
                      a.input singular, :as => :select, :collection => collection, 
                      :include_blank => include_blank,
-                     :input_html => { :disabled => disabled }
+                     :input_html => { :disabled => disabled,
+                                      :slider => slider }
                    end 
     end # submitted by params as : criterion => {:state => "MH", :difficulty => "2"}
 
