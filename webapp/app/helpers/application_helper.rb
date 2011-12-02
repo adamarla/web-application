@@ -51,7 +51,7 @@ module ApplicationHelper
       when :states 
         collection = ['DL','HR','PB','MH','WB','UP','TN']
       when :percentages 
-        collection = [*0..100]
+        collection = 0.step(101,5).to_a 
     end 
 
     unless collection.nil? || collection.empty?
