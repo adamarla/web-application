@@ -153,11 +153,35 @@ $(function() {
     $.get(url) ;
   }) ;
 
+  /* 
+    Load returned JSON data into #edit-syllabi-megatable. 
+    All checkboxes are unchecked and all selects disabled at this point
+  */ 
+
   $('#edit-syllabi-megatable').ajaxSuccess( function(e,xhr,settings) {
     if (settings.url.match(/syllabus\.json\?course_id/) == null) return ;
 
     var json = $.parseJSON(xhr.responseText) ;
     var syllabi = json.syllabi ;
+    var table = $(this) ;
+
+    $.each(syllabi, function(index, data){
+      // data = {syllabus : {specific_topic_id : 10, difficulty : 3}}
+      var topic_id = data.syllabus.specific_topic_id ; 
+      var difficulty = data.syllabus.difficulty ;
+      var targetDiv = table.find('div[marker=' + topic_id + ']') ; // <div marker='10'> 
+
+      if (targetDiv.length == 0) return ; 
+
+      var checkBox = targetDiv.children('.checkbox:first').children('input:first') ;
+      var dropDown = targetDiv.children('.dropdown:first').find('select:first') ;
+      var option = dropDown.children('option[value=' + difficulty + ']:first') ;
+
+      checkBox.prop('checked', true) ; 
+      dropDown.prop('disabled', false) ;
+      option.prop('selected', true) ;
+      
+    }) ;
   }) ;
 
   /* Add a new Specific Topic */ 
