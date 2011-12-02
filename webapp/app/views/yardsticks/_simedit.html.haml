@@ -23,11 +23,13 @@
         - prefix = "yardsticks[#{yardstick.id}]"
         %div.space-vertically{ :marker => "#{yardstick.id}" } 
           -#.label.large= "#{yardstick.annotation}"
-          %input.full-width{ :type => :text, :name => "#{prefix}[annotation]", :value => "#{yardstick.annotation}" }
+          -#.ticker.left= "#{yardstick.default_allotment}"
+          %input.greedy{ :type => :text, :name => "#{prefix}[annotation]", :value => "#{yardstick.annotation}" }
           %textarea{ :name => "#{prefix}[description]", :rows => 5}= "#{yardstick.description}"
           .options-box.full-width 
             = nofrills_checkbox :name => "#{prefix}[mcq]", :label => 'mcq ?'
             = nofrills_checkbox :name => "#{prefix}[active]", :label => 'enabled ?'
             = nofrills_checkbox :name => "#{prefix}[subpart]", :label => 'subpart ?'
+            = drop_down_menu_for :percentages, :name => "#{prefix}[default_allotment]", :include_blank => false
     #first.column.left 
     #second.column.left

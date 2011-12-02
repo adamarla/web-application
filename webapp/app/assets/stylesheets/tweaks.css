@@ -296,11 +296,23 @@ td {
 
 .mega-form input[type="text"] { 
   border : none ;
-  background-color : #6ca7ab ;
-  color : white ; 
+  color : #6ca7ab ; 
   font-weight : bold ;
   min-height : 30px ;
-  -moz-border-radius : 5px ;
-  border-radius : 5px ;
   padding-left : 10px ;
 }
+
+.mega-form .ticker { 
+  background-color : #654b24 ;
+  color : white ; 
+  -moz-border-radius : 5px ;
+  border-radius : 5px ;
+  margin-right : 40px ;
+  font-weight : bold ;
+  font-size : 18px ;
+  min-width : 50px ; 
+  min-height : 30px ;
+  text-align : center ;
+  padding-top : 10px ;
+  margin-bottom : 5px ;
+} 
