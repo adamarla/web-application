@@ -80,11 +80,15 @@ $( function() {
       var controls = $(this).attr('load-controls') ;
       var table = $(this).attr('load-table') ;
 
-      replaceControlPanelContentWith(controls) ;
-      replaceDataPanelContentWith(table) ;
+      if (controls != null && $(controls).length > 0) { 
+        replaceControlPanelContentWith(controls) ;
+      } 
 
-      makeGreedy( $(table) ) ; 
-      resizeCellsIn( $(table).children('.table').first() ) ;
+      if (table != null && $(table).length > 0) {
+        replaceDataPanelContentWith(table) ;
+        makeGreedy( $(table) ) ; 
+        resizeCellsIn( $(table).children('.table').first() ) ;
+      }
 
     }) ; // end 
 
