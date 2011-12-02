@@ -13,6 +13,10 @@ $(function() {
   /*
     When the 'yardsticks' link in the side-panel is clicked 
   */ 
+  $('#yardsticks-link').click( function() { 
+    displayMegaForm('#edit-yardsticks-megaform') ;
+  }) ;
+  /*
 
   $('#yardsticks-link').click( function() { 
     var url = 'yardsticks/list' ; // Ref : views/yardsticks/list.json.rabl
@@ -38,6 +42,7 @@ $(function() {
     }) ; 
 
   }) ;
+  */
 
   /*
     When the 'schools' link in the side-panel is clicked
@@ -138,12 +143,7 @@ $(function() {
     // reset to force re-clicking of radio button in #course-summary
 
     replaceControlPanelContentWith('#topic-controls') ;
-
-    uncheckAllCheckBoxesWithin('#edit-syllabi-megaform') ;
-    disableAllSelectsWithin('#edit-syllabi-megaform') ;
-
-    replaceDataPanelContentWith('#edit-syllabi-megaform') ;
-    arrangeDumpIntoColumns('#edit-syllabi-megaform > form') ;
+    displayMegaForm('#edit-syllabi-megaform') ;
     
     /*
       Now, get syllabus information for the course. Code for updation - 
