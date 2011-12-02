@@ -142,7 +142,7 @@ $( function() {
       anything - my name, your name etc. etc.
     */ 
 
-    $('form, .mapping.form').on('click', "input[type='checkbox']", function() { 
+    $('form, .mega-form').on('click', "input[type='checkbox']", function() { 
       $(this).val( $(this).prop('checked') ) ;
     }) ;
 
