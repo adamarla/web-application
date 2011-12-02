@@ -9,11 +9,13 @@
 */ 
 
 $( function() { 
-    /*
-      Stylized buttons throughout  
-    */ 
-    $('input[type="submit"]').button() ;
 
+    /*
+      Stylize buttons in #admin-forms & #tables, but not #controls.
+      The #control-panel is populated with stuff from #controls and styled buttons 
+      are too big for the panel
+    */ 
+    $('#admin-forms input[type="submit"], #tables input[type="submit"]').button() ;
     /* 
       Generally speaking, contain all forms first inside a <div class="new-entity"> 
       and call .dialog() only on this <div>. And if you want the resulting dialog to 
