@@ -1,9 +1,4 @@
 
--# This is a mega-"form" that is *not* a form in the strictest sense.
--# There is *no* submit button - for one thing. Each checking / unchecking /
--#  selecting triggers an AJAX request to the server. Far leaner approach than 
--# turning the whole thing into a form and submitting masses of data at once
--# 
 -# This form lists out *all* specific topics, grouped by broad-topics
 -# in *one* 3-column form. Each row in each column represents one 
 -# specific topic in the following structure : 
@@ -39,6 +34,6 @@
             = nofrills_checkbox
             .label.small.left= "#{topic.name}"
             = drop_down_menu_for :difficulty, :float => :right, :disabled => true,
-                                 :include_blank => false, :prefix => "syllabi[#{topic.id}]"
+                                 :include_blank => false, :name => "syllabi[#{topic.id}]"
     #first.column.left 
     #second.column.left

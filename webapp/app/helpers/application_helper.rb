@@ -34,7 +34,7 @@ module ApplicationHelper
     singular = plural.to_s.singularize
     disabled = options[:disabled].nil? ? false : options[:disabled]
     include_blank = options[:include_blank].nil? ? true : options[:include_blank]
-    prefix = options[:prefix].nil? ? :criterion : options[:prefix]
+    name = options[:name].nil? ? :criterion : options[:name]
 
     case plural
       when :boards 
@@ -50,7 +50,7 @@ module ApplicationHelper
     end 
 
     unless collection.nil? || collection.empty?
-      select_box = semantic_fields_for prefix do |a| 
+      select_box = semantic_fields_for name do |a| 
                      a.input singular, :as => :select, :collection => collection, 
                      :include_blank => include_blank,
                      :input_html => { :disabled => disabled }
@@ -69,8 +69,9 @@ module ApplicationHelper
     end 
   end # of helper  
 
-  def nofrills_checkbox
-    content_tag(:div, tag(:input, :type => 'checkbox'), :class => 'left checkbox')
+  def nofrills_checkbox(options = {}) 
+    name = options[:name].nil? ? nil : options[:name]
+    content_tag(:div, tag(:input, :type => 'checkbox', :name => name), :class => 'left checkbox')
   end 
 
 end # of helper class
