@@ -127,32 +127,35 @@ function resizeCellsIn( table ) {
 } 
 
 /*
-  This next function is applied to tables with the following structure 
-    #table-name 
-      #dump 
-      .column
-      .column
-      .
-      .
-      .column
+  This next function can be applied to either of the following 2 structures - 
+  a simple table or a 'mega-form'. The start-point, therefore, has to be either
+  a <div> or a <form>
+
+    #table-name         <form> 
+      #dump               #dump 
+      .column              .column
+      .column              .column
+      .                    .
+      .                    .
+      .column              .column 
   
   The assumption is that everthing is first dumped into, well, the #dump
   and that then the children of #dump need to spread equally amongst the .columns. 
   When this function finishes executing, #dump should be empty
 
-  The tables this function is called on are ones where the columns need to be 
+  The forms/tables this function is called on are ones where the columns need to be 
   of equal width. If the widths are to be different, then perhaps the other 
   functions in this file are the ones to use
 */ 
 
-function arrangeDumpIntoColumns(tableId) { 
-  var table = $(tableId) ; 
-  var nToArrange = $(table).children('#dump:first').children().length ; 
+function arrangeDumpIntoColumns(id) { 
+  var startPoint = $(id) ; 
+  var nToArrange = $(startPoint).children('#dump:first').children().length ; 
 
   if (nToArrange == 0) return ; // empty dump => everything arranged in columns
 
-  var parentWidth = $(table).parent().width() ; 
-  var nColumns = $(table).children('.column').length ;
+  var parentWidth = $(startPoint).parent().width() ; 
+  var nColumns = $(startPoint).children('.column').length ;
   var maxWidth = (parentWidth / nColumns) ;
   var columnWidth = maxWidth * 0.99 ; // Just to be safe, use 99% of available width
   var perColumn = (nToArrange / nColumns) + 1;
@@ -160,14 +163,14 @@ function arrangeDumpIntoColumns(tableId) {
 
   // alert(nColumns + ', ' + perColumn) ;
 
-  $(table).children('.column').each( function() { 
+  $(startPoint).children('.column').each( function() { 
     var currColumn = $(this) ; 
     var nArranged = 0 ;
 
     $(this).width(columnWidth) ;
     $(this).css('margin-left', index * maxWidth) ;
 
-    $(table).children('#dump:first').children().each( function() {
+    $(startPoint).children('#dump:first').children().each( function() {
       if (nArranged >= perColumn) return false; 
 
       var me = $(this).detach() ; 
