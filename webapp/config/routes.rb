@@ -30,7 +30,7 @@ Webapp::Application.routes.draw do
 
   resource :specific_topic, :only => [:create, :update]
 
-  resource :syllabus, :only => [:update]
+  resource :syllabus, :only => [:show, :update]
 
   root :to => "welcome#index"
 

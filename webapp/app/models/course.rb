@@ -42,8 +42,37 @@ class Course < ActiveRecord::Base
   scope :in_board, lambda { |g| (g.nil? || g[:board].empty?) ? 
                              where('board_id IS NOT NULL') : 
                              where(:board_id => g[:board]) } 
-  
+
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
   #attr_accessible 
+
+  def update_syllabus( options ) 
+    # options = params[:syllabi] in controller 
+
+    topics = [] 
+    status = :ok 
+
+    options.each do |topic_id, difficulty| 
+      topic = SpecificTopic.find topic_id
+      unless topic.nil? 
+        topics << topic 
+      else 
+        status = :bad_request 
+      end #unless 
+      break if status == :bad_request # retain old syllabus if anything wrong w/ new one 
+    end #each 
+
+    unless status == :bad_request 
+      self.specific_topics = topics # updates the syllabus join table !
+      # Now, update the difficulty levels for each topic for this course
+
+      options.each do |topic_id, difficulty|
+        syllabus = Syllabus.where(:course_id => self.id, :specific_topic_id => topic_id).first 
+        status = syllabus.update_attributes(difficulty) ? :ok : :bad_request
+      end 
+    end # unless  
+
+    return status  
+  end # of function
 
 end
