@@ -61,7 +61,7 @@ p {
 } 
 
 .full-width, .formtastic .text textarea.full-width { 
-   width : 100% ;
+   width : 90% ;
 } 
 
 #main-panel { 
@@ -272,10 +272,35 @@ td {
   min-height : 30px ;
 } 
 
+/*
 .mega-form .column > div > div { 
   vertical-align : middle ;
 } 
+*/
 
-#edit-syllabi-megatable input[type='submit'] { 
+.mega-form input[type='submit'] { 
   margin-bottom : 20px ;
 } 
+
+.mega-form textarea { 
+  width : 90% ;
+} 
+
+.mega-form .options-box { 
+  min-height : 30px ;
+} 
+
+.space-vertically { 
+  margin-bottom : 30px ;
+} 
+
+.mega-form input[type="text"] { 
+  border : none ;
+  background-color : #6ca7ab ;
+  color : white ; 
+  font-weight : bold ;
+  min-height : 30px ;
+  -moz-border-radius : 5px ;
+  border-radius : 5px ;
+  padding-left : 10px ;
+}
