@@ -132,18 +132,18 @@ $(function() {
       return ; 
     } 
 
-    // #course-summary .radio -> #edit-syllabus-link -> #edit-syllabi-megatable -> hidden <input>
-    $('#edit-syllabi-megatable > form > input.hidden:first').val(marker) ;
+    // #course-summary .radio -> #edit-syllabus-link -> #edit-syllabi-megaform -> hidden <input>
+    $('#edit-syllabi-megaform > form > input.hidden:first').val(marker) ;
     $(this).attr('marker', null) ; 
     // reset to force re-clicking of radio button in #course-summary
 
     replaceControlPanelContentWith('#topic-controls') ;
 
-    uncheckAllCheckBoxesWithin('#edit-syllabi-megatable') ;
-    disableAllSelectsWithin('#edit-syllabi-megatable') ;
+    uncheckAllCheckBoxesWithin('#edit-syllabi-megaform') ;
+    disableAllSelectsWithin('#edit-syllabi-megaform') ;
 
-    replaceDataPanelContentWith('#edit-syllabi-megatable') ;
-    arrangeDumpIntoColumns('#edit-syllabi-megatable > form') ;
+    replaceDataPanelContentWith('#edit-syllabi-megaform') ;
+    arrangeDumpIntoColumns('#edit-syllabi-megaform > form') ;
     
     /*
       Now, get syllabus information for the course. Code for updation - 
@@ -154,11 +154,11 @@ $(function() {
   }) ;
 
   /* 
-    Load returned JSON data into #edit-syllabi-megatable. 
+    Load returned JSON data into #edit-syllabi-megaform. 
     All checkboxes are unchecked and all selects disabled at this point
   */ 
 
-  $('#edit-syllabi-megatable').ajaxSuccess( function(e,xhr,settings) {
+  $('#edit-syllabi-megaform').ajaxSuccess( function(e,xhr,settings) {
     if (settings.url.match(/syllabus\.json\?course_id/) == null) return ;
 
     var json = $.parseJSON(xhr.responseText) ;
@@ -190,11 +190,11 @@ $(function() {
   }) ; 
 
   /* 
-    In #edit-syllabi-megatable, enable drop downs ONLY IF the sibling
+    In #edit-syllabi-megaform, enable drop downs ONLY IF the sibling
     checkbox is checked 
   */ 
 
-  $('#edit-syllabi-megatable').on('click', '.column input[type="checkbox"]', function() {
+  $('#edit-syllabi-megaform').on('click', '.column input[type="checkbox"]', function() {
     var dropDown = $(this).parent().siblings('.dropdown:first').find('select:first') ;
 
     dropDown.prop('disabled', !($(this).prop('checked')) ) ;

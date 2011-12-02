@@ -220,7 +220,7 @@ td {
 } 
 
 
-.headings > .row, .mapping.form .column .label.large { 
+.headings > .row, .mega-form .column .label.large { 
   font-variant : small-caps ;
   color : #654b24 ; 
   font-weight : bold ; 
@@ -266,13 +266,13 @@ td {
   overflow-x : hidden ;
 } 
 
-.mapping .column > div {
+.mega-form .column > div {
   width : 100% ;
   float : none ;
   min-height : 30px ;
 } 
 
-.mapping .column > div > div { 
+.mega-form .column > div > div { 
   vertical-align : middle ;
 } 
 
