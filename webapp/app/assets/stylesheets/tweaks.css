@@ -275,3 +275,7 @@ td {
 .mapping .column > div > div { 
   vertical-align : middle ;
 } 
+
+#edit-syllabi-megatable input[type='submit'] { 
+  margin-bottom : 20px ;
+} 
