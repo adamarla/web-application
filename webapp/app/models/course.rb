@@ -47,7 +47,7 @@ class Course < ActiveRecord::Base
   #attr_accessible 
 
   def update_syllabus( options ) 
-    # options = params[:syllabi] in controller 
+    # options = params[:syllabi] in 'update' action in SyllabiController 
 
     topics = [] 
     status = :ok 
