@@ -24,4 +24,8 @@ class StudyGroup < ActiveRecord::Base
     return "#{self.klass.to_s}-#{self.section.upcase}"
   end 
 
+  def name 
+    self.klass + '-' + self.section
+  end 
+
 end
