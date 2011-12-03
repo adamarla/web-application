@@ -18,32 +18,6 @@ $(function() {
   }) ;
   /*
 
-  $('#yardsticks-link').click( function() { 
-    var url = 'yardsticks/list' ; // Ref : views/yardsticks/list.json.rabl
-
-    $.get(url, function(data) {
-      $.each(data.yardsticks, function(index, hash){
-        var yardstick = hash.yardstick ; 
-        var columns = [ [null,'radio',yardstick.id], 
-                        [yardstick.annotation,'regular'],
-                        [yardstick.description,'wide'],
-                        [yardstick.mcq, 'narrow'],
-                        [yardstick.subpart,'narrow'] ] ;
-
-        var row = createTableRow(columns) ; 
-
-        setCellSizesIn(row) ;
-        row.appendTo('#yardsticks-summary .data:first') ;
-        if (index % 2 == 1) { 
-          row.addClass('colored') ;
-        } 
-        row.hide().fadeIn('slow') ;
-      }) ;
-    }) ; 
-
-  }) ;
-  */
-
   /*
     When the 'schools' link in the side-panel is clicked
   */ 
@@ -143,6 +117,9 @@ $(function() {
     // reset to force re-clicking of radio button in #course-summary
 
     replaceControlPanelContentWith('#topic-controls') ;
+    uncheckAllCheckBoxesWithin('#edit-syllabi-megaform') ;
+    disableAllSelectsWithin('#edit-syllabi-megaform') ;
+
     displayMegaForm('#edit-syllabi-megaform') ;
     
     /*

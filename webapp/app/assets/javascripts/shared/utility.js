@@ -175,9 +175,6 @@ function disableAllSelectsWithin( element ) {
 function displayMegaForm(id) {
   var formExpr = id + ' > form' ;
 
-  uncheckAllCheckBoxesWithin(id) ;
-  disableAllSelectsWithin(id) ;
-
   replaceDataPanelContentWith(id) ;
   arrangeDumpIntoColumns(formExpr) ;
 } 
