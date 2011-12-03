@@ -21,6 +21,8 @@ class Student < ActiveRecord::Base
   has_many :graded_responses
   has_many :quizzes, :through => :graded_responses
 
+  validates :first_name, :last_name, :presence => true
+
   # When should a student be destroyed? My guess, some fixed time after 
   # he/she graduates. But as I haven't quite decided what that time should
   # be, I am temporarily disabling all destruction
