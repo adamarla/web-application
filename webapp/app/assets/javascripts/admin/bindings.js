@@ -30,11 +30,11 @@ $(function() {
 
   /*
     Add a new School to the DB 
-  */ 
 
   $('#add-school-link').click( function() { 
     $('#new-school').dialog({ title : 'Add School'}).dialog('open') ; 
   }) ; 
+  */ 
 
   /*
     Add a new Course to the DB
@@ -47,11 +47,11 @@ $(function() {
     Part II : When radio buttons in a summary table are clicked, then they 
     should update links in #control-panel using their 'marker' attribute. The 
     base behaviour of de-selecting other radio buttons is implemented in 
-    shared/bindings.js
+    core/behaviour.js
   */ 
 
   /* Schools */
-  $('#data-panel').on('click', '#schools-summary .data .row > .radio', function() { 
+  $('#schools-summary').on('click', '#schools-summary .data input[type="radio"]', function() { 
     var marker = $(this).attr('marker') ;
 
     $('#edit-school-link').attr('marker', marker) ;

@@ -1,14 +1,11 @@
 
-body {
-  font-family : "Trebuchet MS", Helvetica, Arial, sans-serif ; 
-  width : 1120px ;
-} 
 
 #usable-area { 
   padding : 20px ; 
   padding-top : 40px ;
 } 
 
+/*
 #logout-anchor, #login-anchor { 
   margin-bottom : 60px ;
 } 
@@ -16,6 +13,7 @@ body {
 #logout-link > a, #login-link > a { 
   color : #fd9105 ;
 } 
+*/
 
 /*
 .accordion-heading { 
@@ -71,48 +69,7 @@ p {
   padding-left : 25px ;
 } 
 
-.main-link, .sub-link, .dropdown label {
-  text-decoration : none ;
-  text-transform : lowercase ;
-  color : white ;
-} 
 
-.no-bullets, .dropdown { 
-  list-style-type : none ;
-} 
-
-.main-link { 
-  font-size : 16px ;
-  text-align : left ;
-  font-weight : bold ; 
-  margin-bottom : 4px ;
-  margin-top : 4px ;
-  margin-right : 15px ;
-} 
-
-.sub-link { 
-  font-size : 14px ;
-  text-align : center ;
-} 
-
-.dropdown label { 
-  font-size : 12px ;
-  text-align : left ; 
-  margin-right : 4px ;
-}
-
-.dropdown select { 
-  margin-right : 8px ;
-} 
-
-#side-panel {
-  margin-left : 30px ; 
-  margin-right : 20px ;
-  background-color : #654b24 ;
-  -moz-border-radius : 5px ;
-  border-radius : 5px ;
-  min-height : 400px ;
-} 
 
 #side-panel a {
   text-decoration : none ;
@@ -130,20 +87,15 @@ p {
   margin-left : 5px ;
 } 
 
-/*#side-panel a:hover { */
+/*
 .main-link:hover, .sub-link:hover {
-  /*background-color : #9b8767 ;
+  background-color : #9b8767 ;
   -moz-border-radius : 10px ;
-  border-radius : 10px ;*/
+  border-radius : 10px ;
   border-bottom : 3px solid #fd9105;
 } 
+*/
 
-.action-panel { 
-  background-color : #654b24 ;*/
-  -moz-border-radius : 4px ;
-  border-radius : 4px ;
-  margin-bottom : 10px ;
-} 
 
 .horizontal { 
   height : 60px ;
@@ -316,3 +268,4 @@ td {
   padding-top : 10px ;
   margin-bottom : 5px ;
 } 
+

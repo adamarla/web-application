@@ -24,6 +24,7 @@ Webapp::Application.routes.draw do
 
   resource :school, :only => [:show, :create, :update]
   match 'schools/list' => 'schools#list', :via => :get 
+  match 'schools/new-student' => 'schools#new_student', :via => :put 
 
   resource :course, :only => [:show, :create, :update]
   match 'courses/list' => 'courses#list', :via => :get
@@ -31,6 +32,8 @@ Webapp::Application.routes.draw do
   resource :specific_topic, :only => [:create, :update]
 
   resource :syllabus, :only => [:show, :update]
+
+  resource :student, :only => [:create, :update]
 
   root :to => "welcome#index"
 

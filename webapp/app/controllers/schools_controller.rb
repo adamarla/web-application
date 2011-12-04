@@ -48,4 +48,11 @@ class SchoolsController < ApplicationController
     respond_with @schools 
   end 
 
+  def new_student 
+    school = School.find params[:id]
+    return :bad_request if school.nil? 
+    
+    head :ok
+  end 
+
 end

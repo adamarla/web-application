@@ -1,0 +1,143 @@
+
+body {
+  font-family : "Trebuchet MS", Helvetica, Arial, sans-serif ; 
+  width : 1120px ;
+} 
+
+#visible-active-area { 
+  padding : 20px ;
+} 
+
+.slim { 
+  width : 32.3% ; 
+  padding-left : 5px ;
+  padding-right : 5px ;
+  color : #654b24 ; 
+  /*margin-right : 20px ;*/
+} 
+
+.wide { 
+  width : 65% ;
+} 
+
+#side-panel, #right-panel { 
+} 
+
+#middle-panel, #wide-panel {
+} 
+
+.panel:not([class~="horizontal"]) {
+  padding-top : 20px ;
+  /*-moz-border-radius : 5px ;
+  border-radius : 5px ;*/
+  min-height : 400px ;
+} 
+
+.main-link, .sub-link {
+  text-decoration : none ;
+  text-transform : lowercase ;
+  float : left ;
+} 
+
+.no-bullets {
+  list-style-type : none ;
+} 
+
+.main-link { 
+  font-size : 16px ;
+  text-align : left ;
+  font-weight : bold ; 
+  margin-right : 15px ;
+  color : white ;
+} 
+
+.main-link:hover { 
+  border-bottom : 3px solid #fd9105;
+} 
+
+.sub-link:hover { 
+  border-bottom : 3px solid white ; 
+} 
+
+.sub-link { 
+  font-size : 14px ;
+  text-align : center ;
+  color : #fd9105 ;
+} 
+
+#control-panel { 
+  padding-top : 20px ;
+  height : 100px ;
+  background-color : #654b24 ;*/
+  /*-moz-border-radius : 4px ;
+  border-radius : 4px ; */
+} 
+
+#logout-anchor > a { 
+  float : right ;
+  margin-right : 50px ; 
+  color : #fd9105 ;
+} 
+
+#control-panel > #main-links, #control-panel > #minor-links { 
+  list-style-type : none ;
+  min-height : 40px ;
+} 
+
+#main-links { 
+  
+} 
+
+#minor-links {
+  margin-left : 30% ;
+  margin-right : 20% ;
+} 
+
+#minor-links a { 
+  margin-right : 20px ;
+} 
+
+.dropdown label { 
+  font-size : 12px ;
+  text-align : left ; 
+  margin-right : 4px ;
+  color : white ;
+}
+
+.dropdown select { 
+  margin-right : 8px ;
+} 
+
+.toolbox.radio-column, .toolbox.checkbox-column { 
+  min-height : 20px ;
+} 
+
+.radio-column, .checkbox-column { 
+  font-size : 14px ; 
+  text-transform : lowercase ;
+} 
+
+#schools-summary { 
+  padding-left : 20px ;
+} 
+
+legend { 
+  padding-top : 7px ;
+  padding-bottom : 7px ;
+  border-top : 3px solid gray ;
+  border-bottom : 3px solid gray ;
+  margin-bottom : 5px ;
+} 
+
+legend > span.target { 
+  text-transform : uppercase ; 
+  font-size : 15px ;
+  font-weight : bold ;
+  color : #fd9105 ;
+} 
+
+legend > span.operation { 
+  text-transform : lowercase ; 
+  font-size : 11px ;
+  color : #654b24 ;
+} 
