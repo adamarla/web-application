@@ -22,6 +22,7 @@ class Student < ActiveRecord::Base
   has_many :quizzes, :through => :graded_responses
 
   validates :first_name, :last_name, :presence => true
+  before_save :humanize_name
 
   # When should a student be destroyed? My guess, some fixed time after 
   # he/she graduates. But as I haven't quite decided what that time should
@@ -33,4 +34,10 @@ class Student < ActiveRecord::Base
     def destroyable? 
       return false 
     end 
+
+    def humanize_name
+      self.first_name = self.first_name.humanize
+      self.last_name = self.last_name.humanize
+    end 
+
 end

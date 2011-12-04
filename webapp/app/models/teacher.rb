@@ -39,6 +39,7 @@ class Teacher < ActiveRecord::Base
   has_many :yardsticks, :through => :grades
 
   validates :first_name, :last_name, :presence => true  
+  before_save :humanize_name
 
   # When would one want to 'destroy' a teacher? And what would it mean? 
   # 
@@ -83,6 +84,11 @@ class Teacher < ActiveRecord::Base
 
     def first_time_save? 
       self.new_record? || !self.account
+    end 
+
+    def humanize_name
+      self.first_name = self.first_name.humanize
+      self.last_name = self.last_name.humanize
     end 
 
 end
