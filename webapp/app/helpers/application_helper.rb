@@ -9,7 +9,7 @@ module ApplicationHelper
     # usually by the 'marker' attribute of the containing DOM element
     #   <input type="text" class="hidden" name="student[marker]"
 
-    tag :input, :type => :text, :class => :hidden, :name => "#{name.to_s}[marker]"
+    tag :input, :type => :text, :class => :hidden, :name => "#{name.to_s}[marker]", :trojan => true
   end 
 
   def top_panel_link (name, args = {})
