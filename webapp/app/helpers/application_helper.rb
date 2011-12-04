@@ -4,7 +4,15 @@ module ApplicationHelper
     {:xmlns => "http://www.w3.org/1999/xhtml", 'xml:lang' => lang, :lang => lang}
   end 
 
-  def side_panel_link (name, args = {})
+  def trojan_horse_for(name) 
+    # creates a hidden <input> field inside a form, pre-populated - 
+    # usually by the 'marker' attribute of the containing DOM element
+    #   <input type="text" class="hidden" name="student[marker]"
+
+    tag :input, :type => :text, :class => :hidden, :name => "#{name.to_s}[marker]"
+  end 
+
+  def top_panel_link (name, args = {})
     # 'dynamic' links are those that load tables and controls on click. Non-dynamic links, 
     # like for logout and login, don't
 
@@ -20,13 +28,22 @@ module ApplicationHelper
       panel = "##{singular}-controls" 
 
       link = link_to name.to_s, href, :id => "#{name}-link", :class => class_attr, 
-                                      'load-table' => table, 'load-controls' => panel
+                                      'side-panel' => table, 'load-controls' => panel
     else 
       link = link_to name.to_s, href, :id => "#{name}-link", :class => class_attr 
     end 
 
     return content_tag(:li, link, :id => "#{singular}-anchor") 
   end 
+
+=begin
+   Usage Example : drop_down_menu_for :subjects, :disabled => true, :name => 'subjects[1]'
+   Options : 
+         :disabled => [true | false] 
+         :name => < string > (default = :criterion) 
+         :include_blank => [true | false]
+         :slider => [true | false] (Sets attribute 'slider=true' attribute on the dropdown) 
+=end 
 
   def drop_down_menu_for (sth, options = {}) 
     collection = nil 
