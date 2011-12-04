@@ -7,33 +7,43 @@ Webapp::Application.routes.draw do
   end 
 
   #get "teachers/index"
-
-  resource :examiner, :except => [:new,:create,:destroy]
-  resource :teacher, :only => [:show, :update] 
-
+  
+  # Admin 
   resource :admin, :controller => :admin 
 
-  resource :yardstick, :only => [:show, :create, :update]
-  match 'yardsticks/list' => 'yardsticks#list', :via => :get
-
-  resource :grade, :only => [:update]
-
+  # Board 
   resource :board, :only => [:create, :update]
   # match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
   match 'boards/summary' => "boards#summary", :via => :get
 
+  # Course
+  resource :course, :only => [:show, :create, :update]
+  match 'courses/list' => 'courses#list', :via => :get
+
+  # Examiner 
+  resource :examiner, :except => [:new,:create,:destroy]
+  resource :teacher, :only => [:show, :update] 
+
+  # Grade
+  resource :grade, :only => [:update]
+
+  # School 
   resource :school, :only => [:show, :create, :update]
   match 'schools/list' => 'schools#list', :via => :get 
   match 'schools/new-student' => 'schools#new_student', :via => :put 
 
-  resource :course, :only => [:show, :create, :update]
-  match 'courses/list' => 'courses#list', :via => :get
-
+  # Specific Topic 
   resource :specific_topic, :only => [:create, :update]
 
+  # Student 
+  resource :student, :only => [:create, :update]
+
+  # Syllabus
   resource :syllabus, :only => [:show, :update]
 
-  resource :student, :only => [:create, :update]
+  # Yardstick
+  resource :yardstick, :only => [:show, :create, :update]
+  match 'yardsticks/list' => 'yardsticks#list', :via => :get
 
   root :to => "welcome#index"
 
