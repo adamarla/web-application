@@ -1,6 +1,6 @@
 
-- content_for :hidden_stuff do 
-  #admin-forms.hidden
+- content_for :toolbox do 
+  #toolbox.hidden 
     = render :partial => 'yardsticks/new'
     = render :partial => 'boards/new'
     = render :partial => 'schools/new'
@@ -9,21 +9,24 @@
     = render :partial => 'courses/new'
     = render :partial => 'courses/edit'
     = render :partial => 'specific_topics/new'
+    = render :partial => 'teachers/new'
+    = render :partial => 'students/new'
 
-  #controls.hidden 
     = render :partial => 'boards/controls'
     = render :partial => 'courses/controls'
     = render :partial => 'schools/controls'
     = render :partial => 'yardsticks/controls'
     = render :partial => 'specific_topics/controls'
 
-  #tables.hidden
     = render :partial => 'boards/summary'
-    = render :partial => 'schools/summary'
+    = render :partial => 'schools/admin-view'
     = render :partial => 'courses/summary'
     = render :partial => 'courses/syllabus'
     = render :partial => 'syllabi/edit'
     = render :partial => 'yardsticks/simedit'
+  
+    = render :partial => 'toolbox/radio_one_column'
+    = render :partial => 'toolbox/checkbox_one_column'
   
 !!!5
 
@@ -34,12 +37,15 @@
     = csrf_meta_tag
 
   %body 
-    #usable-area
-      #side-panel.vertical.left
-        = render :partial => 'admin/sidepanel'
-      #results-and-outputs.left.greedy 
-        #control-panel.action-panel.horizontal
-        #data-panel
-          = yield
+    #visible-active-area
+      #control-panel.panel.horizontal
+        #main-links 
+          = render :partial => 'admin/top-panel'
+        -# Links required in the currently loaded context
+        #minor-links
+      #side-panel.panel.left.slim
+      #middle-panel.panel.slim.left
+      #right-panel.panel.slim.left
+      #wide-panel.panel.wide.left
 
-    = yield :hidden_stuff
+    = yield :toolbox
