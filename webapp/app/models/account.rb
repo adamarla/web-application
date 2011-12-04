@@ -18,6 +18,7 @@
 #  loggable_id            :integer
 #  loggable_type          :string(255)
 #  active                 :boolean         default(TRUE)
+#  username               :string(255)
 #
 
 class Account < ActiveRecord::Base
@@ -27,7 +28,8 @@ class Account < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :login
+  attr_accessor :login
 
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
@@ -60,6 +62,17 @@ class Account < ActiveRecord::Base
       when "Examiner" then return (self.loggable.is_admin ? :admin : :examiner)
     end 
     return :guest 
+  end 
+
+  # Override Devise's default behaviour to let users login using either their email
+  # or username ( auto-assigned initially )
+
+  # Ref : https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign_in-using-their-username-or-email-address
+
+  def self.find_for_authentication(warden_conditions) 
+    conditions = warden_conditions.dup 
+    login = conditions.delete(:login)
+    where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first 
   end 
 
 end # of class 

@@ -18,6 +18,7 @@
 #  loggable_id            :integer
 #  loggable_type          :string(255)
 #  active                 :boolean         default(TRUE)
+#  username               :string(255)
 #
 
 require 'test_helper'
