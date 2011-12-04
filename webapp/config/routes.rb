@@ -40,6 +40,9 @@ Webapp::Application.routes.draw do
 
   # Syllabus
   resource :syllabus, :only => [:show, :update]
+   
+  # Teacher 
+  resource :teacher, :only => [:create, :update, :show]
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]
