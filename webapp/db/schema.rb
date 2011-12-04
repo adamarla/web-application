@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111201192735) do
+ActiveRecord::Schema.define(:version => 20111204202116) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20111201192735) do
     t.integer  "loggable_id"
     t.string   "loggable_type"
     t.boolean  "active",                                :default => true
+    t.string   "username"
   end
 
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
