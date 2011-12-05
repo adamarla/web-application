@@ -6,15 +6,24 @@ class StudentsController < ApplicationController
     status = school.nil? ? :bad_request : :ok 
 
     head status if status == :bad_request 
-
+    
+    # E-mails are not strictly required and hence 'email' could be nil
     email = params[:student].delete :email # part of Account model
+
     student = Student.new params[:student]
     student.school = school 
     password = school.zip_code
-    account = student.build_account :email => 'dummy@gmail.com', :password => password, 
-                                    :password_confirmation => password, 
-                                    :username => student.generate_username
+    username = student.generate_username
 
+    unless username.blank?
+      unless email.blank? 
+        account = student.build_account :username => username, :password => password, 
+                                        :email => email, :password_confirmation => password
+      else 
+        account = student.build_account :username => username, :password => password, 
+                                        :password_confirmation => password
+      end 
+    end 
     head (student.save ? :ok : :bad_request) 
   end 
 
