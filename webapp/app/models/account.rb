@@ -75,4 +75,13 @@ class Account < ActiveRecord::Base
     where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first 
   end 
 
+  protected 
+
+    # Overriding Devise's default email-required validation. 
+    # Ref : https://github.com/plataformatec/devise/pull/545
+
+    def email_required?
+      false
+    end 
+
 end # of class 
