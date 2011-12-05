@@ -31,12 +31,14 @@ class Student < ActiveRecord::Base
   before_destroy :destroyable? 
 
   def generate_username 
-    # Whats really important is that there be no scope for conflict 
-    # between auto-assigned usernames. Hence, the reference to seconds_since_midnight
     # Example : abhinavc.9FG
+    username = nil 
 
-    timestamp = Time.now.seconds_since_midnight.to_i.to_s(36).upcase
-    return ((self.first_name + self.last_name[0]).downcase + '.' + timestamp)
+    unless (self.first_name.blank? || self.last_name.blank?)
+      timestamp = Time.now.seconds_since_midnight.to_i.to_s(36).upcase
+      username = ((self.first_name + self.last_name[0]).downcase + '.' + timestamp)
+    end 
+    return username 
   end 
 
   def username?
