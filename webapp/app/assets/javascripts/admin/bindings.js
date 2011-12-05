@@ -4,14 +4,16 @@
 
 $(function() { 
   
+  $('#schools-link').click() ;
+  
   /*
-    When links in the #side-panel are clicked ... 
+    When links in the #control-panel are clicked ... 
   */ 
   $('#boards-link > a').click( function() { $.get('boards/summary') ; }) ;
   $('#courses-link').click( function() { $.get('courses/list') ; }) ;
 
   /*
-    When the 'yardsticks' link in the side-panel is clicked 
+    When the 'yardsticks' link in the control-panel is clicked 
   */ 
   $('#yardsticks-link').click( function() { 
     displayMegaForm('#edit-yardsticks-megaform') ;
@@ -19,7 +21,7 @@ $(function() {
   /*
 
   /*
-    When the 'schools' link in the side-panel is clicked
+    When the 'schools' link in the control-panel is clicked
   */ 
   $('#schools-link').click( function() { 
     // Refer : views/schools/list.json.rabl
