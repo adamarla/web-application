@@ -17,4 +17,4 @@
           - { :course => :wide, :subject => :regular, 
               :grade => :narrow }.each do |title, class_attr| 
             .cell{ :class => "#{class_attr.to_s}" }= "#{title.to_s.humanize}"
-      .data
+      .data.empty-on-putback

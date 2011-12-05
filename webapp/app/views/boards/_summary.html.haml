@@ -8,5 +8,5 @@
       .row 
         - columns.each do |title, width| 
           .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
-    .data 
+    .data.empty-on-putback 
 
