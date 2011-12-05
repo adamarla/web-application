@@ -44,7 +44,7 @@ $( function() {
       The #control-panel is populated with stuff from #controls and styled buttons 
       are too big for that panel
     */ 
-    $('#toolbox > div:not([class="top-panel-controls"]) form input[type="submit"]').button() ;
+    $('#toolbox > div:not([class~="top-panel-controls"]) form input[type="submit"]').button() ;
 
     /*
       Dialogs that must close themselves when 'submit' - or similar - 
