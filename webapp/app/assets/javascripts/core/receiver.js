@@ -19,15 +19,32 @@
 
 $( function() { 
 
+  /* Events & Conditions the #side-panel is supposed to respond to */ 
   $('#side-panel').ajaxSuccess( function(e,xhr,settings) {
     var json = $.parseJSON(xhr.responseText) ;
 
     if (settings.url.match(/schools\/list/) != null) { 
       // First, clear any previous data
-      $(this).find('.data:first').empty() ;
+      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
       displaySchoolListInSidePanel( json.schools ) ;
+    } else if (settings.url.match(/courses\/list/) != null) {
+      // First, clear any previous data
+      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
+      displayCoursesListInSidePanel( json.courses ) ;
     } 
 
+  }) ;
+
+  /* Events & Conditions #wide-panel is supposed to respond to */ 
+  $('#wide-panel').ajaxSuccess( function(e, xhr, settings) { 
+    var json = $.parseJSON(xhr.responseText) ;
+
+    if (settings.url.match(/course\.json\?id=/) != null) { // a GET request
+      arrangeDumpIntoColumns('#edit-syllabi-megaform > form:first') ;
+      uncheckAllCheckBoxesWithin('#edit-syllabi-megaform') ;
+      disableAllSelectsWithin('#edit-syllabi-megaform') ;
+      loadSyllabiEditFormWith(json.course.syllabi) ;
+    } 
   }) ;
 
 }) ;

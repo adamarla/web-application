@@ -104,64 +104,10 @@ $(function() {
 
   }) ;
 
-  /* When #edit-syllabus-link is clicked */ 
-  $('#edit-syllabus-link').click( function() { 
-    var marker = $(this).attr('marker') ; 
-
-    if (marker == null) { 
-      alert (" Please select a course first " ) ;
-      return ; 
-    } 
-
-    // #course-summary .radio -> #edit-syllabus-link -> #edit-syllabi-megaform -> hidden <input>
-    $('#edit-syllabi-megaform > form > input.hidden:first').val(marker) ;
-    $(this).attr('marker', null) ; 
-    // reset to force re-clicking of radio button in #course-summary
-
-    replaceControlPanelContentWith('#topic-controls') ;
-    uncheckAllCheckBoxesWithin('#edit-syllabi-megaform') ;
-    disableAllSelectsWithin('#edit-syllabi-megaform') ;
-
-    displayMegaForm('#edit-syllabi-megaform') ;
-    
-    /*
-      Now, get syllabus information for the course. Code for updation - 
-      using the returned data - is in admin/utility.js
-    */ 
-    var url = 'syllabus.json?course_id=' + marker ; 
-    $.get(url) ;
-  }) ;
-
   /* 
     Load returned JSON data into #edit-syllabi-megaform. 
     All checkboxes are unchecked and all selects disabled at this point
   */ 
-
-  $('#edit-syllabi-megaform').ajaxSuccess( function(e,xhr,settings) {
-    if (settings.url.match(/syllabus\.json\?course_id/) == null) return ;
-
-    var json = $.parseJSON(xhr.responseText) ;
-    var syllabi = json.syllabi ;
-    var table = $(this) ;
-
-    $.each(syllabi, function(index, data){
-      // data = {syllabus : {specific_topic_id : 10, difficulty : 3}}
-      var topic_id = data.syllabus.specific_topic_id ; 
-      var difficulty = data.syllabus.difficulty ;
-      var targetDiv = table.find('div[marker=' + topic_id + ']') ; // <div marker='10'> 
-
-      if (targetDiv.length == 0) return ; 
-
-      var checkBox = targetDiv.children('.checkbox:first').children('input:first') ;
-      var dropDown = targetDiv.children('.dropdown:first').find('select:first') ;
-      var option = dropDown.children('option[value=' + difficulty + ']:first') ;
-
-      checkBox.prop('checked', true) ; 
-      dropDown.prop('disabled', false) ;
-      option.prop('selected', true) ;
-      
-    }) ;
-  }) ;
 
   /* Add a new Specific Topic */ 
   $('#add-topic-link').click( function() { 
