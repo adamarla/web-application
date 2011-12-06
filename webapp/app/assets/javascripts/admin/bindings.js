@@ -65,6 +65,17 @@ $(function() {
     $('#view-teachers-link').attr('marker', marker) ;
   }) ;
 
+  /*
+    When a radio-button in #yardsticks-summary is clicked, it should change the 
+    'action' attribute of the edit form that opens alongside
+  */ 
+
+  $('#yardsticks-summary').on('click', 'input[type="radio"]', function() {
+    var marker = $(this).attr('marker') ;
+    editFormAction('#edit-yardstick', '/yardstick?id=' + marker, 'put') ;
+  }) ;
+
+  /*
   $('#control-panel').on('click','#edit-school-link', function() { 
     var marker = $(this).attr('marker') ; 
     var url = 'school.json?id=' + marker ;
@@ -82,6 +93,7 @@ $(function() {
     }) ;
 
   }) ;
+  */
 
   $('#edit-course-link').click( function() { 
      // If #edit-course-link is visible, then it means #side-panel is showing
