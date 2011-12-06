@@ -64,6 +64,8 @@ function loadFormWithJsonData( form, data ){
       input = $(this).children('select:first') ;
     } else if ($(this).hasClass('boolean')) { 
       input = $(this).find('input[type="checkbox"]') ;
+    } else if ($(this).hasClass('text')) {
+      input = $(this).find('textarea:first') ;
     } 
 
     var marker = (input != null) ? input.attr('marker') : null ;
