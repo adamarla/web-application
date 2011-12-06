@@ -5,20 +5,17 @@ class YardsticksController < ApplicationController
   def new
   end
 
-  def update
-    # params => {:yardsticks => { 1 => {:annotation => .....}, .... } }
-    yardsticks = params[:yardsticks] 
+  def update 
+    options = params[:yardstick]
     status = :ok 
+    yardstick = Yardstick.find params[:id] 
 
-    yardsticks.each { |id, attributes| 
-      yardstick = Yardstick.find(id.to_i) 
-      unless yardstick.nil? 
-        status = yardstick.update_attributes(attributes) ? :ok : :bad_request
-        break if status == :bad_request
-      end 
-    }
-    head status # simply return HTTP headers with HTTP status code
-  end
+    unless yardstick.nil?
+      head (yardstick.update_attributes(options) ? :ok : :bad_request)
+    else
+      head :bad_request 
+    end 
+  end 
 
   def create
     new_yardstick = Yardstick.new params[:yardstick] 
@@ -35,8 +32,13 @@ class YardsticksController < ApplicationController
   end
 
   def list 
-    @yardsticks = Yardstick.all 
-	respond_with @yardsticks 
+    @yardsticks = Yardstick.order(:default_allotment) 
+    respond_with @yardsticks 
+  end 
+
+  def show 
+    @yardstick = Yardstick.find params[:id] 
+    @yardstick.nil? ? (head :bad_request) : (respond_with @yardstick)
   end 
 
 end
