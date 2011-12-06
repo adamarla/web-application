@@ -97,6 +97,10 @@ body {
   margin-right : 20px ;
 } 
 
+.dropdown { 
+  list-style-type : none ;
+} 
+
 .dropdown label { 
   font-size : 12px ;
   text-align : left ; 
