@@ -1,3 +1,6 @@
 
 object @course
-  attributes :name, :klass, :id, :board_id, :subject_id
+  attributes :name
+  child @syllabi do 
+    extends 'syllabi/show'
+  end 

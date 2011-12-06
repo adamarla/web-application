@@ -3,7 +3,8 @@ class CoursesController < ApplicationController
 
   def show 
     @course = Course.find(params[:id]) 
-    respond_with @course 
+    @syllabi = Syllabus.where(:course_id => @course.id)
+    respond_with @course, @syllabi 
   end 
 
   def update 
