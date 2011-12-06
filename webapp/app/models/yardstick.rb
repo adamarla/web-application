@@ -45,8 +45,7 @@ class Yardstick < ActiveRecord::Base
   end 
 
   def name 
-    prefix = self.mcq ? '(mcq) ' : (self.subpart ? '(sub-part) ' : nil) 
-    return ( prefix.nil? ? self.annotation : (prefix + self.annotation))
+    self.annotation
   end 
 
 end
