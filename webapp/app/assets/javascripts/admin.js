@@ -6,6 +6,5 @@
 //= require jquery_ujs 
 //= require jquery-ui
 //= require_directory ./shared
-//= require_directory ./utility
 //= require_directory ./core
 //= require_directory ./admin 
