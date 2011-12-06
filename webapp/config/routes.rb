@@ -19,6 +19,7 @@ Webapp::Application.routes.draw do
   # Course
   resource :course, :only => [:show, :create, :update]
   match 'courses/list' => 'courses#list', :via => :get
+  match 'courses/load' => 'courses#load', :via => :get
 
   # Examiner 
   resource :examiner, :except => [:new,:create,:destroy]
