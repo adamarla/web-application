@@ -31,8 +31,22 @@ $( function() {
       // First, clear any previous data
       $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
       displayCoursesListInSidePanel( json.courses ) ;
+    } else if (settings.url.match(/yardsticks\/list/) != null) {
+      // First, clear any previous data
+      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
+      displayYardsticksInSidePanel( json.yardsticks ) ;
     } 
 
+  }) ;
+
+  /* Events & Conditions #wide-panel is supposed to respond to */ 
+  $('#middle-panel').ajaxSuccess( function(e, xhr, settings) { 
+    var json = $.parseJSON(xhr.responseText) ;
+
+    if (settings.url.match(/yardstick\.json\?id=/) != null) { // a GET request
+      uncheckAllCheckBoxesWithin('#edit-yardstick') ;
+      loadFormWithJsonData( $('#edit-yardstick > form.formtastic'), json.yardstick) ;
+    } 
   }) ;
 
   /* Events & Conditions #wide-panel is supposed to respond to */ 

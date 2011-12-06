@@ -14,10 +14,15 @@ $(function() {
 
   /*
     When the 'yardsticks' link in the control-panel is clicked 
-  */ 
   $('#yardsticks-link').click( function() { 
     displayMegaForm('#edit-yardsticks-megaform') ;
   }) ;
+  */ 
+
+  $('#yardsticks-link').click( function() { 
+    $.get('yardsticks/list') ;
+  }) ;
+
   /*
 
   /*

@@ -1,14 +1,4 @@
 
-- columns = { :notitle => :radio, :state => :regular, :description => :wide, :mcq => :narrow, :subpart => :narrow }
-
-#yardsticks-summary.summary-table.left
-  .table 
-    .headings 
-      .row 
-        - columns.each do |title, width| 
-          - if title != :notitle 
-            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
-          - else 
-            .cell{ :class => "#{width.to_s}" }= " "
-    .data.empty-on-putback 
+#yardsticks-summary.selection.full-width.left{'middle-panel' => '#edit-yardstick'}
+  .data.clear-before-show.empty-on-putback 
 

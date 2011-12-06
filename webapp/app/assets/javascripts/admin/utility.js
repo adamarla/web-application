@@ -48,17 +48,25 @@ function updateCourseSummary( data ) {
 
 function displaySchoolListInSidePanel( schools ) {
   $.each( schools, function(index, data) {
-   var clone = createOneRadioColumnForX(data, 'school') ;
-   if (index % 2 == 1) clone.addClass('colored') ;
-   clone.appendTo('#schools-summary > .data:first').hide().fadeIn('slow') ;
+    var clone = createOneRadioColumnForX(data, 'school') ;
+    if (index % 2 == 1) clone.addClass('colored') ;
+    clone.appendTo('#schools-summary > .data:first').hide().fadeIn('slow') ;
   }) ;
 } 
 
 function displayCoursesListInSidePanel( courses ) {
   $.each( courses, function(index, data) {
-   var clone = createOneRadioColumnForX(data, 'course') ;
-   if (index % 2 == 1) clone.addClass('colored') ;
-   clone.appendTo('#courses-summary > .data:first').hide().fadeIn('slow') ;
+    var clone = createOneRadioColumnForX(data, 'course') ;
+    if (index % 2 == 1) clone.addClass('colored') ;
+    clone.appendTo('#courses-summary > .data:first').hide().fadeIn('slow') ;
+  }) ;
+} 
+
+function displayYardsticksInSidePanel( yardsticks ) { 
+  $.each( yardsticks, function(index, data) { 
+    var clone = createOneRadioColumnForX(data, 'yardstick') ;
+    if (index % 2 == 1) clone.addClass('colored') ;
+    clone.appendTo('#yardsticks-summary > .data:first').hide().fadeIn('slow') ;
   }) ;
 } 
 
