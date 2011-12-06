@@ -119,8 +119,8 @@ $(function() {
     checkbox is checked 
   */ 
 
-  $('#edit-syllabi-megaform').on('click', '.column input[type="checkbox"]', function() {
-    var dropDown = $(this).parent().siblings('.dropdown:first').find('select:first') ;
+  $('#edit-syllabi-megaform').on('click', '.checkbox > input[type="checkbox"]', function() {
+    var dropDown = $(this).closest('div[marker]').children('.dropdown:first').find('select:first') ;
 
     dropDown.prop('disabled', !($(this).prop('checked')) ) ;
   }) ;
