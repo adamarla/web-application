@@ -44,6 +44,10 @@ class Student < ActiveRecord::Base
   def username?
     self.account.username
   end 
+  
+  def name 
+    return (self.first_name + ' ' + self.last_name)
+  end 
 
   private 
     def destroyable? 
