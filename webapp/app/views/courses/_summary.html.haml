@@ -1,14 +1,3 @@
 
-- columns = {:notitle => :radio, :course => :wide, :board => :narrow, :class => :narrow, :difficulty => :narrow}
-
-#courses-summary.summary-table.left
-  .table 
-    .headings 
-      .row 
-        - columns.each do |title, width| 
-          - if title != :notitle 
-            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
-          - else 
-            .cell{ :class => "#{width.to_s}" }= " "
-    .data.empty-on-putback 
-
+#courses-summary.selection.full-width.left{'wide-panel' => '#edit-syllabi-megaform'}
+  .data.clear-before-show.empty-on-putback 
