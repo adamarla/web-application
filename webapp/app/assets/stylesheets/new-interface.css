@@ -145,3 +145,22 @@ legend > span.operation {
   font-size : 11px ;
   color : #654b24 ;
 } 
+
+.colored, .light-orange, .light-green { 
+  color : white ; 
+  -moz-border-radius : 10px ; 
+  border-radius : 10px ;
+  font-weight : bold ;
+} 
+
+.colored { 
+  background-color : #6ca7ab  ;
+} 
+
+.light-orange {
+  background-color : #f69518 ;
+} 
+
+.light-green {
+  background-color : #72ab65 ;
+} 

@@ -149,16 +149,6 @@ p {
   margin-left : 30px ;
 } 
 
-.colored { 
-  /*color : #654b24 ; */ 
-  color : white ; 
-   /* background-color : #91c6c9 ;*/ 
-  background-color : #6ca7ab  ;
-  -moz-border-radius : 10px ; 
-  border-radius : 10px ;
-  font-weight : bold ;
-} 
-
 .small, .cell.small { 
   font-size : 13px ;
 } 
