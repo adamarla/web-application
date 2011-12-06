@@ -1,4 +1,7 @@
 
 collection @yardsticks => :yardsticks 
+  attributes :id 
 
-attributes :annotation, :description, :mcq, :subpart 
+  code :name do |y| 
+    y.name
+  end 
