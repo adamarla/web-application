@@ -95,7 +95,7 @@ $(function() {
        var form = $('#edit-course > form.formtastic') ;
 
        loadFormWithJsonData(form, data.course) ;
-       editFormAction('#edit-course', url, 'put') ;
+       editFormAction('#edit-course', 'course?id=' + marker, 'put') ;
        $('#edit-course').dialog('open') ;
      }) ;
   }) ;
