@@ -163,3 +163,50 @@ function displayMegaForm(id) {
   replaceDataPanelContentWith(id) ;
   arrangeDumpIntoColumns(formExpr) ;
 } 
+
+function createOneRadioColumnForX (data, X) { 
+  /*
+    The radio-one-column is a reusable element in the #toolbox
+    that is essentially a radio button paired with a <div> that serves
+    as the label. Refer : toolbox/radio_one_column.html.haml 
+
+    It appears mostly in the #side-panel where one usually lists 
+    individual DB records. Given the #side-panel's width, there is 
+    only room for squeezing in a radio button and the individual 
+    record's "name" 
+
+    This function assumes, therefore, that each Rails model responds
+    to 2 methods : record.id and record.name. 'record.id' is straightforward
+    and almost always available (unless the DB table was made with :index => false). 
+    'record.name', however, may need to be defined when not directly available.
+    For example, student names are split as first and last names. And there
+    is therefore no student.name attribute. In such cases, define a 'name' method
+
+    It also assumes that further details for an individual record can be got 
+    by an AJAX call of the form '<X>.json?id=<something>'
+
+  */ 
+   var x = data[X] ; // individual record as a hash 
+   var clone = $('#toolbox .radio-column:first').clone() ;
+   var radio = clone.children('.radio:first') ;
+   var label = clone.children('.content:first') ;
+
+   /*
+     Refer toolbox/radio_one_column.haml
+
+     We need to set the following on the newly cloned element : 
+       1. 'url' attribute on the radio-button 
+       2. Text for the sibling <div> 
+       3. 'colored' attribute on every alternate row 
+       4. Uncheck the radio button
+       5. Set 'marker' attribute on the radio button
+   */ 
+
+   radio.attr('url', X + '.json?id=' + x['id']) ; // Example : X = 'school' => 'url' => school.json?id=4
+   radio.attr('marker', x['id']) ;
+   radio.prop('checked', false) ;
+   label.text( x['name']) ;
+
+   return clone ;
+} 
+
