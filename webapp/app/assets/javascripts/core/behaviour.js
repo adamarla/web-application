@@ -35,8 +35,8 @@ function clearPanel( id ){
 
 
 $( function() { 
-	/* Click #schools-link on load */ 
-	// $('#schools-link').click() ;
+    /* Click #schools-link on load */ 
+    // $('#schools-link').click() ;
 
 
     /*
@@ -45,6 +45,20 @@ $( function() {
       are too big for that panel
     */ 
     $('#toolbox > div:not([class~="top-panel-controls"]) form input[type="submit"]').button() ;
+
+    /*
+      Generally speaking, contain all forms first inside a <div class="new-entity"> 
+      and call .dialog() only on this <div>. And if you want the resulting dialog to 
+      close whenever the submit button is clicked ( if there is one and whatever 
+      it might be ), then assign class="close-on-submit" attribute to the <div>
+    */
+
+    $('.new-entity, .update-entity').each( function() { 
+      $(this).dialog({
+        modal : true, 
+        autoOpen : false
+      }) ;
+    }) ;
 
     /*
       Dialogs that must close themselves when 'submit' - or similar - 
@@ -214,8 +228,9 @@ $( function() {
       Now, the tricky bit ... The marker should also percolate to any panel to the right
       of this one, that is, from #side -> #middle -> #right OR from #middle -> #right OR 
       from #side -> #wide. In our interface, we assume that panels to the right result from
-      some action on a panel to the left. And hence, any action on a parent panel should
-      be reflected on the child panel
+      some action on a panel to the left. And because we think of these panels as 'siblings',
+      lets just say that if the elder sibling gets something, then the younger sibling has 
+      to get it too. Its always been true for scolding. Now, its true for marker ;-)
     */ 
 
     $('.panel:not(id="control-panel")').on('click', 'input[type="radio"]', function() {
@@ -355,19 +370,6 @@ $( function() {
 
     }) ;
       */ 
-    /* 
-      Generally speaking, contain all forms first inside a <div class="new-entity"> 
-      and call .dialog() only on this <div>. And if you want the resulting dialog to 
-      close whenever the submit button is clicked ( if there is one and whatever 
-      it might be ), then assign class="close-on-submit" attribute to the <div>
-
-    $('.new-entity, .update-entity').each( function() { 
-      $(this).dialog({
-        modal : true, 
-        autoOpen : false
-      }) ;
-    }) ;
-    */
 
 
 }) ; // end of file ...

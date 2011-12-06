@@ -78,7 +78,33 @@ $(function() {
 
   }) ;
 
+  $('#edit-course-link').click( function() { 
+     // If #edit-course-link is visible, then it means #side-panel is showing
+     // #courses-summary. And if a radio button has been selected in the latter, 
+     // then #side-panel has corresponding marker set on it
+
+     var marker = $('#side-panel').attr('marker') ;
+
+     if (marker == null){ 
+       alert ( " Please select a course first ") ;
+       return ;
+     } 
+
+     var url = 'courses/load.json?id=' + marker ;
+     $.get(url, function(data) {
+       var form = $('#edit-course > form.formtastic') ;
+
+       loadFormWithJsonData(form, data.course) ;
+       editFormAction('#edit-course', url, 'put') ;
+       $('#edit-course').dialog('open') ;
+     }) ;
+  }) ;
+
   /* Courses */
+  /*
+  $('#courses-summary').on('click', 'input[type="radio"]', function() {
+  } 
+
   $('#data-panel').on('click', '#courses-summary .data .row > .radio', function() { 
     var marker = $(this).attr('marker') ;
 
@@ -103,6 +129,7 @@ $(function() {
     }) ;
 
   }) ;
+  */
 
   /* 
     Load returned JSON data into #edit-syllabi-megaform. 
