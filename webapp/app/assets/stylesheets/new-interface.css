@@ -8,6 +8,12 @@ body {
   padding : 20px ;
 } 
 
+fieldset.inputs li.boolean.input { 
+  font-size : 12px ;
+  text-transform : lowercase ;
+  float : left ;
+} 
+
 .slim { 
   width : 32.3% ; 
   padding-left : 5px ;
