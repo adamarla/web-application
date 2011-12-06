@@ -1,6 +1,6 @@
 
 -# This form lists out *all* specific topics, grouped by broad-topics
--# in *one* 3-column form. Each row in each column represents one 
+-# in *one* 2-column form. Each row in each column represents one 
 -# specific topic in the following structure : 
 -# 
 -#  #syllabi-edit-megaform 
@@ -23,7 +23,7 @@
 #edit-syllabi-megaform.mega-form
   = form_tag '/syllabus', :method => :put, :remote => true do |f| 
     = submit_tag "Update"
-    = tag(:input, :name => 'syllabi[course_id]', :class => 'hidden')
+    = trojan_horse_for :course_id
 
     #dump
       - categories.each do |category| 
