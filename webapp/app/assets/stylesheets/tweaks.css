@@ -172,11 +172,25 @@ td {
 } 
 
 
-.headings > .row, .mega-form .column .label.large { 
+.headings > .row, .mega-form .column .headings { 
   font-variant : small-caps ;
-  color : #654b24 ; 
   font-weight : bold ; 
   font-size : 14px ;
+  background-color : #654b24 ;
+  color : white ;
+  padding-left : 10px ;
+  padding-top : 6px ;
+} 
+
+.headings { 
+} 
+
+.mega-form .column { 
+  margin-right : 15px ;
+} 
+
+.mega-form .column .label.small { 
+  text-align : left ;
 } 
 
 .headings .row .cell { 
@@ -218,10 +232,14 @@ td {
   overflow-x : hidden ;
 } 
 
-.mega-form .column > div {
+.mega-form .column > div:not([class~="label"]) {
   width : 100% ;
   float : none ;
-  min-height : 30px ;
+  min-height : 45px ;
+} 
+
+.mega-form .column > div div { 
+  min-height : 20px ;
 } 
 
 /*

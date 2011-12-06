@@ -73,9 +73,9 @@ function loadSyllabiEditFormWith(syllabi) {
 
     if (targetDiv.length == 0) return ; 
 
-    var checkBox = targetDiv.children('.checkbox:first').children('input:first') ;
-    var dropDown = targetDiv.children('.dropdown:first').find('select:first') ;
-    var option = dropDown.children('option[value=' + difficulty + ']:first') ;
+    var checkBox = targetDiv.find('.checkbox:first').children('input:first') ;
+    var dropDown = targetDiv.find('.dropdown:first').find('select:first') ;
+    var option = dropDown.find('option[value=' + difficulty + ']:first') ;
 
     checkBox.prop('checked', true) ; 
     dropDown.prop('disabled', false) ;
