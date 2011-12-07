@@ -80,6 +80,28 @@ function loadFormWithJsonData( form, data ){
   }) ;
 }
 
+function clearAllFieldsInForm( form ) { 
+  var inputs = form.find('fieldset.inputs ol li') ;
+
+  $(inputs).each( function(){
+    var input = null ;  
+
+    if ($(this).hasClass('string')) {
+      input = $(this).children('input:first') ; 
+    } else if ($(this).hasClass('select')) { 
+      input = $(this).children('select:first') ;
+    } else if ($(this).hasClass('boolean')) { 
+      input = $(this).find('input[type="checkbox"]') ;
+    } else if ($(this).hasClass('text')) {
+      input = $(this).find('textarea:first') ;
+    } 
+
+    if (input.length == 0) return true ; 
+    input.val('') ;
+  }) ; 
+}
+
+
   /* 
     Returns the actual input element - be it a <select> or an <input> of 
     type text, checkbox, radio or submit - from the toolbox with id = passed
@@ -155,6 +177,17 @@ function uncheckAllCheckBoxesWithin( element ) {
   var checkBoxes = $(element).find('input[type="checkbox"]') ;
 
   checkBoxes.each( function() { 
+    var isChecked = $(this).prop('checked') ; 
+
+    if (!isChecked) return true ;
+    $(this).prop('checked', false) ;
+  }) ; 
+} 
+
+function uncheckAllRadioButtonsWithin( element ) { 
+  var radioButtons = $(element).find('input[type="radio"]') ;
+
+  radioButtons.each( function() { 
     var isChecked = $(this).prop('checked') ; 
 
     if (!isChecked) return true ;
