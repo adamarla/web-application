@@ -12,28 +12,51 @@ module ApplicationHelper
     tag :input, :type => :text, :class => :hidden, :name => "#{name.to_s}[marker]", :trojan => true
   end 
 
-  def top_panel_link (name, args = {})
+  def make_link (type, options = {})
     # 'dynamic' links are those that load tables and controls on click. Non-dynamic links, 
     # like for logout and login, don't
 
-    link = nil 
-    class_attr = args[:class].nil? ? 'main-link' : args[:class]
-    href = args[:href].nil? ? '#' : args[:href]
-    dynamic = args[:dynamic].nil? ? true : args[:dynamic]
-    singular = name.to_s.singularize
-    plural = name.to_s.pluralize
+    name = options.delete(:for).to_s 
+    href = options.delete(:href) || '#' 
+    with = options.delete(:with) 
 
-    if dynamic 
-      table = "##{plural}-summary"
-      panel = "##{singular}-controls" 
+    if type == :main
+      singular = name.singularize
+      plural = name.pluralize
+      dynamic = options[:delete].nil? ? true : options[:delete] 
+      class_attr = 'main-link'
 
-      link = link_to name.to_s, href, :id => "#{name}-link", :class => class_attr, 
-                                      'side-panel' => table, 'load-controls' => panel
-    else 
-      link = link_to name.to_s, href, :id => "#{name}-link", :class => class_attr 
+      if dynamic
+         panels = with.blank? ? {:side => "##{plural}-summary"} : with[:panels]
+         controls = with.blank? ? "##{singular}-controls" : with[:controls]
+      else 
+         panels = {} 
+         controls = nil 
+      end 
+    elsif type == :minor 
+      class_attr = 'minor-link'
+      panels = with.delete(:panels) || {} 
+      controls = with.delete(:controls) 
     end 
+    
+    side = panels.delete :side 
+    middle = panels.delete :middle 
+    right = panels.delete :right 
+    wide = panels.delete :wide 
 
-    return content_tag(:li, link, :id => "#{singular}-anchor") 
+    link = link_to name, href, :id => "#{name}-link", :class => class_attr, 
+                               :side => side, :middle => middle, :right => right, 
+                               :wide => wide, 'load-controls' => controls
+
+    return content_tag(:li, link, :id => "#{name}-anchor") 
+  end 
+
+  def main_link(options = {}) 
+    make_link :main, options 
+  end 
+
+  def minor_link(options = {}) 
+    make_link :minor, options 
   end 
 
 =begin

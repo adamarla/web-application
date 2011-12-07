@@ -118,7 +118,7 @@ $( function() {
       Do the following when a link in the control panel is clicked : 
 
         1. Clear all panels - #side, #middle, #right and/or #wide - on the page 
-        2. Place $(this).attr('side-panel') in the side panel 
+        2. Place $(this).attr('side') in the side panel 
         3. Replace old controls in #minor-links with those specified in $(this).attr('load-controls')
     */
 
@@ -132,11 +132,11 @@ $( function() {
       }) ;
 
       // Repopulate the side-panel with whatever is specified in 
-      // $(this).attr('side-panel'). All links of this type *must* have 
+      // $(this).attr('side'). All links of this type *must* have 
       // something to show in the side-panel. Otherwise, they are not 
       // worthy of being a .main-link in the #control-panel
 
-      var newStuff = $('#toolbox').find($(this).attr('side-panel')).first() ;
+      var newStuff = $('#toolbox').find($(this).attr('side')).first() ;
 
       if (newStuff.length > 0) newStuff.appendTo( $('#side-panel') ) ;
 
@@ -177,9 +177,9 @@ $( function() {
 
       if (selection.length == 0) return ; 
 
-      var middle = selection.attr('middle-panel') ;
-      var right = selection.attr('right-panel') ;
-      var wide = selection.attr('wide-panel') ;
+      var middle = selection.attr('middle') ;
+      var right = selection.attr('right') ;
+      var wide = selection.attr('wide') ;
 
       // alert(middle + ', ' + right + ', ' + wide) ;
 
