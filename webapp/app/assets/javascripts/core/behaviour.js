@@ -144,11 +144,14 @@ $( function() {
       // came from and put new controls in place - as specified by 
       // $(this).attr('load-controls')
 
-      var existingControls = $('#minor-links').children().first().detach() ;
+      var existingControls = $('#minor-links').children().first() ;
       var newControls = $( $(this).attr('load-controls') ) ;
 
-      existingControls.appendTo('#toolbox') ;
-      newControls.appendTo( $('#minor-links') );
+      if (existingControls != newControls) { 
+        existingControls = existingControls.detach() ;
+        existingControls.appendTo('#toolbox') ;
+        newControls.appendTo( $('#minor-links') );
+      } 
 
     }) ; 
 
