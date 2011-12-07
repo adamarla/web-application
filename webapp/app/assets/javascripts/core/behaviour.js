@@ -117,17 +117,17 @@ $( function() {
     /* 
       Do the following when a link in the control panel is clicked : 
 
-        1. Clear all panels - #side, #first, #second and/or #third - on the page 
+        1. Clear all panels - #side, #middle, #right and/or #wide - on the page 
         2. Place $(this).attr('side-panel') in the side panel 
         3. Replace old controls in #minor-links with those specified in $(this).attr('load-controls')
     */
 
-    $('#control-panel a').click( function() { 
+    $('#control-panel > #main-links a').click( function() { 
       // Move whatever is in the side and other panels back to where 
       // they came from. Empty any data - that is - anything under .data 
       // (if present) of the to-be-moved element before moving
 
-      $.each(['#side-panel', '#first-panel', '#second-panel', '#third-panel'], function(index, panel){
+      $.each(['#side-panel', '#middle-panel', '#right-panel', '#wide-panel'], function(index, panel){
          clearPanel(panel) ;
       }) ;
 
