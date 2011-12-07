@@ -4,8 +4,6 @@
 
 $(function() { 
   
-  $('#schools-link').click() ;
-  
   /*
     When links in the #control-panel are clicked ... 
   */ 
@@ -75,7 +73,6 @@ $(function() {
     editFormAction('#edit-yardstick', '/yardstick?id=' + marker, 'put') ;
   }) ;
 
-  /*
   $('#control-panel').on('click','#edit-school-link', function() { 
     var marker = $(this).attr('marker') ; 
     var url = 'school.json?id=' + marker ;
@@ -93,7 +90,6 @@ $(function() {
     }) ;
 
   }) ;
-  */
 
   $('#edit-course-link').click( function() { 
      // If #edit-course-link is visible, then it means #side-panel is showing
