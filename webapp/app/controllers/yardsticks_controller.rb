@@ -18,17 +18,17 @@ class YardsticksController < ApplicationController
   end 
 
   def create
-    new_yardstick = Yardstick.new params[:yardstick] 
+    @yardstick = Yardstick.new params[:yardstick] 
 
     # A newly created yardstick should be made available 
     # to all teachers as a new grade
     new_grades = [] 
     Teacher.all.each { |teacher| 
-      new_grades << new_yardstick.grades.new( :teacher_id => teacher.id, 
-                                              :allotment => new_yardstick.default_allotment )
+      new_grades << @yardstick.grades.new( :teacher_id => teacher.id, 
+                                              :allotment => @yardstick.default_allotment )
     } 
-    status = new_yardstick.save ? :ok : :bad_request 
-    head status 
+
+    @yardstick.save ? respond_with(@yardstick) : head(:bad_request) 
   end
 
   def list 
