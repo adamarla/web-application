@@ -58,4 +58,18 @@ class TeachersController < ApplicationController
     end 
   end 
 
+  def update_roster
+    teacher = Teacher.find params[:teacher_id] 
+    head :bad_request if teacher.nil? 
+
+    roster = params[:roster] # a hash with (key, value) = (id, boolean)
+    roster.each { |id, teaches| 
+      study_group = StudyGroup.find id 
+      unless study_group.nil? 
+        teacher.study_groups << study_group if teaches 
+      end 
+    }
+    head :ok
+  end 
+
 end # of class
