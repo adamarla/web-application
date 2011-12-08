@@ -30,4 +30,23 @@ class StudyGroupsController < ApplicationController
     head ( school.create_study_groups(klasses, sections) ? :ok : :bad_request ) 
   end 
 
+  def list 
+    if current_account
+      case current_account.role 
+        when :admin
+          @study_groups = StudyGroup.where(:school_id => params[:school_id]) 
+        when :school 
+          @study_groups = StudyGroup.where(:school_id => current_account.loggable.id) 
+        when :student 
+          @study_groups = StudyGroup.where(:id => current_account.loggable.study_group_id)
+        else 
+          @study_groups = [] 
+      end 
+      respond_with @study_groups
+    else
+      head :bad_request 
+    end 
+    
+  end 
+
 end
