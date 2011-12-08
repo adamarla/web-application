@@ -60,6 +60,8 @@ $(function() {
     var marker = $(this).attr('marker') ;
 
     $('#edit-school-link').attr('marker', marker) ;
+    $('#edit-roster-link').attr('marker', marker) ;
+    $('#edit-studygroups-link').attr('marker', marker) ;
     editFormAction('#new-studygroups', '/study_group?id=' + marker) ;
     editFormAction('#new-teacher', '/teacher?id=' + marker) ;
   }) ;
@@ -73,6 +75,10 @@ $(function() {
     var marker = $(this).attr('marker') ;
     editFormAction('#edit-yardstick', '/yardstick?id=' + marker, 'put') ;
   }) ;
+
+  /*
+    Editing a school record 
+  */ 
 
   $('#control-panel').on('click','#edit-school-link', function() { 
     var marker = $(this).attr('marker') ; 
@@ -112,6 +118,20 @@ $(function() {
        editFormAction('#edit-course', 'course?id=' + marker, 'put') ;
        $('#edit-course').dialog('open') ;
      }) ;
+  }) ;
+
+  /*
+    Editing faculty roster, that is, teacher <-> study-group mapping 
+  */ 
+  $('#edit-roster-link').click( function() { 
+    // Send 2 AJAX requests - one for getting the list of teachers, 
+    // the second for getting the list of study-groups. The returned 
+    // data is captured & processed in core/receiver.js 
+
+    var teachers = 'teachers/list?school_id=' + $(this).attr('marker') ;
+    var studyGrps = 'study_groups/list?school_id=' + $(this).attr('marker') ;
+    $.get(teachers) ;
+    $.get(studyGrps) ;
   }) ;
 
   /* Courses */

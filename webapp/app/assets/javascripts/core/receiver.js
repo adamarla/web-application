@@ -39,15 +39,22 @@ $( function() {
 
   }) ;
 
-  /* Events & Conditions #wide-panel is supposed to respond to */ 
+  /* Events & Conditions #middle-panel is supposed to respond to */ 
   $('#middle-panel').ajaxSuccess( function(e, xhr, settings) { 
     var json = $.parseJSON(xhr.responseText) ;
+
 
     if (settings.url.match(/yardstick\.json\?id=/) != null) { // a GET request
       uncheckAllCheckBoxesWithin('#edit-yardstick') ;
       loadFormWithJsonData( $('#edit-yardstick > form.formtastic'), json.yardstick) ;
+    } else if (settings.url.match(/teachers\/list/) != null) {
+      displayTeachersListInX( json.teachers, '#teachers-list') ;
     } 
   }) ;
+
+  /* Events & Conditions #right-panel is supposed to respond to */ 
+  $('#right-panel').ajaxSuccess( function(e, xhr, settings) { 
+  });
 
   /* Events & Conditions #wide-panel is supposed to respond to */ 
   $('#wide-panel').ajaxSuccess( function(e, xhr, settings) { 

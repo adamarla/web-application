@@ -76,6 +76,14 @@ function displayYardsticksInSidePanel( yardsticks ) {
   }) ;
 } 
 
+function displayTeachersListInX( teachers, X ) {
+  $.each( teachers, function(index, data) {
+    var clone = createOneRadioColumnForX(data, 'teacher') ;
+    if (index % 2 == 1) clone.addClass('colored') ;
+    clone.appendTo( X + ' > .data:first').hide().fadeIn('slow') ;
+  }) ; 
+}
+
 function loadSyllabiEditFormWith(syllabi) {
   var table = $('#edit-syllabi-megaform') ;
 
