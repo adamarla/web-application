@@ -32,6 +32,19 @@ class School < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
+  def create_study_groups(klasses, sections) 
+    # 'klasses' and 'sections' are arrays 
+
+    klasses.each { |klass|
+      sections.each { |section| 
+        grp = self.study_groups.new :klass => klass, :section => section 
+        grp.save 
+        # 'save' can fail because of uniqueness validation. That's ok
+      }
+    }
+    return true 
+  end # of method  
+
   private 
     def destroyable? 
       return false

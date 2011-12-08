@@ -56,11 +56,11 @@ $(function() {
   */ 
 
   /* Schools */
-  $('#schools-summary').on('click', '#schools-summary .data input[type="radio"]', function() { 
+  $('#schools-summary').on('click', 'input[type="radio"]', function() { 
     var marker = $(this).attr('marker') ;
 
     $('#edit-school-link').attr('marker', marker) ;
-    $('#view-teachers-link').attr('marker', marker) ;
+    editFormAction('#new-studygroups', '/study_group?id=' + marker) ;
   }) ;
 
   /*

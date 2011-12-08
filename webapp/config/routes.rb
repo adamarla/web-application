@@ -38,6 +38,9 @@ Webapp::Application.routes.draw do
   # Student 
   resource :student, :only => [:create, :update]
 
+  # Study Group 
+  resource :study_group, :only => [:create]
+
   # Syllabus
   resource :syllabus, :only => [:show, :update]
    
