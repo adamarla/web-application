@@ -27,7 +27,7 @@ class StudyGroup < ActiveRecord::Base
   end 
 
   def name 
-    self.klass + '-' + self.section
+    self.klass.to_s + '-' + self.section
   end 
 
 end
