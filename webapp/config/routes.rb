@@ -40,6 +40,7 @@ Webapp::Application.routes.draw do
 
   # Study Group 
   resource :study_group, :only => [:create]
+  match 'study_groups/list' => 'study_groups#list', :via => :get
 
   # Syllabus
   resource :syllabus, :only => [:show, :update]
