@@ -294,7 +294,7 @@ $( function() {
        if (form.length == 0) return ; 
 
        var action = form.attr('action') ;
-       if (settings.url.match(action) != null) { 
+       if (settings.url == action) {
          clearAllFieldsInForm( form ) ; 
        } 
     }) ;
