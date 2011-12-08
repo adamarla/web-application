@@ -52,6 +52,7 @@ class TeachersController < ApplicationController
         else 
           @teachers = [] 
       end 
+      respond_with @teachers
     else
       head :bad_request 
     end 
