@@ -60,6 +60,10 @@ class Teacher < ActiveRecord::Base
   def compile_tex
   end 
 
+  def name 
+    (self.first_name + ' ' + self.last_name)
+  end 
+
   private 
 
     def setup_account 

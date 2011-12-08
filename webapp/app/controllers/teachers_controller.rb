@@ -26,4 +26,21 @@ class TeachersController < ApplicationController
 #    head status 
   end 
 
+  def list 
+    if current_account
+      case current_account.role 
+        when :admin
+          @teachers = Teacher.where(:school_id => params[:school_id])
+        when :school 
+          @teachers = Teacher.where(:school_id => current_account.loggable.id)
+        when :student 
+          @teachers = current_account.loggable.teachers 
+        else 
+          @teachers = [] 
+      end 
+    else
+      head :bad_request 
+    end 
+  end 
+
 end # of class

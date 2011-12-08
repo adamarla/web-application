@@ -23,7 +23,6 @@ Webapp::Application.routes.draw do
 
   # Examiner 
   resource :examiner, :except => [:new,:create,:destroy]
-  resource :teacher, :only => [:show, :update] 
 
   # Grade
   resource :grade, :only => [:update]
@@ -44,6 +43,7 @@ Webapp::Application.routes.draw do
    
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]
+  match 'teachers/list' => 'teachers#list', :via => :get
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]
