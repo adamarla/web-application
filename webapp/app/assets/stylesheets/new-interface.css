@@ -39,7 +39,7 @@ fieldset.inputs li.boolean.input {
   min-height : 400px ;
 } 
 
-.main-link, .sub-link {
+.main-link, .minor-link {
   text-decoration : none ;
   text-transform : lowercase ;
   float : left ;
@@ -61,11 +61,11 @@ fieldset.inputs li.boolean.input {
   border-bottom : 3px solid #fd9105;
 } 
 
-.sub-link:hover { 
+.minor-link:hover { 
   border-bottom : 3px solid white ; 
 } 
 
-.sub-link { 
+.minor-link { 
   font-size : 14px ;
   text-align : center ;
   color : #fd9105 ;
