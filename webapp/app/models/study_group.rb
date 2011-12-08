@@ -14,6 +14,8 @@ class StudyGroup < ActiveRecord::Base
   validates :klass, :presence => true 
   validates :section, :presence => true 
 
+  validates :section, :uniqueness => { :scope => [:klass, :school_id] } 
+
   belongs_to :school
   has_many :students
 
