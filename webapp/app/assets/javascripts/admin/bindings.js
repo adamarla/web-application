@@ -61,6 +61,7 @@ $(function() {
 
     $('#edit-school-link').attr('marker', marker) ;
     editFormAction('#new-studygroups', '/study_group?id=' + marker) ;
+    editFormAction('#new-teacher', '/teacher?id=' + marker) ;
   }) ;
 
   /*
