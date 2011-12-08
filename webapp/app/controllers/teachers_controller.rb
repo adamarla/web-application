@@ -1,5 +1,18 @@
 class TeachersController < ApplicationController
+  respond_to :json
   before_filter :authenticate_account!
+
+  def create 
+    school = School.find params[:id] 
+    head :bad_request if school.nil? 
+    
+    options = params[:teacher]
+    @teacher = school.teachers.new :first_name => options[:first_name],
+                                  :last_name => options[:last_name]
+
+    (@teacher.save ? respond_with(@teacher) : head(:bad_request)) 
+  end 
+
   def show 
     @teacher = params[:id].nil? ? current_account.loggable : 
                                   Teacher.find(params[:id])
