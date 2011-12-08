@@ -156,6 +156,30 @@ $( function() {
     }) ; 
 
     /* 
+      Do the following when a .minor-link in the control panel is clicked : 
+        1. Clear out any #middle & #right panels 
+        2. Replace them with any panels specified for $(this) link
+    */ 
+
+    $('#control-panel').on('click', '#minor-links a', function() {
+      var middle = $( $(this).attr('middle') ) ;
+      var currMiddle = $('#middle-panel').children().first() ;
+
+      if (middle != currMiddle && currMiddle.length != 0) {
+        clearPanel('#middle-panel') ;
+        if (middle.length != 0) middle.appendTo('#middle-panel') ;
+      } 
+
+      var right = $( $(this).attr('right') ) ;
+      var currRight = $('#right-panel').children().first() ;
+
+      if (right != currRight && currRight.length != 0) {
+        clearPanel('#right-panel') ; 
+        if (right.length != 0) right.appendTo('#right-panel') ;
+      } 
+    }) ;
+
+    /* 
       Broadly speaking, do the following when a radio-button in the #side-panel 
       (and nowhere else) is clicked 
 
