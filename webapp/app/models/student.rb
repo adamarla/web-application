@@ -30,6 +30,7 @@ class Student < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
+
   def generate_username 
     # Example : abhinavc.9FG
     username = nil 
@@ -47,6 +48,10 @@ class Student < ActiveRecord::Base
   
   def name 
     return (self.first_name + ' ' + self.last_name)
+  end 
+
+  def teachers
+    Teacher.joins(:study_groups).where('study_groups.id = ?', self.study_group_id)
   end 
 
   private 
