@@ -1,4 +1,5 @@
 class TeachersController < ApplicationController
+  before_filter :authenticate_account!
   def show 
     @teacher = params[:id].nil? ? current_account.loggable : 
                                   Teacher.find(params[:id])

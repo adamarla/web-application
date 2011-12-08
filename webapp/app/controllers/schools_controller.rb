@@ -1,4 +1,5 @@
 class SchoolsController < ApplicationController
+  before_filter :authenticate_account!
   respond_to :json 
 
   def create 

@@ -1,4 +1,5 @@
 class GradesController < ApplicationController
+  before_filter :authenticate_account!
 
   def update
     # params => {:grades => {1 => "60", 4 => "30", ....} .... }

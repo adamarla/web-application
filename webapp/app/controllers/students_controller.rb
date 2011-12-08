@@ -1,4 +1,5 @@
 class StudentsController < ApplicationController
+  before_filter :authenticate_account!
 
   def create 
     school_id = params[:student].delete :marker 
