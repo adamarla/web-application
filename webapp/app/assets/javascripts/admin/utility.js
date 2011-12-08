@@ -78,7 +78,7 @@ function displayYardsticksInSidePanel( yardsticks ) {
 
 function displayTeachersListInX( teachers, X ) {
   $.each( teachers, function(index, data) {
-    var clone = createOneRadioColumnForX(data, 'teacher') ;
+    var clone = createOneRadioColumnForX(data, 'teacher', 'teacher/roster') ;
     if (index % 2 == 1) clone.addClass('colored') ;
     clone.appendTo( X + ' > .data:first').hide().fadeIn('slow') ;
   }) ; 

@@ -213,7 +213,7 @@ function displayMegaForm(id) {
   arrangeDumpIntoColumns(formExpr) ;
 } 
 
-function createOneRadioColumnForX (data, X) { 
+function createOneRadioColumnForX (data, X, url) {
   /*
     The radio-one-column is a reusable element in the #toolbox
     that is essentially a radio button paired with a <div> that serves
@@ -244,14 +244,19 @@ function createOneRadioColumnForX (data, X) {
      Refer toolbox/radio_one_column.haml
 
      We need to set the following on the newly cloned element : 
-       1. 'url' attribute on the radio-button 
+       1. 'url' attribute on the radio-button. Usually, this would be for the 
+           show action. But sometimes, you might want this to be something else.
+           In that case, pass the 3rd argument to this function
        2. Text for the sibling <div> 
        3. 'colored' attribute on every alternate row 
        4. Uncheck the radio button
        5. Set 'marker' attribute on the radio button
    */ 
 
-   radio.attr('url', X + '.json?id=' + x['id']) ; // Example : X = 'school' => 'url' => school.json?id=4
+   var onClick = (url == undefined) ? (X + '.json?id=' + x['id']) : 
+                                 (url + '.json?id=' + x['id']) ;
+
+   radio.attr('url', onClick) ; // Example : X = 'school' => 'url' => school.json?id=4
    radio.attr('marker', x['id']) ;
    radio.prop('checked', false) ;
    label.text( x['name']) ;
