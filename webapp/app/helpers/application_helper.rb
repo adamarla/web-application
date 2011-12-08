@@ -25,6 +25,7 @@ module ApplicationHelper
       plural = name.pluralize
       dynamic = options[:delete].nil? ? true : options[:delete] 
       class_attr = 'main-link'
+      label = name 
 
       if dynamic
          panels = with.blank? ? {:side => "##{plural}-summary"} : with[:panels]
@@ -35,8 +36,9 @@ module ApplicationHelper
       end 
     elsif type == :minor 
       class_attr = 'minor-link'
-      panels = with.delete(:panels) || {} 
-      controls = with.delete(:controls) 
+      panels = with.blank? ? {} : with.delete(:panels) 
+      controls = with.blank? ? nil : with.delete(:controls)
+      label = options[:label].blank? ? name : options[:label]
     end 
     
     side = panels.delete :side 
@@ -44,7 +46,7 @@ module ApplicationHelper
     right = panels.delete :right 
     wide = panels.delete :wide 
 
-    link = link_to name, href, :id => "#{name}-link", :class => class_attr, 
+    link = link_to label.humanize, href, :id => "#{name}-link", :class => class_attr, 
                                :side => side, :middle => middle, :right => right, 
                                :wide => wide, 'load-controls' => controls
 
