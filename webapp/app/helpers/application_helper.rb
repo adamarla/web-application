@@ -16,20 +16,28 @@ module ApplicationHelper
     # 'dynamic' links are those that load tables and controls on click. Non-dynamic links, 
     # like for logout and login, don't
 
-    name = options.delete(:for).to_s 
-    href = options.delete(:href) || '#' 
-    with = options.delete(:with) 
+    name = options[:for].to_s 
+    href = options[:href] || '#' 
+    with = options[:with] 
 
     if type == :main
       singular = name.singularize
       plural = name.pluralize
-      dynamic = options[:delete].nil? ? true : options[:delete] 
+      dynamic = options[:dynamic].nil? ? true : options[:dynamic] 
       class_attr = 'main-link'
       label = name 
 
       if dynamic
-         panels = with.blank? ? {:side => "##{plural}-summary"} : with[:panels]
-         controls = with.blank? ? "##{singular}-controls" : with[:controls]
+         # for main-links, the side-panel is fixed. Anything else specified 
+         # using :with is ignored   
+
+         panels = with.blank? ? {} : with[:panels] 
+         panels = panels.merge( { :side => "##{plural}-summary" } )
+         if (with.blank? || with[:controls].blank?) 
+           controls = "##{singular}-controls"
+         else 
+           controls = with[:controls]
+         end 
       else 
          panels = {} 
          controls = nil 
@@ -41,10 +49,10 @@ module ApplicationHelper
       label = options[:label].blank? ? name : options[:label]
     end 
     
-    side = panels.delete :side 
-    middle = panels.delete :middle 
-    right = panels.delete :right 
-    wide = panels.delete :wide 
+    side = panels[:side]
+    middle = panels[:middle]
+    right = panels[:right]
+    wide = panels[:wide]
 
     link = link_to label.humanize, href, :id => "#{name}-link", :class => class_attr, 
                                :side => side, :middle => middle, :right => right, 

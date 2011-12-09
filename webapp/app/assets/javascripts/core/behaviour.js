@@ -9,6 +9,7 @@ function panelXHasY( X, Y ) { // X, Y = CSS selectors
 
 function clearPanel( id ){ 
   var moveMe = $(id).children().first() ; 
+  if (moveMe.length == 0) return ;
 
   // If 'moveMe' has any data under a <div class="data"> within its 
   // hierarchy, then empty that data first. Note, it is assumed that there 
@@ -126,19 +127,22 @@ $( function() {
       // Move whatever is in the side and other panels back to where 
       // they came from. Empty any data - that is - anything under .data 
       // (if present) of the to-be-moved element before moving
+      var me = $(this) ; 
 
-      $.each(['#side-panel', '#middle-panel', '#right-panel', '#wide-panel'], function(index, panel){
-         clearPanel(panel) ;
+      $.each(['side','middle','right','wide'], function(index, type){
+         var panel = '#' + type + '-panel' ; 
+
+         clearPanel(panel) ; 
+         if (me.attr(type) == null) { 
+           $(panel).addClass('hidden') ;
+           return true ;
+         } else { 
+           $(panel).removeClass('hidden') ;
+         } 
+
+         var shiftMe = $('#toolbox').find(me.attr(type)).first() ;
+         if(shiftMe.length != 0) shiftMe.appendTo( $(panel) ) ;
       }) ;
-
-      // Repopulate the side-panel with whatever is specified in 
-      // $(this).attr('side'). All links of this type *must* have 
-      // something to show in the side-panel. Otherwise, they are not 
-      // worthy of being a .main-link in the #control-panel
-
-      var newStuff = $('#toolbox').find($(this).attr('side')).first() ;
-
-      if (newStuff.length > 0) newStuff.appendTo( $('#side-panel') ) ;
 
       // Put existing controls - in #minor-links - back where they 
       // came from and put new controls in place - as specified by 
@@ -165,85 +169,35 @@ $( function() {
       var middle = $( $(this).attr('middle') ) ;
       var currMiddle = $('#middle-panel').children().first() ;
 
-      if (middle != currMiddle && currMiddle.length != 0) {
-        clearPanel('#middle-panel') ;
-        if (middle.length != 0) middle.appendTo('#middle-panel') ;
+      if (middle.length != 0) { 
+        if (currMiddle != middle) { 
+           clearPanel('#middle-panel') ; 
+           middle.appendTo('#middle-panel') ;
+        } 
       } 
 
       var right = $( $(this).attr('right') ) ;
       var currRight = $('#right-panel').children().first() ;
 
-      if (right != currRight && currRight.length != 0) {
-        clearPanel('#right-panel') ; 
-        if (right.length != 0) right.appendTo('#right-panel') ;
+      if (right.length != 0) { 
+        if (currRight != right) { 
+          clearPanel('#right-panel') ; 
+          right.appendTo('#right-panel') ;
+        } 
       } 
     }) ;
 
-    /* 
-      Broadly speaking, do the following when a radio-button in the #side-panel 
-      (and nowhere else) is clicked 
-
-        1. Populate sibling panels of the #side-panel with what is specified 
-           for #side-panel > first-child ( #summary-table , for example )
-        2. Issue any $.get requests tied to the radio-button.
-           Affected panels must refresh themselves though
-        3. Tweak - as needed - any links in the #control-panel > #minor-links
-      
-      (1) is done by the following binding
-      (2) is done by the next binding in this file 
-      (3) might not be possible to do here because it is too context specific. 
-          But its been listed here anyways
-
-      This function is kinda like the one for #control-panel > a. But unlike 
-      the latter - which changes the whole page - this one's changes are more 
-      local - and less "drastic"
+    /*
+      Clicking a radio button on any panel should initiate an AJAX request 
+      for data from the server using any 'url' attribute set on the radio-button
     */ 
 
-    $('#side-panel').on('click', 'input[type="radio"]', function() {
-      var selection = $(this).closest('.selection') ;
-
-      if (selection.length == 0) return ; 
-
-      var middle = selection.attr('middle') ;
-      var right = selection.attr('right') ;
-      var wide = selection.attr('wide') ;
-
-      // alert(middle + ', ' + right + ', ' + wide) ;
-
-      if (wide != null) { 
-        if (panelXHasY('#wide-panel', wide)) return ;
-
-        clearPanel('#wide-panel') ;
-        $('#toolbox').find(wide).first().detach().appendTo('#wide-panel') ;
-        // Imp: Hide the other 2 panels so that #wide-panel can take the 2/3 space left 
-        //      for it alongside the #side-panel
-
-        $('#wide-panel').removeClass('hidden') ;
-        $('#middle-panel, #right-panel').addClass('hidden') ;
-
-      } else {
-        // Imp: Hide #wide-panel so that each of #middle-panel & #right-panel 
-        //      can get the 1/3 space they require alongside #side-panel
-
-        $('#wide-panel').addClass('hidden') ;
-        $('#middle-panel, #right-panel').removeClass('hidden') ;
-
-        if (!panelXHasY('#middle-panel', middle)){
-          clearPanel('#middle-panel') ;
-          $('#toolbox').find(middle).first().detach().appendTo('#middle-panel') ;
-        } 
-
-        if (!panelXHasY('#right-panel', right)) {
-          clearPanel('#right-panel') ;
-          $('#toolbox').find(right).first().detach().appendTo('#right-panel') ;
-        }
-      } 
-    }) ; // end binding
-
-    $('#visible-active-area').on('click', '#side-panel input[type="radio"]', function() { 
+    $('.panel:not([id="control-panel"])').on('click', 'input[type="radio"]', function() { 
       var url = $(this).attr('url') ;
 
-      if (url != null) $.get(url) ;
+      if (url != null) {
+        $.get(url) ;
+      } 
     }) ;
 
     /*
