@@ -1,8 +1,9 @@
 
 #course-controls.top-panel-controls
-  %a#add-course-link.sub-link.left= "New Course"
-  %a#edit-course-link.sub-link.left= "Edit Selected"
-  %a#add-topic-link.sub-link.left= "New Topic"
+  %ul.no-bullets
+    = minor_link :for => 'add-course', :label => "New Course"  
+    = minor_link :for => 'edit-course', :label => "Edit Selected"  
+    = minor_link :for => 'add-topic', :label => "New Topic"  
   = form_tag courses_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
     = drop_down_menu_for :subjects
     = drop_down_menu_for :boards
