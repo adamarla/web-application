@@ -39,7 +39,7 @@ Webapp::Application.routes.draw do
   resource :student, :only => [:create, :update]
 
   # Study Group 
-  resource :study_group, :only => [:create]
+  resource :study_group, :only => [:create, :update]
   match 'study_groups/list' => 'study_groups#list', :via => :get
 
   # Syllabus
@@ -48,6 +48,8 @@ Webapp::Application.routes.draw do
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
+  match 'teachers/roster' => 'teachers#roster', :via => :get 
+  match 'teachers/update_roster' => 'teachers#update_roster', :via => :put
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]
