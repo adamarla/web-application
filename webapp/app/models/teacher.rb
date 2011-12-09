@@ -64,6 +64,12 @@ class Teacher < ActiveRecord::Base
     (self.first_name + ' ' + self.last_name)
   end 
 
+  def roster 
+    # Yes, yes.. We could have gotten the same thing by simply calling self.study_groups
+    # But if we return an ActiveRelation, then we get the benefit of lazy loading
+    StudyGroup.joins(:faculty_rosters).where('faculty_rosters.teacher_id = ?', self.id)
+  end 
+
   private 
 
     def setup_account 
