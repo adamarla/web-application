@@ -59,7 +59,7 @@ class TeachersController < ApplicationController
   end 
 
   def roster 
-    @teacher = Teacher.find params[:teacher_id] 
+    @teacher = Teacher.find params[:id] 
     head :bad_request if @teacher.nil? 
 
     @study_groups = StudyGroup.where(:school_id => @teacher.school_id)
@@ -67,7 +67,7 @@ class TeachersController < ApplicationController
   end 
 
   def update_roster
-    teacher = Teacher.find params[:teacher_id] 
+    teacher = Teacher.find params[:id] 
     head :bad_request if teacher.nil? 
 
     roster = params[:roster] # a hash with (key, value) = (id, boolean)
