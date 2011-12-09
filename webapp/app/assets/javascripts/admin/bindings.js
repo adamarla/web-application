@@ -124,14 +124,13 @@ $(function() {
     Editing faculty roster, that is, teacher <-> study-group mapping 
   */ 
   $('#edit-roster-link').click( function() { 
-    // Send 2 AJAX requests - one for getting the list of teachers, 
-    // the second for getting the list of study-groups. The returned 
-    // data is captured & processed in core/receiver.js 
+    // Even though the link is for editing faculty rosters, no editing
+    // can happen until a faculty member is selected. Hence, just load the 
+    // list of faculty members. Showing the actual roster would have to
+    // wait for a second radio-button click 
 
     var teachers = 'teachers/list?school_id=' + $(this).attr('marker') ;
-    var studyGrps = 'study_groups/list?school_id=' + $(this).attr('marker') ;
     $.get(teachers) ;
-    $.get(studyGrps) ;
   }) ;
 
   /* Courses */
