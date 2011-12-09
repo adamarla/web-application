@@ -22,12 +22,12 @@ class StudyGroup < ActiveRecord::Base
   has_many :faculty_rosters
   has_many :teachers, :through => :faculty_rosters
 
-  def label? 
-    return "#{self.klass.to_s}-#{self.section.upcase}"
-  end 
-
   def name 
     self.klass.to_s + '-' + self.section
+  end 
+
+  def taught_by? (teacher) 
+    !( FacultyRoster.where(:study_group_id => self.id, :teacher_id => teacher.id).empty? )
   end 
 
 end
