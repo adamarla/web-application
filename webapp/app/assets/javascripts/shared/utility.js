@@ -195,6 +195,7 @@ function uncheckAllRadioButtonsWithin( element ) {
   }) ; 
 } 
 
+
 function disableAllSelectsWithin( element ) { 
   var selects = $(element).find('select') ; 
 
@@ -263,4 +264,48 @@ function createOneRadioColumnForX (data, X, url) {
 
    return clone ;
 } 
+
+function createOneCheckBoxColumnForX( data, X, name ) {
+  /*
+    This function is kinda like 'createOneRadioColumnForX' in that it
+    clones a pre-defined tool for use someplace else
+
+    But it is different because checkboxes are different from radio-buttons.
+    Unlike radio-buttons, check-box states are *not* mutually exclusive.
+    In other words, more than one checkbox could be checked at the same time
+
+    Hence, nothing much can happen at the instant a checkbox is clicked. 
+    One must instead wait for another event - most probably a form submission -
+    before one can factor in all the checking/unchecking. For this reason, 
+    the 3rd argument - name - becomes absolutely essential. It is the name 
+    for the <input type="checkbox"> element and must be supplied
+
+    Moreover, more than radio-buttons, checkboxes reflect existing data. That is,
+    the fact that a checkbox is checked/unchecked means that in some DB table
+    somewhere, some state is true
+
+    Hence, when creating a clone here for that DB field, one must also take
+    into account its 'checked' state. And this means that the DB model must
+    respond to an additional method - checked - alongwith .name & .id
+  */ 
+
+   if (name == undefined) name = 'checked' ;
+
+   var x = data[X] ; // individual record as a hash 
+   var clone = $('#toolbox .checkbox-column:first').clone() ;
+   var checkBox = clone.children('.checkbox:first') ;
+   var label = clone.children('.content:first') ;
+
+   label.text(x['name']) ; 
+   checkBox.attr('marker', x['id']) ;
+   checkBox.prop('checked', x['checked']) ;
+
+   // If 'name' = selected, then the params hash - on form submission - 
+   // will be sth. like : params => { ... selected => { 1 => true, 2 => false, 3 => true ... } }
+   checkBox.attr('name', name + '[' + x['id'] + ']') ; 
+
+   return clone ;
+  
+}
+
 
