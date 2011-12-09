@@ -43,7 +43,6 @@ $( function() {
   $('#middle-panel').ajaxSuccess( function(e, xhr, settings) { 
     var json = $.parseJSON(xhr.responseText) ;
 
-
     if (settings.url.match(/yardstick\.json\?id=/) != null) { // a GET request
       uncheckAllCheckBoxesWithin('#edit-yardstick') ;
       loadFormWithJsonData( $('#edit-yardstick > form.formtastic'), json.yardstick) ;
@@ -54,6 +53,14 @@ $( function() {
 
   /* Events & Conditions #right-panel is supposed to respond to */ 
   $('#right-panel').ajaxSuccess( function(e, xhr, settings) { 
+    var json = $.parseJSON(xhr.responseText) ;
+
+    if (settings.url.match(/teachers\/roster/) != null) { 
+      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
+      uncheckAllCheckBoxesWithin('#studygroups-list') ;
+      displayRosterIn( json.sections, '#studygroups-list .data:first') ;
+      //loadFormWithJsonData( $('#studygroups-list > form'), json.sections) ;
+    } 
   });
 
   /* Events & Conditions #wide-panel is supposed to respond to */ 

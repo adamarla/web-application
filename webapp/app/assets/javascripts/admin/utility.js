@@ -78,11 +78,19 @@ function displayYardsticksInSidePanel( yardsticks ) {
 
 function displayTeachersListInX( teachers, X ) {
   $.each( teachers, function(index, data) {
-    var clone = createOneRadioColumnForX(data, 'teacher', 'teacher/roster') ;
+    var clone = createOneRadioColumnForX(data, 'teacher', 'teachers/roster') ;
     if (index % 2 == 1) clone.addClass('colored') ;
     clone.appendTo( X + ' > .data:first').hide().fadeIn('slow') ;
   }) ; 
 }
+
+function displayRosterIn( sections, X) {
+  $.each(sections, function(index, data) {
+    var clone = createOneCheckBoxColumnForX(data, 'section') ;
+    if (index % 2 == 1) clone.addClass('colored') ;
+    clone.appendTo(X).hide().fadeIn('slow') ;
+  }) ;
+} 
 
 function loadSyllabiEditFormWith(syllabi) {
   var table = $('#edit-syllabi-megaform') ;
