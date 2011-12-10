@@ -25,6 +25,38 @@ function clearPanel( id ){
 } 
 
 /*
+  For any link in the #control-panel - be it a #minor-link or a #major-link - 
+  retain only the panels specified in its 'side', 'middle', 'right' and/or 'wide' 
+  attributes - with one caveat : 
+    #minor-links *cannot* remove the 'side' panel placed on the page by a #major-link
+*/ 
+
+function refreshView( linkId ) {
+  var link = $('#' + linkId) ; 
+
+  $.each(['side','middle','right','wide'], function(index, panelType) {
+    var panelId = link.attr(panelType) ;
+    var currPanelId = '#' + panelType + '-panel' ;
+
+    if (panelId == null) { // no attribute => don't need this panelType
+      if (link.hasClass('minor-link')) {
+        if (panelType == 'side') return true ;
+      } 
+      clearPanel(currPanelId) ;
+      $(currPanelId).addClass('hidden') ;
+    } else {
+      var currPanel = $(currPanelId).children().first() ; 
+
+      if (currPanel == $(panelId)) return true ; // already loaded => do nothing
+      clearPanel(currPanelId) ; 
+      $(currPanelId).removeClass('hidden') ;
+      $(panelId).appendTo(currPanelId).hide().fadeIn('slow') ;
+    } 
+  }) ;
+} 
+
+
+/*
   Define only those bindings here that would apply across all roles. 
 
   These bindings would apply to HTML elements with class, id or other 
@@ -113,41 +145,22 @@ $( function() {
 
       $(this).prop('checked', true) ;
     }) ;
+
+    /*
+      For links in #main-panel, lay out the #side-panel and any applicable 
+      #middle, #right or #side panels. This functionality can be bound at load-time 
+      because the contents of #main-panel are fixed
+    */ 
    
+    $('#control-panel > #main-links a').click( function() { 
+      refreshView( $(this).attr('id') ) ;
+    }) ; 
 
-    /* 
-      Do the following when a link in the control panel is clicked : 
-
-        1. Clear all panels - #side, #middle, #right and/or #wide - on the page 
-        2. Place $(this).attr('side') in the side panel 
-        3. Replace old controls in #minor-links with those specified in $(this).attr('load-controls')
-    */
+    /*
+      Also, load any #minor-links / controls for the clicked #main-link
+    */ 
 
     $('#control-panel > #main-links a').click( function() { 
-      // Move whatever is in the side and other panels back to where 
-      // they came from. Empty any data - that is - anything under .data 
-      // (if present) of the to-be-moved element before moving
-      var me = $(this) ; 
-
-      $.each(['side','middle','right','wide'], function(index, type){
-         var panel = '#' + type + '-panel' ; 
-
-         clearPanel(panel) ; 
-         if (me.attr(type) == null) { 
-           $(panel).addClass('hidden') ;
-           return true ;
-         } else { 
-           $(panel).removeClass('hidden') ;
-         } 
-
-         var shiftMe = $('#toolbox').find(me.attr(type)).first() ;
-         if(shiftMe.length != 0) shiftMe.appendTo( $(panel) ) ;
-      }) ;
-
-      // Put existing controls - in #minor-links - back where they 
-      // came from and put new controls in place - as specified by 
-      // $(this).attr('load-controls')
-
       var existingControls = $('#minor-links').children().first() ;
       var newControls = $( $(this).attr('load-controls') ) ;
 
@@ -159,32 +172,17 @@ $( function() {
 
     }) ; 
 
-    /* 
-      Do the following when a .minor-link in the control panel is clicked : 
-        1. Clear out any #middle & #right panels 
-        2. Replace them with any panels specified for $(this) link
+    /*
+      For #minor-links, refresh the view with any applicable #middle, #right 
+      or #wide panels. Note that : 
+        1. The #side-panel cannot be touched as it has been put in place by 
+           a #main-link 
+        2. This binding has to be deferred because the contents of #minor-link 
+           are not fluid depending on which #main-link was clicked
     */ 
 
-    $('#control-panel').on('click', '#minor-links a', function() {
-      var middle = $( $(this).attr('middle') ) ;
-      var currMiddle = $('#middle-panel').children().first() ;
-
-      if (middle.length != 0) { 
-        if (currMiddle != middle) { 
-           clearPanel('#middle-panel') ; 
-           middle.appendTo('#middle-panel') ;
-        } 
-      } 
-
-      var right = $( $(this).attr('right') ) ;
-      var currRight = $('#right-panel').children().first() ;
-
-      if (right.length != 0) { 
-        if (currRight != right) { 
-          clearPanel('#right-panel') ; 
-          right.appendTo('#right-panel') ;
-        } 
-      } 
+    $('#control-panel').on('click', '#minor-links a', function() { 
+      refreshView( $(this).attr('id') ) ;
     }) ;
 
     /*
