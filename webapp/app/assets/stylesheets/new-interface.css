@@ -170,3 +170,40 @@ legend > span.operation {
 .light-green {
   background-color : #72ab65 ;
 } 
+
+/*
+.rotated { 
+  -moz-transform : rotate(-90deg) ;
+} 
+*/
+
+.traffic-light > img { 
+  margin-right : 30px ;
+} 
+
+#yardsticks-icon-table {
+  min-height : 25px ;
+  font-size : 13px ; 
+  font-weight : bold ;
+  font-variant : small-caps ;
+  border-bottom : 2px solid #654b24 ;
+  margin-bottom : 20px ;
+} 
+
+#yardsticks-icon-table > #insights { 
+  margin-left : 15px ;
+} 
+
+#yardsticks-icon-table > #formulation { 
+  margin-left : 17px ;
+} 
+
+#yardsticks-icon-table > #calculation { 
+  margin-left : 17px ;
+} 
+
+/*
+.headings .label.middle { 
+  margin-left : 40% ;
+} 
+*/
