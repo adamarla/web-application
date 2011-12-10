@@ -15,7 +15,7 @@ SUBJECTS.each { |subject|
 } 
 
 GRADE_STATES = {
-                  1 => {:annotation => 'No Attempt',
+                  1 => {
                         :description => %{ Student either skipped 
                         the question entirely or made only the briefest
                         of attempts at it
@@ -23,7 +23,7 @@ GRADE_STATES = {
                         :default_allotment => 0
                   },
 
-                  2 => {:annotation => 'Some attempt, insight(s) missing',
+                  2 => {
                         :description => %{ Student understood the question
                         and what was required. Seemingly had a line of attack
                         but was still far from formulating the required critical
@@ -32,7 +32,7 @@ GRADE_STATES = {
                         :default_allotment => 30
                   }, 
 
-                  3 => { :annotation => 'Insights partially formulated',
+                  3 => { 
                          :description => %{ Some of the required insights
                          were correctly forumulated while others were either
                          missing or wrongly formulated. In all probability, 
@@ -42,7 +42,7 @@ GRADE_STATES = {
                          :default_allotment => 60
                   }, 
 
-                  4 => { :annotation => %{Insights present, calculation absent},
+                  4 => { 
                          :description => %{ Student has captured all the
                          required insights in his/her response but has only 
                          faltered at formulating some of the equations/
@@ -52,13 +52,13 @@ GRADE_STATES = {
                          :default_allotment => 75
                   }, 
 
-                  5 => { :annotation => 'Calculation mistake', 
+                  5 => { 
                          :description => %{ Everything's perfect otherwise 
                          }, 
                          :default_allotment => 90
                   },
 
-                  6 => { :annotation => 'Correct answer (using stated methods)', 
+                  6 => { 
                          :description => %{ All required insights captured,
                          all calculations done correctly, instructions for the
                          question followed precisely
@@ -66,8 +66,7 @@ GRADE_STATES = {
                          :default_allotment => 100
                   }, 
 
-                  7 => { :annotation => %{ Correct answer (some deviations 
-                                           from stated instructions},
+                  7 => { 
                          :description => %{ The solution cannot be faulted.
                          However, the student has not strictly adhered to 
                          instructions specified for the question
@@ -75,8 +74,7 @@ GRADE_STATES = {
                          :default_allotment => 100
                   }, 
 
-                  8 => { :annotation => %{[Sub-Part]: Correct Solution, 
-                                          Wrong Answer }, 
+                  8 => { 
                          :description => %{ Carried over the wrong values
                          from previous parts as inputs to this part, and 
                          hence getting the wrong answer. The method is
@@ -85,33 +83,33 @@ GRADE_STATES = {
                          :default_allotment => 85
                   }, 
 
-                  9 => { :annotation => %{[MCQ] : No Attempt}, 
+                  9 => { 
                          :description => %{ No options selected for this 
                          multiple choice question (MCQ) }, 
                          :default_allotment => 0
                   },
 
-                  10 => { :annotation => %{[MCQ] : Correct},
+                  10 => { 
                          :description => %{ All correct choices, and none
                          of the wrong ones, selected for this multiple choice
                          question (MCQ) }, 
                          :default_allotment => 100
                   }, 
 
-                  11 => { :annotation => %{[MCQ] : Partially Correct}, 
+                  11 => { 
                           :description => %{ Not all correct choices 
                           selected. However, none of the wrong options were
                           marked either},
                           :default_allotment => 60
                   }, 
 
-                  12 => { :annotation => %{[MCQ] : Partially Wrong},
+                  12 => { 
                           :description => %{ Some of the selected choices
                           are wrong. However, the others are correct},
                           :default_allotment => 40
                   }, 
 
-                  13 => { :annotation => %{[MCQ] : Wrong},
+                  13 => { 
                           :description => %{ None of the selected options
                           are correct}, 
                           :default_allotment => 0
@@ -120,14 +118,12 @@ GRADE_STATES = {
 
 
 GRADE_STATES.each { |k, state|
-  a = state[:annotation].strip.split.join(' ')
   b = state[:description].strip.split.join(' ')
   c = state[:default_allotment]
 
   x = GradeDescription.new 
   # mass-authorization protection (config/initializers/accessible_attributes.rb)
-  x.accessible = [:annotation, :description, :default_allotment] 
-  x = GradeDescription.update_attributes :annotation => a, 
-                                         :description => b, 
+  x.accessible = [:description, :default_allotment] 
+  x = GradeDescription.update_attributes :description => b, 
                                          :default_allotment => c
 }
