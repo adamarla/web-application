@@ -56,10 +56,12 @@ $( function() {
     var json = $.parseJSON(xhr.responseText) ;
 
     if (settings.url.match(/teachers\/roster/) != null) { 
+      var url = 'teachers/update_roster.json?id=' + $('#right-panel').attr('marker') ;
+
       $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
       uncheckAllCheckBoxesWithin('#studygroups-list') ;
       displayRosterIn( json.sections, '#studygroups-list .data:first') ;
-      //loadFormWithJsonData( $('#studygroups-list > form'), json.sections) ;
+      editFormAction('#studygroups-list', url, 'put') ;
     } 
   });
 
