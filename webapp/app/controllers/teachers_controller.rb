@@ -70,13 +70,16 @@ class TeachersController < ApplicationController
     teacher = Teacher.find params[:id] 
     head :bad_request if teacher.nil? 
 
-    roster = params[:roster] # a hash with (key, value) = (id, boolean)
+    roster = params[:checked] # a hash with (key, value) = (id, boolean)
+    retain = [] 
+
     roster.each { |id, teaches| 
       study_group = StudyGroup.find id 
       unless study_group.nil? 
-        teacher.study_groups << study_group if teaches 
+        retain << study_group if teaches 
       end 
     }
+    teacher.study_groups = retain 
     head :ok
   end 
 
