@@ -31,12 +31,7 @@ $( function() {
       // First, clear any previous data
       $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
       displayCoursesListInSidePanel( json.courses ) ;
-    } else if (settings.url.match(/yardsticks\/list/) != null) {
-      // First, clear any previous data
-      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
-      displayYardsticksInSidePanel( json.yardsticks ) ;
     } 
-
   }) ;
 
   /* Events & Conditions #middle-panel is supposed to respond to */ 
@@ -62,6 +57,11 @@ $( function() {
       uncheckAllCheckBoxesWithin('#studygroups-list') ;
       displayRosterIn( json.sections, '#studygroups-list .data:first') ;
       editFormAction('#studygroups-list', url, 'put') ;
+    } else if (settings.url.match(/school\.json\?id=/) != null) {
+      var url = 'school.json?id=' + $('#right-panel').attr('marker') ;
+
+      loadFormWithJsonData( $('#edit-school form'), json.school) ;
+      editFormAction('#edit-school', url, 'put') ;
     } 
   });
 

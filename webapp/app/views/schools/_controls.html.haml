@@ -1,8 +1,8 @@
 
 #school-controls.top-panel-controls
   %ul.no-bullets
-    = minor_link :for => 'add-school', :label => 'New School'
-    = minor_link :for => 'edit-school', :label => 'Edit Selected'
+    = minor_link :for => 'add-n-edit-school', :label => 'Add & Edit', 
+                 :with => {:panels => {:middle => '#new-school', :right => '#edit-school'} }
     = minor_link :for => 'edit-roster', :label => 'Faculty Roster', 
                  :with => { :panels => { :middle => '#teachers-list', :right => '#studygroups-list'} }
     = minor_link :for => 'edit-studygroups', :label => 'Classes & Sections',
