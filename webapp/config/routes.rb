@@ -53,7 +53,6 @@ Webapp::Application.routes.draw do
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]
-  match 'yardsticks/list' => 'yardsticks#list', :via => :get
 
   root :to => "welcome#index"
 

@@ -11,19 +11,6 @@ $(function() {
   $('#courses-link').click( function() { $.get('courses/list') ; }) ;
 
   /*
-    When the 'yardsticks' link in the control-panel is clicked 
-  $('#yardsticks-link').click( function() { 
-    displayMegaForm('#edit-yardsticks-megaform') ;
-  }) ;
-  */ 
-
-  $('#yardsticks-link').click( function() { 
-    $.get('yardsticks/list') ;
-  }) ;
-
-  /*
-
-  /*
     When the 'schools' link in the control-panel is clicked
   */ 
   $('#schools-link').click( function() { 

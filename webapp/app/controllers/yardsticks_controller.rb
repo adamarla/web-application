@@ -31,11 +31,6 @@ class YardsticksController < ApplicationController
     @yardstick.save ? respond_with(@yardstick) : head(:bad_request) 
   end
 
-  def list 
-    @yardsticks = Yardstick.order(:default_allotment) 
-    respond_with @yardsticks 
-  end 
-
   def show 
     @yardstick = Yardstick.find params[:id] 
     @yardstick.nil? ? (head :bad_request) : (respond_with @yardstick)

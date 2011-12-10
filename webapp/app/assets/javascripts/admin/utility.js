@@ -62,20 +62,6 @@ function displayCoursesListInSidePanel( courses ) {
   }) ;
 } 
 
-function displayYardsticksInSidePanel( yardsticks ) { 
-  $.each( yardsticks, function(index, data) { 
-    var clone = createOneRadioColumnForX(data, 'yardstick') ;
-
-    // Colour the rows based on the yardsticks applicability to sub-parts and mcqs
-    if (data.yardstick.mcq) {
-      clone.addClass('light-orange') ;
-    } else if (data.yardstick.subpart) {
-      clone.addClass('light-green') ;
-    } 
-    clone.appendTo('#yardsticks-summary > .data:first').hide().fadeIn('slow') ;
-  }) ;
-} 
-
 function displayTeachersListInX( teachers, X ) {
   $.each( teachers, function(index, data) {
     var clone = createOneRadioColumnForX(data, 'teacher', 'teachers/roster') ;
