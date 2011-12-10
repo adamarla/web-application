@@ -21,14 +21,6 @@ $(function() {
   }) ;
 
   /*
-    Add a new School to the DB 
-
-  $('#add-school-link').click( function() { 
-    $('#new-school').dialog({ title : 'Add School'}).dialog('open') ; 
-  }) ; 
-  */ 
-
-  /*
     Add a new Course to the DB
   */ 
   $('#add-course-link').click( function() {
@@ -49,8 +41,10 @@ $(function() {
     $('#edit-school-link').attr('marker', marker) ;
     $('#edit-roster-link').attr('marker', marker) ;
     $('#edit-studygroups-link').attr('marker', marker) ;
+
     editFormAction('#new-studygroups', '/study_group?id=' + marker) ;
     editFormAction('#new-teacher', '/teacher?id=' + marker) ;
+    editFormAction('#edit-school', '/school.json?id=' + marker, 'put') ;
   }) ;
 
   /*
@@ -61,28 +55,6 @@ $(function() {
   $('#yardsticks-summary').on('click', 'input[type="radio"]', function() {
     var marker = $(this).attr('marker') ;
     editFormAction('#edit-yardstick', '/yardstick?id=' + marker, 'put') ;
-  }) ;
-
-  /*
-    Editing a school record 
-  */ 
-
-  $('#control-panel').on('click','#edit-school-link', function() { 
-    var marker = $(this).attr('marker') ; 
-    var url = 'school.json?id=' + marker ;
-    var form = $('#edit-school form.formtastic') ;
-
-    if (form.length == 0) { 
-        alert (' form not found ') ;
-        return ;
-    } 
-
-    $.get(url, function(data) {
-      loadFormWithJsonData( form, data.school ) ;
-      editFormAction('#edit-school', url, 'put') ;
-      $('#edit-school').dialog('open') ;
-    }) ;
-
   }) ;
 
   $('#edit-course-link').click( function() { 

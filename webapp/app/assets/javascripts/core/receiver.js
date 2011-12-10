@@ -58,10 +58,7 @@ $( function() {
       displayRosterIn( json.sections, '#studygroups-list .data:first') ;
       editFormAction('#studygroups-list', url, 'put') ;
     } else if (settings.url.match(/school\.json\?id=/) != null) {
-      var url = 'school.json?id=' + $('#right-panel').attr('marker') ;
-
       loadFormWithJsonData( $('#edit-school form'), json.school) ;
-      editFormAction('#edit-school', url, 'put') ;
     } 
   });
 
