@@ -5,7 +5,8 @@
     = minor_link :for => 'edit-school', :label => 'Edit'
     = minor_link :for => 'edit-roster', :label => 'Faculty Roster', 
                  :with => { :panels => { :middle => '#teachers-list', :right => '#studygroups-list'} }
-    = minor_link :for => 'edit-studygroups', :label => 'Class & Section'
+    = minor_link :for => 'edit-studygroups', :label => 'Classes & Sections',
+                 :with => { :panels => { :middle => '#new-studygroups' } }
   = form_tag schools_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
     = drop_down_menu_for :states
     = submit_tag 'Search'
