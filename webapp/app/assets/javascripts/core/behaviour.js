@@ -11,14 +11,13 @@ function clearPanel( id ){
   var moveMe = $(id).children().first() ; 
   if (moveMe.length == 0) return ;
 
-  // If 'moveMe' has any data under a <div class="data"> within its 
-  // hierarchy, then empty that data first. Note, it is assumed that there 
-  // is *atmost one* .data element within any element and it has information
-  // that can re-got from an AJAX query. In other words, if some data is 
-  // too valuable to lose, then *do not* put it under .data
+  // If 'moveMe' has any data under a <div class="data empty-on-putback"> within its 
+  // hierarchy, then empty that data first. Note, that it is assumed that 
+  // the emptied out data can re-got from an AJAX query. In other words, 
+  // if some data is too valuable to lose, then *do not* put it under .data.empty-on-putback
 
-  var data = moveMe.find('.data:first') ;
-  if (data != null) data.empty() ;
+  var data = moveMe.find('.data.empty-on-putback') ;
+  data.each( function() { $(this).empty() ; } ) ;
 
   moveMe = moveMe.detach() ; 
   moveMe.appendTo("#toolbox") ;
