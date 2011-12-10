@@ -5,11 +5,8 @@
     %span.operation= "Quick Edit"
   = semantic_form_for :yardstick, :remote => true do |f| 
     = f.inputs do 
-      = f.input :annotation, :input_html => {:marker => :annotation} 
       = f.input :description, :as => :text, :input_html => {:rows => 7, :marker => :description} 
       = f.input :mcq, :label => "MCQ ?", :as => :boolean ,:input_html => {:marker => :mcq} 
-      = f.input :subpart, :label => "About a subpart ?", :as => :boolean ,:input_html => {:marker => :subpart} 
-      = f.input :active, :label => "Active ?", :as => :boolean ,:input_html => {:marker => :active} 
 
     .submit-buttons
       %input{:type => :submit, :role => :button, :value => "Update", :name => "commit"}
