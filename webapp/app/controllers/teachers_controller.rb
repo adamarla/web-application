@@ -62,7 +62,7 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id] 
     head :bad_request if @teacher.nil? 
 
-    @study_groups = StudyGroup.where(:school_id => @teacher.school_id)
+    @study_groups = StudyGroup.where(:school_id => @teacher.school_id).order(:klass).order(:section)
     respond_with @study_groups, @teacher
   end 
 

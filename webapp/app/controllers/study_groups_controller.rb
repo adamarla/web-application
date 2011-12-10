@@ -42,7 +42,7 @@ class StudyGroupsController < ApplicationController
         else 
           @study_groups = [] 
       end 
-      respond_with @study_groups
+      respond_with @study_groups.order(:klass).order(:section)
     else
       head :bad_request 
     end 
