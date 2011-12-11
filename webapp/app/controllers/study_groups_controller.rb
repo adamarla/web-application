@@ -56,4 +56,8 @@ class StudyGroupsController < ApplicationController
     head :ok
   end 
 
+  def students 
+    @students = Student.where(:study_group_id => params[:id]).order(:first_name)
+  end 
+
 end
