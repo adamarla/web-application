@@ -236,15 +236,14 @@ $( function() {
       var panel = $(this).closest('.panel') ; 
       var marker = (panel.length == 0) ? null : panel.attr('marker') ;
 
-      if (marker == null) return false ; // halt submission
+      //if (marker == null) return false ; // halt submission?
       var action = $(this).attr('action') ; 
 
       if (action.match(/\.json\?id=/) != null) { // some .json?id=<> present from before
         action.replace(/id=*/, 'id=' + marker) ;
-      } else { // first time 
+      } else if (marker != null) { // first time 
         action = action.concat('.json?id=' + marker) ;
       } 
-
       $(this).attr('action', action) ;
     }) ;
 
