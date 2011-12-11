@@ -60,4 +60,8 @@ class SchoolsController < ApplicationController
     @students = Student.where(:school_id => params[:id], :study_group_id => nil)
   end 
 
+  def sections 
+    @sections = StudyGroup.where(:school_id => params[:id]) 
+  end 
+
 end

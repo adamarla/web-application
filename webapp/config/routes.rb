@@ -32,6 +32,7 @@ Webapp::Application.routes.draw do
   match 'schools/list' => 'schools#list', :via => :get 
   match 'schools/new-student' => 'schools#new_student', :via => :put 
   match 'schools/unmapped-students' => 'schools#unmapped_students', :via => :get
+  match 'school/sections' => 'schools#sections', :via => :get
 
   # Specific Topic 
   resource :specific_topic, :only => [:create, :update]
