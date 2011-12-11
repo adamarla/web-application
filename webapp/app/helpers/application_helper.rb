@@ -4,6 +4,15 @@ module ApplicationHelper
     {:xmlns => "http://www.w3.org/1999/xhtml", 'xml:lang' => lang, :lang => lang}
   end 
 
+  def text_search_box_for(name) 
+    x = semantic_fields_for :criterion do |a| 
+          a.input "#{name.to_s}", :as => :string, 
+          :wrapper_html => {:class => 'search-box'},
+          :input_html => {:size => 10}
+        end 
+    content_tag(:div, x) 
+  end 
+
   def trojan_horse_for(name) 
     # creates a hidden <input> field inside a form, pre-populated - 
     # usually by the 'marker' attribute of the containing DOM element
