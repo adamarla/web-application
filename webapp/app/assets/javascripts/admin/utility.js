@@ -24,9 +24,12 @@ function displayTeachersListInX( teachers, X ) {
   }) ; 
 }
 
-function displayRosterIn( sections, X) {
+function displayStudyGroups( sections, X, checkBoxes) {
+  checkBoxes = (checkBoxes == undefined) ? false : checkBoxes ;
+
   $.each(sections, function(index, data) {
-    var clone = createOneCheckBoxColumnForX(data, 'section') ;
+    var clone = (checkBoxes) ? createOneCheckBoxColumnForX(data, 'section') : 
+                               createOneRadioColumnForX(data, 'section') ;
     if (index % 2 == 1) clone.addClass('colored') ;
     clone.appendTo(X).hide().fadeIn('slow') ;
   }) ;
