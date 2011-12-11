@@ -1,4 +1,15 @@
 
+function displayJson(jsonArray, where, key, withRadioButtons) 
+{
+   withRadioButtons = (withRadioButtons == undefined) ? true : withRadioButtons ;
+
+   $.each(jsonArray, function(index, data) {
+     var clone = (withRadioButtons) ? createOneRadioColumnForX(data, key) : 
+                                      createOneCheckBoxColumnForX(data, key) ;
+     if (index % 2 == 1) clone.addClass('colored') ;
+     clone.appendTo(where).hide().fadeIn('slow') ;
+   }) ;
+} 
 
 function displaySchoolListInSidePanel( schools ) {
   $.each( schools, function(index, data) {
