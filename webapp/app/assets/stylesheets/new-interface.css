@@ -118,6 +118,10 @@ fieldset.inputs li.boolean.input {
   list-style-type : none ;
 } 
 
+#edit-syllabi-megaform .dropdown label {
+  display : none ;
+} 
+
 #minor-links label { 
   font-size : 12px ;
   text-align : left ; 
