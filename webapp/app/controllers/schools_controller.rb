@@ -61,7 +61,7 @@ class SchoolsController < ApplicationController
   end 
 
   def sections 
-    @sections = StudyGroup.where(:school_id => params[:id]) 
+    @sections = StudyGroup.where(:school_id => params[:id]).order(:klass).order(:section)
   end 
 
 end
