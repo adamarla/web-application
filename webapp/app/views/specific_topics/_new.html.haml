@@ -1,6 +1,6 @@
 
 #new-topic.new-entity.close-on-submit
-  = semantic_form_for :topic, :remote => true do |f| 
+  = semantic_form_for :topic, :remote => true, :url => specific_topic_path do |f| 
     = f.inputs do 
       = f.input :name 
       = f.input :category, :label => 'Category', :as => :select, 

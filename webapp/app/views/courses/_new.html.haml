@@ -1,6 +1,6 @@
 
 #new-course.new-entity.close-on-submit
-  = semantic_form_for :course, :remote => true do |f| 
+  = semantic_form_for :course, :remote => true, :url => course_path do |f| 
     = f.inputs do 
       = f.input :name 
       = f.input :board_id, :label => 'Board', :as => :select, 

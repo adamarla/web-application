@@ -42,10 +42,6 @@ $(function() {
     $('#edit-roster-link').attr('marker', marker) ;
     $('#new-studygroups-link').attr('marker', marker) ;
     $('#edit-studygroups-link').attr('marker', marker) ;
-
-    editFormAction('#new-studygroups', '/study_group?id=' + marker) ;
-    editFormAction('#new-teacher', '/teacher?id=' + marker) ;
-    editFormAction('#edit-school', '/school.json?id=' + marker, 'put') ;
   }) ;
 
   /*
@@ -55,7 +51,6 @@ $(function() {
 
   $('#yardsticks-summary').on('click', 'input[type="radio"]', function() {
     var marker = $(this).attr('marker') ;
-    editFormAction('#edit-yardstick', '/yardstick?id=' + marker, 'put') ;
   }) ;
 
   $('#edit-course-link').click( function() { 

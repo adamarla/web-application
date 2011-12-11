@@ -3,7 +3,7 @@
   %legend
     %span.target= "Yardstick"
     %span.operation= "Quick Edit"
-  = semantic_form_for :yardstick, :remote => true do |f| 
+  = semantic_form_for :yardstick, :remote => true, :url => '/yardstick', :method => :put do |f| 
     = f.inputs do 
       = f.input :description, :as => :text, :input_html => {:rows => 7, :marker => :description} 
       = f.input :mcq, :label => "MCQ ?", :as => :boolean ,:input_html => {:marker => :mcq} 

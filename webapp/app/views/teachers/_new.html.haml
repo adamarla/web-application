@@ -3,7 +3,7 @@
   %legend
     %span.target= "Teacher"
     %span.operation= "Quick Add"
-  = semantic_form_for :teacher, :remote => true do |f|
+  = semantic_form_for :teacher, :remote => true, :url => teacher_path do |f|
     = f.inputs :name => :mandatory do 
       = f.input :first_name, :label => 'First Name'
       = f.input :last_name, :label => 'Surname'

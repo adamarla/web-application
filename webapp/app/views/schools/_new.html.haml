@@ -3,7 +3,7 @@
   %legend
     %span.target= "Quick Add"
     %span.operation= "School"
-  = semantic_form_for :school, :remote => true do |f| 
+  = semantic_form_for :school, :remote => true, :url => school_path do |f| 
     .submit-buttons
       %input{:type => :submit, :role => :button, :value => "Create", :name => "commit"}
 
