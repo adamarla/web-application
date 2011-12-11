@@ -46,7 +46,14 @@ class StudyGroupsController < ApplicationController
     else
       head :bad_request 
     end 
-    
+  end # of action 
+
+  def update_student_list 
+    section = StudyGroup.find params[:id] 
+    head :bad_request if section.nil? 
+
+    section.update_student_list params[:checked]
+    head :ok
   end 
 
 end

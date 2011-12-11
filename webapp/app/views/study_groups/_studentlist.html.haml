@@ -3,4 +3,6 @@
   %legend
     %span.target= "Students" 
     %span.operation= "as yet unassigned"
-  .data.empty-on-putback 
+  = form_tag study_groups_update_student_list_path, :remote => true, :method => :put do |f| 
+    = submit_tag "Assign to Selected"
+    .data.empty-on-putback 
