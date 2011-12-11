@@ -117,5 +117,28 @@ $(function() {
     dropDown.prop('disabled', !($(this).prop('checked')) ) ;
   }) ;
 
+  $('#view-students-in-section-link').click( function() { 
+    var panel = $(this).closest('.panel') ; // the containing panel
+    var marker = (panel.length == 0) ? null : panel.attr('marker') ; 
+    
+    if (marker != null) { 
+      clearPanel('#right-panel', false) ;
+      $.get('study_groups/students.json?id=' + marker) ;
+    } 
+  }) ;
+
+  $('#view-unassigned-students-link').click( function() { 
+    // Unassigned students only belong to a school. And therefore, the marker
+    // we need is for the school, not a section (as above). This marker would 
+    // be available on one of #control an #side panel
+
+    var marker = $('#control-panel').attr('marker') ; 
+    
+    if (marker != null) { 
+      clearPanel('#right-panel', false) ;
+      $.get('school/unassigned-students.json?id=' + marker) ;
+    } 
+  }) ;
+
 
 }) ; // end of main 

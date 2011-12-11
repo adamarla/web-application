@@ -2,7 +2,8 @@
 #student-list.selection.full-width.left
   %legend
     %span.target= "Students" 
-    %span.operation= "as yet unassigned"
+    %a#view-students-in-section-link.right{:href => '#'}= "enrolled"
+    %a#view-unassigned-students-link.right{:href => '#'}= "unassigned"
   = form_tag study_groups_update_student_list_path, :remote => true, :method => :put do |f| 
     = submit_tag "Assign to Selected"
     .data.empty-on-putback 

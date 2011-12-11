@@ -163,8 +163,14 @@ legend > span.target {
 
 legend > span.operation { 
   text-transform : lowercase ; 
-  font-size : 11px ;
+  font-size : 13px ;
   color : #654b24 ;
+} 
+
+legend > a { 
+  font-size : 13px ; 
+  text-decoration : none ; 
+  margin-right : 8px ;
 } 
 
 .colored, .light-orange, .light-green { 
