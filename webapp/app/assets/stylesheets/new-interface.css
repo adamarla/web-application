@@ -106,13 +106,8 @@ fieldset.inputs li.boolean.input {
   min-height : 40px ;
 } 
 
-#main-links { 
-  
-} 
-
-#minor-links {
-  margin-left : 10% ;
-  margin-right : 10% ;
+#minor-links { 
+  margin-right : 4% ;
 } 
 
 #minor-links a { 
@@ -123,7 +118,7 @@ fieldset.inputs li.boolean.input {
   list-style-type : none ;
 } 
 
-.dropdown label { 
+#minor-links label { 
   font-size : 12px ;
   text-align : left ; 
   margin-right : 4px ;
