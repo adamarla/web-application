@@ -41,6 +41,7 @@ $(function() {
     $('#edit-school-link').attr('marker', marker) ;
     $('#edit-roster-link').attr('marker', marker) ;
     $('#new-studygroups-link').attr('marker', marker) ;
+    $('#edit-studygroups-link').attr('marker', marker) ;
 
     editFormAction('#new-studygroups', '/study_group?id=' + marker) ;
     editFormAction('#new-teacher', '/teacher?id=' + marker) ;
@@ -92,41 +93,14 @@ $(function() {
     $.get(teachers) ;
   }) ;
 
-  /* Courses */
-  /*
-  $('#courses-summary').on('click', 'input[type="radio"]', function() {
-  } 
+  $('#edit-studygroups-link').click( function() { 
+    // As for 'edit-roster-link', the only thing that can be done on click
+    // is loading the list of study-groups for the selected school ( as 
+    // identified by the 'marker' set on $(this)
 
-  $('#data-panel').on('click', '#courses-summary .data .row > .radio', function() { 
-    var marker = $(this).attr('marker') ;
-
-    $('#edit-course-link').attr('marker', marker) ;
-    $('#edit-syllabus-link').attr('marker', marker) ;
+    var sections = 'school/sections.json?id=' + $(this).attr('marker') ;
+    $.get(sections) ;
   }) ;
-
-  $('#control-panel').on('click','#edit-course-link', function() { 
-    var marker = $(this).attr('marker') ; 
-    var url = 'course.json?id=' + marker ;
-    var form = $('#edit-course form.formtastic') ;
-
-    if (form.length == 0) { 
-        alert (' form not found ') ;
-        return ;
-    } 
-
-    $.get(url, function(data) {
-      loadFormWithJsonData( form, data.course ) ;
-      editFormAction('#edit-course', url, 'put') ;
-      $('#edit-course').dialog('open') ;
-    }) ;
-
-  }) ;
-  */
-
-  /* 
-    Load returned JSON data into #edit-syllabi-megaform. 
-    All checkboxes are unchecked and all selects disabled at this point
-  */ 
 
   /* Add a new Specific Topic */ 
   $('#add-topic-link').click( function() { 

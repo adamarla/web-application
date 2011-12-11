@@ -43,6 +43,8 @@ $( function() {
       loadFormWithJsonData( $('#edit-yardstick > form.formtastic'), json.yardstick) ;
     } else if (settings.url.match(/teachers\/list/) != null) {
       displayTeachersListInX( json.teachers, '#teachers-list') ;
+    } else if (settings.url.match(/school\/sections\.json\?id=/) != null) { 
+      displayStudyGroups( json.sections, '#studygroups-radiolist .data:first') ;
     } 
   }) ;
 
@@ -55,7 +57,7 @@ $( function() {
 
       $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
       uncheckAllCheckBoxesWithin('#studygroups-list') ;
-      displayRosterIn( json.sections, '#studygroups-list .data:first') ;
+      displayStudyGroups( json.sections, '#studygroups-list .data:first', true) ;
       editFormAction('#studygroups-list', url, 'put') ;
     } else if (settings.url.match(/school\.json\?id=/) != null) {
       loadFormWithJsonData( $('#edit-school form'), json.school) ;
