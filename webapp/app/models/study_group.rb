@@ -30,4 +30,18 @@ class StudyGroup < ActiveRecord::Base
     !( FacultyRoster.where(:study_group_id => self.id, :teacher_id => teacher.id).empty? )
   end 
 
+  def update_student_list ( student_list ) 
+    # student_list is a hash of the form : { 1 => true, 2 => false, 3 => true ... }
+    # and is actually equal to params[:checked]
+
+    student_list.each { |student_id, assign| 
+      student = Student.find student_id 
+      if assign 
+        student.update_attribute(:study_group_id, self.id) 
+      else 
+        student.update_attribute(:study_group_id, nil) if student.study_group_id == self.id 
+      end 
+    } 
+  end 
+
 end
