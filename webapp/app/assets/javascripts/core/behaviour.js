@@ -219,103 +219,34 @@ $( function() {
     }) ;
 
     /*
+      Update the action attribute of any form inside #side, #middle, #right 
+      or #wide panels with the 'marker' attribute on the panel
 
-    // Group individual forms into one accordion...  
-    $('.form.accordion').accordion({ header : '.heading.accordion', collapsible : true, active : false }) ;
-    // .. and let the accordion shut like a clam before sending an AJAX request
-    $('.form.accordion').ajaxSend( function() {
-        $(this).accordion('activate', false) ;
-    }) ;
+      For example : If the action attribute is 'schools/update' and the 
+      marker attribute on the containing panel is = 2, then change the 
+      action attribute to 'schools/update.json?id=2' (yes, we do all submission
+      through AJAX) 
 
-    // Button-set for submit buttons
-    $('.submit-buttons').buttonset() ;
-
-    // $('#board-list').buttonset() ;
-    
-    $('.action-panel.vertical').each( function() {
-       alignVertical( $(this) ) ;
-    }) ;
-
-    /*
-       Expand 'greedy' elements so that they take all remaining 
-       width in their parent
-
-    $('.greedy').each( function() { 
-        makeGreedy($(this)) ;
-    }) ;
-
-    /*
-      Load controls in the #control-panel when a link in the #side-panel is clicked.
-      Also, load the empty table - that is, just the headers - in #tables into #data-panel
-
-      However, logic for loading any relevant data into #data-panel would 
-      most probably be in the role-specific .js file and would require a separate 
-      binding to the same elements listed below
-
-    $('#side-panel').on('click', '#side-panel a.main-link', function() {
-      var controls = $(this).attr('load-controls') ;
-      var table = $(this).attr('load-table') ;
-
-      if (controls != null && $(controls).length > 0) { 
-        replaceControlPanelContentWith(controls) ;
-      } 
-
-      if (table != null && $(table).length > 0) {
-        replaceDataPanelContentWith(table) ;
-        makeGreedy( $(table) ) ; 
-        resizeCellsIn( $(table).children('.table').first() ) ;
-      }
-
-    }) ; // end 
-    */
-
-    /*
-      Count the number of columns for all tables. The count is important 
-      for dynamic resizing of table columns. Static class attribute values - like 
-      wide, regular & narrow - are not sufficient by themselves for telling us 
-      what the width should be. If, however, they were to be used to specify relative 
-      width ratios, then they might be useful
-
-    $('.table').each( function() { 
-      countTableColumns($(this)) ;
-      calculateColumnWidths($(this)) ;
-    }) ; 
+      With this scheme, we can write most of the actiob attribute as we know 
+      it when we write the view file and be assured that the action attribute 
+      would be tweaked - as needed - just before submission
     */ 
 
-    /*
-      Updation of the same summary table can be triggered by many distinct events 
-      spread across multiple DOM elements. And hence, rather than bind the updation 
-      logic part to the triggering DOM element, it makes all the sense to bind 
-      the logic to the table itself
-    */ 
+    $('.panel:not([id="control-panel"])').on('submit', 'form', function() {
+      var panel = $(this).closest('.panel') ; 
+      var marker = (panel.length == 0) ? null : panel.attr('marker') ;
 
-      /*
-    $('.summary-table').ajaxSuccess( function(e, xhr, settings){
-      var returnedJSON = $.parseJSON(xhr.responseText) ; 
-      // alert(xhr.responseText) ;
+      if (marker == null) return false ; // halt submission
+      var action = $(this).attr('action') ; 
 
-      $(this).find('.table > .data').empty() ; // clear existing data first
-
-        There are > 1 summary tables and all of them catch the AJAX success event.
-        However, the success event was generated in a context and therefore not all
-        tables are supposed to respond to it
-
-        So that is what we do here. We check what the invoking URL was and then 
-        which summary table needs to process any returned JSON data. For all other 
-        tables, the execution should just fall through
-
-      if (settings.url.match(/schools\/list/) != null) { 
-        if ($(this).attr('id') == 'schools-summary'){ // the capturing DOM element
-          updateSchoolSummary(returnedJSON) ;
-        } 
-      } else if (settings.url.match(/courses\/list/) != null) {
-        if ($(this).attr('id') == 'courses-summary'){ // the capturing DOM element
-          updateCourseSummary(returnedJSON) ;
-        } 
+      if (action.match(/\.json\?id=/) != null) { // some .json?id=<> present from before
+        action.replace(/id=*/, 'id=' + marker) ;
+      } else { // first time 
+        action = action.concat('.json?id=' + marker) ;
       } 
 
+      $(this).attr('action', action) ;
     }) ;
-      */ 
 
 
 }) ; // end of file ...
