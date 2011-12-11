@@ -56,8 +56,8 @@ class SchoolsController < ApplicationController
     head :ok
   end 
 
-  def unmapped_students 
-    @students = Student.where(:school_id => params[:id], :study_group_id => nil)
+  def unassigned_students 
+    @students = Student.where(:school_id => params[:id], :study_group_id => nil).order(:first_name)
   end 
 
   def sections 
