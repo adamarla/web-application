@@ -40,7 +40,7 @@ $(function() {
 
     $('#edit-school-link').attr('marker', marker) ;
     $('#edit-roster-link').attr('marker', marker) ;
-    $('#edit-studygroups-link').attr('marker', marker) ;
+    $('#new-studygroups-link').attr('marker', marker) ;
 
     editFormAction('#new-studygroups', '/study_group?id=' + marker) ;
     editFormAction('#new-teacher', '/teacher?id=' + marker) ;
