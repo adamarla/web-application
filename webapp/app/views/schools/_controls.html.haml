@@ -8,7 +8,7 @@
     = minor_link :for => 'new-studygroups', :label => 'New Sections',
                  :with => { :panels => { :middle => '#new-studygroups' } }
     = minor_link :for => 'edit-studygroups', :label => 'Edit Sections', 
-                 :with => {:panels => {:middle => '#studygroups-radiolist'} }
+                 :with => {:panels => {:middle => '#studygroups-radiolist', :right => '#student-list'} }
 
   = form_tag schools_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
     = drop_down_menu_for :states

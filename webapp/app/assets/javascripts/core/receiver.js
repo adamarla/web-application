@@ -61,7 +61,9 @@ $( function() {
       editFormAction('#studygroups-list', url, 'put') ;
     } else if (settings.url.match(/school\.json\?id=/) != null) {
       loadFormWithJsonData( $('#edit-school form'), json.school) ;
-    } 
+    } else if (settings.url.match(/school\/unassigned-students\.json\?id=/) != null) {
+      displayJson(json.students, '#student-list .data:first', 'student', false) ;
+    }
   });
 
   /* Events & Conditions #wide-panel is supposed to respond to */ 
