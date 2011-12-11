@@ -7,9 +7,11 @@ function panelXHasY( X, Y ) { // X, Y = CSS selectors
   return false ;
 } 
 
-function clearPanel( id ){ 
+function clearPanel( id, moveAlso ){ 
   var moveMe = $(id).children().first() ; 
   if (moveMe.length == 0) return ;
+
+  moveAlso = (moveAlso == undefined) ? true : moveAlso ;
 
   // If 'moveMe' has any data under a <div class="data empty-on-putback"> within its 
   // hierarchy, then empty that data first. Note, that it is assumed that 
@@ -19,8 +21,10 @@ function clearPanel( id ){
   var data = moveMe.find('.data.empty-on-putback') ;
   data.each( function() { $(this).empty() ; } ) ;
 
-  moveMe = moveMe.detach() ; 
-  moveMe.appendTo("#toolbox") ;
+  if (moveAlso) { 
+    moveMe = moveMe.detach() ; 
+    moveMe.appendTo("#toolbox") ;
+  } 
 } 
 
 /*
