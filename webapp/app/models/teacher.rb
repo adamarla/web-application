@@ -51,6 +51,24 @@ class Teacher < ActiveRecord::Base
   #after_validation :setup_account, :if => :first_time_save?
   before_destroy :destroyable? 
 
+  def generate_username 
+    # Usernames are generated using the first & last names and the time of 
+    # record creation - but with a slight difference depending on what role
+    # the person has 
+    #
+    # For example, below would be the usernames for a person called Richard Feynman
+    #   (if a student) : richardf.XYZ
+    #   (if a teacher) : rfeynman.XYZ
+
+    username = nil 
+
+    unless (self.first_name.blank? || self.last_name.blank?)
+      timestamp = Time.now.seconds_since_midnight.to_i.to_s(36).upcase
+      username = ((self.first_name[0] + self.last_name).downcase + '.' + timestamp)
+    end 
+    return username 
+  end 
+
   def build_xml(questions, students) 
   end 
 

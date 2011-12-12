@@ -6,13 +6,20 @@ class TeachersController < ApplicationController
     school = School.find params[:id] 
     head :bad_request if school.nil? 
     
-    options = params[:teacher]
-    @teacher = school.teachers.new :first_name => options[:first_name],
-                                  :last_name => options[:last_name]
+    @teacher = Teacher.new params[:teacher]
+    username = @teacher.generate_username
+    email = params[:teacher].delete(:email) || "#{username}@drona.com"
+    @teacher.school = school 
+    password = school.zip_code
 
-    (@teacher.save ? respond_with(@teacher) : head(:bad_request)) 
+    unless username.nil? 
+      account = @teacher.build_account :email => email, :username => username, 
+                                      :password => password, :password_confirmation => password
+    end 
+
+    @teacher.save ? respond_with(@teacher) : head(:bad_request) 
   end 
-
+ 
   def show 
     @teacher = params[:id].nil? ? current_account.loggable : 
                                   Teacher.find(params[:id])

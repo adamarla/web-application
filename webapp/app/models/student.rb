@@ -32,7 +32,14 @@ class Student < ActiveRecord::Base
 
 
   def generate_username 
-    # Example : abhinavc.9FG
+    # Usernames are generated using the first & last names and the time of 
+    # record creation - but with a slight difference depending on what role
+    # the person has 
+    #
+    # For example, below would be the usernames for a person called Richard Feynman
+    #   (if a student) : richardf.XYZ
+    #   (if a teacher) : rfeynman.XYZ
+
     username = nil 
 
     unless (self.first_name.blank? || self.last_name.blank?)
