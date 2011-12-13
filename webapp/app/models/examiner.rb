@@ -47,7 +47,7 @@ class Examiner < ActiveRecord::Base
         username = "#{self.first_name}.#{self.last_name}" 
       end 
     end 
-    return username 
+    return username.downcase 
   end 
 
   private 
