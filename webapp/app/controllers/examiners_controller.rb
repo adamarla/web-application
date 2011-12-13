@@ -7,7 +7,7 @@ class ExaminersController < ApplicationController
     username = @examiner.generate_username
     email = params[:examiner].delete(:email) || "#{username}@drona.com" 
     account = @examiner.build_account :email => email, :username => username, 
-                                      :password = "12345", :password_confirmation => "12345"
+                                      :password => "12345", :password_confirmation => "12345"
 
     @examiner.save ? respond_with(@examiner) : head(:bad_request) 
   end 
