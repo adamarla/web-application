@@ -79,7 +79,7 @@ p {
   padding-bottom : 4px ;*/
 } 
 
-#side-panel li:not(id='login-anchor') {
+#side-panel li:not([id='login-anchor']) {
   margin-bottom : 20px ;
 } 
 
