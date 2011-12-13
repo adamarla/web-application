@@ -9,6 +9,7 @@
 
     = f.inputs do 
       = f.input :name 
+      = f.input :tag
       = f.input :street_address, :label => "Address" 
       = f.input :city
       = f.input :state, :as => :select, :collection => ['DL', 'MH', 'HR','PB','RJ']

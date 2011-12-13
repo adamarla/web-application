@@ -4,22 +4,15 @@ class SchoolsController < ApplicationController
 
   def create 
     email = params[:school].delete :email # email is part of Account model 
+    @school = School.new params[:school] 
+    username = @school.generate_username 
+    email = email || "#{username}@drona.com"
+    zip = @school.zip_code
 
-    unless (email.nil? || email.empty?) 
-      school = School.new params[:school]
-      zip = school.zip_code 
-      status = :ok 
+    @school.build_account :email => email, :username => username, 
+                          :password => zip, :password_confirmation => zip
 
-      unless zip.nil? 
-        school.build_account :email => email, :password => zip, :password_confirmation => zip 
-        status = school.save ? :ok : :bad_request
-      else
-        status = :bad_request 
-      end 
-    else 
-      status = :bad_request
-    end 
-    head status 
+    @school.save ? respond_with(@school) : head(:bad_request) 
   end 
 
   def show 
