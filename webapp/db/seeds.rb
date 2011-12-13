@@ -6,15 +6,25 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
+################################################################################
+
+adam = Examiner.new :first_name => "Abhinav", :last_name => "Chaturvedi", :is_admin => true
+adams_account = adam.build_account :email => 'achaturvedi@gmail.com', 
+                                   :username => adam.generate_username, 
+                                   :password => 'shibb0leth', 
+                                   :password_confirmation => 'shibb0leth'
+adam.save 
+
+################################################################################
+
 SUBJECTS = [:maths, :physics, :chemistry, :computer_science, :biology]
 
 SUBJECTS.each { |subject| 
   x = Subject.new 
-  x.accessible = [:name] # mass-assignment protection, remember ?? 
   x.update_attribute :name, subject.to_s.humanize
 } 
 
-GRADE_STATES = {
+YARDSTICKS = {
                   1 => {
                         :description => %{ Student either skipped 
                         the question entirely or made only the briefest
@@ -117,13 +127,10 @@ GRADE_STATES = {
 }
 
 
-GRADE_STATES.each { |k, state|
-  b = state[:description].strip.split.join(' ')
-  c = state[:default_allotment]
+YARDSTICKS.each { |k, yardstick|
+  b = yardstick[:description].strip.split.join(' ')
+  c = yardstick[:default_allotment]
 
-  x = GradeDescription.new 
-  # mass-authorization protection (config/initializers/accessible_attributes.rb)
-  x.accessible = [:description, :default_allotment] 
-  x = GradeDescription.update_attributes :description => b, 
-                                         :default_allotment => c
+  x = Yardstick.new 
+  x.update_attributes :description => b, :default_allotment => c
 }
