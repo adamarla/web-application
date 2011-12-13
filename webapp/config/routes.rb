@@ -22,7 +22,7 @@ Webapp::Application.routes.draw do
   match 'courses/load' => 'courses#load', :via => :get
 
   # Examiner 
-  resource :examiner, :except => [:new,:create,:destroy]
+  resource :examiner, :except => [:new, :destroy]
 
   # Grade
   resource :grade, :only => [:update]
