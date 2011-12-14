@@ -4,17 +4,17 @@ class SpecificTopicsController < ApplicationController
 
   def create 
     options = params[:topic] 
-    status = :ok 
+    category_name = options.delete :new_category
 
-    unless (options[:category].nil? || options[:category].empty?)
-      new_topic = SpecificTopic.new :name => options[:name], :broad_topic_id => options[:category]
+    if category_name.blank? 
+      @topic = SpecificTopic.new :name => options[:name], :broad_topic_id => options[:category]
     else 
-      new_topic = SpecificTopic.new :name => options[:name] 
-      new_category = new_topic.build_broad_topic :name => options[:new_category]
-    end 
+      category = BroadTopic.where(:name => category_name).first || BroadTopic.new(:name => category_name) 
+      category.save if category.new_record? 
 
-    status = new_topic.save ? :ok : :bad_request 
-    head status 
+      @topic = category.specific_topics.new :name => options[:name]
+    end 
+    @topic.save ? respond_with(@topic) : head(:bad_request) 
   end 
 
   def update 
