@@ -5,6 +5,7 @@
       = f.input :name 
       = f.input :board_id, :label => 'Board', :as => :select, 
                 :collection => Board.all, :include_blank => false
+      = f.input :board, :hint => 'If not in above list', :as => :string 
       = f.input :subject_id, :label => 'Subject', :as => :select, 
                 :collection => Subject.all, :include_blank => false
       = f.input :klass, :label => 'Class', :as => :select, 

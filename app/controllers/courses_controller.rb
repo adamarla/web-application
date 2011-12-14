@@ -22,9 +22,16 @@ class CoursesController < ApplicationController
   end 
 
   def create 
-   new_course = Course.new params[:course] 
-   status = new_course.save ? :ok : :bad_request 
-   head status
+   board_name = params[:course].delete :board 
+   unless board_name.empty? 
+     board = Board.where(:name => board_name).first 
+     board = board.nil? ? Board.new(:name => board_name) : board 
+     board.save if board.new_record? # Have to save board first else @course.board_id = nil
+     @course = board.courses.new params[:course]
+   else  
+     @course = Course.new params[:course] 
+   end 
+   @course.save ? respond_with(@course) : head(:bad_request) 
   end 
 
   def list
