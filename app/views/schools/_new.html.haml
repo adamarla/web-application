@@ -1,0 +1,19 @@
+
+#new-school.clear-after-submit
+  %legend
+    %span.target= "Quick Add"
+    %span.operation= "School"
+  = semantic_form_for :school, :remote => true, :url => school_path do |f| 
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Create", :name => "commit"}
+
+    = f.inputs do 
+      = f.input :name 
+      = f.input :tag
+      = f.input :street_address, :label => "Address" 
+      = f.input :city
+      = f.input :state, :as => :select, :collection => ['DL', 'MH', 'HR','PB','RJ']
+      = f.input :zip_code 
+      = f.input :phone, :label => 'Phone #'
+      = semantic_fields_for :account do |a| 
+        = f.input :email, :hint => "Will be used for logging in"

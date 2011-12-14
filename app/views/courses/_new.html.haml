@@ -1,0 +1,14 @@
+
+#new-course.new-entity.close-on-submit
+  = semantic_form_for :course, :remote => true, :url => course_path do |f| 
+    = f.inputs do 
+      = f.input :name 
+      = f.input :board_id, :label => 'Board', :as => :select, 
+                :collection => Board.all, :include_blank => false
+      = f.input :subject_id, :label => 'Subject', :as => :select, 
+                :collection => Subject.all, :include_blank => false
+      = f.input :klass, :label => 'Class', :as => :select, 
+                :collection => [*9..12], :include_blank => false
+
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Add", :name => "commit"}

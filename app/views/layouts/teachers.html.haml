@@ -1,0 +1,19 @@
+!!!5
+
+%html{html_attrs}
+  %head 
+    %title Teacher's Console
+    = stylesheet_link_tag "application"
+    = javascript_include_tag "application"
+    -# = javascript_include_tag :defaults
+    = csrf_meta_tag
+  
+  %body 
+    - if current_account
+      %a#link-logout{ :href => '/logout' } Sign Out
+    - else 
+      %a#link-login{ :href => '/login' } Sign In
+    
+    = yield
+  
+

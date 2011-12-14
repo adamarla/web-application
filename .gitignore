@@ -1,24 +1,8 @@
-
-# Ignore everything, everywhere EXCEPT files written by the user, namely: 
-#	1. question.tex 
-#	2. Any .gnuplot files ( but not generated .table files )
-#	3. Makefiles ( obviously )
-
-*.dvi
-*.ps
-*.pdf
-*.aux
-*.log
-*.table
-*.out
-*.tex
-!question.tex
-
-session/preview/session-*
-session/staging/session-*
-
-#!session/*/README 
-#!session/staging/Makefile
-
-*.swp
-*.jpeg
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/
+.sass-cache/
+.redcar/
+config/database.yml
+public/assets

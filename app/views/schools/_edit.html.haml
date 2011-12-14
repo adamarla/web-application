@@ -1,0 +1,18 @@
+
+#edit-school
+  %legend
+    %span.target= "Quick Edit"
+    %span.operation= "School"
+  = semantic_form_for :school, :remote => true, :url => '/school', :method => :put do |f| 
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Update", :name => "commit"}
+
+    = f.inputs do 
+      = f.input :name, :input_html => { :marker => :name } 
+      = f.input :street_address, :label => "Address", :input_html => { :marker => :street_address } 
+      = f.input :city, :input_html => { :marker => :city}
+      = f.input :state, :as => :select, :collection => ['DL', 'MH', 'HR','PB','RJ'], :input_html => { :marker => :state}
+      = f.input :zip_code, :input_html => { :marker => :zip_code} 
+      = f.input :phone, :label => 'Phone #', :input_html => { :marker => :phone}
+      = semantic_fields_for :account do |a| 
+        = a.input :active, :as => :boolean, :input_html => { :marker => :active}
