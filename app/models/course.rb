@@ -31,15 +31,15 @@ class Course < ActiveRecord::Base
             :numericality => {:only_integer => true, :greater_than => 0}
   validates :subject_id, :board_id, :presence => true
 
-  scope :for_klass, lambda { |g| (g.nil? || g[:klass].empty?) ? 
+  scope :for_klass, lambda { |g| (g.nil? || g[:klass].blank?) ? 
                              where('klass IS NOT NULL') : 
                              where(:klass => g[:klass]) } 
 
-  scope :for_subject, lambda { |g| (g.nil? || g[:subject].empty?) ? 
+  scope :for_subject, lambda { |g| (g.nil? || g[:subject].blank?) ? 
                                where('subject_id IS NOT NULL') : 
                                where(:subject_id => g[:subject]) }
 
-  scope :in_board, lambda { |g| (g.nil? || g[:board].empty?) ? 
+  scope :in_board, lambda { |g| (g.nil? || g[:board].blank?) ? 
                              where('board_id IS NOT NULL') : 
                              where(:board_id => g[:board]) } 
 
