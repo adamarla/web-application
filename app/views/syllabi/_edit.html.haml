@@ -1,0 +1,43 @@
+
+-# This form lists out *all* specific topics, grouped by broad-topics
+-# in *one* 2-column form. Each row in each column represents one 
+-# specific topic in the following structure : 
+-# 
+-#  #syllabi-edit-megaform 
+-#    <div class="label large left">Calculus</div>  
+-#    <div marker=" {broad_topic_id} "> 
+-#      <input type='checkbox'/> 
+-#      <div class="label small left">Area under the Curve</div> 
+-#      <select> 
+-#        <option> 
+-#      </select>
+-# 
+-# The form is rendered in virginal form initially - that is - with none of the
+-# checkboxes checked and none of the drop-downs selected. Thereafter information
+-# about the syllabi for the last selected course is loaded (via AJAX) and the
+-# display updated
+
+
+- categories = BroadTopic.order(:name).all 
+
+#edit-syllabi-megaform.mega-form
+  = form_tag '/syllabus', :method => :put, :remote => true do |f| 
+    = submit_tag "Update"
+    = trojan_horse_for :course_id
+
+    #dump
+      - categories.each do |category| 
+        .headings 
+          .label.large.left.full-width= "#{category.name}"
+          = nofrills_checkbox :float => :right 
+
+        - topics = SpecificTopic.where(:broad_topic_id => category.id).order(:name)
+        - topics.each do |topic| 
+          %div{ :marker => "#{topic.id}" }
+            %div 
+              = nofrills_checkbox 
+              .label.small= "#{topic.name}"
+            = drop_down_menu_for :difficulty, :float => :right, :disabled => true,
+                                 :include_blank => false, :name => "syllabi[#{topic.id}]"
+    #first.column.left 
+    #second.column.left

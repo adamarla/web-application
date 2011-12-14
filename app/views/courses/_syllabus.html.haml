@@ -1,0 +1,14 @@
+
+- columns = {:broad_topic => :regular, :specific_topic => :wide}
+
+#syllabus.summary-table.left
+  .table 
+    .headings 
+      .row 
+        - columns.each do |title, width| 
+          - if title != :notitle 
+            .cell{ :class => "#{width.to_s}" }= "#{title.to_s.humanize}"
+          - else 
+            .cell{ :class => "#{width.to_s}" }= " "
+    .data.clear-before-show.empty-on-putback 
+

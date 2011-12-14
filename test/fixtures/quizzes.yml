@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: quizzes
+#
+#  id            :integer         not null, primary key
+#  teacher_id    :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#  uid           :string(255)
+#  num_students  :integer
+#  num_questions :integer
+#
+
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  teacher_id: 1
+
+two:
+  teacher_id: 1

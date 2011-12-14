@@ -1,0 +1,16 @@
+
+-# Ordinarily, when we get a list of elements as JSON, we render it
+-# as a list of : 
+-#   1. a radio-button 
+-#   2. with some accompanying text 
+-# 
+-# However, there are times when radio-buttons need to be replaced with 
+-# checkboxes to allow inclusion of multiple DB records in the next action.
+-# The next action is usually some sort of form submission. And when its
+-# going to be a form submission, we first make the form
+
+#studygroups-list.multi-select.selection.full-width.left
+  = form_tag '/study_group', :method => :put, :remote => true do |f| 
+    = submit_tag "Update"
+    .data.clear-before-show.empty-on-putback 
+

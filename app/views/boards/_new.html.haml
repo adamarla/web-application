@@ -1,0 +1,15 @@
+
+- new_board = Board.new 
+
+#new-board-form.close-on-submit
+  = semantic_form_for :board, :url => board_path, :remote => true do |f| 
+    = f.inputs do 
+      = f.input :name 
+
+    %a#new-course-link.link-within-form{ :href => '#'}= "Add Course"
+    .appendable{ :next => 0 }
+      
+    .submit-buttons
+      %input{:type => :submit, :role => :button, :value => "Add", :name => "commit"}
+    
+

@@ -1,0 +1,37 @@
+# == Schema Information
+#
+# Table name: graded_responses
+#
+#  id            :integer         not null, primary key
+#  quiz_id       :integer
+#  question_id   :integer
+#  student_id    :integer
+#  index_in_quiz :integer
+#  on_page       :integer
+#  grade_id      :integer
+#  scanned_image :string(255)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  examiner_id   :integer
+#  contested     :boolean         default(FALSE)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  quiz_id: 1
+  question_id: 1
+  student_id: 1
+  index_in_quiz: 1
+  on_page: 1
+  grade: 1
+  scanned_image: MyString
+
+two:
+  quiz_id: 1
+  question_id: 1
+  student_id: 1
+  index_in_quiz: 1
+  on_page: 1
+  grade: 1
+  scanned_image: MyString

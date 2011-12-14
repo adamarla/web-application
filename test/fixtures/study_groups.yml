@@ -1,0 +1,23 @@
+# == Schema Information
+#
+# Table name: study_groups
+#
+#  id         :integer         not null, primary key
+#  school_id  :integer
+#  klass      :integer
+#  section    :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  school_id: 1
+  grade: 1
+  section: MyString
+
+two:
+  school_id: 1
+  grade: 1
+  section: MyString

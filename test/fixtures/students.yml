@@ -1,0 +1,27 @@
+# == Schema Information
+#
+# Table name: students
+#
+#  id             :integer         not null, primary key
+#  guardian_id    :integer
+#  school_id      :integer
+#  first_name     :string(255)
+#  last_name      :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  study_group_id :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  parent_id: 1
+  school_id: 1
+  first_name: MyString
+  last_name: MyString
+
+two:
+  parent_id: 1
+  school_id: 1
+  first_name: MyString
+  last_name: MyString
