@@ -27,17 +27,18 @@
 
     #dump
       - categories.each do |category| 
-        .headings 
-          .label.large.left.full-width= "#{category.name}"
-          = nofrills_checkbox :float => :right 
+        .broad-topic
+          .heading
+            .label.large.left.full-width= "#{category.name}"
+            = nofrills_checkbox :float => :right 
 
-        - topics = SpecificTopic.where(:broad_topic_id => category.id).order(:name)
-        - topics.each do |topic| 
-          %div{ :marker => "#{topic.id}" }
-            %div 
-              = nofrills_checkbox 
-              .label.small= "#{topic.name}"
-            = drop_down_menu_for :difficulty, :float => :right, :disabled => true,
-                                 :include_blank => false, :name => "syllabi[#{topic.id}]"
+          - topics = SpecificTopic.where(:broad_topic_id => category.id).order(:name) 
+          - topics.each do |topic| 
+            .specific-topic{ :marker => "#{topic.id}" }
+              .heading
+                = nofrills_checkbox 
+                .label.small= "#{topic.name}"
+              = drop_down_menu_for :difficulty, :float => :right, :disabled => true,
+                                   :include_blank => false, :name => "syllabi[#{topic.id}]"
     #first.column.left 
     #second.column.left

@@ -158,7 +158,7 @@ function arrangeDumpIntoColumns(id) {
   var nColumns = $(startPoint).children('.column').length ;
   var maxWidth = (parentWidth / nColumns) ;
   var columnWidth = maxWidth * 0.90 ; // Just to be safe, use 90% of available width
-  var perColumn = (nToArrange / nColumns) + 1;
+  var perColumn = (nToArrange / nColumns) ; 
   var index = 0 ;
 
   // alert(nColumns + ', ' + perColumn) ;
