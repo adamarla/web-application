@@ -6,3 +6,4 @@ tmp/
 .redcar/
 config/database.yml
 public/assets
+*.swp
