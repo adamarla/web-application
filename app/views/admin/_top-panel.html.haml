@@ -1,8 +1,13 @@
 
 %ul.no-bullets
   = main_link :for => :schools, :with => {:panels => {:middle => "#new-student", :right => "#new-teacher"}} 
-  = main_link :for => :courses, :with => {:panels => {:wide => "#edit-syllabi-megaform"}} 
-  = main_link :for => :yardsticks, :with => {:panels => {:middle => '#edit-yardstick'}}
+
+  = main_link :for => :courses, :with => {:panels => {:wide => "#edit-syllabi-megaform"},
+                                          :radio_urls => {:side => 'course.json?id='} } 
+
+  = main_link :for => :yardsticks, :with => {:panels => {:middle => '#edit-yardstick'}, 
+                                             :radio_urls => {:side => 'yardstick.json?id='} }
+
   = main_link :for => :examiners, :with => {:panels => {:middle => '#new-examiner'}}
   = main_link :for => :logout, :href => "/logout", :dynamic => false
 

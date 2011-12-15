@@ -31,6 +31,7 @@ $( function() {
       // First, clear any previous data
       $(this).find('.clear-before-show').each( function() { $(this).empty() ; } ) ;
       displayCoursesListInSidePanel( json.courses ) ;
+      resetRadioUrls('#courses-link') ;
     } 
   }) ;
 

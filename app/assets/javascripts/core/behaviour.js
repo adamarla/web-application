@@ -112,7 +112,6 @@ $( function() {
         existingControls.appendTo('#toolbox') ;
         newControls.appendTo( $('#minor-links') );
       } 
-
     }) ; 
 
     /*
