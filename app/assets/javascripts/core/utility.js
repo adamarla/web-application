@@ -58,4 +58,36 @@ function refreshView( linkId ) {
   }) ;
 } 
 
+function setUrlOnRadiosIn( panelId, url ) { 
+  $(panelId).find('input[type="radio"][marker]').each( function() {
+     var marker = $(this).attr('marker') ;
+
+     $(this).attr('url', url + marker) ;
+  }) ;
+} 
+
+/*
+   If a #major or a #minor link has [side|middle|right|wide]-radio-url attribute,
+   then the 'url' attribute for all radio-buttons in that panel should get 
+   updated using the radio's marker attribute 
+
+   Barring some very basic sanity checks, it is not possible to guarantee that 
+   each radio button within a panel deserves a url attribute. The assumption 
+   is that you know what is in the panel and understand how each radio-button 
+   is supposed to behave on-click ( see next binding )
+*/ 
+
+function resetRadioUrls( linkId ) {
+  var link = $(linkId) ; 
+
+  $.each(['side','middle','right','wide'], function(index, value) {
+    var attr = value + '-radio-url' ; // Ex : right-radio-url 
+    var panel = '#' + value + '-panel' ; // Ex : #side-panel
+    var url = link.attr(attr) ;
+
+    if (url == null) return true ;
+    setUrlOnRadiosIn( panel, url ) ;
+  }) ;
+}
+
 

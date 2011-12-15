@@ -42,30 +42,30 @@ module ApplicationHelper
 
          panels = with.blank? ? {} : with[:panels] 
          panels = panels.merge( { :side => "##{plural}-summary" } )
-         if (with.blank? || with[:controls].blank?) 
-           controls = "##{singular}-controls"
-         else 
-           controls = with[:controls]
-         end 
+         controls = (with.blank? || with[:controls].blank?) ? "##{singular}-controls" : with[:controls]
+         radio_urls = (with.blank? || with[:radio_urls].blank?) ? {} : with[:radio_urls]
       else 
          panels = {} 
          controls = nil 
+         radio_urls = {} 
       end 
     elsif type == :minor 
       class_attr = 'minor-link'
       panels = with.blank? ? {} : with.delete(:panels) 
-      controls = with.blank? ? nil : with.delete(:controls)
+      controls = nil # minor-links cannot load any controls
       label = options[:label].blank? ? name : options[:label]
+      radio_urls = (with.blank? || with[:radio_urls].blank?) ? {} : with[:radio_urls]
     end 
-    
-    side = panels[:side]
-    middle = panels[:middle]
-    right = panels[:right]
-    wide = panels[:wide]
 
+    
     link = link_to label.humanize, href, :id => "#{name}-link", :class => class_attr, 
-                               :side => side, :middle => middle, :right => right, 
-                               :wide => wide, 'load-controls' => controls
+                               :side => panels[:side], :middle => panels[:middle], 
+                               :right => panels[:right], :wide => panels[:wide], 
+                               'load-controls' => controls, 
+                               'side-radio-url' => radio_urls[:side], 
+                               'middle-radio-url' => radio_urls[:middle], 
+                               'right-radio-url' => radio_urls[:right], 
+                               'wide-radio-url' => radio_urls[:wide]
 
     return content_tag(:li, link, :id => "#{name}-anchor") 
   end 

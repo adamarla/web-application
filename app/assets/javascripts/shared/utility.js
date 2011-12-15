@@ -254,8 +254,7 @@ function createOneRadioColumnForX (data, X, url) {
        5. Set 'marker' attribute on the radio button
    */ 
 
-   var onClick = (url == undefined) ? (X + '.json?id=' + x['id']) : 
-                                 (url + '.json?id=' + x['id']) ;
+   var onClick = (url == undefined) ? null : (url + '.json?id=' + x['id']) ;
 
    radio.attr('url', onClick) ; // Example : X = 'school' => 'url' => school.json?id=4
    radio.attr('marker', x['id']) ;
