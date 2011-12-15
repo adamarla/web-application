@@ -1,6 +1,6 @@
 class TeachersController < ApplicationController
-  respond_to :json
   before_filter :authenticate_account!
+  respond_to :json
 
   def create 
     school = School.find params[:id] 
