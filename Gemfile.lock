@@ -34,6 +34,13 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
     cancan (1.6.7)
+    coffee-rails (3.1.1)
+      coffee-script (>= 2.2.0)
+      railties (~> 3.1.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.1.2)
     devise (1.5.0)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.0.3)
@@ -129,6 +136,7 @@ PLATFORMS
 DEPENDENCIES
   annotate (= 2.4.0)
   cancan
+  coffee-rails (~> 3.1.0)
   devise
   formtastic
   haml
