@@ -1,18 +1,18 @@
 
-emptyMe = (node) -> node.empty() 
+emptyMe = (node) -> node.empty()
 
-putBack = (node) -> 
-  node = node.detach() 
+putBack = (node) ->
+  node = node.detach()
   node.appendTo '#toolbox'
 
 clearPanel = (id, moveAlso = true) ->
-  me = $(id).children().first() 
+  me = $(id).children().first()
   return if me.length is 0
    ###
-     If 'me' has any data under a <div class="data empty-on-putback"> within its 
-     hierarchy, then empty that data first. Note, that it is assumed that 
-     the emptied out data can re-got from an AJAX query. In other words, 
-     if some data is too valuable to lose, then *do not* put it under 
+     If 'me' has any data under a <div class="data empty-on-putback"> within its
+     hierarchy, then empty that data first. Note, that it is assumed that
+     the emptied out data can re-got from an AJAX query. In other words,
+     if some data is too valuable to lose, then *do not* put it under
      .data.empty-on-putback
    ###
 
@@ -20,94 +20,95 @@ clearPanel = (id, moveAlso = true) ->
   putBack me if moveAlso is true
 
 
-window.refreshView = (linkId) -> 
-  link = $('#' + linkId) 
+window.refreshView = (linkId) ->
+  link = $('#' + linkId)
 
-  for type in ['side', 'middle', 'right', 'wide'] 
+  for type in ['side', 'middle', 'right', 'wide']
     needed = link.attr type
     target = '#' + type + '-panel'
-    
-    continue if link.hasClass('minor-link') and needed is 'side' 
-    loaded = $(target).children().first() 
-    continue if loaded is $(needed) 
-    
+
+    continue if link.hasClass('minor-link') and needed is 'side'
+    loaded = $(target).children().first()
+    continue if loaded is $(needed)
+
     clearPanel target
 
-    if not needed?  
-      $(target).addClass('hidden') 
-    else 
-      $(target).removeClass('hidden') 
+    if not needed?
+      $(target).addClass('hidden')
+    else
+      $(target).removeClass('hidden')
       $(needed).appendTo(target).hide().fadeIn('slow')
 
-setUrlOn = (radio, url) -> 
+setUrlOn = (radio, url) ->
   radio.attr 'url', (url + radio.attr 'marker')
 
-resetRadiosUrlsIn = (panel, url) -> 
+resetRadiosUrlsIn = (panel, url) ->
   setUrlOn radio for radio in $(panel).find 'input[type="radio"]' when radio.attr 'marker' isnt null
 
-window.editFormAction = (formId, url, method = 'post') -> 
+window.editFormAction = (formId, url, method = 'post') ->
   form = $(formId).find 'form:first'
-  if form.length is 1 
+  if form.length is 1
     form.attr 'action', url
-    form.attr 'method', method 
+    form.attr 'method', method
 
-fillValue = (value, field) -> 
-  field.val value 
+fillValue = (value, field) ->
+  field.val value
   field.prop 'checked', value if field.attr 'type' is 'checkbox'
 
-window.loadFormWithJsonData = (form, data) -> 
+window.loadFormWithJsonData = (form, data) ->
   ###
    This function assumes that the JSON data is flat - that is, it has no nesting
    So, data = { x:a, y:b .. } is fine but data = { x:a, y: {z:d} .. } is not
-   Also, note that in each formtastic form this function is called on, we have 
+   Also, note that in each formtastic form this function is called on, we have
    added a 'marker' attribute = DB field-name for each input. The input field gets
    value = data[marker] if it has a marker
   ###
-  alert data.keys
-  fillValue(data[marker], input) for input in form.find('input,textarea,select') when (input.attr('marker') isnt null) and (data[marker] isnt null)
+  for input in form.find 'input,textarea,select'
+    marker = input.attr 'marker'
+    fillValue data[marker], input if (data[marker] isnt null and marker isnt null)
 
-window.clearAllFieldsInForm = (form) -> 
+window.clearAllFieldsInForm = (form) ->
   fillValue '', input for input in form.find 'input,select,textarea'
 
-setBooleanPropOn = (node, prop, value = false) -> 
+setBooleanPropOn = (node, prop, value = false) ->
   node.prop prop, value
-  
-window.uncheckAllCheckBoxesWithin = (element) -> 
+
+window.uncheckAllCheckBoxesWithin = (element) ->
   setBooleanPropOn checkbox, 'checked', false for checkbox in element.find 'input[type="checkbox"]'
 
-window.uncheckAllRadioButtonsWithin = (element) -> 
+window.uncheckAllRadioButtonsWithin = (element) ->
   setBooleanPropOn radio, 'checked', false for radio in element.find 'input[type="radio"]'
 
-window.disableAllSelectsWithin = (element) -> 
+window.disableAllSelectsWithin = (element) ->
   setBooleanPropOn select, 'disabled', true for select in element.find 'select'
-  
+
 ###
   This function assumes that for whichever model the returned json is responds to
-  the following 2 methods : name and id 
+  the following 2 methods : name and id
 ###
- 
 
-window.selectionWithRadio = (json, key) -> 
-  data = json[key] 
-  clone = $('#toolbox .radio-column:first').clone() 
+
+window.selectionWithRadio = (json, key) ->
+  data = json[key]
+  clone = $('#toolbox .radio-column:first').clone()
   radio = clone.children '.radio:first'
   label = clone.children '.content:first'
 
   label.text data['name']
-  radio.attr 'marker', data['id'] 
+  radio.attr 'marker', data['id']
   setBooleanPropOn radio,'checked', false
-  if url? 
-    url = url + '.json?id=' + data['id'] 
+  if url?
+    url = url + '.json?id=' + data['id']
     radio.attr 'url', url
-  return clone 
+  return clone
 
 window.selectionWithCheckbox = (json, key, name = 'checked') ->
-  data = json[key] 
-  clone = $('#toolbox .checkbox-column:first').clone() 
+  data = json[key]
+  clone = $('#toolbox .checkbox-column:first').clone()
   checkBox = clone.children '.checkbox:first'
   label = clone.children '.content:first'
 
-  label.text data['name'] 
-  checkBox.attr 'marker', data['id'] 
+  label.text data['name']
+  checkBox.attr 'marker', data['id']
   setBooleanPropOn checkBox, 'checked', data['checked']
-  return clone 
+  return clone
