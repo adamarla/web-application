@@ -4,8 +4,8 @@ function displayJson(jsonArray, where, key, withRadioButtons)
    withRadioButtons = (withRadioButtons == undefined) ? true : withRadioButtons ;
 
    $.each(jsonArray, function(index, data) {
-     var clone = (withRadioButtons) ? createOneRadioColumnForX(data, key) : 
-                                      createOneCheckBoxColumnForX(data, key) ;
+     var clone = (withRadioButtons) ? selectionWithRadio(data, key) : 
+                                      selectionWithCheckbox(data, key) ;
      if (index % 2 == 1) clone.addClass('colored') ;
      clone.appendTo(where).hide().fadeIn('slow') ;
    }) ;
@@ -13,7 +13,7 @@ function displayJson(jsonArray, where, key, withRadioButtons)
 
 function displaySchoolListInSidePanel( schools ) {
   $.each( schools, function(index, data) {
-    var clone = createOneRadioColumnForX(data, 'school') ;
+    var clone = selectionWithRadio(data, 'school') ;
     if (index % 2 == 1) clone.addClass('colored') ;
     clone.appendTo('#schools-summary > .data:first').hide().fadeIn('slow') ;
   }) ;
@@ -21,7 +21,7 @@ function displaySchoolListInSidePanel( schools ) {
 
 function displayCoursesListInSidePanel( courses ) {
   $.each( courses, function(index, data) {
-    var clone = createOneRadioColumnForX(data, 'course') ;
+    var clone = selectionWithRadio(data, 'course') ;
     if (index % 2 == 1) clone.addClass('colored') ;
     clone.appendTo('#courses-summary > .data:first').hide().fadeIn('slow') ;
   }) ;
@@ -29,7 +29,7 @@ function displayCoursesListInSidePanel( courses ) {
 
 function displayTeachersListInX( teachers, X ) {
   $.each( teachers, function(index, data) {
-    var clone = createOneRadioColumnForX(data, 'teacher', 'teachers/roster') ;
+    var clone = selectionWithRadio(data, 'teacher', 'teachers/roster') ;
     if (index % 2 == 1) clone.addClass('colored') ;
     clone.appendTo( X + ' > .data:first').hide().fadeIn('slow') ;
   }) ; 
@@ -39,8 +39,8 @@ function displayStudyGroups( sections, X, checkBoxes) {
   checkBoxes = (checkBoxes == undefined) ? false : checkBoxes ;
 
   $.each(sections, function(index, data) {
-    var clone = (checkBoxes) ? createOneCheckBoxColumnForX(data, 'section') : 
-                               createOneRadioColumnForX(data, 'section') ;
+    var clone = (checkBoxes) ? selectionWithCheckbox(data, 'section') : 
+                               selectionWithRadio(data, 'section') ;
     if (index % 2 == 1) clone.addClass('colored') ;
     clone.appendTo(X).hide().fadeIn('slow') ;
   }) ;

@@ -8,12 +8,13 @@ putBack = (node) ->
 clearPanel = (id, moveAlso = true) ->
   me = $(id).children().first() 
   return if me.length is 0
-
-    # If 'me' has any data under a <div class="data empty-on-putback"> within its 
-    # hierarchy, then empty that data first. Note, that it is assumed that 
-    # the emptied out data can re-got from an AJAX query. In other words, 
-    # if some data is too valuable to lose, then *do not* put it under 
-    # .data.empty-on-putback
+   ###
+     If 'me' has any data under a <div class="data empty-on-putback"> within its 
+     hierarchy, then empty that data first. Note, that it is assumed that 
+     the emptied out data can re-got from an AJAX query. In other words, 
+     if some data is too valuable to lose, then *do not* put it under 
+     .data.empty-on-putback
+   ###
 
   emptyMe node for node in me.find('.data.empty-on-putback')
   putBack me if moveAlso is true
@@ -44,3 +45,69 @@ setUrlOn = (radio, url) ->
 resetRadiosUrlsIn = (panel, url) -> 
   setUrlOn radio for radio in $(panel).find 'input[type="radio"]' when radio.attr 'marker' isnt null
 
+window.editFormAction = (formId, url, method = 'post') -> 
+  form = $(formId).find 'form:first'
+  if form.length is 1 
+    form.attr 'action', url
+    form.attr 'method', method 
+
+fillValue = (value, field) -> 
+  field.val value 
+  field.prop 'checked', value if field.attr 'type' is 'checkbox'
+
+window.loadFormWithJsonData = (form, data) -> 
+  ###
+   This function assumes that the JSON data is flat - that is, it has no nesting
+   So, data = { x:a, y:b .. } is fine but data = { x:a, y: {z:d} .. } is not
+   Also, note that in each formtastic form this function is called on, we have 
+   added a 'marker' attribute = DB field-name for each input. The input field gets
+   value = data[marker] if it has a marker
+  ###
+  alert data.keys
+  fillValue(data[marker], input) for input in form.find('input,textarea,select') when (input.attr('marker') isnt null) and (data[marker] isnt null)
+
+window.clearAllFieldsInForm = (form) -> 
+  fillValue '', input for input in form.find 'input,select,textarea'
+
+setBooleanPropOn = (node, prop, value = false) -> 
+  node.prop prop, value
+  
+window.uncheckAllCheckBoxesWithin = (element) -> 
+  setBooleanPropOn checkbox, 'checked', false for checkbox in element.find 'input[type="checkbox"]'
+
+window.uncheckAllRadioButtonsWithin = (element) -> 
+  setBooleanPropOn radio, 'checked', false for radio in element.find 'input[type="radio"]'
+
+window.disableAllSelectsWithin = (element) -> 
+  setBooleanPropOn select, 'disabled', true for select in element.find 'select'
+  
+###
+  This function assumes that for whichever model the returned json is responds to
+  the following 2 methods : name and id 
+###
+ 
+
+window.selectionWithRadio = (json, key) -> 
+  data = json[key] 
+  clone = $('#toolbox .radio-column:first').clone() 
+  radio = clone.children '.radio:first'
+  label = clone.children '.content:first'
+
+  label.text data['name']
+  radio.attr 'marker', data['id'] 
+  setBooleanPropOn radio,'checked', false
+  if url? 
+    url = url + '.json?id=' + data['id'] 
+    radio.attr 'url', url
+  return clone 
+
+window.selectionWithCheckbox = (json, key, name = 'checked') ->
+  data = json[key] 
+  clone = $('#toolbox .checkbox-column:first').clone() 
+  checkBox = clone.children '.checkbox:first'
+  label = clone.children '.content:first'
+
+  label.text data['name'] 
+  checkBox.attr 'marker', data['id'] 
+  setBooleanPropOn checkBox, 'checked', data['checked']
+  return clone 

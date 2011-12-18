@@ -4,6 +4,7 @@ Copy element X to Y. This needs to be done when - for example - one
 needs to make a search box by picking elements from the toolbox
 */ 
 
+/*
 function copyXtoY(X,Y) { // X,Y are CSS-selectors
   var source = $(X) ; 
   var target = $(Y) ;
@@ -25,6 +26,8 @@ function editFormAction(formId, url, method) {
   }
 } 
 
+*/
+/*
 function alignVertical( radioButtons ) { 
   var bs = $(radioButtons).buttonset() ;
 
@@ -41,9 +44,10 @@ function alignVertical( radioButtons ) {
      $(this).width(max_w) ;
   }) ;
 } 
+*/
 
-function loadFormWithJsonData( form, data ){ 
   /* 
+function loadFormWithJsonData( form, data ){ 
      This function tries to fill any formtastic form with any JSON data by iterating 
      over the form, matching keys in the JSON with field markers in the form
 
@@ -51,7 +55,6 @@ function loadFormWithJsonData( form, data ){
      not have any nesting. So, 'data' like below is OK : 
        { x:y, a:b, m:n ..... } 
      But something like {x:y, a:{b:c, d:e}, m:n ... } is not
-  */ 
 
   var inputs = form.find('fieldset.inputs ol li') ;
 
@@ -100,6 +103,7 @@ function clearAllFieldsInForm( form ) {
     input.val('') ;
   }) ; 
 }
+  */ 
 
 
   /* 
@@ -119,6 +123,7 @@ function clearAllFieldsInForm( form ) {
     For now, I am not taking the <label>. Only its sibling input element
   */ 
 
+/*
   function getInputElementFromToolBox( toolId ) { // toolId = CSS selector
     var child = $(toolId).children().first() ; 
     var me = null ;
@@ -134,14 +139,14 @@ function clearAllFieldsInForm( form ) {
     } 
     return me ;
   } 
+	*/
 
-function replaceDataPanelContentWith( newStuff ) {
   /* 
+function replaceDataPanelContentWith( newStuff ) {
   Move any previous table in #data-panel to #tables.hidden
   and then the 'newStuff' to #data-panel. However, this time, empty 
   the first table first before moving it to #tables.hidden. We don't 
   want any residual data for next time
-  */ 
 
   if (newStuff == null) return false ;
 
@@ -154,13 +159,13 @@ function replaceDataPanelContentWith( newStuff ) {
   } 
   $(newStuff).appendTo('#data-panel').hide().fadeIn('slow') ;
 } // end  
+  */ 
 
 
-function replaceControlPanelContentWith( newStuff ) {
   /*
+function replaceControlPanelContentWith( newStuff ) {
     Move any previous controls in #control-panel to #controls.hidden.
     Then move 'controls' to #control-panel w/ fade-in effect
-  */ 
   if (newStuff == null) return false ; 
 
   var previous = $('#control-panel').children().first() ;
@@ -206,16 +211,19 @@ function disableAllSelectsWithin( element ) {
     $(this).prop('disabled', true) ;
   }) ;
 } 
+  */ 
 
+/*
 function displayMegaForm(id) {
   var formExpr = id + ' > form' ;
 
   replaceDataPanelContentWith(id) ;
   arrangeDumpIntoColumns(formExpr) ;
 } 
+*/
 
-function createOneRadioColumnForX (data, X, url) {
   /*
+function createOneRadioColumnForX (data, X, url) {
     The radio-one-column is a reusable element in the #toolbox
     that is essentially a radio button paired with a <div> that serves
     as the label. Refer : toolbox/radio_one_column.html.haml 
@@ -235,13 +243,11 @@ function createOneRadioColumnForX (data, X, url) {
     It also assumes that further details for an individual record can be got 
     by an AJAX call of the form '<X>.json?id=<something>'
 
-  */ 
    var x = data[X] ; // individual record as a hash 
    var clone = $('#toolbox .radio-column:first').clone() ;
    var radio = clone.children('.radio:first') ;
    var label = clone.children('.content:first') ;
 
-   /*
      Refer toolbox/radio_one_column.haml
 
      We need to set the following on the newly cloned element : 
@@ -252,7 +258,6 @@ function createOneRadioColumnForX (data, X, url) {
        3. 'colored' attribute on every alternate row 
        4. Uncheck the radio button
        5. Set 'marker' attribute on the radio button
-   */ 
 
    var onClick = (url == undefined) ? null : (url + '.json?id=' + x['id']) ;
 
@@ -263,9 +268,10 @@ function createOneRadioColumnForX (data, X, url) {
 
    return clone ;
 } 
+   */ 
 
-function createOneCheckBoxColumnForX( data, X, name ) {
   /*
+function createOneCheckBoxColumnForX( data, X, name ) {
     This function is kinda like 'createOneRadioColumnForX' in that it
     clones a pre-defined tool for use someplace else
 
@@ -286,7 +292,6 @@ function createOneCheckBoxColumnForX( data, X, name ) {
     Hence, when creating a clone here for that DB field, one must also take
     into account its 'checked' state. And this means that the DB model must
     respond to an additional method - checked - alongwith .name & .id
-  */ 
 
    if (name == undefined) name = 'checked' ;
 
@@ -307,4 +312,5 @@ function createOneCheckBoxColumnForX( data, X, name ) {
   
 }
 
+  */ 
 
