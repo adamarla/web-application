@@ -51,7 +51,7 @@ class TeachersController < ApplicationController
     if current_account
       case current_account.role 
         when :admin
-          @teachers = Teacher.where(:school_id => params[:school_id])
+          @teachers = Teacher.where(:school_id => params[:id])
         when :school 
           @teachers = Teacher.where(:school_id => current_account.loggable.id)
         when :student 
