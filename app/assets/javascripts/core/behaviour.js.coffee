@@ -80,15 +80,32 @@ jQuery ->
           $(sibling).prop 'checked', (if sibling is this then true else false)
 
   ###
-    For links in #control-panel, lay out the #side-panel and any applicable
-    #middle, #right or #side panels. This functionality can be bound at load-time
-    because the contents of #control-panel are fixed
+    For any link in the #control-panel, refresh the view with any applicable
+    #side, #middle, #right or #wide panels. Note that :
+      1. A minor link cannot remove the #side-panel as it has been put in place by
+         a #main-link
+      2. It can, however, update url's for radio-buttons in the #side-panel
+  ###
 
+  $('#control-panel').on 'click', '#main-links a, #minor-links a', ->
+    refreshView $(this).attr 'id'
+    return true if $(this).hasClass 'main-link'
+
+    ###
+      Don't update radio-urls on main-link click. Why ? Because there are no
+      radio-buttons to update ! Clicks on main-links invariably involve an AJAX
+      request for data. That data takes time to come and then some more time
+      before it can be rendered into a list with radio-buttons. One must wait
+      therefore for that process to finish. As this is not the case with
+      #minor-links, those can be processed now
+    ###
+    resetRadioUrlsAsPer $(this)
+
+  ###
     Also, load any #minor-links / controls for the clicked #main-link
   ###
 
   $('#control-panel > #main-links a').click ->
-    refreshView $(this).attr 'id'
     currControls = $('#minor-links').children().first()
     neededControls = $($(this).attr 'load-controls')
 
@@ -96,24 +113,6 @@ jQuery ->
       currControls = currControls.detach()
       currControls.appendTo '#toolbox'
       neededControls.appendTo $('#minor-links')
-
-  ###
-    For #minor-links, refresh the view with any applicable #middle, #right
-    or #wide panels. Note that :
-      1. The #side-panel cannot be touched as it has been put in place by
-         a #main-link
-      2. This binding has to be deferred because the contents of #minor-link
-         are fluid depending on which #main-link was clicked
-  ###
-
-  $('#control-panel').on 'click', '#minor-links a', ->
-    refreshView $(this).attr 'id'
-    for type in ['side', 'middle', 'right', 'wide']
-      url = $(this).attr(type + '-radio-url')
-      continue if url is null
-
-      panel = '#' + type + '-panel'
-      resetRadioUrlsIn panel, url
 
   ###
     For both #main and #minor links, a click should result in some
