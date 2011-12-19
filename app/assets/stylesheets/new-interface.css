@@ -57,30 +57,6 @@ fieldset.inputs li.boolean.input {
   color : white ;
 } 
 
-.main-link:hover { 
-  border-bottom : 3px solid #fd9105;
-} 
-
-/*
-.main-link:active { 
-  -moz-border-radius : 5px ; 
-  border-radius : 5px ;
-  border : 2px solid #fd9105 ;
-} 
-*/
-
-.minor-link:hover { 
-  border-bottom : 3px solid white ; 
-} 
-
-/*
-.minor-link:active { 
-  -moz-border-radius : 5px ; 
-  border-radius : 5px ;
-  border : 2px solid white ; 
-} 
-*/
-
 .minor-link { 
   font-size : 14px ;
   text-align : center ;
