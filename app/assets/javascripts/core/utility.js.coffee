@@ -42,8 +42,8 @@ window.refreshView = (linkId) ->
 setUrlOn = (radio, url) ->
   radio.attr 'url', (url + radio.attr 'marker')
 
-resetRadiosUrlsIn = (panel, url) ->
-  setUrlOn radio for radio in $(panel).find 'input[type="radio"]' when radio.attr 'marker' isnt null
+window.resetRadioUrlsIn = (panel, url) ->
+  setUrlOn $(radio),url for radio in $(panel).find 'input[type="radio"]' when $(radio).attr('marker') isnt null
 
 window.editFormAction = (formId, url, method = 'post') ->
   form = $(formId).find 'form:first'
