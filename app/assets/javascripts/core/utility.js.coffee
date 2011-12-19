@@ -1,5 +1,5 @@
 
-emptyMe = (node) -> node.empty()
+emptyMe = (node) -> $(node).empty()
 
 putBack = (node) ->
   node = node.detach()
@@ -27,7 +27,7 @@ window.refreshView = (linkId) ->
     needed = link.attr type
     target = '#' + type + '-panel'
 
-    continue if link.hasClass('minor-link') and needed is 'side'
+    continue if link.hasClass('minor-link') and type is 'side'
     loaded = $(target).children().first()
     continue if loaded is $(needed)
 
