@@ -108,6 +108,13 @@ jQuery ->
 
   $('#control-panel').on 'click', '#minor-links a', ->
     refreshView $(this).attr 'id'
+    for type in ['side', 'middle', 'right', 'wide']
+      url = $(this).attr(type + '-radio-url')
+      continue if url is null
+
+      panel = '#' + type + '-panel'
+      resetRadioUrlsIn panel, url
+
 
   ###
     Clicking a radio button on any panel should initiate an AJAX request
