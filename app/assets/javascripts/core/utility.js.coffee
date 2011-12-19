@@ -42,8 +42,17 @@ window.refreshView = (linkId) ->
 setUrlOn = (radio, url) ->
   radio.attr 'url', (url + radio.attr 'marker')
 
-window.resetRadioUrlsIn = (panel, url) ->
+resetRadioUrlsIn = (panel, url) ->
   setUrlOn $(radio),url for radio in $(panel).find 'input[type="radio"]' when $(radio).attr('marker') isnt null
+
+window.resetRadioUrlsAsPer = (link) ->
+  if link.hasClass('main-link') or link.hasClass('minor-link')
+    for type in ['side', 'middle', 'right', 'wide']
+      radioUrl = link.attr "#{type}-radio-url"
+      continue if radioUrl is null
+
+      panel = '#' + type + '-panel'
+      resetRadioUrlsIn panel, radioUrl
 
 window.editFormAction = (formId, url, method = 'post') ->
   form = $(formId).find 'form:first'
@@ -112,3 +121,11 @@ window.selectionWithCheckbox = (json, key, name = 'checked') ->
   checkBox.attr 'marker', data['id']
   setBooleanPropOn checkBox, 'checked', data['checked']
   return clone
+
+window.displayJson = (json, where, key, withRadio = true) ->
+  where = if $(where).hasClass 'data' then $(where) else $(where).find('.data:first')
+  for record, index in json
+    clone = if withRadio then selectionWithRadio(record,key) else selectionWithCheckbox(record,key)
+    clone.addClass 'colored' if index % 2 is 1
+    clone.appendTo(where).hide().fadeIn('slow')
+

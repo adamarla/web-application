@@ -1,4 +1,5 @@
 
+/*
 function displayJson(jsonArray, where, key, withRadioButtons) 
 {
    withRadioButtons = (withRadioButtons == undefined) ? true : withRadioButtons ;
@@ -10,6 +11,7 @@ function displayJson(jsonArray, where, key, withRadioButtons)
      clone.appendTo(where).hide().fadeIn('slow') ;
    }) ;
 } 
+*/
 
 function displaySchoolListInSidePanel( schools ) {
   $.each( schools, function(index, data) {
