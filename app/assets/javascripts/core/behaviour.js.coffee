@@ -15,7 +15,7 @@ jQuery ->
 
   ###
     Stylize buttons in forms but not in the #control-panel.
-    The #control-panel is populated with stuff from #controls and 
+    The #control-panel is populated with stuff from #controls and
     styled buttons are too big for that panel
   ###
 
@@ -115,6 +115,20 @@ jQuery ->
       panel = '#' + type + '-panel'
       resetRadioUrlsIn panel, url
 
+  ###
+    For both #main and #minor links, a click should result in some
+    persistent visual feedback suggesting which link was clicked
+  ###
+
+  $('#control-panel').on 'click', '.main-link, .minor-link', ->
+    uncles = $(this).closest('li').siblings()
+
+    for uncle in uncles
+      for cousin in $(uncle).children('a:first')
+        $(cousin).css 'border', 'none'
+
+    $(this).css 'border-bottom', '2px solid #6ca7ab'
+    return true
 
   ###
     Clicking a radio button on any panel should initiate an AJAX request
@@ -166,7 +180,7 @@ jQuery ->
 
   $('.panel:not([id="control-panel"])').on 'submit', 'form', ->
     trojanHorse = $(this).find 'input[trojan="true"]:first'
-    return if trojanHorse.length is 0 
+    return if trojanHorse.length is 0
 
     panel = $(this).closest '.panel'
     marker = if panel.length isnt 0 then panel.attr 'marker' else null
