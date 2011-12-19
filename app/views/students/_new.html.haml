@@ -5,7 +5,6 @@
     %span.operation= "Quick Add"
   = semantic_form_for :student, :remote => true, :url => student_path do |f| 
     = f.inputs :name => :mandatory do 
-      = trojan_horse_for :student
       = f.input :first_name, :label => 'First Name'
       = f.input :last_name, :label => 'Surname'
 

@@ -3,9 +3,7 @@ class StudentsController < ApplicationController
   respond_to :json
 
   def create 
-    school_id = params[:student].delete :marker 
-    school = School.find school_id 
-
+    school = School.find params[:id] 
     head :bad_request if school.nil?
     
     @student = Student.new params[:student]
