@@ -49,7 +49,7 @@ window.resetRadioUrlsAsPer = (link) ->
   if link.hasClass('main-link') or link.hasClass('minor-link')
     for type in ['side', 'middle', 'right', 'wide']
       radioUrl = link.attr "#{type}-radio-url"
-      continue if radioUrl is null
+      continue if not radioUrl?
 
       panel = '#' + type + '-panel'
       resetRadioUrlsIn panel, radioUrl
