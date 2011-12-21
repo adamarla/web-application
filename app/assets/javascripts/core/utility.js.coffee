@@ -72,6 +72,8 @@ window.loadFormWithJsonData = (form, data) ->
    added a 'marker' attribute = DB field-name for each input. The input field gets
    value = data[marker] if it has a marker
   ###
+  form = if typeof form is 'string' then $(form) else form
+
   for input in form.find 'input,textarea,select'
     marker = input.attr 'marker'
     fillValue data[marker], input if (data[marker] isnt null and marker isnt null)
@@ -119,6 +121,7 @@ window.selectionWithCheckbox = (json, key, name = 'checked') ->
 
   label.text data['name']
   checkBox.attr 'marker', data['id']
+  checkBox.attr 'name', "#{name}[#{data['id']}]"
   setBooleanPropOn checkBox, 'checked', data['checked']
   return clone
 
