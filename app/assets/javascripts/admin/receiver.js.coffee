@@ -19,7 +19,7 @@
 jQuery ->
   ###
     AJAX successes the side-panel is supposed to respond to.
-    Note that JS reg-exp matching returns an array of matches - not 
+    Note that JS reg-exp matching returns an array of matches - not
     the first matching sub-string. Hence, we pop the first match.
     That's ok because we know that if there were a match, then there
     would be only one
@@ -70,7 +70,8 @@ jQuery ->
   ###
 
   $('#right-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/teachers\/roster/)
+    matched = settings.url.match(/teachers\/roster/) or
+              settings.url.match(/school\/unassigned-students/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -80,7 +81,9 @@ jQuery ->
     switch matched.pop()
       when 'teachers/roster'
         displayJson json.sections, '#right-panel', 'section', false
-        
+      when 'school/unassigned-students'
+        displayJson json.students, '#right-panel', 'student', false
+
   ###
     AJAX successes the wide-panel is supposed to respond to.
   ###
