@@ -82,15 +82,18 @@ window.clearAllFieldsInForm = (form) ->
   fillValue '', input for input in form.find 'input,select,textarea'
 
 setBooleanPropOn = (node, prop, value = false) ->
-  node.prop prop, value
+  $(node).prop prop, value
 
 window.uncheckAllCheckBoxesWithin = (element) ->
+  element = if typeof element is 'string' then $(element) else element
   setBooleanPropOn checkbox, 'checked', false for checkbox in element.find 'input[type="checkbox"]'
 
 window.uncheckAllRadioButtonsWithin = (element) ->
+  element = if typeof element is 'string' then $(element) else element
   setBooleanPropOn radio, 'checked', false for radio in element.find 'input[type="radio"]'
 
 window.disableAllSelectsWithin = (element) ->
+  element = if typeof element is 'string' then $(element) else element
   setBooleanPropOn select, 'disabled', true for select in element.find 'select'
 
 ###
