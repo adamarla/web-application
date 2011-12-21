@@ -39,19 +39,21 @@ window.refreshView = (linkId) ->
       $(target).removeClass('hidden')
       $(needed).appendTo(target).hide().fadeIn('slow')
 
-setUrlOn = (radio, url) ->
-  url = if url? then (url + radio.attr 'marker') else null
-  radio.attr 'url', url
 
 resetRadioUrlsIn = (panel, url) ->
-  setUrlOn $(radio),url for radio in $(panel).find 'input[type="radio"]' when $(radio).attr('marker') isnt null
+  for radio in $(panel).find 'input[type="radio"]'
+    marker = $(radio).attr 'marker'
+    continue if not marker? 
+
+    if url?
+      url = url.replace /id=\d*/g, "id=#{marker}"
+    $(radio).attr 'url', url
 
 window.resetRadioUrlsAsPer = (link) ->
   if link.hasClass('main-link') or link.hasClass('minor-link')
     for type in ['side', 'middle', 'right', 'wide']
       radioUrl = link.attr "#{type}-radio-url"
-
-      panel = '#' + type + '-panel'
+      panel = "##{type}-panel"
       resetRadioUrlsIn panel, radioUrl
 
 window.editFormAction = (formId, url, method = 'post') ->

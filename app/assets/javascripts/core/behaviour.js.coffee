@@ -136,11 +136,18 @@ jQuery ->
     What that url is - however - is not defined here. That is a property of
     the link and moreover can only be set after the radio-button has been
     put in place - perhaps after an AJAX request
+
+    Moreover, it might be that a radio button has to issue multiple AJAX calls
+    on one click. In that case, the 'url' by the link on the radio is of the 
+    form 'a|b|c...|...', where a,b,c ... are the urls to call
   ###
 
   $('.panel:not([id="control-panel"])').on 'click', 'input[type="radio"]', ->
     url = $(this).attr 'url'
-    $.get url if url isnt null
+    if url isnt null
+      call = url.split '|'
+      for link in call
+        $.get link
 
   ###
     In all panels - other than the #control-panel - clicking on the radio button
