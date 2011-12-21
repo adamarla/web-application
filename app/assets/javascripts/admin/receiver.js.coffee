@@ -41,7 +41,44 @@ jQuery ->
       when 'courses/list'
         displayJson json.courses, '#side-panel', 'course'
         resetRadioUrlsAsPer $('#courses-link')
-  
+
+  ###
+    AJAX successes the middle-panel is supposed to respond to.
+  ###
+
+  $('#middle-panel').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/yardstick\.json/) or
+              settings.url.match(/teachers\/list/)
+    return if matched is null
+
+    json = $.parseJSON xhr.responseText
+    for oldData in $(this).find '.clear-before-show'
+      $(oldData).empty()
+
+    switch matched.pop()
+      when 'teachers/list'
+        displayJson json.teachers, '#middle-panel', 'teacher'
+        resetRadioUrlsAsPer $('#edit-roster-link')
+      when 'yardstick'
+        uncheckAllCheckBoxesWithin '#edit-yardstick'
+        loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
+  ###
+    AJAX successes the right-panel is supposed to respond to.
+  ###
+
+  $('#right-panel').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/teachers\/roster/)
+    return if matched is null
+
+    json = $.parseJSON xhr.responseText
+    for oldData in $(this).find '.clear-before-show'
+      $(oldData).empty()
+
+    switch matched.pop()
+      when 'teachers/roster'
+        displayJson json.sections, '#right-panel', 'section', false
+        
+
 
 ###
 $( function() {
