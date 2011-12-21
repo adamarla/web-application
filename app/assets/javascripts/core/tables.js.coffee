@@ -29,54 +29,14 @@ window.arrangeDumpIntoColumns = (id) ->
 
   parentWidth = startPoint.parent().width()
   nColumns = startPoint.children('.column').length
-  maxWidth = parentWidth/nColumns
-  columnWidth = 0.9*maxWidth
+  columnWidth = 0.9 * (parentWidth / nColumns)
   perColumn = nToArrange / nColumns
 
   for column, m in startPoint.children '.column'
-    $(column).width maxWidth
-    $(column).css 'margin-left', m * maxWidth
+    $(column).width columnWidth
 
     for broadTopic, n in startPoint.children('#dump:first').children('.broad-topic')
       broadTopic = $(broadTopic).detach()
       broadTopic.appendTo $(column)
-      break if n >= perColumn
+      break if n > (perColumn - 1)
 
-
-###
-
-function arrangeDumpIntoColumns(id) { 
-  var startPoint = $(id) ; 
-  var nToArrange = $(startPoint).children('#dump:first').children().length ; 
-
-  if (nToArrange == 0) return ; // empty dump => everything arranged in columns
-
-  var parentWidth = $(startPoint).parent().width() ; 
-  var nColumns = $(startPoint).children('.column').length ;
-  var maxWidth = (parentWidth / nColumns) ;
-  var columnWidth = maxWidth * 0.90 ; // Just to be safe, use 90% of available width
-  var perColumn = (nToArrange / nColumns) ; 
-  var index = 0 ;
-
-  // alert(nColumns + ', ' + perColumn) ;
-
-  $(startPoint).children('.column').each( function() { 
-    var currColumn = $(this) ; 
-    var nArranged = 0 ;
-
-    $(this).width(columnWidth) ;
-    $(this).css('margin-left', index * maxWidth) ;
-
-    $(startPoint).children('#dump:first').children().each( function() {
-      if (nArranged >= perColumn) return false; 
-
-      var me = $(this).detach() ; 
-      me.appendTo(currColumn) ;
-      nArranged += 1 ;
-      // alert(' Ab dekho' ) ;
-    }) ; 
-    // alert(' Broken from loop with nArranged = ' + nArranged) ;
-    $(this).fadeIn('slow') ;
-  }) ; 
-} 
-###
