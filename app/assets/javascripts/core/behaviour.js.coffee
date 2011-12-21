@@ -166,7 +166,7 @@ jQuery ->
 
         if panelId is 'side-panel' or panelId is 'middle-panel'
           for sibling in $(panel).siblings '.panel'
-            continue if panelId is 'middle-panel' and sibling.attr('id') isnt 'right-panel'
+            continue if panelId is 'middle-panel' and $(sibling).attr('id') isnt 'right-panel'
             $(sibling).attr 'marker', marker
 
 
