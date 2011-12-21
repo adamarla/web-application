@@ -233,3 +233,29 @@ jQuery ->
 
     $(this).attr 'action', action
     return true
+
+  ###
+    Submit buttons of forms in .panels can be double-up to provide status 
+    message on the on-going process. Something like, "Working" when they are
+    clicked and "Done!" or "Oops!!" depending on Ajax success or failure
+  ###
+
+  $('.panel:not([id="control-panel"])').on 'submit', '.clear-after-submit form:first', ->
+    button = $(this).find 'input[type="submit"]:first'
+    if button?
+      button.val 'Working'
+  .ajaxSuccess (e,xhr,settings) ->
+    form = $(this).find '.clear-after-submit form:first'
+    if form?
+      if settings.url is form.attr('action')
+        button = $(this).find 'input[type="submit"]:first'
+        if button?
+          button.val 'Done'
+  .ajaxError (e,xhr,settings) ->
+    form = $(this).find '.clear-after-submit form:first'
+    if form?
+      if settings.url is form.attr('action')
+        button = $(this).find 'input[type="submit"]:first'
+        if button?
+          button.val('Oops !')
+    
