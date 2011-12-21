@@ -48,7 +48,8 @@ jQuery ->
 
   $('#middle-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/yardstick\.json/) or
-              settings.url.match(/teachers\/list/)
+              settings.url.match(/teachers\/list/) or
+              settings.url.match(/school\/sections/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -59,6 +60,8 @@ jQuery ->
       when 'teachers/list'
         displayJson json.teachers, '#middle-panel', 'teacher'
         resetRadioUrlsAsPer $('#edit-roster-link')
+      when 'school/sections'
+        displayJson json.sections, '#middle-panel', 'section'
       when 'yardstick'
         uncheckAllCheckBoxesWithin '#edit-yardstick'
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
