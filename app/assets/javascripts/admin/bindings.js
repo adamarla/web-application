@@ -75,19 +75,6 @@ $(function() {
      }) ;
   }) ;
 
-  $('#edit-studygroups-link').click( function() { 
-    // As for 'edit-roster-link', the only thing that can be done on click
-    // is loading the list of study-groups for the selected school ( as 
-    // identified by the 'marker' set on $(this) and the list of students 
-    // as yet unassigned to any study-group/section 
-
-    var sections = 'school/sections.json?id=' + $(this).attr('marker') ;
-    var unassigned = 'school/unassigned-students.json?id=' + $(this).attr('marker') ;
-
-    $.get(sections) ;
-    $.get(unassigned) ;
-  }) ;
-
   /* Add a new Specific Topic */ 
   $('#add-topic-link').click( function() { 
     $('#new-topic').dialog({ title : 'New Topic' }).dialog('open') ;
