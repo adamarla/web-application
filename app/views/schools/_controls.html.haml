@@ -5,7 +5,8 @@
                  :with => {:panels => {:middle => '#new-school', :right => '#edit-school'} }
     = minor_link :for => 'edit-roster', :label => 'Faculty Roster', 
                  :with => { :panels => { :middle => '#teachers-list', :right => '#studygroups-list'}, 
-                            :radio_urls => { :side => 'teachers/list.json?id='} }
+                            :radio_urls => { :side => 'teachers/list.json?id=', 
+                                             :middle => 'teachers/roster.json?id='} }
     = minor_link :for => 'new-studygroups', :label => 'New Sections',
                  :with => { :panels => { :middle => '#new-studygroups' } }
     = minor_link :for => 'edit-studygroups', :label => 'Edit Sections', 
