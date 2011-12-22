@@ -58,6 +58,7 @@ class StudyGroupsController < ApplicationController
 
   def students 
     @students = Student.where(:study_group_id => params[:id]).order(:first_name)
+    @who_wants_to_know = current_account.nil? ? :guest : current_account.role
   end 
 
 end

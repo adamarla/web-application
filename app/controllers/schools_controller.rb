@@ -51,6 +51,7 @@ class SchoolsController < ApplicationController
 
   def unassigned_students 
     @students = Student.where(:school_id => params[:id], :study_group_id => nil).order(:first_name)
+    @who_wants_to_know = current_account.nil? ? :guest : current_account.role
   end 
 
   def sections 
