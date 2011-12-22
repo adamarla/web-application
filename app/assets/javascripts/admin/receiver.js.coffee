@@ -71,7 +71,8 @@ jQuery ->
 
   $('#right-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/teachers\/roster/) or
-              settings.url.match(/school\/unassigned-students/)
+              settings.url.match(/school\/unassigned-students/) or
+              settings.url.match(/study_groups\/students/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -82,6 +83,8 @@ jQuery ->
       when 'teachers/roster'
         displayJson json.sections, '#right-panel', 'section', false
       when 'school/unassigned-students'
+        displayJson json.students, '#right-panel', 'student', false
+      when 'study_groups/students'
         displayJson json.students, '#right-panel', 'student', false
 
   ###
