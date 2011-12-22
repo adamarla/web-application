@@ -1,0 +1,7 @@
+
+#examiner-controls.top-panel-controls
+  %ul.no-bullets
+    = minor_link :for => :me 
+    - if current_account.role == :admin
+      = minor_link :for => 'other-examiners', :label => 'others'
+      = minor_link :for => 'add-examiner', :label => 'add'
