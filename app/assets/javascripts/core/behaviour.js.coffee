@@ -138,13 +138,13 @@ jQuery ->
     put in place - perhaps after an AJAX request
 
     Moreover, it might be that a radio button has to issue multiple AJAX calls
-    on one click. In that case, the 'url' by the link on the radio is of the 
+    on one click. In that case, the 'url' by the link on the radio is of the
     form 'a|b|c...|...', where a,b,c ... are the urls to call
   ###
 
   $('.panel:not([id="control-panel"])').on 'click', 'input[type="radio"]', ->
     url = $(this).attr 'url'
-    if url isnt null
+    if url?
       call = url.split '|'
       for link in call
         $.get link
@@ -242,7 +242,7 @@ jQuery ->
     return true
 
   ###
-    Submit buttons of forms in .panels can be double-up to provide status 
+    Submit buttons of forms in .panels can be double-up to provide status
     message on the on-going process. Something like, "Working" when they are
     clicked and "Done!" or "Oops!!" depending on Ajax success or failure
   ###
@@ -265,4 +265,4 @@ jQuery ->
         button = $(this).find 'input[type="submit"]:first'
         if button?
           button.val('Oops !')
-    
+
