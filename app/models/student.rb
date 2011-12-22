@@ -41,7 +41,7 @@ class Student < ActiveRecord::Base
     #   (if a teacher) : rfeynman.XYZ
 
     username = nil 
-    black_list = ['ASS', 'ARSE', 'DICK', 'SEX', 'TIT']
+    black_list = ['ASS', 'ARSE', 'DICK', 'SEX', 'TIT', 'TITS', 'BOOB']
 
     unless (self.first_name.blank? || self.last_name.blank?)
       timestamp = Time.now.seconds_since_midnight.to_i.to_s(36).upcase
