@@ -96,7 +96,7 @@ $(function() {
     var marker = (panel.length == 0) ? null : panel.attr('marker') ; 
     
     if (marker != null) { 
-      clearPanel('#right-panel', false) ;
+      // clearPanel('#right-panel', false) ;
       $.get('study_groups/students.json?id=' + marker) ;
     } 
   }) ;
@@ -109,7 +109,7 @@ $(function() {
     var marker = $('#control-panel').attr('marker') ; 
     
     if (marker != null) { 
-      clearPanel('#right-panel', false) ;
+      // clearPanel('#right-panel', false) ;
       $.get('school/unassigned-students.json?id=' + marker) ;
     } 
   }) ;
