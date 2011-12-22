@@ -49,7 +49,8 @@ class TeachersController < ApplicationController
 
   def list 
     if current_account
-      case current_account.role 
+      @who_wants_to_know = current_account.role
+      case @who_wants_to_know
         when :admin
           @teachers = Teacher.where(:school_id => params[:id])
         when :school 
@@ -59,7 +60,7 @@ class TeachersController < ApplicationController
         else 
           @teachers = [] 
       end 
-      respond_with @teachers
+      respond_with @teachers, @who_wants_to_know
     else
       head :bad_request 
     end 

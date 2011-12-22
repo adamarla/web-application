@@ -69,6 +69,19 @@ class Teacher < ActiveRecord::Base
     return username 
   end 
 
+  def username?
+    self.account.username
+  end 
+
+  def name( who_wants_to_know = :guest )
+    case who_wants_to_know 
+      when :teacher, :admin, :school
+        return "#{self.first_name} #{self.last_name} (#{self.username?})"
+      else 
+        return "#{self.first_name} #{self.last_name}"
+    end
+  end 
+
   def build_xml(questions, students) 
   end 
 
@@ -76,10 +89,6 @@ class Teacher < ActiveRecord::Base
   end 
 
   def compile_tex
-  end 
-
-  def name 
-    (self.first_name + ' ' + self.last_name)
   end 
 
   def roster 
