@@ -5,50 +5,6 @@
   padding-top : 40px ;
 } 
 
-/*
-#logout-anchor, #login-anchor { 
-  margin-bottom : 60px ;
-} 
-
-#logout-link > a, #login-link > a { 
-  color : #fd9105 ;
-} 
-*/
-
-/*
-.accordion-heading { 
-    font-size : 14px ;
-    font-variant : small-caps ; 
-} 
-
-.accordion-textbox { 
-    border : none ; 
-    font-size : 9px ;
-    background-color : inherit ;
-} 
-
-.pane { 
-  margin-left : 25px ; 
-  float : left ;
-} 
-
-.narrow { 
-  max-width : 33% ;
-}
-
-.heading.accordion, .content.accordion { 
-    font-size : 14px ;
-} 
-
-p {
-    text-justify : justify;
-} 
-
-.ui-accordion .ui-accordion-header a.small-font {
-    font-size : 13px ;
-} 
-*/
-
 .submit-buttons { 
    margin-top : 7px ;
    margin-left : 40% ;
@@ -59,7 +15,7 @@ p {
 } 
 
 .full-width, .formtastic .text textarea.full-width { 
-   width : 90% ;
+   width : 94% ;
 } 
 
 #main-panel { 
@@ -87,16 +43,6 @@ p {
   margin-left : 5px ;
 } 
 
-/*
-.main-link:hover, .sub-link:hover {
-  background-color : #9b8767 ;
-  -moz-border-radius : 10px ;
-  border-radius : 10px ;
-  border-bottom : 3px solid #fd9105;
-} 
-*/
-
-
 .horizontal { 
   height : 60px ;
   min-width : 60px ;
@@ -116,16 +62,6 @@ p {
   /* vertical-align : middle ; */
   padding-top : 2px ;
 } 
-
-/* Not sure about the settings below
-.table .row { 
-  margin-top : 5px ;
-  padding-top : 2px ; 
-  padding-bottom : 2px ;
-  -moz-border-radius : 4px ;
-  border-radius : 4px ;
-} 
-*/
 
 .table .headings { 
   margin-bottom : 13px ;
