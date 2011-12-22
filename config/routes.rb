@@ -36,6 +36,7 @@ Webapp::Application.routes.draw do
 
   # Specific Topic 
   resource :specific_topic, :only => [:create, :update]
+  match 'topics/list' => 'specific_topics#list', :via => :get
 
   # Student 
   resource :student, :only => [:create, :update]
