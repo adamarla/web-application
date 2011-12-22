@@ -11,7 +11,6 @@ class SyllabiController < ApplicationController
   def show 
     course = params[:course_id] 
     @syllabi = Syllabus.where(:course_id => course).all 
-
-    respond_with @syllabi
   end 
+
 end
