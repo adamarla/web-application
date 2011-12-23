@@ -40,7 +40,7 @@ window.refreshView = (linkId) ->
       $(needed).appendTo(target).hide().fadeIn('slow')
 
 
-resetRadioUrlsIn = (panel, url) ->
+window.resetRadioUrlsIn = (panel, url) ->
   for radio in $(panel).find 'input[type="radio"]'
     marker = $(radio).attr 'marker'
     continue if not marker? 
@@ -137,20 +137,50 @@ buildLineItem = (json,key) ->
 
   label.text data['name']
   return clone
+
+###
+  This next function assumes that the returned JSON has at least the 
+  following 3 keys : name, id and select. If 'select' is null, then 
+  the <select> menu is disabled and the sibling check-box un-checked
+###
+
+window.cboxLabelSelect = (json, key, name = 'checked') ->
+  data = json[key]
+  clone = $('#toolbox .cbox-label-select:first').clone()
+  cbox = clone.children '.checkbox:first'
+  label = clone.children '.content:first'
+  menu = clone.find 'select:first'
+  
+  label.text data.name
+  cbox.attr 'marker', data.id
+  cbox.attr 'name', "#{name}[#{data.id}]"
+  selected = data.select
+
+  if selected isnt null
+    menu.prop 'disabled', false
+    menu.val selected
+    cbox.prop 'checked', true
+  else
+    menu.prop 'disabled', true
+    cbox.prop 'checked', false
+  return clone
   
 
-window.displayJson = (json, where, key, withRadio = true, lineItem = false) ->
-  where = if $(where).hasClass 'data' then $(where) else $(where).find('.data:first')
-  for record, index in json
-    if lineItem is true
-      clone = buildLineItem record, key
-    else if withRadio is true
-      clone = selectionWithRadio record,key
-    else
-      clone = selectionWithCheckbox record,key
+window.displayJson = (json, where, key, withRadio = true, withCheck = false, withSelect = false) ->
+  target = if $(where).hasClass 'data' then $(where) else $(where).find('.data:first')
+  if target.length is 0 then target = $(where)
 
-    if lineItem isnt true then clone.addClass 'colored' if index % 2 is 1
-    clone.appendTo(where).hide().fadeIn('slow')
+  for record, index in json
+    if withRadio is true
+      clone = selectionWithRadio record,key
+    else if withCheck is true
+      if withSelect is true
+        clone = cboxLabelSelect record, key
+      else
+        clone = selectionWithCheckbox record,key
+
+    clone.addClass 'colored' if index % 2 is 1
+    clone.appendTo(target).hide().fadeIn('slow')
 
 ###
   This next function also takes JSON. But it requires that the returned
