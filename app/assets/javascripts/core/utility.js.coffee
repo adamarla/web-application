@@ -152,3 +152,19 @@ window.displayJson = (json, where, key, withRadio = true, lineItem = false) ->
     if lineItem isnt true then clone.addClass 'colored' if index % 2 is 1
     clone.appendTo(where).hide().fadeIn('slow')
 
+###
+  This next function also takes JSON. But it requires that the returned
+  JSON records each have *atleast* the following attributes : name, id and 'in'
+  This last attribute - in - can either be true or false. If true, then 
+  a 'selectionWithRadio' is appended to 'in-tray' and if false, then 'out-tray'
+###
+
+window.displayInOutTrays = (json, where, key) ->
+  where = if typeof where is 'string' then $(where) else where
+  $(node).empty() for node in where.find '.data'
+
+  for record, index in json
+    clone = selectionWithRadio record,key
+    inTray = record[key].in
+    target = if inTray is true then where.find '.in-tray:first' else where.find '.out-tray:first'
+    clone.appendTo(target)

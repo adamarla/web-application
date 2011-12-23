@@ -46,6 +46,12 @@ class CoursesController < ApplicationController
     @courses = Course.klass?(klass).subject?(subject).board?(board)
   end 
 
+  def macro_coverage
+    @course = Course.find params[:id]
+    @macros = MacroTopic.where('id IS NOT NULL').order(:name) # basically, everyone
+  end 
+
+=begin
   def load 
     @course = Course.find params[:id] 
     unless @course.nil? 
@@ -54,5 +60,6 @@ class CoursesController < ApplicationController
       head :bad_request 
     end 
   end 
+=end
 
 end

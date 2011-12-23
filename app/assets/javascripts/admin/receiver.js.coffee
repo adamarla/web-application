@@ -50,7 +50,8 @@ jQuery ->
     matched = settings.url.match(/yardstick\.json/) or
               settings.url.match(/teachers\/list/) or
               settings.url.match(/school\/sections/) or
-              settings.url.match(/topics\/list/)
+              settings.url.match(/topics\/list/) or
+              settings.url.match(/course\/macro_coverage/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -68,6 +69,9 @@ jQuery ->
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
       when 'topics/list'
         displayJson json.topics, '#middle-panel', 'topic'
+      when 'course/macro_coverage'
+        displayInOutTrays json.macros, "#macro-topic-list", 'macro'
+
   ###
     AJAX successes the right-panel is supposed to respond to.
   ###
@@ -92,7 +96,6 @@ jQuery ->
 
   ###
     AJAX successes the wide-panel is supposed to respond to.
-  ###
 
   $('#wide-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/course\.json/)
@@ -105,71 +108,4 @@ jQuery ->
         uncheckAllCheckBoxesWithin('#edit-syllabi-megaform')
         disableAllSelectsWithin('#edit-syllabi-megaform')
         loadSyllabiEditFormWith(json.course.syllabi)
-
-
-###
-$( function() {
-
-  # Events & Conditions the side-panel is supposed to respond to
-  $('#side-panel').ajaxSuccess( function(e,xhr,settings) {
-    var json = $.parseJSON(xhr.responseText)
-
-    if (settings.url.match(/schools\/list/) != null) {
-      // First, clear any previous data
-      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } )
-      displaySchoolListInSidePanel( json.schools )
-    } else if (settings.url.match(/courses\/list/) != null) {
-      // First, clear any previous data
-      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } )
-      displayCoursesListInSidePanel( json.courses )
-      resetRadioUrls('#courses-link')
-    }
-  })
-
-  # Events & Conditions middle-panel is supposed to respond to
-  $('#middle-panel').ajaxSuccess( function(e, xhr, settings) {
-    var json = $.parseJSON(xhr.responseText)
-
-    if (settings.url.match(/yardstick\.json\?id=/) != null) { // a GET request
-      uncheckAllCheckBoxesWithin('#edit-yardstick')
-      loadFormWithJsonData( $('#edit-yardstick > form.formtastic'), json.yardstick)
-    } else if (settings.url.match(/teachers\/list/) != null) {
-      displayTeachersListInX( json.teachers, '#teachers-list')
-    } else if (settings.url.match(/school\/sections\.json\?id=/) != null) {
-      displayStudyGroups( json.sections, '#studygroups-radiolist .data:first')
-    }
-  })
-
-  # Events & Conditions right-panel is supposed to respond to
-  $('#right-panel').ajaxSuccess( function(e, xhr, settings) {
-    var json = $.parseJSON(xhr.responseText)
-
-    if (settings.url.match(/teachers\/roster/) != null) {
-      var url = 'teachers/update_roster.json?id=' + $('#right-panel').attr('marker')
-
-      $(this).find('.clear-before-show').each( function() { $(this).empty() ; } )
-      uncheckAllCheckBoxesWithin('#studygroups-list')
-      displayStudyGroups( json.sections, '#studygroups-list .data:first', true)
-      editFormAction('#studygroups-list', url, 'put')
-    } else if (settings.url.match(/school\.json\?id=/) != null) {
-      loadFormWithJsonData( $('#edit-school form'), json.school)
-    } else if (settings.url.match(/school\/unassigned-students\.json\?id=/) != null) {
-      displayJson(json.students, '#student-list .data:first', 'student', false)
-    } else if (settings.url.match(/study_groups\/students\.json\?id=/) != null) {
-      displayJson(json.students, '#student-list .data:first', 'student', false)
-    }
-  })
-
-  # Events & Conditions #wide-panel is supposed to respond to
-  $('#wide-panel').ajaxSuccess( function(e, xhr, settings) {
-    var json = $.parseJSON(xhr.responseText)
-
-    if (settings.url.match(/course\.json\?id=/) != null) { // a GET request
-      arrangeDumpIntoColumns('#edit-syllabi-megaform > form:first')
-      uncheckAllCheckBoxesWithin('#edit-syllabi-megaform')
-      disableAllSelectsWithin('#edit-syllabi-megaform')
-      loadSyllabiEditFormWith(json.course.syllabi)
-    }
-  })
-
-})
+  ###
