@@ -1,0 +1,2 @@
+module MacroTopicsHelper
+end
