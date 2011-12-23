@@ -31,17 +31,17 @@ class Course < ActiveRecord::Base
             :numericality => {:only_integer => true, :greater_than => 0}
   validates :subject_id, :board_id, :presence => true
 
-  scope :for_klass, lambda { |g| (g.nil? || g[:klass].blank?) ? 
-                             where('klass IS NOT NULL') : 
-                             where(:klass => g[:klass]) } 
+  def self.klass?(klass = nil)
+    klass.blank? ? where('klass IS NOT NULL') : where(:klass => klass)
+  end 
 
-  scope :for_subject, lambda { |g| (g.nil? || g[:subject].blank?) ? 
-                               where('subject_id IS NOT NULL') : 
-                               where(:subject_id => g[:subject]) }
+  def self.subject?(subject = nil)
+    subject.blank? ? where('subject_id IS NOT NULL') : where(:subject_id => subject)
+  end 
 
-  scope :in_board, lambda { |g| (g.nil? || g[:board].blank?) ? 
-                             where('board_id IS NOT NULL') : 
-                             where(:board_id => g[:board]) } 
+  def self.board?(board = nil)
+    board.blank? ? where('board_id IS NOT NULL') : where(:board_id => board)
+  end 
 
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
   #attr_accessible 

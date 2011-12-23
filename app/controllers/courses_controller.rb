@@ -36,8 +36,14 @@ class CoursesController < ApplicationController
 
   def list
     criterion = params[:criterion]
-    @courses = Course.for_klass(criterion).for_subject(criterion).in_board(criterion).all
-    respond_with @courses
+    unless criterion.nil?
+      klass = criterion[:klass]
+      subject = criterion[:subject]
+      board = criterion[:board]
+    else
+      klass = subject = board = nil
+    end 
+    @courses = Course.klass?(klass).subject?(subject).board?(board)
   end 
 
   def load 
