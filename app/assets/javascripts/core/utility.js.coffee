@@ -130,7 +130,7 @@ window.selectionWithCheckbox = (json, key, name = 'checked') ->
   setBooleanPropOn checkBox, 'checked', data['checked']
   return clone
 
-lineItem = (json,key) ->
+buildLineItem = (json,key) ->
   data = json[key]
   clone = $('#toolbox .line-item:first').clone()
   label = clone.children '.content:first'
@@ -143,12 +143,12 @@ window.displayJson = (json, where, key, withRadio = true, lineItem = false) ->
   where = if $(where).hasClass 'data' then $(where) else $(where).find('.data:first')
   for record, index in json
     if lineItem is true
-      clone = lineItem record, key
+      clone = buildLineItem record, key
     else if withRadio is true
       clone = selectionWithRadio record,key
     else
       clone = selectionWithCheckbox record,key
 
-    clone.addClass 'colored' if index % 2 is 1
+    if lineItem isnt true then clone.addClass 'colored' if index % 2 is 1
     clone.appendTo(where).hide().fadeIn('slow')
 
