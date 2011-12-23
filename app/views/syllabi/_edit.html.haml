@@ -1,11 +1,11 @@
 
--# This form lists out *all* specific topics, grouped by broad-topics
+-# This form lists out *all* micro topics, grouped by macro-topics
 -# in *one* 2-column form. Each row in each column represents one 
--# specific topic in the following structure : 
+-# micro topic in the following structure : 
 -# 
 -#  #syllabi-edit-megaform 
 -#    <div class="label large left">Calculus</div>  
--#    <div marker=" {broad_topic_id} "> 
+-#    <div marker=" {macro_topic_id} "> 
 -#      <input type='checkbox'/> 
 -#      <div class="label small left">Area under the Curve</div> 
 -#      <select> 
@@ -18,7 +18,7 @@
 -# display updated
 
 
-- categories = BroadTopic.order(:name).all 
+- categories = MacroTopic.order(:name).all 
 
 #edit-syllabi-megaform.mega-form
   = form_tag '/syllabus', :method => :put, :remote => true do |f| 
@@ -26,14 +26,14 @@
 
     #dump
       - categories.each do |category| 
-        .broad-topic
+        .macro-topic
           .heading
             .label.large.left.full-width= "#{category.name}"
             = nofrills_checkbox :float => :right 
 
-          - topics = SpecificTopic.where(:broad_topic_id => category.id).order(:name) 
+          - topics = MicroTopic.where(:macro_topic_id => category.id).order(:name) 
           - topics.each do |topic| 
-            .specific-topic{ :marker => "#{topic.id}" }
+            .micro-topic{ :marker => "#{topic.id}" }
               .heading
                 = nofrills_checkbox 
                 .label.small= "#{topic.name}"

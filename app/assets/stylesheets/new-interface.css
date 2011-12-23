@@ -196,7 +196,7 @@ legend > a {
   margin-left : 17px ;
 } 
 
-#edit-syllabi-megaform .broad-topic > .heading { 
+#edit-syllabi-megaform .macro-topic > .heading { 
   font-variant : small-caps ;
   font-weight : bold ; 
   font-size : 14px ;
@@ -209,11 +209,11 @@ legend > a {
   border-radius : 2px ;
 } 
 
-#edit-syllabi-megaform .broad-topic { 
+#edit-syllabi-megaform .macro-topic { 
   margin-top : 5px ;
 } 
 
-#edit-syllabi-megaform .specific-topic { 
+#edit-syllabi-megaform .micro-topic { 
   min-height : 45px ;
   text-transform : lowercase ;
 } 

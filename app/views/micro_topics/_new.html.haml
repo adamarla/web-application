@@ -1,10 +1,10 @@
 
 #new-topic.new-entity.close-on-submit
-  = semantic_form_for :topic, :remote => true, :url => specific_topic_path do |f| 
+  = semantic_form_for :topic, :remote => true, :url => micro_topic_path do |f| 
     = f.inputs do 
-      = f.input :name, :label => 'Specific Topic'
+      = f.input :name, :label => 'Micro Topic'
       = f.input :category, :label => 'Category', :as => :select, 
-                           :collection => BroadTopic.all
+                           :collection => MacroTopic.all
       = f.input :new_category, :hint => 'Specify new category if none of the above apply'
     .submit-buttons
       %input{:type => :submit, :role => :button, :value => "Add", :name => "commit"}

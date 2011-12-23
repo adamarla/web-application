@@ -35,8 +35,8 @@ window.arrangeDumpIntoColumns = (id) ->
   for column, m in startPoint.children '.column'
     $(column).width columnWidth
 
-    for broadTopic, n in startPoint.children('#dump:first').children('.broad-topic')
-      broadTopic = $(broadTopic).detach()
-      broadTopic.appendTo $(column)
+    for macroTopic, n in startPoint.children('#dump:first').children('.macro-topic')
+      macroTopic = $(macroTopic).detach()
+      macroTopic.appendTo $(column)
       break if n > (perColumn - 1)
 

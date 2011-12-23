@@ -34,9 +34,9 @@ Webapp::Application.routes.draw do
   match 'school/unassigned-students' => 'schools#unassigned_students', :via => :get
   match 'school/sections' => 'schools#sections', :via => :get
 
-  # Specific Topic 
-  resource :specific_topic, :only => [:create, :update]
-  match 'topics/list' => 'specific_topics#list', :via => :get
+  # Micro Topic 
+  resource :micro_topic, :only => [:create, :update]
+  match 'topics/list' => 'micro_topics#list', :via => :get
 
   # Student 
   resource :student, :only => [:create, :update]

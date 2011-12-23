@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: broad_topics
+# Table name: macro_topics
 #
 #  id         :integer         not null, primary key
 #  name       :string(255)
@@ -8,8 +8,8 @@
 #  updated_at :datetime
 #
 
-class BroadTopic < ActiveRecord::Base
-  has_many :specific_topics 
+class MacroTopic < ActiveRecord::Base
+  has_many :micro_topics 
 
   validates :name, :presence => true
 end

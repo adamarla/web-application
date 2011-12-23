@@ -75,7 +75,7 @@ $(function() {
      }) ;
   }) ;
 
-  /* Add a new Specific Topic */ 
+  /* Add a new Micro Topic */ 
   $('#add-topic-link').click( function() { 
     $('#new-topic').dialog({ title : 'New Topic' }).dialog('open') ;
   }) ; 
@@ -85,7 +85,7 @@ $(function() {
     checkbox is checked 
   */ 
 
-  $('#edit-syllabi-megaform').on('click', '.specific-topic input[type="checkbox"]', function() {
+  $('#edit-syllabi-megaform').on('click', '.micro-topic input[type="checkbox"]', function() {
     var dropDown = $(this).closest('div[marker]').children('.dropdown:first').find('select:first') ;
 
     dropDown.prop('disabled', !($(this).prop('checked')) ) ;

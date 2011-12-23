@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111213043032) do
+ActiveRecord::Schema.define(:version => 20111223083454) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -36,12 +36,6 @@ ActiveRecord::Schema.define(:version => 20111213043032) do
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
 
   create_table "boards", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "broad_topics", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -102,6 +96,19 @@ ActiveRecord::Schema.define(:version => 20111213043032) do
     t.datetime "updated_at"
   end
 
+  create_table "macro_topics", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "micro_topics", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "macro_topic_id"
+  end
+
   create_table "q_selections", :force => true do |t|
     t.integer  "quiz_id"
     t.integer  "question_id"
@@ -112,17 +119,17 @@ ActiveRecord::Schema.define(:version => 20111213043032) do
 
   create_table "questions", :force => true do |t|
     t.string   "path"
-    t.integer  "attempts",          :default => 0
+    t.integer  "attempts",       :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.integer  "specific_topic_id"
+    t.integer  "micro_topic_id"
     t.integer  "teacher_id"
-    t.boolean  "mcq",               :default => false
-    t.boolean  "multi_correct",     :default => false
-    t.boolean  "multi_part",        :default => false
+    t.boolean  "mcq",            :default => false
+    t.boolean  "multi_correct",  :default => false
+    t.boolean  "multi_part",     :default => false
     t.integer  "num_parts"
-    t.integer  "difficulty",        :default => 1
+    t.integer  "difficulty",     :default => 1
   end
 
   create_table "quizzes", :force => true do |t|
@@ -144,13 +151,6 @@ ActiveRecord::Schema.define(:version => 20111213043032) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "tag"
-  end
-
-  create_table "specific_topics", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "broad_topic_id"
   end
 
   create_table "students", :force => true do |t|
@@ -179,10 +179,10 @@ ActiveRecord::Schema.define(:version => 20111213043032) do
 
   create_table "syllabi", :force => true do |t|
     t.integer  "course_id"
-    t.integer  "specific_topic_id"
+    t.integer  "micro_topic_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "difficulty",        :default => 1
+    t.integer  "difficulty",     :default => 1
   end
 
   create_table "teachers", :force => true do |t|

@@ -1,12 +1,12 @@
 # == Schema Information
 #
-# Table name: specific_topics
+# Table name: micro_topics
 #
 #  id             :integer         not null, primary key
 #  name           :string(255)
 #  created_at     :datetime
 #  updated_at     :datetime
-#  broad_topic_id :integer
+#  macro_topic_id :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -16,10 +16,10 @@
 #    |__:belongs_to__|  |___:has_many___| |__:belongs_to__|
 #    
 
-class SpecificTopic < ActiveRecord::Base
+class MicroTopic < ActiveRecord::Base
   validates :name, :presence => true
 
   has_many :courses, :through => :syllabi
   has_many :syllabi
-  belongs_to :broad_topic
+  belongs_to :macro_topic
 end

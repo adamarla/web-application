@@ -23,7 +23,7 @@ class Course < ActiveRecord::Base
   belongs_to :board 
   belongs_to :subject
 
-  has_many :specific_topics, :through => :syllabi
+  has_many :micro_topics, :through => :syllabi
   has_many :syllabi
 
   validates :name, :presence => true
@@ -63,11 +63,11 @@ class Course < ActiveRecord::Base
     end #each 
 
     unless status == :bad_request 
-      self.specific_topics = topics # updates the syllabus join table !
+      self.micro_topics = topics # updates the syllabus join table !
       # Now, update the difficulty levels for each topic for this course
 
       options.each do |topic_id, difficulty|
-        syllabus = Syllabus.where(:course_id => self.id, :specific_topic_id => topic_id).first 
+        syllabus = Syllabus.where(:course_id => self.id, :micro_topic_id => topic_id).first 
         status = syllabus.update_attributes(difficulty) ? :ok : :bad_request
       end 
     end # unless  
