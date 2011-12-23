@@ -43,6 +43,16 @@ class Course < ActiveRecord::Base
     board.blank? ? where('board_id IS NOT NULL') : where(:board_id => board)
   end 
 
+  def covers_macro_topic?(id)
+    micros = Syllabus.where(:course_id => self.id).select(:micro_topic_id)
+    micros.each do |topic| 
+      micro_id = topic.micro_topic_id
+      macro_id = MicroTopic.where(:id => micro_id).select(:macro_topic_id).first.macro_topic_id
+      return true if macro_id == id
+    end 
+    return false
+  end
+
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
   #attr_accessible 
 
