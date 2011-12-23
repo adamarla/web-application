@@ -49,7 +49,8 @@ jQuery ->
   $('#middle-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/yardstick\.json/) or
               settings.url.match(/teachers\/list/) or
-              settings.url.match(/school\/sections/)
+              settings.url.match(/school\/sections/) or
+              settings.url.match(/topics\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -65,6 +66,8 @@ jQuery ->
       when 'yardstick'
         uncheckAllCheckBoxesWithin '#edit-yardstick'
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
+      when 'topics/list'
+        displayJson json.topics, '#middle-panel', 'topic'
   ###
     AJAX successes the right-panel is supposed to respond to.
   ###

@@ -3,7 +3,7 @@
   = main_link :for => :schools, :with => {:panels => {:middle => "#new-student", :right => "#new-teacher"}} 
   = main_link :for => :examiners, :with => {:panels => {} }
 
-  = main_link :for => :courses, :with => {:panels => {:wide => "#edit-syllabi-megaform"},
+  = main_link :for => :courses, :with => {:panels => { :middle => '#topic-list' },
                                           :radio_urls => {:side => 'course.json?id='} } 
 
   = main_link :for => :yardsticks, :with => {:panels => {:middle => '#edit-yardstick'}, 

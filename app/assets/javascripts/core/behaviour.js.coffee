@@ -266,3 +266,5 @@ jQuery ->
         if button?
           button.val('Oops !')
 
+  $('.sortable').sortable()
+
