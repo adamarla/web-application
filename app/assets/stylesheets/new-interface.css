@@ -91,7 +91,7 @@ fieldset.inputs li.boolean.input {
   list-style-type : none ;
 } 
 
-#edit-syllabi-megaform .dropdown label {
+#edit-syllabi-megaform .dropdown label, .cbox-label-select > .dropdown label  {
   display : none ;
 } 
 
@@ -110,10 +110,15 @@ fieldset.inputs li.boolean.input {
   min-height : 20px ;
 } 
 
-.radio-column, .checkbox-column, .line-item { 
+.radio-column, .checkbox-column, .line-item, .cbox-label-select { 
   font-size : 13px ; 
   text-transform : lowercase ;
 } 
+
+.cbox-label-select {
+  padding-top : 3px ;
+  min-height : 27px ;
+}
 
 #schools-summary { 
   padding-left : 20px ;
