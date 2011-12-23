@@ -266,5 +266,13 @@ jQuery ->
         if button?
           button.val('Oops !')
 
-  #$('.sortable').sortable()
+
+  ###
+    Checking / unchecking the checkbox in a .cbox-label-select should 
+    enabled / disable the sibling <select>
+  ###
+
+  $('.panel:not([id="control-panel"])').on 'click', '.cbox-label-select > input[type="checkbox"]', ->
+    select = $(this).siblings('.dropdown:first').find 'select:first'
+    select.prop 'disabled', !$(this).prop('checked')
 
