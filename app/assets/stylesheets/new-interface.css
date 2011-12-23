@@ -120,9 +120,9 @@ fieldset.inputs li.boolean.input {
 } 
 
 legend { 
-  padding-top : 7px ;
+  /*padding-top : 7px ;*/
   padding-bottom : 7px ;
-  border-top : 3px solid gray ;
+  /*border-top : 3px solid gray ;*/
   border-bottom : 3px solid gray ;
   margin-bottom : 5px ;
 } 
