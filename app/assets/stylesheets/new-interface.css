@@ -42,7 +42,7 @@ fieldset.inputs li.boolean.input {
   float : left ;
 } 
 
-.no-bullets {
+.no-bullets, ul.sortable {
   list-style-type : none ;
 } 
 
@@ -110,7 +110,7 @@ fieldset.inputs li.boolean.input {
   min-height : 20px ;
 } 
 
-.radio-column, .checkbox-column { 
+.radio-column, .checkbox-column, .line-item { 
   font-size : 13px ; 
   text-transform : lowercase ;
 } 
