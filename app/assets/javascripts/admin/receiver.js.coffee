@@ -70,7 +70,16 @@ jQuery ->
       when 'topics/list'
         displayJson json.topics, '#middle-panel', 'topic'
       when 'course/macro_coverage'
+        ### 
+          We will need to set URLs of the form : 
+            macro_topic/micros_in_course.json?course=<sth>&id=<to be filled>
+          To do this, we need the currently selected course's ID. Where is that? 
+          As the 'marker' attribute on the side-panel
+        ###
+        course = $('#side-panel').attr 'marker'
+        url = "macro_topic/micros_in_course.json?course=#{course}&id="
         displayInOutTrays json.macros, "#macro-topic-list", 'macro'
+        resetRadioUrlsIn '#middle-panel', url
 
   ###
     AJAX successes the right-panel is supposed to respond to.
@@ -79,7 +88,8 @@ jQuery ->
   $('#right-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/teachers\/roster/) or
               settings.url.match(/school\/unassigned-students/) or
-              settings.url.match(/study_groups\/students/)
+              settings.url.match(/study_groups\/students/) or
+              settings.url.match(/macro_topic\/micros_in_course/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -93,6 +103,8 @@ jQuery ->
         displayJson json.students, '#right-panel', 'student', false
       when 'study_groups/students'
         displayJson json.students, '#right-panel', 'student', false
+      when 'macro_topic/micros_in_course'
+        displayJson json.micros, '#micro-topic-list', 'micro', false, true, true
 
   ###
     AJAX successes the wide-panel is supposed to respond to.
