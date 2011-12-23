@@ -5,7 +5,7 @@ class MacroTopicsController < ApplicationController
   def micros_in_course
     me = MacroTopic.find params[:id]
     unless me.nil? 
-      @course = Course.find params[:course_id]
+      @course = Course.find params[:course]
       @micros = MicroTopic.where :macro_topic_id => me.id 
       respond_with @course, @micros
     else 
