@@ -83,13 +83,13 @@ $(function() {
   /* 
     In #edit-syllabi-megaform, enable drop downs ONLY IF the sibling
     checkbox is checked 
-  */ 
 
   $('#edit-syllabi-megaform').on('click', '.micro-topic input[type="checkbox"]', function() {
     var dropDown = $(this).closest('div[marker]').children('.dropdown:first').find('select:first') ;
 
     dropDown.prop('disabled', !($(this).prop('checked')) ) ;
   }) ;
+  */ 
 
   $('#view-students-in-section-link').click( function() { 
     var panel = $(this).closest('.panel') ; // the containing panel
