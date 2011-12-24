@@ -22,4 +22,14 @@ class MicroTopic < ActiveRecord::Base
   has_many :courses, :through => :syllabi
   has_many :syllabi
   belongs_to :macro_topic
+
+  def difficulty_in(course_id)
+    course = Course.find course_id
+    unless course.nil? 
+      in_syllabi = Syllabus.where(:course_id => course_id, :micro_topic_id => self.id).first
+      return in_syllabi.nil? ? nil : in_syllabi.difficulty
+    end 
+    return nil
+  end 
+
 end
