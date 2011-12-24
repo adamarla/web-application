@@ -63,7 +63,7 @@ class Course < ActiveRecord::Base
     status = :ok 
 
     options.each do |topic_id, difficulty| 
-      topic = SpecificTopic.find topic_id
+      topic = MicroTopic.find topic_id
       unless topic.nil? 
         topics << topic 
       else 
