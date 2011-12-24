@@ -17,3 +17,12 @@ window.loadSyllabiEditFormWith = (syllabi) ->
     dropdown.prop 'disabled', false
     option.prop 'selected', true
 
+window.buildSyllabiEditForm = (json) ->
+  startPt = $('#edit-syllabi-form')
+
+  for m in json
+    macro = m.macro
+    target = if macro.in is true then startPt.find('.peek-a-boo:first') else startPt.find('.dump:first')
+    newNode = $('<div/>', { class : 'hidden', marker : macro.id})
+    newNode.appendTo target
+    displayJson macro.micros, newNode, 'micro', false, true, true
