@@ -48,7 +48,7 @@ jQuery ->
     in turn depends on who is seeing those lists. Hence, that connecting
     logic should be implemented in role-specific .coffee files
   ###
-  $('.sortable').sortable()
+  $('.sortable').sortable({ dropOnEmpty : true })
 
   ###
     In our forms, if a checkbox is checked, then it should submit 'true',
