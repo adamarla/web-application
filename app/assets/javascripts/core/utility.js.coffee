@@ -199,5 +199,11 @@ window.displayInOutTrays = (json, where, key) ->
     target = if inTray is true then where.find '.in-tray:first' else where.find '.out-tray:first'
     clone.appendTo(target)
 
+    ###
+    Only elements in in-trays (yes, there can be more than one) should
+    be selectable and capable of initiating some action. Those in the
+    out-tray can do the same - but only after being dragged into one
+    of the in-trays
+    ###
     radio = clone.find 'input[type="radio"]:first'
     if inTray then radio.prop('disabled', false) else radio.prop('disabled', true)
