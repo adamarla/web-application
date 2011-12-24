@@ -51,6 +51,24 @@ jQuery ->
   $('.sortable').sortable({ dropOnEmpty : true })
 
   ###
+    (Sortables) : When an element is moved from an .in-tray to an 
+    .out-tray, then disable any radio buttons within it. Conversely, when
+    an element is moved in the other direction (.out -> .in), enable 
+    any radio buttons 
+  ###
+
+  $('.panel:not([id="control-panel"])').on 'sortreceive', '.sortable', (event, ui) ->
+    ###
+      ui.item is the item that was dragged and placed within another .sortable
+    ###
+    parent = ui.item.closest '.sortable'
+    return if parent.get(0) isnt $(this).get(0) # read up on jQuery object comparison
+    disableState = if parent.hasClass 'in-tray' then false else true
+    for radio in ui.item.find 'input[type="radio"]'
+      $(radio).prop 'disabled', disableState
+    
+
+  ###
     In our forms, if a checkbox is checked, then it should submit 'true',
     else 'false'. Note, that this is just how we interpret checkboxes.
     The value really does not have to be only true/false. It could be
