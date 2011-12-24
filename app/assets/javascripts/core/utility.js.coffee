@@ -198,3 +198,6 @@ window.displayInOutTrays = (json, where, key) ->
     inTray = record[key].in
     target = if inTray is true then where.find '.in-tray:first' else where.find '.out-tray:first'
     clone.appendTo(target)
+
+    radio = clone.find 'input[type="radio"]:first'
+    if inTray then radio.prop('disabled', false) else radio.prop('disabled', true)
