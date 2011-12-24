@@ -43,6 +43,14 @@ jQuery ->
     $(this).dialog 'close'
 
   ###
+    Make sortable lists. However, logic for connecting lists that need 
+    to connect with each other depends on what the lists are - which 
+    in turn depends on who is seeing those lists. Hence, that connecting
+    logic should be implemented in role-specific .coffee files
+  ###
+  $('.sortable').sortable()
+
+  ###
     In our forms, if a checkbox is checked, then it should submit 'true',
     else 'false'. Note, that this is just how we interpret checkboxes.
     The value really does not have to be only true/false. It could be
@@ -269,7 +277,7 @@ jQuery ->
 
   ###
     Checking / unchecking the checkbox in a .cbox-label-select should 
-    enabled / disable the sibling <select>
+    enable / disable the sibling <select>
   ###
 
   $('.panel:not([id="control-panel"])').on 'click', '.cbox-label-select > input[type="checkbox"]', ->
