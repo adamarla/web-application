@@ -163,6 +163,8 @@ window.cboxLabelSelect = (json, key, name = 'checked') ->
   else
     menu.prop 'disabled', true
     cbox.prop 'checked', false
+
+  menu.attr 'name', "syllabi[#{data.id}]" # Change to more generic behaviour later !!
   return clone
   
 
