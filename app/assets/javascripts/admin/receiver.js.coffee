@@ -51,7 +51,7 @@ jQuery ->
               settings.url.match(/teachers\/list/) or
               settings.url.match(/school\/sections/) or
               settings.url.match(/topics\/list/) or
-              settings.url.match(/course\/macro_coverage/)
+              settings.url.match(/course\/coverage/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -69,7 +69,7 @@ jQuery ->
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
       when 'topics/list'
         displayJson json.topics, '#middle-panel', 'topic'
-      when 'course/macro_coverage'
+      when 'course/coverage'
         ### 
           We will need to set URLs of the form : 
             macro_topic/micros_in_course.json?course=<sth>&id=<to be filled>

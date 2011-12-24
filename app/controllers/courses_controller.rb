@@ -46,7 +46,7 @@ class CoursesController < ApplicationController
     @courses = Course.klass?(klass).subject?(subject).board?(board)
   end 
 
-  def macro_coverage
+  def coverage
     @course = Course.find params[:id]
     @macros = MacroTopic.where('id IS NOT NULL').order(:name) # basically, everyone
   end 
