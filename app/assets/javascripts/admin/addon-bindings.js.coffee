@@ -14,14 +14,15 @@ jQuery ->
     role-specific JS files in case something else is desired
   ###
 
-  $('#edit-syllabi-form').on 'submit', 'form:first', ->
+  $('#right-panel').on 'submit', 'form', ->
     ### 
       URL = /syllabus?id=<course_id>. <course_id> in turn is available 
       *not* in the parent panel - as core/behaviour assumes - but on the 
       side-panel where the courses are listed
     ###
-    course_id = $('#side-panel').attr 'marker'
-    $(this).attr 'action', "syllabus.json?id=#{course_id}"
+    if $(this).closest('div').attr('id') is 'edit-syllabi-form'
+      course_id = $('#side-panel').attr 'marker'
+      $(this).attr 'action', "syllabus.json?id=#{course_id}"
 
   ###
     Connect sortable lists for Admin
