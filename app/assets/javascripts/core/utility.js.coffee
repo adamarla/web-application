@@ -76,9 +76,9 @@ window.loadFormWithJsonData = (form, data) ->
   ###
   form = if typeof form is 'string' then $(form) else form
 
-  for input in form.find 'input,textarea,select'
-    marker = input.attr 'marker'
-    fillValue data[marker], input if (data[marker] isnt null and marker isnt null)
+  for input in form.find 'input[marker],textarea[marker],select[marker]'
+    marker = $(input).attr 'marker'
+    fillValue data[marker], $(input) if (data[marker] isnt null and marker isnt null)
 
 window.clearAllFieldsInForm = (form) ->
   fillValue '', input for input in form.find 'input,select,textarea'
