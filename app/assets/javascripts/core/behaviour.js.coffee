@@ -98,7 +98,7 @@ jQuery ->
   ###
 
   for type in ['side', 'middle', 'right', 'wide']
-    panel = $("#{type}-panel")
+    panel = $("##{type}-panel")
     panel.on 'click', '.purgeable input[type="radio"]', ->
       startPt = $(this).closest '.purgeable'
       if startPt.length isnt 0
