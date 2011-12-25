@@ -11,7 +11,7 @@
 - marker = marker.blank? ? 'tbd' : marker
 - label = label.blank? ? 'tbd' : label
 
-.toolbox.god-element.full-width
+.toolbox.god-element.full-width{ :marker => "#{marker}" }
   %input.left{ :type => :radio, :class => :radio, :marker => "#{marker}", :disabled => true }  
   %input.left{ :type => :checkbox, :class => :checkbox, :disabled => true, 
                :marker => "#{marker}", :name => "checked[#{marker}]" }  
