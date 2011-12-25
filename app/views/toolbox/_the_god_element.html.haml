@@ -13,10 +13,10 @@
 
 .toolbox.god-element.full-width
   %input.left{ :type => :radio, :class => :radio, :marker => "#{marker}" }  
-  %input.left{ :type => :checkbox, :class => :checkbox, :marker => "#{marker}" }  
+  %input.left{ :type => :checkbox, :class => :checkbox, :marker => "#{marker}", :name => "checked[#{marker}]" }  
   .label.left= "#{label}"
   %input.right{ :type => :button }
-  %select.right.difficulty{ :name => :difficulty, :disabled => true}
+  %select.right.difficulty{ :name => "difficulty[#{marker}]", :disabled => true}
     %option{ :value => 1 }= "introductory"
     %option{ :value => 2 }= "intermediate"
     %option{ :value => 3 }= "advanced"
