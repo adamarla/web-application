@@ -64,7 +64,7 @@ jQuery ->
         resetRadioUrlsAsPer $('#edit-roster-link')
       when 'school/sections'
         displayJson json.sections, '#middle-panel', 'section'
-      when 'yardstick'
+      when 'yardstick.json'
         uncheckAllCheckBoxesWithin '#edit-yardstick'
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
       when 'topics/list'
