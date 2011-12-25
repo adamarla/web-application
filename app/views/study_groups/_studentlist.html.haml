@@ -6,4 +6,4 @@
     %a#view-unassigned-students-link.right{:href => '#'}= "unassigned"
   = form_tag study_groups_update_student_list_path, :remote => true, :method => :put do |f| 
     = submit_tag "Assign to Selected"
-    .data.clear-before-show.empty-on-putback 
+    .purgeable.clear-before-show.empty-on-putback 

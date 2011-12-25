@@ -13,10 +13,10 @@ clearPanel = (id, moveAlso = true) ->
      hierarchy, then empty that data first. Note, that it is assumed that
      the emptied out data can re-got from an AJAX query. In other words,
      if some data is too valuable to lose, then *do not* put it under
-     .data.empty-on-putback
+     .purgeable.empty-on-putback
    ###
 
-  emptyMe node for node in me.find('.data.empty-on-putback')
+  emptyMe node for node in me.find('.purgeable.empty-on-putback')
   putBack me if moveAlso is true
 
 
@@ -169,7 +169,7 @@ window.cboxLabelSelect = (json, key, name = 'checked') ->
   
 
 window.displayJson = (json, where, key, withRadio = true, withCheck = false, withSelect = false) ->
-  target = if $(where).hasClass 'data' then $(where) else $(where).find('.data:first')
+  target = if $(where).hasClass 'data' then $(where) else $(where).find('.purgeable:first')
   if target.length is 0 then target = $(where)
 
   for record, index in json
@@ -193,7 +193,7 @@ window.displayJson = (json, where, key, withRadio = true, withCheck = false, wit
 
 window.displayInOutTrays = (json, where, key) ->
   where = if typeof where is 'string' then $(where) else where
-  $(node).empty() for node in where.find '.data'
+  $(node).empty() for node in where.find '.purgeable'
 
   for record, index in json
     clone = selectionWithRadio record,key

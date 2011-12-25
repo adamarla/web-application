@@ -87,7 +87,7 @@ jQuery ->
      AND 2. all radio-buttons within it are siblings. How incestuous you make this
      assumption depends on the hierarchy you implement
 
-         .data
+         .purgeable
            .
              .
                %input{ :type => :radio }
@@ -98,9 +98,9 @@ jQuery ->
   ###
 
   for type in ['side', 'middle', 'right', 'wide']
-    panel = $('#' + type + '-panel')
-    panel.on 'click', '.data input[type="radio"]', ->
-      startPt = $(this).closest '.data'
+    panel = $("#{type}-panel")
+    panel.on 'click', '.purgeable input[type="radio"]', ->
+      startPt = $(this).closest '.purgeable'
       if startPt.length isnt 0
         for sibling in startPt.find 'input[type="radio"]'
           $(sibling).prop 'checked', (if sibling is this then true else false)

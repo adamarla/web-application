@@ -36,7 +36,7 @@ function countTableColumns(table) {
           .headings 
             .row 
               .cell .... 
-          .data 
+          .purgeable 
             .row 
               .cell ....
      We just count the number of .headings > .row > .cell and set value on the table
@@ -121,7 +121,7 @@ function setCellSizesIn( row ) {
 } // end  
 
 function resizeCellsIn( table ) {
-  table.find('.headings > .row, .data > .row').each( function() {
+  table.find('.headings > .row, .purgeable > .row').each( function() {
     setCellSizesIn($(this)) ;
   }) ;
 } 
