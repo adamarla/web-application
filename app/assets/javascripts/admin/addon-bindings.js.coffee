@@ -50,3 +50,19 @@ jQuery ->
     micros.appendTo '#edit-syllabi-form .dump:first'
     micros.addClass 'hidden'
 
+  ###
+    #macro-topic-list : Make the micro-topics in #edit-syllabi-form for a macro 
+    in the .in-tray visible when the corresponding radio button is clicked
+  ###
+
+  $('#macro-topic-list').on 'click', '.in-tray input[type="radio"]', ->
+    marker = $(this).attr 'marker'
+    return if not marker?
+
+    for micro in $('#edit-syllabi-form .peek-a-boo').children('div[marker]')
+      if $(micro).attr('marker') is marker
+        $(micro).removeClass 'hidden'
+      else
+        $(micro).addClass 'hidden'
+
+
