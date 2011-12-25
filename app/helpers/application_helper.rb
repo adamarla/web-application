@@ -152,4 +152,14 @@ module ApplicationHelper
     return c 
   end 
 
+########################################################
+  def get_list_of( what )
+    case what 
+      when :boards then return Board.where('id IS NOT NULL')
+      when :micro_topics then return MicroTopic.where('id IS NOT NULL')
+      when :macro_topics then return MacroTopic.where('id IS NOT NULL')
+      else return []
+    end 
+  end 
+
 end # of helper class
