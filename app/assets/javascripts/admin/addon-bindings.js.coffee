@@ -9,6 +9,21 @@ jQuery ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
   ###
+    Over-ride action attribute for #edit-syllabi-form just before submit.
+    The default value is set in core/behaviour but should be over-ridden in
+    role-specific JS files in case something else is desired
+  ###
+
+  $('#edit-syllabi-form').on 'submit', 'form:first', ->
+    ### 
+      URL = /syllabus?id=<course_id>. <course_id> in turn is available 
+      *not* in the parent panel - as core/behaviour assumes - but on the 
+      side-panel where the courses are listed
+    ###
+    course_id = $('#side-panel').attr 'marker'
+    $(this).attr 'action', "syllabus.json?id=#{course_id}"
+
+  ###
     Connect sortable lists for Admin
   ###
   $('#macro-topic-list > #in-macros').sortable 'option', 'connectWith', '#macro-topic-list > #out-macros'
