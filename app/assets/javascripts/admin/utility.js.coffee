@@ -19,6 +19,7 @@ window.loadSyllabiEditFormWith = (syllabi) ->
 
 window.buildSyllabiEditForm = (json) ->
   startPt = $('#edit-syllabi-form')
+  $(node).empty() for node in startPt.find('.peek-a-boo:first')
 
   for m in json
     macro = m.macro
