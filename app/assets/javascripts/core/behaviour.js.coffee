@@ -204,21 +204,6 @@ jQuery ->
 
 
   ###
-    Trojan fields in forms that have them (see trojan_horse_for helper method in
-    application_helper.rb) need to be filled in with before submission. And usually,
-    these trojan fields need to be filled in with the 'marker' attribute set on the
-    parent panel
-  ###
-
-  $('.panel:not([id="control-panel"])').on 'submit', 'form', ->
-    trojanHorse = $(this).find 'input[trojan="true"]:first'
-    return if trojanHorse.length is 0
-
-    panel = $(this).closest '.panel'
-    marker = if panel.length isnt 0 then panel.attr 'marker' else null
-    trojanHorse.val marker if marker isnt null
-
-  ###
     All fields in forms that have the class attribute "clear-after-submit"
     should be cleared on successful AJAX submission. Three things to remember/take
     care of :
@@ -231,6 +216,7 @@ jQuery ->
          fully understand, respond_with @object is caught by ajaxSuccess but
          not head :ok - even if 'data-remote' is set on the form
   ###
+
   $('.clear-after-submit').ajaxSuccess (e,xhr,settings) ->
     form = $(this).find 'form:first'
     return if form.length is 0
@@ -262,10 +248,8 @@ jQuery ->
     if lastBit isnt null # some json?id= from before
       action = action.replace lastBit, ('json?id=' + marker)
     else
-      action = action.concat('.json?id=' + marker)
-
+      action = "#{action}.json?id=#{marker}"
     $(this).attr 'action', action
-    return true
 
   ###
     Submit buttons of forms in .panels can be double-up to provide status
