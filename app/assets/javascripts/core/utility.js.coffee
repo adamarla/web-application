@@ -108,7 +108,7 @@ window.selectionWithRadio = (json, key) ->
   data = json[key]
   clone = $('#toolbox .radio-column:first').clone()
   radio = clone.children '.radio:first'
-  label = clone.children '.content:first'
+  label = clone.children '.label:first'
 
   label.text data['name']
   radio.attr 'marker', data['id']
@@ -122,7 +122,7 @@ window.selectionWithCheckbox = (json, key, name = 'checked') ->
   data = json[key]
   clone = $('#toolbox .checkbox-column:first').clone()
   checkBox = clone.children '.checkbox:first'
-  label = clone.children '.content:first'
+  label = clone.children '.label:first'
 
   label.text data['name']
   checkBox.attr 'marker', data['id']
@@ -133,7 +133,7 @@ window.selectionWithCheckbox = (json, key, name = 'checked') ->
 buildLineItem = (json,key) ->
   data = json[key]
   clone = $('#toolbox .line-item:first').clone()
-  label = clone.children '.content:first'
+  label = clone.children '.label:first'
 
   label.text data['name']
   return clone
@@ -148,7 +148,7 @@ window.cboxLabelSelect = (json, key, name = 'checked') ->
   data = json[key]
   clone = $('#toolbox .cbox-label-select:first').clone()
   cbox = clone.children '.checkbox:first'
-  label = clone.children '.content:first'
+  label = clone.children '.label:first'
   menu = clone.find 'select:first'
   
   label.text data.name
