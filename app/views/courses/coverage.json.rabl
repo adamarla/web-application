@@ -1,12 +1,12 @@
 
 collection @macros => :macros
-  attributes :name, :id
+  attributes :id
   code :in do |m|
     @course.covers_macro_topic? m.id
   end 
 
   child :micro_topics => :micros do 
-    attributes :name, :id
+    attributes :id
 
     # The JSON generated here is loaded onto an HTML element that includes - 
     # amongst other things - a <select> menu. As the element is intended to 

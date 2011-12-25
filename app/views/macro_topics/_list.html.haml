@@ -3,8 +3,11 @@
   %legend
     %span.target= "in"
     %span.operation= "drag-n-drop | select to edit" 
-  %ul#in-macros.purgeable.in-tray.sortable
+  #in-macros.in-tray.sortable
   %legend
     %span.target= "out"
     %span.operation= "drag-n-drop" 
-  %ul#out-macros.purgeable.out-tray.sortable
+  #out-macros.out-tray.sortable
+    - list = get_list_of :macro_topics
+    - list.each do |item|
+      = render :partial => 'toolbox/the_god_element', :locals => { :marker => "#{item.id}", :label => "#{item.name}" }

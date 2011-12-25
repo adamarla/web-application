@@ -7,3 +7,10 @@
     = submit_tag :update
     .peek-a-boo.purgeable
   .dump.hidden
+    - list = get_list_of :macro_topics
+    - list.each do |macro|
+      %div{ :marker => "#{macro.id}" }
+        - micros = MicroTopic.where(:macro_topic_id => macro.id).order(:name)
+        - micros.each do |micro|
+          = render :partial => 'toolbox/the_god_element', 
+                   :locals => { :marker => "#{micro.id}", :label => "#{micro.name}" }
