@@ -104,11 +104,15 @@ fieldset.inputs li.boolean.input {
   margin-right : 8px ;
 } 
 
-.toolbox.radio-column, .toolbox.checkbox-column { 
+.toolbox.radio-column, .toolbox.checkbox-column {
   min-height : 20px ;
 } 
 
-.radio-column, .checkbox-column, .line-item, .cbox-label-select { 
+.god-element { 
+  min-height : 30px ;
+} 
+
+.radio-column, .checkbox-column, .line-item, .cbox-label-select, .god-element { 
   font-size : 13px ; 
   text-transform : lowercase ;
 } 
