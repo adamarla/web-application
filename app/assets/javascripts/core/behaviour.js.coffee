@@ -52,20 +52,22 @@ jQuery ->
 
   ###
     (Sortables) : When an element is moved from an .in-tray to an 
-    .out-tray, then disable any radio buttons within it. Conversely, when
-    an element is moved in the other direction (.out -> .in), enable 
-    any radio buttons 
+    .out-tray, then disable any visible active elements (radios, checkboxes etc) 
+    within it. Conversely, when an element is moved in the other 
+    direction (.out -> .in), enable any radio buttons 
   ###
 
-  $('.panel:not([id="control-panel"])').on 'sortreceive', '.sortable', (event, ui) ->
+  $('#macro-topic-list .sortable').on 'sortreceive', (event, ui) ->
     ###
       ui.item is the item that was dragged and placed within another .sortable
     ###
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0) # read up on jQuery object comparison
-    disableState = if parent.hasClass 'in-tray' then false else true
-    for radio in ui.item.find 'input[type="radio"]'
-      $(radio).prop 'disabled', disableState
+    disableState = if $(this).hasClass 'in-tray' then false else true
+
+    for element in ui.item.children()
+      continue if $(element).hasClass 'hidden'
+      $(element).prop 'disabled', disableState
     
 
   ###
