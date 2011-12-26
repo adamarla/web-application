@@ -98,6 +98,23 @@ window.disableAllSelectsWithin = (element) ->
   element = if typeof element is 'string' then $(element) else element
   setBooleanPropOn select, 'disabled', true for select in element.find 'select'
 
+
+###
+  Customize the God-element 
+###
+
+window.customizeGodElement = (element, options = { radio:true, checkbox:true, select:false, button:false }) ->
+  element = if typeof element is 'string' then $(element) else element
+  return if not element.hasClass 'god-element'
+
+  for key in ['radio', 'checkbox', 'select', 'button']
+    thing = element.find ".#{key}:first"
+    thing.prop 'disabled', true
+    if not(options[key]?) or (options[key] is false)
+      thing.addClass 'hidden'
+    else
+      thing.removeClass 'hidden'
+
 ###
   This function assumes that for whichever model the returned json is responds to
   the following 2 methods : name and id
@@ -184,28 +201,3 @@ window.displayJson = (json, where, key, withRadio = true, withCheck = false, wit
     clone.addClass 'colored' if index % 2 is 1
     clone.appendTo(target).hide().fadeIn('slow')
 
-###
-  This next function also takes JSON. But it requires that the returned
-  JSON records each have *atleast* the following attributes : name, id and 'in'
-  This last attribute - in - can either be true or false. If true, then 
-  a 'selectionWithRadio' is appended to 'in-tray' and if false, then 'out-tray'
-###
-
-window.displayInOutTrays = (json, where, key) ->
-  where = if typeof where is 'string' then $(where) else where
-  $(node).empty() for node in where.find '.purgeable'
-
-  for record, index in json
-    clone = selectionWithRadio record,key
-    inTray = record[key].in
-    target = if inTray is true then where.find '.in-tray:first' else where.find '.out-tray:first'
-    clone.appendTo(target)
-
-    ###
-    Only elements in in-trays (yes, there can be more than one) should
-    be selectable and capable of initiating some action. Those in the
-    out-tray can do the same - but only after being dragged into one
-    of the in-trays
-    ###
-    radio = clone.find 'input[type="radio"]:first'
-    if inTray then radio.prop('disabled', false) else radio.prop('disabled', true)

@@ -27,3 +27,43 @@ window.buildSyllabiEditForm = (json) ->
     newNode = $('<div/>', { class : 'hidden', marker : macro.id})
     newNode.appendTo target
     displayJson macro.micros, newNode, 'micro', false, true, true
+
+###
+  Shows the list of macros covered by a course. The passed JSON
+  is assumed to have at least 2 fields : id (of the macro) and a 
+  boolean 'in' for whether or not the macro is covered in a course
+###
+
+window.displayMacroList = (json, options = {radio:true, checkbox:false, select:false, button:false}) ->
+  start = $('#macro-topic-list')
+  for record in json
+    macro = record['macro']
+    covered = macro.in
+    id = macro.id
+
+    chosenOne = start.find ".god-element[marker=#{id}]:first"
+    customizeGodElement chosenOne, options
+    within = chosenOne.closest '.sortable'
+
+    if within.length is 0 #initially
+      if covered is true
+        target = start.find '.in-tray:first'
+        disabled = false
+      else
+        target = start.find '.out-tray:first'
+        disabled = true
+    else if within.hasClass 'in-tray'
+      continue if covered is true # leave untouched
+      target = start.find '.out-tray:first'
+      disabled = true
+    else
+      continue if covered is false # leave untouched
+      target = start.find '.in-tray:first'
+      disabled = false
+
+    chosenOne = chosenOne.detach()
+    chosenOne.appendTo $(target)
+
+    for element in chosenOne.children()
+      continue if $(element).hasClass 'hidden'
+      $(element).prop 'disabled', disabled
