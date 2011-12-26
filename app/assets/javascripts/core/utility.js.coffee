@@ -103,7 +103,7 @@ window.disableAllSelectsWithin = (element) ->
   Customize the swiss-knife 
 ###
 
-window.customizeGodElement = (element, options = { radio:true, checkbox:true, select:false, button:false }) ->
+window.customizeSwissKnife = (element, options = { radio:true, checkbox:true, select:false, button:false }) ->
   element = if typeof element is 'string' then $(element) else element
   return if not element.hasClass 'swiss-knife'
 
