@@ -39,13 +39,12 @@ jQuery ->
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0)
 
-    marker = ui.item.children('.radio:first').attr 'marker'
-    micros = $('#edit-syllabi-form .dump:first').find "div[marker=#{marker}]:first"
+    marker = ui.item.attr 'marker'
+    micros = $('#micro-topic-list').find "div[marker=#{marker}]:first"
     return if micros.length is 0
 
     micros = micros.detach()
     micros.appendTo '#edit-syllabi-form .peek-a-boo:first'
-
 
   ###
     #macro-topic-list :  When an item is moved from in-tray to out-tray, 
@@ -58,12 +57,12 @@ jQuery ->
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0)
 
-    marker = ui.item.children('.radio:first').attr 'marker'
+    marker = ui.item.attr 'marker'
     micros = $('#edit-syllabi-form .peek-a-boo:first').find "div[marker=#{marker}]:first"
     return if micros.length is 0
 
     micros = micros.detach()
-    micros.appendTo '#edit-syllabi-form .dump:first'
+    micros.appendTo '#micro-topic-list'
     micros.addClass 'hidden'
 
   ###
