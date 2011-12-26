@@ -35,7 +35,7 @@ jQuery ->
     make list of micro-topics part of #edit-syllabi-form's <form> element
   ###
 
-  $('#macro-topic-list').on 'sortreceive', '.in-tray:first', (event, ui) ->
+  $('#macro-topic-list .in-tray:first').on 'sortreceive', (event, ui) ->
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0)
 
@@ -54,7 +54,7 @@ jQuery ->
     before making the move
   ###
 
-  $('#macro-topic-list').on 'sortreceive', '.out-tray:first', (event, ui) ->
+  $('#macro-topic-list .out-tray:first').on 'sortreceive', (event, ui) ->
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0)
 
