@@ -8,6 +8,7 @@
     %span.target= "out"
     %span.operation= "drag-n-drop" 
   #out-macros.out-tray.sortable
+  .dump.hidden
     - list = get_list_of :macro_topics
     - list.each do |item|
       = render :partial => 'toolbox/the_god_element', :locals => { :marker => "#{item.id}", :label => "#{item.name}" }
