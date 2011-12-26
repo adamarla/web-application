@@ -100,12 +100,12 @@ window.disableAllSelectsWithin = (element) ->
 
 
 ###
-  Customize the God-element 
+  Customize the swiss-knife 
 ###
 
 window.customizeGodElement = (element, options = { radio:true, checkbox:true, select:false, button:false }) ->
   element = if typeof element is 'string' then $(element) else element
-  return if not element.hasClass 'god-element'
+  return if not element.hasClass 'swiss-knife'
 
   for key in ['radio', 'checkbox', 'select', 'button']
     thing = element.find ".#{key}:first"

@@ -108,11 +108,11 @@ fieldset.inputs li.boolean.input {
   min-height : 20px ;
 } 
 
-.god-element { 
+.swiss-knife { 
   min-height : 30px ;
 } 
 
-.radio-column, .checkbox-column, .line-item, .cbox-label-select, .god-element { 
+.radio-column, .checkbox-column, .line-item, .cbox-label-select, .swiss-knife { 
   font-size : 13px ; 
   text-transform : lowercase ;
 } 

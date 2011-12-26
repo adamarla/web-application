@@ -41,7 +41,7 @@ window.displayMacroList = (json, options = {radio:true, checkbox:false, select:f
     covered = macro.in
     id = macro.id
 
-    chosenOne = start.find ".god-element[marker=#{id}]:first"
+    chosenOne = start.find ".swiss-knife[marker=#{id}]:first"
     customizeGodElement chosenOne, options
     within = chosenOne.closest '.sortable'
 

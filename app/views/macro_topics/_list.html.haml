@@ -11,4 +11,4 @@
   .dump.hidden
     - list = get_list_of :macro_topics
     - list.each do |item|
-      = render :partial => 'toolbox/the_god_element', :locals => { :marker => "#{item.id}", :label => "#{item.name}" }
+      = render :partial => 'toolbox/swiss_knife', :locals => { :marker => "#{item.id}", :label => "#{item.name}" }
