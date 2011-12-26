@@ -121,30 +121,38 @@ window.customizeSwissKnife = (element, options = { radio:true, checkbox:true, se
 ###
 
 
-window.selectionWithRadio = (json, key) ->
+window.domRadioLabel = (json, key) ->
   data = json[key]
-  clone = $('#toolbox .radio-column:first').clone()
+  clone = $('#toolbox .swiss-knife:first').clone()
+
+  customizeSwissKnife clone, {radio:true}
+
   radio = clone.children '.radio:first'
   label = clone.children '.label:first'
 
   label.text data['name']
   radio.attr 'marker', data['id']
-  setBooleanPropOn radio,'checked', false
+  radio.prop 'disabled', false
+  radio.prop 'checked', false
+
   if url?
     url = url + '.json?id=' + data['id']
     radio.attr 'url', url
   return clone
 
-window.selectionWithCheckbox = (json, key, name = 'checked') ->
+window.domCheckboxLabel = (json, key, name = 'checked') ->
   data = json[key]
-  clone = $('#toolbox .checkbox-column:first').clone()
+  clone = $('#toolbox .swiss-knife:first').clone()
   checkBox = clone.children '.checkbox:first'
   label = clone.children '.label:first'
+
+  customizeSwissKnife clone, {checkbox:true}
 
   label.text data['name']
   checkBox.attr 'marker', data['id']
   checkBox.attr 'name', "#{name}[#{data['id']}]"
-  setBooleanPropOn checkBox, 'checked', data['checked']
+  checkBox.prop 'checked', data['checked']
+  checkBox.prop 'disabled', false
   return clone
 
 buildLineItem = (json,key) ->
@@ -161,16 +169,19 @@ buildLineItem = (json,key) ->
   the <select> menu is disabled and the sibling check-box un-checked
 ###
 
-window.cboxLabelSelect = (json, key, name = 'checked') ->
+window.domCheckboxLabelSelect = (json, key, name = 'checked') ->
   data = json[key]
-  clone = $('#toolbox .cbox-label-select:first').clone()
+  clone = $('#toolbox .swiss-knife:first').clone()
   cbox = clone.children '.checkbox:first'
   label = clone.children '.label:first'
   menu = clone.find 'select:first'
+
+  customizeSwissKnife clone, {checkbox:true, select:true}
   
   label.text data.name
   cbox.attr 'marker', data.id
   cbox.attr 'name', "#{name}[#{data.id}]"
+  cbox.prop 'disabled', false
   selected = data.select
 
   if selected isnt null
@@ -191,12 +202,12 @@ window.displayJson = (json, where, key, withRadio = true, withCheck = false, wit
 
   for record, index in json
     if withRadio is true
-      clone = selectionWithRadio record,key
+      clone = domRadioLabel record,key
     else if withCheck is true
       if withSelect is true
-        clone = cboxLabelSelect record, key
+        clone = domCheckboxLabelSelect record, key
       else
-        clone = selectionWithCheckbox record,key
+        clone = domCheckboxLabel record,key
 
     clone.addClass 'colored' if index % 2 is 1
     clone.appendTo(target).hide().fadeIn('slow')

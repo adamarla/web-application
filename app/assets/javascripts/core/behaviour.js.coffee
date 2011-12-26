@@ -101,11 +101,11 @@ jQuery ->
 
   for type in ['side', 'middle', 'right', 'wide']
     panel = $("##{type}-panel")
-    panel.on 'click', '.purgeable input[type="radio"]', ->
-      startPt = $(this).closest '.purgeable'
-      if startPt.length isnt 0
-        for sibling in startPt.find 'input[type="radio"]'
-          $(sibling).prop 'checked', (if sibling is this then true else false)
+    panel.on 'click', '.swiss-knife > input[type="radio"]', ->
+      parent = $(this).closest '.swiss-knife'
+      if parent.length isnt 0
+        for cousin in parent.siblings('.swiss-knife').find('input[type="radio"]')
+          $(cousin).prop 'checked', false
 
   ###
     For any link in the #control-panel, refresh the view with any applicable
