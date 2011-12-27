@@ -18,6 +18,40 @@ window.loadSyllabiEditFormWith = (syllabi) ->
     option.prop 'selected', true
 
 window.buildSyllabiEditForm = (json) ->
+  target = $('#edit-syllabi-form .peek-a-boo:first')
+
+  # 1. Move all micro back to #micro-topic-list
+  for micro in target.children('div[marker]')
+    $(micro).addClass 'hidden'
+    micro = $(micro).detach()
+    $(micro).appendTo '#micro-topic-list'
+    resetSwissKnife $(micro)
+
+  # 2. Bring back whichever micros are required
+  for m in json
+    macro = m.macro
+    continue if macro.in is false
+    list = $('#micro-topic-list').children("div[marker=#{macro.id}]").first()
+    list.removeClass 'hidden'
+    list.appendTo target
+
+  # 3. Customize the swiss-knife for each micro-topic within the form
+  for micro in target.find('div[marker] > .swiss-knife')
+    customizeSwissKnife $(micro), {checkbox:true, select:true}, true
+
+  # 4. Load micro-topic information in the JSON onto the form
+  for m in json
+    macro = m.macro
+    continue if macro.in is false
+    e = target.children "div[marker=#{macro.id}]:first" # containing <div>
+    micros = macro.micros
+    for n in micros
+      micro = n.micro
+      f = e.children "div[marker=#{micro.id}]:first" # swiss-knife
+      select = f.children '.select:first'
+      select.val "#{micro.select}"
+
+  ###
   startPt = $('#edit-syllabi-form')
   $(node).empty() for node in startPt.find('.peek-a-boo:first')
 
@@ -27,6 +61,7 @@ window.buildSyllabiEditForm = (json) ->
     newNode = $('<div/>', { class : 'hidden', marker : macro.id})
     newNode.appendTo target
     displayJson macro.micros, newNode, 'micro', false, true, true
+  ###
 
 ###
   Shows the list of macros covered by a course. The passed JSON
