@@ -101,9 +101,9 @@ fieldset.inputs li.boolean.input {
 } 
 
 .swiss-knife { 
-  min-height : 30px ;
+  min-height : 25px ;
   border-bottom : 1px solid #6ca7ab ;
-  padding-top : 5px ;
+  padding-top : 3px ;
 } 
 
 .swiss-knife > .label {
@@ -125,11 +125,9 @@ fieldset.inputs li.boolean.input {
 } 
 
 legend { 
-  /*padding-top : 7px ;*/
-  padding-bottom : 7px ;
-  /*border-top : 3px solid gray ;*/
-  border-bottom : 3px solid gray ;
-  margin-bottom : 5px ;
+  border-bottom : 2px solid gray ;
+  margin-bottom : 20px ;
+  margin-top : 20px ;
 } 
 
 legend > span.target { 
