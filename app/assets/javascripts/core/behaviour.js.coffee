@@ -68,6 +68,7 @@ jQuery ->
     for element in ui.item.children()
       continue if $(element).hasClass 'hidden'
       $(element).prop 'disabled', disableState
+      $(element).prop 'checked', false
     
 
   ###
