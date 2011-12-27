@@ -57,32 +57,20 @@ class Course < ActiveRecord::Base
   #attr_accessible 
 
   def update_syllabus( syllabi ) 
-    # syllabi = params[:syllabi] in 'update' action in SyllabiController 
+    status = :ok
+    ids = syllabi.keys.find_all { |key| syllabi[key].to_i > 0 }
+    ids = ids.map { |id| id.to_i }
+    topics = ids.map { |index| MicroTopic.find index }
+    self.micro_topics = topics # requisite additions & deletions to the join-table
 
-    topics = [] 
-    status = :ok 
-
-    syllabi.each do |topic_id, difficulty| 
-      topic = MicroTopic.find topic_id
-      unless topic.nil? 
-        topics << topic 
-      else 
-        status = :bad_request 
-      end #unless 
-      break if status == :bad_request # retain old syllabus if anything wrong w/ new one 
-    end #each 
-
-    unless status == :bad_request 
-      self.micro_topics = topics # updates the syllabus join table !
-      # Now, update the difficulty levels for each topic for this course
-
-      syllabi.each do |topic_id, difficulty|
-        item = Syllabus.where(:course_id => self.id, :micro_topic_id => topic_id).first 
+    syllabi.each do |id,difficulty| 
+      if difficulty.to_i > 0
+        item = Syllabus.where(:course_id => self.id, :micro_topic_id => id.to_i).first
         status = item.update_attribute(:difficulty, difficulty.to_i) ? :ok : :bad_request
-      end 
-    end # unless  
-
-    return status  
+        break if status == :bad_request
+      end
+    end 
+    return (status == :bad_request) ? :bad_request : :ok
   end # of function
 
 end

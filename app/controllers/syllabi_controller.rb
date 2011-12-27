@@ -3,9 +3,8 @@ class SyllabiController < ApplicationController
   respond_to :json 
 
   def update 
-    options = params[:syllabi] 
     course = Course.find params[:id]
-    head (course.nil? ? :bad_request : course.update_syllabus(params[:syllabi]))
+    head (course.nil? ? :bad_request : course.update_syllabus(params[:difficulty]))
   end 
 
   def show 
