@@ -27,9 +27,9 @@ class MicroTopic < ActiveRecord::Base
     course = Course.find course_id
     unless course.nil? 
       in_syllabi = Syllabus.where(:course_id => course_id, :micro_topic_id => self.id).first
-      return in_syllabi.nil? ? nil : in_syllabi.difficulty
+      return in_syllabi.nil? ? 0 : in_syllabi.difficulty
     end 
-    return nil
+    return 0
   end 
 
 end
