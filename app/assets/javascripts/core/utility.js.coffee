@@ -103,14 +103,14 @@ window.disableAllSelectsWithin = (element) ->
   Customize the swiss-knife 
 ###
 
-window.customizeSwissKnife = (element, options = { radio:true, checkbox:true, select:false, button:false }, enableAlso = false) ->
+window.customizeSwissKnife = (element, visible = { radio:true, checkbox:false, select:false, button:false }, enable = false) ->
   element = if typeof element is 'string' then $(element) else element
   return false if not element.hasClass 'swiss-knife'
 
   for key in ['radio', 'checkbox', 'select', 'button']
     thing = element.find ".#{key}:first"
-    thing.prop 'disabled', not enableAlso
-    if not(options[key]?) or (options[key] is false)
+    thing.prop 'disabled', not enable
+    if not(visible[key]?) or (visible[key] is false)
       thing.addClass 'hidden'
     else
       thing.removeClass 'hidden'
