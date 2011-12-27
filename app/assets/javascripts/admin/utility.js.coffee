@@ -32,7 +32,6 @@ window.buildSyllabiEditForm = (json) ->
     macro = m.macro
     continue if macro.in is false
     list = $('#micro-topic-list').children("div[marker=#{macro.id}]").first()
-    list.removeClass 'hidden'
     list.appendTo target
 
   # 3. Customize the swiss-knife for each micro-topic within the form
