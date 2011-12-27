@@ -133,99 +133,33 @@ window.resetSwissKnife = (element) ->
     active.prop 'checked', false
 
 ###
-  This function assumes that for whichever model the returned json is responds to
-  the following 2 methods : name and id
+  The function below assumes that the passed JSON structure has at least
+  the following 2 keys : name & id. The other keys handled here are 'checked'
+  and 'selected'
 ###
 
-
-window.domRadioLabel = (json, key) ->
-  data = json[key]
+domSwissKnife = (record, key, visible = {radio:true}, enable = true) ->
   clone = $('#toolbox .swiss-knife:first').clone()
+  customizeSwissKnife clone, visible, enable
 
-  customizeSwissKnife clone, {radio:true}
-
-  radio = clone.children '.radio:first'
+  data = record[key]
   label = clone.children '.label:first'
-
-  label.text data['name']
-  radio.attr 'marker', data['id']
-  radio.prop 'disabled', false
-  radio.prop 'checked', false
-
-  if url?
-    url = url + '.json?id=' + data['id']
-    radio.attr 'url', url
-  return clone
-
-window.domCheckboxLabel = (json, key, name = 'checked') ->
-  data = json[key]
-  clone = $('#toolbox .swiss-knife:first').clone()
-  checkBox = clone.children '.checkbox:first'
-  label = clone.children '.label:first'
-
-  customizeSwissKnife clone, {checkbox:true}
-
-  label.text data['name']
-  checkBox.attr 'marker', data['id']
-  checkBox.attr 'name', "#{name}[#{data['id']}]"
-  checkBox.prop 'checked', data['checked']
-  checkBox.prop 'disabled', false
-  return clone
-
-buildLineItem = (json,key) ->
-  data = json[key]
-  clone = $('#toolbox .line-item:first').clone()
-  label = clone.children '.label:first'
-
-  label.text data['name']
-  return clone
-
-###
-  This next function assumes that the returned JSON has at least the 
-  following 3 keys : name, id and select. If 'select' is null, then 
-  the <select> menu is disabled and the sibling check-box un-checked
-###
-
-window.domCheckboxLabelSelect = (json, key, name = 'checked') ->
-  data = json[key]
-  clone = $('#toolbox .swiss-knife:first').clone()
-  cbox = clone.children '.checkbox:first'
-  label = clone.children '.label:first'
-  menu = clone.find 'select:first'
-
-  customizeSwissKnife clone, {checkbox:true, select:true}
-  
   label.text data.name
-  cbox.attr 'marker', data.id
-  cbox.attr 'name', "#{name}[#{data.id}]"
-  cbox.prop 'disabled', false
-  selected = data.select
 
-  if selected isnt null
-    menu.prop 'disabled', false
-    menu.val selected
-    cbox.prop 'checked', true
-  else
-    menu.prop 'disabled', true
-    cbox.prop 'checked', false
-
-  menu.attr 'name', "syllabi[#{data.id}]" # Change to more generic behaviour later !!
+  for other in ['radio', 'checkbox', 'select', 'button']
+    e = clone.children ".#{other}:first"
+    continue if e.hasClass 'hidden'
+    if other is 'radio' or other is 'checkbox'
+      e.prop 'checked', (if data.checked isnt null then data.checked else false)
+      e.attr 'marker', data.id
+    else if other is 'select'
+      e.val data.select
   return clone
   
-
-window.displayJson = (json, where, key, withRadio = true, withCheck = false, withSelect = false) ->
+window.displayJson = (json, where, key, visible = {radio:true}, enable = true) ->
   target = if $(where).hasClass 'data' then $(where) else $(where).find('.purgeable:first')
   if target.length is 0 then target = $(where)
 
   for record, index in json
-    if withRadio is true
-      clone = domRadioLabel record,key
-    else if withCheck is true
-      if withSelect is true
-        clone = domCheckboxLabelSelect record, key
-      else
-        clone = domCheckboxLabel record,key
-
-    clone.addClass 'colored' if index % 2 is 1
+    clone = domSwissKnife record, key, visible, enable
     clone.appendTo(target).hide().fadeIn('slow')
-

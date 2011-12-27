@@ -98,11 +98,11 @@ jQuery ->
 
     switch matched.pop()
       when 'teachers/roster'
-        displayJson json.sections, '#right-panel', 'section', false, true
+        displayJson json.sections, '#right-panel', 'section', {checkbox:true}
       when 'school/unassigned-students'
-        displayJson json.students, '#right-panel', 'student', false, true
+        displayJson json.students, '#right-panel', 'student', {checkbox:true}
       when 'study_groups/students'
-        displayJson json.students, '#right-panel', 'student', false, true
+        displayJson json.students, '#right-panel', 'student', {checkbox:true}
 
   ###
     AJAX successes the wide-panel is supposed to respond to.
