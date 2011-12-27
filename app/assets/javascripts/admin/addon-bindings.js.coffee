@@ -62,6 +62,7 @@ jQuery ->
     return if micros.length is 0
 
     micros = micros.detach()
+    resetSwissKnife micros
     micros.appendTo '#micro-topic-list'
     micros.addClass 'hidden'
 
