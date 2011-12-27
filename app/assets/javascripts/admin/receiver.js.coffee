@@ -70,7 +70,7 @@ jQuery ->
       when 'topics/list'
         displayJson json.topics, '#middle-panel', 'topic'
       when 'course/coverage'
-        displayInOutTrays json.macros, "#macro-topic-list", 'macro'
+        displayMacroList json.macros, {radio:true}
         buildSyllabiEditForm json.macros
         ### 
           We will need to set URLs of the form : 
