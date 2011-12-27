@@ -105,7 +105,7 @@ window.disableAllSelectsWithin = (element) ->
 
 window.customizeSwissKnife = (element, options = { radio:true, checkbox:true, select:false, button:false }, enableAlso = false) ->
   element = if typeof element is 'string' then $(element) else element
-  return if not element.hasClass 'swiss-knife'
+  return false if not element.hasClass 'swiss-knife'
 
   for key in ['radio', 'checkbox', 'select', 'button']
     thing = element.find ".#{key}:first"
@@ -114,6 +114,23 @@ window.customizeSwissKnife = (element, options = { radio:true, checkbox:true, se
       thing.addClass 'hidden'
     else
       thing.removeClass 'hidden'
+  return true
+
+###
+  Reset swiss-knife to a virginal state. This means : 
+    1. Hide & disable everything other than the label
+    2. Set value = 0 on <select>
+    3. Uncheck all radio-buttons and check-boxes
+###
+
+window.resetSwissKnife = (element) ->
+  return false if not customizeSwissKnife(element) # (1)
+
+  select = element.children '.select:first'
+  select.val 0 # (2)
+
+  for active in element.children '.checkbox, .radio'
+    active.prop 'checked', false
 
 ###
   This function assumes that for whichever model the returned json is responds to
