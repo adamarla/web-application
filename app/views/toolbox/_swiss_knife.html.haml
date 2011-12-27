@@ -17,6 +17,7 @@
   .label.left= "#{label}"
   %input.button.right{ :type => :button, :disabled => true }
   %select.right.difficulty.select{ :name => "difficulty[#{marker}]", :disabled => true}
+    %option{ :value => 0 }= ""
     %option{ :value => 1 }= "introductory"
     %option{ :value => 2 }= "intermediate"
     %option{ :value => 3 }= "advanced"
