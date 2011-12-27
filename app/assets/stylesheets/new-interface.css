@@ -89,10 +89,6 @@ fieldset.inputs li.boolean.input {
   list-style-type : none ;
 } 
 
-#edit-syllabi-megaform .dropdown label, .cbox-label-select > .dropdown label  {
-  display : none ;
-} 
-
 #minor-links label { 
   font-size : 12px ;
   text-align : left ; 
@@ -104,13 +100,15 @@ fieldset.inputs li.boolean.input {
   margin-right : 8px ;
 } 
 
-.toolbox.radio-column, .toolbox.checkbox-column {
-  min-height : 20px ;
-} 
-
 .swiss-knife { 
   min-height : 30px ;
+  border-bottom : 1px solid #6ca7ab ;
+  padding-top : 5px ;
 } 
+
+.swiss-knife > .label {
+  margin-left : 5px ;
+}
 
 .radio-column, .checkbox-column, .line-item, .cbox-label-select, .swiss-knife { 
   font-size : 13px ; 
@@ -172,12 +170,6 @@ legend > a {
   background-color : #72ab65 ;
 } 
 
-/*
-.rotated { 
-  -moz-transform : rotate(-90deg) ;
-} 
-*/
-
 .traffic-light > img { 
   margin-right : 30px ;
 } 
@@ -203,34 +195,3 @@ legend > a {
   margin-left : 17px ;
 } 
 
-#edit-syllabi-megaform .macro-topic > .heading { 
-  font-variant : small-caps ;
-  font-weight : bold ; 
-  font-size : 14px ;
-  background-color : #654b24 ;
-  color : white ;
-  padding-left : 10px ;
-  padding-top : 6px ;
-  min-height : 40px ;
-  -moz-border-radius : 2px ;
-  border-radius : 2px ;
-} 
-
-#edit-syllabi-megaform .macro-topic { 
-  margin-top : 5px ;
-} 
-
-#edit-syllabi-megaform .micro-topic { 
-  min-height : 45px ;
-  text-transform : lowercase ;
-} 
-
-#edit-syllabi-megaform .column { 
-  margin-right : 15px ;
-} 
-
-/*
-.headings .label.middle { 
-  margin-left : 40% ;
-} 
-*/
