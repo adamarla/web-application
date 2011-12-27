@@ -37,7 +37,7 @@ window.buildSyllabiEditForm = (json) ->
 
   # 3. Customize the swiss-knife for each micro-topic within the form
   for micro in target.find('div[marker] > .swiss-knife')
-    customizeSwissKnife $(micro), {checkbox:true, select:true}, true
+    customizeSwissKnife $(micro), {select:true}, true
 
   # 4. Load micro-topic information in the JSON onto the form
   for m in json
@@ -50,18 +50,6 @@ window.buildSyllabiEditForm = (json) ->
       f = e.children "div[marker=#{micro.id}]:first" # swiss-knife
       select = f.children '.select:first'
       select.val "#{micro.select}"
-
-  ###
-  startPt = $('#edit-syllabi-form')
-  $(node).empty() for node in startPt.find('.peek-a-boo:first')
-
-  for m in json
-    macro = m.macro
-    target = if macro.in is true then startPt.find('.peek-a-boo:first') else startPt.find('.dump:first')
-    newNode = $('<div/>', { class : 'hidden', marker : macro.id})
-    newNode.appendTo target
-    displayJson macro.micros, newNode, 'micro', false, true, true
-  ###
 
 ###
   Shows the list of macros covered by a course. The passed JSON
