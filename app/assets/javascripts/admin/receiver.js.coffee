@@ -27,7 +27,8 @@ jQuery ->
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/schools\/list/) or
-              settings.url.match(/courses\/list/)
+              settings.url.match(/courses\/list/) or
+              settings.url.match(/questions\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -41,6 +42,8 @@ jQuery ->
       when 'courses/list'
         displayJson json.courses, '#side-panel', 'course'
         resetRadioUrlsAsPer $('#courses-link')
+      when 'questions/list'
+        samuraiLineUp '#tbds-summary .samurai-armory:first', json.questions, 'question', ['mcq', 'multi_correct'], ['difficulty']
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
