@@ -19,23 +19,23 @@
 .toolbox.samurai-sword.full-width{ :marker => "#{marker}" }
   .label.accordion-heading
   .accordion-content
-    .checkbox-row
-      .checkbox
-        %label
+    .checkbox-row.full-width
+      .checkbox.left.hidden
+        %label.left
         %input.left{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
-      .checkbox
-        %label
+      .checkbox.left.hidden
+        %label.left
         %input.left{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
-      .checkbox
-        %label
+      .checkbox.left.hidden
+        %label.left
         %input.left{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
-    .select-row
-      .select
+    .select-row.full-width
+      .select.hidden
         %label
         %select.left{ :disabled => true }
-      .select
+      .select.hidden
         %label
         %select.left{ :disabled => true }
-    .button-row
-      %input.button.left{ :type => :button, :disabled => true }
-      %input.button.left{ :type => :button, :disabled => true }
+    .button-row.full-width
+      %input.button.left.hidden{ :type => :button, :disabled => true }
+      %input.button.left.hidden{ :type => :button, :disabled => true }
