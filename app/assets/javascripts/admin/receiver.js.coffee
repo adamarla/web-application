@@ -55,7 +55,8 @@ jQuery ->
               settings.url.match(/teachers\/list/) or
               settings.url.match(/school\/sections/) or
               settings.url.match(/topics\/list/) or
-              settings.url.match(/course\/coverage/)
+              settings.url.match(/course\/coverage/) or
+              settings.url.match(/macros\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -76,6 +77,8 @@ jQuery ->
       when 'course/coverage'
         displayMacroList json.macros, {radio:true}
         buildSyllabiEditForm json.macros
+      when 'macros/list'
+        displayMacroList json.macros, {radio:true}
         ### 
           We will need to set URLs of the form : 
             macro_topic/micros_in_course.json?course=<sth>&id=<to be filled>

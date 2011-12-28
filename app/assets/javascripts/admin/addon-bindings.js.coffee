@@ -13,6 +13,7 @@ jQuery ->
   ###
   $('#tbd-link').click ->
     $.get 'questions/list.json'
+    $.get 'macros/list.json'
 
   ###
     Over-ride action attribute for #edit-syllabi-form just before submit.
