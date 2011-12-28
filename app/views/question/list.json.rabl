@@ -1,3 +1,4 @@
 
 collection @questions
-  attributes :id, :path => :name, :mcq, :multi_correct, :difficulty
+  attributes :id, :path => :name
+  attributes :mcq, :multi_correct, :difficulty
