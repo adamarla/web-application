@@ -1,6 +1,4 @@
 
-emptyMe = (node) -> $(node).empty()
-
 putBack = (node) ->
   node = node.detach()
   node.appendTo '#toolbox'
@@ -15,9 +13,10 @@ clearPanel = (id, moveAlso = true) ->
      if some data is too valuable to lose, then *do not* put it under
      .purgeable.empty-on-putback
    ###
-
-  emptyMe node for node in me.find('.purgeable.empty-on-putback')
+  for node in me.find '.purgeable'
+    $(node).empty()
   putBack me if moveAlso is true
+  return true
 
 
 window.refreshView = (linkId) ->
