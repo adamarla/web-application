@@ -9,6 +9,12 @@ jQuery ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
   ###
+    (control-panel) : #tbd-link click
+  ###
+  $('#tbd-link').click ->
+    $.get 'questions/list.json'
+
+  ###
     Over-ride action attribute for #edit-syllabi-form just before submit.
     The default value is set in core/behaviour but should be over-ridden in
     role-specific JS files in case something else is desired

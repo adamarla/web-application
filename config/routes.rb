@@ -42,6 +42,9 @@ Webapp::Application.routes.draw do
   resource :micro_topic, :only => [:create, :update]
   match 'topics/list' => 'micro_topics#list', :via => :get
 
+  # Question
+  match 'questions/list' => 'question#list', :via => :get
+
   # Student 
   resource :student, :only => [:create, :update]
 
