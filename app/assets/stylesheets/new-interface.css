@@ -193,3 +193,20 @@ legend > a {
   margin-left : 17px ;
 } 
 
+.samurai-armory .accordion-heading {
+  border : none ;
+  border-bottom : 1px solid #6ca7ab ;
+  font-size : 13px ;
+  padding-bottom : 5px ;
+}
+
+.samurai-armory .accordion-content { 
+  font-size : 12px ;
+  border : none ;
+  border-bottom : 1px solid #6ca7ab ;
+} 
+
+.samurai-armory .checkbox {
+  margin-right : 5px ;
+}
+
