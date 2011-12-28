@@ -210,3 +210,8 @@ legend > a {
   margin-right : 5px ;
 }
 
+.samurai-armory .checkbox-row, .samurai-armory .button-row, .samurai-armory .select-row { 
+  min-height : 25px ;
+  margin-bottom : 6px ;
+} 
+
