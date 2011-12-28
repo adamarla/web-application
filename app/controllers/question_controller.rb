@@ -1,5 +1,6 @@
 class QuestionController < ApplicationController
   before_filter :authenticate_account!, :except => [:insert_new]
+  respond_to :json
 
   def insert_new
     # As of now, this action can be initiated only by the POST 
@@ -24,4 +25,31 @@ class QuestionController < ApplicationController
     render :nothing => true, :status => status
   end
 
-end
+  def list
+    me = current_account.role
+    type = params[:type].blank? ? :untagged : params[:type].to_sym
+
+    case me
+      when :admin
+        author_id = params[:id].blank? ? current_account.loggable_id : params[:id]
+      when :examiner
+        author_id = current_account.loggable_id #ignore params[:id] even if specified
+      else
+        author_id = nil
+    end 
+
+    unless author_id.nil?
+      case type 
+        when :tagged
+          @questions = Question.where(:examiner_id => author_id).where('micro_topic_id IS NOT NULL')
+        when :any
+          @questions = Question.where(:examiner_id => author_id)
+        else
+          @questions = Question.where(:examiner_id => author_id).where('micro_topic_id IS NULL')
+      end
+    else
+      @questions = []
+    end 
+  end # of method
+
+end # of class
