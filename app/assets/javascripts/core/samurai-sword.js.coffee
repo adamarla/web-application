@@ -54,6 +54,7 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
     for child in sword.children()
       $(child).appendTo where
 
-    where.accordion( { header:'.accordion-heading', collapsible:true, active:false } )
+  where.accordion( { header:'.accordion-heading', collapsible:true, active:false, clearStyle:true } )
+  return true
 
 
