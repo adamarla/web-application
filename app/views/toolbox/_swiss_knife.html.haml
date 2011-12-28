@@ -1,7 +1,15 @@
 
 -#
-  The structure below has everything in it - radio-buttons, check-boxes, 
-  a label, <select> for difficulty etc.
+  The point of this structure is to provide a customizable, re-usable element
+  that fits into many situations - thereby reducing code complexity
+
+  This particular element - the swiss-knife - has within it the following (in order):
+    1. a radio-button
+    2. a checkbox 
+    3. a text-label
+    4. a button 
+    5. a <select> ( for difficulty )
+    6. a hidden text field, or trojan
   In cases where the list to display is already known, iterate over the DB
   records and render this element. Then, in JS, disable & hide the bits you don't want
   to show in the list. So, if you want to show checkbox instead of a radio-button,
