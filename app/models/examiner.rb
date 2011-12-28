@@ -22,14 +22,6 @@ class Examiner < ActiveRecord::Base
   #attr_accessible :num_contested
   before_create :set_secret_key
 
-  def questions( type = :untagged )
-    case type 
-      when :untagged then Question.where(:examiner_id => self.id).where('micro_topic_id IS NULL')
-      when :tagged then Question.where(:examiner_id => self.id).where('micro_topic_id IS NOT NULL')
-      else Question.where(:examiner_id => self.id)
-    end 
-  end 
-
   def name 
     self.first_name + ' ' + self.last_name 
   end 
