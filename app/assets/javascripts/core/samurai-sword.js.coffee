@@ -42,6 +42,8 @@ samuraiButtonRow = (sword, json, buttons = []) ->
 
 window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = []) ->
   where = if typeof where is 'string' then $(where) else where
+  where.append '<div class="samurai-armory"></div>'
+  where = where.children '.samurai-armory:first'
 
   for record in json
     samurai = record[key]
@@ -54,7 +56,7 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
     for child in sword.children()
       $(child).appendTo where
 
-  where.accordion( { header:'.accordion-heading', collapsible:true, active:false, clearStyle:true } )
+  where.accordion({header:'.accordion-heading', collapsible:true, active:false})
   return true
 
 

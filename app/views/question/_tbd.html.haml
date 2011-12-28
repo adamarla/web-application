@@ -3,4 +3,10 @@
   %legend
     %span.target= "un-tagged questions"
     %span.operation= "select, then tag" 
-  .samurai-armory.purgeable.clear-before-show
+  -# We need a buffer layer between here and the element on which 
+  -# jQuery.accordion() will be called. Otherwise, the attributes
+  -# .accordion() sets on the element will interfere with accordion 
+  -# rendering in subsequent runs. Therefore, we have .samurai-garrison.
+  -# Within it would be .samurai-armory (added in JS) and within that 
+  -# would be .samurai-swords
+  .samurai-garrison.purgeable.clear-before-show
