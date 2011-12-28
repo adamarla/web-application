@@ -23,7 +23,7 @@ class Examiner < ActiveRecord::Base
   before_create :set_secret_key
 
   def name 
-    self.first_name + ' ' + self.last_name 
+    return "#{self.first_name} #{self.last_name} (#{self.account.username})"
   end 
 
   def generate_username
