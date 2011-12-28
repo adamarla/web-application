@@ -58,6 +58,10 @@ fieldset.inputs li.boolean.input {
   color : #fd9105 ;
 } 
 
+.panel:not([id="control-panel"]) form input[type="submit"] {
+  margin-bottom : 15px ;
+}
+
 #control-panel { 
   padding-top : 20px ;
   height : 100px ;
