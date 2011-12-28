@@ -43,7 +43,8 @@ jQuery ->
         displayJson json.courses, '#side-panel', 'course'
         resetRadioUrlsAsPer $('#courses-link')
       when 'questions/list'
-        samuraiLineUp '#tbds-summary .samurai-armory:first', json.questions, 'question', ['mcq', 'multi_correct'], ['difficulty']
+        samuraiLineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
+        ['mcq', 'multi_correct'], [], ['preview']
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
