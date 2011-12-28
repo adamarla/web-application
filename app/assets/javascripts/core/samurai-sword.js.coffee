@@ -28,6 +28,18 @@ samuraiCheckboxRow = (sword, json, labels = []) ->
     cbox.prop 'checked', (if json[label] is null then false else json[label])
   return true
 
+samuraiButtonRow = (sword, json, buttons = []) ->
+  return if not sword.hasClass 'samurai-sword'
+  marker = json.id
+
+  for b,index in buttons
+    button = sword.find('.button').eq(index)
+    button.attr 'marker', marker
+    button.val b
+    button.removeClass 'hidden'
+    button.prop 'disabled', false
+  
+
 window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = []) ->
   where = if typeof where is 'string' then $(where) else where
 
@@ -37,6 +49,8 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
 
     samuraiSetHeading sword, samurai.name
     samuraiCheckboxRow sword, samurai, checks
+    samuraiButtonRow sword, samurai, buttons
+
     for child in sword.children()
       $(child).appendTo where
 
