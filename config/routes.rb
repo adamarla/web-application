@@ -37,6 +37,7 @@ Webapp::Application.routes.draw do
 
   # Macro Topic
   match 'macro_topic/micros_in_course' => 'macro_topics#micros_in_course', :via => :get
+  match 'macros/list' => 'macro_topics#list', :via => :get
 
   # Micro Topic 
   resource :micro_topic, :only => [:create, :update]

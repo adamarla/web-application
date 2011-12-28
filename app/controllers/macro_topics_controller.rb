@@ -13,4 +13,8 @@ class MacroTopicsController < ApplicationController
     end
   end 
 
+  def list
+    @macros = MacroTopic.where('id IS NOT NULL').order(:name)
+  end 
+
 end #of controller
