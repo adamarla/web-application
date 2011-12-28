@@ -17,13 +17,15 @@
 - label = label.blank? ? 'tbd' : label
 
 .toolbox.samurai-sword.full-width{ :marker => "#{marker}" }
-  .checkbox-row
-    %input.left.checkbox{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
-    %input.left.checkbox{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
-    %input.left.checkbox{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
-  .select-row
-    %select.select.left{ :disabled => true }
-    %select.select.left{ :disabled => true }
-  .button-row
-    %input.button.left{ :type => :button, :disabled => true }
-    %input.button.left{ :type => :button, :disabled => true }
+  .label.accordion-heading
+  .accordion-content
+    .checkbox-row
+      %input.left.checkbox{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
+      %input.left.checkbox{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
+      %input.left.checkbox{ :type => :checkbox, :marker => "#{marker}", :disabled => true }
+    .select-row
+      %select.select.left{ :disabled => true }
+      %select.select.left{ :disabled => true }
+    .button-row
+      %input.button.left{ :type => :button, :disabled => true }
+      %input.button.left{ :type => :button, :disabled => true }
