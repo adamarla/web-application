@@ -2,8 +2,9 @@
 # Function call : samuraiSetHeading e, 'click me to expand' 
 samuraiSetHeading = (sword, label) ->
   return if not sword.hasClass 'samurai-sword'
-  heading = sword.children '.accordion-heading:first'
-  heading.text label
+  header = sword.children().first() # will be an .accordion-heading 
+  title = header.children().first()
+  title.text label
 
 # Function call : samuraiCheckboxRow e, json, ['mcq', 'multi-part']
 samuraiCheckboxRow = (sword, json, labels = []) ->
@@ -38,7 +39,11 @@ samuraiButtonRow = (sword, json, buttons = []) ->
     button.val b
     button.removeClass 'hidden'
     button.prop 'disabled', false
-  
+
+samuraiSetupHidden = (sword, json) ->
+  marker = json.id
+  ninja = sword.children().eq(1).children('input[type="hidden"]:first')
+  $(ninja).attr 'name', "ninja[#{marker}]"
 
 window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = []) ->
   where = if typeof where is 'string' then $(where) else where
@@ -52,6 +57,7 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
     samuraiSetHeading sword, samurai.name
     samuraiCheckboxRow sword, samurai, checks
     samuraiButtonRow sword, samurai, buttons
+    samuraiSetupHidden sword, samurai
 
     for child in sword.children()
       $(child).appendTo where
