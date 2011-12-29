@@ -15,6 +15,9 @@ clearPanel = (id, moveAlso = true) ->
    ###
   for node in me.find '.purgeable'
     $(node).empty()
+  for node in me.find '.put-back' # children that need to be put back separately
+    putBack $(node)
+
   putBack me if moveAlso is true
   return true
 
