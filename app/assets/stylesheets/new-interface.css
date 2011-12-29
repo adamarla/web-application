@@ -204,6 +204,12 @@ legend > a {
   padding-bottom : 5px ;
 }
 
+.samurai-armory .accordion-heading > .footnote {
+  font-size : 11px ;
+  color : #6ca7ab ;
+  text-transform : lowercase ;
+}
+
 .samurai-armory .accordion-content { 
   font-size : 12px ;
   border : none ;
