@@ -10,6 +10,17 @@ window.ensureMicroListCompleteness = () ->
     for knife in list.children()
       swissKnifeReset $(knife)
 
+resetMacroTopicList = () ->
+  source = $('#macro-topic-list')
+  target = $('#macro-topic-list .dump:first')
+
+  for tray in source.find '.in-tray:first, .out-tray:first'
+    for knife in $(tray).find '.swiss-knife'
+      knife = $(knife).detach()
+      swissKnifeReset knife
+      knife.appendTo target
+  return true
+      
 
 window.loadSyllabiEditFormWith = (syllabi) ->
   table = $('#edit-syllabi-megaform')
@@ -69,35 +80,20 @@ window.buildSyllabiEditForm = (json) ->
 ###
 
 window.displayMacroList = (json, options = {radio:true, checkbox:false, select:false, button:false}) ->
-  start = $('#macro-topic-list')
+  resetMacroTopicList()
+  start = $('#macro-topic-list .dump:first')
   for record in json
     macro = record['macro']
     covered = macro.in
     id = macro.id
 
     chosenOne = start.find ".swiss-knife[marker=#{id}]:first"
-    swissKnifeCustomize chosenOne, options
-    within = chosenOne.closest '.sortable'
+    swissKnifeCustomize chosenOne, options, covered
 
-    if within.length is 0 #initially
-      if covered is true
-        target = start.find '.in-tray:first'
-        disabled = false
-      else
-        target = start.find '.out-tray:first'
-        disabled = true
-    else if within.hasClass 'in-tray'
-      continue if covered is true # leave untouched
-      target = start.find '.out-tray:first'
-      disabled = true
+    if covered is true
+      target = $('#macro-topic-list .in-tray:first')
     else
-      continue if covered is false # leave untouched
-      target = start.find '.in-tray:first'
-      disabled = false
+      target = $('#macro-topic-list .out-tray:first')
 
     chosenOne = chosenOne.detach()
-    chosenOne.appendTo $(target)
-
-    for element in chosenOne.children()
-      continue if $(element).hasClass 'hidden'
-      $(element).prop 'disabled', disabled
+    chosenOne.appendTo target
