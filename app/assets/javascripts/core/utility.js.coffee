@@ -3,6 +3,19 @@ putBack = (node) ->
   node = node.detach()
   node.appendTo '#toolbox'
 
+###
+When clearing panels, only one of the following 4 can be done to
+the elements within the said panel :
+  1. the element's internals can be purged
+  2. the element can be moved back to #toolbox
+  3. both (1) and (2)
+  4. neither (1) nor (2)
+      
+These 4 possibilities can be captured using just 2 class attributes -
+purgeable and put-back. The former has been around for some time
+while the latter is being introduced with the benefit of hindsight 
+###
+
 clearPanel = (id, moveAlso = true) ->
   me = $(id).children().first()
   return if me.length is 0
