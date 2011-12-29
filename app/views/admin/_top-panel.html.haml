@@ -1,10 +1,15 @@
 
 %ul.no-bullets
-  = main_link :for => :tbd, :with => { :panels => { :middle => '#macro-topic-list', :right => '#micro-topic-list' } } 
-  = main_link :for => :schools, :with => {:panels => {:middle => "#new-student", :right => "#new-teacher"}} 
+  = main_link :for => :tbd, :with => { :panels => { :middle => '#macro-topic-list', 
+                                                    :right => '#micro-topics-for-tagging' } } 
+
+  = main_link :for => :schools, :with => {:panels => {:middle => "#new-student", 
+                                                      :right => "#new-teacher"}} 
+
   = main_link :for => :examiners, :with => {:panels => {} }
 
-  = main_link :for => :courses, :with => {:panels => { :middle => '#macro-topic-list', :right => '#edit-syllabi-form' },
+  = main_link :for => :courses, :with => {:panels => { :middle => '#macro-topic-list', 
+                                                       :right => '#edit-syllabi-form' },
                                           :radio_urls => {:side => 'course/coverage.json?id='} }
 
   = main_link :for => :yardsticks, :with => {:panels => {:middle => '#edit-yardstick'}, 
