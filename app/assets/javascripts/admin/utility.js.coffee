@@ -1,4 +1,13 @@
 
+window.ensureMicroListCompleteness = () ->
+  source = $('#edit-syllabi-form') # the only other place micro-topics could be
+  target = $('#micro-topic-list')
+
+  for list in source.find 'div[back-to]'
+    list = $(list).detach()
+    list.appendTo target
+
+
 window.loadSyllabiEditFormWith = (syllabi) ->
   table = $('#edit-syllabi-megaform')
 
@@ -25,7 +34,7 @@ window.buildSyllabiEditForm = (json) ->
     $(micro).addClass 'hidden'
     micro = $(micro).detach()
     $(micro).appendTo '#micro-topic-list'
-    resetSwissKnife $(micro)
+    swissKnifeReset $(micro)
 
   # 2. Bring back whichever micros are required
   for m in json
@@ -36,7 +45,7 @@ window.buildSyllabiEditForm = (json) ->
 
   # 3. Customize the swiss-knife for each micro-topic within the form
   for micro in target.find('div[marker] > .swiss-knife')
-    customizeSwissKnife $(micro), {select:true}, true
+    swissKnifeCustomize $(micro), {select:true}, true
 
   # 4. Load micro-topic information in the JSON onto the form
   for m in json
@@ -64,7 +73,7 @@ window.displayMacroList = (json, options = {radio:true, checkbox:false, select:f
     id = macro.id
 
     chosenOne = start.find ".swiss-knife[marker=#{id}]:first"
-    customizeSwissKnife chosenOne, options
+    swissKnifeCustomize chosenOne, options
     within = chosenOne.closest '.sortable'
 
     if within.length is 0 #initially
