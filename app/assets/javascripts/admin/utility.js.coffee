@@ -1,5 +1,5 @@
 
-window.ensureMicroListCompleteness = () ->
+window.resetMicroTopicList = () ->
   source = $('#edit-syllabi-form') # the only other place micro-topics could be
   target = $('#micro-topic-list')
 
@@ -9,6 +9,7 @@ window.ensureMicroListCompleteness = () ->
 
     for knife in list.children()
       swissKnifeReset $(knife)
+  return true
 
 resetMacroTopicList = () ->
   source = $('#macro-topic-list')
@@ -21,34 +22,11 @@ resetMacroTopicList = () ->
       knife.appendTo target
   return true
       
-
-window.loadSyllabiEditFormWith = (syllabi) ->
-  table = $('#edit-syllabi-megaform')
-
-  for item in syllabi
-    topic = item.syllabus.id
-    difficulty = item.syllabus.difficulty
-    target = table.find "div[marker=#{topic}]"
-
-    continue if target.length is 0
-
-    checkbox = target.find('.checkbox:first').children('input:first')
-    dropdown = target.find('.dropdown:first').find('select:first')
-    option = dropdown.find "option[value=#{difficulty}]:first"
-
-    checkbox.prop 'checked', true
-    dropdown.prop 'disabled', false
-    option.prop 'selected', true
-
 window.buildSyllabiEditForm = (json) ->
   target = $('#edit-syllabi-form .peek-a-boo:first')
 
-  # 1. Move all micro back to #micro-topic-list
-  for micro in target.children('div[marker]')
-    $(micro).addClass 'hidden'
-    micro = $(micro).detach()
-    $(micro).appendTo '#micro-topic-list'
-    swissKnifeReset $(micro)
+  # 1. Move all micro back to #micro-topic-list 
+  resetMicroTopicList()
 
   # 2. Bring back whichever micros are required
   for m in json

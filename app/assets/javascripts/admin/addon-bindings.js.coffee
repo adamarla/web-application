@@ -53,10 +53,22 @@ jQuery ->
     micros = micros.detach()
     micros.appendTo '#edit-syllabi-form .peek-a-boo:first'
 
+    ###
+      macro-topic-list is used on 2 occassions : 
+        1. when editing the syllabus of a course
+        2. when tagging questions
+      The code below is appropriate for (1) and irrelevant for (2). Irrelevant 
+      because for (2), the out-tray is empty. So, there is nothing to drag
+      into the in-tray and therefore no event to trigger this whole function
+    ###
+    for knife in micros.children()
+      swissKnifeCustomize $(knife), {select:true}, true
+
+
   ###
-    #macro-topic-list :  When an item is moved from in-tray to out-tray, 
+    #macro-topic-list :  when an item is moved from in-tray to out-tray, 
     remove list of micro-topics within #edit-syllabi-form's <form> element
-    and move it back to the .dump. Remember to un-check all checkboxes 
+    and move it back to the .dump. remember to un-check all checkboxes 
     before making the move
   ###
 

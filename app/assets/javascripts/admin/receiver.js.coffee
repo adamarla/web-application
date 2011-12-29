@@ -78,17 +78,8 @@ jQuery ->
         displayMacroList json.macros, {radio:true}
         buildSyllabiEditForm json.macros
       when 'macros/list'
-        ensureMicroListCompleteness()
+        resetMicroTopicList()
         displayMacroList json.macros, {radio:true}
-        ### 
-          We will need to set URLs of the form : 
-            macro_topic/micros_in_course.json?course=<sth>&id=<to be filled>
-          To do this, we need the currently selected course's ID. Where is that? 
-          As the 'marker' attribute on the side-panel
-        course = $('#side-panel').attr 'marker'
-        url = "macro_topic/micros_in_course.json?course=#{course}&id="
-        resetRadioUrlsIn '#middle-panel', url
-        ###
 
   ###
     AJAX successes the right-panel is supposed to respond to.
@@ -121,9 +112,4 @@ jQuery ->
 
     json = $.parseJSON xhr.responseText
     switch matched.pop()
-      when 'course.json'
-        arrangeDumpIntoColumns '#edit-syllabi-megaform form:first'
-        uncheckAllCheckBoxesWithin('#edit-syllabi-megaform')
-        disableAllSelectsWithin('#edit-syllabi-megaform')
-        loadSyllabiEditFormWith(json.course.syllabi)
   ###
