@@ -11,7 +11,7 @@ samuraiCheckboxRow = (sword, json, labels = []) ->
   marker = json.id
 
   for label,index in labels
-    checkbox = sword.find('.checkbox').eq(index)
+    checkbox = sword.find('input[type="checkbox"]').eq(index)
     id = "samurai-#{label}-#{marker}-#{index}" # id = samurai-difficulty-2-1
     checkbox.removeClass 'hidden'
 

@@ -27,10 +27,10 @@ window.swissKnifeCustomize = (element, visible = { radio:true, checkbox:false, s
 window.swissKnifeReset = (element) ->
   return false if not swissKnifeCustomize(element) # (1)
 
-  select = element.children '.select:first'
+  select = element.children 'select:first'
   select.val 0 # (2)
 
-  for active in element.children '.checkbox, .radio'
+  for active in element.children 'input[type="checkbox"], input[type="radio"]'
     $(active).prop 'checked', false
 
 ###
