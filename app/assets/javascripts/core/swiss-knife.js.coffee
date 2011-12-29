@@ -9,11 +9,12 @@ window.swissKnifeCustomize = (element, visible = { radio:true, checkbox:false, s
 
   for key in ['radio', 'checkbox', 'select', 'button']
     thing = element.find ".#{key}:first"
-    thing.prop 'disabled', not enable
     if not(visible[key]?) or (visible[key] is false)
       thing.addClass 'hidden'
+      thing.prop 'disabled', true # hidden elements get no choice
     else
       thing.removeClass 'hidden'
+      thing.prop 'disabled', not enable
   return true
 
 ###
