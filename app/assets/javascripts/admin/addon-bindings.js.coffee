@@ -14,6 +14,8 @@ jQuery ->
   $('#tbd-link').click ->
     $.get 'questions/list.json'
     $.get 'macros/list.json'
+    microTopics = $('#micro-topic-list').detach()
+    microTopics.appendTo '#micro-topics-for-tagging'
 
   ###
     Over-ride action attribute for #edit-syllabi-form just before submit.
@@ -42,7 +44,7 @@ jQuery ->
     make list of micro-topics part of #edit-syllabi-form's <form> element
   ###
 
-  $('#macro-topic-list .in-tray:first').on 'sortreceive', (event, ui) ->
+  $('#macro-topic-list div.in-tray:first').on 'sortreceive', (event, ui) ->
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0)
 
@@ -72,7 +74,7 @@ jQuery ->
     before making the move
   ###
 
-  $('#macro-topic-list .out-tray:first').on 'sortreceive', (event, ui) ->
+  $('#macro-topic-list div.out-tray:first').on 'sortreceive', (event, ui) ->
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0)
 
@@ -87,14 +89,26 @@ jQuery ->
 
   ###
     #macro-topic-list : Make the micro-topics in #edit-syllabi-form for a macro 
-    in the .in-tray visible when the corresponding radio button is clicked
+    in the div.in-tray visible when the corresponding radio button is clicked
   ###
 
-  $('#macro-topic-list').on 'click', '.in-tray input[type="radio"]', ->
+  $('#macro-topic-list').on 'click', 'div.in-tray input[type="radio"]', ->
     marker = $(this).attr 'marker'
     return if not marker?
 
-    for micro in $('#edit-syllabi-form .peek-a-boo').children('div[marker]')
+    right = $('#right-panel').children('div').first()
+    switch $(right).attr 'id'
+      when 'edit-syllabi-form'
+        target = right.find('.peek-a-boo:first')
+      when 'micro-topics-for-tagging'
+        target = right.find '#micro-topic-list:first'
+      else
+        target = null
+        alert 'something is amiss'
+
+    return if target is null
+
+    for micro in target.children('div[marker]')
       if $(micro).attr('marker') is marker
         $(micro).removeClass 'hidden'
       else
