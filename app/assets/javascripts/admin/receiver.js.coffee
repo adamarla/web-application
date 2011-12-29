@@ -88,7 +88,8 @@ jQuery ->
   $('#right-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/teachers\/roster/) or
               settings.url.match(/school\/unassigned-students/) or
-              settings.url.match(/study_groups\/students/)
+              settings.url.match(/study_groups\/students/) or
+              settings.url.match(/macros\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -102,6 +103,12 @@ jQuery ->
         displayJson json.students, '#right-panel', 'student', {checkbox:true}
       when 'study_groups/students'
         displayJson json.students, '#right-panel', 'student', {checkbox:true}
+      when 'macros/list'
+        # Customize swiss-knives within microTopics to include just one enabled radio-button
+        microTopics = $('#micro-topic-list')
+        for macro in microTopics.find 'div[marker]'
+          for swissKnife in $(macro).children()
+            swissKnifeCustomize $(swissKnife), {radio:true}, true
 
   ###
     AJAX successes the wide-panel is supposed to respond to.
