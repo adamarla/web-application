@@ -6,6 +6,7 @@ window.resetMicroTopicList = () ->
   for list in source.find 'div[back-to]'
     list = $(list).detach()
     list.appendTo target
+    list.addClass 'hidden'
 
     for knife in list.children()
       swissKnifeReset $(knife)
