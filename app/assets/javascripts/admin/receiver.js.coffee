@@ -78,6 +78,7 @@ jQuery ->
         displayMacroList json.macros, {radio:true}
         buildSyllabiEditForm json.macros
       when 'macros/list'
+        ensureMicroListCompleteness()
         displayMacroList json.macros, {radio:true}
         ### 
           We will need to set URLs of the form : 

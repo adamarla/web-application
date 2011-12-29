@@ -7,6 +7,9 @@ window.ensureMicroListCompleteness = () ->
     list = $(list).detach()
     list.appendTo target
 
+    for knife in list.children()
+      swissKnifeReset $(knife)
+
 
 window.loadSyllabiEditFormWith = (syllabi) ->
   table = $('#edit-syllabi-megaform')
