@@ -30,7 +30,7 @@ window.swissKnifeReset = (element) ->
   select.val 0 # (2)
 
   for active in element.children '.checkbox, .radio'
-    active.prop 'checked', false
+    $(active).prop 'checked', false
 
 ###
   The function below assumes that the passed JSON structure has at least
