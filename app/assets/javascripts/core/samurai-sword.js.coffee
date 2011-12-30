@@ -7,7 +7,7 @@ samuraiSetHeading = (sword, label) ->
   title.text label
 
 # Function call : samuraiCheckboxRow e, json, ['mcq', 'multi-part']
-samuraiCheckboxRow = (sword, json, labels = []) ->
+samuraiCheckboxRow = (sword, json, labels = [], namespace = 'samurai') ->
   return if not sword.hasClass 'samurai-sword'
   marker = json.id
 
@@ -24,7 +24,7 @@ samuraiCheckboxRow = (sword, json, labels = []) ->
 
     cbox.attr 'id', id
     cbox.attr 'marker', marker
-    cbox.attr 'name', "#{label}[#{marker}]" # Ex: difficulty[2]
+    cbox.attr 'name', "#{namespace}[#{marker}][#{label}]" # Ex : samurai[2][difficulty]
     cbox.prop 'disabled', false
     cbox.prop 'checked', (if json[label] is null then false else json[label])
   return true
@@ -40,12 +40,12 @@ samuraiButtonRow = (sword, json, buttons = []) ->
     button.removeClass 'hidden'
     button.prop 'disabled', false
 
-samuraiSetupHidden = (sword, json) ->
+samuraiSetupHidden = (sword, json, namespace = 'samurai') ->
   marker = json.id
   ninja = sword.children().eq(1).children('input[type="hidden"]:first')
-  $(ninja).attr 'name', "ninja[#{marker}]"
+  $(ninja).attr 'name', "#{namespace}[#{marker}][ninja]"
 
-window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = []) ->
+window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [], namespace = 'samurai') ->
   where = if typeof where is 'string' then $(where) else where
   where.append '<div class="samurai-armory"></div>'
   where = where.children '.samurai-armory:first'
@@ -55,9 +55,9 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
     sword = $('#toolbox').children('.samurai-sword:first').clone()
 
     samuraiSetHeading sword, samurai.name
-    samuraiCheckboxRow sword, samurai, checks
+    samuraiCheckboxRow sword, samurai, checks, namespace
     samuraiButtonRow sword, samurai, buttons
-    samuraiSetupHidden sword, samurai
+    samuraiSetupHidden sword, samurai, namespace
 
     for child in sword.children()
       $(child).appendTo where
