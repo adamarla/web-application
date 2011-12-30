@@ -52,4 +52,19 @@ class QuestionController < ApplicationController
     end 
   end # of method
 
+  def mass_update
+    status = :ok
+    samurai_armory = params[:samurai]
+
+    samurai_armory.each { |id, attributes| 
+      micro_topic_id = attributes.delete :ninja # the hidden field in samurai-sword
+      next if micro_topic_id.blank? # an empty 
+      attributes = attributes.merge({:micro_topic_id => micro_topic_id.to_i})
+      question = Question.find id
+      status = (question.nil? || !question.update_attributes(attributes)) ? :bad_request : :ok
+      break if status == :bad_request
+    } 
+    head status
+  end
+
 end # of class

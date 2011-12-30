@@ -45,6 +45,7 @@ Webapp::Application.routes.draw do
 
   # Question
   match 'questions/list' => 'question#list', :via => :get
+  match 'questions/tag' => 'question#mass_update', :via => :put
 
   # Student 
   resource :student, :only => [:create, :update]
