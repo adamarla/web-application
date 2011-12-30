@@ -116,7 +116,7 @@ window.displayJson = (json, where, key, visible = {radio:true}, enable = true) -
   object. The function is agnostic to who, why and how the <select>s were created
 ###
 
-window.setSelects = (obj, selections) ->
+window.populateSelectsWithOptions = (obj, selections) ->
   ###
     'selections' is of the form { 1:{ 1:<string>, 2:<string> .. }, 2:{ 1:<string> ...} }
     The outer keys specify which n-th <select> to update
