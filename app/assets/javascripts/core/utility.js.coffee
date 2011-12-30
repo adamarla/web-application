@@ -110,3 +110,31 @@ window.displayJson = (json, where, key, visible = {radio:true}, enable = true) -
   for record, index in json
     clone = swissKnifeForge record, key, visible, enable
     clone.appendTo(target).hide().fadeIn('slow')
+
+###
+  The next function will create <options> for any <selects> within the passed 
+  object. The function is agnostic to who, why and how the <select>s were created
+###
+
+window.setSelects = (obj, selections) ->
+  ###
+    'selections' is of the form { 1:{ 1:<string>, 2:<string> .. }, 2:{ 1:<string> ...} }
+    The outer keys specify which n-th <select> to update
+    The inner-hash specifies the <option>s that need to be set
+    the n-th <select>
+
+    This function sets some limits on the # of <select>s within a hierarchy (10)
+    and the number of options within each <select> (15). I think these should be 
+    enough for most cases
+  ###
+  return if not obj?
+
+  selects = for nth,options of selections
+    select = obj.find('select').eq(nth)
+    break if select.length is 0
+
+    select.prop 'disabled', false
+    choices = for posn,choice of options
+      select.append "<option value=#{posn}>#{choice}</option>"
+  return true
+
