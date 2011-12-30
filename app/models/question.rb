@@ -41,6 +41,7 @@
 class Question < ActiveRecord::Base
   before_save :set_mcq_if_multi_correct
 
+  validates :path, :uniqueness => true
   validates :num_parts, :numericality => {:only_integer => true, :greater_than => 0}, :if => :multi_part?
 
   # 'path' is relative to some root and should be of the form 'dir/dir/something'
