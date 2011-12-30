@@ -6,6 +6,22 @@ samuraiSetHeading = (sword, label) ->
   title = header.children().first()
   title.text label
 
+samuraiSelectRow = (sword, json, selects, selections, namespace = 'samurai') ->
+  return if not sword.hasClass 'samurai-sword'
+  marker = json.id
+
+  for label, index in selects
+    select = sword.find('.select').eq(index) # find the n-th .select
+    id = "samurai-#{label}-#{marker}-#{index}" # id = samurai-klass-2-1
+    select.removeClass 'hidden'
+
+    s = select.children 'select:first'
+    s.attr 'id', id
+    s.attr 'marker', marker
+    s.attr 'name', "#{namespace}[#{marker}][#{label}]"
+
+  setSelects sword, selections
+
 # Function call : samuraiCheckboxRow e, json, ['mcq', 'multi-part']
 samuraiCheckboxRow = (sword, json, labels = [], namespace = 'samurai') ->
   return if not sword.hasClass 'samurai-sword'
@@ -13,7 +29,7 @@ samuraiCheckboxRow = (sword, json, labels = [], namespace = 'samurai') ->
 
   for label,index in labels
     checkbox = sword.find('.checkbox').eq(index)
-    id = "samurai-#{label}-#{marker}-#{index}" # id = samurai-difficulty-2-1
+    id = "samurai-#{label}-#{marker}-#{index}" # id = samurai-mcq-2-1
     checkbox.removeClass 'hidden'
 
     l = checkbox.children 'label:first'
@@ -45,19 +61,20 @@ samuraiSetupHidden = (sword, json, namespace = 'samurai') ->
   ninja = sword.children().eq(1).children('input[type="hidden"]:first')
   $(ninja).attr 'name', "#{namespace}[#{marker}][ninja]"
 
-window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [], namespace = 'samurai') ->
+window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [], selections = {}, namespace = 'samurai') ->
   where = if typeof where is 'string' then $(where) else where
   where.append '<div class="samurai-armory"></div>'
   where = where.children '.samurai-armory:first'
 
   for record in json
-    samurai = record[key]
+    data = record[key]
     sword = $('#toolbox').children('.samurai-sword:first').clone()
 
-    samuraiSetHeading sword, samurai.name
-    samuraiCheckboxRow sword, samurai, checks, namespace
-    samuraiButtonRow sword, samurai, buttons
-    samuraiSetupHidden sword, samurai, namespace
+    samuraiSetHeading sword, data.name
+    samuraiCheckboxRow sword, data, checks, namespace
+    samuraiButtonRow sword, data, buttons
+    samuraiSelectRow sword, data, selects, selections
+    samuraiSetupHidden sword, data, namespace
 
     for child in sword.children()
       $(child).appendTo where
