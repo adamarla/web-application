@@ -56,8 +56,6 @@ class Question < ActiveRecord::Base
   has_many :quizzes, :through => :q_selections
   has_many :graded_responses
 
-  attr_accessible :path, :examiner_id, :micro_topic_id, :teacher_id
-
   def mcq? 
     return mcq
   end 
