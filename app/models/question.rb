@@ -39,9 +39,7 @@
 #    
 
 class Question < ActiveRecord::Base
-  
-  validates :multi_correct, :inclusion => {:in => [false], 
-  :message => "'multi_correct' has to false if mcq == false"}, :unless => :mcq?
+  before_save :set_mcq_if_multi_correct
 
   validates :num_parts, :numericality => {:only_integer => true, :greater_than => 0}, :if => :multi_part?
 
@@ -67,5 +65,12 @@ class Question < ActiveRecord::Base
   def num_parts?
     return (num.parts.nil? ? 0 : num_parts)
   end 
+
+  def set_mcq_if_multi_correct
+    self.mcq = (self.mcq || self.multi_correct)
+    return true 
+    # if self.mcq results to 'false' and the 'false' is then returned, 
+    # then the save operation would be aborted (needlessly)
+  end
 
 end
