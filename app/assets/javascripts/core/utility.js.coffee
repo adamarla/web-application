@@ -55,7 +55,7 @@ window.refreshView = (linkId) ->
       $(needed).appendTo(target).hide().fadeIn('slow')
 
 
-window.resetRadioUrlsIn = (panel, url) ->
+resetRadioUrlsIn = (panel, url) ->
   for radio in $(panel).find 'input[type="radio"]'
     marker = $(radio).attr 'marker'
     continue if not marker? 
@@ -98,21 +98,10 @@ window.loadFormWithJsonData = (form, data) ->
 window.clearAllFieldsInForm = (form) ->
   fillValue '', input for input in form.find 'input,select,textarea'
 
-setBooleanPropOn = (node, prop, value = false) ->
-  $(node).prop prop, value
-
 window.uncheckAllCheckBoxesWithin = (element) ->
   element = if typeof element is 'string' then $(element) else element
-  setBooleanPropOn checkbox, 'checked', false for checkbox in element.find 'input[type="checkbox"]'
-
-window.uncheckAllRadioButtonsWithin = (element) ->
-  element = if typeof element is 'string' then $(element) else element
-  setBooleanPropOn radio, 'checked', false for radio in element.find 'input[type="radio"]'
-
-window.disableAllSelectsWithin = (element) ->
-  element = if typeof element is 'string' then $(element) else element
-  setBooleanPropOn select, 'disabled', true for select in element.find 'select'
-
+  for checkbox in element.find 'input[type="checkbox"]'
+    $(checkbox).prop 'checked', false
 
 window.displayJson = (json, where, key, visible = {radio:true}, enable = true) ->
   target = if $(where).hasClass 'data' then $(where) else $(where).find('.purgeable:first')
