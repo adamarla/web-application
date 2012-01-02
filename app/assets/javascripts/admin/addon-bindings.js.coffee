@@ -175,12 +175,12 @@ jQuery ->
       preview = preview.detach()
       preview.appendTo '#toolbox'
       $('#wide-panel').addClass 'hidden'
+      $(this).val 'preview'
     else
       $('#wide-panel').removeClass 'hidden'
       preview = $('#toolbox').find '.ppy-placeholder:first' # pre-generated
-
-      alert 'phat gayee' if not preview? or preview.lenght is 0
       preview.appendTo '#wide-panel'
+      $(this).val 'back'
 
     
 
