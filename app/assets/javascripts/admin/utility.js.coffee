@@ -76,3 +76,25 @@ window.displayMacroList = (json, options = {radio:true, checkbox:false, select:f
 
     chosenOne = chosenOne.detach()
     chosenOne.appendTo target
+
+###
+  Given the JSON response of 'questions/list.json', populates #document-preview
+  for use by Popeye plugin
+###
+
+window.prepareTBDSlideShow = (json) ->
+  baseUrl = "https://github.com/abhinavc/RiddlersVault/raw/master"
+  target = $('#document-preview').find 'ul:first'
+
+  for record in json
+    question = record['question']
+    relPath = question.name # actually, its the path. But in questions/list.rabl, we override the key name
+    folder = relPath.split('/').pop() # from X/Y/1_5, extract 1_5
+    full = "#{baseUrl}/#{relPath}/#{folder}-answer.jpeg"
+    thumb = "#{baseUrl}/#{relPath}/#{folder}-thumb.jpeg"
+
+    preview = $("<li><a href=#{full}><img src=#{thumb} alt=#{folder}/></a></li>")
+    preview.appendTo target
+
+  $('#document-preview').popeye()
+
