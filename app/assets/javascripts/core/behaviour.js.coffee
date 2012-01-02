@@ -11,7 +11,6 @@
 
 
 jQuery ->
-  ### Click #schools-link on load ###
 
   ###
     Stylize buttons in forms but not in the #control-panel.
