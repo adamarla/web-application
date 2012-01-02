@@ -2,6 +2,17 @@
 jQuery ->
   
   ###
+    Stylize the #tbd-preview-button
+  ###
+  $('#tbd-preview-button').button()
+
+  ###
+    Call Popeye on #document-preview. The internals will be filled in 
+    later if and when the examiner clicks on #tbd-summary-link
+  ###
+  $('#document-preview').popeye()
+
+  ###
     #new-examiner-link
   ###
 
@@ -136,4 +147,42 @@ jQuery ->
 
     header.children().eq(2).text label # the .footnote element in header
     panel.children('input[type="hidden"]').first().val marker # the ninja field
+
+  ###
+    What to do when a 'preview' button in '#tbds-summary' is clicked
+
+  $('#tbds-summary').on 'click', 'input[type=button]', ->
+    baseUrl = "https://github.com/abhinavc/RiddlersVault/raw/master"
+    relPath = "maths/1_2/1_2-answer.jpeg"
+    full = "#{baseUrl}/#{relPath}"
+    
+    yoxView = $('#yoxview')
+    yoxView.empty()
+
+    preview = $("<img src=#{full} alt='Lets see..' title='Something'/>")
+    preview.appendTo yoxView
+    yoxView.yoxview({})
+  ###
+
+  $('#tbd-preview-button').click ->
+    showWide = $('#wide-panel').hasClass 'hidden'
+    for type in ['middle', 'right']
+      panel = $("##{type}-panel")
+      if showWide then panel.addClass('hidden') else panel.removeClass('hidden')
+
+    if showWide is false
+      preview = $('#wide-panel').children().first() # should be a .ppy-placeholder
+      preview = preview.detach()
+      preview.appendTo '#toolbox'
+      $('#wide-panel').addClass 'hidden'
+    else
+      $('#wide-panel').removeClass 'hidden'
+      preview = $('#toolbox').find '.ppy-placeholder:first' # pre-generated
+
+      alert 'phat gayee' if not preview? or preview.lenght is 0
+      preview.appendTo '#wide-panel'
+
+    
+
+
 
