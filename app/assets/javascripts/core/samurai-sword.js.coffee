@@ -82,4 +82,21 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
   where.accordion({header:'.accordion-heading', collapsible:true, active:false})
   return true
 
+window.samuraiClosestActiveHeading = (id) ->
+  me = if typeof(id) is 'string' then $(id) else id
+  armory = me.closest '.samurai-armory'
+
+  if not armory? or armory.length is 0 then return null
+  openTab = armory.accordion 'option', 'active'
+  return (if openTab < 0 then null else armory.find('.accordion-heading').eq(openTab))
+
+
+window.samuraiClosestActiveTab = (id) ->
+  me = if typeof(id) is 'string' then $(id) else id
+  armory = me.closest '.samurai-armory'
+
+  if not armory? or armory.length is 0 then return null
+  openTab = armory.accordion 'option', 'active'
+  return (if openTab < 0 then null else armory.find('.accordion-content').eq(openTab))
+
 
