@@ -43,9 +43,10 @@ jQuery ->
         displayJson json.courses, '#side-panel', 'course'
         resetRadioUrlsAsPer $('#courses-link')
       when 'questions/list'
+        prepareTBDSlideShow json.questions #TBD = To be done
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
         samuraiLineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
-        ['mcq', 'multi_correct'], ['difficulty'], ['preview'], selections
+        ['mcq', 'multi_correct'], ['difficulty'], [], selections
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
