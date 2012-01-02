@@ -16,7 +16,7 @@ purgeable and put-back. The former has been around for some time
 while the latter is being introduced with the benefit of hindsight 
 ###
 
-clearPanel = (id, moveAlso = true) ->
+window.clearPanel = (id, moveAlso = true) ->
   me = $(id).children().first()
   return if me.length is 0
    ###
@@ -40,7 +40,7 @@ window.refreshView = (linkId) ->
 
   for type in ['side', 'middle', 'right', 'wide']
     needed = link.attr type
-    target = '#' + type + '-panel'
+    target = "##{type}-panel"
 
     continue if link.hasClass('minor-link') and type is 'side'
     loaded = $(target).children().first()
