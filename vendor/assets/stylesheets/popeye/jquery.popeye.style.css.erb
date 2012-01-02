@@ -50,8 +50,8 @@
     width:          240px;
     height:         270px;
 }
-#ppy2 .ppy-imglist li,
-#ppy2 .ppy-imglist li a {
+ .ppy-imglist li,
+ .ppy-imglist li a {
     width:              160px;
     height:             160px;
     overflow:           hidden;
@@ -194,26 +194,27 @@
 
 
 /* popeye example 2 */
-#ppy2.ppy-active {
+.ppy-active {
     width:          224px;
-    float:          right;
+    float:          left;
     margin:         0 0 10px 20px;
 }
 
-#ppy2 .ppy-outer {
+ .ppy-outer {
     padding:        0 46px 0 0;
     
 }
-#ppy2 .ppy-stagewrap {
-    padding:        7px;
+ .ppy-stagewrap {
+    padding:        3px;
     border-radius:          5px 0 5px 5px;
     -moz-border-radius:     5px 0 5px 5px;
     -webkit-border-radius:  5px 0 5px 5px;
     background:     #c1eaff;
-    background:     rgba(193,234,255,0.7);
+    /*background:     rgba(193,234,255,0.7);*/
+    background : #6ca7ab ;
 }
 
-#ppy2 .ppy-stage {
+ .ppy-stage {
     width:              160px;
     height:             160px;
     border:             2px solid #fff;
@@ -224,7 +225,7 @@
     cursor:         pointer;
 }
 
-#ppy2 .ppy-counter {
+ .ppy-counter {
     background:         #fff;
     color:              #333;
     padding:            0 5px;
@@ -239,13 +240,13 @@
     -webkit-border-radius:  5px 0 0 0; 
 }
 
-#ppy2 .ppy-loading {
+ .ppy-loading {
     background-image:   url(<%= asset_path 'popeye/loading2.gif' %>);
     background-repeat:  no-repeat;
     background-position:center;
 }
 
-#ppy2 .ppy-nav {
+ .ppy-nav {
     border-radius:          0 5px 5px 0;
     -moz-border-radius:     0 5px 5px 0;
     -webkit-border-radius:  0 5px 5px 0;
@@ -269,11 +270,11 @@
     right:          0;
 }
 
-#ppy2 .nav-wrap {
+ .nav-wrap {
     padding:        5px 0;
 }
 
-#ppy2 .ppy-nav a {
+ .ppy-nav a {
     display:        block;
     overflow:       hidden;
     text-indent:    -900em;
@@ -285,23 +286,23 @@
     width:          30px;
 }
 
-#ppy2 .ppy-prev {
+ .ppy-prev {
     background:     url(<%= asset_path 'popeye/prev3.png' %>) no-repeat center;
 }
 
-#ppy2 .ppy-next {
+ .ppy-next {
     background:     url(<%= asset_path 'popeye/next3.png' %>) no-repeat center;
 }
 
-#ppy2 .ppy-switch-enlarge {
+ .ppy-switch-enlarge {
     background:     url(<%= asset_path 'popeye/enlarge4.png' %>) no-repeat center;
 }
 
-#ppy2 .ppy-switch-compact {
+ .ppy-switch-compact {
     background:     url(<%= asset_path 'popeye/compact4.png' %>) no-repeat center;
 }
 
-#ppy2 .ppy-nav a:hover {
+ .ppy-nav a:hover {
     background-color:   #378eba;
     cursor:         pointer;
     opacity:        0.8;
