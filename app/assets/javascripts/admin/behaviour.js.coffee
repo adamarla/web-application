@@ -190,6 +190,10 @@ jQuery ->
     marker = $(this).attr 'marker'
     switch lastMinor.attr 'id'
       when 'edit-roster-link'
+        # Clear out the #right-panel which has section-information
+        for e in $('#right-panel').find '.purgeable'
+          $(e).empty()
+        # Then issue the AJAX request
         $.get "teachers/list.json?id=#{marker}"
       when 'edit-studygroups-link'
         $.get "school/sections.json?id=#{marker}"
