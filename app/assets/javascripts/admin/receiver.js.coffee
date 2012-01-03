@@ -38,10 +38,8 @@ jQuery ->
     switch matched.pop()
       when 'schools/list'
         displayJson json.schools, '#side-panel', 'school'
-        resetRadioUrlsAsPer $('#schools-link')
       when 'courses/list'
         displayJson json.courses, '#side-panel', 'course'
-        resetRadioUrlsAsPer $('#courses-link')
       when 'questions/list'
         prepareTBDSlideShow json.questions #TBD = To be done
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
@@ -68,7 +66,6 @@ jQuery ->
     switch matched.pop()
       when 'teachers/list'
         displayJson json.teachers, '#middle-panel', 'teacher'
-        resetRadioUrlsAsPer $('#edit-roster-link')
       when 'school/sections'
         displayJson json.sections, '#middle-panel', 'section'
       when 'yardstick.json'
