@@ -198,6 +198,8 @@ jQuery ->
       when 'edit-studygroups-link'
         $.get "school/sections.json?id=#{marker}"
         $.get "school/unassigned-students.json?id=#{marker}"
+      when 'add-n-edit-school-link'
+        $.get "school.json?id=#{marker}"
     return true
 
   $('#teachers-list').on 'click', 'input[type="radio"]', ->

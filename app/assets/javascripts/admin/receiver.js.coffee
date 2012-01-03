@@ -88,7 +88,8 @@ jQuery ->
     matched = settings.url.match(/teachers\/roster/) or
               settings.url.match(/school\/unassigned-students/) or
               settings.url.match(/study_groups\/students/) or
-              settings.url.match(/macros\/list/)
+              settings.url.match(/macros\/list/) or
+              settings.url.match(/school\.json/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -102,6 +103,8 @@ jQuery ->
         displayJson json.students, '#right-panel', 'student', {checkbox:true}
       when 'study_groups/students'
         displayJson json.students, '#right-panel', 'student', {checkbox:true}
+      when 'school.json'
+        loadFormWithJsonData $('#edit-school').children('form:first'), json.school
       when 'macros/list'
         # Customize swiss-knives within microTopics to include just one enabled radio-button
         microTopics = $('#micro-topic-list')
