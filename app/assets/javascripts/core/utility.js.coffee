@@ -35,8 +35,8 @@ window.clearPanel = (id, moveAlso = true) ->
   return true
 
 
-window.refreshView = (linkId) ->
-  link = $('#' + linkId)
+window.refreshView = (link) ->
+  link = if typeof link is 'string' then $(link) else link
 
   for type in ['side', 'middle', 'right', 'wide']
     needed = link.attr type
