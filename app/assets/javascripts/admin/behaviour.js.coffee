@@ -196,3 +196,8 @@ jQuery ->
         $.get "school/unassigned-students.json?id=#{marker}"
     return true
 
+  $('#teachers-list').on 'click', 'input[type="radio"]', ->
+    marker = $(this).attr 'marker'
+    $.get "teachers/roster.json?id=#{marker}"
+    
+
