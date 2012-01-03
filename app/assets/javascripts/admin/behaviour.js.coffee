@@ -27,6 +27,7 @@ jQuery ->
     $.get 'macros/list.json'
     microTopics = $('#micro-topic-list').detach()
     microTopics.appendTo '#micro-topics-for-tagging'
+    $('#tbd-preview-button').val 'preview'
 
   ###
     Over-ride action attribute for #edit-syllabi-form just before submit.
