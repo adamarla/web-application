@@ -86,6 +86,9 @@ window.prepareTBDSlideShow = (json) ->
   baseUrl = "https://github.com/abhinavc/RiddlersVault/raw/master"
   target = $('#document-preview').find 'ul:first'
 
+  # Empty the target to make space for a new list
+  target.empty()
+
   for record in json
     question = record['question']
     relPath = question.name # actually, its the path. But in questions/list.rabl, we override the key name
@@ -96,5 +99,13 @@ window.prepareTBDSlideShow = (json) ->
     preview = $("<li><a href=#{full}><img src=#{thumb} alt=#{folder}/></a></li>")
     preview.appendTo target
 
-  $('#document-preview').popeye()
+  ###
+    If popeye() was called once before, then don't call it again on #document-preview.
+    If you do, then the border around the preview will get thicker and thicker.
+    Other weird stuff can happen too
+  ###
 
+  ppy = $('#document-preview').closest '.ppy-placeholder'
+  if ppy.length is 0
+    $('#document-preview').popeye()
+  
