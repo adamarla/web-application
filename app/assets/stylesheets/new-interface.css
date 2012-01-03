@@ -40,6 +40,10 @@ fieldset.inputs li.boolean.input {
   float : left ;
 } 
 
+.main-link[selected], .minor-link[selected] {
+  border-bottom : 2px solid #6ca7ab ;
+}
+
 .no-bullets, ul.sortable {
   list-style-type : none ;
 } 

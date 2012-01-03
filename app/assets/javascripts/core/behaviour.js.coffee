@@ -128,9 +128,11 @@ jQuery ->
       for uncle in uncles
         for cousin in $(uncle).children 'a'
           $(cousin).attr 'selected', false
-
     $(this).attr 'selected', true
-    return true if $(this).hasClass 'main-link'
+    if $(this).hasClass 'main-link'
+      for minor in $('#minor-links').find 'a'
+        $(minor).attr 'selected', false
+    return true
 
   ###
     Also, load any #minor-links / controls for the clicked #main-link
@@ -144,21 +146,6 @@ jQuery ->
       currControls = currControls.detach()
       currControls.appendTo '#toolbox'
       neededControls.appendTo $('#minor-links')
-
-  ###
-    For both #main and #minor links, a click should result in some
-    persistent visual feedback suggesting which link was clicked
-  ###
-
-  $('#control-panel').on 'click', '.main-link, .minor-link', ->
-    uncles = $(this).closest('li').siblings()
-
-    for uncle in uncles
-      for cousin in $(uncle).children('a:first')
-        $(cousin).css 'border', 'none'
-
-    $(this).css 'border-bottom', '2px solid #6ca7ab'
-    return true
 
   ###
     In all panels - other than the #control-panel - clicking on the radio button
