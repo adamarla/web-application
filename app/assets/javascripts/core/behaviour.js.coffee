@@ -117,7 +117,7 @@ jQuery ->
   ###
 
   $('#control-panel').on 'click', '#main-links a, #minor-links a', ->
-    refreshView $(this).attr 'id'
+    refreshView $(this)
 
     ###
       Set 'selected=true' on $(this) whilst setting it to false on all other siblings/cousins
