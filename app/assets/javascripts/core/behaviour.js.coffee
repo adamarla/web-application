@@ -109,25 +109,28 @@ jQuery ->
 
   ###
     For any link in the #control-panel, refresh the view with any applicable
-    #side, #middle, #right or #wide panels. Note that :
+    #side, #middle, #right or #wide panels. Also, set the selected=true attribute
+    on the link just clicked whilst removing it from all other siblings. 
+    Note however that : 
       1. A minor link cannot remove the #side-panel as it has been put in place by
          a #main-link
-      2. It can, however, update url's for radio-buttons in the #side-panel
   ###
 
   $('#control-panel').on 'click', '#main-links a, #minor-links a', ->
     refreshView $(this).attr 'id'
-    return true if $(this).hasClass 'main-link'
 
     ###
-      Don't update radio-urls on main-link click. Why ? Because there are no
-      radio-buttons to update ! Clicks on main-links invariably involve an AJAX
-      request for data. That data takes time to come and then some more time
-      before it can be rendered into a list with radio-buttons. One must wait
-      therefore for that process to finish. As this is not the case with
-      #minor-links, those can be processed now
+      Set 'selected=true' on $(this) whilst setting it to false on all other siblings/cousins
     ###
-    resetRadioUrlsAsPer $(this)
+    parent = $(this).closest 'li'
+    if parent.length isnt 0
+      uncles = parent.siblings 'li'
+      for uncle in uncles
+        for cousin in $(uncle).children 'a'
+          $(cousin).attr 'selected', false
+
+    $(this).attr 'selected', true
+    return true if $(this).hasClass 'main-link'
 
   ###
     Also, load any #minor-links / controls for the clicked #main-link
@@ -156,26 +159,6 @@ jQuery ->
 
     $(this).css 'border-bottom', '2px solid #6ca7ab'
     return true
-
-  ###
-    Clicking a radio button on any panel should initiate an AJAX request
-    for data from the server using any 'url' attribute set on the radio-button
-
-    What that url is - however - is not defined here. That is a property of
-    the link and moreover can only be set after the radio-button has been
-    put in place - perhaps after an AJAX request
-
-    Moreover, it might be that a radio button has to issue multiple AJAX calls
-    on one click. In that case, the 'url' by the link on the radio is of the
-    form 'a|b|c...|...', where a,b,c ... are the urls to call
-  ###
-
-  $('.panel:not([id="control-panel"])').on 'click', 'input[type="radio"]', ->
-    url = $(this).attr 'url'
-    if url?
-      call = url.split '|'
-      for link in call
-        $.get link
 
   ###
     In all panels - other than the #control-panel - clicking on the radio button

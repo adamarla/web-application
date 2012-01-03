@@ -54,22 +54,25 @@ window.refreshView = (linkId) ->
       $(target).removeClass('hidden')
       $(needed).appendTo(target).hide().fadeIn('slow')
 
+###
+  Find the selected major or minor link in the #control-panel
+###
 
-resetRadioUrlsIn = (panel, url) ->
-  for radio in $(panel).find 'input[type="radio"]'
-    marker = $(radio).attr 'marker'
-    continue if not marker? 
+window.findLastClickedLink = (type) ->
+  if not type? then return null
 
-    if url?
-      url = url.replace /id=\d*/g, "id=#{marker}"
-    $(radio).attr 'url', url
+  startPt = null
+  switch type
+    when 'minor'
+      startPt = $('#minor-links')
+    when 'major'
+      startPt = $('#main-links')
 
-window.resetRadioUrlsAsPer = (link) ->
-  if link.hasClass('main-link') or link.hasClass('minor-link')
-    for type in ['side', 'middle', 'right', 'wide']
-      radioUrl = link.attr "#{type}-radio-url"
-      panel = "##{type}-panel"
-      resetRadioUrlsIn panel, radioUrl
+  if startPt? then return startPt.find 'a[selected]:first' else return null
+
+###
+  Change the form's action as per passed URL 
+###
 
 window.editFormAction = (formId, url, method = 'post') ->
   form = $(formId).find 'form:first'

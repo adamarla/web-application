@@ -150,18 +150,6 @@ jQuery ->
 
   ###
     What to do when a 'preview' button in '#tbds-summary' is clicked
-
-  $('#tbds-summary').on 'click', 'input[type=button]', ->
-    baseUrl = "https://github.com/abhinavc/RiddlersVault/raw/master"
-    relPath = "maths/1_2/1_2-answer.jpeg"
-    full = "#{baseUrl}/#{relPath}"
-    
-    yoxView = $('#yoxview')
-    yoxView.empty()
-
-    preview = $("<img src=#{full} alt='Lets see..' title='Something'/>")
-    preview.appendTo yoxView
-    yoxView.yoxview({})
   ###
 
   $('#tbd-preview-button').click ->
@@ -182,7 +170,29 @@ jQuery ->
       preview.appendTo '#wide-panel'
       $(this).val 'back'
 
-    
+  ###########################################################################
+  # AJAX requests to issue when radio-buttons in various panels are clicked
+  ###########################################################################
 
+  $('#courses-summary').on 'click', 'input[type="radio"]', ->
+    marker = $(this).attr 'marker'
+    $.get "course/coverage.json?id=#{marker}"
 
+  $('#yardsticks-summary').on 'click', 'input[type="radio"]', ->
+    marker = $(this).attr 'marker'
+    $.get "yardstick.json?id=#{marker}"
+
+  $('#schools-summary').on 'click', 'input[type="radio"]', ->
+    # What AJAX to issue depends on which minor-link has been selected
+    lastMinor = findLastClickedLink 'minor'
+    return if lastMinor.length is 0
+
+    marker = $(this).attr 'marker'
+    switch lastMinor.attr 'id'
+      when 'edit-roster-link'
+        $.get "teachers/list.json?id=#{marker}"
+      when 'edit-studygroups-link'
+        $.get "school/sections.json?id=#{marker}"
+        $.get "school/unassigned-students.json?id=#{marker}"
+    return true
 
