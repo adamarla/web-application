@@ -194,7 +194,7 @@ jQuery ->
     return if form.length is 0
 
     action = form.attr 'action'
-    clearAllFieldsInForm form if action is settings.url
+    clearForm form if action is settings.url
 
   ###
     Update the action attribute of any form inside #side, #middle, #right

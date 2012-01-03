@@ -80,10 +80,6 @@ window.editFormAction = (formId, url, method = 'post') ->
     form.attr 'action', url
     form.attr 'method', method
 
-fillValue = (value, field) ->
-  field.val value
-  field.prop 'checked', value if field.attr 'type' is 'checkbox'
-
 window.loadFormWithJsonData = (form, data) ->
   ###
    This function assumes that the JSON data is flat - that is, it has no nesting
@@ -96,10 +92,16 @@ window.loadFormWithJsonData = (form, data) ->
 
   for input in form.find 'input[marker],textarea[marker],select[marker]'
     marker = $(input).attr 'marker'
-    fillValue data[marker], $(input) if (data[marker] isnt null and marker isnt null)
+    if marker?
+      value = data[marker]
+      $(input).val value
+      if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', value
 
-window.clearAllFieldsInForm = (form) ->
-  fillValue '', input for input in form.find 'input,select,textarea'
+window.clearForm = (form) ->
+  form = if typeof form is 'string' then $(form) else form
+  for input in form.find 'input,textarea,select'
+    $(input).val null
+    if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', false
 
 window.uncheckAllCheckBoxesWithin = (element) ->
   element = if typeof element is 'string' then $(element) else element
