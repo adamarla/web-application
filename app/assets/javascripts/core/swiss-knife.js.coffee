@@ -46,27 +46,26 @@ window.swissKnifeForge = (record, key, visible = {radio:true}, enable = true) ->
   swissKnifeCustomize clone, visible, enable
 
   data = record[key]
-  marker = data.id
-  clone.attr 'marker', marker
+  id = data.id
+  clone.attr 'marker', id
 
-  label = clone.children '.label:first'
-  label.text data.name
+  for child in clone.children()
+    if $(child).hasClass 'hidden'
+      continue unless $(child).hasClass 'trojan'
 
-  for other in ['radio', 'checkbox', 'select', 'button']
-    e = clone.children ".#{other}:first"
-    continue if e.hasClass 'hidden'
+    marker = $(child).attr 'marker'
+    name = $(child).attr 'name'
 
-    e.attr 'marker', marker
-    switch other
+    if marker? then $(child).attr 'marker', id
+    if name?
+      x = $(child).attr('name').replace('tbd', "#{id}")
+      $(child).attr 'name', x
+
+    if $(child).hasClass 'label' then $(child).text(data.name)
+    switch $(child).attr 'type'
       when 'radio', 'checkbox'
-        e.prop 'checked', (if data.checked isnt null then data.checked else false)
+        $(child).prop 'checked', (if data.checked isnt null then data.checked else false)
       when 'select'
-        e.val data.select
-  
-  # Last step : Change the 'name' attribute on any child that has it
-  for child in clone.children('[name]')
-    x = $(child).attr('name').replace('tbd', "#{marker}")
-    $(child).attr 'name', x
-
+        $(child).val data.select
   return clone
   
