@@ -7,6 +7,8 @@ window.swissKnifeCustomize = (element, visible = { radio:true, checkbox:false, s
   element = if typeof element is 'string' then $(element) else element
   return false if not element.hasClass 'swiss-knife'
 
+  element.removeClass 'blueprint'
+
   for key in ['radio', 'checkbox', 'select', 'button']
     thing = element.find ".#{key}:first"
     if not(visible[key]?) or (visible[key] is false)
@@ -40,20 +42,31 @@ window.swissKnifeReset = (element) ->
 ###
 
 window.swissKnifeForge = (record, key, visible = {radio:true}, enable = true) ->
-  clone = $('#toolbox .swiss-knife:first').clone()
+  clone = $('#toolbox').children('.blueprint.swiss-knife').first().clone()
   swissKnifeCustomize clone, visible, enable
 
   data = record[key]
+  marker = data.id
+  clone.attr 'marker', marker
+
   label = clone.children '.label:first'
   label.text data.name
 
   for other in ['radio', 'checkbox', 'select', 'button']
     e = clone.children ".#{other}:first"
     continue if e.hasClass 'hidden'
-    if other is 'radio' or other is 'checkbox'
-      e.prop 'checked', (if data.checked isnt null then data.checked else false)
-      e.attr 'marker', data.id
-    else if other is 'select'
-      e.val data.select
+
+    e.attr 'marker', marker
+    switch other
+      when 'radio', 'checkbox'
+        e.prop 'checked', (if data.checked isnt null then data.checked else false)
+      when 'select'
+        e.val data.select
+  
+  # Last step : Change the 'name' attribute on any child that has it
+  for child in clone.children('[name]')
+    x = $(child).attr('name').replace('tbd', "#{marker}")
+    $(child).attr 'name', x
+
   return clone
   
