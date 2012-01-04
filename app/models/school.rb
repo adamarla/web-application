@@ -12,6 +12,7 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  tag            :string(255)
+#  board_id       :integer
 #
 
 class School < ActiveRecord::Base
@@ -21,6 +22,7 @@ class School < ActiveRecord::Base
   has_many :study_groups
 
   validates :name, :street_address, :city, :state, :zip_code, :presence => true 
+  validates :board_id, :presence => true
 
   scope :state_matches, lambda { |criterion| (criterion.nil? || criterion[:state].blank?) ? 
                               where('state IS NOT NULL') : where(:state => criterion[:state]) } 

@@ -12,6 +12,7 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  tag            :string(255)
+#  board_id       :integer
 #
 
 require 'test_helper'
