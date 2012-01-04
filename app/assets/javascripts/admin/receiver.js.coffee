@@ -32,14 +32,11 @@ jQuery ->
     return if matched is null
 
     json = $.parseJSON xhr.responseText
-    for oldData in $(this).find '.clear-before-show'
-      $(oldData).empty()
-
     switch matched.pop()
       when 'schools/list'
-        displayJson json.schools, '#side-panel', 'school'
+        displayJson json.schools, '#schools-summary', 'school'
       when 'courses/list'
-        displayJson json.courses, '#side-panel', 'course'
+        displayJson json.courses, '#courses-summary', 'course'
       when 'questions/list'
         prepareTBDSlideShow json.questions #TBD = To be done
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
@@ -54,25 +51,19 @@ jQuery ->
     matched = settings.url.match(/yardstick\.json/) or
               settings.url.match(/teachers\/list/) or
               settings.url.match(/school\/sections/) or
-              settings.url.match(/topics\/list/) or
               settings.url.match(/course\/coverage/) or
               settings.url.match(/macros\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
-    for oldData in $(this).find '.clear-before-show'
-      $(oldData).empty()
-
     switch matched.pop()
       when 'teachers/list'
-        displayJson json.teachers, '#middle-panel', 'teacher'
+        displayJson json.teachers, '#teachers-list', 'teacher'
       when 'school/sections'
-        displayJson json.sections, '#middle-panel', 'section'
+        displayJson json.sections, '#studygroups-radiolist', 'section'
       when 'yardstick.json'
         uncheckAllCheckBoxesWithin '#edit-yardstick'
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
-      when 'topics/list'
-        displayJson json.topics, '#middle-panel', 'topic'
       when 'course/coverage'
         displayMacroList json.macros, {radio:true}
         buildSyllabiEditForm json.macros
@@ -93,16 +84,13 @@ jQuery ->
     return if matched is null
 
     json = $.parseJSON xhr.responseText
-    for oldData in $(this).find '.clear-before-show'
-      $(oldData).empty()
-
     switch matched.pop()
       when 'teachers/roster'
-        displayJson json.sections, '#right-panel', 'section', {checkbox:true}
-      when 'school/unassigned-students'
-        displayJson json.students, '#right-panel', 'student', {checkbox:true}
-      when 'study_groups/students'
-        displayJson json.students, '#right-panel', 'student', {checkbox:true}
+        here = $('#studygroups-list').children 'form:first'
+        displayJson json.sections, here, 'section', {checkbox:true}
+      when 'school/unassigned-students', 'study_groups/students'
+        here = $('#student-list').children 'form:first'
+        displayJson json.students, here, 'student', {checkbox:true}
       when 'school.json'
         loadFormWithJsonData $('#edit-school').children('form:first'), json.school
       when 'macros/list'
