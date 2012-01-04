@@ -68,7 +68,7 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
 
   for record in json
     data = record[key]
-    sword = $('#samurai-sword-blueprint').clone()
+    sword = $('#toolbox').children('.blueprint.samurai-sword:first').clone()
 
     samuraiSetHeading sword, data.name
     samuraiCheckboxRow sword, data, checks, namespace
