@@ -3,6 +3,24 @@ putBack = (node) ->
   node = node.detach()
   node.appendTo '#toolbox'
 
+buildHierarchy = (selector) ->
+  needed = selector.split ' >'
+  start = $(needed[0])
+  length = start.length
+
+  if length is 0 then return null
+  else
+    #alert "#{length} -> #{start.attr 'id'}"
+    for j in [0 ... length]
+      current = $(needed[j])
+      next = $(needed[j+1])
+
+      if not (current.length is 0 or next.length is 0)
+        #alert "#{current.attr 'id'} --> #{next.attr 'id'}"
+        next = next.detach()
+        next.appendTo current
+  return start
+
 ###
 When clearing panels, only one of the following 4 can be done to
 the elements within the said panel :
@@ -16,8 +34,10 @@ purgeable and put-back. The former has been around for some time
 while the latter is being introduced with the benefit of hindsight 
 ###
 
-window.clearPanel = (id, moveAlso = true) ->
-  me = $(id).children().first()
+resetPanel = (id, moveAlso = true) ->
+  start = if typeof id is 'string' then $(id) else id
+
+  me = id.children().first()
   return if me.length is 0
    ###
      If 'me' has any data under a <div class="data empty-on-putback"> within its
@@ -40,19 +60,19 @@ window.refreshView = (link) ->
 
   for type in ['side', 'middle', 'right', 'wide']
     needed = link.attr type
-    target = "##{type}-panel"
+    target = $("##{type}-panel")
 
     continue if link.hasClass('minor-link') and type is 'side'
-    loaded = $(target).children().first()
-    continue if loaded is $(needed)
-
-    clearPanel target
+    resetPanel target # if there is any data to be purged, then it should be done before the next step
+    continue if target.find(needed).length isnt 0
 
     if not needed?
       $(target).addClass('hidden')
     else
+      e = buildHierarchy needed
       $(target).removeClass('hidden')
-      $(needed).appendTo(target).hide().fadeIn('slow')
+      if e isnt null then e.appendTo(target).hide().fadeIn('slow')
+  return true
 
 ###
   Find the selected major or minor link in the #control-panel
@@ -109,8 +129,13 @@ window.uncheckAllCheckBoxesWithin = (element) ->
     $(checkbox).prop 'checked', false
 
 window.displayJson = (json, where, key, visible = {radio:true}, enable = true) ->
-  target = if $(where).hasClass 'data' then $(where) else $(where).find('.purgeable:first')
-  if target.length is 0 then target = $(where)
+  # JSON data is always purgeable. And so, it is always inserted within
+  # the first .purgeable of $(where)
+  where = if typeof where is 'string' then $(where) else where
+  target = if where.length isnt 0 then where.children('.purgeable:first') else null
+
+  return if target is null
+  target.empty() # Purge before showing new data
 
   for record, index in json
     clone = swissKnifeForge record, key, visible, enable

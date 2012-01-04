@@ -25,8 +25,6 @@ jQuery ->
   $('#tbd-link').click ->
     $.get 'questions/list.json'
     $.get 'macros/list.json'
-    microTopics = $('#micro-topic-list').detach()
-    microTopics.appendTo '#micro-topics-for-tagging'
     $('#tbd-preview-button').val 'preview'
 
   ###
