@@ -44,13 +44,10 @@ class Course < ActiveRecord::Base
   end 
 
   def covers_macro_topic?(id)
-    micros_covered = Syllabus.where(:course_id => self.id).select(:micro_topic_id)
-    macros_covered = MicroTopic.where(:id => micros_covered).select(:macro_topic_id).group(:macro_topic_id)
+    a = self.micro_topic_ids 
+    b = MacroTopic.find(id).micro_topic_ids
 
-    macros_covered.each do |m|
-      return true if m.macro_topic_id == id
-    end
-    return false
+    return !((a & b).empty?)
   end
 
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
