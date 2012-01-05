@@ -6,30 +6,24 @@ class TeachersController < ApplicationController
     school = School.find params[:id] 
     head :bad_request if school.nil? 
     
+    subjects = params[:teacher].delete :subjects
     @teacher = Teacher.new params[:teacher]
+    @teacher.school = school 
+
+    # Prepare data for teacher's account
     username = @teacher.generate_username
     email = params[:teacher].delete(:email) || "#{username}@drona.com"
-    @teacher.school = school 
     password = school.zip_code
-    status = :ok
 
     unless username.nil? 
       account = @teacher.build_account :email => email, :username => username, 
                   :password => password, :password_confirmation => password
-    end 
-
-    if @teacher.save
-      Yardstick.select('id, default_allotment').each do |y|
-        grade = @teacher.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
-        status = grade.save ? :ok : :bad_request
-        break if status == :bad_request
-      end
-      (status == :ok) ? respond_with(@teacher) : head(:bad_request)
+      @teacher.set_subjects subjects 
+      (@teacher.save) ? respond_with(@teacher) : :bad_request
     else
       head :bad_request
-    end
-
-  end 
+    end 
+  end # of create
  
   def show 
     render :nothing => true, :layout => 'teachers'

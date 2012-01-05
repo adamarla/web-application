@@ -42,7 +42,9 @@ class Teacher < ActiveRecord::Base
   has_many :subjects, :through => :specializations
 
   validates :first_name, :last_name, :presence => true  
+
   before_save :humanize_name
+  after_create :build_grade_table
 
   # When would one want to 'destroy' a teacher? And what would it mean? 
   # 
@@ -105,6 +107,11 @@ class Teacher < ActiveRecord::Base
     StudyGroup.joins(:faculty_rosters).where('faculty_rosters.teacher_id = ?', self.id)
   end 
 
+  def set_subjects(list_of_ids = [])
+    list_of_ids.each_with_index { |a, index| list_of_ids[index] = a.to_i } 
+    self.subjects = Subject.where :id => list_of_ids
+  end
+
   private 
 
     def setup_account 
@@ -122,6 +129,13 @@ class Teacher < ActiveRecord::Base
     def humanize_name
       self.first_name = self.first_name.humanize
       self.last_name = self.last_name.humanize
+    end 
+
+    def build_grade_table
+      Yardstick.select('id, default_allotment').each do |y|
+        grade = self.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
+        break if !grade.save
+      end
     end 
 
 end
