@@ -11,40 +11,32 @@ class TeachersController < ApplicationController
     email = params[:teacher].delete(:email) || "#{username}@drona.com"
     @teacher.school = school 
     password = school.zip_code
+    status = :ok
 
     unless username.nil? 
       account = @teacher.build_account :email => email, :username => username, 
-                                      :password => password, :password_confirmation => password
+                  :password => password, :password_confirmation => password
     end 
 
-    @teacher.save ? respond_with(@teacher) : head(:bad_request) 
+    if @teacher.save
+      Yardstick.select('id, default_allotment').each do |y|
+        grade = @teacher.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
+        status = grade.save ? :ok : :bad_request
+        break if status == :bad_request
+      end
+      (status == :ok) ? respond_with(@teacher) : head(:bad_request)
+    else
+      head :bad_request
+    end
+
   end 
  
   def show 
-    @teacher = params[:id].nil? ? current_account.loggable : 
-                                  Teacher.find(params[:id])
-    if @teacher.grades.empty? 
-      # Create default grades for this teacher
-      Yardstick.all.each { |d| 
-        grade = @teacher.grades.new :yardstick_id => d.id,
-                                    :allotment => d.default_allotment
-        grade.save
-      } 
-    end 
-    @grades = @teacher.grades
+    render :nothing => true, :layout => 'teachers'
   end 
 
   def update 
     head :ok 
-#    grades = params[:grades] 
-#    status = :ok 
-#
-#    grades.each { |id, allotment|
-#      grade = Grade.find(id) 
-#      status = (grade && grade.update_attribute(:allotment, allotment)) ? :ok : :bad_request
-#      break if status == :bad_request 
-#    } 
-#    head status 
   end 
 
   def list 
