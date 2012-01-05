@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: specializations
+#
+#  id         :integer         not null, primary key
+#  teacher_id :integer
+#  subject_id :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  teacher_id: 1
+  subject_id: 1
+
+two:
+  teacher_id: 1
+  subject_id: 1

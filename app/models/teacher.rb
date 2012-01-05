@@ -38,6 +38,9 @@ class Teacher < ActiveRecord::Base
   has_many :grades
   has_many :yardsticks, :through => :grades
 
+  has_many :specializations
+  has_many :subjects, :through => :specializations
+
   validates :first_name, :last_name, :presence => true  
   before_save :humanize_name
 
