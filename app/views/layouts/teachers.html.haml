@@ -1,19 +1,30 @@
+
+- content_for :toolbox do 
+  #toolbox.hidden 
+    = render :partial => 'toolbox/swiss_knife'
+    = render :partial => 'toolbox/samurai_sword'
+    = render :partial => 'toolbox/document_preview'
+
 !!!5
 
 %html{html_attrs}
   %head 
-    %title Teacher's Console
-    = stylesheet_link_tag "application"
     = javascript_include_tag "application"
-    -# = javascript_include_tag :defaults
+    = stylesheet_link_tag "application" 
     = csrf_meta_tag
-  
-  %body 
-    - if current_account
-      %a#link-logout{ :href => '/logout' } Sign Out
-    - else 
-      %a#link-login{ :href => '/login' } Sign In
-    
-    = yield
-  
 
+  %body 
+    - default_marker = "#{current_account.nil? ? :tbd : current_account.loggable_id}"
+    #visible-active-area
+      #control-panel.panel.horizontal{ :marker => default_marker } 
+        #main-links 
+          = render :partial => 'teachers/control-panel'
+        -# Links required in the currently loaded context
+        #minor-links
+
+      #side-panel.panel.left.slim{ :marker => default_marker }
+      #middle-panel.panel.slim.left
+      #right-panel.panel.slim.left
+      #wide-panel.panel.wide.left
+
+    = yield :toolbox
