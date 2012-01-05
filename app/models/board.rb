@@ -21,4 +21,10 @@ class Board < ActiveRecord::Base
 
   # [:name] ~> [:admin] 
   #attr_accessible
+
+  def schools (active = true)
+    a = Account.where(:loggable_type => 'School').where(:active => active).select(:loggable_id)
+    School.where(:board_id => self.id, :id => a)
+  end 
+
 end
