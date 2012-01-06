@@ -30,6 +30,10 @@ fieldset.inputs li.boolean.input {
   font-weight : bold ;
 } 
 
+.search-form { 
+  min-height : 50px ;
+} 
+
 .sortable { 
   min-height : 30px ;
 } 
