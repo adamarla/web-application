@@ -50,6 +50,14 @@ class Course < ActiveRecord::Base
     return !((a & b).empty?)
   end
 
+  def macros
+    a = self.micro_topics.select(:macro_topic_id).group(:macro_topic_id)
+    a.each_with_index do |b, index|
+      a[index] = b.macro_topic_id
+    end
+    MacroTopic.where(:id => a)
+  end
+
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
   #attr_accessible 
 

@@ -29,6 +29,19 @@ class TeachersController < ApplicationController
     render :nothing => true, :layout => 'teachers'
   end 
 
+  def applicable_macros
+    teacher = (current_account.role == :teacher) ? current_account.loggable : nil
+    head :bad_request if teacher.nil?
+
+    subject = params[:criterion][:subject]
+    klass = params[:criterion][:klass]
+    board = teacher.school.board_id
+
+    course = Course.where(:board_id => board, :klass => klass, :subject_id => subject).first
+    @macros = course.nil? ? nil : course.macros
+    @macros.nil? ? head(:bad_request) : respond_with(@macros)
+  end
+
   def update 
     head :ok 
   end 

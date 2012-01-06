@@ -4,7 +4,7 @@
     %span.target= "for whom?"
     %span.operation= "choose subject & class"
   .search-form
-    = form_tag 'teacher/macro_list', :remote => true, :method => :get do |f|
+    = form_tag 'teacher/applicable_macros', :remote => true, :method => :get do |f|
       = drop_down_menu_for :subjects, :include_blank => false
       = drop_down_menu_for :klasses, :include_blank => false
       = submit_tag 'submit', :class => 'no-style'
