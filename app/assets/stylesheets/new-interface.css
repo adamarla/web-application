@@ -23,6 +23,13 @@ fieldset.inputs li.boolean.input {
   width : 65% ;
 } 
 
+.inline-label { 
+  margin-right : 5px ;
+  font-variant : small-caps ;
+  font-size : 12px ;
+  font-weight : bold ;
+} 
+
 .sortable { 
   min-height : 30px ;
 } 
@@ -228,4 +235,6 @@ legend > a {
   min-height : 25px ;
   margin-bottom : 6px ;
 } 
+
+
 

@@ -1,14 +1,11 @@
 
 jQuery ->
   ###
-    Hide the labels in #macro-search-form. The labels will be there
-    because the form has been generated using formtastic. But we don't 
-    have to see them, do we ? 
+    Change the default styling of labels in #macro-search-form
   ###
 
   for label in $('#macro-search-form').find 'label'
-    alert '1'
-    $(label).addClass 'hidden'
+    $(label).addClass 'inline-label'
 
   ###
     Clicking new-quiz-link
