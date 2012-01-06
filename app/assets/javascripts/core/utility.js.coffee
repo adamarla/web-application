@@ -128,6 +128,12 @@ window.uncheckAllCheckBoxesWithin = (element) ->
   for checkbox in element.find 'input[type="checkbox"]'
     $(checkbox).prop 'checked', false
 
+###
+  Parse and then display the returned JSON. The function below assumes - 
+  via swissKnifeForge - that the returned JSON has atleast the following 
+  2 keys : name & id
+###
+
 window.displayJson = (json, where, key, visible = {radio:true}, enable = true) ->
   # JSON data is always purgeable. And so, it is always inserted within
   # the first .purgeable of $(where)
@@ -140,6 +146,22 @@ window.displayJson = (json, where, key, visible = {radio:true}, enable = true) -
   for record, index in json
     clone = swissKnifeForge record, key, visible, enable
     clone.appendTo(target).hide().fadeIn('slow')
+
+###
+  Display inline-error messages 
+###
+window.displayInlineError = (here, heading, description) ->
+  here = if typeof here is 'string' then $(where) else here
+  clone = $('#toolbox').find('.blueprint.inline-error:first').clone()
+
+  head = clone.children().eq(0)
+  desc = clone.children().eq(1)
+
+  head.text heading
+  desc.text description
+
+  clone.appendTo(here).hide().fadeIn('slow')
+
 
 ###
   The next function will create <options> for any <selects> within the passed 

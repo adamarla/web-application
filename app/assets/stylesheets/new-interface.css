@@ -34,6 +34,19 @@ fieldset.inputs li.boolean.input {
   min-height : 50px ;
 } 
 
+.inline-error > .heading {
+  font-size : 14px ;
+  color : #fd9105 ; 
+  text-transform : lowercase ;
+  font-weight : bold ;
+} 
+
+.inline-error > .description {
+  font-size : 12px ;
+  color : #6ca7ab ;
+  text-transform : lowercase ;
+} 
+
 .sortable { 
   min-height : 30px ;
 } 
