@@ -4,6 +4,10 @@
     %span.target= "for whom?"
     %span.operation= "choose subject & class"
   .search-form
-  -# Insert a samurai-sword here. Customization in JS
+    = form_tag 'teacher/macro_list', :remote => true, :method => :get do |f|
+      = drop_down_menu_for :subjects, :include_blank => false
+      = drop_down_menu_for :klasses, :include_blank => false
+      = submit_tag 'submit', :class => 'no-style'
+    
   .search-results
   -# List of macro-topics for specified subject, class & board (implicit)
