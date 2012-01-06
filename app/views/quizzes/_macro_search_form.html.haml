@@ -1,5 +1,5 @@
 
-#macro-search-form
+#macro-search-form.full-width.left
   %legend
     %span.target= "for whom?"
     %span.operation= "choose subject & class"
@@ -7,7 +7,7 @@
     = form_tag 'teacher/applicable_macros', :remote => true, :method => :get do |f|
       = drop_down_menu_for :subjects, :include_blank => false
       = drop_down_menu_for :klasses, :include_blank => false
-      = submit_tag 'submit', :class => 'no-style'
+      = submit_tag 'submit', :class => 'no-style right'
     
-  .search-results
+  .search-results.purgeable
   -# List of macro-topics for specified subject, class & board (implicit)
