@@ -46,84 +46,21 @@ jQuery ->
   ###
     Connect sortable lists for Admin
   ###
-  $('#macro-topic-list > #in-macros').sortable 'option', 'connectWith', '#macro-topic-list > #out-macros'
-  $('#macro-topic-list > #out-macros').sortable 'option', 'connectWith', '#macro-topic-list > #in-macros'
+  $('#macro-selected-list').sortable 'option', 'connectWith', '#macro-deselected-list'
+  $('#macro-deselected-list').sortable 'option', 'connectWith', '#macro-selected-list'
 
   ###
-    #macro-topic-list :  When an item is moved from out-tray to in-tray, 
-    make list of micro-topics part of #edit-syllabi-form's <form> element
+    edit-syllabi form should acquire or lose elements depending on whether a 
+    macro-topic has been moved from selected -> deselected or the other way round
   ###
-
-  $('#macro-topic-list div.in-tray:first').on 'sortreceive', (event, ui) ->
+  $('.sortable').on 'sortreceive', (event, ui) ->
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0)
 
-    marker = ui.item.attr 'marker'
-    micros = $('#micro-topic-list').find "div[marker=#{marker}]:first"
-    return if micros.length is 0
-
-    micros = micros.detach()
-    micros.appendTo '#edit-syllabi-form .peek-a-boo:first'
-
-    ###
-      macro-topic-list is used on 2 occassions : 
-        1. when editing the syllabus of a course
-        2. when tagging questions
-      The code below is appropriate for (1) and irrelevant for (2). Irrelevant 
-      because for (2), the out-tray is empty. So, there is nothing to drag
-      into the in-tray and therefore no event to trigger this whole function
-    ###
-    for knife in micros.children()
-      swissKnifeCustomize $(knife), {select:true}, true
-
-
-  ###
-    #macro-topic-list :  when an item is moved from in-tray to out-tray, 
-    remove list of micro-topics within #edit-syllabi-form's <form> element
-    and move it back to the .dump. remember to un-check all checkboxes 
-    before making the move
-  ###
-
-  $('#macro-topic-list div.out-tray:first').on 'sortreceive', (event, ui) ->
-    parent = ui.item.closest '.sortable'
-    return if parent.get(0) isnt $(this).get(0)
-
-    marker = ui.item.attr 'marker'
-    micros = $('#edit-syllabi-form .peek-a-boo:first').find "div[marker=#{marker}]:first"
-    return if micros.length is 0
-
-    micros = micros.detach()
-    swissKnifeReset micros
-    micros.appendTo '#micro-topic-list'
-    micros.addClass 'hidden'
-
-  ###
-    #macro-topic-list : Make the micro-topics in #edit-syllabi-form for a macro 
-    in the div.in-tray visible when the corresponding radio button is clicked
-  ###
-
-  $('#macro-topic-list').on 'click', 'div.in-tray input[type="radio"]', ->
-    marker = $(this).attr 'marker'
-    return if not marker?
-
-    right = $('#right-panel').children('div').first()
-    switch $(right).attr 'id'
-      when 'edit-syllabi-form'
-        target = right.find('.peek-a-boo:first')
-      when 'micro-topics-for-tagging'
-        target = right.find '#micro-topic-list:first'
-      else
-        target = null
-        alert 'something is amiss'
-
-    return if target is null
-
-    for micro in target.children('div[marker]')
-      if $(micro).attr('marker') is marker
-        $(micro).removeClass 'hidden'
-      else
-        $(micro).addClass 'hidden'
-
+    id = ui.item.attr 'marker'
+    type = if parent.hasClass 'selected' then 'deselected' else 'selected'
+    adminUtil.mnmToggle type, id, {select:true}
+    
   ###
     When tagging questions, update the accordion-heading and fill in the 
     trojan,nay, ninja field when a micro-topic - in #micro-topics-for-tagging - 

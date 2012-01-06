@@ -65,11 +65,16 @@ jQuery ->
         uncheckAllCheckBoxesWithin '#edit-yardstick'
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
       when 'course/coverage'
-        displayMacroList json.macros, {radio:true}
-        buildSyllabiEditForm json.macros
+        reallocateMacroMicroAsPer json.macros
+        coreUtil.mnmCustomize 'macro'
+
+        target = $('#macro-selection')
+        $('#macro-selected-list').insertAfter target.children('legend').eq(0)
+        $('#macro-deselected-list').insertAfter target.children('legend').eq(1)
+
+        adminUtil.buildSyllabiEditForm json.macros
       when 'macros/list'
-        resetMicroTopicList()
-        displayMacroList json.macros, {radio:true}
+        reallocateMacroMicroAsPer json.macros
 
   ###
     AJAX successes the right-panel is supposed to respond to.
@@ -97,8 +102,8 @@ jQuery ->
         # Customize swiss-knives within microTopics to include just one enabled radio-button
         microTopics = $('#micro-topic-list')
         for macro in microTopics.find 'div[marker]'
-          for swissKnife in $(macro).children()
-            swissKnifeCustomize $(swissKnife), {radio:true}, true
+          for e in $(macro).children()
+            swissKnife.customize $(e), {radio:true}, true
 
   ###
     AJAX successes the wide-panel is supposed to respond to.

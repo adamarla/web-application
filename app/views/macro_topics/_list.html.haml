@@ -1,14 +1,8 @@
 
-#macro-topic-list
+#macro-selection
   %legend
     %span.target= "in"
     %span.operation= "drag-n-drop | select to edit" 
-  #in-macros.in-tray.sortable
   %legend
     %span.target= "out"
     %span.operation= "drag-n-drop" 
-  #out-macros.out-tray.sortable
-  .dump.hidden
-    - list = get_list_of :macro_topics
-    - list.each do |item|
-      = render :partial => 'toolbox/swiss_knife', :locals => { :marker => "#{item.id}", :label => "#{item.name}" }

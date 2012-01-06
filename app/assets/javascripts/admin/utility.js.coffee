@@ -1,81 +1,51 @@
 
-window.resetMicroTopicList = () ->
-  source = $('#edit-syllabi-form') # the only other place micro-topics could be
-  target = $('#micro-topic-list')
+window.adminUtil = {
 
-  for list in source.find 'div[back-to]'
-    list = $(list).detach()
-    list.appendTo target
-    list.addClass 'hidden'
+  buildSyllabiEditForm : (json) ->
+    # 1. Move #micro-selected-list to within #edit-syllabi-form
+    target = $('#edit-syllabi-form > form:first')
+    selected = $('#micro-selected-list').detach()
+    selected.appendTo target
+    
+    # 2. Customize swiss-knives to have only the <select> visible & enabled
+    swissKnife.customizeWithin selected, {select:true}, true
 
-    for knife in list.children()
-      swissKnifeReset $(knife)
-  return true
+    # 3. Load the difficulty levels for micro-topics using the passed JSON
+    #    JSON is of the form : [{macro : { .., micros : { ... } }}, { macro : { .., micros : { ... } }}]
 
-resetMacroTopicList = () ->
-  source = $('#macro-topic-list')
-  target = $('#macro-topic-list .dump:first')
+    for a in json
+      macro = a.macro
+      continue if not macro.in is true # don't waste time w/ these
 
-  for tray in source.find '.in-tray:first, .out-tray:first'
-    for knife in $(tray).find '.swiss-knife'
-      knife = $(knife).detach()
-      swissKnifeReset knife
-      knife.appendTo target
-  return true
-      
-window.buildSyllabiEditForm = (json) ->
-  target = $('#edit-syllabi-form .peek-a-boo:first')
+      micros = macro.micros
+      start = selected.children "div[marker=#{macro.id}]:first"
+      start.addClass 'hidden'
 
-  # 1. Move all micro back to #micro-topic-list 
-  resetMicroTopicList()
+      for b in micros
+        micro = b.micro
+        select = start.children("div[marker=#{micro.id}]:first").children("select:first")
+        select.val micro.select
+    return true
 
-  # 2. Bring back whichever micros are required
-  for m in json
-    macro = m.macro
-    continue if macro.in is false
-    list = $('#micro-topic-list').children("div[marker=#{macro.id}]").first()
-    list.appendTo target
+  mnmToggle : (type, id, customization = null) ->
+    ### 
+      type = 'selected' OR 'deselected', id = of the macro
+      If 'type' = selected, then we are moving a 'selected' element 
+      to the 'deselected' list. Otherwise, the other way round
+    ###
 
-  # 3. Customize the swiss-knife for each micro-topic within the form
-  for micro in target.find('div[marker] > .swiss-knife')
-    swissKnifeCustomize $(micro), {select:true}, true
+    other = if type is 'selected' then 'deselected' else 'selected'
 
-  # 4. Load micro-topic information in the JSON onto the form
-  for m in json
-    macro = m.macro
-    continue if macro.in is false
-    e = target.children "div[marker=#{macro.id}]:first" # containing <div>
-    micros = macro.micros
-    for n in micros
-      micro = n.micro
-      f = e.children "div[marker=#{micro.id}]:first" # swiss-knife
-      select = f.children '.select:first'
-      select.val "#{micro.select}"
+    source = $("#micro-#{type}-list").children("div[marker=#{id}]").detach()
+    target = $("#micro-#{other}-list")
+    source.appendTo target
 
-###
-  Shows the list of macros covered by a course. The passed JSON
-  is assumed to have at least 2 fields : id (of the macro) and a 
-  boolean 'in' for whether or not the macro is covered in a course
-###
-
-window.displayMacroList = (json, options = {radio:true, checkbox:false, select:false, button:false}) ->
-  resetMacroTopicList()
-  start = $('#macro-topic-list .dump:first')
-  for record in json
-    macro = record['macro']
-    covered = macro.in
-    id = macro.id
-
-    chosenOne = start.find ".swiss-knife[marker=#{id}]:first"
-    swissKnifeCustomize chosenOne, options, covered
-
-    if covered is true
-      target = $('#macro-topic-list .in-tray:first')
+    if type is 'selected'
+      swissKnife.customizeWithin source, {}, false
     else
-      target = $('#macro-topic-list .out-tray:first')
-
-    chosenOne = chosenOne.detach()
-    chosenOne.appendTo target
+      source.addClass 'hidden'
+      swissKnife.customizeWithin source, customization, true
+}
 
 ###
   Given the JSON response of 'questions/list.json', populates #document-preview

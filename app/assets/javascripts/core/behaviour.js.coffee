@@ -50,23 +50,23 @@ jQuery ->
   $('.sortable').sortable({ dropOnEmpty : true })
 
   ###
-    (Sortables) : When an element is moved from an .in-tray to an 
-    .out-tray, then disable any visible active elements (radios, checkboxes etc) 
+    (Sortables) : When an element is moved from an .selected to an 
+    .deselected, then disable any visible active elements (radios, checkboxes etc) 
     within it. Conversely, when an element is moved in the other 
     direction (.out -> .in), enable any radio buttons 
   ###
 
-  $('#macro-topic-list .sortable').on 'sortreceive', (event, ui) ->
+  $('.sortable').on 'sortreceive', (event, ui) ->
     ###
       ui.item is the item that was dragged and placed within another .sortable
     ###
     parent = ui.item.closest '.sortable'
     return if parent.get(0) isnt $(this).get(0) # read up on jQuery object comparison
-    disableState = if $(this).hasClass 'in-tray' then false else true
+    disable = if $(this).hasClass 'selected' then false else true
 
     for element in ui.item.children()
       continue if $(element).hasClass 'hidden'
-      $(element).prop 'disabled', disableState
+      $(element).prop 'disabled', disable
       $(element).prop 'checked', false
     
 
@@ -77,7 +77,7 @@ jQuery ->
     anything - my name, your name etc. etc.
   ###
 
-  $('form, .mega-form').on 'click', 'input[type="checkbox"]', ->
+  $('form').on 'click', 'input[type="checkbox"]', ->
     $(this).val $(this).prop 'checked'
 
   ###
@@ -247,4 +247,23 @@ jQuery ->
         button = $(this).find 'input[type="submit"]:first'
         if button?
           button.val('Oops !')
+
+  ###
+    If a radio button within the macro-selected-list is clicked, then 
+    make the corresponding micro-topics in #micro-selected-list visible.
+    But do this only if #micro-selected-list is in view - that is - 
+    not in the #toolbox. And leave any other context specific customization
+    to the context specific JS file
+  ###
+
+  $('#macro-selected-list').on 'click', 'input[type="radio"]', ->
+    return if $('#toolbox').children('#micro-selected-list').length isnt 0
+
+    marker = $(this).attr 'marker'
+    for macro in $('#micro-selected-list').children("div[marker]")
+      id = $(macro).attr 'marker'
+      hide = if id is marker then false else true
+      if hide then $(macro).addClass('hidden') else $(macro).removeClass('hidden')
+    return true
+
 

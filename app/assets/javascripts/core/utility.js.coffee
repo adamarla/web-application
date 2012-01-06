@@ -130,7 +130,7 @@ window.uncheckAllCheckBoxesWithin = (element) ->
 
 ###
   Parse and then display the returned JSON. The function below assumes - 
-  via swissKnifeForge - that the returned JSON has atleast the following 
+  via swissKnife.forge - that the returned JSON has atleast the following 
   2 keys : name & id
 ###
 
@@ -144,7 +144,7 @@ window.displayJson = (json, where, key, visible = {radio:true}, enable = true) -
   target.empty() # Purge before showing new data
 
   for record, index in json
-    clone = swissKnifeForge record, key, visible, enable
+    clone = swissKnife.forge record, key, visible, enable
     clone.appendTo(target).hide().fadeIn('slow')
 
 ###
@@ -189,4 +189,74 @@ window.populateSelectsWithOptions = (obj, selections) ->
     choices = for posn,choice of options
       select.append "<option value=#{posn}>#{choice}</option>"
   return true
+
+###
+  The list of macro and micro topics is known at the time of HTML rendering - 
+  and is therefore statically rendered within the 2 master-lists : 
+  macro-masterlist and micro-masterlist 
+
+  However, depending on the context, some macro-topics - and as a result, some 
+  micro-topics - are "applicable" while others are not. And the ones that are 
+  "applicable" we want in one list while those that aren't we want in another. 
+  This next set of functions manages that required sorting 
+
+  Once again, note that what is "applicable" and what is not depends really on 
+  the what the question is. The answer comes in the form of a JSON response 
+  with AT LEAST the following structure : 
+
+     { macros : [ {macro : {id, [in]}}, { macro : {id, [in] }}, ... ] }
+
+  The keys HAVE TO BE as shown. And conversely, if you want to use the functions
+  below, you will have to structure the JSON response as shown. The [in] key is an optional
+  boolean. But its always interpreted as follows : 
+    1. macro-topic - and resulting micro-topics - are "applicable" if in=true
+       and "not applicable" if in=anyting else
+###
+
+restoreMacroMicroMasterLists = () ->
+  for type in ['macro', 'micro']
+    master = $("##{type}-masterlist") # Eg. macro-masterlist
+    for j in ['selected', 'deselected']
+      source = $("##{type}-#{j}-list") # Eg. micro-selected-list
+      for child in source.children()
+        child = $(child).detach()
+        child.appendTo master
+
+window.reallocateMacroMicroAsPer = (json) ->
+  # First, bring everything back into macro & micro master lists
+  restoreMacroMicroMasterLists()
+  # Now, based on the JSON, sort into selected and deselected lists
+
+  macroS = $('#macro-selected-list')
+  macroU = $('#macro-deselected-list')
+  microS = $('#micro-selected-list')
+  microU = $('#micro-deselected-list')
+
+  for record in json
+    data = record.macro
+    selected = if data.in is true then true else false
+    id = data.id
+
+    macro = $('#macro-masterlist').children("[marker=#{id}]").first().detach()
+    micro = $('#micro-masterlist').children("div[marker=#{id}]").first().detach()
+
+    if selected
+      macro.appendTo macroS
+      micro.appendTo microS
+    else
+      macro.appendTo macroU
+      micro.appendTo microU
+  return true
+
+window.coreUtil = {
+  mnmCustomize : (type = 'macro', visible = {radio:true}) ->
+    for x in ['selected','deselected']
+      target = $("##{type}-#{x}-list") # Eg. #macro-selected-list
+      enable = if x is 'selected' then true else false
+
+      swissKnife.customizeWithin target, visible, enable
+
+    
+}
+
 
