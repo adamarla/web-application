@@ -18,7 +18,7 @@ jQuery ->
     styled buttons are too big for that panel
   ###
 
-  $('#toolbox > div:not([class~="top-panel-controls"]) form input[type="submit"]').button()
+  $('#toolbox > div:not([class~="top-panel-controls"]) form input[type="submit"]:not([class~="no-style"])').button()
 
   ###
     Any form for creating or editing a record that needs to be opened as a dialog
