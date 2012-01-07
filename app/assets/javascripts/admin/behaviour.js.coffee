@@ -68,7 +68,7 @@ jQuery ->
     is 'active'/'open'
   ###
 
-  $('#micro-topics-for-tagging').on 'click', 'input[type="radio"]', ->
+  $('#panel-micro-masterlist').on 'click', 'input[type="radio"]', ->
     marker = $(this).attr 'marker'
     label = $(this).siblings('div.label').first().text()
 

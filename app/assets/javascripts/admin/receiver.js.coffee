@@ -75,6 +75,14 @@ jQuery ->
         adminUtil.buildSyllabiEditForm json.macros
       when 'macros/list'
         reallocateMacroMicroAsPer json.macros
+        coreUtil.mnmCustomize 'macro'
+        coreUtil.mnmCustomize 'micro'
+        
+        target = $('#panel-macro-masterlist')
+        $('#macro-selected-list').insertAfter target.children('legend').eq(0)
+
+        target = $('#panel-micro-masterlist')
+        $('#micro-selected-list').insertAfter target.children('legend').eq(0)
 
   ###
     AJAX successes the right-panel is supposed to respond to.
