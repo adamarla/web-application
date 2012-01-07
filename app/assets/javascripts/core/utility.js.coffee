@@ -85,6 +85,14 @@ window.coreUtil = {
 
   # Namespace for functions related to macro and micro lists
   mnmlists : {
+
+    attach : (type, here) -> # type = [macro,micro]
+      return if not type? and not here?
+      here = if typeof here is 'string' then $(here) else here
+      source = $("##{type}-selected-list").detach()
+      source.appendTo here
+      return true
+
     restore : () ->
       for type in ['macro', 'micro']
         master = $("##{type}-masterlist") # Eg. macro-masterlist
