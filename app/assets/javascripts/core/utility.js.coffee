@@ -62,7 +62,8 @@ window.refreshView = (link) ->
     needed = link.attr type
     target = $("##{type}-panel")
 
-    #continue if link.hasClass('minor-link') and type is 'side'
+    if link.hasClass('minor-link') and type is 'side'
+      continue if not needed?
     resetPanel target # if there is any data to be purged, then it should be done before the next step
     continue if target.find(needed).length isnt 0
 
