@@ -81,5 +81,13 @@ window.swissKnife = {
     for e in element.find '.swiss-knife'
       swissKnife.customize $(e),visible,enable
     return true
+
+  setButtonCaption : (within, caption) ->
+    return if not caption?
+    within = if typeof within is 'string' then $(within) else within
+    for button in within.find '.swiss-knife > input[type="button"]'
+      continue if $(button).hasClass 'hidden'
+      $(button).val caption
+    return true
 }
 
