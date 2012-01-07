@@ -8,10 +8,8 @@ class ApplicationController < ActionController::Base
     @current_ability ||= AccountAbility.new(current_account)
   end 
 
-  def create_username_for(me,role)
-    username = nil
-    prefix = nil 
-
+  def username_prefix_for( me, role )
+    prefix = nil
     case role 
       when :teacher, :admin 
         prefix = "#{me.first_name[0]}#{me.last_name}".downcase
@@ -20,6 +18,13 @@ class ApplicationController < ActionController::Base
       when :school
         prefix = "principal.#{me.tag}".downcase
     end 
+    return prefix
+  end
+
+  def create_username_for( me,role )
+    username = nil
+    prefix = username_prefix_for me, role
+    return nil if prefix.nil?
 
     case role 
       when :student, :teacher
