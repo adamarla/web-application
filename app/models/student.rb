@@ -23,6 +23,7 @@ class Student < ActiveRecord::Base
 
   validates :first_name, :last_name, :presence => true
   before_save :humanize_name
+  after_save  :reset_login_info
 
   # When should a student be destroyed? My guess, some fixed time after 
   # he/she graduates. But as I haven't quite decided what that time should
@@ -56,5 +57,13 @@ class Student < ActiveRecord::Base
       self.first_name = self.first_name.humanize
       self.last_name = self.last_name.humanize
     end 
+
+    def reset_login_info
+      new_prefix = username_prefix_for self, :student
+      u = self.account.username.sub(/^\w+\./, "#{new_prefix}.")
+      e = self.account.email.sub(/^\w+\./, "#{new_prefix}.")
+      self.account.update_attributes(:username => u, :email => e)
+    end
+
 
 end

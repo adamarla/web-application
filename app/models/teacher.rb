@@ -26,6 +26,7 @@
 
 require 'rexml/document'
 include REXML
+include ApplicationUtil
 
 class Teacher < ActiveRecord::Base
   has_many :quizzes, :dependent => :destroy 
@@ -43,8 +44,9 @@ class Teacher < ActiveRecord::Base
 
   validates :first_name, :last_name, :presence => true  
 
-  before_save :humanize_name
+  before_save  :humanize_name
   after_create :build_grade_table
+  after_save   :reset_login_info
 
   # When would one want to 'destroy' a teacher? And what would it mean? 
   # 
@@ -90,6 +92,13 @@ class Teacher < ActiveRecord::Base
   end
 
   private 
+    
+    def reset_login_info
+      new_prefix = username_prefix_for self, :teacher
+      u = self.account.username.sub(/^\w+\./, "#{new_prefix}.")
+      e = self.account.email.sub(/^\w+\./, "#{new_prefix}.")
+      self.account.update_attributes(:username => u, :email => e)
+    end
 
     def setup_account 
       self.build_account
