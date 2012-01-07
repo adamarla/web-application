@@ -5,12 +5,10 @@ module ApplicationUtil
     prefix = nil
     workable = false 
 
-=begin
     [:first_name, :last_name, :tag].each do |method|
       workable |= me.respond_to?(method)
     end
-    return nil if not workable
-=end
+    return nil if !workable
 
     case role 
       when :teacher, :admin 
