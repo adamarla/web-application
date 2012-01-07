@@ -203,7 +203,7 @@ window.coreUtil = {
 
     # Change the form's action as per passed URL 
     modifyAction : (formId, url, method = 'post') ->
-      form = $(formId).find 'form:first'
+      form = if typeof formId is 'string' then $(formId).find('form:first') else formId
       if form.length is 1
         form.attr 'action', url
         form.attr 'method', method
