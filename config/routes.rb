@@ -65,6 +65,7 @@ Webapp::Application.routes.draw do
   match 'teachers/roster' => 'teachers#roster', :via => :get 
   match 'teachers/update_roster' => 'teachers#update_roster', :via => :put
   match 'teacher/applicable_macros' => 'teachers#applicable_macros', :via => :get
+  match 'teacher/load' => 'teachers#load', :via => :get
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]

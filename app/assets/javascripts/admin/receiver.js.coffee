@@ -58,7 +58,8 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     switch matched.pop()
       when 'teachers/list'
-        coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher'
+        coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher', {radio:true,button:true}
+        swissKnife.setButtonCaption '#teachers-list', 'edit'
       when 'school/sections'
         coreUtil.interface.displayJson json.sections, '#studygroups-radiolist', 'section'
       when 'yardstick.json'
@@ -123,3 +124,15 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     switch matched.pop()
   ###
+
+  $('#teachers-list').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/teacher\/load/)
+    return if matched is null
+
+    json = $.parseJSON xhr.responseText
+    switch matched.pop()
+      when 'teacher/load'
+        form = $('#edit-teacher > form:first')
+        coreUtil.forms.loadJson form, json.teacher
+        coreUtil.forms.modifyAction form, "/teacher.json?id=#{json.teacher.id}", 'put'
+        $('#edit-teacher').dialog('open')

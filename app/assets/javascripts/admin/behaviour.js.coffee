@@ -107,6 +107,15 @@ jQuery ->
       $(this).val 'back'
 
   ###########################################################################
+  # AJAX requests triggered by other actions 
+  ###########################################################################
+  $('#teachers-list').on 'click', 'input[type="button"]', ->
+    # if the clicked button is within teachers-list, then it must be 
+    # the 'edit' button for the selected teacher 
+    marker = $(this).closest('.swiss-knife').attr('marker')
+    $.get "teacher/load.json?id=#{marker}"
+
+  ###########################################################################
   # AJAX requests to issue when radio-buttons in various panels are clicked
   ###########################################################################
 

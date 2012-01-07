@@ -29,6 +29,10 @@ class TeachersController < ApplicationController
     render :nothing => true, :layout => 'teachers'
   end 
 
+  def load
+    @teacher = Teacher.find params[:id]
+  end
+
   def applicable_macros
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     head :bad_request if teacher.nil?
@@ -43,7 +47,10 @@ class TeachersController < ApplicationController
   end
 
   def update 
-    head :ok 
+    teacher = Teacher.find params[:id]
+    head :bad_request if teacher.nil?
+    status = teacher.update_attributes(params[:teacher]) ? :ok : :bad_request
+    head status 
   end 
 
   def list 
