@@ -54,142 +54,9 @@ resetPanel = (id, moveAlso = true) ->
   putBack me if moveAlso is true
   return true
 
-
-window.refreshView = (link) ->
-  link = if typeof link is 'string' then $(link) else link
-
-  for type in ['side', 'middle', 'right', 'wide']
-    needed = link.attr type
-    target = $("##{type}-panel")
-
-    if link.hasClass('minor-link') and type is 'side'
-      continue if not needed?
-    resetPanel target # if there is any data to be purged, then it should be done before the next step
-    continue if target.find(needed).length isnt 0
-
-    if not needed?
-      $(target).addClass('hidden')
-    else
-      e = buildHierarchy needed
-      $(target).removeClass('hidden')
-      if e isnt null then e.appendTo(target).hide().fadeIn('slow')
-  return true
-
-###
-  Find the selected major or minor link in the #control-panel
-###
-
-window.findLastClickedLink = (type) ->
-  if not type? then return null
-
-  startPt = null
-  switch type
-    when 'minor'
-      startPt = $('#minor-links')
-    when 'major'
-      startPt = $('#main-links')
-
-  if startPt? then return startPt.find 'a[selected]:first' else return null
-
-###
-  Change the form's action as per passed URL 
-###
-
-window.editFormAction = (formId, url, method = 'post') ->
-  form = $(formId).find 'form:first'
-  if form.length is 1
-    form.attr 'action', url
-    form.attr 'method', method
-
-window.loadFormWithJsonData = (form, data) ->
-  ###
-   This function assumes that the JSON data is flat - that is, it has no nesting
-   So, data = { x:a, y:b .. } is fine but data = { x:a, y: {z:d} .. } is not
-   Also, note that in each formtastic form this function is called on, we have
-   added a 'marker' attribute = DB field-name for each input. The input field gets
-   value = data[marker] if it has a marker
-  ###
-  form = if typeof form is 'string' then $(form) else form
-
-  for input in form.find 'input[marker],textarea[marker],select[marker]'
-    marker = $(input).attr 'marker'
-    if marker?
-      value = data[marker]
-      $(input).val value
-      if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', value
-
-window.clearForm = (form) ->
-  form = if typeof form is 'string' then $(form) else form
-  for input in form.find 'input,textarea,select'
-    $(input).val null
-    if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', false
-
-window.uncheckAllCheckBoxesWithin = (element) ->
-  element = if typeof element is 'string' then $(element) else element
-  for checkbox in element.find 'input[type="checkbox"]'
-    $(checkbox).prop 'checked', false
-
-###
-  Parse and then display the returned JSON. The function below assumes - 
-  via swissKnife.forge - that the returned JSON has atleast the following 
-  2 keys : name & id
-###
-
-window.displayJson = (json, where, key, visible = {radio:true}, enable = true) ->
-  # JSON data is always purgeable. And so, it is always inserted within
-  # the first .purgeable of $(where)
-  where = if typeof where is 'string' then $(where) else where
-  target = if where.length isnt 0 then where.children('.purgeable:first') else null
-
-  return if target is null
-  target.empty() # Purge before showing new data
-
-  for record, index in json
-    clone = swissKnife.forge record, key, visible, enable
-    clone.appendTo(target).hide().fadeIn('slow')
-
 ###
   Display inline-error messages 
 ###
-window.displayInlineError = (here, heading, description) ->
-  here = if typeof here is 'string' then $(where) else here
-  clone = $('#toolbox').find('.blueprint.inline-error:first').clone()
-
-  head = clone.children().eq(0)
-  desc = clone.children().eq(1)
-
-  head.text heading
-  desc.text description
-
-  clone.appendTo(here).hide().fadeIn('slow')
-
-
-###
-  The next function will create <options> for any <selects> within the passed 
-  object. The function is agnostic to who, why and how the <select>s were created
-###
-
-window.populateSelectsWithOptions = (obj, selections) ->
-  ###
-    'selections' is of the form { 1:{ 1:<string>, 2:<string> .. }, 2:{ 1:<string> ...} }
-    The outer keys specify which n-th <select> to update
-    The inner-hash specifies the <option>s that need to be set
-    the n-th <select>
-
-    This function sets some limits on the # of <select>s within a hierarchy (10)
-    and the number of options within each <select> (15). I think these should be 
-    enough for most cases
-  ###
-  return if not obj?
-
-  selects = for nth,options of selections
-    select = obj.find('select').eq(nth)
-    break if select.length is 0
-
-    select.prop 'disabled', false
-    choices = for posn,choice of options
-      select.append "<option value=#{posn}>#{choice}</option>"
-  return true
 
 ###
   The list of macro and micro topics is known at the time of HTML rendering - 
@@ -260,8 +127,148 @@ window.coreUtil = {
           macro.appendTo macroU
           micro.appendTo microU
       return true
-  }
-    
-}
+  } # end of namespace 'mnmlists'
+  
+  # Namespace for functions impacting the interface
+  interface : {
+    refreshView : (link) ->
+      link = if typeof link is 'string' then $(link) else link
 
+      for type in ['side', 'middle', 'right', 'wide']
+        needed = link.attr type
+        target = $("##{type}-panel")
+
+        if link.hasClass('minor-link') and type is 'side'
+          continue if not needed?
+        resetPanel target # if there is any data to be purged, then it should be done before the next step
+        continue if target.find(needed).length isnt 0
+
+        if not needed?
+          $(target).addClass('hidden')
+        else
+          e = buildHierarchy needed
+          $(target).removeClass('hidden')
+          if e isnt null then e.appendTo(target).hide().fadeIn('slow')
+      return true
+
+    ###
+      Parse and then display the returned JSON. The function below assumes - 
+      via swissKnife.forge - that the returned JSON has atleast the following 
+      2 keys : name & id
+    ###
+    displayJson : (json, where, key, visible = {radio:true}, enable = true) ->
+      # JSON data is always purgeable. And so, it is always inserted within
+      # the first .purgeable of $(where)
+      where = if typeof where is 'string' then $(where) else where
+      target = if where.length isnt 0 then where.children('.purgeable:first') else null
+
+      return if target is null
+      target.empty() # Purge before showing new data
+
+      for record, index in json
+        clone = swissKnife.forge record, key, visible, enable
+        clone.appendTo(target).hide().fadeIn('slow')
+      return true
+
+    # Find the selected major or minor link in the #control-panel
+    lastClicked : (type) ->
+      if not type? then return null
+      startPt = null
+      switch type
+        when 'minor'
+          startPt = $('#minor-links')
+        when 'major'
+          startPt = $('#main-links')
+      if startPt? then return startPt.find 'a[selected]:first' else return null
+
+  } # end of namespace 'interface'
+
+  # Namespace for functions pertaining to forms 
+  forms : {
+
+    clear : (form) ->
+      form = if typeof form is 'string' then $(form) else form
+      for input in form.find 'input,textarea,select'
+        $(input).val null
+        if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', false
+      return true
+
+    # Change the form's action as per passed URL 
+    modifyAction : (formId, url, method = 'post') ->
+      form = $(formId).find 'form:first'
+      if form.length is 1
+        form.attr 'action', url
+        form.attr 'method', method
+      return true
+
+    loadJson : (form, data) ->
+      ###
+       This function assumes that the JSON data is flat - that is, it has no nesting
+       So, data = { x:a, y:b .. } is fine but data = { x:a, y: {z:d} .. } is not
+       Also, note that in each formtastic form this function is called on, we have
+       added a 'marker' attribute = DB field-name for each input. The input field gets
+       value = data[marker] if it has a marker
+      ###
+      form = if typeof form is 'string' then $(form) else form
+
+      for input in form.find 'input[marker],textarea[marker],select[marker]'
+        marker = $(input).attr 'marker'
+        if marker?
+          value = data[marker]
+          $(input).val value
+          if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', value
+      return true
+  } # end of namespace 'forms'
+
+  dom : {
+    unsetCheckboxesIn : (element) ->
+      element = if typeof element is 'string' then $(element) else element
+      for checkbox in element.find 'input[type="checkbox"]'
+        $(checkbox).prop 'checked', false
+      return true
+
+    ###
+      The next function will create <options> for any <selects> within the passed 
+      object. The function is agnostic to who, why and how the <select>s were created
+    ###
+
+    buildSelectOptions : (obj, selections) ->
+      ###
+        'selections' is of the form { 1:{ 1:<string>, 2:<string> .. }, 2:{ 1:<string> ...} }
+        The outer keys specify which n-th <select> to update
+        The inner-hash specifies the <option>s that need to be set
+        the n-th <select>
+
+        This function sets some limits on the # of <select>s within a hierarchy (10)
+        and the number of options within each <select> (15). I think these should be 
+        enough for most cases
+      ###
+      return if not obj?
+
+      selects = for nth,options of selections
+        select = obj.find('select').eq(nth)
+        break if select.length is 0
+
+        select.prop 'disabled', false
+        choices = for posn,choice of options
+          select.append "<option value=#{posn}>#{choice}</option>"
+      return true
+  } # end of namespace 'dom'
+
+  messaging : {
+    inlineError : (here, heading, description) ->
+      here = if typeof here is 'string' then $(where) else here
+      clone = $('#toolbox').find('.blueprint.inline-error:first').clone()
+
+      head = clone.children().eq(0)
+      desc = clone.children().eq(1)
+
+      head.text heading
+      desc.text description
+
+      clone.appendTo(here).hide().fadeIn('slow')
+      return true
+  } # end of namespace 'messaging'
+
+} # end of namespace 'coreUtil'
 

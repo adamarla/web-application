@@ -117,7 +117,7 @@ jQuery ->
   ###
 
   $('#control-panel').on 'click', '#main-links a, #minor-links a', ->
-    refreshView $(this)
+    coreUtil.interface.refreshView $(this)
 
     ###
       Set 'selected=true' on $(this) whilst setting it to false on all other siblings/cousins
@@ -194,7 +194,7 @@ jQuery ->
     return if form.length is 0
 
     action = form.attr 'action'
-    clearForm form if action is settings.url
+    coreUtil.forms.clear form if action is settings.url
 
   ###
     Update the action attribute of any form inside #side, #middle, #right

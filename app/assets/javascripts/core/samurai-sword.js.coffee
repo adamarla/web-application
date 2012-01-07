@@ -20,7 +20,7 @@ samuraiSelectRow = (sword, json, selects, selections, namespace = 'samurai') ->
     s.attr 'marker', marker
     s.attr 'name', "#{namespace}[#{marker}][#{label}]"
 
-  populateSelectsWithOptions sword, selections
+  coreUtil.dom.buildSelectOptions sword, selections
 
 # Function call : samuraiCheckboxRow e, json, ['mcq', 'multi-part']
 samuraiCheckboxRow = (sword, json, labels = [], namespace = 'samurai') ->

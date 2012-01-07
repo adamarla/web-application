@@ -34,9 +34,9 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     switch matched.pop()
       when 'schools/list'
-        displayJson json.schools, '#schools-summary', 'school'
+        coreUtil.interface.displayJson json.schools, '#schools-summary', 'school'
       when 'courses/list'
-        displayJson json.courses, '#courses-summary', 'course'
+        coreUtil.interface.displayJson json.courses, '#courses-summary', 'course'
       when 'questions/list'
         prepareTBDSlideShow json.questions #TBD = To be done
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
@@ -58,12 +58,12 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     switch matched.pop()
       when 'teachers/list'
-        displayJson json.teachers, '#teachers-list', 'teacher'
+        coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher'
       when 'school/sections'
-        displayJson json.sections, '#studygroups-radiolist', 'section'
+        coreUtil.interface.displayJson json.sections, '#studygroups-radiolist', 'section'
       when 'yardstick.json'
-        uncheckAllCheckBoxesWithin '#edit-yardstick'
-        loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
+        coreUtil.dom.unsetCheckboxesIn '#edit-yardstick'
+        coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick
       when 'course/coverage'
         coreUtil.mnmlists.redistribute json.macros
         coreUtil.mnmlists.customize 'macro'
@@ -100,12 +100,12 @@ jQuery ->
     switch matched.pop()
       when 'teachers/roster'
         here = $('#studygroups-list').children 'form:first'
-        displayJson json.sections, here, 'section', {checkbox:true}
+        coreUtil.interface.displayJson json.sections, here, 'section', {checkbox:true}
       when 'school/unassigned-students', 'study_groups/students'
         here = $('#student-list').children 'form:first'
-        displayJson json.students, here, 'student', {checkbox:true}
+        coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
       when 'school.json'
-        loadFormWithJsonData $('#edit-school').children('form:first'), json.school
+        coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
       when 'macros/list'
         # Customize swiss-knives within microTopics to include just one enabled radio-button
         microTopics = $('#micro-topic-list')
