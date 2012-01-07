@@ -30,30 +30,6 @@ class Student < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
-
-  def generate_username 
-    # Usernames are generated using the first & last names and the time of 
-    # record creation - but with a slight difference depending on what role
-    # the person has 
-    #
-    # For example, below would be the usernames for a person called Richard Feynman
-    #   (if a student) : richardf.XYZ
-    #   (if a teacher) : rfeynman.XYZ
-
-    username = nil 
-    black_list = ['ASS', 'ARSE', 'DICK', 'SEX', 'TIT', 'TITS', 'BOOB']
-
-    unless (self.first_name.blank? || self.last_name.blank?)
-      timestamp = Time.now.seconds_since_midnight.to_i.to_s(36).upcase
-      while black_list.include? timestamp
-        sleep 1 #wait for one second
-        timestamp = Time.now.seconds_since_midnight.to_i.to_s(36).upcase
-      end 
-      username = ((self.first_name + self.last_name[0]).downcase + '.' + timestamp)
-    end 
-    return username 
-  end 
-
   def username?
     self.account.username
   end 

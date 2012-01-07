@@ -35,15 +35,6 @@ class School < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
-  def generate_username 
-    username = nil 
-
-    unless self.tag.nil? 
-      username = "principal.#{tag}"
-    end 
-    return username 
-  end 
-
   def create_study_groups(klasses, sections) 
     # 'klasses' and 'sections' are arrays 
 

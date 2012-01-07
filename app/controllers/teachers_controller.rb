@@ -11,7 +11,7 @@ class TeachersController < ApplicationController
     @teacher.school = school 
 
     # Prepare data for teacher's account
-    username = @teacher.generate_username
+    username = create_username_for @teacher, :teacher 
     email = params[:teacher].delete(:email) || "#{username}@drona.com"
     password = school.zip_code
 

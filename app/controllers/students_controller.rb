@@ -7,7 +7,7 @@ class StudentsController < ApplicationController
     head :bad_request if school.nil?
     
     @student = Student.new params[:student]
-    username = @student.generate_username
+    username = create_username_for @student, :student 
     email = params[:student].delete(:email) || "#{username}@drona.com"
     @student.school = school 
     password = school.zip_code

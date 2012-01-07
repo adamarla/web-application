@@ -4,7 +4,7 @@ class ExaminersController < ApplicationController
 
   def create 
     @examiner = Examiner.new params[:examiner] 
-    username = @examiner.generate_username
+    username = create_username_for @examiner, (@examiner.is_admin ? :admin : :examiner) 
     email = params[:examiner].delete(:email) || "#{username}@drona.com" 
     account = @examiner.build_account :email => email, :username => username, 
                                       :password => "123456", :password_confirmation => "123456"
