@@ -13,3 +13,12 @@ jQuery ->
     Clicking new-quiz-link
   ###
   $('#new-quiz-link').click ->
+    # Append the micro-topic-list inside #micro-select-form > form
+    microTopics = $('#toolbox').children('#micro-topic-list').detach()
+    form = $('#micro-select-form > form:first')
+    microTopics.appendTo form
+    
+    # Customize the swiss-knives within the form 
+    for item in form.find '.swiss-knife'
+      swissKnife.customize $(item), {radio:true}, true
+

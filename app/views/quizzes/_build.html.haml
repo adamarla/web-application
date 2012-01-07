@@ -11,3 +11,10 @@
     
   .search-results.purgeable
   -# List of macro-topics for specified subject, class & board (implicit)
+
+#micro-select-form.full-width.left
+  %legend
+    %span.target= "pick topics"
+    %span.operation= "and the preferred difficulty levels"
+  = form_tag 'quiz/build', :remote => true, :method => :get do |f|
+    = submit_tag 'build'
