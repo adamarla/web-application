@@ -78,10 +78,10 @@ jQuery ->
         coreUtil.mnmlists.customize 'macro'
         coreUtil.mnmlists.customize 'micro'
         
-        target = $('#panel-macro-masterlist')
+        target = $('#macro-tagging-options')
         $('#macro-selected-list').insertAfter target.children('legend').eq(0)
 
-        target = $('#panel-micro-masterlist')
+        target = $('#micro-tagging-options')
         $('#micro-selected-list').insertAfter target.children('legend').eq(0)
 
   ###
