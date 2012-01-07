@@ -65,8 +65,8 @@ jQuery ->
         uncheckAllCheckBoxesWithin '#edit-yardstick'
         loadFormWithJsonData '#edit-yardstick > form:first', json.yardstick
       when 'course/coverage'
-        reallocateMacroMicroAsPer json.macros
-        coreUtil.mnmCustomize 'macro'
+        coreUtil.mnmlists.redistribute json.macros
+        coreUtil.mnmlists.customize 'macro'
 
         target = $('#macro-selection')
         $('#macro-selected-list').insertAfter target.children('legend').eq(0)
@@ -74,9 +74,9 @@ jQuery ->
 
         adminUtil.buildSyllabiEditForm json.macros
       when 'macros/list'
-        reallocateMacroMicroAsPer json.macros
-        coreUtil.mnmCustomize 'macro'
-        coreUtil.mnmCustomize 'micro'
+        coreUtil.mnmlists.redistribute json.macros
+        coreUtil.mnmlists.customize 'macro'
+        coreUtil.mnmlists.customize 'micro'
         
         target = $('#panel-macro-masterlist')
         $('#macro-selected-list').insertAfter target.children('legend').eq(0)

@@ -214,49 +214,53 @@ window.populateSelectsWithOptions = (obj, selections) ->
        and "not applicable" if in=anyting else
 ###
 
-restoreMacroMicroMasterLists = () ->
-  for type in ['macro', 'micro']
-    master = $("##{type}-masterlist") # Eg. macro-masterlist
-    for j in ['selected', 'deselected']
-      source = $("##{type}-#{j}-list") # Eg. micro-selected-list
-      for child in source.children()
-        child = $(child).detach()
-        child.appendTo master
-
-window.reallocateMacroMicroAsPer = (json) ->
-  # First, bring everything back into macro & micro master lists
-  restoreMacroMicroMasterLists()
-  # Now, based on the JSON, sort into selected and deselected lists
-
-  macroS = $('#macro-selected-list')
-  macroU = $('#macro-deselected-list')
-  microS = $('#micro-selected-list')
-  microU = $('#micro-deselected-list')
-
-  for record in json
-    data = record.macro
-    selected = if data.in is true then true else false
-    id = data.id
-
-    macro = $('#macro-masterlist').children("[marker=#{id}]").first().detach()
-    micro = $('#micro-masterlist').children("div[marker=#{id}]").first().detach()
-
-    if selected
-      macro.appendTo macroS
-      micro.appendTo microS
-    else
-      macro.appendTo macroU
-      micro.appendTo microU
-  return true
-
 window.coreUtil = {
-  mnmCustomize : (type = 'macro', visible = {radio:true}) ->
-    for x in ['selected','deselected']
-      target = $("##{type}-#{x}-list") # Eg. #macro-selected-list
-      enable = if x is 'selected' then true else false
 
-      swissKnife.customizeWithin target, visible, enable
+  # Namespace for functions related to macro and micro lists
+  mnmlists : {
+    restore : () ->
+      for type in ['macro', 'micro']
+        master = $("##{type}-masterlist") # Eg. macro-masterlist
+        for j in ['selected', 'deselected']
+          source = $("##{type}-#{j}-list") # Eg. micro-selected-list
+          for child in source.children()
+            child = $(child).detach()
+            child.appendTo master
+      return true
 
+    customize : (type = 'macro', visible = {radio:true}) ->
+      for x in ['selected','deselected']
+        target = $("##{type}-#{x}-list") # Eg. #macro-selected-list
+        enable = if x is 'selected' then true else false
+        swissKnife.customizeWithin target, visible, enable
+      return true
+
+    redistribute : (json) ->
+      # First, bring everything back into macro & micro master lists
+      coreUtil.mnmlists.restore()
+
+      # Now, based on the JSON, sort into selected and deselected lists
+      macroS = $('#macro-selected-list')
+      macroU = $('#macro-deselected-list')
+      microS = $('#micro-selected-list')
+      microU = $('#micro-deselected-list')
+
+      for record in json
+        data = record.macro
+        selected = if data.in is true then true else false
+        id = data.id
+
+        macro = $('#macro-masterlist').children("[marker=#{id}]").first().detach()
+        micro = $('#micro-masterlist').children("div[marker=#{id}]").first().detach()
+
+        if selected
+          macro.appendTo macroS
+          micro.appendTo microS
+        else
+          macro.appendTo macroU
+          micro.appendTo microU
+      return true
+  }
     
 }
 
