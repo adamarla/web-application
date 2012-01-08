@@ -4,11 +4,10 @@ form.formtastic {
 } 
 
 form.formtastic fieldset.inputs p.inline-hints {
-   font-size : 13px ; 
-   /*font-family : Helvetica ;*/
+   font-size : 9px ; 
    text-align : justify ;
-   float : left ; 
-   border-top : 1px solid gray ;
+   float : left ;
+   text-transform : uppercase ;
 } 
 
 form.formtastic fieldset.inputs label.label { 
