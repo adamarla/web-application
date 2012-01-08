@@ -21,6 +21,15 @@ buildHierarchy = (selector) ->
         next.appendTo current
   return start
 
+idInMacroJson = (id, json) ->
+  selected = false
+  for record in json
+    data = record.macro
+    selected = (data.id is id) and (data.in is true)
+    break if selected is true
+  return selected
+  
+
 ###
 When clearing panels, only one of the following 4 can be done to
 the elements within the said panel :
@@ -93,6 +102,22 @@ window.coreUtil = {
       source.appendTo here
       return true
 
+    ###
+    asAccordion : (type = 'selected') -> # type = [selected, deselected]
+      macros = $("#macro-#{type}-list")
+      micros = $("#micro-#{type}-list")
+      accordion = $()
+
+      for macro in macros.children()
+        id = $(macro).attr 'marker'
+        accordion = accordion.add $(macro)
+        $(macro).clone().appendTo accordion
+        micro = micros.children("[marker=#{id}]").first().clone()
+        micro.appendTo accordion
+        alert accordion.html()
+      return accordion
+    ###
+
     restore : () ->
       for type in ['macro', 'micro']
         master = $("##{type}-masterlist") # Eg. macro-masterlist
@@ -120,21 +145,19 @@ window.coreUtil = {
       microS = $('#micro-selected-list')
       microU = $('#micro-deselected-list')
 
-      for record in json
-        data = record.macro
-        selected = if data.in is true then true else false
-        id = data.id
-
-        macro = $('#macro-masterlist').children("[marker=#{id}]").first().detach()
-        micro = $('#micro-masterlist').children("div[marker=#{id}]").first().detach()
+      for macro in $('#macro-masterlist').children()
+        id = $(macro).attr 'marker'
+        selected = idInMacroJson parseInt(id), json
+        micro = $('#micro-masterlist').children("[marker=#{id}]").first()
 
         if selected
-          macro.appendTo macroS
-          micro.appendTo microS
+          macroS.append $(macro).detach()
+          microS.append micro.detach()
         else
-          macro.appendTo macroU
-          micro.appendTo microU
+          macroU.append $(macro).detach()
+          microU.append micro.detach()
       return true
+
   } # end of namespace 'mnmlists'
   
   # Namespace for functions impacting the interface
