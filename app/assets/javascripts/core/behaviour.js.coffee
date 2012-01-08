@@ -197,6 +197,19 @@ jQuery ->
     coreUtil.forms.clear form if action is settings.url
 
   ###
+    If a <form> has or requires multiple submit buttons, then house each 
+    submit button within a .submit-buttons
+    
+    Now, in order to differentiate which submit was clicked, set an 
+    attribute on the clicked button whilst removing it from all its 
+    siblings within .submit-buttons
+  ###
+  $('.submit-buttons input[type="submit"]').click ->
+    $(this).attr 'clicked', true
+    for others in $(this).siblings('input[type="submit"]')
+      $(others).attr 'clicked', false
+
+  ###
     Update the action attribute of any form inside #side, #middle, #right
     or #wide panels with the 'marker' attribute on the panel
 
@@ -205,9 +218,11 @@ jQuery ->
     action attribute to 'schools/update.json?id=2' (yes, we do all submission
     through AJAX)
 
-    With this scheme, we can write most of the actiob attribute as we know
-    it when we write the view file and be assured that the action attribute
-    would be tweaked - as needed - just before submission
+    With this scheme, we can write most of the action attributes as we know
+    them when we write the view files and be assured that the action attributes
+    would be tweaked - as needed - just before submission. However, if the 
+    default behaviour is not what one needs, then it can be overridden in the
+    role specific JS files
   ###
 
   $('.panel:not([id="control-panel"])').on 'submit', 'form', ->
