@@ -115,8 +115,11 @@ module ApplicationHelper
                    end 
     end # submitted by params as : criterion => {:state => "MH", :difficulty => "2"}
 
-    class_attr = options[:float].nil? ? 'left dropdown' : 
-                      (options[:float] == :right ? 'right dropdown' : 'left dropdown')
+    case options[:float]
+      when :right then class_attr = 'right dropdown'
+      when :none then class_attr = 'dropdown'
+      else class_attr = 'left dropdown'
+    end
 
     if options[:id].nil? 
       content_tag(:div, select_box, :id => "#{singular}-dropdown", 
