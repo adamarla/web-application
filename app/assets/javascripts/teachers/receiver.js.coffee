@@ -11,7 +11,7 @@ jQuery ->
     $(this).find('.inline-error').remove()
     switch matched.pop()
       when 'teacher/coverage'
-        here = $('#macro-search-form').find '.search-results:first'
+        here = $('#quiz-builder-form').find '.search-results:first'
         here.empty()
 
         coreUtil.mnmlists.redistribute json.macros
@@ -33,5 +33,5 @@ jQuery ->
 
     switch matched.pop()
       when 'teacher/coverage'
-        here = $('#macro-search-form')
+        here = $('#quiz-builder-form')
         coreUtil.messaging.inlineError here, 'we apologize ...', "the requisite course isn't currently present in our database"
