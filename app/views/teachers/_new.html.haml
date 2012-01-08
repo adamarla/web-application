@@ -5,9 +5,10 @@
     %span.operation= "Quick Add"
   = semantic_form_for :teacher, :remote => true, :url => teacher_path do |f|
     = f.inputs :name => :mandatory do 
-      = f.input :first_name, :label => 'First Name'
-      = f.input :last_name, :label => 'Surname'
-      = f.input :subjects, :as => :select, :collection => Subject.all, :include_blank => false, :multiple => true
+      = f.input :first_name
+      = f.input :last_name
+      = f.input :subjects, :label => 'teaches?', :as => :select, 
+                :collection => Subject.all, :include_blank => false, :multiple => true
 
     .submit-buttons
       %input{:type => :submit, :role => :button, :value => "Create", :name => "commit"}

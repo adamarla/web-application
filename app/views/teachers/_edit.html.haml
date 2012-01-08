@@ -4,7 +4,7 @@
     = f.inputs do
       = f.input :first_name, :input_html => { :marker => :first_name }
       = f.input :last_name, :input_html => { :marker => :last_name }
-      = f.input :subject_ids, :label => 'subjects', :as => :select, 
+      = f.input :subject_ids, :label => 'teaches?', :as => :select, 
                 :collection => Subject.all, :multiple => true, :input_html => { :marker => :subject_ids }
     .submit-buttons
       %input{:type => :submit, :role => :button, :value => "update", :name => "commit"}
