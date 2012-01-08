@@ -102,21 +102,25 @@ window.coreUtil = {
       source.appendTo here
       return true
 
-    ###
     asAccordion : (type = 'selected') -> # type = [selected, deselected]
       macros = $("#macro-#{type}-list")
       micros = $("#micro-#{type}-list")
-      accordion = $()
+      accordion = $('<div class="as-accordion" />')
 
       for macro in macros.children()
         id = $(macro).attr 'marker'
-        accordion = accordion.add $(macro)
-        $(macro).clone().appendTo accordion
-        micro = micros.children("[marker=#{id}]").first().clone()
-        micro.appendTo accordion
-        alert accordion.html()
+
+        header = $(macro).clone()
+        header.addClass 'accordion-heading'
+
+        content = micros.children("[marker=#{id}]:first").clone()
+        content.removeClass 'hidden'
+        content.addClass 'accordion-content'
+
+        header.appendTo accordion
+        content.appendTo accordion
+
       return accordion
-    ###
 
     restore : () ->
       for type in ['macro', 'micro']
