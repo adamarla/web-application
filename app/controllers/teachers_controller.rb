@@ -33,7 +33,10 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id]
   end
 
-  def applicable_macros
+  def coverage
+    # Returns the list of macro-topics covered by the teacher for the passed
+    # (class, subject, board) combo
+
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     head :bad_request if teacher.nil?
 
