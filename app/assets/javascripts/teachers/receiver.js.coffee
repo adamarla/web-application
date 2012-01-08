@@ -2,7 +2,7 @@
 jQuery ->
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/teacher\/applicable_macros/)
+    matched = settings.url.match(/teacher\/coverage/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -10,7 +10,7 @@ jQuery ->
     # by now that you're going to be updating this panel
     $(this).find('.inline-error').remove()
     switch matched.pop()
-      when 'teacher/applicable_macros'
+      when 'teacher/coverage'
         here = $('#macro-search-form').find '.search-results:first'
         here.empty()
 
@@ -23,7 +23,7 @@ jQuery ->
         results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
 
   .ajaxError (e,xhr,settings) ->
-    matched = settings.url.match(/teacher\/applicable_macros/)
+    matched = settings.url.match(/teacher\/coverage/)
     return if matched is null
 
     # Remove any prior error messages and search-results - unconditionally. 
@@ -32,6 +32,6 @@ jQuery ->
     $(this).find('.inline-error').remove()
 
     switch matched.pop()
-      when 'teacher/applicable_macros'
+      when 'teacher/coverage'
         here = $('#macro-search-form')
         coreUtil.messaging.inlineError here, 'we apologize ...', "the requisite course isn't currently present in our database"
