@@ -47,6 +47,9 @@ Webapp::Application.routes.draw do
   match 'questions/list' => 'question#list', :via => :get
   match 'questions/tag' => 'question#mass_update', :via => :put
 
+  # Quiz
+  match 'quiz/candidate_questions' => 'quizzes#get_candidates', :via => :get
+
   # Student 
   resource :student, :only => [:create, :update]
 

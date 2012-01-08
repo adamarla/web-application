@@ -7,8 +7,11 @@
     = form_tag '#', :remote => true, :method => :get, 
       :marker => "#{current_account.loggable_id}", :board_id => "#{current_account.loggable.school.board_id}" do |f|
       .search-parameters.full-width
-        = drop_down_menu_for :subjects, :include_blank => false
-        = drop_down_menu_for :klasses, :include_blank => false
-        = submit_tag 'submit', :class => 'no-style right'
+        .search-inputs.full-width
+          = drop_down_menu_for :subjects, :include_blank => false
+          = drop_down_menu_for :klasses, :include_blank => false
+        .submit-buttons.full-width
+          = submit_tag 'show candidates', :id => 'btn-candidate-questions', :class => 'no-style right'
+          = submit_tag 'search', :id => 'btn-teacher-coverage', :class => 'no-style left'
       .search-results.purgeable
         -# an accordion is added here on-the-fly by jQuery

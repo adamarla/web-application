@@ -30,12 +30,12 @@ fieldset.inputs li.boolean.input {
   font-weight : bold ;
 } 
 
-.search-form { 
+.search-form, .search-parameters, .search-results { 
   min-height : 50px ;
 } 
 
-.search-parameters, .search-results {
-  min-height : 50px ;
+.search-inputs, .submit-buttons {
+  min-height : 25px ;
 }
 
 .inline-error > .heading {
@@ -90,7 +90,7 @@ fieldset.inputs li.boolean.input {
   color : #fd9105 ;
 } 
 
-.panel:not([id="control-panel"]) form input[type="submit"] {
+.panel:not([id="control-panel"][class="no-style"]) form input[type="submit"] {
   margin-bottom : 15px ;
 }
 
