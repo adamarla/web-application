@@ -11,13 +11,17 @@ jQuery ->
     $(this).find('.inline-error').remove()
     switch matched.pop()
       when 'teacher/applicable_macros'
-        here = $('#macro-search-form')
+        here = $('#macro-search-form').find '.search-results:first'
+        here.empty()
 
         coreUtil.mnmlists.redistribute json.macros
-        coreUtil.mnmlists.customize 'macro', {radio:true}
-        coreUtil.mnmlists.customize 'micro', {select:true}
-        coreUtil.mnmlists.attach 'macro', here
-        coreUtil.mnmlists.attach 'micro', $('#micro-select-form > form:first')
+        coreUtil.mnmlists.customize 'macro', {}
+        coreUtil.mnmlists.customize 'micro', {checkbox:true}
+
+        results = coreUtil.mnmlists.asAccordion 'selected'
+        results.appendTo here
+        results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+
   .ajaxError (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/applicable_macros/)
     return if matched is null

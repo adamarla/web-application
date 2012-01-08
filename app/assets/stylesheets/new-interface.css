@@ -34,6 +34,10 @@ fieldset.inputs li.boolean.input {
   min-height : 50px ;
 } 
 
+.search-parameters, .search-results {
+  min-height : 50px ;
+}
+
 .inline-error > .heading {
   font-size : 14px ;
   color : #fd9105 ; 
@@ -132,11 +136,16 @@ fieldset.inputs li.boolean.input {
   margin-right : 8px ;
 } 
 
-.swiss-knife { 
+.swiss-knife { /* stand-alone */ 
   min-height : 25px ;
   border-bottom : 1px solid #6ca7ab ;
   padding-top : 3px ;
 } 
+
+.as-accordion .swiss-knife { /* when within an accordion */
+  min-height : 17px ;
+  border : none ;
+}
 
 .swiss-knife > .label {
   margin-left : 5px ;
@@ -225,7 +234,7 @@ legend > a {
   margin-left : 17px ;
 } 
 
-.samurai-armory .accordion-heading {
+.samurai-armory .accordion-heading, .as-accordion .accordion-heading {
   border : none ;
   border-bottom : 1px solid #6ca7ab ;
   font-size : 13px ;
@@ -238,7 +247,7 @@ legend > a {
   text-transform : lowercase ;
 }
 
-.samurai-armory .accordion-content { 
+.samurai-armory .accordion-content, .as-accordion .accordion-content { 
   font-size : 12px ;
   border : none ;
   border-bottom : 1px solid #6ca7ab ;
