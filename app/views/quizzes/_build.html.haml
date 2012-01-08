@@ -1,20 +1,13 @@
 
 #macro-search-form.full-width.left
   %legend
-    %span.target= "for whom?"
-    %span.operation= "choose subject & class"
+    %span.target= "start here"
+    %span.operation= "choose subject, class & then the topics" 
   .search-form
     = form_tag 'teacher/applicable_macros', :remote => true, :method => :get do |f|
-      = drop_down_menu_for :subjects, :include_blank => false
-      = drop_down_menu_for :klasses, :include_blank => false
-      = submit_tag 'submit', :class => 'no-style right'
-    
-  .search-results.purgeable
-  -# List of macro-topics for specified subject, class & board (implicit)
-
-#micro-select-form.full-width.left
-  %legend
-    %span.target= "pick topics"
-    %span.operation= "and the preferred difficulty levels"
-  = form_tag 'quiz/build', :remote => true, :method => :get do |f|
-    = submit_tag 'build'
+      .search-parameters.full-width
+        = drop_down_menu_for :subjects, :include_blank => false
+        = drop_down_menu_for :klasses, :include_blank => false
+        = submit_tag 'submit', :class => 'no-style right'
+      .search-results.purgeable
+        -# an accordion is added here on-the-fly by jQuery
