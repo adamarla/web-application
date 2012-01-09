@@ -25,8 +25,6 @@ class Quiz < ActiveRecord::Base
 
   validates :teacher_id, :presence => true, :numericality => true
 
-  after_create :set_uid
-
   def prepare_for(students)
     # students : an array of selected students from the DB
   end 
