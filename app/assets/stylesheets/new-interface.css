@@ -31,10 +31,10 @@ fieldset.inputs li.boolean.input {
 } 
 
 .search-form, .search-parameters, .search-results { 
-  min-height : 50px ;
+  min-height : 80px ;
 } 
 
-.search-inputs, .submit-buttons {
+.search-inputs {
   min-height : 25px ;
 }
 
