@@ -11,8 +11,8 @@
           = drop_down_menu_for :subjects, :include_blank => false
           = drop_down_menu_for :klasses, :include_blank => false
         .submit-buttons.right
-          = submit_tag 'search', :id => 'btn-teacher-coverage', :class => 'no-style'
-          = submit_tag 'show ', :id => 'btn-candidate-questions', :class => 'no-style'
-          = submit_tag 'preview', :id => 'btn-quiz-preview', :class => 'no-style'
+          = submit_tag 'view topics', :id => 'btn-teacher-coverage', :class => 'no-style'
+          = submit_tag 'get choices', :id => 'btn-candidate-questions', :class => 'no-style'
+          = submit_tag 'build quiz', :id => 'btn-quiz-preview', :class => 'no-style'
       .search-results.purgeable
         -# an accordion is added here on-the-fly by jQuery
