@@ -6,7 +6,8 @@ window.selection = {
     selection.list = []
 
   add : (id) ->
-    selection.list.push id
+    at = selection.list.indexOf(id)
+    if at is -1 then selection.list.push id
 
   remove : (id) ->
     at = selection.list.indexOf(id)
