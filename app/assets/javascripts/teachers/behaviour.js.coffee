@@ -30,3 +30,19 @@ jQuery ->
       else return false
     return true
 
+  ########################################################
+  #  Key-press event processing. Best to attach to $(document)
+  # so that event is always caught, even when focus in NOT 
+  # on #document-preview
+  ########################################################
+
+  $(document).keypress (event) ->
+    # No point in processing key-events if #document-preview is not being seen
+    return if $('#document-preview').hasClass 'hidden' 
+    switch event.which
+      when 115 # 'S' pressed => select
+        selection.add preview.currDBId()
+      when 100 # 'D' pressed => deselect 
+        selection.remove preview.currDBId()
+    return true
+
