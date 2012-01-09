@@ -6,8 +6,6 @@
 #  teacher_id    :integer
 #  created_at    :datetime
 #  updated_at    :datetime
-#  uid           :string(255)
-#  num_students  :integer
 #  num_questions :integer
 #
 
