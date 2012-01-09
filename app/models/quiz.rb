@@ -18,6 +18,8 @@
 
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
+
+  has_many :q_selections
   has_many :questions, :through => :q_selections
 
   has_many :graded_responses

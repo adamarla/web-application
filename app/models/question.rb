@@ -52,6 +52,8 @@ class Question < ActiveRecord::Base
   belongs_to :examiner
   belongs_to :micro_topic
   belongs_to :teacher # non-nil if question came from a teacher
+
+  has_many :q_selections
   has_many :quizzes, :through => :q_selections
   has_many :graded_responses
 
