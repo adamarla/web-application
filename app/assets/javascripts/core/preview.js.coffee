@@ -35,4 +35,11 @@ jQuery ->
       if ppy.length is 0
         $('#document-preview').popeye()
       return true
+
+    # Returns the index of the currently displayed image, starting with 0
+    currIndex : () ->
+      return null if $('#document-preview').hasClass 'hidden'
+      counter = $('#document-preview').find '.ppy-counter:first'
+      return parseInt(counter.text()) - 1
+
   }
