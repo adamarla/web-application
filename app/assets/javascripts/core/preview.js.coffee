@@ -42,4 +42,12 @@ jQuery ->
       counter = $('#document-preview').find '.ppy-counter:first'
       return parseInt(counter.text()) - 1
 
+    # Returns the DB Id of the question being viewed currently 
+    currDBId : () ->
+      index = preview.currIndex()
+      return null if index is null
+      start = $('#document-preview').find '.ppy-imglist:first'
+      current = start.children('li').eq(index)
+      return current.attr 'marker'
+
   }
