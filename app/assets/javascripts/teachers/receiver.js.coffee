@@ -1,6 +1,10 @@
 
 jQuery ->
 
+  ########################################################
+  #  SIDE PANEL
+  ########################################################
+
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/coverage/)
     return if matched is null
@@ -35,3 +39,16 @@ jQuery ->
       when 'teacher/coverage'
         here = $('#quiz-builder-form')
         coreUtil.messaging.inlineError here, 'we apologize ...', "the requisite course isn't currently present in our database"
+
+  ########################################################
+  #  WIDE PANEL
+  ########################################################
+
+  $('#wide-panel').ajaxSuccess (e, xhr, settings) ->
+    matched = settings.url.match(/quiz\/candidate_questions/)
+    return if matched is null
+
+    json = $.parseJSON xhr.responseText
+    switch matched.pop()
+      when 'quiz/candidate_questions'
+        preview.loadJson json.candidates, 'candidate'
