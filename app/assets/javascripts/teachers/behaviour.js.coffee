@@ -31,8 +31,15 @@ jQuery ->
     return true
 
   $('#btn-build-quiz').click ->
-    teacher = $('#quiz-builder-form form:first').attr 'marker'
-    $.post '/quiz.json', {'selected' : selection.list, 'id' : teacher}
+    # 1. Collect information about the teacher, subject and klass from
+    #    the <form> within which this button is
+    form = $('#quiz-builder-form form:first')
+    teacher = form.attr 'marker'
+    subject = form.find('#subject-dropdown option:selected:first').text()
+    klass = form.find('#klass-dropdown option:selected:first').text()
+
+    # 2. Then, POST the above collected data with the question selection
+    $.post '/quiz.json', {'selected' : selection.list, 'id' : teacher, 'klass' : klass, 'subject' : subject}
 
   ########################################################
   #  Key-press event processing. Best to attach to $(document)
@@ -42,7 +49,7 @@ jQuery ->
 
   $(document).keypress (event) ->
     # No point in processing key-events if #document-preview is not being seen
-    return if $('#document-preview').hasClass 'hidden' 
+    return if $('#document-preview').hasClass 'hidden'
     switch event.which
       when 115 # 'S' pressed => select
         selection.add preview.currDBId()

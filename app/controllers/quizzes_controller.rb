@@ -10,7 +10,10 @@ class QuizzesController < ApplicationController
     selected.each_with_index do |q, index|
       selected[index] = q.to_i
     end
+
     @quiz = Quiz.new :teacher_id => teacher.id, :question_ids => selected, :num_questions => selected.count
+    @quiz.set_name params[:klass], params[:subject]
+
     status = @quiz.save ? :ok : :bad_request
     head status
   end 
