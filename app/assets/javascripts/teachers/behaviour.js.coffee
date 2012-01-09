@@ -30,6 +30,10 @@ jQuery ->
       else return false
     return true
 
+  $('#btn-build-quiz').click ->
+    teacher = $('#quiz-builder-form form:first').attr 'marker'
+    $.post '/quiz.json', {'selected' : selection.list, 'id' : teacher}
+
   ########################################################
   #  Key-press event processing. Best to attach to $(document)
   # so that event is always caught, even when focus in NOT 

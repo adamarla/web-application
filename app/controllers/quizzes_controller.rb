@@ -2,6 +2,19 @@ class QuizzesController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json
 
+  def create
+    # teachers/behaviour.js.coffee is where this POST request was structured
+    teacher = Teacher.find params[:id]
+    selected = params[:selected]
+
+    selected.each_with_index do |q, index|
+      selected[index] = q.to_i
+    end
+    @quiz = Quiz.new :teacher_id => teacher.id, :question_ids => selected, :num_questions => selected.count
+    status = @quiz.save ? :ok : :bad_request
+    head status
+  end 
+
   def get_candidates
     board = params[:board_id]
     klass = params[:criterion][:klass]
