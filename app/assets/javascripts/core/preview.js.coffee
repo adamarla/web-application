@@ -22,7 +22,7 @@ jQuery ->
         full = "#{baseUrl}/#{relPath}/#{folder}-answer.jpeg"
         thumb = "#{baseUrl}/#{relPath}/#{folder}-thumb.jpeg"
 
-        preview = $("<li><a href=#{full}><img src=#{thumb} alt=#{folder}/></a></li>")
+        preview = $("<li marker=#{data.id}><a href=#{full}><img src=#{thumb} alt=#{folder}/></a></li>")
         preview.appendTo target
 
       ###
