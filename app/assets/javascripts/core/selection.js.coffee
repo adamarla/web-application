@@ -9,7 +9,7 @@ window.selection = {
     selection.list.push id
 
   remove : (id) ->
-    at = list.indexOf(id)
+    at = selection.list.indexOf(id)
     return if at is -1
-    list.splice(at, 1)
+    selection.list.splice(at, 1)
 }
