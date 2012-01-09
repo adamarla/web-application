@@ -38,7 +38,7 @@ jQuery ->
       when 'courses/list'
         coreUtil.interface.displayJson json.courses, '#courses-summary', 'course'
       when 'questions/list'
-        prepareTBDSlideShow json.questions #TBD = To be done
+        preview.loadJson json.questions
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
         samuraiLineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
         ['mcq', 'multi_correct'], ['difficulty'], [], selections

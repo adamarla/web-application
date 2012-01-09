@@ -7,12 +7,6 @@ jQuery ->
   $('#tbd-preview-button').button()
 
   ###
-    Call Popeye on #document-preview. The internals will be filled in 
-    later if and when the examiner clicks on #tbd-summary-link
-  ###
-  $('#document-preview').popeye()
-
-  ###
     #new-examiner-link
   ###
 
