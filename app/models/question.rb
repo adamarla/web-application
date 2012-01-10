@@ -15,6 +15,8 @@
 #  multi_part     :boolean         default(FALSE)
 #  num_parts      :integer
 #  difficulty     :integer         default(1)
+#  half_page      :boolean         default(FALSE)
+#  full_page      :boolean         default(TRUE)
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__

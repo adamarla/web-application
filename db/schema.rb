@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120109183503) do
+ActiveRecord::Schema.define(:version => 20120110030634) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -130,6 +130,8 @@ ActiveRecord::Schema.define(:version => 20120109183503) do
     t.boolean  "multi_part",     :default => false
     t.integer  "num_parts"
     t.integer  "difficulty",     :default => 1
+    t.boolean  "half_page",      :default => false
+    t.boolean  "full_page",      :default => true
   end
 
   create_table "quizzes", :force => true do |t|

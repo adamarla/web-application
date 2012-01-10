@@ -15,6 +15,8 @@
 #  multi_part     :boolean         default(FALSE)
 #  num_parts      :integer
 #  difficulty     :integer         default(1)
+#  half_page      :boolean         default(FALSE)
+#  full_page      :boolean         default(TRUE)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
