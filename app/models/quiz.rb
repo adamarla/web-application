@@ -29,6 +29,8 @@ class Quiz < ActiveRecord::Base
   validates :teacher_id, :presence => true, :numericality => true
   validates :name, :presence => true
 
+  after_create :lay_it_out
+
   def prepare_for(students)
     # students : an array of selected students from the DB
   end 
@@ -42,5 +44,23 @@ class Quiz < ActiveRecord::Base
     timestamp = "(#{Date.today.strftime '%b %d, %Y'})"
     self.name = "#{subject[0]}#{klass} #{timestamp}"
   end 
+
+  def lay_it_out
+    questions = Question.where(:id => self.question_ids).order(:mcq).order(:half_page).order(:full_page)
+    page = 1
+    score = 0
+
+    questions.each do |q|
+      score += (q.mcq ? 0.25 : (q.half_page ? 0.5 : 1))
+      if score > 1
+        page += 1
+        score = 0
+      end
+      selection = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
+      selection.update_attribute :page, page
+    end
+
+
+  end
 
 end
