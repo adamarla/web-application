@@ -87,6 +87,7 @@ class Question < ActiveRecord::Base
     # And if half-page is true, then full-page is false
     self.half_page &= !self.mcq
     self.full_page &= !self.half_page
+    return true # return true lest the results of last operation abort the save 
   end
 
 end
