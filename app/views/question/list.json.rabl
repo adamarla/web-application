@@ -1,4 +1,5 @@
 
 collection @questions => :questions
-  attributes :id, :mcq, :multi_correct, :difficulty
+  attributes :id, :mcq, :difficulty
+  attributes :half_page, :full_page
   attribute :path => :name

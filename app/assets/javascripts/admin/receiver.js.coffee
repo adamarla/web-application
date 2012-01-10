@@ -40,8 +40,9 @@ jQuery ->
       when 'questions/list'
         preview.loadJson json.questions
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
+
         samuraiLineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
-        ['mcq', 'multi_correct'], ['difficulty'], [], selections
+        ['mcq', 'half_page', 'full_page'], ['difficulty'], [], selections
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
