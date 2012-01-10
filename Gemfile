@@ -30,6 +30,7 @@ gem 'jquery-rails'
 gem 'therubyracer'
 
 gem 'rabl'
+gem 'savon'
 
 # Use unicorn as the web server
 # gem 'unicorn'
