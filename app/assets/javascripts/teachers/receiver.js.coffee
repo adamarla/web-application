@@ -28,7 +28,7 @@ jQuery ->
         results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
       when 'quizzes/list'
         here = $('#quizzes-summary')
-        coreUtil.interface.displayJson json.quizzes, here, 'quiz', {button:true}
+        coreUtil.interface.displayJson json.quizzes, here, 'quiz', {radio:true, button:true}
         swissKnife.setButtonCaption here, 'preview'
 
   .ajaxError (e,xhr,settings) ->
@@ -44,6 +44,23 @@ jQuery ->
       when 'teacher/coverage'
         here = $('#quiz-builder-form')
         coreUtil.messaging.inlineError here, 'we apologize ...', "the requisite course isn't currently present in our database"
+
+  ########################################################
+  #  MIDDLE PANEL
+  ########################################################
+
+  $('#middle-panel').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/teachers\/roster/)
+    return if matched is null
+
+    json = $.parseJSON xhr.responseText
+    switch matched.pop()
+      when 'teachers/roster'
+        here = $('#teacher-roster')
+        coreUtil.interface.displayJson json.sections, here, 'section', {radio:true}
+
+    return true
+
 
   ########################################################
   #  WIDE PANEL

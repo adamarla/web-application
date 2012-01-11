@@ -51,6 +51,11 @@ jQuery ->
     $.get "quiz/preview.json?id=#{id}"
     return true
 
+  $('#assign-quiz-link').click ->
+    teacher = $('#control-panel').attr 'marker'
+    $.get "teachers/roster.json?id=#{teacher}"
+    return true
+
 
   ########################################################
   #  Key-press event processing. Best to attach to $(document)
