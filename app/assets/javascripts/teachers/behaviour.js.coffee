@@ -49,7 +49,6 @@ jQuery ->
   $('#quizzes-summary').on 'click', 'input[type="button"]', ->
     id = $(this).parent().attr 'marker'
     return if id is null
-    alert id
     $.get "quiz/preview.json?id=#{id}"
     return true
 
