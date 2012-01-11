@@ -101,7 +101,7 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     switch matched.pop()
       when 'teachers/roster'
-        here = $('#studygroups-list').children 'form:first'
+        here = $('#edit-student-klass-mapping').children 'form:first'
         coreUtil.interface.displayJson json.sections, here, 'section', {checkbox:true}
       when 'school/unassigned-students', 'study_groups/students'
         here = $('#student-list').children 'form:first'
