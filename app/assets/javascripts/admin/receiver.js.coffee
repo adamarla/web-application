@@ -41,7 +41,7 @@ jQuery ->
         preview.loadJson json.questions
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
 
-        samuraiLineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
+        katana.lineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
         ['mcq', 'half_page', 'full_page'], ['difficulty'], [], selections
 
   ###
