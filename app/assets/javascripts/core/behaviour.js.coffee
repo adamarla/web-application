@@ -170,7 +170,7 @@ jQuery ->
         panel.attr 'marker', marker
 
         if panelId is 'side-panel' or panelId is 'middle-panel'
-          for sibling in $(panel).siblings '.panel'
+          for sibling in $(panel).siblings '.panel:not([id="control-panel"])'
             continue if panelId is 'middle-panel' and $(sibling).attr('id') isnt 'right-panel'
             $(sibling).attr 'marker', marker
 
