@@ -6,7 +6,8 @@ jQuery ->
   ########################################################
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/teacher\/coverage/)
+    matched = settings.url.match(/teacher\/coverage/) or
+              settings.url.match(/quizzes\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -25,6 +26,10 @@ jQuery ->
         results = coreUtil.mnmlists.asAccordion 'selected'
         results.appendTo here
         results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+      when 'quizzes/list'
+        here = $('#quizzes-summary')
+        coreUtil.interface.displayJson json.quizzes, here, 'quiz', {button:true}
+        swissKnife.setButtonCaption here, 'preview'
 
   .ajaxError (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/coverage/)

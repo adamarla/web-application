@@ -36,4 +36,9 @@ class QuizzesController < ApplicationController
     respond_with @questions
   end
 
+  def list
+    teacher = Teacher.find params[:id]
+    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id)
+  end
+
 end

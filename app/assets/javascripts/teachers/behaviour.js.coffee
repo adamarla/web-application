@@ -41,6 +41,10 @@ jQuery ->
     # 2. Then, POST the above collected data with the question selection
     $.post '/quiz.json', {'selected' : selection.list, 'id' : teacher, 'klass' : klass, 'subject' : subject}
 
+  $('#quizzes-link').click ->
+    teacher = $('#control-panel').attr 'marker'
+    $.get "quizzes/list.json?id=#{teacher}"
+
   ########################################################
   #  Key-press event processing. Best to attach to $(document)
   # so that event is always caught, even when focus in NOT 
