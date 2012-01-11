@@ -41,4 +41,9 @@ class QuizzesController < ApplicationController
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id)
   end
 
+  def preview
+    quiz = Quiz.find params[:id]
+    @questions = quiz.nil? ? [] : quiz.questions
+  end
+
 end

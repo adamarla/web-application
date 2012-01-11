@@ -50,10 +50,13 @@ jQuery ->
   ########################################################
 
   $('#wide-panel').ajaxSuccess (e, xhr, settings) ->
-    matched = settings.url.match(/quiz\/candidate_questions/)
+    matched = settings.url.match(/quiz\/candidate_questions/) or
+              settings.url.match(/quiz\/preview/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
     switch matched.pop()
       when 'quiz/candidate_questions'
         preview.loadJson json.candidates, 'candidate'
+      when 'quiz/preview'
+        preview.loadJson json.questions, 'question'
