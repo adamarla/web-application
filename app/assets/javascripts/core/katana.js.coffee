@@ -1,13 +1,13 @@
 
 # Function call : samuraiSetHeading e, 'click me to expand' 
 samuraiSetHeading = (sword, label) ->
-  return if not sword.hasClass 'samurai-sword'
+  return if not sword.hasClass 'katana'
   header = sword.children().first() # will be an .accordion-heading 
   title = header.children().first()
   title.text label
 
 samuraiSelectRow = (sword, json, selects, selections, namespace = 'samurai') ->
-  return if not sword.hasClass 'samurai-sword'
+  return if not sword.hasClass 'katana'
   marker = json.id
 
   for label, index in selects
@@ -24,7 +24,7 @@ samuraiSelectRow = (sword, json, selects, selections, namespace = 'samurai') ->
 
 # Function call : samuraiCheckboxRow e, json, ['mcq', 'multi-part']
 samuraiCheckboxRow = (sword, json, labels = [], namespace = 'samurai') ->
-  return if not sword.hasClass 'samurai-sword'
+  return if not sword.hasClass 'katana'
   marker = json.id
 
   for label,index in labels
@@ -46,7 +46,7 @@ samuraiCheckboxRow = (sword, json, labels = [], namespace = 'samurai') ->
   return true
 
 samuraiButtonRow = (sword, json, buttons = []) ->
-  return if not sword.hasClass 'samurai-sword'
+  return if not sword.hasClass 'katana'
   marker = json.id
 
   for b,index in buttons
@@ -68,7 +68,7 @@ window.samuraiLineUp = (where, json, key, checks = [], selects = [], buttons = [
 
   for record in json
     data = record[key]
-    sword = $('#toolbox').children('.blueprint.samurai-sword:first').clone()
+    sword = $('#toolbox').children('.blueprint.katana:first').clone()
 
     samuraiSetHeading sword, data.name
     samuraiCheckboxRow sword, data, checks, namespace
