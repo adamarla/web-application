@@ -37,7 +37,7 @@ class QuizzesController < ApplicationController
   end
 
   def list
-    teacher = Teacher.find params[:id]
+    teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id)
   end
 

@@ -42,8 +42,7 @@ jQuery ->
     $.post '/quiz.json', {'selected' : selection.list, 'id' : teacher, 'klass' : klass, 'subject' : subject}
 
   $('#quizzes-link').click ->
-    teacher = $('#control-panel').attr 'marker'
-    $.get "quizzes/list.json?id=#{teacher}"
+    $.get 'quizzes/list.json'
     return true
 
   $('#quizzes-summary').on 'click', 'input[type="button"]', ->
