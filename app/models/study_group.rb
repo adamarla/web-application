@@ -23,7 +23,7 @@ class StudyGroup < ActiveRecord::Base
   has_many :teachers, :through => :faculty_rosters
 
   def name 
-    self.klass.to_s + '-' + self.section
+    return "#{self.klass.to_s}-#{self.section} (#{self.students.count})"
   end 
 
   def taught_by? (teacher) 
