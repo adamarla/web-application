@@ -171,6 +171,11 @@ legend {
   margin-top : 20px ;
 } 
 
+form > .controls {
+  margin-bottom : 13px ;
+  min-height : 20px ;
+} 
+
 legend > span.target { 
   text-transform : uppercase ; 
   font-size : 15px ;
