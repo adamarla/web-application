@@ -42,18 +42,36 @@ jQuery ->
     $.post '/quiz.json', {'selected' : selection.list, 'id' : teacher, 'klass' : klass, 'subject' : subject}
 
   $('#quizzes-link').click ->
+    teacher = $('#control-panel').attr 'marker'
     $.get 'quizzes/list.json'
+    $.get "teachers/roster.json?id=#{teacher}"
     return true
 
+  # Clicking of preview button
   $('#quizzes-summary').on 'click', 'input[type="button"]', ->
-    id = $(this).parent().attr 'marker'
-    return if id is null
-    $.get "quiz/preview.json?id=#{id}"
+    
+    if $(this).attr('in-preview') is 'yes'
+      $(this).val 'preview'
+      show = ['middle', 'right']
+      hide = ['wide']
+      $(this).attr 'in-preview', 'no'
+    else
+      $(this).val 'back'
+      show = ['wide']
+      hide = ['middle', 'right']
+      id = $(this).closest('.swiss-knife').attr('marker')
+      $.get "quiz/preview.json?id=#{id}"
+      $(this).attr 'in-preview', 'yes'
+
+    for type in show
+      panel = $("##{type}-panel")
+      panel.removeClass 'hidden'
+    for type in hide
+      panel = $("##{type}-panel")
+      panel.addClass 'hidden'
     return true
 
   $('#assign-quiz-link').click ->
-    teacher = $('#control-panel').attr 'marker'
-    $.get "teachers/roster.json?id=#{teacher}"
     return true
 
 
