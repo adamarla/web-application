@@ -32,7 +32,7 @@ window.swissKnife = {
 
       if $(child).hasClass 'label' then $(child).text(data.name)
       switch $(child).attr 'type'
-        when 'radio', 'checkbox'
+        when 'checkbox'
           $(child).prop 'checked', (if data.checked isnt null then data.checked else false)
         when 'select'
           $(child).val data.select
