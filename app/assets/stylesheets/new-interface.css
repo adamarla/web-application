@@ -184,6 +184,7 @@ form > .controls > input {
   font-weight : bold ;
   padding : 8px ;
   -moz-border-radius : 5px ;
+  border-radius : 5px ;
 }
 
 legend > span.target { 
