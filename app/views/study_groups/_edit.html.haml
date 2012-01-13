@@ -13,7 +13,7 @@
   %legend
     %span.target= "roster"
     %span.operation= "select sections"
-  = form_tag teachers_update_roster_path, :method => :put, :remote => true do |f| 
+  = form_tag teacher_update_roster_path, :method => :put, :remote => true do |f| 
     .controls
       = submit_tag "Update"
     .purgeable

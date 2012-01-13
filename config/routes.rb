@@ -69,7 +69,7 @@ Webapp::Application.routes.draw do
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
   match 'teachers/roster' => 'teachers#roster', :via => :get 
-  match 'teachers/update_roster' => 'teachers#update_roster', :via => :put
+  match 'teacher/update_roster' => 'teachers#update_roster', :via => :put
   match 'teacher/coverage' => 'teachers#coverage', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
 
