@@ -10,6 +10,8 @@
   -# Within it would be .samurai-armory (added in JS) and within that 
   -# would be .katanas
   = form_tag questions_tag_path, :method => :put, :remote => true do |f|
-    = submit_tag :update 
-    %input#tbd-preview-button.right{:type => :button, :value => "preview"}
+    .controls
+      = submit_tag :update 
+      %input#tbd-preview-button{:type => :button, :value => "preview"}
+
     .samurai-garrison.purgeable

@@ -5,7 +5,7 @@
     %span.operation= "School"
   = semantic_form_for :school, :remote => true, :url => '/school', :method => :put do |f| 
     .controls
-      = submit_tag 'update', :class => 'no-style'
+      = submit_tag 'update school'
 
     = f.inputs do 
       = f.input :board_id, :label => 'board', :as => :select, :collection => Board.all,

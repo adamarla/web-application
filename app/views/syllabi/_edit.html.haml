@@ -4,4 +4,5 @@
     %span.target= "specific topics"
     %span.operation= "select difficulty levels and submit"
   = form_tag '/syllabus', :method => :put, :remote => true do |f|
-    = submit_tag :update
+    .controls
+      = submit_tag 'add selected to course'

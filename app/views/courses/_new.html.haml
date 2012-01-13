@@ -10,6 +10,5 @@
                 :collection => Subject.all, :include_blank => false
       = f.input :klass, :label => 'Class', :as => :select, 
                 :collection => [*9..12], :include_blank => false
-
-    .submit-buttons
-      %input{:type => :submit, :role => :button, :value => "Add", :name => "commit"}
+    .controls
+      = submit_tag 'add new course'

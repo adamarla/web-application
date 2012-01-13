@@ -5,6 +5,7 @@
     %span.operation= "select students for quiz" 
   = form_tag 'quiz/assign', :remote => true, :method => :put do |f|
     .controls
-      = submit_tag 'assign', :class => 'no-style right'
-      %input.left.no-style.check-all{:type => :button, :value => 'select all'}
+      = submit_tag 'assign'
+      %input.check-all{:type => :button, :value => 'select all'}
+
     .purgeable

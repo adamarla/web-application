@@ -5,5 +5,6 @@
     %a#view-students-in-section-link.right{:href => '#'}= "enrolled"
     %a#view-unassigned-students-link.right{:href => '#'}= "unassigned"
   = form_tag study_groups_update_student_list_path, :remote => true, :method => :put do |f| 
-    = submit_tag "Assign to Selected"
+    .controls
+      = submit_tag "assign to selected"
     .purgeable

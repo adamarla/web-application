@@ -5,7 +5,7 @@
     %span.operation= "Quick Add"
   = semantic_form_for :student, :remote => true, :url => student_path do |f| 
     .controls
-      = submit_tag 'add new student', :class => 'no-style'
+      = submit_tag 'add new student'
 
     = f.inputs :name => :mandatory do 
       = f.input :first_name
