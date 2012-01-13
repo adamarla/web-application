@@ -14,6 +14,7 @@
     %span.target= "roster"
     %span.operation= "select sections"
   = form_tag teachers_update_roster_path, :method => :put, :remote => true do |f| 
-    = submit_tag "Update"
+    .controls
+      = submit_tag "Update"
     .purgeable
 
