@@ -23,9 +23,9 @@ jQuery ->
     return true
 
   ###
-    Edit the <form> action of 'edit-school' and 'new-school'
+    Edit <form> actions
   ###
-  $('#edit-school, #new-school, #new-teacher, #new-student').on 'submit', 'form', ->
+  $('#edit-school, #new-school, #new-teacher, #new-student, #student-list').on 'submit', 'form', ->
     parent = $(this).parent().attr 'id'
     school = $('#side-panel').attr 'marker'
     method = null
@@ -43,6 +43,11 @@ jQuery ->
       when 'new-teacher'
         return false if not school?
         action = "/teacher.json?id=#{school}"
+      when 'student-list'
+        section = $('#middle-panel').attr 'marker'
+        return false if not section?
+        action = "study_groups/update_student_list.json?id=#{section}"
+        method = 'put'
 
     coreUtil.forms.modifyAction $(this), action, method
     return true
