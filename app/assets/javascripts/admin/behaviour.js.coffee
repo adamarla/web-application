@@ -25,7 +25,7 @@ jQuery ->
   ###
     Edit <form> actions
   ###
-  $('#edit-school, #new-school, #new-teacher, #new-student, #student-list').on 'submit', 'form', ->
+  $('#edit-school, #new-school, #new-teacher, #new-student, #student-list, #edit-syllabi-form').on 'submit', 'form', ->
     parent = $(this).parent().attr 'id'
     school = $('#side-panel').attr 'marker'
     method = null
@@ -33,40 +33,29 @@ jQuery ->
     switch parent
       when 'edit-school'
         return false if not school?
-        action = "/school.json?id=#{school}"
+        action = "school.json?id=#{school}"
         method = 'put'
       when 'new-school'
-        action = "/school.json"
+        action = "school.json"
       when 'new-student'
         return false if not school?
-        action = "/student.json?id=#{school}"
+        action = "student.json?id=#{school}"
       when 'new-teacher'
         return false if not school?
-        action = "/teacher.json?id=#{school}"
+        action = "teacher.json?id=#{school}"
       when 'student-list'
         section = $('#middle-panel').attr 'marker'
         return false if not section?
         action = "study_groups/update_student_list.json?id=#{section}"
         method = 'put'
+      when 'edit-syllabi-form'
+        course = $('#side-panel').attr 'marker'
+        return false if not course?
+        action = "syllabus.json?id=#{course}"
+        method = 'put'
 
     coreUtil.forms.modifyAction $(this), action, method
     return true
-
-  ###
-    Over-ride action attribute for #edit-syllabi-form just before submit.
-    The default value is set in core/behaviour but should be over-ridden in
-    role-specific JS files in case something else is desired
-  ###
-
-  $('#right-panel').on 'submit', 'form', ->
-    ### 
-      URL = /syllabus?id=<course_id>. <course_id> in turn is available 
-      *not* in the parent panel - as core/behaviour assumes - but on the 
-      side-panel where the courses are listed
-    ###
-    if $(this).closest('div').attr('id') is 'edit-syllabi-form'
-      course_id = $('#side-panel').attr 'marker'
-      $(this).attr 'action', "syllabus.json?id=#{course_id}"
 
   ###
     Connect sortable lists for Admin
