@@ -6,8 +6,6 @@
 #  quiz_id       :integer
 #  question_id   :integer
 #  student_id    :integer
-#  index_in_quiz :integer
-#  on_page       :integer
 #  grade_id      :integer
 #  scanned_image :string(255)
 #  created_at    :datetime
@@ -22,6 +20,10 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
   belongs_to :grade
+
+  validates :quiz_id, :presence => true
+  validates :question_id, :presence => true
+  validates :student_id, :presence => true
 
   # [:all] ~> [:admin, :cron]
   # [:grade_id] ~> [:examiner, :teacher]
