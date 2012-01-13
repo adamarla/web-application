@@ -281,4 +281,25 @@ jQuery ->
       if hide then $(macro).addClass('hidden') else $(macro).removeClass('hidden')
     return true
 
+  ###
+    If a <form> has a button of class 'check-all', then on clicking it 
+    the state of all visible checkboxes within the <form> should toggle - that is -
+    go from unchecked to checked or checked to unchecked
+  ###
 
+  $('form').on 'click', 'input[type="button"][class~="check-all"]', ->
+    form = $(this).closest 'form'
+    return if form.length is 0
+    check = if $(this).attr('all-checked') is 'yes'then false else true # toggle
+    if $(this).attr('all-checked') is 'yes'
+      next = false
+      $(this).attr 'all-checked', 'no'
+      $(this).val 'select all'
+    else
+      next = true
+      $(this).attr 'all-checked', 'yes'
+      $(this).val 'unselect all'
+
+    coreUtil.forms.checkAllIn form, next
+    return true
+    
