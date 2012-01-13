@@ -253,6 +253,19 @@ window.coreUtil = {
           $(input).val value
           if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', value
       return true
+
+    checkAllIn : (form, state = true) ->
+      ###
+        This functions checks/unchecks all visible checkboxes in swiss-knives 
+        within the passed form
+      ###
+      form = if typeof form is 'string' then $(form) else form
+      for knife in form.find '.swiss-knife'
+        check = $(knife).children 'input[type="checkbox"]:first'
+        continue if check.hasClass 'hidden'
+        check.prop 'checked', state
+      return true
+
   } # end of namespace 'forms'
 
   dom : {
