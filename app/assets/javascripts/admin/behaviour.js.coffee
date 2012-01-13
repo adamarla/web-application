@@ -25,17 +25,24 @@ jQuery ->
   ###
     Edit the <form> action of 'edit-school' and 'new-school'
   ###
-  $('#edit-school, #new-school').on 'submit', 'form', ->
+  $('#edit-school, #new-school, #new-teacher, #new-student').on 'submit', 'form', ->
     parent = $(this).parent().attr 'id'
+    school = $('#side-panel').attr 'marker'
+    method = null
+
     switch parent
       when 'edit-school'
-        school = $('#side-panel').attr 'marker'
-        return if not school?
+        return false if not school?
         action = "/school.json?id=#{school}"
         method = 'put'
       when 'new-school'
         action = "/school.json"
-        method = 'post'
+      when 'new-student'
+        return false if not school?
+        action = "/student.json?id=#{school}"
+      when 'new-teacher'
+        return false if not school?
+        action = "/teacher.json?id=#{school}"
 
     coreUtil.forms.modifyAction $(this), action, method
     return true
