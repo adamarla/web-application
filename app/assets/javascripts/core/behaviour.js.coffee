@@ -152,13 +152,6 @@ jQuery ->
     should set 'marker' attribute on the panel equal to the 'marker' attribute of the
     radio button. In other words, the panel would know which radio button is currently
     selected.
-
-    Now, the tricky bit ... The marker should also percolate to any panel to the right
-    of this one, that is, from #side -> #middle -> #right OR from #middle -> #right OR
-    from #side -> #wide. In our interface, we assume that panels to the right result from
-    some action on a panel to the left. And because we think of these panels as 'siblings',
-    lets just say that if the elder sibling gets something, then the younger sibling has
-    to get it too. Its always been true for scolding. Now, its true for marker ;-)
   ###
 
   $('.panel:not([id="control-panel"])').on 'click', 'input[type="radio"]', ->
@@ -168,12 +161,7 @@ jQuery ->
       if panel.length isnt 0
         panelId = panel.attr 'id'
         panel.attr 'marker', marker
-
-        if panelId is 'side-panel' or panelId is 'middle-panel'
-          for sibling in $(panel).siblings '.panel:not([id="control-panel"])'
-            continue if panelId is 'middle-panel' and $(sibling).attr('id') isnt 'right-panel'
-            $(sibling).attr 'marker', marker
-
+    return true
 
   ###
     All fields in forms that have the class attribute "clear-after-submit"
