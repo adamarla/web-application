@@ -8,6 +8,7 @@
 #  page        :integer
 #  created_at  :datetime
 #  updated_at  :datetime
+#  index       :integer
 #
 
 require 'test_helper'
