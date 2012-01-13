@@ -6,7 +6,7 @@ class TeachersController < ApplicationController
     school = School.find params[:id] 
     head :bad_request if school.nil? 
     
-    subjects = params[:teacher].delete :subjects
+    subjects = params[:teacher].delete(:subjects) || []
     @teacher = Teacher.new params[:teacher]
     @teacher.school = school 
 
