@@ -20,6 +20,25 @@ jQuery ->
     $.get 'questions/list.json'
     $.get 'macros/list.json'
     $('#tbd-preview-button').val 'preview'
+    return true
+
+  ###
+    Edit the <form> action of 'edit-school' and 'new-school'
+  ###
+  $('#edit-school, #new-school').on 'submit', 'form', ->
+    parent = $(this).parent().attr 'id'
+    switch parent
+      when 'edit-school'
+        school = $('#side-panel').attr 'marker'
+        return if not school?
+        action = "/school.json?id=#{school}"
+        method = 'put'
+      when 'new-school'
+        action = "/school.json"
+        method = 'post'
+
+    coreUtil.forms.modifyAction $(this), action, method
+    return true
 
   ###
     Over-ride action attribute for #edit-syllabi-form just before submit.
