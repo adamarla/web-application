@@ -18,6 +18,10 @@ class QuizzesController < ApplicationController
     head status
   end 
 
+  def assign
+    head :ok
+  end
+
   def get_candidates
     board = params[:board_id]
     klass = params[:criterion][:klass]

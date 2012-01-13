@@ -3,4 +3,8 @@
   %legend
     %span.target= "students" 
     %span.operation= "select students for quiz" 
-  .purgeable
+  = form_tag 'quiz/assign', :remote => true, :method => :put do |f|
+    .controls
+      = submit_tag 'build', :class => 'no-style right'
+      %input.left.no-style.check-all{:type => :button, :value => 'select all'}
+    .purgeable
