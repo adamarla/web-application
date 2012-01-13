@@ -8,6 +8,7 @@
 #  page        :integer
 #  created_at  :datetime
 #  updated_at  :datetime
+#  index       :integer
 #
 
 #     __:has_many_____     ___:has_many___  

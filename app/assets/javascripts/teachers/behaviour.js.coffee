@@ -71,9 +71,20 @@ jQuery ->
       panel.addClass 'hidden'
     return true
 
-  $('#assign-quiz-link').click ->
+  # Assigning a Quiz to students selected in #enrolled-student-list 
+  $('#enrolled-student-list > form:first').submit ->
+    ###
+      This thing will need the quiz's ID. And that is available 
+      as 'marker' on the 'side' panel
+    ###
+    quiz = $('#side-panel').attr 'marker'
+    return if not quiz?
+
+    coreUtil.forms.modifyAction $(this), "quiz/assign.json?id=#{quiz}", 'put'
     return true
 
+
+  # Load the student list into #enrolled-student-list on section selection 
   $('#teacher-roster').on 'click', 'input[type="radio"]', ->
     section = $(this).attr 'marker'
     return if not section?

@@ -18,8 +18,12 @@ class QuizzesController < ApplicationController
     head status
   end 
 
-  def assign
-    head :ok
+  def assign_to
+    quiz = Quiz.find params[:id]
+    head :bad_request if quiz.nil?
+
+    students = Student.where :id => params[:checked].keys
+    head quiz.assign_to students
   end
 
   def get_candidates

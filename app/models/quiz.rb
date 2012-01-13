@@ -31,8 +31,17 @@ class Quiz < ActiveRecord::Base
 
   after_create :lay_it_out
 
-  def prepare_for(students)
+  def assign_to (students) 
     # students : an array of selected students from the DB
+    status = :ok
+    self.questions.each do |q|
+      students.each do |s|
+        response =GradedResponse.new :quiz_id => self.id, :question_id => q.id, :student_id => s.id
+        status = (response.save) ? :ok : :bad_request
+        break if status == :bad_request
+      end
+    end
+    return status
   end 
 
   def teacher 
