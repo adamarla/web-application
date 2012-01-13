@@ -128,6 +128,15 @@ jQuery ->
     # the 'edit' button for the selected teacher 
     marker = $(this).closest('.swiss-knife').attr('marker')
     $.get "teacher/load.json?id=#{marker}"
+    return true
+
+  $('#courses-summary').on 'click', 'input[type="button"]', ->
+    # The 'edit' button within #courses-summary. Clicked when editing course information
+    marker = $(this).closest('.swiss-knife').attr('marker')
+    return if not marker?
+    $.get "course/profile.json?id=#{marker}"
+    return true
+    
 
   ###########################################################################
   # AJAX requests to issue when radio-buttons in various panels are clicked

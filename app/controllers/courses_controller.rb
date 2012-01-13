@@ -2,6 +2,10 @@ class CoursesController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
+  def profile
+    @course = Course.find params[:id]
+  end
+
   def show 
     @course = Course.find(params[:id]) 
     @syllabi = Syllabus.where(:course_id => @course.id)

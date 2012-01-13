@@ -36,7 +36,8 @@ jQuery ->
       when 'schools/list'
         coreUtil.interface.displayJson json.schools, '#schools-summary', 'school'
       when 'courses/list'
-        coreUtil.interface.displayJson json.courses, '#courses-summary', 'course'
+        coreUtil.interface.displayJson json.courses, '#courses-summary', 'course', {radio:true, button:true}
+        swissKnife.setButtonCaption '#courses-summary', 'edit'
       when 'questions/list'
         preview.loadJson json.questions
         selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
@@ -126,6 +127,10 @@ jQuery ->
     switch matched.pop()
   ###
 
+  ###
+    Miscellaneous event captures 
+  ###
+
   $('#teachers-list').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/load/)
     return if matched is null
@@ -137,3 +142,18 @@ jQuery ->
         coreUtil.forms.loadJson form, json.teacher
         coreUtil.forms.modifyAction form, "/teacher.json?id=#{json.teacher.id}", 'put'
         $('#edit-teacher').dialog('open')
+    return true
+
+
+  $('#courses-summary').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/course\/profile/)
+    return if matched is null
+
+    json = $.parseJSON xhr.responseText
+    switch matched.pop()
+      when 'course/profile'
+        form = $('#edit-course > form:first')
+        coreUtil.forms.loadJson form, json.course
+        coreUtil.forms.modifyAction form, "course.json?id=#{json.course.id}", 'put'
+        $('#edit-course').dialog('open')
+    return true
