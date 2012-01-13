@@ -74,6 +74,12 @@ jQuery ->
   $('#assign-quiz-link').click ->
     return true
 
+  $('#teacher-roster').on 'click', 'input[type="radio"]', ->
+    section = $(this).attr 'marker'
+    return if not section?
+    $.get "study_groups/students.json?id=#{section}"
+    return true
+
 
   ########################################################
   #  Key-press event processing. Best to attach to $(document)

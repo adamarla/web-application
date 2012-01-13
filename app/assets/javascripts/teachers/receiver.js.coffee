@@ -61,6 +61,21 @@ jQuery ->
 
     return true
 
+  ########################################################
+  #  RIGHT PANEL
+  ########################################################
+
+  $('#right-panel').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/study_groups\/students/)
+    return if matched is null
+
+    json = $.parseJSON xhr.responseText
+    switch matched.pop()
+      when 'study_groups/students'
+        here = $('#enrolled-student-list > form')
+        coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
+
+    return true
 
   ########################################################
   #  WIDE PANEL
