@@ -176,6 +176,16 @@ form > .controls {
   min-height : 20px ;
 } 
 
+form > .controls > input {
+  font-size : 13px ;
+  font-family : "Trebuchet MS" ;
+  color : white ;
+  background : #6ca7ab ;
+  font-weight : bold ;
+  padding : 4px ;
+  -moz-border-radius : 5px ;
+}
+
 legend > span.target { 
   text-transform : uppercase ; 
   font-size : 15px ;
