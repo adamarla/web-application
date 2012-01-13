@@ -35,8 +35,9 @@ class Quiz < ActiveRecord::Base
     # students : an array of selected students from the DB
     status = :ok
     self.questions.each do |q|
+      selection = QSelection.where(:quiz_id => self.id, :question_id => q.id).first.id
       students.each do |s|
-        response =GradedResponse.new :quiz_id => self.id, :question_id => q.id, :student_id => s.id
+        response = GradedResponse.new :q_selection_id => selection, :student_id => s.id
         status = (response.save) ? :ok : :bad_request
         break if status == :bad_request
       end
