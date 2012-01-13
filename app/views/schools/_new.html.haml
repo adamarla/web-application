@@ -4,10 +4,12 @@
     %span.target= "Quick Add"
     %span.operation= "School"
   = semantic_form_for :school, :remote => true, :url => school_path do |f| 
-    .submit-buttons
-      %input{:type => :submit, :role => :button, :value => "Create", :name => "commit"}
+    .controls
+      = submit_tag 'create record', :class => 'no-style'
 
     = f.inputs do 
+      = f.input :board_id, :label => 'board', :as => :select, :collection => Board.all,
+                :input_html => { :marker => :board_id }
       = f.input :name 
       = f.input :tag
       = f.input :street_address, :label => "Address" 
