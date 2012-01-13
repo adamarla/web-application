@@ -25,7 +25,10 @@ jQuery ->
   ###
     Edit <form> actions
   ###
-  $('#edit-school, #new-school, #new-teacher, #new-student, #student-list, #edit-syllabi-form').on 'submit', 'form', ->
+  adminForms = '#edit-school, #new-school, #new-teacher, #new-student, #student-list, 
+                #edit-syllabi-form, #new-studygroups, #edit-student-klass-mapping'
+
+  $(adminForms).on 'submit', 'form', ->
     parent = $(this).parent().attr 'id'
     school = $('#side-panel').attr 'marker'
     method = null
@@ -52,6 +55,14 @@ jQuery ->
         course = $('#side-panel').attr 'marker'
         return false if not course?
         action = "syllabus.json?id=#{course}"
+        method = 'put'
+      when 'new-studygroups'
+        return false if not school?
+        action = "study_group.json?id=#{school}"
+      when 'edit-student-klass-mapping'
+        teacher = $('#middle-panel').attr 'marker'
+        return false if not teacher?
+        action = "teacher/update_roster.json?id=#{teacher}"
         method = 'put'
 
     coreUtil.forms.modifyAction $(this), action, method
