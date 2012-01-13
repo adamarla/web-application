@@ -42,13 +42,6 @@ class SchoolsController < ApplicationController
     respond_with @schools 
   end 
 
-  def new_student 
-    school = School.find params[:id]
-    return :bad_request if school.nil? 
-    
-    head :ok
-  end 
-
   def unassigned_students 
     @students = Student.where(:school_id => params[:id], :study_group_id => nil).order(:first_name)
     @who_wants_to_know = current_account.nil? ? :guest : current_account.role
