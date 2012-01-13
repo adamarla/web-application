@@ -216,7 +216,7 @@ jQuery ->
   $('.panel:not([id="control-panel"])').on 'submit', 'form', ->
     panel = $(this).closest '.panel'
     marker = if panel.length isnt 0 then panel.attr 'marker' else null
-    return if marker is null
+    return if not marker?
 
     action = $(this).attr 'action'
     lastBit = action.match /json\?id=\d+/
