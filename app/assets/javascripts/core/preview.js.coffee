@@ -50,7 +50,9 @@ jQuery ->
       loadedPreview = if typeof loadedPreview is 'string' then $(loadedPreview) else loadedPreview
       return null if loadedPreview.hasClass 'hidden'
       counter = loadedPreview.find '.ppy-counter:first'
-      return parseInt(counter.text()) - 1
+      if counter.length isnt 0
+        return parseInt(counter.text()) - 1
+      else return 0 # => single image preview
 
     # Returns the DB Id of the question being viewed currently 
     currDBId : (loadedPreview = '#document-preview') ->
