@@ -47,8 +47,9 @@ jQuery ->
 
     # Returns the index of the currently displayed image, starting with 0
     currIndex : (loadedPreview = '#document-preview') ->
-      return null if $(loadedPreview).hasClass 'hidden'
-      counter = $(loadedPreview).find '.ppy-counter:first'
+      loadedPreview = if typeof loadedPreview is 'string' then $(loadedPreview) else loadedPreview
+      return null if loadedPreview.hasClass 'hidden'
+      counter = loadedPreview.find '.ppy-counter:first'
       return parseInt(counter.text()) - 1
 
     # Returns the DB Id of the question being viewed currently 
@@ -59,13 +60,27 @@ jQuery ->
       current = start.children('li').eq(index)
       return current.attr 'marker'
 
-    changeImgCaption : (imgId, newCaption, previewId = 0) ->
+    hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
       return if (not imgId? or not newCaption?)
-      # 'oliveOil' is defined in Popeye's code (vendor/assets/javascripts)
+      ###
+      'oliveOil' is defined in Popeye's code (vendor/assets/javascripts)
+      It is of the form [0,[...],1,[...],2,[...] .... ]. Each number represents
+      a preview (yes, there can be > 1) and the following array has the captions
+      for that preview
+      ###
       captions = oliveOil[2*previewId + 1]
       return if imgId >= captions.length
 
       captions[imgId] = newCaption
       return true
+
+    softSetImgCaption : (newCaption, loadedPreview = '#document-preview') ->
+      loadedPreview = if typeof loadedPreview is 'string' then $(loadedPreview) else loadedPreview
+      return null if loadedPreview.hasClass 'hidden'
+      caption = loadedPreview.find '.ppy-text:first'
+      return null if caption.length is 0
+      caption.text newCaption
+      return true
+
 
   }
