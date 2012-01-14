@@ -25,7 +25,7 @@ jQuery ->
     execute : () ->
       p = $('#document-preview')
       return if p.parent().hasClass '.ppy-placeholder'
-      p.popeye()
+      p.popeye({ navigation : 'permanent', caption : 'permanent'})
 
     loadJson : (json, key = 'question') ->
       baseUrl = "https://github.com/abhinavc/RiddlersVault/raw/master"
