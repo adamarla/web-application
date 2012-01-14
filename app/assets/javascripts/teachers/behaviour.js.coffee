@@ -108,12 +108,10 @@ jQuery ->
     switch event.which
       when 115 # 'S' pressed => select
         selection.add preview.currDBId()
-        alert selection.list
         preview.softSetImgCaption 'selected'
         preview.hardSetImgCaption imgId, 'selected'
       when 100 # 'D' pressed => deselect 
         selection.remove preview.currDBId()
-        alert selection.list
         preview.softSetImgCaption 'dropped'
         preview.hardSetImgCaption imgId, 'dropped'
     return true
