@@ -101,10 +101,16 @@ jQuery ->
   $(document).keypress (event) ->
     # No point in processing key-events if #document-preview is not being seen
     return if $('#document-preview').hasClass 'hidden'
+
+    dbId = preview.currDBId()
+    imgId = preview.currIndex()
+
     switch event.which
       when 115 # 'S' pressed => select
         selection.add preview.currDBId()
+        preview.changeImgCaption imgId, 'selected'
       when 100 # 'D' pressed => deselect 
         selection.remove preview.currDBId()
+        preview.changeImgCaption imgId, ''
     return true
 

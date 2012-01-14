@@ -46,17 +46,26 @@ jQuery ->
       return true
 
     # Returns the index of the currently displayed image, starting with 0
-    currIndex : () ->
-      return null if $('#document-preview').hasClass 'hidden'
-      counter = $('#document-preview').find '.ppy-counter:first'
+    currIndex : (loadedPreview = '#document-preview') ->
+      return null if $(loadedPreview).hasClass 'hidden'
+      counter = $(loadedPreview).find '.ppy-counter:first'
       return parseInt(counter.text()) - 1
 
     # Returns the DB Id of the question being viewed currently 
-    currDBId : () ->
+    currDBId : (loadedPreview = '#document-preview') ->
       index = preview.currIndex()
       return null if index is null
-      start = $('#document-preview').find '.ppy-imglist:first'
+      start = $(loadedPreview).find '.ppy-imglist:first'
       current = start.children('li').eq(index)
       return current.attr 'marker'
+
+    changeImgCaption : (imgId, newCaption, previewId = 0) ->
+      return if (not imgId? or not newCaption?)
+      # 'oliveOil' is defined in Popeye's code (vendor/assets/javascripts)
+      captions = oliveOil[2*previewId + 1]
+      return if imgId >= captions.length
+
+      captions[imgId] = newCaption
+      return true
 
   }
