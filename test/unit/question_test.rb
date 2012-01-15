@@ -17,6 +17,7 @@
 #  difficulty     :integer         default(1)
 #  half_page      :boolean         default(FALSE)
 #  full_page      :boolean         default(TRUE)
+#  marks          :integer
 #
 
 require 'test_helper'

@@ -17,6 +17,7 @@
 #  difficulty     :integer         default(1)
 #  half_page      :boolean         default(FALSE)
 #  full_page      :boolean         default(TRUE)
+#  marks          :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -45,6 +46,9 @@ class Question < ActiveRecord::Base
   before_save :set_space_requirement
 
   validates :path, :uniqueness => true
+  validates :marks, :numericality => {:only_integer => true, :greater_than => 0,
+                                      :less_than_or_equal_to => 6}, :unless => :new_record?
+
   validates :num_parts, :numericality => {:only_integer => true, :greater_than => 0}, :if => :multi_part?
 
   # 'path' is relative to some root and should be of the form 'dir/dir/something'

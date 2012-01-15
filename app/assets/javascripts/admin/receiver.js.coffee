@@ -40,10 +40,13 @@ jQuery ->
         swissKnife.setButtonCaption '#courses-summary', 'edit'
       when 'questions/list'
         preview.loadJson json.questions
-        selections = {0:{1:'introductory', 2:'intermediate', 3:'advanced'}}
+        selections = {
+          0: {1:'introductory', 2:'intermediate', 3:'advanced'}, #topic difficulty
+          1: {0:'',1:1,2:2,3:3,4:4,5:5,6:6} # marks
+        }
 
         katana.lineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
-        ['mcq', 'half_page', 'full_page'], ['difficulty'], [], selections
+        ['mcq', 'half_page', 'full_page'], ['difficulty', 'marks'], [], selections
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
