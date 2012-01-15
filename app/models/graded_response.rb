@@ -11,7 +11,7 @@
 #  examiner_id    :integer
 #  contested      :boolean         default(FALSE)
 #  q_selection_id :integer
-#  marks          :integer
+#  marks          :float
 #
 
 class GradedResponse < ActiveRecord::Base
