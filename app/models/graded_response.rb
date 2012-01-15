@@ -49,6 +49,21 @@ class GradedResponse < ActiveRecord::Base
     where(:grade_id => nil)
   end
 
+  def assign_grade(grade, examiner = nil)
+    quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
+    question = Question.where(:id => self.q_selection.question_id).first # to question? 
+
+    return :bad_request if (quiz.nil? || question.nil?)
+
+    teacher = Teacher.where(:id => quiz.teacher_id).first # quiz by which teacher?
+    grade = Grade.where(:teacher_id => teacher.id, :yardstick_id => grade).first
+
+    allotment = grade.nil? ? nil : grade.allotment
+    marks = question.marks
+    assigned = (marks * (allotment/100.0)).round(1)
+    return (self.update_attributes(:grade_id => grade.id, :marks => assigned, :examiner_id => examiner) ? :ok : :bad_request)
+  end
+
   # [:all] ~> [:admin, :cron]
   # [:grade_id] ~> [:examiner, :teacher]
   #attr_accessible
