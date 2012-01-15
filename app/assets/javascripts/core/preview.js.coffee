@@ -20,6 +20,7 @@ jQuery ->
       clone = $('#blueprint-document-preview').clone()
       clone.attr 'id', 'document-preview'
       clone.appendTo here
+      here.removeClass 'hidden'
       return true
 
     execute : () ->
