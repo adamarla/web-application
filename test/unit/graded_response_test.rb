@@ -11,6 +11,7 @@
 #  examiner_id    :integer
 #  contested      :boolean         default(FALSE)
 #  q_selection_id :integer
+#  marks          :integer
 #
 
 require 'test_helper'
