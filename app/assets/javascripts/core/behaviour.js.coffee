@@ -198,35 +198,6 @@ jQuery ->
       $(others).attr 'clicked', false
 
   ###
-    Update the action attribute of any form inside #side, #middle, #right
-    or #wide panels with the 'marker' attribute on the panel
-
-    For example : If the action attribute is 'schools/update' and the
-    marker attribute on the containing panel is = 2, then change the
-    action attribute to 'schools/update.json?id=2' (yes, we do all submission
-    through AJAX)
-
-    With this scheme, we can write most of the action attributes as we know
-    them when we write the view files and be assured that the action attributes
-    would be tweaked - as needed - just before submission. However, if the 
-    default behaviour is not what one needs, then it can be overridden in the
-    role specific JS files
-  ###
-
-  $('.panel:not([id="control-panel"])').on 'submit', 'form', ->
-    panel = $(this).closest '.panel'
-    marker = if panel.length isnt 0 then panel.attr 'marker' else null
-    return if not marker?
-
-    action = $(this).attr 'action'
-    lastBit = action.match /json\?id=\d+/
-    if lastBit isnt null # some json?id= from before
-      action = action.replace lastBit, ('json?id=' + marker)
-    else
-      action = "#{action}.json?id=#{marker}"
-    $(this).attr 'action', action
-
-  ###
     Submit buttons of forms in .panels can be double-up to provide status
     message on the on-going process. Something like, "Working" when they are
     clicked and "Done!" or "Oops!!" depending on Ajax success or failure
