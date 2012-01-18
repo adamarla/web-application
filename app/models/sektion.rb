@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: study_groups
+# Table name: sektions
 #
 #  id         :integer         not null, primary key
 #  school_id  :integer
@@ -10,7 +10,7 @@
 #  updated_at :datetime
 #
 
-class StudyGroup < ActiveRecord::Base
+class Sektion < ActiveRecord::Base
   validates :klass, :presence => true 
   validates :section, :presence => true 
 
@@ -27,7 +27,7 @@ class StudyGroup < ActiveRecord::Base
   end 
 
   def taught_by? (teacher) 
-    !( FacultyRoster.where(:study_group_id => self.id, :teacher_id => teacher.id).empty? )
+    !( FacultyRoster.where(:sektion_id => self.id, :teacher_id => teacher.id).empty? )
   end 
 
   def update_student_list ( student_list ) 
@@ -37,9 +37,9 @@ class StudyGroup < ActiveRecord::Base
     student_list.each { |student_id, assign| 
       student = Student.find student_id 
       if assign 
-        student.update_attribute(:study_group_id, self.id) 
+        student.update_attribute(:sektion_id, self.id) 
       else 
-        student.update_attribute(:study_group_id, nil) if student.study_group_id == self.id 
+        student.update_attribute(:sektion_id, nil) if student.sektion_id == self.id 
       end 
     } 
   end 

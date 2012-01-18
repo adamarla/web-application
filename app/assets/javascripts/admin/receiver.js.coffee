@@ -97,7 +97,7 @@ jQuery ->
   $('#right-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/teachers\/roster/) or
               settings.url.match(/school\/unassigned-students/) or
-              settings.url.match(/study_groups\/students/) or
+              settings.url.match(/sektions\/students/) or
               settings.url.match(/macros\/list/) or
               settings.url.match(/school\.json/)
     return if matched is null
@@ -107,7 +107,7 @@ jQuery ->
       when 'teachers/roster'
         here = $('#edit-student-klass-mapping').children 'form:first'
         coreUtil.interface.displayJson json.sections, here, 'section', {checkbox:true}
-      when 'school/unassigned-students', 'study_groups/students'
+      when 'school/unassigned-students', 'sektions/students'
         here = $('#student-list').children 'form:first'
         coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
       when 'school.json'

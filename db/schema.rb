@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120115114422) do
+ActiveRecord::Schema.define(:version => 20120118073822) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(:version => 20120115114422) do
   end
 
   create_table "faculty_rosters", :force => true do |t|
-    t.integer  "study_group_id"
+    t.integer  "sektion_id"
     t.integer  "teacher_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -155,6 +155,14 @@ ActiveRecord::Schema.define(:version => 20120115114422) do
     t.integer  "board_id"
   end
 
+  create_table "sektions", :force => true do |t|
+    t.integer  "school_id"
+    t.integer  "klass"
+    t.string   "section"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "specializations", :force => true do |t|
     t.integer  "teacher_id"
     t.integer  "subject_id"
@@ -169,15 +177,7 @@ ActiveRecord::Schema.define(:version => 20120115114422) do
     t.string   "last_name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "study_group_id"
-  end
-
-  create_table "study_groups", :force => true do |t|
-    t.integer  "school_id"
-    t.integer  "klass"
-    t.string   "section"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "sektion_id"
   end
 
   create_table "subjects", :force => true do |t|

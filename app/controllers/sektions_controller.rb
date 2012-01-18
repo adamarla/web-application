@@ -1,4 +1,4 @@
-class StudyGroupsController < ApplicationController
+class SektionsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
@@ -34,11 +34,11 @@ class StudyGroupsController < ApplicationController
     if current_account
       case current_account.role 
         when :admin
-          @study_groups = StudyGroup.where(:school_id => params[:school_id]) 
+          @study_groups = Sektion.where(:school_id => params[:school_id]) 
         when :school 
-          @study_groups = StudyGroup.where(:school_id => current_account.loggable.id) 
+          @study_groups = Sektion.where(:school_id => current_account.loggable.id) 
         when :student 
-          @study_groups = StudyGroup.where(:id => current_account.loggable.study_group_id)
+          @study_groups = Sektion.where(:id => current_account.loggable.study_group_id)
         else 
           @study_groups = [] 
       end 
@@ -49,7 +49,7 @@ class StudyGroupsController < ApplicationController
   end # of action 
 
   def update_student_list 
-    section = StudyGroup.find params[:id] 
+    section = Sektion.find params[:id] 
     head :bad_request if section.nil? 
 
     section.update_student_list params[:checked]

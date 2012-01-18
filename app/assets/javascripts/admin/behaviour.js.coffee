@@ -49,7 +49,7 @@ jQuery ->
       when 'student-list'
         section = $('#middle-panel').attr 'marker'
         return false if not section?
-        action = "study_groups/update_student_list.json?id=#{section}"
+        action = "sektions/update_student_list.json?id=#{section}"
         method = 'put'
       when 'edit-syllabi-form'
         course = $('#side-panel').attr 'marker'
@@ -58,7 +58,7 @@ jQuery ->
         method = 'put'
       when 'new-studygroups'
         return false if not school?
-        action = "study_group.json?id=#{school}"
+        action = "sektion.json?id=#{school}"
       when 'edit-student-klass-mapping'
         teacher = $('#middle-panel').attr 'marker'
         return false if not teacher?

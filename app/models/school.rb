@@ -19,7 +19,7 @@ class School < ActiveRecord::Base
   has_one :account, :as => :loggable
   has_many :students
   has_many :teachers
-  has_many :study_groups
+  has_many :sektions
 
   validates :name, :street_address, :city, :state, :zip_code, :presence => true 
   validates :board_id, :presence => true
@@ -35,12 +35,12 @@ class School < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
-  def create_study_groups(klasses, sections) 
+  def create_sektions(klasses, sections) 
     # 'klasses' and 'sections' are arrays 
 
     klasses.each { |klass|
       sections.each { |section| 
-        grp = self.study_groups.new :klass => klass, :section => section 
+        grp = self.sektions.new :klass => klass, :section => section 
         grp.save 
         # 'save' can fail because of uniqueness validation. That's ok
       }

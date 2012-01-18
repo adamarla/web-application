@@ -34,7 +34,7 @@ class Teacher < ActiveRecord::Base
   has_one :account, :as => :loggable
 
   has_many :faculty_rosters
-  has_many :study_groups, :through => :faculty_rosters
+  has_many :sektions, :through => :faculty_rosters
 
   has_many :grades
   has_many :yardsticks, :through => :grades
@@ -81,9 +81,9 @@ class Teacher < ActiveRecord::Base
   end 
 
   def roster 
-    # Yes, yes.. We could have gotten the same thing by simply calling self.study_groups
+    # Yes, yes.. We could have gotten the same thing by simply calling self.sektions
     # But if we return an ActiveRelation, then we get the benefit of lazy loading
-    StudyGroup.joins(:faculty_rosters).where('faculty_rosters.teacher_id = ?', self.id)
+    Sektion.joins(:faculty_rosters).where('faculty_rosters.teacher_id = ?', self.id)
   end 
 
   def set_subjects(list_of_ids = [])

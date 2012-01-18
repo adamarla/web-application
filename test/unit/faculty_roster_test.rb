@@ -2,11 +2,11 @@
 #
 # Table name: faculty_rosters
 #
-#  id             :integer         not null, primary key
-#  study_group_id :integer
-#  teacher_id     :integer
-#  created_at     :datetime
-#  updated_at     :datetime
+#  id         :integer         not null, primary key
+#  sektion_id :integer
+#  teacher_id :integer
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 require 'test_helper'

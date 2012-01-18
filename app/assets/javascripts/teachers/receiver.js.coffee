@@ -66,12 +66,12 @@ jQuery ->
   ########################################################
 
   $('#right-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/study_groups\/students/)
+    matched = settings.url.match(/sektions\/students/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
     switch matched.pop()
-      when 'study_groups/students'
+      when 'sektions/students'
         here = $('#enrolled-student-list > form')
         coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
 

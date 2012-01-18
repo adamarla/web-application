@@ -3,7 +3,7 @@
   %legend
     %span.target= "Classes & Sections"
     %span.operation= "Quick Add"
-  = semantic_form_for :study_groups, :remote => true, :url => study_group_path do |f| 
+  = semantic_form_for :sektions, :remote => true, :url => sektion_path do |f| 
     = f.inputs do 
       = f.input :from, :as => :select, :collection => [*9..12], 
                 :include_blank => false, :input_html => { :name => 'klasses[from]' }

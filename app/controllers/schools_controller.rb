@@ -3,8 +3,8 @@ class SchoolsController < ApplicationController
   respond_to :json 
 
   def add_students
-    school = School.find params[:id]
-    head :bad_request if school.nil?
+    @school = School.find params[:id]
+    head :bad_request if @school.nil?
 
     status = :ok
 
@@ -15,8 +15,8 @@ class SchoolsController < ApplicationController
       next if username.blank? 
 
       email = "#{username}@drona.com"
-      student.school = school
-      password = school.zip_code
+      student.school = @school
+      password = @school.zip_code
 
       account = student.build_account :username => username, :email => email,
                                       :password => password, 
@@ -24,7 +24,7 @@ class SchoolsController < ApplicationController
       status = student.save ? :ok : :bad_request
       break if status == :bad_request
     end
-    head status
+    status == :ok ? respond_with(@school) : head(:bad_request)
   end
 
   def create 
@@ -73,7 +73,7 @@ class SchoolsController < ApplicationController
   end 
 
   def sections 
-    @sections = StudyGroup.where(:school_id => params[:id]).order(:klass).order(:section)
+    @sections = Sektion.where(:school_id => params[:id]).order(:klass).order(:section)
   end 
 
 end

@@ -96,7 +96,7 @@ $(function() {
     var marker = (panel.length == 0) ? null : panel.attr('marker') ; 
     
     if (marker != null) { 
-      $.get('study_groups/students.json?id=' + marker) ;
+      $.get('sektions/students.json?id=' + marker) ;
     } 
   }) ;
 

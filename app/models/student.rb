@@ -2,14 +2,14 @@
 #
 # Table name: students
 #
-#  id             :integer         not null, primary key
-#  guardian_id    :integer
-#  school_id      :integer
-#  first_name     :string(255)
-#  last_name      :string(255)
-#  created_at     :datetime
-#  updated_at     :datetime
-#  study_group_id :integer
+#  id          :integer         not null, primary key
+#  guardian_id :integer
+#  school_id   :integer
+#  first_name  :string(255)
+#  last_name   :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  sektion_id  :integer
 #
 
 include ApplicationUtil
@@ -17,7 +17,7 @@ include ApplicationUtil
 class Student < ActiveRecord::Base
   belongs_to :guardian
   belongs_to :school
-  belongs_to :study_group
+  belongs_to :sektion
   has_one :account, :as => :loggable, :dependent => :destroy
 
   has_many :graded_responses
@@ -53,7 +53,7 @@ class Student < ActiveRecord::Base
   end
 
   def teachers
-    Teacher.joins(:study_groups).where('study_groups.id = ?', self.study_group_id)
+    Teacher.joins(:sektions).where('sektions.id = ?', self.sektion_id)
   end 
 
   private 

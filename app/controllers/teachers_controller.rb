@@ -79,7 +79,7 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id] 
     head :bad_request if @teacher.nil? 
 
-    @study_groups = StudyGroup.where(:school_id => @teacher.school_id).order(:klass).order(:section)
+    @study_groups = Sektion.where(:school_id => @teacher.school_id).order(:klass).order(:section)
     respond_with @study_groups, @teacher
   end 
 
@@ -91,7 +91,7 @@ class TeachersController < ApplicationController
     retain = [] 
 
     roster.each { |id, teaches| 
-      study_group = StudyGroup.find id 
+      study_group = Sektion.find id 
       unless study_group.nil? 
         retain << study_group if teaches 
       end 
