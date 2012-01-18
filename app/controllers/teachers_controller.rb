@@ -79,8 +79,8 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id] 
     head :bad_request if @teacher.nil? 
 
-    @study_groups = Sektion.where(:school_id => @teacher.school_id).order(:klass).order(:section)
-    respond_with @study_groups, @teacher
+    @sektions = Sektion.where(:school_id => @teacher.school_id).order(:klass).order(:section)
+    respond_with @sektions, @teacher
   end 
 
   def update_roster
@@ -91,12 +91,12 @@ class TeachersController < ApplicationController
     retain = [] 
 
     roster.each { |id, teaches| 
-      study_group = Sektion.find id 
-      unless study_group.nil? 
-        retain << study_group if teaches 
+      sektion = Sektion.find id 
+      unless sektion.nil? 
+        retain << sektion if teaches 
       end 
     }
-    teacher.study_groups = retain 
+    teacher.sektions = retain 
     head :ok
   end 
 

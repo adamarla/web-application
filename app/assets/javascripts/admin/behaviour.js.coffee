@@ -47,9 +47,9 @@ jQuery ->
         return false if not school?
         action = "teacher.json?id=#{school}"
       when 'student-list'
-        section = $('#middle-panel').attr 'marker'
-        return false if not section?
-        action = "sektions/update_student_list.json?id=#{section}"
+        sektion = $('#middle-panel').attr 'marker'
+        return false if not sektion?
+        action = "sektions/update_student_list.json?id=#{sektion}"
         method = 'put'
       when 'edit-syllabi-form'
         course = $('#side-panel').attr 'marker'
@@ -172,13 +172,13 @@ jQuery ->
 
     switch lastMinor.attr 'id'
       when 'edit-roster-link'
-        # Clear out the #right-panel which has section-information
+        # Clear out the #right-panel which has sektion-information
         for e in $('#right-panel').find '.purgeable'
           $(e).empty()
         # Then issue the AJAX request
         $.get "teachers/list.json?id=#{marker}"
       when 'edit-studygroups-link'
-        $.get "school/sections.json?id=#{marker}"
+        $.get "school/sektions.json?id=#{marker}"
         $.get "school/unassigned-students.json?id=#{marker}"
       when 'add-n-edit-school-link'
         $.get "school.json?id=#{marker}"

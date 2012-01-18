@@ -57,7 +57,7 @@ jQuery ->
     switch matched.pop()
       when 'teachers/roster'
         here = $('#teacher-roster')
-        coreUtil.interface.displayJson json.sections, here, 'section', {radio:true}
+        coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}
 
     return true
 

@@ -7,6 +7,7 @@ class SchoolsController < ApplicationController
     head :bad_request if @school.nil?
 
     status = :ok
+    sektion = Sektion.find params[:sektion]
 
     params[:names].each do |i, name|
       next if name.blank?
@@ -17,6 +18,7 @@ class SchoolsController < ApplicationController
       email = "#{username}@drona.com"
       student.school = @school
       password = @school.zip_code
+      student.sektion = sektion unless sektion.nil?
 
       account = student.build_account :username => username, :email => email,
                                       :password => password, 
@@ -68,7 +70,7 @@ class SchoolsController < ApplicationController
   end 
 
   def unassigned_students 
-    @students = Student.where(:school_id => params[:id], :study_group_id => nil).order(:first_name)
+    @students = Student.where(:school_id => params[:id], :sektion_id => nil).order(:first_name)
     @who_wants_to_know = current_account.nil? ? :guest : current_account.role
   end 
 
