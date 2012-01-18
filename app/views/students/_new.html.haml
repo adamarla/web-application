@@ -3,10 +3,11 @@
   %legend
     %span.target= "Student"
     %span.operation= "Quick Add"
-  = semantic_form_for :student, :remote => true, :url => student_path do |f| 
+  = semantic_form_for :student, :remote => true, :url => '#' do |f| 
     .controls
-      = submit_tag 'add new student'
+      = submit_tag 'add students'
 
-    = f.inputs :name => :mandatory do 
-      = f.input :first_name
-      = f.input :last_name
+    = f.inputs do 
+      - [*1..5].each do |i|
+        = f.input :name, :input_html => {:name => "names[#{i}]", :id => "student_#{i}"}, 
+                         :label => "student ##{i}"

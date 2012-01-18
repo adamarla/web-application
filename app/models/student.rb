@@ -12,6 +12,8 @@
 #  study_group_id :integer
 #
 
+include ApplicationUtil
+
 class Student < ActiveRecord::Base
   belongs_to :guardian
   belongs_to :school
@@ -44,6 +46,12 @@ class Student < ActiveRecord::Base
     end
   end 
 
+  def name=(name)
+    split = name.split(' ', 2)
+    self.first_name = split.first
+    self.last_name = split.last
+  end
+
   def teachers
     Teacher.joins(:study_groups).where('study_groups.id = ?', self.study_group_id)
   end 
@@ -59,11 +67,10 @@ class Student < ActiveRecord::Base
     end 
 
     def reset_login_info
-      new_prefix = username_prefix_for self, :student
+      new_prefix = username_prefix_for(self, :student)
       u = self.account.username.sub(/^\w+\./, "#{new_prefix}.")
       e = self.account.email.sub(/^\w+\./, "#{new_prefix}.")
       self.account.update_attributes(:username => u, :email => e)
     end
 
-
-end
+end # of class 

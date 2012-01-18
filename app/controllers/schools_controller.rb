@@ -2,6 +2,31 @@ class SchoolsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
+  def add_students
+    school = School.find params[:id]
+    head :bad_request if school.nil?
+
+    status = :ok
+
+    params[:names].each do |i, name|
+      next if name.blank?
+      student = Student.new :name => name
+      username = create_username_for student, :student
+      next if username.blank? 
+
+      email = "#{username}@drona.com"
+      student.school = school
+      password = school.zip_code
+
+      account = student.build_account :username => username, :email => email,
+                                      :password => password, 
+                                      :password_confirmation => password
+      status = student.save ? :ok : :bad_request
+      break if status == :bad_request
+    end
+    head status
+  end
+
   def create 
     email = params[:school].delete :email # email is part of Account model 
     @school = School.new params[:school] 

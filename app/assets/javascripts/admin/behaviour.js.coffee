@@ -42,7 +42,7 @@ jQuery ->
         action = "school.json"
       when 'new-student'
         return false if not school?
-        action = "student.json?id=#{school}"
+        action = "school/students/add.json?id=#{school}"
       when 'new-teacher'
         return false if not school?
         action = "teacher.json?id=#{school}"
