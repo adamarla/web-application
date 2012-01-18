@@ -72,8 +72,8 @@ class SchoolsController < ApplicationController
     @who_wants_to_know = current_account.nil? ? :guest : current_account.role
   end 
 
-  def sections 
-    @sections = Sektion.where(:school_id => params[:id]).order(:klass).order(:section)
+  def sektions 
+    @sektions = Sektion.where(:school_id => params[:id]).order(:klass).order(:section)
   end 
 
 end

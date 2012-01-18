@@ -33,7 +33,7 @@ Webapp::Application.routes.draw do
   match 'school/students/add' => 'schools#add_students', :via => :post
   match 'schools/list' => 'schools#list', :via => :get 
   match 'school/unassigned-students' => 'schools#unassigned_students', :via => :get
-  match 'school/sections' => 'schools#sections', :via => :get
+  match 'school/sektions' => 'schools#sektions', :via => :get
 
   # Macro Topic
   match 'macro_topic/micros_in_course' => 'macro_topics#micros_in_course', :via => :get
