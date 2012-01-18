@@ -55,18 +55,25 @@ jQuery ->
   $('#middle-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/yardstick\.json/) or
               settings.url.match(/teachers\/list/) or
-              settings.url.match(/school\/sections/) or
+              settings.url.match(/school\/sektions/) or
               settings.url.match(/course\/coverage/) or
               settings.url.match(/macros\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
+    onDisplay = $(this).children().first()
+
+
     switch matched.pop()
       when 'teachers/list'
         coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher', {radio:true,button:true}
         swissKnife.setButtonCaption '#teachers-list', 'edit'
-      when 'school/sections'
-        coreUtil.interface.displayJson json.sections, '#studygroups-radiolist', 'section'
+      when 'school/sektions'
+        if onDisplay.attr('id') is 'new-student'
+          select = onDisplay.find 'form select:first' # the first select is for sektions 
+          coreUtil.dom.loadJsonToSelect select, json.sektions, 'sektion'
+        else
+          coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
       when 'yardstick.json'
         coreUtil.dom.unsetCheckboxesIn '#edit-yardstick'
         coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick
@@ -106,7 +113,7 @@ jQuery ->
     switch matched.pop()
       when 'teachers/roster'
         here = $('#edit-student-klass-mapping').children 'form:first'
-        coreUtil.interface.displayJson json.sections, here, 'section', {checkbox:true}
+        coreUtil.interface.displayJson json.sektions, here, 'sektion', {checkbox:true}
       when 'school/unassigned-students', 'sektions/students'
         here = $('#student-list').children 'form:first'
         coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}

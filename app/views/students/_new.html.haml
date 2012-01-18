@@ -8,6 +8,8 @@
       = submit_tag 'add students'
 
     = f.inputs do 
+      = f.input :sektion, :label => 'section', :as => :select, :collection => [],
+                          :input_html => { :name => "sektion" }
       - [*1..5].each do |i|
         = f.input :name, :input_html => {:name => "names[#{i}]", :id => "student_#{i}"}, 
                          :label => "student ##{i}"

@@ -164,9 +164,12 @@ jQuery ->
   $('#schools-summary').on 'click', 'input[type="radio"]', ->
     # What AJAX to issue depends on which minor-link has been selected
     lastMinor = coreUtil.interface.lastClicked 'minor'
-    return if lastMinor.length is 0
-
     marker = $(this).attr 'marker'
+
+    if lastMinor.length is 0
+      $.get "school/sektions.json?id=#{marker}"
+      return
+
     switch lastMinor.attr 'id'
       when 'edit-roster-link'
         # Clear out the #right-panel which has section-information
