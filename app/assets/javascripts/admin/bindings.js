@@ -75,11 +75,9 @@ $(function() {
   */ 
 
   $('#view-students-in-section-link').click( function() { 
-    var panel = $(this).closest('.panel') ; // the containing panel
-    var marker = (panel.length == 0) ? null : panel.attr('marker') ; 
-    
-    if (marker != null) { 
-      $.get('sektions/students.json?id=' + marker) ;
+		sektion = $('#middle-panel').attr('marker') ;
+    if (sektion != null) { 
+      $.get('sektions/students.json?id=' + sektion) ;
     } 
   }) ;
 
