@@ -301,6 +301,20 @@ window.coreUtil = {
         choices = for posn,choice of options
           select.append "<option value=#{posn}>#{choice}</option>"
       return true
+
+    ###
+      This method creates <option>s based on the passed JSON for the passed <select>
+      It assumes that the JSON has the following 2 keys : id & name
+    ###
+    loadJsonToSelect : (select, json, key) ->
+      return if not key? or not select?
+      # Purge any previous <option> entries 
+      select.empty()
+      for record in json
+        data = record[key]
+        select.append "<option value=#{data.id}>#{data.name}</option>"
+      return true
+
   } # end of namespace 'dom'
 
   messaging : {
