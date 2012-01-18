@@ -223,7 +223,7 @@ window.coreUtil = {
 
     clear : (form) ->
       form = if typeof form is 'string' then $(form) else form
-      for input in form.find 'input,textarea,select'
+      for input in form.find 'input:not([type="submit"]),textarea,select'
         $(input).val null
         if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', false
       return true
