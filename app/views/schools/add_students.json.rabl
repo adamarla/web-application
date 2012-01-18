@@ -1,0 +1,3 @@
+
+object @school
+  attributes :id
