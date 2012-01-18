@@ -28,23 +28,6 @@ $(function() {
   }) ;
 
   /*
-    Part II : When radio buttons in a summary table are clicked, then they 
-    should update links in #control-panel using their 'marker' attribute. The 
-    base behaviour of de-selecting other radio buttons is implemented in 
-    core/behaviour.js
-  */ 
-
-  /* Schools */
-  $('#schools-summary').on('click', 'input[type="radio"]', function() { 
-    var marker = $(this).attr('marker') ;
-
-    $('#edit-school-link').attr('marker', marker) ;
-    $('#edit-roster-link').attr('marker', marker) ;
-    $('#new-studygroups-link').attr('marker', marker) ;
-    $('#edit-studygroups-link').attr('marker', marker) ;
-  }) ;
-
-  /*
     When a radio-button in #yardsticks-summary is clicked, it should change the 
     'action' attribute of the edit form that opens alongside
   */ 
