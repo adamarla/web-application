@@ -23,9 +23,6 @@ class Quiz < ActiveRecord::Base
   has_many :q_selections
   has_many :questions, :through => :q_selections
 
-  has_many :graded_responses
-  has_many :students, :through => :graded_responses
-
   validates :teacher_id, :presence => true, :numericality => true
   validates :name, :presence => true
 
@@ -69,8 +66,6 @@ class Quiz < ActiveRecord::Base
       selection = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
       selection.update_attribute :page, page
     end
-
-
-  end
+  end # lay_it_out
 
 end
