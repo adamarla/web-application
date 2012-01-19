@@ -51,7 +51,7 @@ class Quiz < ActiveRecord::Base
 
   def set_name
     subject = Subject.where(:id => self.subject_id).select(:name).first.name
-    self.name = "#{subject} (Week ##{Date.today.cweek})" # Example : Week #14
+    self.name = "#{self.klass}-#{subject} [Week #{Date.today.cweek}, #{Date.today.year}]" # Example : Week #14
   end 
 
   def lay_it_out
