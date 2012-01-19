@@ -30,7 +30,7 @@ class QuizzesController < ApplicationController
     board = params[:board_id]
     klass = params[:criterion][:klass]
     subject = params[:criterion][:subject]
-    topics = params[:checked].keys
+    topics = params[:checked].nil? ? [] : params[:checked].keys
 
     @questions = []
     course = Course.where(:board_id => board, :klass => klass, :subject_id => subject).first 
