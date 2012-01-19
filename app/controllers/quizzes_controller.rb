@@ -11,9 +11,10 @@ class QuizzesController < ApplicationController
       selected[index] = q.to_i
     end
 
-    @quiz = Quiz.new :teacher_id => teacher.id, :question_ids => selected, :num_questions => selected.count
-    @quiz.set_name params[:klass], params[:subject]
-
+    subject = Subject.where(:name => params[:subject]).select(:id).first.id
+    @quiz = Quiz.new :teacher_id => teacher.id, :question_ids => selected, 
+                     :num_questions => selected.count, :subject_id => subject, 
+                     :klass => params[:klass]
     status = @quiz.save ? :ok : :bad_request
     head status
   end 
@@ -46,7 +47,7 @@ class QuizzesController < ApplicationController
 
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
-    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id)
+    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).order(:klass)
   end
 
   def preview

@@ -8,6 +8,8 @@
 #  updated_at    :datetime
 #  num_questions :integer
 #  name          :string(255)
+#  klass         :integer
+#  subject_id    :integer
 #
 
 require 'test_helper'
