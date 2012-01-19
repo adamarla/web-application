@@ -8,6 +8,8 @@
 #  updated_at    :datetime
 #  num_questions :integer
 #  name          :string(255)
+#  klass         :integer
+#  subject_id    :integer
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -26,6 +28,7 @@ class Quiz < ActiveRecord::Base
   validates :teacher_id, :presence => true, :numericality => true
   validates :name, :presence => true
 
+  before_save :set_name, :if => :new_record?
   after_create :lay_it_out
 
   def assign_to (students) 
@@ -46,10 +49,9 @@ class Quiz < ActiveRecord::Base
     Teacher.find self.teacher_id
   end 
 
-  def set_name( klass, subject )
-    return false if (klass.blank? || subject.blank?)
-    timestamp = "(#{Date.today.strftime '%b %d, %Y'})"
-    self.name = "#{subject[0]}#{klass} #{timestamp}"
+  def set_name
+    subject = Subject.where(:id => self.subject_id).select(:name).first.name
+    self.name = "#{subject} (Week ##{Date.today.cweek})" # Example : Week #14
   end 
 
   def lay_it_out
