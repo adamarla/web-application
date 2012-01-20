@@ -62,6 +62,7 @@ class Quiz < ActiveRecord::Base
     questions = Question.where(:id => self.question_ids).order(:mcq).order(:half_page).order(:full_page)
     page = 1
     score = 0
+    index = 1
 
     questions.each do |q|
       score += (q.mcq ? 0.25 : (q.half_page ? 0.5 : 1))
@@ -69,8 +70,9 @@ class Quiz < ActiveRecord::Base
         page += 1
         score = 0
       end
-      selection = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
-      selection.update_attribute :page, page
+      in_quiz = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
+      in_quiz.update_attributes :page => page, :index => index
+      index += 1
     end
   end # lay_it_out
 
