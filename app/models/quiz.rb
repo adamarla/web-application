@@ -34,14 +34,18 @@ class Quiz < ActiveRecord::Base
   def assign_to (students) 
     # students : an array of selected students from the DB
     status = :ok
-    self.questions.each do |q|
-      selection = QSelection.where(:quiz_id => self.id, :question_id => q.id).first.id
-      students.each do |s|
-        response = GradedResponse.new :q_selection_id => selection, :student_id => s.id
+    students.each do |s|
+      # Don't issue the same quiz to the same students
+      next if s.quiz_ids.include? self.id
+
+      self.questions.each do |q|
+        in_quiz = QSelection.where(:quiz_id => self.id, :question_id => q.id).first.id
+        response = GradedResponse.new :q_selection_id => in_quiz, :student_id => s.id
         status = (response.save) ? :ok : :bad_request
         break if status == :bad_request
-      end
-    end
+      end # question loop
+      break if status == :bad_request
+    end # student loop 
     return status
   end 
 
