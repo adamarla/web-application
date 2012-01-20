@@ -56,6 +56,14 @@ class Student < ActiveRecord::Base
     Teacher.joins(:sektions).where('sektions.id = ?', self.sektion_id)
   end 
 
+  def quiz_ids
+    # Return the list if Quiz IDs this student has taken
+    responses = GradedResponse.where(:student_id => self.id)
+    selection_ids = responses.select(:q_selection_id).map(&:q_selection_id)
+    quiz_ids = QSelection.where(:id => selection_ids).select(:quiz_id).map(&:quiz_id).uniq
+    return quiz_ids
+  end
+
   private 
     def destroyable? 
       return false 
