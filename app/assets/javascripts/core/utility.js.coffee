@@ -173,14 +173,12 @@ window.coreUtil = {
         needed = link.attr type
         target = $("##{type}-panel")
 
-        if link.hasClass('minor-link') and type is 'side'
-          continue if not needed?
-        resetPanel target # if there is any data to be purged, then it should be done before the next step
-        continue if target.find(needed).length isnt 0
-
         if not needed?
-          $(target).addClass('hidden')
+          continue if link.hasClass('minor-link') and type is 'side'
+          target.addClass 'hidden'
+          resetPanel target
         else
+          continue if target.find(needed).length isnt 0 # already present
           e = buildHierarchy needed
           $(target).removeClass('hidden')
           if e isnt null then e.appendTo(target).hide().fadeIn('slow')
