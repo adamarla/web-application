@@ -1,6 +1,6 @@
 class QuizzesController < ApplicationController
   before_filter :authenticate_account!
-  respond_to :json
+  respond_to :json, :xml
 
   def create
     # teachers/behaviour.js.coffee is where this POST request was structured
@@ -24,7 +24,21 @@ class QuizzesController < ApplicationController
     head :bad_request if quiz.nil?
 
     students = Student.where :id => params[:checked].keys
-    head quiz.assign_to students
+
+    client = Savon::Client.new do
+      wsdl.document = "http://localhost:8080/axis2/services/documentMaster?wsdl"
+      wsdl.endpoint = "http://localhost:8080/axis2/services/documentMaster"
+    end
+   client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/buildQuiz"'
+   response = client.request :wsdl, :build_quiz do  
+     soap.body = { 
+         :id => "#{quiz.id}-#{Time.now.strftime('%H%M')}",
+         :teacher_id => '12',
+         :page => quiz.layout?
+     } 
+   end
+	 head :ok
+    #head quiz.assign_to students
   end
 
   def get_candidates

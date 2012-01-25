@@ -76,4 +76,9 @@ class Quiz < ActiveRecord::Base
     end
   end # lay_it_out
 
+  def layout?
+    layout = [{ :number => 1, :question => [{:id => 1}, {:id => 2}] }]
+    return layout
+  end
+
 end
