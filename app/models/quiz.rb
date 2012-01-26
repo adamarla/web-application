@@ -77,7 +77,22 @@ class Quiz < ActiveRecord::Base
   end # lay_it_out
 
   def layout?
-    layout = [{ :number => 1, :question => [{:id => 1}, {:id => 2}] }]
+    # Sample layout --> [{ :number => 1, :question => [{:id => 1}, {:id => 2}] }]
+    #
+    # The form of the layout returned from here is determined by the WSDL. We 
+    # really don't have much choice 
+
+    j = self.q_selections.order(:page).select('question_id, page')
+    last = j.last.page 
+    layout = [] 
+
+    [*1..last].each do |page|
+      q_on_page = j.where(:page => page).map(&:question_id)
+      q_on_page.each_with_index do |qid, index|
+        q_on_page[index] = { :id => qid }
+      end
+      layout.push( { :number => page, :question => q_on_page })
+    end
     return layout
   end
 
