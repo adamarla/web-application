@@ -59,7 +59,7 @@ class Quiz < ActiveRecord::Base
   end 
 
   def lay_it_out
-    questions = Question.where(:id => self.question_ids).order(:mcq).order(:half_page).order(:full_page)
+    questions = Question.where(:id => self.question_ids).order(:full_page).order(:half_page)
     page = 1
     score = 0
     index = 1
