@@ -23,21 +23,30 @@ class QuizzesController < ApplicationController
     quiz = Quiz.find params[:id]
     head :bad_request if quiz.nil?
 
-    students = Student.where :id => params[:checked].keys
+    students = Student.where(:id => params[:checked].keys)
+    id_names = []
+    #id_names = students.map { |k| id_names.push({ k.id.to_s => k.name }) } # [{ 1 => 'Abhinav' } ... ]
+    students.each do |s|
+      id_names.push({ :id => s.id, :name => s.name })
+    end
 
     client = Savon::Client.new do
       wsdl.document = "http://localhost:8080/axis2/services/documentMaster?wsdl"
       wsdl.endpoint = "http://localhost:8080/axis2/services/documentMaster"
     end
-   client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/buildQuiz"'
-   response = client.request :wsdl, :build_quiz do  
+   client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/assignQuiz"'
+   response = client.request :wsdl, :assignQuiz do  
      soap.body = { 
-         :id => "#{quiz.id}-#{Time.now.strftime('%H%M')}",
-         :teacher_id => '12',
+       :quiz => {
+         #:id => "#{quiz.id}-#{Time.now.strftime('%H%M')}",
+         :id => "#{quiz.id}",
+         :teacher_id => quiz.teacher_id,
          :page => quiz.layout?
+       },
+       :students => id_names 
      } 
    end
-	 head :ok
+   head :ok
     #head quiz.assign_to students
   end
 
