@@ -27,7 +27,7 @@ class QuizzesController < ApplicationController
     id_names = []
     #id_names = students.map { |k| id_names.push({ k.id.to_s => k.name }) } # [{ 1 => 'Abhinav' } ... ]
     students.each do |s|
-      id_names.push({ :id => s.id, :name => s.name })
+      id_names.push({ :id => s.id, :name => s.print_name })
     end
 
     client = Savon::Client.new do
