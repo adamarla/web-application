@@ -179,6 +179,7 @@ window.coreUtil = {
           resetPanel target
         else
           continue if target.find(needed).length isnt 0 # already present
+          resetPanel target
           e = buildHierarchy needed
           $(target).removeClass('hidden')
           if e isnt null then e.appendTo(target).hide().fadeIn('slow')
