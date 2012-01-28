@@ -36,20 +36,26 @@ class Quiz < ActiveRecord::Base
 
   def assign_to (students) 
     # students : an array of selected students from the DB
-    status = :ok
+
+    # Mappings to take care of :
+    #   1. quiz <-> testpaper
+    #   2. student <-> testpaper
+    #   3. graded_response <-> testpaper
+    #   3. graded_response <-> student
+
+    testpaper = self.testpapers.new :name => "#{Date.today.strftime "%B %d, %Y"}" # (1)
+    questions = QSelection.where(:quiz_id => self.id).order(:page).select(:id)
+
     students.each do |s|
       # Don't issue the same quiz to the same students
       next if s.quiz_ids.include? self.id
 
-      self.questions.each do |q|
-        in_quiz = QSelection.where(:quiz_id => self.id, :question_id => q.id).first.id
-        response = GradedResponse.new :q_selection_id => in_quiz, :student_id => s.id
-        status = (response.save) ? :ok : :bad_request
-        break if status == :bad_request
-      end # question loop
-      break if status == :bad_request
+      testpaper.students << s # (2) 
+      questions.each do |q|
+        testpaper.graded_responses << GradedResponse.new(:q_selection_id => q.id, :student_id => s.id) #(3) & (4)
+      end
     end # student loop 
-    return status
+    return (self.save ? :ok : :bad_request) 
   end 
 
   def teacher 
