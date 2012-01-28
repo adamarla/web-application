@@ -19,6 +19,17 @@
 #    |__:belongs_to___|   |___:has_many___| 
 #    
 
+# When to destroy a Quiz ? 
+# ------------------------
+# 
+# Destroying a Quiz is a massively destructive operation. If the Quiz goes, 
+# then all associated data - student grades on that quiz, entries in course-pack
+# etc. etc. must go too 
+#
+# So, here is what I think should be done. Let the teacher indicate that she 
+# does not want to use a Quiz anymore. We hide the Quiz then. And if she really
+# does not use it for - say, 3 months - then we really do destroy the Quiz (using a cronjob)
+
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
 
