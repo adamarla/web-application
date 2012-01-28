@@ -22,13 +22,13 @@
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
 
-  has_many :q_selections
+  has_many :q_selections, :dependent => :destroy
   has_many :questions, :through => :q_selections
 
   validates :teacher_id, :presence => true, :numericality => true
   validates :name, :presence => true
-
-  before_save :set_name, :if => :new_record?
+  
+  before_validation :set_name, :if => :new_record?
   after_create :lay_it_out
 
   def assign_to (students) 
@@ -96,4 +96,21 @@ class Quiz < ActiveRecord::Base
     return layout
   end
 
-end
+  def build_answer_key_tex
+    client = Savon::Client.new do
+      wsdl.document = "http://109.74.201.62:8080/axis2/services/documentMaster?wsdl"
+      wsdl.endpoint = "http://109.74.201.62:8080/axis2/services/documentMaster"
+    end
+    client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/buildQuiz"'
+    response = client.request :wsdl, :build_quiz do
+      soap.body = {
+        :id => self.id, 
+        :teacher_id => self.teacher.school.name,
+        :page => self.layout?
+      }
+    end # of response 
+    # sample response : {:build_quiz_response=>{:manifest=>{:root=>"/home/gutenberg/bank/mint/15"}}}
+    return response.to_hash[:build_quiz_response]
+  end # of method
+
+end # of class
