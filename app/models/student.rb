@@ -23,6 +23,9 @@ class Student < ActiveRecord::Base
   has_many :graded_responses
   has_many :quizzes, :through => :graded_responses
 
+  has_many :course_packs
+  has_many :testpapers, :through => :course_packs
+
   validates :first_name, :last_name, :presence => true
   before_save :humanize_name
   after_save  :reset_login_info

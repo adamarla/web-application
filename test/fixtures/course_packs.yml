@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: course_packs
+#
+#  id           :integer         not null, primary key
+#  student_id   :integer
+#  testpaper_id :integer
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  student_id: 1
+  testpaper_id: 1
+
+two:
+  student_id: 1
+  testpaper_id: 1
