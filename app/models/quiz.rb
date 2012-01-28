@@ -25,13 +25,14 @@ class Quiz < ActiveRecord::Base
   has_many :q_selections, :dependent => :destroy
   has_many :questions, :through => :q_selections
 
-  has_many :testpapers
+  has_many :testpapers, :dependent => :destroy
 
   validates :teacher_id, :presence => true, :numericality => true
   validates :name, :presence => true
   
   before_validation :set_name, :if => :new_record?
   after_create :lay_it_out
+  after_destroy :shred_pdfs
 
   def assign_to (students) 
     # students : an array of selected students from the DB
@@ -114,5 +115,12 @@ class Quiz < ActiveRecord::Base
     # sample response : {:build_quiz_response=>{:manifest=>{:root=>"/home/gutenberg/bank/mint/15"}}}
     return response.to_hash[:build_quiz_response]
   end # of method
+
+  def shred_pdfs
+    # Going forward, this method would issue a Savon request to the
+    # 'printing-press' asking it to delete PDFs of testpapers generated
+    # for this Quiz - both composite & per-student 
+    return true
+  end
 
 end # of class
