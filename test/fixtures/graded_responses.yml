@@ -12,6 +12,7 @@
 #  contested      :boolean         default(FALSE)
 #  q_selection_id :integer
 #  marks          :float
+#  testpaper_id   :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

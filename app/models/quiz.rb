@@ -25,6 +25,8 @@ class Quiz < ActiveRecord::Base
   has_many :q_selections, :dependent => :destroy
   has_many :questions, :through => :q_selections
 
+  has_many :testpapers
+
   validates :teacher_id, :presence => true, :numericality => true
   validates :name, :presence => true
   

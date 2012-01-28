@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: testpapers
+#
+#  id         :integer         not null, primary key
+#  quiz_id    :integer
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  quiz_id: 1
+  name: MyString
+
+two:
+  quiz_id: 1
+  name: MyString

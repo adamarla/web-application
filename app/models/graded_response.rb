@@ -12,13 +12,15 @@
 #  contested      :boolean         default(FALSE)
 #  q_selection_id :integer
 #  marks          :float
+#  testpaper_id   :integer
 #
 
 class GradedResponse < ActiveRecord::Base
-  belongs_to :q_selection
   belongs_to :student
   belongs_to :examiner
   belongs_to :grade
+  belongs_to :q_selection
+  belongs_to :testpaper
 
   validates :q_selection_id, :presence => true
   validates :student_id, :presence => true
