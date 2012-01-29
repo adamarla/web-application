@@ -3,23 +3,6 @@
 */ 
 
 $(function() { 
-  
-  /*
-    When links in the #control-panel are clicked ... 
-  */ 
-  $('#boards-link > a').click( function() { $.get('boards/summary') ; }) ;
-  $('#courses-link').click( function() { $.get('courses/list') ; }) ;
-
-  /*
-    When the 'schools' link in the control-panel is clicked
-  */ 
-  $('#schools-link').click( function() { 
-    // Refer : views/schools/list.json.rabl
-    var url = 'schools/list' ; 
-
-    $.get(url) ;
-  }) ;
-
   /*
     Add a new Course to the DB
   */ 

@@ -13,13 +13,16 @@ jQuery ->
   $('#add-examiner-link').click ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
-  ###
-    (control-panel) : #tbd-link click
-  ###
-  $('#tbd-link').click ->
-    $.get 'questions/list.json'
-    $.get 'macros/list.json'
-    $('#tbd-preview-button').val 'preview'
+  $('#main-links a').click ->
+    id = $(this).attr 'id'
+    switch id
+      when 'schools-link' then $.get 'schools/list'
+      when 'boards-link' then $.get 'boards/summary'
+      when 'courses-link' then $.get 'courses/list'
+      when 'tbd-link'
+        $.get 'questions/list.json'
+        $.get 'macros/list.json'
+        $('#tbd-preview-button').val 'preview'
     return true
 
   ###
@@ -187,5 +190,11 @@ jQuery ->
   $('#teachers-list').on 'click', 'input[type="radio"]', ->
     marker = $(this).attr 'marker'
     $.get "teachers/roster.json?id=#{marker}"
+
+  ###
+    On load, auto-click the first main-link > a that has attribute default='true'
+  ###
+  $('#main-links a[default="true"]:first').click()
+
     
 
