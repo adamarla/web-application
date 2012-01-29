@@ -71,6 +71,12 @@ class Teacher < ActiveRecord::Base
     end
   end 
 
+  def name=(name)
+    split = name.split(' ', 2)
+    self.first_name = split.first
+    self.last_name = split.last
+  end
+
   def print_name
     return "#{self.first_name} #{self.last_name}"
   end

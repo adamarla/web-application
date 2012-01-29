@@ -8,7 +8,6 @@
       = submit_tag 'add new teacher'
 
     = f.inputs :name => :mandatory do 
-      = f.input :first_name
-      = f.input :last_name
+      = f.input :name, :input_html => { :name => "teacher[name]" }
       = f.input :subjects, :label => 'teaches?', :as => :select, 
                 :collection => Subject.all, :include_blank => false, :multiple => true
