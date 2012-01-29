@@ -28,6 +28,7 @@ module ApplicationHelper
     name = options[:for].to_s 
     href = options[:href] || '#' 
     with = options[:with] 
+    default = options[:default].nil? ? false : options[:default]
 
     if type == :main
       singular = name.singularize
@@ -58,7 +59,7 @@ module ApplicationHelper
     link = link_to label.humanize, href, :id => "#{name}-link", :class => class_attr, 
                                :side => panels[:side], :middle => panels[:middle], 
                                :right => panels[:right], :wide => panels[:wide], 
-                               'load-controls' => controls
+                               'load-controls' => controls, :default => default
 
     return content_tag(:li, link, :id => "#{name}-anchor") 
   end 
