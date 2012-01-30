@@ -118,6 +118,7 @@ jQuery ->
 
   $('#control-panel').on 'click', '#main-links a, #minor-links a', ->
     coreUtil.interface.refreshView $(this)
+    selection.initialize() # any prior selections should be cleared 
 
     ###
       Set 'selected=true' on $(this) whilst setting it to false on all other siblings/cousins
