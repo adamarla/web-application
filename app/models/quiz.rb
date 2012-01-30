@@ -66,7 +66,10 @@ class Quiz < ActiveRecord::Base
         testpaper.graded_responses << GradedResponse.new(:q_selection_id => q.id, :student_id => s.id) #(3) & (4)
       end
     end # student loop 
-    return (self.save ? :ok : :bad_request) 
+
+    response = (self.save) ? testpaper.compile_tex : {}
+    testpaper.destroy if response[:manifest].blank? 
+    return response
   end 
 
   def teacher 
@@ -116,7 +119,7 @@ class Quiz < ActiveRecord::Base
     return layout
   end
 
-  def build_answer_key_tex
+  def compile_tex
     teacher = self.teacher 
 
     client = Savon::Client.new do

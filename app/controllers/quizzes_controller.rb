@@ -18,7 +18,7 @@ class QuizzesController < ApplicationController
 
     status = @quiz.save ? :ok : :bad_request
     unless status == :bad_request
-      response = @quiz.build_answer_key_tex
+      response = @quiz.compile_tex
       if response[:manifest].blank? 
         status = :bad_request
         @quiz.destroy
@@ -32,40 +32,11 @@ class QuizzesController < ApplicationController
   def assign_to
     quiz = Quiz.find params[:id]
     head :bad_request if quiz.nil?
+    teacher = quiz.teacher 
 
     students = Student.where(:id => params[:checked].keys)
-    id_names = []
-    #id_names = students.map { |k| id_names.push({ k.id.to_s => k.name }) } # [{ 1 => 'Abhinav' } ... ]
-    students.each do |s|
-      id_names.push({ :id => s.id, :name => s.print_name })
-    end
-
-    client = Savon::Client.new do
-      wsdl.document = "http://109.74.201.62:8080/axis2/services/documentMaster?wsdl"
-      wsdl.endpoint = "http://109.74.201.62:8080/axis2/services/documentMaster"
-    end
-   client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/buildQuiz"'
-   response = client.request :wsdl, :build_quiz do  
-     soap.body = { 
-         #:id => "#{quiz.id}-#{Time.now.strftime('%H%M')}",
-         :id => "#{quiz.id}",
-         :teacher_id => quiz.teacher.school.name, # hack.. too lazy to change the WSDL
-         :page => quiz.layout?
-     }
-=begin
-     soap.body = { 
-       :quiz => {
-         #:id => "#{quiz.id}-#{Time.now.strftime('%H%M')}",
-         :id => "#{quiz.id}",
-         :teacher_id => quiz.teacher.school.name, # hack.. too lazy to change the WSDL
-         :page => quiz.layout?
-       },
-       :students => id_names 
-     }
-=end
-   end
-   head :ok
-    #head quiz.assign_to students
+    response = quiz.assign_to students
+    render :json => response, :status => (response[:manifest].blank? ? :bad_request : :ok)
   end
 
   def get_candidates
