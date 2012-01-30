@@ -11,5 +11,5 @@
 
 class CoursePack < ActiveRecord::Base
   belongs_to :student
-  belongs_to :course_pack 
+  belongs_to :testpaper 
 end
