@@ -1,4 +1,3 @@
 
-collection @questions => :questions 
-  attribute :id
-  attribute :path => :name
+object @quiz => :preview  
+  attributes :id, :num_pages

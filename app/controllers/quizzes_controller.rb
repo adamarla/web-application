@@ -63,8 +63,8 @@ class QuizzesController < ApplicationController
   end
 
   def preview
-    quiz = Quiz.find params[:id]
-    @questions = quiz.nil? ? [] : quiz.questions
+    @quiz = Quiz.find params[:id]
+    head :bad_request if @quiz.nil?
   end
 
 end
