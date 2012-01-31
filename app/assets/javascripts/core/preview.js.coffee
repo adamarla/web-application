@@ -3,6 +3,11 @@ jQuery ->
   
   window.preview = {
 
+    server : {
+      local : "http://localhost:8080",
+      remote : "http://109.74.201.62:8080"
+    },
+
     initialize : (here = '#wide-panel') ->
       here = if typeof here is 'string' then $(here) else here
 
@@ -28,21 +33,50 @@ jQuery ->
       return if p.parent().hasClass '.ppy-placeholder'
       p.popeye({ navigation : 'permanent', caption : 'permanent'})
 
-    loadJson : (json, key = 'question') ->
-      baseUrl = "https://github.com/abhinavc/RiddlersVault/raw/master"
+    loadJson : (json, source) ->
+      ###
+        This method will create the preview in all situations - 
+        when viewing candidate question in the 'vault', existing 
+        quizzes in the 'mint' or stored response scans in the 'locker/atm'
+
+        Needless to say, to keep the code here simple, the form of the passed 
+        json should be consistent across all situations. And so, this is
+        what it would be : 
+           json = { :preview => { :id => 45, :indices => [ list of numbers ] } }
+        where 'id' is whatever the preview is for and 'indices' are the list 
+        of object-identifiers that need to be picked up. All interpretation 
+        is context specific
+      ###
+      server = preview.server.local
+      switch source
+        when 'mint' then base = "#{server}/mint"
+        when 'vault' then base = "#{server}/vault"
+        else base = null
+
+      return false if base is null
+
       preview.initialize()
 
       target = $('#document-preview').find 'ul:first'
-      for record in json
-        data = record[key]
-        relPath = data.name # actually, its the path
-        folder = relPath.split('/').pop() # from X/Y/1_5, extract 1_5
-        full = "#{baseUrl}/#{relPath}/#{folder}-answer.jpeg"
-        thumb = "#{baseUrl}/#{relPath}/#{folder}-thumb.jpeg"
+      root = json.preview.id
+      indices = json.preview.indices
 
-        img = $("<li marker=#{data.id}><a href=#{full}><img src=#{thumb} alt=#{folder}/></a></li>")
+      for index in indices
+        switch source
+          when 'mint'
+            thumb = "#{server}/mint/#{root}/answer-key/preview/page-#{index}-thumbnail.jpeg"
+            full = "#{server}/mint/#{root}/answer-key/preview/page-#{index}-preview.jpeg"
+            alt = "##{index + 1}"
+          when 'vault'
+            thumb = "#{server}/vault/#{index}/#{index}-thumb.jpeg"
+            full = "#{server}/vault/#{index}/#{index}-answer.jpeg"
+            alt = "#{index}"
+          else break
+
+        img = $("<li marker=#{index}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
         img.appendTo target
 
+      # Now, call the preview
       preview.execute()
       return true
 

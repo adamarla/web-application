@@ -89,6 +89,6 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     switch matched.pop()
       when 'quiz/candidate_questions'
-        preview.loadJson json.candidates, 'candidate'
+        preview.loadJson json, 'vault'
       when 'quiz/preview'
-        preview.loadJson json.questions, 'question'
+        preview.loadJson json, 'mint'
