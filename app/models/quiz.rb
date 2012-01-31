@@ -84,6 +84,10 @@ class Quiz < ActiveRecord::Base
     subject = Subject.where(:id => self.subject_id).select(:name).first.name
     self.name = "#{self.klass}-#{subject} [Week #{Date.today.cweek}, #{Date.today.year}]" # Example : Week #14
   end 
+  
+  def num_pages
+    return QSelection.where(:quiz_id => self.id).order(:page).last.page
+  end
 
   def lay_it_out
     questions = Question.where(:id => self.question_ids).order(:full_page).order(:half_page)
