@@ -52,7 +52,7 @@ class QuizzesController < ApplicationController
 
     topics.each do |topic|
       difficulty = Syllabus.where(:course_id => course.id, :micro_topic_id => topic).select(:difficulty).first.difficulty
-      @questions |= Question.where(:micro_topic_id => topic, :difficulty => difficulty)
+      @questions |= Question.where(:micro_topic_id => topic, :difficulty => difficulty).order(:id).map(&:id)
     end 
     respond_with @questions
   end
