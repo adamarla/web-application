@@ -26,8 +26,8 @@ class Testpaper < ActiveRecord::Base
     end
 
     client = Savon::Client.new do
-      wsdl.document = "#{Gutenberg['wsdl']['local']}"
-      wsdl.endpoint = "#{Gutenberg['server']['local']}"
+      wsdl.document = "#{Gutenberg['wsdl']}"
+      wsdl.endpoint = "#{Gutenberg['server']}"
     end
     client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/assignQuiz"'
     response = client.request :wsdl, :assign_quiz do  

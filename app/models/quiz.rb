@@ -131,8 +131,8 @@ class Quiz < ActiveRecord::Base
     teacher = self.teacher 
 
     client = Savon::Client.new do
-      wsdl.document = "#{Gutenberg['wsdl']['local']}"
-      wsdl.endpoint = "#{Gutenberg['server']['local']}"
+      wsdl.document = "#{Gutenberg['wsdl']}"
+      wsdl.endpoint = "#{Gutenberg['server']}"
     end
     client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/buildQuiz"'
     response = client.request :wsdl, :build_quiz do  

@@ -6,4 +6,4 @@ Webapp::Application.initialize!
 
 
 # Using YAML to set application-wide variables - Railscast #85
-Gutenberg = YAML.load_file("#{Dir.pwd}/config/gutenberg.yml")
+Gutenberg = YAML.load_file("#{Dir.pwd}/config/gutenberg.yml")[Rails.env]
