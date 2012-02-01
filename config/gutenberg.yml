@@ -1,12 +1,17 @@
 
-development :
+operations : &tasks 
+  build_quiz : http://gutenberg/blocs/buildQuiz
+  assign_quiz : http://gutenberg/blocs/assignQuiz
+
+development : &non_production_settings
   server : http://localhost:8080/axis2/services/documentMaster
   wsdl : http://localhost:8080/axis2/services/documentMaster?wsdl
+  action : *tasks
 
 production : 
   server : http://109.74.201.62:8080/axis2/services/documentMaster
   wsdl : http://109.74.201.62:8080/axis2/services/documentMaster?wsdl
+  action : *tasks
 
-test : 
-  server : http://localhost:8080/axis2/services/documentMaster
-  wsdl : http://localhost:8080/axis2/services/documentMaster?wsdl
+test : *non_production_settings 
+

@@ -134,7 +134,9 @@ class Quiz < ActiveRecord::Base
       wsdl.document = "#{Gutenberg['wsdl']}"
       wsdl.endpoint = "#{Gutenberg['server']}"
     end
-    client.http.headers["SOAPAction"] = '"http://gutenberg/blocs/buildQuiz"'
+
+    client.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 
+
     response = client.request :wsdl, :build_quiz do  
       soap.body = { 
          :quiz => { :id => self.id },
