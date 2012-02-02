@@ -331,5 +331,37 @@ window.coreUtil = {
       return true
   } # end of namespace 'messaging'
 
+  accordion : {
+    build : (json, firstIter, secondHandle, secondIter) ->
+      ###
+        The passed JSON is a double-nested setructure with information
+        about the accordion headers and the content to go with each
+        However, the way the passed JSON is generated in Rails - using Rabl -
+        we need one handle to get header information, an iterator to
+        go over the headers, then a handle to the content for each header 
+        and an iterator to go over individual content elements
+      ###
+      accordion = $("<div class='as-accordion'/>")
+
+      for parentList in json
+        parent = parentList[firstIter]
+        family = parent[secondHandle]
+        continue if not family?
+
+        heading = $("<div class='accordion-heading' marker=#{parent.id}>#{parent.name}</div>")
+        heading.appendTo accordion
+        content = $("<div class='accordion-content'/>")
+        content.appendTo accordion
+
+        for children in family
+          child = children[secondIter]
+          item = $('#toolbox > .nail-file:first').clone()
+          nailFile.customize item, child
+          item.appendTo content
+          #alert "#{child.id} ---> #{parent.id}"
+
+      return accordion
+  }
+
 } # end of namespace 'coreUtil'
 
