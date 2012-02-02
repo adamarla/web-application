@@ -346,7 +346,7 @@ window.coreUtil = {
       for parentList in json
         parent = parentList[firstIter]
         family = parent[secondHandle]
-        continue if not family?
+        continue if not parent.id?
 
         heading = $("<div class='accordion-heading' marker=#{parent.id}>#{parent.name}</div>")
         heading.appendTo accordion
