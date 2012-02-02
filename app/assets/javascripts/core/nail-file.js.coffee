@@ -1,27 +1,23 @@
 
 window.nailFile = {
-  customize : (element, json, visibility = {anchor : true, button:false}) ->
+  customize : (element, json, anchor = true, buttons = []) ->
     element.removeClass 'blueprint'
     element.attr 'marker', "#{json.id}"
 
-    anchor = element.children('a:first')
-    if visibility.anchor is true
-      anchor.attr 'marker', "#{json.id}"
-      anchor.text "#{json.name}"
-      anchor.removeClass 'hidden'
-      anchor.prop 'disabled', false
-    else
-      anchor.addClass 'hidden'
-      anchor.prop 'disabled', true
+    if anchor is true
+      a = element.children('a:first')
+      a.removeClass 'hidden'
+      a.attr 'marker', "#{json.id}"
+      a.text "#{json.name}"
 
-    btn = element.children 'input[type="button"]:first'
-    if visibility.button is true
-      btn.attr 'marker', "#{json.id}"
-      btn.prop 'disabled', false
-      btn.removeClass 'hidden'
-    else
-      btn.prop 'disabled', true
-      btn.addClass 'hidden'
-
+    for btn,index in buttons
+      b = element.children('input[type="button"]').eq(index)
+      break if b.length is 0
+      b.removeClass 'hidden'
+      b.addClass "#{buttons[index]}"
+      b.prop 'disabled', false
+      b.val buttons[index]
+      b.attr 'marker', "#{json.id}"
     return true
+
 }

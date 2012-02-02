@@ -332,7 +332,7 @@ window.coreUtil = {
   } # end of namespace 'messaging'
 
   accordion : {
-    build : (json, firstIter, secondHandle, secondIter, nPreviewBtns = 0) ->
+    build : (json, firstIter, secondHandle, secondIter, sharedBtns = []) ->
       ### 
       Example :
         json = quizzes
@@ -354,10 +354,9 @@ window.coreUtil = {
         content.appendTo accordion
 
         # If some shared preview buttons are required, then add them now
-        for j in [0...nPreviewBtns]
-          btn = $('#toolbox > .nail-file:first').clone()
-          nailFile.customize btn, parent, { anchor : false, button : true }
-          btn.appendTo content
+        shared = $('#toolbox > .nail-file:first').clone()
+        nailFile.customize shared, parent, false, sharedBtns
+        shared.appendTo content
 
         for children in family
           child = children[secondIter]
