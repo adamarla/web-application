@@ -27,9 +27,10 @@ jQuery ->
         results.appendTo here
         results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
       when 'quizzes/list'
-        here = $('#quizzes-summary')
-        coreUtil.interface.displayJson json.quizzes, here, 'quiz', {radio:true, button:true}
-        swissKnife.setButtonCaption here, 'preview'
+        here = $('#quizzes-summary > .purgeable:first')
+        list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper'
+        list.appendTo here
+        list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
 
   .ajaxError (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/coverage/)
