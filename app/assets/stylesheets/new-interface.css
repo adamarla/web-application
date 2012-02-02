@@ -190,7 +190,7 @@ fieldset.inputs li.boolean.input {
 
 .nail-file {
   min-height : 20px ;
-  padding : 3px ;
+  padding-top : 3px ;
 }
 
 .nail-file > a {
