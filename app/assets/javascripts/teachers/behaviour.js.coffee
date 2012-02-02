@@ -59,7 +59,7 @@ jQuery ->
       $(this).val 'back'
       show = ['wide']
       hide = ['middle', 'right']
-      id = $(this).closest('.swiss-knife').attr('marker')
+      id = $(this).attr('marker')
       $.get "quiz/preview.json?id=#{id}"
       $(this).attr 'in-preview', 'yes'
 
