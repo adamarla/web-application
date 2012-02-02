@@ -1,3 +1,6 @@
 
 collection @quizzes => :quizzes
-  attributes :id, :name, :num_questions
+  attributes :id, :name
+  child :testpapers do 
+    attributes :id, :name
+  end 
