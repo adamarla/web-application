@@ -23,9 +23,11 @@ class QuizzesController < ApplicationController
         status = :bad_request
         @quiz.destroy
       else 
-        # In case of success, we really don't need the returned manifest. 
-        # Just the newly created Quiz's ID and name would suffice 
-        response = {:id => @quiz.id, :name => @quiz.name }
+        # The atm-key is the randomized access point to this quiz in mint/
+        atm_key = Quiz.extract_atm_key response[:manifest][:root]
+        @quiz.update_attribute :atm_key, atm_key
+
+        response = {:atm_key => atm_key, :name => @quiz.name }
         status = :ok
       end
       render :json => response, :status => status 
@@ -70,6 +72,20 @@ class QuizzesController < ApplicationController
   def preview
     @quiz = Quiz.find params[:id]
     head :bad_request if @quiz.nil?
+  end
+
+  def download
+    quiz = Quiz.find params[:id]
+    head :bad_request if quiz.nil? 
+    url = "#{Gutenberg['server']}/mint/#{quiz.id}/answer-key/downloads/answer-key.pdf"
+
+    redirect_to url, :method => :get
+    #send_file "#{Gutenberg['server']}/mint/#{quiz.id}/answer-key/downloads/answer-key.pdf",
+    #          :filename => "#{quiz.id}-answer-key.pdf", :type => "application/pdf",
+    #          :x_sendfile => true
+    #send_file "answer-key.pdf",
+    #          :filename => "#{quiz.id}-answer-key.pdf", :type => "application/pdf"
+    #head (status ? :ok : :bad_request)
   end
 
 end

@@ -10,6 +10,7 @@
 #  name          :string(255)
 #  klass         :integer
 #  subject_id    :integer
+#  atm_key       :integer
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -154,6 +155,11 @@ class Quiz < ActiveRecord::Base
     # 'printing-press' asking it to delete PDFs of testpapers generated
     # for this Quiz - both composite & per-student 
     return true
+  end
+
+  def self.extract_atm_key(manifest_root)
+    # manifest_root = http://< ... >:8080/atm/<atm-key>
+    return manifest_root.split('/').last.to_i
   end
 
 end # of class
