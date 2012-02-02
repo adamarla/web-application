@@ -1,6 +1,8 @@
 
 collection @quizzes => :quizzes
-  attributes :id, :name
-  child :testpapers do 
+  attribute :atm_key => :id 
+  attribute :name
+
+  child :testpapers => :testpapers do 
     attributes :id, :name
   end 
