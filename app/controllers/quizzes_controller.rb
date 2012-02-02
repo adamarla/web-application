@@ -22,6 +22,11 @@ class QuizzesController < ApplicationController
       if response[:manifest].blank? 
         status = :bad_request
         @quiz.destroy
+      else 
+        # In case of success, we really don't need the returned manifest. 
+        # Just the newly created Quiz's ID and name would suffice 
+        response = {:id => @quiz.id, :name => @quiz.name }
+        status = :ok
       end
       render :json => response, :status => status 
     else
