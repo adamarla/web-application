@@ -132,7 +132,7 @@ class Quiz < ActiveRecord::Base
 
     client = Savon::Client.new do
       wsdl.document = "#{Gutenberg['wsdl']}"
-      wsdl.endpoint = "#{Gutenberg['server']}"
+      wsdl.endpoint = "#{Gutenberg['axis2']}"
     end
 
     client.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 

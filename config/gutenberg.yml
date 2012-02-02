@@ -4,13 +4,15 @@ operations : &tasks
   assign_quiz : http://gutenberg/blocs/assignQuiz
 
 development : &non_production_settings
-  server : http://localhost:8080/axis2/services/documentMaster
+  axis2 : http://localhost:8080/axis2/services/documentMaster
   wsdl : http://localhost:8080/axis2/services/documentMaster?wsdl
+  server : http://localhost:8080
   action : *tasks
 
 production : 
-  server : http://109.74.201.62:8080/axis2/services/documentMaster
+  axis2 : http://109.74.201.62:8080/axis2/services/documentMaster
   wsdl : http://109.74.201.62:8080/axis2/services/documentMaster?wsdl
+  server : http://109.74.201.62:8080
   action : *tasks
 
 test : *non_production_settings 
