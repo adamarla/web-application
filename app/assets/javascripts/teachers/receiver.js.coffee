@@ -28,7 +28,7 @@ jQuery ->
         results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
       when 'quizzes/list'
         here = $('#quizzes-summary > .purgeable:first')
-        list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', 1
+        list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', ['preview','download']
         list.appendTo here
         list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
 
