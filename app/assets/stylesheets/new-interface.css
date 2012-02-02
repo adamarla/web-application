@@ -188,6 +188,17 @@ fieldset.inputs li.boolean.input {
   margin-left : 5px ;
 }
 
+.nail-file {
+  min-height : 20px ;
+  padding : 3px ;
+}
+
+.nail-file > a {
+  color : black ;
+  font-size : 12px ;
+  text-decoration : none ;
+}
+
 .radio-column, .checkbox-column, .line-item, .cbox-label-select, .swiss-knife { 
   font-size : 13px ; 
   text-transform : lowercase ;
