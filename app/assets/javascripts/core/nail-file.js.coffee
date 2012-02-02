@@ -5,10 +5,9 @@ window.nailFile = {
     element.attr 'marker', "#{json.id}"
 
     anchor = element.children('a:first')
-    anchor.attr 'marker', "#{json.id}"
-    anchor.text "#{json.name}"
-
     if visibility.anchor is true
+      anchor.attr 'marker', "#{json.id}"
+      anchor.text "#{json.name}"
       anchor.removeClass 'hidden'
       anchor.prop 'disabled', false
     else
