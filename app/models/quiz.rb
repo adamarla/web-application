@@ -83,7 +83,12 @@ class Quiz < ActiveRecord::Base
 
   def set_name
     subject = Subject.where(:id => self.subject_id).select(:name).first.name
-    self.name = "#{self.klass}-#{subject} [Week #{Date.today.cweek}, #{Date.today.year}]" # Example : Week #14
+
+    topics = MicroTopic.where(:id => self.micros).map(&:name).join(', ')
+    topics = topics.split[0...2].join(' ') # take the first 2 words only ...
+    topics += ' ...'
+
+    self.name = "#{self.klass}-#{subject}: #{topics}" 
   end 
   
   def num_pages
