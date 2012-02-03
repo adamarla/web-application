@@ -4,17 +4,24 @@ window.nailFile = {
     return if anchors.length is 0
 
     element.removeClass 'blueprint'
-    element.attr 'marker', "#{json.id}"
+
+    ###
+      Generally speaking, give preference to a randomized_id - if available -
+      over plain id
+    ###
+    id = if json.randomized_id? then json.randomized_id else json.id
+
+    element.attr 'marker', id
     server = preview.server.local
 
     for label, index in anchors
       anchor = element.children('a').eq(index)
       anchor.removeClass 'hidden'
-      anchor.attr 'marker', "#{json.id}"
+      anchor.attr 'marker', id
       switch label
         when 'quiz-download'
           anchor.text 'download'
-          anchor.attr 'href', "#{server}/atm/#{json.id}/answer-key/downloads/answer-key.pdf"
+          anchor.attr 'href', "#{server}/atm/#{id}/answer-key/downloads/answer-key.pdf"
           anchor.attr 'type', label
         when 'preview'
           anchor.text 'preview'

@@ -348,7 +348,13 @@ window.coreUtil = {
         family = parent[secondHandle]
         continue if not parent.id?
 
-        heading = $("<div class='accordion-heading' marker=#{parent.id}>#{parent.name}</div>")
+        ###
+          Generally speaking, give preference to a randomized_id - if available -
+          over plain id
+        ###
+        id = if parent.randomized_id? then parent.randomized_id else parent.id
+
+        heading = $("<div class='accordion-heading' marker=#{id}>#{parent.name}</div>")
         heading.appendTo accordion
         content = $("<div class='accordion-content'/>")
         content.appendTo accordion
