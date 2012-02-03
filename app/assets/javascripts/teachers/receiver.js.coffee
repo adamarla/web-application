@@ -92,4 +92,4 @@ jQuery ->
       when 'quiz/candidate_questions'
         preview.loadJson json, 'vault'
       when 'quiz/preview'
-        preview.loadJson json, 'mint'
+        preview.loadJson json, 'atm'

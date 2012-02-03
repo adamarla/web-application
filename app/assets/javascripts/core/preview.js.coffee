@@ -51,6 +51,7 @@ jQuery ->
       switch source
         when 'mint' then base = "#{server}/mint"
         when 'vault' then base = "#{server}/vault"
+        when 'atm' then base = "#{server}/atm"
         else base = null
 
       return false if base is null
@@ -63,13 +64,13 @@ jQuery ->
 
       for index in indices
         switch source
-          when 'mint'
-            thumb = "#{server}/mint/#{root}/answer-key/preview/page-#{index}-thumbnail.jpeg"
-            full = "#{server}/mint/#{root}/answer-key/preview/page-#{index}-preview.jpeg"
+          when 'atm'
+            thumb = "#{base}/#{root}/answer-key/preview/page-#{index}-thumbnail.jpeg"
+            full = "#{base}/#{root}/answer-key/preview/page-#{index}-preview.jpeg"
             alt = "##{index + 1}"
           when 'vault'
-            thumb = "#{server}/vault/#{index}/#{index}-thumb.jpeg"
-            full = "#{server}/vault/#{index}/#{index}-answer.jpeg"
+            thumb = "#{base}/#{index}/#{index}-thumb.jpeg"
+            full = "#{base}/#{index}/#{index}-answer.jpeg"
             alt = "#{index}"
           else break
 

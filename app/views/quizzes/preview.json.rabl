@@ -8,7 +8,7 @@
 # - even in cases where the list of indices is not a contiguous set of numbers
 
 object @quiz => :preview  
-  attribute :id
+  attribute :atm_key => :id
   code :indices do |m|
     [*0...m.num_pages]
   end

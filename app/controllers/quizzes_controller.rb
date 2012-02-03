@@ -66,11 +66,11 @@ class QuizzesController < ApplicationController
 
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
-    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).order(:klass)
+    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL').order(:klass)
   end
 
   def preview
-    @quiz = Quiz.find params[:id]
+    @quiz = Quiz.where(:atm_key => params[:id]).first
     head :bad_request if @quiz.nil?
   end
 
