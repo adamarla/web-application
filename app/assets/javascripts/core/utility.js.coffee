@@ -353,15 +353,15 @@ window.coreUtil = {
         content = $("<div class='accordion-content'/>")
         content.appendTo accordion
 
-        # If some shared preview buttons are required, then add them now
+        # Quiz-specific links - shared by all 
         shared = $('#toolbox > .nail-file:first').clone()
-        nailFile.customize shared, parent, false, sharedBtns
+        nailFile.customize shared, parent, ['preview', 'quiz-download']
         shared.appendTo content
 
         for children in family
           child = children[secondIter]
           item = $('#toolbox > .nail-file:first').clone()
-          nailFile.customize item, child
+          nailFile.customize item, child, ['test-download'], parent.id
           item.appendTo content
           #alert "#{child.id} ---> #{parent.id}"
 

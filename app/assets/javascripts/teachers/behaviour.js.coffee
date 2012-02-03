@@ -47,16 +47,15 @@ jQuery ->
     $.get "teachers/roster.json?id=#{teacher}"
     return true
 
-  # Clicking of preview button
-  $('#quizzes-summary').on 'click', 'input[type="button"]', ->
-    
+  # Clicking the 'preview' link in a nail-file 
+  $('#quizzes-summary').on 'click', 'a[type="preview"]', ->
     if $(this).attr('in-preview') is 'yes'
-      $(this).val 'preview'
+      $(this).text 'preview'
       show = ['middle', 'right']
       hide = ['wide']
       $(this).attr 'in-preview', 'no'
     else
-      $(this).val 'back'
+      $(this).text 'back'
       show = ['wide']
       hide = ['middle', 'right']
       id = $(this).attr('marker')
