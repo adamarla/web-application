@@ -193,10 +193,28 @@ fieldset.inputs li.boolean.input {
   padding-top : 3px ;
 }
 
-.nail-file > a {
-  color : black ;
-  font-size : 12px ;
+.nail-file > a[type] {
+  font-size : 13px ;
   text-decoration : none ;
+  -moz-border-radius : 4px ;
+  border-radius : 4px ;
+  padding : 6px ;
+  font-weight : bold ;
+  color : white ;
+  min-width : 70px ;
+  text-align : center ;
+}
+
+.nail-file > a[type="quiz-download"] {
+  background-color : #6ca7ab ;
+}
+
+.nail-file > a[type="test-download"] {
+  border : 1px solid orange ;
+}
+
+.nail-file > a[type="preview"] {
+  background-color : #7ea974 ; 
 }
 
 .radio-column, .checkbox-column, .line-item, .cbox-label-select, .swiss-knife { 
