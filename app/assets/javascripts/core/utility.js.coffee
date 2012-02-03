@@ -355,7 +355,7 @@ window.coreUtil = {
 
         # Quiz-specific links - shared by all 
         shared = $('#toolbox > .nail-file:first').clone()
-        nailFile.customize shared, parent, ['preview', 'quiz-download']
+        nailFile.customize shared, parent, sharedBtns
         shared.appendTo content
 
         for children in family
