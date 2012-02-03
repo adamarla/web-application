@@ -162,4 +162,9 @@ class Quiz < ActiveRecord::Base
     return manifest_root.split('/').last.to_i
   end
 
+  # Returns the list of micro-topics touched upon in this Quiz - as an array of indices
+  def micros
+    self.questions.map{|q| q.micro_topic_id}.uniq
+  end
+
 end # of class
