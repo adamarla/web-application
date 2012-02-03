@@ -361,7 +361,7 @@ window.coreUtil = {
         for children in family
           child = children[secondIter]
           item = $('#toolbox > .nail-file:first').clone()
-          nailFile.customize item, child, ['test-download'], parent.id
+          nailFile.customize item, child, ['test-download'], parent
           item.appendTo content
           #alert "#{child.id} ---> #{parent.id}"
 

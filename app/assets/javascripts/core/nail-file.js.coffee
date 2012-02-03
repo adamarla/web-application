@@ -1,6 +1,6 @@
 
 window.nailFile = {
-  customize : (element, json, anchors = [], qualifier = null) ->
+  customize : (element, json, anchors = [], parentJson = null) ->
     return if anchors.length is 0
 
     element.removeClass 'blueprint'
@@ -22,7 +22,7 @@ window.nailFile = {
           anchor.attr 'type', label
         when 'test-download'
           anchor.text "#{json.name}"
-          anchor.attr 'href', "#{server}/atm/#{qualifier}/#{json.id}/downloads/assignment-#{qualifier}-#{json.id}.pdf"
+          anchor.attr 'href', "#{server}/atm/#{parentJson.randomized_id}/#{json.id}/downloads/assignment-#{parentJson.id}-#{json.id}.pdf"
           anchor.attr 'type', label
         else
           anchor.attr 'href', '#'

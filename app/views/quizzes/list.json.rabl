@@ -1,7 +1,7 @@
 
 collection @quizzes => :quizzes
-  attribute :atm_key => :id 
-  attribute :name
+  attributes :id, :name 
+  attribute :atm_key => :randomized_id 
 
   child :testpapers => :testpapers do 
     attributes :id, :name
