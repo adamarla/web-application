@@ -37,7 +37,7 @@ class QuizzesController < ApplicationController
   end 
 
   def assign_to
-    quiz = Quiz.find params[:id]
+    quiz = Quiz.where(:atm_key => params[:id]).first 
     head :bad_request if quiz.nil?
     teacher = quiz.teacher 
 
