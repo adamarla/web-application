@@ -15,6 +15,8 @@
 #  testpaper_id   :integer
 #
 
+# Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#
+
 class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
