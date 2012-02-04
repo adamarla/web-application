@@ -5,7 +5,6 @@
 #  id             :integer         not null, primary key
 #  student_id     :integer
 #  grade_id       :integer
-#  scanned_image  :string(255)
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
@@ -13,6 +12,7 @@
 #  q_selection_id :integer
 #  marks          :float
 #  testpaper_id   :integer
+#  scan_available :boolean         default(FALSE)
 #
 
 require 'test_helper'
