@@ -12,7 +12,7 @@ window.nailFile = {
     id = if json.randomized_id? then json.randomized_id else json.id
 
     element.attr 'marker', id
-    server = preview.server.local
+    server = gutenberg.server
 
     for label, index in anchors
       anchor = element.children('a').eq(index)

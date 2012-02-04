@@ -3,11 +3,6 @@ jQuery ->
   
   window.preview = {
 
-    server : {
-      local : "http://localhost:8080",
-      remote : "http://109.74.201.62:8080"
-    },
-
     initialize : (here = '#wide-panel') ->
       here = if typeof here is 'string' then $(here) else here
 
@@ -47,7 +42,7 @@ jQuery ->
         of object-identifiers that need to be picked up. All interpretation 
         is context specific
       ###
-      server = preview.server.local
+      server = gutenberg.server
       switch source
         when 'mint' then base = "#{server}/mint"
         when 'vault' then base = "#{server}/vault"
