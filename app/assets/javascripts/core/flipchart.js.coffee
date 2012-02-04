@@ -66,12 +66,12 @@ window.flipchart = {
     return true
 
   activate : (root, index) ->
-    return false if index < 0 or index >= root.attr('length')
+    return null if index < 0 or index >= root.attr('length')
     current = root.attr 'current'
     root.children().eq(current).addClass 'hidden'
     root.children().eq(index).removeClass 'hidden'
     root.attr 'current', index
-    return true
+    return root.children().eq(index)
 
   last : (root) ->
     root = if typeof root is 'string' then $(root) else root
