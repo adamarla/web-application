@@ -8,4 +8,5 @@
 #   inflect.irregular 'person', 'people'
 #   inflect.uncountable %w( fish sheep )
    inflect.irregular 'syllabus', 'syllabi'
+   inflect.irregular 'pending', 'pending'
  end

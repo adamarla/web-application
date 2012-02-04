@@ -2,9 +2,9 @@
 jQuery ->
   
   ###
-    Stylize the #tbd-preview-button
+    Stylize the #pending-preview-button
   ###
-  $('#tbd-preview-button').button()
+  $('#pending-preview-button').button()
 
   ###
     #new-examiner-link
@@ -19,10 +19,10 @@ jQuery ->
       when 'schools-link' then $.get 'schools/list'
       when 'boards-link' then $.get 'boards/summary'
       when 'courses-link' then $.get 'courses/list'
-      when 'tbd-link'
+      when 'pending-link'
         $.get 'questions/list.json'
         $.get 'macros/list.json'
-        $('#tbd-preview-button').val 'preview'
+        $('#pending-preview-button').val 'preview'
     return true
 
   ###
@@ -103,7 +103,7 @@ jQuery ->
     # Find the open tab in accordion
     
     # ok,ok .. I got chammak challo running in my head
-    akon = $('#tbds-summary').find '.samurai-armory:first'
+    akon = $('#pending-summary').find '.samurai-armory:first'
     openTab = akon.accordion('option', 'active')
 
     header = akon.find('.accordion-heading').eq(openTab)
@@ -113,10 +113,10 @@ jQuery ->
     panel.children('input[type="hidden"]').first().val marker # the ninja field
 
   ###
-    What to do when a 'preview' button in '#tbds-summary' is clicked
+    What to do when a 'preview' button in '#pending-summary' is clicked
   ###
 
-  $('#tbd-preview-button').click ->
+  $('#pending-preview-button').click ->
     showWide = $('#wide-panel').hasClass 'hidden'
     for type in ['middle', 'right']
       panel = $("##{type}-panel")

@@ -45,7 +45,7 @@ jQuery ->
           1: {0:'',1:1,2:2,3:3,4:4,5:5,6:6} # marks
         }
 
-        katana.lineUp '#tbds-summary .samurai-garrison:first', json.questions, 'question',
+        katana.lineUp '#pending-summary .samurai-garrison:first', json.questions, 'question',
         ['mcq', 'half_page', 'full_page'], ['difficulty', 'marks'], [], selections
 
   ###

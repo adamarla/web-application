@@ -1,5 +1,5 @@
 
-#tbds-summary.selection.full-width.left
+#pending-summary.selection.full-width.left
   %legend
     %span.target= "un-tagged questions"
     %span.operation= "select, then tag" 
@@ -12,6 +12,6 @@
   = form_tag questions_tag_path, :method => :put, :remote => true do |f|
     .controls
       = submit_tag :update 
-      %input#tbd-preview-button{:type => :button, :value => "preview"}
+      %input#pending-preview-button{:type => :button, :value => "preview"}
 
     .samurai-garrison.purgeable
