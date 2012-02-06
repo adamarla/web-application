@@ -4,6 +4,19 @@ body {
   width : 1020px ;
 } 
 
+.left { 
+  float : left ;
+}
+
+.middle { 
+  float : left ; 
+  margin-left : 30% ;
+} 
+
+.right { 
+  float : right ;
+} 
+
 #sign-in-form { 
   width : 400px ;
   margin-left : 45% ;
@@ -356,5 +369,20 @@ legend > a {
   margin-bottom : 6px ;
 } 
 
+.flipchart > .navigation {
+  padding : 6px ;
+  border-bottom : 2px solid gray ;
+  margin-bottom : 6px ;
+  min-height : 20px ;
+} 
+
+.flipchart a { 
+  font-size : 13px ; 
+  text-decoration : none ;
+}
+
+.flipchart > .pages a {
+  width : 90% ;
+} 
 
 
