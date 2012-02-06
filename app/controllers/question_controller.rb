@@ -2,6 +2,7 @@ class QuestionController < ApplicationController
   before_filter :authenticate_account!, :except => [:insert_new]
   respond_to :json
 
+=begin
   def insert_new
     # As of now, this action can be initiated only by the POST 
     # request sent by 'examiner' script. And the POST request sends 
@@ -24,6 +25,7 @@ class QuestionController < ApplicationController
     end 
     render :nothing => true, :status => status
   end
+=end
 
   def list
     me = current_account.role

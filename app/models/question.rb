@@ -3,7 +3,7 @@
 # Table name: questions
 #
 #  id             :integer         not null, primary key
-#  path           :string(255)
+#  uid            :string(255)
 #  attempts       :integer         default(0)
 #  created_at     :datetime
 #  updated_at     :datetime
@@ -45,17 +45,14 @@ class Question < ActiveRecord::Base
   before_save :set_mcq_if_multi_correct
   before_save :set_space_requirement
 
-  validates :path, :uniqueness => true
+  # UID is an alphanumeric string representing the millisecond time at
+  # which the folder was created in the 'vault'
+  validates :uid, :uniqueness => true
   validates :marks, :numericality => {:only_integer => true, :greater_than => 0,
                                       :less_than_or_equal_to => 6}, :unless => :new_record?
 
   validates :num_parts, :numericality => {:only_integer => true, :greater_than => 0}, :if => :multi_part?
 
-  # 'path' is relative to some root and should be of the form 'dir/dir/something'
-  validates :path, :presence => true, 
-            :format => { :with => /\A[\/\w\d]+\z/, 
-                         :message => "Should be a valid UNIX path" }
-  
   belongs_to :examiner
   belongs_to :micro_topic
   belongs_to :teacher # non-nil if question came from a teacher

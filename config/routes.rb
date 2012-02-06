@@ -1,5 +1,5 @@
 Webapp::Application.routes.draw do
-  post "question/insert_new"
+  # post "question/insert_new"
 
   devise_for :accounts do 
     get '/login' => 'devise/sessions#new'
