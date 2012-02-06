@@ -22,6 +22,7 @@ buildHierarchy = (selector) ->
   return start
 
 idInMacroJson = (id, json) ->
+  return json if typeof json is 'boolean'
   selected = false
   for record in json
     data = record.macro
@@ -140,7 +141,10 @@ window.coreUtil = {
       return true
 
     redistribute : (json) ->
-      # First, bring everything back into macro & micro master lists
+      # Cool trick : If you know that everything is to go in the 
+      # selected(deselected) list, then simply pass json = true(false)
+
+      # That said, first bring everything back into macro & micro master lists
       coreUtil.mnmlists.restore()
 
       # Now, based on the JSON, sort into selected and deselected lists
