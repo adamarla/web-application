@@ -69,4 +69,8 @@ class QuestionController < ApplicationController
     head question.update_attributes(options) ? :ok : :bad_request
   end
 
+  def preview
+    @question = Question.find params[:id] 
+  end
+
 end # of class

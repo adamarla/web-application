@@ -94,7 +94,6 @@ jQuery ->
     trojan,nay, ninja field when a micro-topic - in #micro-topics-for-tagging - 
     is selected. Needless to say, you do this for the accordion that 
     is 'active'/'open'
-  ###
 
   $('#micro-tagging-options').on 'click', 'input[type="radio"]', ->
     marker = $(this).attr 'marker'
@@ -111,10 +110,10 @@ jQuery ->
 
     header.children().eq(2).text label # the .footnote element in header
     panel.children('input[type="hidden"]').first().val marker # the ninja field
+  ###
 
   ###
     What to do when a 'preview' button in '#pending-summary' is clicked
-  ###
 
   $('#pending-preview-button').click ->
     showWide = $('#wide-panel').hasClass 'hidden'
@@ -133,6 +132,7 @@ jQuery ->
       preview = $('#toolbox').find '.ppy-placeholder:first' # pre-generated
       preview.appendTo '#wide-panel'
       $(this).val 'back'
+  ###
 
   ###########################################################################
   # AJAX requests triggered by other actions 
@@ -198,12 +198,14 @@ jQuery ->
 
   ###
     When an untagged question in #examiner-untagged is selected, then set the 
-    hidden <input> field in #misc-traits > form with the selected question's id 
+    hidden <input> field in #misc-traits > form with the selected question's id.
+    Also, load the preview
   ###
   $('#examiner-untagged').on 'click', 'input[type="radio"]', ->
     id = $(this).attr 'marker'
     target = $('#misc-traits input#misc_id').first() # formtastic generated id
     target.val id
+    $.get "question/preview.json?id=#{id}"
     return true
 
   ###
