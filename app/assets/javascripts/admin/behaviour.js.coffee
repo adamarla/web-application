@@ -22,7 +22,7 @@ jQuery ->
       when 'pending-link'
         $.get 'questions/list.json'
         $.get 'macros/list.json'
-        $('#pending-preview-button').val 'preview'
+        #$('#pending-preview-button').val 'preview'
     return true
 
   ###
@@ -195,6 +195,27 @@ jQuery ->
     On load, auto-click the first main-link > a that has attribute default='true'
   ###
   $('#main-links a[default="true"]:first').click()
+
+  ###
+    When an untagged question in #examiner-untagged is selected, then set the 
+    hidden <input> field in #misc-traits > form with the selected question's id 
+  ###
+  $('#examiner-untagged').on 'click', 'input[type="radio"]', ->
+    id = $(this).attr 'marker'
+    target = $('#misc-traits input#misc_id').first() # formtastic generated id
+    target.val id
+    return true
+
+  ###
+    When a micro-topic in #micro-selection is selected, then set the 
+    hidden <input> field in #misc-traits > form with the selected topic's id
+  ###
+  $('#micro-selection').on 'click', 'input[type="radio"]', ->
+    id = $(this).attr 'marker'
+    target = $('#misc-traits input#misc_micro_topic_id').first() # formtastic generated id
+    target.val id
+    return true
+
 
     
 

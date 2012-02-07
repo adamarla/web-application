@@ -44,8 +44,9 @@ Webapp::Application.routes.draw do
   match 'topics/list' => 'micro_topics#list', :via => :get
 
   # Question
+  resource :question, :only => [:create, :update], :controller => :question
   match 'questions/list' => 'question#list', :via => :get
-  match 'questions/tag' => 'question#mass_update', :via => :put
+  match 'question/preview' => 'question#preview', :via => :get
 
   # Quiz
   resource :quiz, :only => [:show, :create]
