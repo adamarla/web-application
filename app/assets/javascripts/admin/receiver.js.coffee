@@ -28,7 +28,8 @@ jQuery ->
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/schools\/list/) or
               settings.url.match(/courses\/list/) or
-              settings.url.match(/questions\/list/)
+              settings.url.match(/questions\/list/) or
+              settings.url.match(/macros\/list/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -39,14 +40,15 @@ jQuery ->
         coreUtil.interface.displayJson json.courses, '#courses-summary', 'course', {radio:true, button:true}
         swissKnife.setButtonCaption '#courses-summary', 'edit'
       when 'questions/list'
-        preview.loadJson json.questions
-        selections = {
-          0: {1:'introductory', 2:'intermediate', 3:'advanced'}, #topic difficulty
-          1: {0:'',1:1,2:2,3:3,4:4,5:5,6:6} # marks
-        }
+        flipchart.initialize '#pending-summary'
+        coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
+      when 'macros/list'
+        coreUtil.mnmlists.redistribute true
+        coreUtil.mnmlists.customize 'macro'
+        coreUtil.mnmlists.customize 'micro'
 
-        katana.lineUp '#pending-summary .samurai-garrison:first', json.questions, 'question',
-        ['mcq', 'half_page', 'full_page'], ['difficulty', 'marks'], [], selections
+        coreUtil.mnmlists.attach 'macro', '#macro-selection'
+        coreUtil.mnmlists.attach 'micro', '#micro-selection'
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
@@ -56,8 +58,7 @@ jQuery ->
     matched = settings.url.match(/yardstick\.json/) or
               settings.url.match(/teachers\/list/) or
               settings.url.match(/school\/sektions/) or
-              settings.url.match(/course\/coverage/) or
-              settings.url.match(/macros\/list/)
+              settings.url.match(/course\/coverage/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -86,16 +87,6 @@ jQuery ->
         $('#macro-deselected-list').insertAfter target.children('legend').eq(1)
 
         adminUtil.buildSyllabiEditForm json.macros
-      when 'macros/list'
-        coreUtil.mnmlists.redistribute json.macros
-        coreUtil.mnmlists.customize 'macro'
-        coreUtil.mnmlists.customize 'micro'
-        
-        target = $('#macro-tagging-options')
-        $('#macro-selected-list').insertAfter target.children('legend').eq(0)
-
-        target = $('#micro-tagging-options')
-        $('#micro-selected-list').insertAfter target.children('legend').eq(0)
 
   ###
     AJAX successes the right-panel is supposed to respond to.

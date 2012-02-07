@@ -1,19 +1,18 @@
 
-#pending-summary.selection.full-width.left
-  %legend
-    %span.target= "un-tagged questions"
-    %span.operation= "select, then tag" 
-  -# We need a buffer layer between here and the element on which 
-  -# jQuery.accordion() will be called. Otherwise, the attributes
-  -# .accordion() sets on the element will interfere with accordion 
-  -# rendering in subsequent runs. Therefore, we have .samurai-garrison.
-  -# Within it would be .samurai-armory (added in JS) and within that 
-  -# would be .katanas
-  = form_tag questions_tag_path, :method => :put, :remote => true do |f|
-    .controls
-      = submit_tag :update 
-      %input#pending-preview-button{:type => :button, :value => "preview"}
-    .samurai-garrison.purgeable
+#pending-summary.flipchart
+  %ul
+    %li
+      %a{ :href => '#examiner-untagged' }= "Pending"
+    %li
+      %a{ :href => '#macro-selection' }= "Macros"
+    %li
+      %a{ :href => '#micro-selection' }= "Micros"
+    %li
+      %a{ :href => '#misc-traits' }= "Misc"
+  #examiner-untagged
+  #macro-selection
+  #micro-selection
+  #misc-traits
 
 #pending-controls.top-panel-controls
   %ul.no-bullets

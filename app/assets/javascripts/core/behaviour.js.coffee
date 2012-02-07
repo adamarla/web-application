@@ -274,5 +274,11 @@ jQuery ->
     panel = $(this).closest('.panel').first()
     panel.attr 'marker', id
     return true
-
     
+  ###
+    Initialize all flipcharts 
+  ###
+
+  for chart in $('.flipchart')
+    flipchart.initialize $(chart)
+
