@@ -13,7 +13,6 @@ form.formtastic fieldset.inputs p.inline-hints {
 form.formtastic fieldset.inputs label.label { 
   font-size : 13px ;
   text-transform : lowercase ;
-  font-weight : bold ;
 } 
 
 fieldset.inputs textarea, fieldset.inputs input[type="text"] {

@@ -385,4 +385,8 @@ legend > a {
   width : 90% ;
 } 
 
+.flipchart form.formtastic li.select > label {
+  width : 50% ;
+}
+
 
