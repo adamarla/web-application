@@ -34,6 +34,15 @@ jQuery ->
     return true
 
   ###
+    When a radio-button within a flipchart is clicked 
+  ###
+  $('.flipchart').on 'click', 'input[type="radio"]', ->
+    chart = $(this).closest '.ui-tabs-panel'
+    id = $(this).attr 'marker'
+    switch chart.attr 'id'
+      when 'pending-quizzes' then $.get "examiner/pending_pages.json?id=#{id}"
+
+  ###
     Edit <form> actions
   ###
   adminForms = '#edit-school, #new-school, #new-teacher, #new-student, #student-list, 
