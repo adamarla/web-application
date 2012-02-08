@@ -369,24 +369,18 @@ legend > a {
   margin-bottom : 6px ;
 } 
 
-.flipchart > .navigation {
-  padding : 6px ;
-  border-bottom : 2px solid gray ;
-  margin-bottom : 6px ;
-  min-height : 20px ;
-} 
-
 .flipchart a { 
   font-size : 13px ; 
   text-decoration : none ;
 }
 
-.flipchart > .pages a {
-  width : 90% ;
-} 
-
 .flipchart form.formtastic li.select > label {
   width : 50% ;
+}
+
+.flipchart .action-panel { 
+  min-height : 20px ;
+  margin-bottom : 20px ;
 }
 
 
