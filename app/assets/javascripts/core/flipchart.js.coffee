@@ -49,6 +49,6 @@ jQuery ->
     ###
     current = chart.tabs 'option', 'selected'
     chart.attr 'marker', $(this).attr 'marker' if current is 0
-    flipchart.next chart
+    flipchart.next chart unless $(this).hasClass 'accordion-heading' # let the accordion expand
     event.stopPropagation() # stop unnecessary bubbling up to the containing .panel
     return true
