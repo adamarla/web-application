@@ -378,9 +378,24 @@ legend > a {
   width : 50% ;
 }
 
-.flipchart .action-panel { 
+.flipchart .submit-buttons {
   min-height : 20px ;
   margin-bottom : 20px ;
+}
+
+form.formtastic .submit-buttons > input {
+  font-family : inherit ;
+  font-size : 12px ;
+  font-weight : bold ;
+  color : white ; 
+  background-color : #6ca7ab ;
+  border-radius : 4px ;
+  -moz-border-radius : 4px ;
+  padding : 6px ;
+  text-align : center ;
+  text-decoration : none ;
+  border : none ;
+  min-width : 50px ;
 }
 
 
