@@ -18,7 +18,7 @@ jQuery ->
     styled buttons are too big for that panel
   ###
 
-  $('#toolbox > div:not([class~="top-panel-controls"]) form input[type="submit"]:not([class~="no-style"])').button()
+  #$('#toolbox > div:not([class~="top-panel-controls"]) form input[type="submit"]:not([class~="no-style"])').button()
 
   ###
     Any form for creating or editing a record that needs to be opened as a dialog
@@ -160,7 +160,6 @@ jQuery ->
     unless marker is null
       panel = $(this).closest '.panel'
       if panel.length isnt 0
-        panelId = panel.attr 'id'
         panel.attr 'marker', marker
     return true
 
@@ -247,7 +246,7 @@ jQuery ->
     go from unchecked to checked or checked to unchecked
   ###
 
-  $('form').on 'click', 'input[type="button"][class~="check-all"]', ->
+  $('form').on 'click', 'input.check-all[type]', ->
     form = $(this).closest 'form'
     return if form.length is 0
     check = if $(this).attr('all-checked') is 'yes'then false else true # toggle
@@ -262,19 +261,7 @@ jQuery ->
 
     coreUtil.forms.checkAllIn form, next
     return true
- 
-  ###
-    If a panel has an accordion within it, then on clicking an accordion-heading
-    to open a leaf, the panel's marker attribute should be set to be = marker(header) 
-  ###
-  $('.panel:not([id="control-panel"])').on 'click', '.accordion-heading', ->
-    id = $(this).attr 'marker'
-    return if not id?
 
-    panel = $(this).closest('.panel').first()
-    panel.attr 'marker', id
-    return true
-    
   ###
     Initialize all flipcharts 
   ###

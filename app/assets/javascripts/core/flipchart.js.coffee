@@ -40,7 +40,15 @@ window.flipchart = {
 
 jQuery ->
   
-  $('.flipchart').on 'click', 'input[type="radio"]', ->
+  $('.flipchart').on 'click', 'input[type="radio"], .accordion-heading', (event) ->
     chart = $(this).closest '.flipchart'
+    ###
+      The first tab is special because it marks the beginning of the 'diving-in'
+      process. Whatever is selected in the first tab is, therefore, important 
+      and usually the only thing we want to track
+    ###
+    current = chart.tabs 'option', 'selected'
+    chart.attr 'marker', $(this).attr 'marker' if current is 0
     flipchart.next chart
+    event.stopPropagation() # stop unnecessary bubbling up to the containing .panel
     return true
