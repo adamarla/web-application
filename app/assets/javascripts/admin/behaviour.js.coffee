@@ -96,51 +96,6 @@ jQuery ->
     id = ui.item.attr 'marker'
     type = if parent.hasClass 'selected' then 'deselected' else 'selected'
     adminUtil.mnmToggle type, id, {select:true}
-    
-  ###
-    When tagging questions, update the accordion-heading and fill in the 
-    trojan,nay, ninja field when a micro-topic - in #micro-topics-for-tagging - 
-    is selected. Needless to say, you do this for the accordion that 
-    is 'active'/'open'
-
-  $('#micro-tagging-options').on 'click', 'input[type="radio"]', ->
-    marker = $(this).attr 'marker'
-    label = $(this).siblings('div.label').first().text()
-
-    # Find the open tab in accordion
-    
-    # ok,ok .. I got chammak challo running in my head
-    akon = $('#pending-summary').find '.samurai-armory:first'
-    openTab = akon.accordion('option', 'active')
-
-    header = akon.find('.accordion-heading').eq(openTab)
-    panel = akon.find('.accordion-content').eq(openTab)
-
-    header.children().eq(2).text label # the .footnote element in header
-    panel.children('input[type="hidden"]').first().val marker # the ninja field
-  ###
-
-  ###
-    What to do when a 'preview' button in '#pending-summary' is clicked
-
-  $('#pending-preview-button').click ->
-    showWide = $('#wide-panel').hasClass 'hidden'
-    for type in ['middle', 'right']
-      panel = $("##{type}-panel")
-      if showWide then panel.addClass('hidden') else panel.removeClass('hidden')
-
-    if showWide is false
-      preview = $('#wide-panel').children().first() # should be a .ppy-placeholder
-      preview = preview.detach()
-      preview.appendTo '#toolbox'
-      $('#wide-panel').addClass 'hidden'
-      $(this).val 'preview'
-    else
-      $('#wide-panel').removeClass 'hidden'
-      preview = $('#toolbox').find '.ppy-placeholder:first' # pre-generated
-      preview.appendTo '#wide-panel'
-      $(this).val 'back'
-  ###
 
   ###########################################################################
   # AJAX requests triggered by other actions 

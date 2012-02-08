@@ -120,16 +120,6 @@ jQuery ->
           for e in $(macro).children()
             swissKnife.customize $(e), {radio:true}, true
 
-  ###
-    AJAX successes the wide-panel is supposed to respond to.
-
-  $('#wide-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/course\.json/)
-    return if matched is null
-
-    json = $.parseJSON xhr.responseText
-    switch matched.pop()
-  ###
 
   ###
     Miscellaneous event captures 
