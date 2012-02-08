@@ -36,6 +36,21 @@ window.flipchart = {
     root.tabs 'enable', next
     root.tabs 'select', next
     return true
+
+  resetNext : (root) ->
+    root = if typeof root is 'string' then $(root) else root
+    return false if not root.hasClass 'flipchart'
+
+    next = root.tabs('option', 'selected') + 1
+    last = root.tabs 'length'
+    return if next is last
+
+    next = root.children('.ui-tabs-panel').eq(next)
+    for type in ['radio', 'checkbox']
+      for obj in next.find "input[type=#{type}]"
+        $(obj).prop 'checked', false
+    return true
+    
 }
 
 jQuery ->
@@ -50,5 +65,6 @@ jQuery ->
     current = chart.tabs 'option', 'selected'
     chart.attr 'marker', $(this).attr 'marker' if current is 0
     flipchart.next chart unless $(this).hasClass 'accordion-heading' # let the accordion expand
+    flipchart.resetNext chart
     event.stopPropagation() # stop unnecessary bubbling up to the containing .panel
     return true
