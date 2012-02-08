@@ -21,4 +21,9 @@ class ExaminersController < ApplicationController
     @quizzes = Examiner.pending_quizzes
   end
 
+  def pending_pages
+    quiz = Quiz.find params[:id]
+    @pages = Examiner.pages quiz, :pending
+  end
+
 end

@@ -30,7 +30,8 @@ jQuery ->
               settings.url.match(/courses\/list/) or
               settings.url.match(/questions\/list/) or
               settings.url.match(/macros\/list/) or
-              settings.url.match(/examiner\/pending_quizzes/)
+              settings.url.match(/examiner\/pending_quizzes/) or
+              settings.url.match(/examiner\/pending_pages/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -52,6 +53,8 @@ jQuery ->
         coreUtil.mnmlists.attach 'micro', '#micro-selection'
       when 'examiner/pending_quizzes'
         coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
+      when 'examiner/pending_pages'
+        coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
 
   ###
     AJAX successes the middle-panel is supposed to respond to.

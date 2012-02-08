@@ -25,6 +25,7 @@ Webapp::Application.routes.draw do
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'examiner/pending_quizzes' => 'examiners#pending_quizzes', :via => :get
+  match 'examiner/pending_pages' => 'examiners#pending_pages', :via => :get
 
   # Grade
   resource :grade, :only => [:update]

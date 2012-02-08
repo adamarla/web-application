@@ -32,6 +32,16 @@ class Examiner < ActiveRecord::Base
     @quizzes = Quiz.where :id => quiz_ids
   end
 
+  def self.pages( quiz = nil, type = :pending ) # other option is :graded
+    # Find all the pages from passed quiz assigned to this particular examiner
+    return [] if quiz.nil?
+
+    responses = GradedResponse.in_quiz(quiz.id)
+    responses = (type == :pending) ? responses.ungraded : responses.where('grade_id IS NOT NULL')
+
+    @pages = QSelection.where(:id => responses.map(&:q_selection_id).uniq).map(&:page).uniq
+  end
+
 
   private 
     def set_secret_key 
