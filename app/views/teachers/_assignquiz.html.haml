@@ -1,0 +1,20 @@
+
+#quizzes-summary.flipchart
+  %ul
+    %li
+      %a{ :href => '#past-quizzes' }= "quizzes"
+    %li
+      %a{ :href => '#sektion-list' }= "sections"
+    %li
+      %a{ :href => '#student-list' }= "students"
+    %li
+      %a{ :href => '#assign-quiz-receipt' }= "fyi"
+  #past-quizzes
+  #sektion-list
+  #student-list
+    = semantic_form_for :students, :remote => true do |f|
+      .submit-buttons.full-width
+        %input{:type => :button, :class => 'middle check-all', :value => 'select all'}
+        = submit_tag 'assign', :class => 'right'
+      .purgeable
+  #assign-quiz-receipt

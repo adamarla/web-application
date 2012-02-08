@@ -70,13 +70,15 @@ jQuery ->
       panel.addClass 'hidden'
     return true
 
-  # Assigning a Quiz to students selected in #enrolled-student-list 
-  $('#enrolled-student-list > form:first').submit ->
+  # Assigning a Quiz to students selected in #student-list
+  $('#student-list > form:first').submit ->
     ###
       This thing will need the quiz's ID. And that is available 
       as 'marker' on the 'side' panel
     ###
-    quiz = $('#side-panel').attr 'marker'
+    chart = $(this).closest '.flipchart'
+    return false if chart.length is 0
+    quiz = chart.attr 'marker'
     return if not quiz?
 
     coreUtil.forms.modifyAction $(this), "quiz/assign.json?id=#{quiz}", 'put'
@@ -84,7 +86,7 @@ jQuery ->
 
 
   # Load the student list into #enrolled-student-list on section selection 
-  $('#teacher-roster').on 'click', 'input[type="radio"]', ->
+  $('#sektion-list').on 'click', 'input[type="radio"]', ->
     section = $(this).attr 'marker'
     return if not section?
     $.get "sektions/students.json?id=#{section}"
@@ -119,5 +121,17 @@ jQuery ->
     On load, auto-click the first main-link > a that has attribute default='true'
   ###
   $('#main-links a[default="true"]:first').click()
+
+  ###
+    If an accordion is rendered within a flipchart page, then opening the 
+    accordion by clicking on an accordion-header should enable the next tab. 
+    This is being done first within #past-quizzes when assigning a quiz. Not 
+    sure if this behaviour is desired everytime and should hence be in core 
+  ###
+  $('#past-quizzes').on 'click', '.accordion-heading', ->
+    chart = $(this).closest '.flipchart'
+    chart.tabs 'enable', 1
+    $.get "quiz/preview.json?id=#{$(this).attr 'marker'}"
+    return true
 
 

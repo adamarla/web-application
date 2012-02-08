@@ -7,7 +7,9 @@ jQuery ->
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/coverage/) or
-              settings.url.match(/quizzes\/list/)
+              settings.url.match(/quizzes\/list/) or
+              settings.url.match(/teachers\/roster/) or
+              settings.url.match(/sektions\/students/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -27,11 +29,16 @@ jQuery ->
         results.appendTo here
         results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
       when 'quizzes/list'
-        here = $('#quizzes-summary > .purgeable:first')
-        list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper',
-                                        ['preview', 'quiz-download']
+        here = $('#past-quizzes')
+        list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', ['quiz-download']
         list.appendTo here
         list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+      when 'teachers/roster'
+        here = $('#sektion-list')
+        coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}
+      when 'sektions/students'
+        here = $('#student-list')
+        coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
 
   .ajaxError (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/coverage/)
@@ -46,36 +53,4 @@ jQuery ->
       when 'teacher/coverage'
         here = $('#quiz-builder-form')
         coreUtil.messaging.inlineError here, 'we apologize ...', "the requisite course isn't currently present in our database"
-
-  ########################################################
-  #  MIDDLE PANEL
-  ########################################################
-
-  $('#middle-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/teachers\/roster/)
-    return if matched is null
-
-    json = $.parseJSON xhr.responseText
-    switch matched.pop()
-      when 'teachers/roster'
-        here = $('#teacher-roster')
-        coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}
-
-    return true
-
-  ########################################################
-  #  RIGHT PANEL
-  ########################################################
-
-  $('#right-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/sektions\/students/)
-    return if matched is null
-
-    json = $.parseJSON xhr.responseText
-    switch matched.pop()
-      when 'sektions/students'
-        here = $('#enrolled-student-list > form')
-        coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
-
-    return true
 
