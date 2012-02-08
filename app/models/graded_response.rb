@@ -29,12 +29,12 @@ class GradedResponse < ActiveRecord::Base
 
   def self.on_page(page)
     # Returns all respones on passed page of all Quizzes
-    where(:q_selection_id => QSelection.where(:page => page).map(&:id)) 
+    where(:q_selection_id => QSelection.where(:page => page)
   end
 
   def self.in_quiz(id)
     # Responses to any question in a Quiz
-    where(:q_selection_id => QSelection.where(:quiz_id => id).map(&:id)) 
+    where(:q_selection_id => QSelection.where(:quiz_id => id)
   end
 
   def self.of_student(id)
@@ -42,7 +42,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def self.to_question(id)
-    where(:q_selection_id => QSelection.where(:question_id => id).map(&:id))
+    where(:q_selection_id => QSelection.where(:question_id => id)
   end
 
   def self.unassigned
