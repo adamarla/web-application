@@ -26,6 +26,13 @@ class Examiner < ActiveRecord::Base
     return "#{self.first_name} #{self.last_name} (#{self.account.username})"
   end 
 
+  def self.pending_quizzes
+    pending = GradedResponse.ungraded.map(&:q_selection_id).uniq
+    quiz_ids = QSelection.where(:id => pending).map(&:quiz_id).uniq
+    @quizzes = Quiz.where :id => quiz_ids
+  end
+
+
   private 
     def set_secret_key 
       x = rand(36**16).to_s(36).rjust(16,"0")
