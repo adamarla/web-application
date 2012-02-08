@@ -198,7 +198,7 @@ window.coreUtil = {
       # JSON data is always purgeable. And so, it is always inserted within
       # the first .purgeable of $(where)
       where = if typeof where is 'string' then $(where) else where
-      target = where.children '.purgeable:first'
+      target = where.find '.purgeable:first'
       target = if target.length is 0 then where else target
 
       return if target is null
