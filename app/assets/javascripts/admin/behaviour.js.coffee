@@ -22,7 +22,15 @@ jQuery ->
       when 'pending-link'
         $.get 'questions/list.json'
         $.get 'macros/list.json'
-        #$('#pending-preview-button').val 'preview'
+    return true
+
+  ###
+    On minor-links click
+  ###
+  $('#control-panel').on 'click', '#minor-links a', ->
+    id = $(this).attr 'id'
+    switch id
+      when 'grading-link' then $.get 'examiner/pending_quizzes'
     return true
 
   ###
