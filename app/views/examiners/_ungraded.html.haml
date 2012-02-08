@@ -1,5 +1,13 @@
 
-#ungraded-responses
-  %legend
-    %span.target= "need grading"
-    %span.operation= "click to preview, (1-9) to grade"
+#ungraded-responses.flipchart
+  %ul
+    %li
+      %a{ :href => '#pending-quizzes'}= 'quizzes'
+    %li
+      %a{ :href => '#pending-pages' }= 'by page'
+    %li
+      %a{ :href => '#pending-students' }= 'per student'
+  #pending-quizzes
+  #pending-pages
+  #pending-students
+
