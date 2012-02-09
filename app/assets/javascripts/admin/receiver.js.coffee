@@ -42,7 +42,7 @@ jQuery ->
         coreUtil.interface.displayJson json.courses, '#courses-summary', 'course', {radio:true, button:true}
         swissKnife.setButtonCaption '#courses-summary', 'edit'
       when 'questions/list'
-        flipchart.initialize '#pending-summary'
+        # flipchart initialized in core/behaviour 
         coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
       when 'macros/list'
         coreUtil.mnmlists.redistribute true

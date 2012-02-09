@@ -2,11 +2,6 @@
 jQuery ->
   
   ###
-    Stylize the #pending-preview-button
-  ###
-  $('#pending-preview-button').button()
-
-  ###
     #new-examiner-link
   ###
 
@@ -19,7 +14,7 @@ jQuery ->
       when 'schools-link' then $.get 'schools/list'
       when 'boards-link' then $.get 'boards/summary'
       when 'courses-link' then $.get 'courses/list'
-      when 'pending-link'
+      when 'workbench-link'
         $.get 'questions/list.json'
         $.get 'macros/list.json'
     return true
