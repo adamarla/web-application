@@ -30,6 +30,7 @@ jQuery ->
         results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
       when 'quizzes/list'
         here = $('#past-quizzes')
+        here.empty()
         list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', ['quiz-download']
         list.appendTo here
         list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
