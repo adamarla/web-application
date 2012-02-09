@@ -42,6 +42,29 @@ class Examiner < ActiveRecord::Base
     @pages = QSelection.where(:id => responses.map(&:q_selection_id).uniq).map(&:page).uniq
   end
 
+  def block_db_slots
+    slots = []
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['create_question']}" 
+
+    [*1...5].each do |index|
+      response = SavonClient.request :wsdl, :create_question do
+        soap.body = "#{self.id}"
+      end
+      manifest = response[:create_question_response][:manifest]
+      unless manifest.nil?
+        root = manifest[:root] 
+        uid = root.split('/').last
+        slots << uid
+      end
+    end # of looping
+
+    # Now, make the DB entries for the slots that were created 
+    slots.each do |s|
+      q = Question.new :uid => s, :examiner_id => self.id 
+      slots.delete s unless q.save
+    end
+    return slots
+  end
 
   private 
     def set_secret_key 

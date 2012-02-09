@@ -17,6 +17,15 @@ body {
   float : right ;
 } 
 
+li.code {
+  font-size : 12px ;
+  font-family : monospace ;
+}
+
+.new-entity, .update-entity { 
+  font-size : 13px ;
+} 
+
 #sign-in-form { 
   width : 400px ;
   margin-left : 45% ;

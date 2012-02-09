@@ -185,6 +185,26 @@ jQuery ->
     target.val id
     return true
 
+  ###
+    Pop up a modal dialog on #db-slots-link click
+  ###
+  $('#control-panel').on 'click', '#db-slots-link', ->
+    $('#block-db-slots').dialog 'open'
 
-    
+  ###
+    Close the #block-db-slots dialog if the 'cancel' button is clicked
+  ###
+  $('#block-db-slots').on 'click', '#btn-cancel', (event) ->
+    event.stopPropagation()
+    $('#block-db-slots').dialog 'close'
+    return true
+
+  ###
+    Issue request for new slots if #btn-submit in #block-db-slots is clicked 
+  ###
+  $('#block-db-slots').on 'click', '#btn-submit', (event) ->
+    event.stopPropagation()
+    examiner_id = $('#control-panel').attr 'marker'
+    $.get "examiner/block_db_slots.json?id=#{examiner_id}"
+    return true
 

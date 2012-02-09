@@ -47,10 +47,7 @@ class Question < ActiveRecord::Base
 
   # UID is an alphanumeric string representing the millisecond time at
   # which the folder was created in the 'vault'
-  validates :uid, :uniqueness => true
-  validates :marks, :numericality => {:only_integer => true, :greater_than => 0,
-                                      :less_than_or_equal_to => 6}, :unless => :new_record?
-
+  validates :uid, :uniqueness => true, :presence => true
   validates :num_parts, :numericality => {:only_integer => true, :greater_than => 0}, :if => :multi_part?
 
   belongs_to :examiner

@@ -26,4 +26,10 @@ class ExaminersController < ApplicationController
     @pages = Examiner.pages quiz, :pending
   end
 
+  def block_db_slots
+    examiner = Examiner.find params[:id]
+    slots = examiner.block_db_slots
+    render :json => {:slots => slots}, :status => :ok
+  end
+
 end
