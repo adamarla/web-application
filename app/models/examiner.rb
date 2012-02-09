@@ -46,7 +46,7 @@ class Examiner < ActiveRecord::Base
     slots = []
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['create_question']}" 
 
-    [*1...5].each do |index|
+    [*1...6].each do |index|
       response = SavonClient.request :wsdl, :create_question do
         soap.body = "#{self.id}"
       end
@@ -56,6 +56,7 @@ class Examiner < ActiveRecord::Base
         uid = root.split('/').last
         slots << uid
       end
+      sleep 1.0/2 # sleep for 500ms
     end # of looping
 
     # Now, make the DB entries for the slots that were created 
