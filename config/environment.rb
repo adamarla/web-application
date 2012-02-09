@@ -7,3 +7,8 @@ Webapp::Application.initialize!
 
 # Using YAML to set application-wide variables - Railscast #85
 Gutenberg = YAML.load_file("#{Dir.pwd}/config/gutenberg.yml")[Rails.env]
+
+SavonClient = Savon::Client.new do
+  wsdl.document = "#{Gutenberg['wsdl']}"
+  wsdl.endpoint = "#{Gutenberg['axis2']}"
+end
