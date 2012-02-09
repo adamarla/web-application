@@ -25,14 +25,9 @@ class Testpaper < ActiveRecord::Base
       names.push({ :id => s.id, :name => s.name })
     end
 
-    client = Savon::Client.new do
-      wsdl.document = "#{Gutenberg['wsdl']}"
-      wsdl.endpoint = "#{Gutenberg['axis2']}"
-    end
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
 
-    client.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
-
-    response = client.request :wsdl, :assign_quiz do  
+    response = SavonClient.request :wsdl, :assign_quiz do  
       soap.body = { 
         :quiz => { :id => self.quiz_id, :name => self.quiz.teacher.school.name },
         :instance => { :id => self.id, :name => self.name },

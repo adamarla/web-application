@@ -136,14 +136,9 @@ class Quiz < ActiveRecord::Base
   def compile_tex
     teacher = self.teacher 
 
-    client = Savon::Client.new do
-      wsdl.document = "#{Gutenberg['wsdl']}"
-      wsdl.endpoint = "#{Gutenberg['axis2']}"
-    end
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 
 
-    client.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 
-
-    response = client.request :wsdl, :build_quiz do  
+    response = SavonClient.request :wsdl, :build_quiz do  
       soap.body = { 
          :quiz => { :id => self.id },
          :teacher => { :id => teacher.id, :name => teacher.print_name },
