@@ -205,6 +205,8 @@ jQuery ->
   $('#block-db-slots').on 'click', '#btn-submit', (event) ->
     event.stopPropagation()
     examiner_id = $('#control-panel').attr 'marker'
+    $('#block-db-slots').dialog 'close'
+    $('#block-db-operation-summary').dialog 'open'
     $.get "examiner/block_db_slots.json?id=#{examiner_id}"
     return true
 

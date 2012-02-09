@@ -154,3 +154,17 @@ jQuery ->
         coreUtil.forms.modifyAction form, "course.json?id=#{json.course.id}", 'put'
         $('#edit-course').dialog('open')
     return true
+
+  $('#block-db-operation-summary').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/examiner\/block_db_slots/)
+    return if matched is null
+
+    e.stopPropagation()
+    json = $.parseJSON xhr.responseText
+    target = $('#created-slots')
+    target.hide()
+    for slot in json.slots
+      $("<li class='code'>#{slot}</li>").appendTo target
+
+    target.fadeIn('slow')
+    return true

@@ -1,21 +1,31 @@
 
 #block-db-slots.new-entity
-  %h4 know this..
+  %h4 Right ..
   %p 
     You are about to create 5 slots - for 5 questions - in the database.
     The whole process intentionally takes upto 5 seconds because the 
     computer waits a bit between each request for a new slot
-  %h4 thereafter ..
+  %h4 Thereafter ..
   %p 
-    Once the slots are made, bring-in the newly created folders into your machine 
-    by issuing the following commands:
-    %ol
-      %li.code git fetch upstream
-      %li.code git merge upstream/master
-  %h4 if you don't want to proceed ...
+    \... bring-in the newly created folders into your machine
+    from the git repository, fill in the question and then commit 
+    the output of the make command back to the repo
+  %h4 However, ...
   %p
-    \... then click 'Cancel' below. However, once the process starts, do not 
-    close the dialog until it finishes. You can wait for 5 seconds, right?
+    \... if you don't want to proceed, then click 'Cancel' below.
+    But once the process starts, please do not 
+    close the dialog until it finishes. Surely you can wait for 5 seconds, right?
   .submit-buttons
     %input.left#btn-cancel{ :type => :button, :value => "Cancel"}
     %input.right#btn-submit{ :type => :button, :value => "Go ahead.." }
+
+#block-db-operation-summary.new-entity
+  %h4 Created in vault ....
+  %ol#created-slots
+  %h4 Don't forget to ...
+  %p
+    \... bring the above folders into your local working area. Issue the
+    following commands (in order) to do the same: 
+  %ol
+    %li.code git fetch upstream
+    %li.code git merge upstream/master
