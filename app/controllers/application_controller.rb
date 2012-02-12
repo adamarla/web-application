@@ -9,4 +9,8 @@ class ApplicationController < ActionController::Base
     @current_ability ||= AccountAbility.new(current_account)
   end 
 
+  def ping
+    render :json => {:deployment => Rails.env}
+  end
+
 end
