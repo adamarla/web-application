@@ -11,7 +11,9 @@
 
     - yardsticks.each_with_index do |y,j|
       %div{ :id => "ys-#{j}" }
+        %div.header
+          %a.edit{ :href => '#', :marker => "#{y.id}" } Edit
         %h4 What does it mean?
-        %p.code= y.meaning
+        %p= y.meaning
         %h4 For example ...
-        %p.code= y.example
+        %p= y.example

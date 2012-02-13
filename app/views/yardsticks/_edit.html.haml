@@ -1,12 +1,14 @@
 
-#edit-yardstick.clear-after-submit
-  %legend
-    %span.target= "Yardstick"
-    %span.operation= "Quick Edit"
+#edit-yardstick.update-entity.clear-after-submit.close-on-submit
   = semantic_form_for :yardstick, :remote => true, :url => '/yardstick', :method => :put do |f| 
     = f.inputs do 
-      = f.input :description, :as => :text, :input_html => {:rows => 7, :marker => :description} 
+      = f.input :annotation, :as => :text, :input_html => {:rows => 1, :marker => :annotation} 
+      = f.input :meaning, :as => :text, :input_html => {:rows => 7, :marker => :meaning} 
+      = f.input :example, :as => :text, :input_html => {:rows => 7, :columns => 60, :marker => :example} 
       = f.input :mcq, :label => "MCQ ?", :as => :boolean ,:input_html => {:marker => :mcq} 
+      = f.input :default_allotment, :label => 'assign', :as => :select, 
+                :collection => [*0..20].map {|x| x*5}, :include_blank => false,
+                :input_html => {:marker => :default_allotment, :class => :right}
 
     .controls
       = submit_tag 'update yardstick'
