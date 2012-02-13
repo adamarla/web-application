@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120213065558) do
+ActiveRecord::Schema.define(:version => 20120213075933) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -221,12 +221,13 @@ ActiveRecord::Schema.define(:version => 20120213065558) do
   end
 
   create_table "yardsticks", :force => true do |t|
-    t.string   "description"
+    t.string   "example"
     t.integer  "default_allotment"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "mcq",               :default => false
     t.string   "annotation"
+    t.string   "meaning"
   end
 
 end
