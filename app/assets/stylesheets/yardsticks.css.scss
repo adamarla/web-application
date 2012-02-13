@@ -60,13 +60,34 @@ $red:red ;
       font-size: 14px ;
       color: lighten(black, 40%) ;
       font-weight: bold ;
+      padding-bottom: 8px ;
+      border-bottom: 1px solid #6ca7ab ;
     }
 
     p {
       text-align: justify ;
+      font-size: 12px ;
     }
 
-  }
+    div.header {
+      min-height: 30px ;
+      a {
+        text-decoration:none ;
+        font-size: 12px ;
+        font-weight: bold ;
+        float: left ;
+      }
+      h4 {
+        float: right ; 
+        margin-right: 20% ;
+        border: {
+          radius: 8px ;
+          color: gray ;
+          style: 2px solid ;
+        } 
+      } 
+    } 
+  } // end of <div>
 
   #tab-ys-0 {
     background-color: lighten($orange, 20%)
