@@ -1,0 +1,110 @@
+
+$blue:#495c5e ;
+$orange:#f48d07 ;
+$green:#165008 ;
+$purple:#3a4d4e ;
+$black:black ;
+$red:red ;
+
+#yardsticks-summary {
+  .accordion-heading {
+    color: white ;
+    font-weight: bold ;
+    min-height: 40px ; 
+    width: 80% ;
+
+    border: {
+      bottom: 1px solid #6ca7ab ; 
+    } 
+
+    .label {
+      border: {
+        radius: 5px ;
+        width: 2px ;
+        style: none ;
+      }
+      padding: {
+        top: 2px ;
+        bottom: 2px ;
+        left: 6px ;
+        right: 6px ;
+      }
+      margin: {
+        top: 5px ;
+      }
+      font-weight: bold ;
+    }
+
+    .label.left {
+      margin-left: 10% ;
+    }
+
+    .label.middle {
+      border: {
+        style:none ;
+      }
+      font-size:12px ;
+      text-transform: lowercase ;
+      margin-left: 5% ;
+      font-weight: normal ;
+    } 
+
+    .label.right {
+      margin-right: 10% ;
+      border: {
+        style: none ;
+      }
+    }
+  }
+
+  .accordion-content { 
+    h4 {
+      font-size: 13px ;
+      color : black ;
+    }
+  } 
+
+  #ys-0 {
+    color: lighten($orange, 20%)
+  }
+  
+  #ys-1 {
+    color: lighten($orange, 10%);
+  }
+
+  #ys-2 {
+    color: lighten($orange, 10%);
+  }
+
+  #ys-3 {
+    color: saturate($orange, 10%);
+  }
+
+  #ys-4 {
+    color: saturate($orange, 20%);
+  }
+
+  #ys-5 {
+    color: lighten($black, 70%);
+  }
+
+  #ys-6 {
+    color: lighten($black, 60%);
+  }
+  #ys-7 {
+    color: lighten($black, 50%);
+  }
+  #ys-8 {
+    color: lighten($black, 40%);
+  }
+  #ys-9 {
+    color: lighten($black, 30%);
+  }
+  #ys-A {
+    color: lighten($black, 20%);
+  }
+  #ys-B {
+    color: lighten($black, 10%);
+  }
+
+}

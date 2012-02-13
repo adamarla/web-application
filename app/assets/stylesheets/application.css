@@ -1,5 +1,6 @@
 /*
 *= require new-interface
+*= require yardsticks
 *= require tweaks 
 *= require jquery-custom-theme/styling 
 *= require_directory ../../../vendor/assets/stylesheets/popeye 
