@@ -22,7 +22,6 @@ fieldset.inputs textarea, fieldset.inputs input[type="text"] {
   background : inherit ; 
   font-style : sans-serif;
   padding-left : 5px ;
-  max-width : 67% ;
   -moz-border-radius : 3px ;
   border-radius : 3px ;
   padding-bottom : 4px ;

@@ -17,7 +17,7 @@ body {
   float : right ;
 } 
 
-li.code {
+li.code, p.code {
   font-size : 12px ;
   font-family : monospace ;
 }
