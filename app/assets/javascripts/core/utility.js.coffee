@@ -253,7 +253,7 @@ window.coreUtil = {
       for input in form.find 'input[marker],textarea[marker],select[marker]'
         marker = $(input).attr 'marker'
         if marker?
-          value = data[marker]
+          value = (if data[marker]? then data[marker] else "")
           $(input).val value
           if $(input).attr('type') is 'checkbox' then $(input).prop 'checked', value
       return true
