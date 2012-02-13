@@ -8,6 +8,7 @@
 #  created_at        :datetime
 #  updated_at        :datetime
 #  mcq               :boolean         default(FALSE)
+#  annotation        :string(255)
 #
 
 #     __:belongs_to___     __:belongs_to___  

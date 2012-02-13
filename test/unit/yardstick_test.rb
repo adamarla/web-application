@@ -8,6 +8,7 @@
 #  created_at        :datetime
 #  updated_at        :datetime
 #  mcq               :boolean         default(FALSE)
+#  annotation        :string(255)
 #
 
 require 'test_helper'
