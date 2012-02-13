@@ -27,21 +27,6 @@
   padding-left : 25px ;
 } 
 
-
-/*
-#side-panel a {
-  text-decoration : none ;
-  color : white ;
-  margin-left : 20px ;
-  line-height : 5 ;
-  padding-bottom : 4px ;
-} 
-*/
-
-#side-panel li:not([id='login-anchor']) {
-  margin-bottom : 20px ;
-} 
-
 #side-panel a.first-element {
   margin-left : 5px ;
 } 
