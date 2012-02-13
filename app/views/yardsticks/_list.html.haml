@@ -1,0 +1,30 @@
+
+- yardsticks = Yardstick.order(:default_allotment).order(:mcq)
+
+#yardsticks-summary.left
+  .vertical-tabs 
+    %ul
+      - yardsticks.each_with_index do |y,j|
+        - j_as_hex = j.to_s(16).upcase
+        %li
+          %a{ :id => "tab-ys-#{j_as_hex}", :href => "#ys-#{j}", :marker => "#{y.id}" }= "#{j_as_hex}"
+
+    - yardsticks.each_with_index do |y,j|
+      %div{ :id => "ys-#{j}" }
+        %h4 What does it mean?
+        %p.code= y.meaning
+        %h4 For example ...
+        %p.code= y.example
+-#  .accordion
+-#    - yardsticks.each_with_index do |y,j|
+-#      %div.accordion-heading{ :id => "ys-#{j_as_hex}", :marker => "#{y.id}" }
+-#        .label.left  #{j_as_hex}
+-#        .label.middle= y.annotation.blank? ? ' ' : y.annotation 
+-#        .label.right #{y.default_allotment}%
+-#      %div.accordion-content{ :id => "ys-#{j_as_hex}-d" }
+-#        = link_to 'Edit', '#', :class => :edit, :marker => "#{y.id}" 
+-#        %h4 What does it mean?
+-#        %p.code= "#{y.meaning.blank? ? "" : y.meaning}"
+-#        %h4 For example ...
+-#        %p.code= "#{y.example unless y.example.blank?}"
+

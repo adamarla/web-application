@@ -1,6 +1,7 @@
 
 jQuery ->
   
+  $('#scan-loader-link').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
   ###
     #new-examiner-link
   ###
@@ -127,10 +128,6 @@ jQuery ->
     marker = $(this).attr 'marker'
     $.get "course/coverage.json?id=#{marker}"
 
-  $('#yardsticks-summary').on 'click', 'input[type="radio"]', ->
-    marker = $(this).attr 'marker'
-    $.get "yardstick.json?id=#{marker}"
-
   $('#schools-summary').on 'click', 'input[type="radio"]', ->
     # What AJAX to issue depends on which minor-link has been selected
     lastMinor = coreUtil.interface.lastClicked 'minor'
@@ -209,4 +206,5 @@ jQuery ->
     $('#block-db-operation-summary').dialog 'open'
     $.get "examiner/block_db_slots.json?id=#{examiner_id}"
     return true
+
 

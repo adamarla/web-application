@@ -269,3 +269,6 @@ jQuery ->
   for chart in $('.flipchart')
     flipchart.initialize $(chart)
 
+  for verticalTabs in $('.vertical-tabs')
+    $(verticalTabs).tabs()
+

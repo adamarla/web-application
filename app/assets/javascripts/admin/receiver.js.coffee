@@ -82,8 +82,11 @@ jQuery ->
         else
           coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
       when 'yardstick.json'
+        ###
         coreUtil.dom.unsetCheckboxesIn '#edit-yardstick'
         coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick
+        $('#edit-yardstick').dialog 'open'
+        ###
       when 'course/coverage'
         coreUtil.mnmlists.redistribute json.macros
         coreUtil.mnmlists.customize 'macro'

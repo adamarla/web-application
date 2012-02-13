@@ -6,105 +6,135 @@ $purple:#3a4d4e ;
 $black:black ;
 $red:red ;
 
-#yardsticks-summary {
-  .accordion-heading {
-    color: white ;
-    font-weight: bold ;
-    min-height: 40px ; 
-    width: 80% ;
+// Vertical jQuery tabs via CSS 
+// Reference: http://keith-wood.name/uiTabs.html#tabs-nobg
 
-    border: {
-      bottom: 1px solid #6ca7ab ; 
-    } 
+.vertical-tabs {
+  position: relative ;
+  padding-left: 6.5em ;
 
-    .label {
+  .ui-tabs-nav {
+    position: absolute ;
+    left: 0.25em ;
+    top: 0.25em ;
+    bottom: 0.25em ;
+    width: 10% ;
+    padding: 0.2em 0 0.2em 0.2em ;
+
+    li {
+      right: 1px ;
       border: {
-        radius: 5px ;
-        width: 2px ;
-        style: none ;
+        right: none ;
+        bottom-width: 1px !important ;
+        radius: 4px 0px 0px 4px ;
       }
-      padding: {
-        top: 2px ;
-        bottom: 2px ;
-        left: 6px ;
-        right: 6px ;
+      -moz-border-radius: 4px 0px 0px 4px ;
+      -webkit-border-radius: 4px 0px 0px 4px ;
+      overflow: hidden ;
+      margin-bottom: 5px ;
+
+      a {
+        color: white ;
       }
-      margin: {
-        top: 5px ;
-      }
+    }
+
+    li.ui-tabs-selected {
+      border-right: 1px solid transparent ;
+    }
+
+    a {
+      float: right ;
+      width: 10% ;
+      text-align: right ;
+    }
+
+  }
+
+  > div {
+    height: 35em ;
+    float: right ;
+    margin-left: 20% ;
+    padding-right: 0px ;
+
+    h4 { 
+      font-size: 14px ;
+      color: lighten(black, 40%) ;
       font-weight: bold ;
     }
 
-    .label.left {
-      margin-left: 10% ;
+    p {
+      text-align: justify ;
     }
 
-    .label.middle {
-      border: {
-        style:none ;
-      }
-      font-size:12px ;
-      text-transform: lowercase ;
-      margin-left: 5% ;
-      font-weight: normal ;
-    } 
-
-    .label.right {
-      margin-right: 10% ;
-      border: {
-        style: none ;
-      }
-    }
   }
 
-  .accordion-content { 
-    h4 {
-      font-size: 13px ;
-      color : black ;
-    }
-  } 
-
-  #ys-0 {
-    color: lighten($orange, 20%)
+  #tab-ys-0 {
+    background-color: lighten($orange, 20%)
   }
   
-  #ys-1 {
-    color: lighten($orange, 10%);
+  #tab-ys-1 {
+    background-color: lighten($orange, 10%);
   }
 
-  #ys-2 {
-    color: lighten($orange, 10%);
+  #tab-ys-2 {
+    background-color: lighten($orange, 10%);
   }
 
-  #ys-3 {
-    color: saturate($orange, 10%);
+  #tab-ys-3 {
+    background-color: saturate($orange, 10%);
   }
 
-  #ys-4 {
-    color: saturate($orange, 20%);
+  #tab-ys-4 {
+    background-color: saturate($orange, 20%);
   }
 
-  #ys-5 {
-    color: lighten($black, 70%);
+  #tab-ys-5 {
+    background-color: lighten($black, 70%);
   }
 
-  #ys-6 {
-    color: lighten($black, 60%);
+  #tab-ys-6 {
+    background-color: lighten($black, 60%);
   }
-  #ys-7 {
-    color: lighten($black, 50%);
+  #tab-ys-7 {
+    background-color: lighten($black, 50%);
   }
-  #ys-8 {
-    color: lighten($black, 40%);
+  #tab-ys-8 {
+    background-color: lighten($black, 40%);
   }
-  #ys-9 {
-    color: lighten($black, 30%);
+  #tab-ys-9 {
+    background-color: lighten($black, 30%);
   }
-  #ys-A {
-    color: lighten($black, 20%);
+  #tab-ys-A {
+    background-color: lighten($black, 20%);
   }
-  #ys-B {
-    color: lighten($black, 10%);
+  #tab-ys-B {
+    background-color: lighten($black, 10%);
+  }
+  #tab-ys-C {
+    background-color: lighten($green, 10%);
   }
 
+}
+
+#edit-yardstick { 
+  form.formtastic {
+    li.text {
+      label {
+        width: 90% ;
+      }
+      textarea {
+        width: 90% ;
+        border:none ;
+        border: {
+          top: 2px solid gray ;
+          radius: 0px ;
+        }
+        font: {
+          family: monospace ;
+          size: 11px ;
+        } 
+
+      }
+    }
+  }
 }

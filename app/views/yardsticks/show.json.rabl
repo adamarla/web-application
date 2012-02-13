@@ -1,3 +1,3 @@
 
 object @yardstick 
-  attributes :description, :mcq, :id,:default_allotment
+  attributes :mcq, :annotation, :meaning, :example, :id

@@ -10,15 +10,6 @@ $(function() {
     $('#new-course').dialog({ title : 'Add Course'}).dialog('open') ;
   }) ;
 
-  /*
-    When a radio-button in #yardsticks-summary is clicked, it should change the 
-    'action' attribute of the edit form that opens alongside
-  */ 
-
-  $('#yardsticks-summary').on('click', 'input[type="radio"]', function() {
-    var marker = $(this).attr('marker') ;
-  }) ;
-
   $('#edit-course-link').click( function() { 
      // If #edit-course-link is visible, then it means #side-panel is showing
      // #courses-summary. And if a radio button has been selected in the latter, 
