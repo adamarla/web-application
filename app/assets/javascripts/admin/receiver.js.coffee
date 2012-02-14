@@ -106,8 +106,10 @@ jQuery ->
               settings.url.match(/macros\/list/) or
               settings.url.match(/school\.json/)
     return if matched is null
-
+  
+    e.stopPropagation()
     json = $.parseJSON xhr.responseText
+
     switch matched.pop()
       when 'teachers/roster'
         here = $('#edit-student-klass-mapping').children 'form:first'
@@ -124,6 +126,21 @@ jQuery ->
           for e in $(macro).children()
             swissKnife.customize $(e), {radio:true}, true
 
+  ###
+    AJAX successes the right-panel is supposed to respond to.
+  ###
+
+  $('#wide-panel').ajaxSuccess (e,xhr,settings) ->
+    matched = settings.url.match(/yardsticks\/preview/)
+
+    return if matched is null
+
+    e.stopPropagation()
+    json = $.parseJSON xhr.responseText
+
+    switch matched.pop()
+      when 'yardsticks/preview'
+        preview.loadJson json, 'frontdesk-yardsticks'
 
   ###
     Miscellaneous event captures 

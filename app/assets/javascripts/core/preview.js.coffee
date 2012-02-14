@@ -47,6 +47,7 @@ jQuery ->
         when 'mint' then base = "#{server}/mint"
         when 'vault' then base = "#{server}/vault"
         when 'atm' then base = "#{server}/atm"
+        when 'frontdesk-yardsticks' then base = "#{server}/front-desk/previews/yardsticks"
         else base = null
 
       return false if base is null
@@ -67,6 +68,10 @@ jQuery ->
             thumb = "#{base}/#{index}/#{index}-thumb.jpeg"
             full = "#{base}/#{index}/#{index}-answer.jpeg"
             alt = "#{index}"
+          when 'frontdesk-yardsticks'
+            thumb = "#{base}/#{index}/thumbnail.jpeg"
+            full = "#{base}/#{index}/preview.jpeg"
+            alt = "preview"
           else break
 
         img = $("<li marker=#{index}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")

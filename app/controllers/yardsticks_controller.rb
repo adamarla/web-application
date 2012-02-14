@@ -36,4 +36,8 @@ class YardsticksController < ApplicationController
     @yardstick.nil? ? (head :bad_request) : (respond_with @yardstick)
   end 
 
+  def preview
+    @yardsticks = Yardstick.order(:default_allotment).order(:mcq)
+  end
+
 end

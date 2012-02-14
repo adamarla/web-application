@@ -80,6 +80,7 @@ Webapp::Application.routes.draw do
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]
+  match 'yardsticks/preview' => 'yardsticks#preview', :via => :get
 
   root :to => "welcome#index"
 
