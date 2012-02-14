@@ -51,11 +51,8 @@ class Course < ActiveRecord::Base
   end
 
   def macros
-    a = self.micro_topics.select(:macro_topic_id).group(:macro_topic_id)
-    a.each_with_index do |b, index|
-      a[index] = b.macro_topic_id
-    end
-    MacroTopic.where(:id => a)
+    ids = self.micro_topics.map(&:macro_topic_id).uniq
+    return MacroTopic.where :id => ids
   end
 
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
