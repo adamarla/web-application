@@ -81,15 +81,6 @@ class Teacher < ActiveRecord::Base
     return "#{self.first_name} #{self.last_name}"
   end
 
-  def build_xml(questions, students) 
-  end 
-
-  def build_tex 
-  end 
-
-  def compile_tex
-  end 
-
   def roster 
     # Yes, yes.. We could have gotten the same thing by simply calling self.sektions
     # But if we return an ActiveRelation, then we get the benefit of lazy loading
