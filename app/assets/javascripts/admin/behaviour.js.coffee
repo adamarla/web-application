@@ -1,7 +1,21 @@
 
 jQuery ->
   
-  $('#scan-loader-link').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+  ###
+    In order to know what server this JS code is running on, one of the
+    first things we do while loading core JS files is issue an AJAX ping request
+
+    However, the results of the ping will take time to come back and if the 
+    client computer continues with JS loading, then we would never be able 
+    to set the deployment-specific JS variables that we need to
+
+    So, we halt loading for a reasonable time and wait for the response 
+    to come back and be processed before proceeding 
+  ###
+  window.setTimeout () ->
+    $('#scan-loader-link').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+  , 1000
+
   ###
     #new-examiner-link
   ###
@@ -225,6 +239,16 @@ jQuery ->
   ###
   $('#yardsticks-link').click (event) ->
     $.get 'yardsticks/preview'
+    return true
+
+  ###
+    Send request to web-service to shift any new scans from staging -> locker
+    and then assign these scans to examiners. Any examiner can inititate this
+    action for everyone else
+  ###
+  $('#new-scans-link').click (event) ->
+    event.stopPropagation()
+    $.get 'examiner/update_workset'
     return true
 
 
