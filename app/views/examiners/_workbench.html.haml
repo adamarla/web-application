@@ -37,7 +37,8 @@
 
 #workbench-controls.top-panel-controls
   %ul.no-bullets
-    = minor_link :for => 'grading', :label => 'scans to grade', 
+    = minor_link :for => 'grading', :as => 'scans to grade', 
                  :with => {:panels => {:side => '#ungraded-responses'}}
-    = minor_link :for => 'db-slots', :label => 'add questions to db'
+    = minor_link :for => 'db-slots', :as => 'add questions to db'
+    = minor_link :for => 'new-scans', :as => 'get new scans'
     

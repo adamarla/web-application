@@ -29,13 +29,13 @@ module ApplicationHelper
     href = options[:href] || '#' 
     with = options[:with] 
     default = options[:default].nil? ? false : options[:default]
+    label = options[:as] || name
 
     if type == :main
       singular = name.singularize
       plural = name.pluralize
       dynamic = options[:dynamic].nil? ? true : options[:dynamic] 
       class_attr = 'main-link'
-      label = name 
 
       if dynamic
          # for main-links, the side-panel is fixed. Anything else specified 
@@ -52,7 +52,6 @@ module ApplicationHelper
       class_attr = 'minor-link'
       panels = with.blank? ? {} : with.delete(:panels) 
       controls = nil # minor-links cannot load any controls
-      label = options[:label].blank? ? name : options[:label]
     end 
 
     

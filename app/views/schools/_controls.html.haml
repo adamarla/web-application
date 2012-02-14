@@ -1,13 +1,13 @@
 
 #school-controls.top-panel-controls
   %ul.no-bullets
-    = minor_link :for => 'add-n-edit-school', :label => 'Add & Edit School', 
+    = minor_link :for => 'add-n-edit-school', :as => 'Add & Edit School', 
                  :with => {:panels => {:middle => '#new-school', :right => '#edit-school'} }
-    = minor_link :for => 'edit-roster', :label => 'Faculty Roster', 
+    = minor_link :for => 'edit-roster', :as => 'Faculty Roster', 
                  :with => { :panels => { :middle => '#teachers-list', :right => '#edit-student-klass-mapping'} } 
-    = minor_link :for => 'new-studygroups', :label => 'New Sections',
+    = minor_link :for => 'new-studygroups', :as => 'New Sections',
                  :with => { :panels => { :middle => '#new-studygroups' } }
-    = minor_link :for => 'edit-studygroups', :label => 'Edit Sections', 
+    = minor_link :for => 'edit-studygroups', :as => 'Edit Sections', 
                  :with => {:panels => {:middle => '#studygroups-radiolist', :right => '#student-list'} }
 
   = form_tag schools_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
