@@ -130,18 +130,6 @@ jQuery ->
     AJAX successes the right-panel is supposed to respond to.
   ###
 
-  $('#wide-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/yardsticks\/preview/)
-
-    return if matched is null
-
-    e.stopPropagation()
-    json = $.parseJSON xhr.responseText
-
-    switch matched.pop()
-      when 'yardsticks/preview'
-        preview.loadJson json, 'frontdesk-yardsticks'
-
   ###
     Miscellaneous event captures 
   ###

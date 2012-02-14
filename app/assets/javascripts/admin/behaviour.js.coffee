@@ -232,16 +232,6 @@ jQuery ->
     return true
 
   ###
-    Load 'example' jpegs of student responses on #yardsticks-link click. 
-    If someone has clicked on the link, then it means that he/she wants to 
-    edit/review their marking scheme. In which case, showing example 
-    responses makes all the sense
-  ###
-  $('#yardsticks-link').click (event) ->
-    $.get 'yardsticks/preview'
-    return true
-
-  ###
     Send request to web-service to shift any new scans from staging -> locker
     and then assign these scans to examiners. Any examiner can inititate this
     action for everyone else

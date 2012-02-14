@@ -9,7 +9,8 @@ jQuery ->
     matched = settings.url.match(/quiz\/candidate_questions/) or
               settings.url.match(/quiz\/preview/) or
               settings.url.match(/question\/preview/) or
-              settings.url.match(/ping/)
+              settings.url.match(/ping/) or
+              settings.url.match(/yardsticks\/preview/)
     return if matched is null
 
     e.stopImmediatePropagation()
@@ -24,3 +25,5 @@ jQuery ->
           gutenberg.server = gutenberg.serverOptions.remote
         else
           gutenberg.server = gutenberg.serverOptions.local
+      when 'yardsticks/preview'
+        preview.loadJson json, 'frontdesk-yardsticks'

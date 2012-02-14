@@ -30,12 +30,14 @@ jQuery ->
   $.get 'ping'
 
   ###
-    Stylize buttons in forms but not in the #control-panel.
-    The #control-panel is populated with stuff from #controls and
-    styled buttons are too big for that panel
+    Load 'example' jpegs of student responses on #yardsticks-link click. 
+    If someone has clicked on the link, then it means that he/she wants to 
+    edit/review their marking scheme. In which case, showing example 
+    responses makes all the sense
   ###
-
-  #$('#toolbox > div:not([class~="top-panel-controls"]) form input[type="submit"]:not([class~="no-style"])').button()
+  $('#yardsticks-link').click (event) ->
+    $.get 'yardsticks/preview'
+    return true
 
   ###
     Any form for creating or editing a record that needs to be opened as a dialog
