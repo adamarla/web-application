@@ -92,6 +92,14 @@ class Teacher < ActiveRecord::Base
     self.subjects = Subject.where :id => list_of_ids
   end
 
+  def courses
+    sektions = FacultyRoster.where(:teacher_id => self.id).map(&:sektion_id)
+    klasses = Sektion.where(:id => sektions).map(&:klass).uniq
+    subjects = Specialization.where(:teacher_id => self.id).map(&:subject_id)
+    board = self.school.board_id
+    @courses = Course.where :board_id => board, :klass => klasses, :subject_id => subjects
+  end
+
   private 
     
     def reset_login_info
