@@ -84,7 +84,7 @@
             ismouseover         = false,
             
             // start in compact mode
-            enlarged            = false,
+            enlarged            = true, // [Abhinav]: Start out by showing full-images
             
             // counter vars
             cur             = 0,                // array index of currently displayed image
@@ -596,7 +596,8 @@
                     ppyCaptionWrap = ppyCaption.wrapInner(ppyCaptionWrap).children().eq(0);
                     
                     // display first image
-                    showThumb();
+                    // showThumb();
+                    showImage(); // [Abhinav]: Start out by showing full images
                     
                     // add event handlers
                     //--------------------------------------------------------------
