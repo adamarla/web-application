@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120213075933) do
+ActiveRecord::Schema.define(:version => 20120214091140) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(:version => 20120213075933) do
     t.integer  "q_selection_id"
     t.float    "marks"
     t.integer  "testpaper_id"
-    t.boolean  "scan_available", :default => false
+    t.string   "scan"
   end
 
   create_table "grades", :force => true do |t|

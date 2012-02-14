@@ -12,7 +12,7 @@
 #  q_selection_id :integer
 #  marks          :float
 #  testpaper_id   :integer
-#  scan_available :boolean         default(FALSE)
+#  scan           :string(255)
 #
 
 # Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#
