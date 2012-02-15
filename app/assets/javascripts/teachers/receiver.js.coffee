@@ -9,6 +9,8 @@ jQuery ->
 
     json = $.parseJSON xhr.responseText
     url = settings.url
+    matched = true
+
     # Remove any prior error messages - unconditionally. You know
     # by now that you're going to be updating this panel
     $(this).find('.inline-error').remove()
@@ -51,6 +53,10 @@ jQuery ->
       here = $('#question-options > form:first > .form-fields')
       coreUtil.interface.displayJson json.questions, here, 'question', {checkbox:true}
       preview.loadJson json, 'vault'
+    else
+      matched = false
+
+    e.stopPropagation() if matched is true
 
   .ajaxError (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/coverage/)
