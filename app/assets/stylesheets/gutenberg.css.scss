@@ -1,0 +1,122 @@
+
+$blue:#00007f ;
+$gray:#191919 ;
+
+body {
+  font-family : "Trebuchet MS", Helvetica, Arial, sans-serif ; 
+  width : 1020px ;
+  background-color: darken($blue, 30%) ;
+  color: white ;
+} 
+
+#control-panel { 
+  padding-top : 10px ;
+  height : 100px ;
+  border: {
+    bottom: 3px solid lighten($gray, 30%) ; 
+  }
+
+  #main-links, #minor-links {
+    list-style-type : none ;
+    min-height: 30px ;
+  }
+} 
+
+.full-width, .formtastic .text textarea.full-width { 
+   width: 100% ;
+} 
+
+.ui-tabs-panel {
+  background-color: lighten($gray,30%) ;
+}
+
+.swiss-knife { 
+  min-height: 25px ;
+  border-bottom: 1px solid lighten($gray, 30%) ; 
+  padding-top: 3px ;
+  color: white ;
+  font-size: 12px ;
+  font-weight: normal ;
+} 
+
+.as-accordion .swiss-knife { /* when within an accordion */
+  min-height : 17px ;
+  border : none ;
+}
+
+.swiss-knife > .label {
+  margin-left : 5px ;
+}
+
+.flipchart .submit-buttons {
+  min-height : 20px ;
+  margin-bottom : 20px ;
+}
+
+form.formtastic > .submit-buttons > input {
+  border: {
+    style: none ;
+    radius: 4px ;
+  }
+
+  font: {
+    family: inherit ;
+    size: 12px ;
+    weight: bold ;
+  }
+  color: white ; 
+  background-color: #6ca7ab ;
+  -moz-border-radius: 4px ;
+  padding: 6px ;
+  text-align : center ;
+  text-decoration: none ;
+  min-width: 50px ;
+  margin-bottom: 18px ;
+}
+
+#side-panel {
+  width: 320px ;
+  border-right: 3px solid lighten($gray, 30%) ;
+  padding-right: 10px ;
+  min-height: 400px ;
+}
+
+#middle-panel, #right-panel {
+  width: 300px ;
+  padding-left: 20px ;
+}
+
+legend { 
+  width: 100% ;
+  
+  margin: {
+    bottom: 15px ;
+  }
+} 
+
+///////////////  formtastic form changes ///////////////////////////
+
+fieldset.inputs textarea, fieldset.inputs input[type="text"] {
+  font: {
+    family: "Trebuchet MS" ;
+    size: 13px ;
+  } 
+
+  border: {
+    radius: 0px ;
+    style: solid ;
+    width: 1px ;
+    color: lighten($gray, 30%) ;
+  } 
+  -moz-border-radius: 13px ;
+  background-color: lighten($gray, 80%) ;
+  color: $gray ;
+
+  font-style : sans-serif;
+  padding: {
+    left: 6px ;
+    bottom: 5px ;
+    top: 5px ;
+  }
+} 
+

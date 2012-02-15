@@ -1,9 +1,4 @@
 
-body {
-  font-family : "Trebuchet MS", Helvetica, Arial, sans-serif ; 
-  width : 1020px ;
-} 
-
 .left { 
   float : left ;
 }
@@ -73,10 +68,12 @@ fieldset.inputs li.boolean.input {
   float : left ;
 } 
 
+/*
 .slim { 
   width : 32.3% ; 
   color : #654b24 ; 
 } 
+*/
 
 .wide { 
   width : 65% ;
@@ -153,23 +150,11 @@ fieldset.inputs li.boolean.input {
   margin-bottom : 15px ;
 }
 
-#control-panel { 
-  padding-top : 20px ;
-  height : 100px ;
-  background-color : #654b24 ;
-  /*-moz-border-radius : 4px ;
-  border-radius : 4px ; */
-} 
 
 #logout-anchor > a { 
   float : right ;
   margin-right : 50px ; 
   color : #fd9105 ;
-} 
-
-#control-panel > #main-links, #control-panel > #minor-links { 
-  list-style-type : none ;
-  min-height : 40px ;
 } 
 
 #minor-links { 
@@ -194,21 +179,6 @@ fieldset.inputs li.boolean.input {
 .dropdown select { 
   margin-right : 8px ;
 } 
-
-.swiss-knife { /* stand-alone */ 
-  min-height : 25px ;
-  border-bottom : 1px solid #6ca7ab ;
-  padding-top : 3px ;
-} 
-
-.as-accordion .swiss-knife { /* when within an accordion */
-  min-height : 17px ;
-  border : none ;
-}
-
-.swiss-knife > .label {
-  margin-left : 5px ;
-}
 
 .nail-file {
   min-height : 20px ;
@@ -251,7 +221,7 @@ fieldset.inputs li.boolean.input {
   background-color : #7ea974 ; 
 }
 
-.radio-column, .checkbox-column, .line-item, .cbox-label-select, .swiss-knife { 
+.radio-column, .checkbox-column, .line-item, .cbox-label-select {
   font-size : 13px ; 
   text-transform : lowercase ;
 } 
@@ -261,16 +231,7 @@ fieldset.inputs li.boolean.input {
   min-height : 27px ;
 }
 
-#schools-summary { 
-  padding-left : 20px ;
-} 
-
-legend { 
-  border-bottom : 2px solid gray ;
-  margin-bottom : 20px ;
-  margin-top : 20px ;
-} 
-
+/*
 form > .controls {
   margin-bottom : 13px ;
   min-height : 20px ;
@@ -286,6 +247,7 @@ form > .controls > input {
   -moz-border-radius : 5px ;
   border-radius : 5px ;
 }
+*/
 
 legend > span.target { 
   text-transform : uppercase ; 
@@ -385,26 +347,6 @@ legend > a {
 
 .flipchart form.formtastic li.select > label {
   width : 50% ;
-}
-
-.flipchart .submit-buttons {
-  min-height : 20px ;
-  margin-bottom : 20px ;
-}
-
-form.formtastic .submit-buttons > input {
-  font-family : inherit ;
-  font-size : 12px ;
-  font-weight : bold ;
-  color : white ; 
-  background-color : #6ca7ab ;
-  border-radius : 4px ;
-  -moz-border-radius : 4px ;
-  padding : 6px ;
-  text-align : center ;
-  text-decoration : none ;
-  border : none ;
-  min-width : 50px ;
 }
 
 
