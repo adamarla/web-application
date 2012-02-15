@@ -46,24 +46,6 @@ class QuizzesController < ApplicationController
     render :json => response, :status => (response[:manifest].blank? ? :bad_request : :ok)
   end
 
-  def get_candidates
-    board = params[:board_id]
-    klass = params[:criterion][:klass]
-    subject = params[:criterion][:subject]
-    topics = params[:checked].nil? ? [] : params[:checked].keys
-
-    @questions = []
-    course = Course.where(:board_id => board, :klass => klass, :subject_id => subject).first 
-
-    head :bad_request if course.nil?
-
-    topics.each do |topic|
-      difficulty = Syllabus.where(:course_id => course.id, :micro_topic_id => topic).select(:difficulty).first.difficulty
-      @questions |= Question.where(:micro_topic_id => topic, :difficulty => difficulty).order(:id).map(&:id)
-    end 
-    respond_with @questions
-  end
-
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL').order(:klass)
@@ -72,20 +54,6 @@ class QuizzesController < ApplicationController
   def preview
     @quiz = Quiz.where(:atm_key => params[:id]).first
     head :bad_request if @quiz.nil?
-  end
-
-  def download
-    quiz = Quiz.find params[:id]
-    head :bad_request if quiz.nil? 
-    url = "#{Gutenberg['server']}/mint/#{quiz.id}/answer-key/downloads/answer-key.pdf"
-
-    redirect_to url, :method => :get
-    #send_file "#{Gutenberg['server']}/mint/#{quiz.id}/answer-key/downloads/answer-key.pdf",
-    #          :filename => "#{quiz.id}-answer-key.pdf", :type => "application/pdf",
-    #          :x_sendfile => true
-    #send_file "answer-key.pdf",
-    #          :filename => "#{quiz.id}-answer-key.pdf", :type => "application/pdf"
-    #head (status ? :ok : :bad_request)
   end
 
 end
