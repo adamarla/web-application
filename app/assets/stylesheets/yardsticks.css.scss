@@ -5,6 +5,8 @@ $green:#165008 ;
 $purple:#3a4d4e ;
 $black:black ;
 $red:red ;
+$gray:#191919 ;
+$light-gray: lighten($gray, 30%) ;
 
 // Vertical jQuery tabs via CSS 
 // Reference: http://keith-wood.name/uiTabs.html#tabs-nobg
@@ -26,10 +28,10 @@ $red:red ;
       border: {
         right: none ;
         bottom-width: 1px !important ;
-        radius: 4px 0px 0px 4px ;
+        radius: 0px;  
       }
-      -moz-border-radius: 4px 0px 0px 4px ;
-      -webkit-border-radius: 4px 0px 0px 4px ;
+      -moz-border-radius: 0px ; 
+      -webkit-border-radius: 0px ; 
       overflow: hidden ;
       margin-bottom: 5px ;
 
@@ -39,7 +41,7 @@ $red:red ;
     }
 
     li.ui-tabs-selected {
-      border-right: 1px solid transparent ;
+      background-color: #6ca7ab ; 
     }
 
     a {
@@ -58,15 +60,16 @@ $red:red ;
 
     h4 { 
       font-size: 14px ;
-      color: lighten(black, 40%) ;
-      font-weight: bold ;
+      color: #6ca7ab ;
+      font-weight: normal ;
       padding-bottom: 8px ;
-      border-bottom: 1px solid #6ca7ab ;
+      border-bottom: 1px solid #6ca7ab ; 
     }
 
     p {
       text-align: justify ;
       font-size: 12px ;
+      color: white ;
     }
 
     div.header {
@@ -76,6 +79,7 @@ $red:red ;
         font-size: 12px ;
         font-weight: bold ;
         float: left ;
+        color: #6ca7ab ;
       }
       h4 {
         float: right ; 
@@ -89,49 +93,55 @@ $red:red ;
     } 
   } // end of <div>
 
-  #tab-ys-0 {
+  #tab-ys-0:not([class~="ui-tabs-selected"]) {
     background-color: lighten($orange, 20%)
   }
   
-  #tab-ys-1 {
+  #tab-ys-1:not([class~="ui-tabs-selected"]) {
     background-color: lighten($orange, 10%);
   }
 
-  #tab-ys-2 {
+  #tab-ys-2:not([class~="ui-tabs-selected"]) {
     background-color: lighten($orange, 10%);
   }
 
-  #tab-ys-3 {
+  #tab-ys-3:not([class~="ui-tabs-selected"]) {
     background-color: saturate($orange, 10%);
   }
 
-  #tab-ys-4 {
+  #tab-ys-4:not([class~="ui-tabs-selected"]) {
     background-color: saturate($orange, 20%);
   }
 
-  #tab-ys-5 {
+  #tab-ys-5:not([class~="ui-tabs-selected"]) {
     background-color: lighten($black, 70%);
   }
 
-  #tab-ys-6 {
+  #tab-ys-6:not([class~="ui-tabs-selected"]) {
     background-color: lighten($black, 60%);
   }
-  #tab-ys-7 {
+
+  #tab-ys-7:not([class~="ui-tabs-selected"]) {
     background-color: lighten($black, 50%);
   }
-  #tab-ys-8 {
+
+  #tab-ys-8:not([class~="ui-tabs-selected"]) {
     background-color: lighten($black, 40%);
   }
-  #tab-ys-9 {
+
+  #tab-ys-9:not([class~="ui-tabs-selected"]) {
     background-color: lighten($black, 30%);
   }
-  #tab-ys-A {
+
+  #tab-ys-A:not([class~="ui-tabs-selected"]) {
     background-color: lighten($black, 20%);
   }
-  #tab-ys-B {
+
+  #tab-ys-B:not([class~="ui-tabs-selected"]) {
     background-color: lighten($black, 10%);
   }
-  #tab-ys-C {
+
+  #tab-ys-C:not([class~="ui-tabs-selected"]) {
     background-color: lighten($green, 10%);
   }
 
