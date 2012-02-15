@@ -52,7 +52,7 @@ class Course < ActiveRecord::Base
 
   def macros
     ids = self.micro_topics.map(&:macro_topic_id).uniq
-    return MacroTopic.where :id => ids
+    return MacroTopic.where(:id => ids).order(:name)
   end
 
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
