@@ -4,7 +4,7 @@
     %span.target= "students" 
     %span.operation= "select students for quiz" 
   = form_tag 'quiz/assign', :remote => true, :method => :put do |f|
-    .controls
+    .submit-buttons
       = submit_tag 'assign'
       %input.check-all{:type => :button, :value => 'select all'}
 

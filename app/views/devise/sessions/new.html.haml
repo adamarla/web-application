@@ -7,6 +7,6 @@
     .reminders.right
       - if devise_mapping.recoverable? && controller_name != 'passwords'
         = link_to 'Forgot your password?', new_password_path(:account)
-    .controls
+    .submit-buttons
       = submit_tag 'login'
 

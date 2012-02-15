@@ -4,7 +4,7 @@
     %span.target= "Teacher"
     %span.operation= "Quick Add"
   = semantic_form_for :teacher, :remote => true, :url => teacher_path do |f|
-    .controls
+    .submit-buttons
       = submit_tag 'add new teacher'
 
     = f.inputs :name => :mandatory do 
