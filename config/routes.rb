@@ -21,12 +21,16 @@ Webapp::Application.routes.draw do
   match 'courses/list' => 'courses#list', :via => :get
   match 'course/profile' => 'courses#profile', :via => :get
   match 'course/coverage' => 'courses#coverage', :via => :get
+  match 'course/macros' => 'courses#macros', :via => :get
+  match 'course/applicable_micros' => 'courses#applicable_micros', :via => :put
+  match 'course/questions' => 'courses#get_relevant_questions', :via => :put
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'examiner/pending_quizzes' => 'examiners#pending_quizzes', :via => :get
   match 'examiner/pending_pages' => 'examiners#pending_pages', :via => :get
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
+  match 'examiner/update_workset' => 'examiners#update_workset', :via => :get
 
   # Grade
   resource :grade, :only => [:update]
@@ -77,6 +81,7 @@ Webapp::Application.routes.draw do
   match 'teacher/update_roster' => 'teachers#update_roster', :via => :put
   match 'teacher/coverage' => 'teachers#coverage', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
+  match 'teacher/courses' => 'teachers#courses', :via => :get
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]

@@ -6,40 +6,51 @@ jQuery ->
   ########################################################
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/teacher\/coverage/) or
-              settings.url.match(/quizzes\/list/) or
-              settings.url.match(/teachers\/roster/) or
-              settings.url.match(/sektions\/students/)
-    return if matched is null
 
     json = $.parseJSON xhr.responseText
+    url = settings.url
     # Remove any prior error messages - unconditionally. You know
     # by now that you're going to be updating this panel
     $(this).find('.inline-error').remove()
-    switch matched.pop()
-      when 'teacher/coverage'
-        here = $('#quiz-builder-form').find '.search-results:first'
-        here.empty()
 
-        coreUtil.mnmlists.redistribute json.macros
-        coreUtil.mnmlists.customize 'macro', {}
-        coreUtil.mnmlists.customize 'micro', {checkbox:true}
+    if url.match(/teacher\/coverage/)
+      here = $('#quiz-builder-form').find '.search-results:first'
+      here.empty()
 
-        results = coreUtil.mnmlists.asAccordion 'selected'
-        results.appendTo here
-        results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
-      when 'quizzes/list'
-        here = $('#past-quizzes')
-        here.empty()
-        list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', ['quiz-download']
-        list.appendTo here
-        list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
-      when 'teachers/roster'
-        here = $('#sektion-list')
-        coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}
-      when 'sektions/students'
-        here = $('#student-list')
-        coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
+      coreUtil.mnmlists.redistribute json.macros
+      coreUtil.mnmlists.customize 'macro', {}
+      coreUtil.mnmlists.customize 'micro', {checkbox:true}
+
+      results = coreUtil.mnmlists.asAccordion 'selected'
+      results.appendTo here
+      results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+    else if url.match(/quizzes\/list/)
+      here = $('#past-quizzes')
+      here.empty()
+      list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', ['quiz-download']
+      list.appendTo here
+      list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+    else if url.match(/teachers\/roster/)
+      here = $('#sektion-list')
+      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}
+    else if url.match(/sektions\/students/)
+      here = $('#student-list')
+      coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
+    else if url.match(/teacher\/courses/)
+      here = $('#courses-taught')
+      coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
+    else if url.match(/course\/macros/)
+      here = $('#macro-selection-list > form:first > .form-fields')
+      coreUtil.interface.displayJson json.macros, here, 'macro', {checkbox:true}
+    else if url.match(/course\/applicable_micros/)
+      flipchart.next '#build-quiz'
+      here = $('#micro-selection-list > form:first > .form-fields')
+      coreUtil.interface.displayJson json.micros, here, 'micro', {checkbox:true}
+    else if url.match(/course\/questions/)
+      flipchart.next '#build-quiz'
+      here = $('#question-options > form:first > .form-fields')
+      coreUtil.interface.displayJson json.questions, here, 'question', {checkbox:true}
+      preview.loadJson json, 'vault'
 
   .ajaxError (e,xhr,settings) ->
     matched = settings.url.match(/teacher\/coverage/)

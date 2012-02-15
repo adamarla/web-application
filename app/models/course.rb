@@ -75,4 +75,13 @@ class Course < ActiveRecord::Base
     return (status == :bad_request) ? :bad_request : :ok
   end # of function
 
+  def relevant_questions(topic_ids = [])
+    @questions = []
+    Syllabus.where(:course_id => self.id, :micro_topic_id => topic_ids).each do |j|
+      @questions |= Question.where(:micro_topic_id => j.micro_topic_id, :difficulty => j.difficulty)
+    end
+
+    return @questions
+  end
+
 end

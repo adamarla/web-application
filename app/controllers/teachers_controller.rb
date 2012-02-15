@@ -49,6 +49,12 @@ class TeachersController < ApplicationController
     @macros.nil? ? head(:bad_request) : respond_with(@macros)
   end
 
+  def courses
+    teacher = Teacher.find params[:id]
+    head :bad_request if teacher.nil? 
+    @courses = teacher.courses
+  end
+
   def update 
     teacher = Teacher.find params[:id]
     head :bad_request if teacher.nil?

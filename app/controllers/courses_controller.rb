@@ -55,4 +55,24 @@ class CoursesController < ApplicationController
     @macros = MacroTopic.where('id IS NOT NULL').order(:name) # basically, everyone
   end 
 
+  def macros
+    course = Course.find params[:id]
+    head :bad_request if course.nil?
+    @macros = course.macros
+  end
+
+  def applicable_micros 
+    macro_ids = params[:checked].keys.map(&:to_i)
+    @micros = MicroTopic.where(:macro_topic_id => macro_ids).order(:name)
+  end 
+
+  def get_relevant_questions
+    @course = Course.find params[:id]
+    head :bad_request if @course.nil? 
+
+    topic_ids = params[:checked].keys.map(&:to_i)
+    @questions = @course.relevant_questions topic_ids
+    respond_with @questions, @course
+  end
+
 end
