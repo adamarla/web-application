@@ -6,8 +6,8 @@
     %ul
       - yardsticks.each_with_index do |y,j|
         - j_as_hex = j.to_s(16).upcase
-        %li
-          %a{ :id => "tab-ys-#{j_as_hex}", :href => "#ys-#{j}", :marker => "#{y.id}" }= "#{j_as_hex}"
+        %li{ :id => "tab-ys-#{j_as_hex}" }
+          %a{ :href => "#ys-#{j}", :marker => "#{y.id}" }= "#{j_as_hex}"
 
     - yardsticks.each_with_index do |y,j|
       %div{ :id => "ys-#{j}" }
