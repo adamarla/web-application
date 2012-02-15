@@ -96,6 +96,10 @@ form.formtastic > .submit-buttons > input {
     background-color: inherit ; 
   }
 
+  .ui-widget-content {
+    background: none ;
+  }
+
 }
 
 #middle-panel, #right-panel {
