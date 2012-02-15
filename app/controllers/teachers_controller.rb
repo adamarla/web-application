@@ -106,4 +106,14 @@ class TeachersController < ApplicationController
     head :ok
   end 
 
+  def build_quiz 
+    teacher = Teacher.find params[:id]
+    course = Course.find params[:course_id]
+    head :bad_request if (teacher.nil? || course.nil?)
+
+    question_ids = params[:checked].keys.map(&:to_i)
+    response, status = teacher.build_quiz_with question_ids, course
+    render :json => response, :status => status
+  end
+
 end # of class

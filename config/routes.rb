@@ -56,7 +56,7 @@ Webapp::Application.routes.draw do
   match 'question/preview' => 'question#preview', :via => :get
 
   # Quiz
-  resource :quiz, :only => [:show, :create]
+  resource :quiz, :only => [:show]
   match 'quiz/candidate_questions' => 'quizzes#get_candidates', :via => :get
   match 'quizzes/list' => 'quizzes#list', :via => :get
   match 'quiz/preview' => 'quizzes#preview', :via => :get
@@ -82,6 +82,7 @@ Webapp::Application.routes.draw do
   match 'teacher/coverage' => 'teachers#coverage', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/courses' => 'teachers#courses', :via => :get
+  match 'teacher/build_quiz' => 'teachers#build_quiz', :via => :put
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]

@@ -58,6 +58,34 @@ class Teacher < ActiveRecord::Base
   #after_validation :setup_account, :if => :first_time_save?
   before_destroy :destroyable? 
 
+  def build_quiz_with (question_ids, course)
+    @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
+                     :num_questions => question_ids.count, 
+                     :subject_id => course.subject_id, :klass => course.klass
+
+    # Ideally, one should ask for the TeX to be compiled before saving
+    # @quiz into the database. But in this case, we need a quiz-ID and its layout 
+    # before we can go in for TeX compilation. So, we save first and delete if TeX 
+    # compilation fails
+
+    status = @quiz.save ? :ok : :bad_request
+    response = {}
+
+    unless status == :bad_request
+      response = @quiz.compile_tex
+      status = response[:manifest].blank? ? :bad_request : :ok
+      if status == :bad_request 
+        @quiz.destroy
+      else
+        # The atm-key is the randomized access point to this quiz in mint/
+        atm_key = Quiz.extract_atm_key response[:manifest][:root]
+        @quiz.update_attribute :atm_key, atm_key
+        response = {:atm_key => atm_key, :name => @quiz.name }
+      end
+    end
+    return response, status
+  end
+
   def username?
     self.account.username
   end 
