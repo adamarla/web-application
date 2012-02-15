@@ -96,8 +96,8 @@ form.formtastic > .submit-buttons > input {
     background-color: inherit ; 
   }
 
-  .ui-widget-content {
-    background: none ;
+  .ui-widget-content, .ui-widget-header {
+    background: transparent ;
   }
 
 }
