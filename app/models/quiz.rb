@@ -126,7 +126,12 @@ class Quiz < ActiveRecord::Base
     [*1..last].each do |page|
       q_on_page = j.where(:page => page).map(&:question_id)
       q_on_page.each_with_index do |qid, index|
-        q_on_page[index] = { :id => qid }
+        # Previously, we sent the question's DB id. Now, we send the containing
+        # folder's name - which really is just the millisecond time-stamp at 
+        # which the question was created 
+
+        uid = Question.where(:id => qid).first.uid 
+        q_on_page[index] = { :id => uid }
       end
       layout.push( { :number => page, :question => q_on_page })
     end
