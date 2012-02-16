@@ -32,4 +32,9 @@ class ExaminersController < ApplicationController
     render :json => {:slots => slots}, :status => :ok
   end
 
+  def update_workset
+    failures = Examiner.receive_scans
+    render :json => failures, :status => :ok
+  end
+
 end
