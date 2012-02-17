@@ -169,6 +169,7 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     target = $('#created-slots')
     target.hide()
+    target.empty() # purge any old summary from previous call
     for slot in json.slots
       $("<li class='code'>#{slot}</li>").appendTo target
 
