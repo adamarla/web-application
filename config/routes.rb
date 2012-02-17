@@ -1,12 +1,21 @@
 Webapp::Application.routes.draw do
   # post "question/insert_new"
 
-  devise_for :accounts do 
+  # The :path_prefix is important to disambiguate paths devise creates 
+  # from ones that one would create if he/she wants to update their own 
+  # Account model. For example, to edit the email field in our own model,
+  # we need a controller & controller actions. Paths corresponding them 
+  # would be quite similar - if not the same - as those created by devise below
+
+  devise_for :accounts, :path_prefix => 'gutenberg' do 
     get '/login' => 'devise/sessions#new'
     get '/logout' => 'devise/sessions#destroy'
   end 
 
   match 'ping' => 'application#ping', :via => :get
+
+  # Account 
+  resource :account, :only => [:update]
 
   # Admin 
   resource :admin, :controller => :admin 
