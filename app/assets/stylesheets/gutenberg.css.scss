@@ -10,6 +10,16 @@ body {
   color: white ;
 } 
 
+.instructions {
+  text-align: justify ;
+  font: {
+    size: 12px ;
+    weight: normal; 
+  }
+  color: $light-gray ;
+  margin-bottom: 30px ;
+}
+
 #control-panel { 
   padding-top : 10px ;
   height : 100px ;
@@ -117,27 +127,29 @@ legend {
 
 ///////////////  formtastic form changes ///////////////////////////
 
-fieldset.inputs textarea, fieldset.inputs input[type="text"] {
-  font: {
-    family: "Trebuchet MS" ;
-    size: 13px ;
-  } 
+fieldset.inputs {
+  textarea, input[type="text"], input[type="password"] {
+    font: {
+      family: "Trebuchet MS" ;
+      size: 13px ;
+    } 
 
-  border: {
-    radius: 0px ;
-    style: solid ;
-    width: 1px ;
-    color: lighten($gray, 30%) ;
-  } 
-  -moz-border-radius: 13px ;
-  background-color: lighten($gray, 80%) ;
-  color: $gray ;
+    border: {
+      radius: 0px ;
+      style: solid ;
+      width: 1px ;
+      color: lighten($gray, 30%) ;
+    } 
+    -moz-border-radius: 0px ;
+    background-color: lighten($gray, 80%) ;
+    color: $gray ;
 
-  font-style : sans-serif;
-  padding: {
-    left: 6px ;
-    bottom: 5px ;
-    top: 5px ;
+    font-style : sans-serif;
+    padding: {
+      left: 6px ;
+      bottom: 5px ;
+      top: 5px ;
+    }
   }
 } 
 
