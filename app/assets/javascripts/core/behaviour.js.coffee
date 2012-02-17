@@ -222,24 +222,28 @@ jQuery ->
     clicked and "Done!" or "Oops!!" depending on Ajax success or failure
   ###
 
-  $('.panel:not([id="control-panel"])').on 'submit', '.clear-after-submit form:first', ->
+  $('.panel:not([id="control-panel"])').on 'submit', 'form', ->
     button = $(this).find 'input[type="submit"]:first'
     if button?
       button.val 'Working'
   .ajaxSuccess (e,xhr,settings) ->
-    form = $(this).find '.clear-after-submit form:first'
-    if form?
-      if settings.url is form.attr('action')
-        button = $(this).find 'input[type="submit"]:first'
+    forms = $(this).find 'form'
+    for form in forms
+      if settings.url is $(form).attr('action')
+        e.stopPropagation()
+        button = $(form).find 'input[type="submit"]:first'
         if button?
           button.val 'Done'
+    return true
   .ajaxError (e,xhr,settings) ->
-    form = $(this).find '.clear-after-submit form:first'
-    if form?
-      if settings.url is form.attr('action')
-        button = $(this).find 'input[type="submit"]:first'
+    forms = $(this).find 'form'
+    for form in forms
+      if settings.url is $(form).attr('action')
+        e.stopPropagation()
+        button = $(form).find 'input[type="submit"]:first'
         if button?
           button.val('Oops !')
+    return true
 
   ###
     If a radio button within the macro-selected-list is clicked, then 
