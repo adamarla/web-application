@@ -1,0 +1,8 @@
+
+#edit-login-email.part-form
+  = semantic_form_for current_account, :url => "/account.json?id=#{current_account.id}", :remote => true do |f|
+    = f.inputs do 
+      = f.input :email
+    .submit-buttons
+      = submit_tag 'update'
+

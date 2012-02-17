@@ -1,0 +1,9 @@
+
+#edit-password.part-form
+  = semantic_form_for :account, :url => update_password_path, :remote => true, :method => :put do |f|
+    = f.inputs do
+      = f.input :password, :as => :password
+      = f.input :password_confirmation, :as => :password
+    .submit-buttons
+      = submit_tag 'update'
+      

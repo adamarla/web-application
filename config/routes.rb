@@ -16,6 +16,7 @@ Webapp::Application.routes.draw do
 
   # Account 
   resource :account, :only => [:update]
+  match 'update_password' => 'accounts#update_password', :via => :put
 
   # Admin 
   resource :admin, :controller => :admin 
