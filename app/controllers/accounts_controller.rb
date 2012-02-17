@@ -9,9 +9,11 @@ class AccountsController < ApplicationController
   end
 
   def update_password
+    # Ref: https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-password
     account = params[:account]
     failed = current_account.update_attributes(:password => account[:password], 
                                                :password_confirmation => account[:password_confirmation]) ? false : true
+    sign_in current_account, :bypass => true unless failed
     head (failed) ? :bad_request : :ok
   end
 
