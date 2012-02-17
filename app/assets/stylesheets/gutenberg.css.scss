@@ -17,7 +17,12 @@ body {
     weight: normal; 
   }
   color: $light-gray ;
-  margin-bottom: 30px ;
+  margin-bottom: 20px ;
+}
+
+.part-form {
+  border-top: 2px solid $light-gray ;
+  padding-top: 20px ;
 }
 
 #control-panel { 
@@ -128,7 +133,7 @@ legend {
 ///////////////  formtastic form changes ///////////////////////////
 
 fieldset.inputs {
-  textarea, input[type="text"], input[type="password"] {
+  textarea, input[type="text"], input[type="password"], input[type="email"] {
     font: {
       family: "Trebuchet MS" ;
       size: 13px ;
