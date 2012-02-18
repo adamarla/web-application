@@ -158,3 +158,11 @@ fieldset.inputs {
   }
 } 
 
+span.unhappyMessage {
+  color: #fd9105 ;
+  font: {
+    weight: normal ;
+    style: italic; 
+    size: 11px ;
+  }
+}
