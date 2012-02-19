@@ -35,5 +35,12 @@ jQuery ->
         test: happy.validate.password,
         message: 'should be at least 6 characters long'
       }
+
+      '#account_password_confirmation': {
+        required: 'sometimes',
+        test: happy.validate.sameToSame,
+        arg: '#account_password',
+        message: 'must match password above'
+      }
     }
   }
