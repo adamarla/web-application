@@ -27,3 +27,13 @@ jQuery ->
       }
     }
   }
+
+  $('#edit-password > form').isHappy {
+    fields: {
+      '#account_password': {
+        required: 'sometimes',
+        test: happy.validate.password,
+        message: 'should be at least 6 characters long'
+      }
+    }
+  }
