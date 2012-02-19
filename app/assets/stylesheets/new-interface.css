@@ -37,7 +37,7 @@ li.code, p.code {
 
 #sign-in-form label {
   font-size : 14px ;
-  font-weight : bold ;
+  font-weight : normal ;
   text-transform : uppercase;
 }
 
@@ -83,7 +83,7 @@ fieldset.inputs li.boolean.input {
   margin-right : 5px ;
   font-variant : small-caps ;
   font-size : 12px ;
-  font-weight : bold ;
+  font-weight : normal ;
 } 
 
 .search-form, .search-parameters, .search-results { 
@@ -98,7 +98,7 @@ fieldset.inputs li.boolean.input {
   font-size : 14px ;
   color : #fd9105 ; 
   text-transform : lowercase ;
-  font-weight : bold ;
+  font-weight : normal ;
 } 
 
 .inline-error > .description {
@@ -135,7 +135,7 @@ fieldset.inputs li.boolean.input {
 .main-link { 
   font-size : 16px ;
   text-align : left ;
-  font-weight : bold ; 
+  font-weight : normal ; 
   margin-right : 15px ;
   color : white ;
 } 
@@ -191,7 +191,7 @@ fieldset.inputs li.boolean.input {
   -moz-border-radius : 4px ;
   border-radius : 4px ;
   padding : 6px ;
-  font-weight : bold ;
+  font-weight : normal ;
   color : white ;
   min-width : 70px ;
   text-align : center ;
@@ -214,7 +214,7 @@ fieldset.inputs li.boolean.input {
   padding : 1px ;
   -moz-border-radius : 0px ; 
   border-radius : 0px ;
-  font-weight : bold ;
+  font-weight : normal ;
 }
 
 .nail-file > a[type="preview"] {
@@ -242,18 +242,23 @@ form > .controls > input {
   font-family : "Trebuchet MS" ;
   color : white ;
   background : #6ca7ab ;
-  font-weight : bold ;
+  font-weight : normal ;
   padding : 8px ;
   -moz-border-radius : 5px ;
   border-radius : 5px ;
 }
 */
 
+legend {
+  margin-top: -10px ;
+  margin-bottom: 30px ;
+} 
+
 legend > span.target { 
-  text-transform : uppercase ; 
-  font-size : 15px ;
-  font-weight : bold ;
+  font-size : 14px ;
+  font-weight : normal ;
   color : #fd9105 ;
+  margin-right: 20px ;
 } 
 
 legend > span.operation { 
@@ -272,7 +277,7 @@ legend > a {
   color : white ; 
   -moz-border-radius : 10px ; 
   border-radius : 10px ;
-  font-weight : bold ;
+  font-weight : normal ;
 } 
 
 .colored { 
@@ -294,7 +299,7 @@ legend > a {
 #yardsticks-icon-table {
   min-height : 25px ;
   font-size : 13px ; 
-  font-weight : bold ;
+  font-weight : normal ;
   font-variant : small-caps ;
   border-bottom : 2px solid #654b24 ;
   margin-bottom : 20px ;

@@ -3,8 +3,23 @@ $blue:#00007f ;
 $gray:#191919 ;
 $light-gray: lighten($gray, 30%) ;
 
+/*
+  On www.codestyle.org, one can build combinations of font-families
+  and see what the probability for a particular font-family 
+  to be picked up on various platforms is. It also show that probability
+  of defaulting to the generic font-family - in our case, sans-serif
+*/
+
+
 body {
-  font-family : "Trebuchet MS", Helvetica, Arial, sans-serif ; 
+  font-family: 
+              Ubuntu,
+              "Trebuchet MS",
+              "Lucida Grande",
+              "Lucida Sans",
+              "DejaVu Sans",
+              "Lucida Sans Unicode",
+              sans-serif;
   width : 1020px ;
   background-color: darken($blue, 30%) ;
   color: white ;
@@ -24,7 +39,7 @@ body {
   border-top: 2px solid $light-gray ;
   padding-top: 20px ;
 }
-
+          
 #control-panel { 
   padding-top : 10px ;
   height : 100px ;
