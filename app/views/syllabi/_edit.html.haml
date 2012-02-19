@@ -2,7 +2,7 @@
 #edit-syllabi-form
   %legend
     %span.target= "specific topics"
-    %span.operation= "select difficulty levels and submit"
+    %span.operation= "select, set and submit"
   = form_tag '/syllabus', :method => :put, :remote => true do |f|
     .submit-buttons
       = submit_tag 'add selected to course'

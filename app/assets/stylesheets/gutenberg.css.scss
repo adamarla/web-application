@@ -137,13 +137,20 @@ form.formtastic > .submit-buttons > input {
   padding-left: 20px ;
 }
 
-legend { 
+#macro-selection > legend { 
   width: 100% ;
   
   margin: {
+    top: 15px ;
     bottom: 15px ;
   }
 } 
+
+legend + form {
+  margin: {
+    top: -13px ;
+  }
+}
 
 ///////////////  formtastic form changes ///////////////////////////
 
