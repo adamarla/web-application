@@ -17,3 +17,13 @@ jQuery ->
       }
     }
   }
+
+  $('#edit-login-email > form').isHappy {
+    fields: {
+      '#account_email': {
+        required: 'sometimes',
+        test: happy.validate.email,
+        message: 'invalid e-mail address'
+      }
+    }
+  }
