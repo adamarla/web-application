@@ -2,13 +2,14 @@
 #
 # Table name: examiners
 #
-#  id            :integer         not null, primary key
-#  num_contested :integer         default(0)
-#  created_at    :datetime
-#  updated_at    :datetime
-#  is_admin      :boolean         default(FALSE)
-#  first_name    :string(255)
-#  last_name     :string(255)
+#  id              :integer         not null, primary key
+#  num_contested   :integer         default(0)
+#  created_at      :datetime
+#  updated_at      :datetime
+#  is_admin        :boolean         default(FALSE)
+#  first_name      :string(255)
+#  last_name       :string(255)
+#  last_workset_on :datetime
 #
 
 class Examiner < ActiveRecord::Base
