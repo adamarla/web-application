@@ -66,5 +66,5 @@ jQuery ->
     chart.attr 'marker', $(this).attr 'marker' if current is 0
     flipchart.next chart unless $(this).hasClass 'accordion-heading' # let the accordion expand
     flipchart.resetNext chart
-    event.stopPropagation() # stop unnecessary bubbling up to the containing .panel
+    event.stopPropagation() unless $(this).is 'input[type="radio"]'
     return true
