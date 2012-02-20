@@ -76,10 +76,52 @@ class Examiner < ActiveRecord::Base
     over just a few scans
 
     In other words, if there are 10 scans and 10 examiners, then it makes more sense
-    to assign 5 scans each to 2 examiners than to assign one scan each to the 
+    to assign 5 scans each to two examiners than to assign one scan each to the 
     10 examiners 
 =end
+    examiners = Examiner.order(:last_workset_on)
+    n_examiners = examiners.count
+    start_pt = 0
     scans = GradedResponse.where('examiner_id IS NULL').where('scan IS NOT NULL')
+    quiz_ids = scans.map(&:q_selection).map(&:quiz).map(&:id).uniq
+    per_quiz_limit = 20
+
+    Quiz.where(:id => quiz_ids).each_with_index do |quiz, index|
+      last_page = QSelection.where(:quiz_id => quiz.id).order(:page).select(:page).last.page
+      [*1..last_page].each do |page|
+        page_scans = scans & GradedResponse.in_quiz(quiz.id).on_page(page)
+        n_scans = page_scans.count 
+        next if n_scans == 0 # no scans for this page of this quiz 
+
+        # Try and allocate 'per_quiz_limit' pages/quiz to each examiner
+        n_reqd = (n_scans / per_quiz_limit) + 1
+
+        if n_reqd > n_examiners # too bad ... more work for everyone 
+          assign_to = [*0...n_examiners]
+        else 
+          assign_to = circular_slice [*0...n_examiners], start_pt, n_reqd
+          start_pt = n_reqd % n_examiners # for next time 
+        end
+
+        n_assignees = assign_to.count
+        j = 0 
+
+        page_scans.each_with_index do |p,index|
+          j = (j < n_assignees) ? j : 0
+          examiner_id = assign_to[j]
+          puts "[quiz, page, examiner] = [#{quiz.id}, #{page}, #{examiner_id}]"
+          # p.update_attribute :examiner_id, examiner_id
+          j += 1
+        end
+
+        # Update last_workset_on for examiners in assign_to 
+        # right_now = Time.now 
+        # Examiners.where(:id => assign_to).each do |e|
+        #   e.update_attribute :last_workset_on = right_now 
+
+      end # of page 
+    end # of Quiz do...
+
   end
 
   def self.receive_scans
