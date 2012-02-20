@@ -6,7 +6,6 @@
 #  num_contested :integer         default(0)
 #  created_at    :datetime
 #  updated_at    :datetime
-#  secret_key    :string(255)
 #  is_admin      :boolean         default(FALSE)
 #  first_name    :string(255)
 #  last_name     :string(255)
@@ -17,10 +16,8 @@ class Examiner < ActiveRecord::Base
   has_many :graded_responses
 
   # [:all] ~> [:admin]
-  # [:secret_key] ~> [:examiner] 
   # [:num_contested] ~> [:student]
   #attr_accessible :num_contested
-  before_create :set_secret_key
 
   def name 
     return "#{self.first_name} #{self.last_name} (#{self.account.username})"
@@ -71,12 +68,21 @@ class Examiner < ActiveRecord::Base
     return GradedResponse.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
 
-  def self.allocate_scans
+  def self.distribute_work
+=begin
+    The prep work an examiner needs to do before starting to grade is, really, 
+    the same for each new work-set. So, don't make the examiner spend that time
+    over just a few scans
+
+    In other words, if there are 10 scans and 10 examiners, then it makes more sense
+    to assign 5 scans each to 2 examiners than to assign one scan each to the 
+    10 examiners 
+=end
     scans = GradedResponse.where('examiner_id IS NULL').where('scan IS NOT NULL')
   end
 
   def self.receive_scans
-    failed_for = []
+    failures = []
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['receive_scans']}" 
     response = SavonClient.request :wsdl, :receiveScans do
@@ -98,20 +104,13 @@ class Examiner < ActiveRecord::Base
           db_record.update_attribute :scan, entry
         else
           name = Student.find(student).name
-          failed_for.push({:name => name, :id => page}) 
+          failures.push({:name => name, :id => page}) 
           # 'name, id' pairs are standard keys in our standard JSON response
         end 
-      end
-    end
-
-    return failed_for
+      end # of do ..
+      self.distribute_work 
+    end # of unless
+    return failures
   end
 
-  private 
-    def set_secret_key 
-      x = rand(36**16).to_s(36).rjust(16,"0")
-      y = rand(36**16).to_s(36).rjust(16,"0")
-      self.secret_key = x + y
-    end 
-
-end
+end # of class
