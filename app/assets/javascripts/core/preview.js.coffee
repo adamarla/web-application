@@ -58,7 +58,7 @@ jQuery ->
       root = json.preview.id
       indices = json.preview.indices
 
-      for index in indices
+      for index,j in indices
         switch source
           when 'atm'
             thumb = "#{base}/#{root}/answer-key/preview/page-#{index}-thumbnail.jpeg"
@@ -71,7 +71,7 @@ jQuery ->
           when 'frontdesk-yardsticks'
             thumb = "#{base}/#{index}/thumbnail.jpeg"
             full = "#{base}/#{index}/preview.jpeg"
-            alt = "preview"
+            alt = "#{j.toString(16).toUpperCase()}"
           else break
 
         img = $("<li marker=#{index}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
