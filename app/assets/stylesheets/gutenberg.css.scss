@@ -198,7 +198,25 @@ span.unhappyMessage {
   }
 }
 
-.ys-slider {
-  min-height: 30px ;
-  display: block ;
+.ys-slider.ui-slider-horizontal {
+  height: 0.5px ;
+  border: {
+    style: solid ;
+    width: 1px ;
+    color: white ;
+  }
+  margin-bottom: 20px ;
+
+  > a.ui-slider-handle {
+    height: 10px ;
+    width: 7px ;
+    border: {
+      style: solid ;
+      width: 1px ;
+      color: $orange ;
+      radius: 4px ;
+    }
+    background-color: $orange ;
+  } 
+  background-color: white ;
 } 
