@@ -26,7 +26,7 @@ jQuery ->
     execute : () ->
       p = $('#document-preview')
       return if p.parent().hasClass '.ppy-placeholder'
-      p.popeye({ navigation : 'permanent', caption : 'permanent'})
+      p.popeye({ navigation : 'permanent', caption : 'permanent', zindex:1000})
 
     loadJson : (json, source) ->
       ###
