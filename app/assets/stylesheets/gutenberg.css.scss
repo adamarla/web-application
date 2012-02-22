@@ -2,6 +2,7 @@
 $blue:#00007f ;
 $gray:#191919 ;
 $light-gray: lighten($gray, 30%) ;
+$orange:#fd9105 ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -188,3 +189,16 @@ span.unhappyMessage {
     size: 11px ;
   }
 }
+
+.ticker, .ys-ticker {
+  color: $orange ;
+  font: {
+    size: 24pt ;
+    weight: normal ;
+  }
+}
+
+.ys-slider {
+  min-height: 30px ;
+  display: block ;
+} 

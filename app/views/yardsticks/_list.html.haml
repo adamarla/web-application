@@ -1,5 +1,6 @@
 
 - yardsticks = Yardstick.order(:default_allotment).order(:mcq)
+- role = current_account.role
 
 #yardsticks-summary.left
   .vertical-tabs 
@@ -11,8 +12,31 @@
 
     - yardsticks.each_with_index do |y,j|
       %div{ :id => "ys-#{j}" }
-        %div.header
-          %a.edit{ :href => '#', :marker => "#{y.id}" } Edit
+
+        -# Only for Admin, a link to edit yardstick description 
+        - if role == :admin
+          %div.header
+            %a.edit{ :href => '#', :marker => "#{y.id}" } Edit
+
+        -# Role-specific <form> with slider to change the allotment
+        .edit-allotment
+          .ys-slider{ :id => "ys-#{y.id}-slider" }
+          - if role == :admin
+            .ys-ticker.right= "#{y.default_allotment}%"
+            = semantic_form_for :yardstick, :remote => true, :url => "/yardstick.json?id=#{y.id}", :method => :put do |f|
+              = f.input :default_allotment, :wrapper_html => { :class => 'hidden' }, :as => :number
+              .submit-buttons
+                = submit_tag 'update'
+          - elsif role == :teacher
+            .ys-ticker.right= "#{Grade.where(:yardstick_id => y.id, :teacher_id => current_account.loggable_id).first.allotment}%"
+            = semantic_form_for :grade, :remote => true, 
+                                :url => "/grade.json?id=#{y.id}&teacher_id=#{current_account.loggable_id}", 
+                                :method => :put do |f|
+              = f.input :allotment, :wrapper_html => { :class => 'hidden' }, :as => :number
+              .submit-buttons
+                = submit_tag 'update'
+
+        -# Yardstick description
         %h4 What does it mean?
         %p= y.meaning
         %h4 For example ...

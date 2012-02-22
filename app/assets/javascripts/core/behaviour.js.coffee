@@ -292,6 +292,32 @@ jQuery ->
   for chart in $('.flipchart')
     flipchart.initialize $(chart)
 
+  ###
+    Initialize vertical tabs 
+  ###
+
   for verticalTabs in $('.vertical-tabs')
     $(verticalTabs).tabs()
+
+  ###
+    In Admin & Teacher consoles, allotments for various yardsticks can be 
+    changed using a slider. These sliders - when slid - update a ticker
+    Define this functionality here
+  ###
+
+  $('.ys-slider').slider {
+    value: 50,
+    min:0,
+    max:100,
+    slide: (event, ui) ->
+      dom = $(ui.handle).parent()
+      #alert $(ui.handle).attr 'class'
+      ticker = dom.siblings '.ys-ticker:first'
+      formInput = dom.siblings('form:first').find 'li > input:first'
+
+      #alert formInput.attr 'id' if formInput.length
+
+      ticker.text "#{ui.value}%" if ticker?
+      formInput.val ui.value if formInput?
+  }
 

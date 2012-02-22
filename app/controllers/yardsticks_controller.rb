@@ -6,15 +6,9 @@ class YardsticksController < ApplicationController
   end
 
   def update 
-    options = params[:yardstick]
-    status = :ok 
-    yardstick = Yardstick.find params[:id] 
-
-    unless yardstick.nil?
-      head (yardstick.update_attributes(options) ? :ok : :bad_request)
-    else
-      head :bad_request 
-    end 
+    yardstick = Yardstick.where(:id => params[:id]).first
+    head :bad_request if yardstick.nil?
+    head (yardstick.update_attribute(:default_allotment, params[:yardstick][:default_allotment]) ? :ok : :bad_request)
   end 
 
   def create

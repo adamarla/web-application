@@ -1,21 +1,11 @@
 class GradesController < ApplicationController
+  respond_to :json
   before_filter :authenticate_account!
 
   def update
-    # params => {:grades => {1 => "60", 4 => "30", ....} .... }
-    grades = params[:grades] 
-    status = :ok 
-
-    grades.each { |id, allotment| 
-      grade = Grade.find(id) 
-      unless grade.nil? 
-        status = grade.update_attribute(:allotment, allotment) ? :ok : :bad_request
-      else
-        status = :bad_request
-      end 
-      break if status == :bad_request 
-    } 
-    head status 
+    grade = Grade.where(:yardstick_id => params[:id], :teacher_id => params[:teacher_id]).first
+    head :bad_request if grade.nil?
+    head (grade.update_attribute(:allotment, params[:grade][:allotment]) ? :ok : :bad_request)
   end
 
 end
