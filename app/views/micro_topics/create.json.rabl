@@ -2,6 +2,6 @@
 object @topic 
   attributes :name, :id 
 
-  code :macro_topic do |m| 
-    m.macro_topic.name 
+  code :vertical do |m| 
+    m.vertical.name 
   end 

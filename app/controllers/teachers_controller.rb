@@ -34,7 +34,7 @@ class TeachersController < ApplicationController
   end
 
   def coverage
-    # Returns the list of macro-topics covered by the teacher for the passed
+    # Returns the list of verticals covered by the teacher for the passed
     # (class, subject, board) combo
 
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
@@ -45,8 +45,8 @@ class TeachersController < ApplicationController
     board = teacher.school.board_id
 
     course = Course.where(:board_id => board, :klass => klass, :subject_id => subject).first
-    @macros = course.nil? ? nil : course.macros
-    @macros.nil? ? head(:bad_request) : respond_with(@macros)
+    @verticals = course.nil? ? nil : course.verticals
+    @verticals.nil? ? head(:bad_request) : respond_with(@verticals)
   end
 
   def courses

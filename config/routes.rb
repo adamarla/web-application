@@ -52,9 +52,9 @@ Webapp::Application.routes.draw do
   match 'school/unassigned-students' => 'schools#unassigned_students', :via => :get
   match 'school/sektions' => 'schools#sektions', :via => :get
 
-  # Macro Topic
-  match 'macro_topic/micros_in_course' => 'macro_topics#micros_in_course', :via => :get
-  match 'macros/list' => 'macro_topics#list', :via => :get
+  # Verticals 
+  match 'vertical/micros_in_course' => 'verticals#micros_in_course', :via => :get
+  match 'macros/list' => 'verticals#list', :via => :get
 
   # Micro Topic 
   resource :micro_topic, :only => [:create, :update]

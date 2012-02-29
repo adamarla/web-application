@@ -21,11 +21,11 @@ buildHierarchy = (selector) ->
         next.appendTo current
   return start
 
-idInMacroJson = (id, json) ->
+idInVerticalJson = (id, json) ->
   return json if typeof json is 'boolean'
   selected = false
   for record in json
-    data = record.macro
+    data = record.vertical
     selected = (data.id is id) and (data.in is true)
     break if selected is true
   return selected
@@ -69,11 +69,11 @@ resetPanel = (id, moveAlso = true) ->
 ###
 
 ###
-  The list of macro and micro topics is known at the time of HTML rendering - 
+  The list of vertical and micro topics is known at the time of HTML rendering - 
   and is therefore statically rendered within the 2 master-lists : 
-  macro-masterlist and micro-masterlist 
+  vertical-masterlist and micro-masterlist 
 
-  However, depending on the context, some macro-topics - and as a result, some 
+  However, depending on the context, some verticals - and as a result, some 
   micro-topics - are "applicable" while others are not. And the ones that are 
   "applicable" we want in one list while those that aren't we want in another. 
   This next set of functions manages that required sorting 
@@ -82,21 +82,21 @@ resetPanel = (id, moveAlso = true) ->
   the what the question is. The answer comes in the form of a JSON response 
   with AT LEAST the following structure : 
 
-     { macros : [ {macro : {id, [in]}}, { macro : {id, [in] }}, ... ] }
+     { verticals : [ {vertical : {id, [in]}}, { vertical : {id, [in] }}, ... ] }
 
   The keys HAVE TO BE as shown. And conversely, if you want to use the functions
   below, you will have to structure the JSON response as shown. The [in] key is an optional
   boolean. But its always interpreted as follows : 
-    1. macro-topic - and resulting micro-topics - are "applicable" if in=true
+    1. vertical - and resulting micro-topics - are "applicable" if in=true
        and "not applicable" if in=anyting else
 ###
 
 window.coreUtil = {
 
-  # Namespace for functions related to macro and micro lists
+  # Namespace for functions related to vertical and micro lists
   mnmlists : {
 
-    attach : (type, here) -> # type = [macro,micro]
+    attach : (type, here) -> # type = [vertical,micro]
       return if not type? and not here?
       here = if typeof here is 'string' then $(here) else here
       source = $("##{type}-selected-list").detach()
@@ -104,14 +104,14 @@ window.coreUtil = {
       return true
 
     asAccordion : (type = 'selected') -> # type = [selected, deselected]
-      macros = $("#macro-#{type}-list")
+      verticals = $("#vertical-#{type}-list")
       micros = $("#micro-#{type}-list")
       accordion = $('<div class="as-accordion" />')
 
-      for macro in macros.children()
-        id = $(macro).attr 'marker'
+      for vertical in verticals.children()
+        id = $(vertical).attr 'marker'
 
-        header = $(macro).clone()
+        header = $(vertical).clone()
         header.addClass 'accordion-heading'
 
         content = micros.children("[marker=#{id}]:first").clone()
@@ -124,8 +124,8 @@ window.coreUtil = {
       return accordion
 
     restore : () ->
-      for type in ['macro', 'micro']
-        master = $("##{type}-masterlist") # Eg. macro-masterlist
+      for type in ['vertical', 'micro']
+        master = $("##{type}-masterlist") # Eg. vertical-masterlist
         for j in ['selected', 'deselected']
           source = $("##{type}-#{j}-list") # Eg. micro-selected-list
           for child in source.children()
@@ -133,9 +133,9 @@ window.coreUtil = {
             child.appendTo master
       return true
 
-    customize : (type = 'macro', visible = {radio:true}) ->
+    customize : (type = 'vertical', visible = {radio:true}) ->
       for x in ['selected','deselected']
-        target = $("##{type}-#{x}-list") # Eg. #macro-selected-list
+        target = $("##{type}-#{x}-list") # Eg. #vertical-selected-list
         enable = if x is 'selected' then true else false
         swissKnife.customizeWithin target, visible, enable
       return true
@@ -144,25 +144,25 @@ window.coreUtil = {
       # Cool trick : If you know that everything is to go in the 
       # selected(deselected) list, then simply pass json = true(false)
 
-      # That said, first bring everything back into macro & micro master lists
+      # That said, first bring everything back into vertical & micro master lists
       coreUtil.mnmlists.restore()
 
       # Now, based on the JSON, sort into selected and deselected lists
-      macroS = $('#macro-selected-list')
-      macroU = $('#macro-deselected-list')
+      verticalS = $('#vertical-selected-list')
+      verticalU = $('#vertical-deselected-list')
       microS = $('#micro-selected-list')
       microU = $('#micro-deselected-list')
 
-      for macro in $('#macro-masterlist').children()
-        id = $(macro).attr 'marker'
-        selected = idInMacroJson parseInt(id), json
+      for vertical in $('#vertical-masterlist').children()
+        id = $(vertical).attr 'marker'
+        selected = idInVerticalJson parseInt(id), json
         micro = $('#micro-masterlist').children("[marker=#{id}]").first()
 
         if selected
-          macroS.append $(macro).detach()
+          verticalS.append $(vertical).detach()
           microS.append micro.detach()
         else
-          macroU.append $(macro).detach()
+          verticalU.append $(vertical).detach()
           microU.append micro.detach()
       return true
 

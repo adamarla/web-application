@@ -4,7 +4,7 @@
     = f.inputs do 
       = f.input :name, :label => 'Micro Topic'
       = f.input :category, :label => 'Category', :as => :select, 
-                           :collection => MacroTopic.order(:name)
+                           :collection => Vertical.order(:name)
       = f.input :new_category, :hint => 'Specify new category if none of the above apply'
     .submit-buttons
       = submit_tag 'add new topic'

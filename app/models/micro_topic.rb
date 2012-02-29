@@ -2,11 +2,11 @@
 #
 # Table name: micro_topics
 #
-#  id             :integer         not null, primary key
-#  name           :string(255)
-#  created_at     :datetime
-#  updated_at     :datetime
-#  macro_topic_id :integer
+#  id          :integer         not null, primary key
+#  name        :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  vertical_id :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -21,7 +21,7 @@ class MicroTopic < ActiveRecord::Base
 
   has_many :courses, :through => :syllabi
   has_many :syllabi
-  belongs_to :macro_topic
+  belongs_to :vertical
 
   def difficulty_in(course_id)
     course = Course.find course_id

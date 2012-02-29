@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MacroTopicsControllerTest < ActionController::TestCase
+class VerticalsControllerTest < ActionController::TestCase
   # test "the truth" do
   #   assert true
   # end

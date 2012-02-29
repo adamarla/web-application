@@ -11,14 +11,14 @@ window.adminUtil = {
     swissKnife.customizeWithin selected, {select:true}, true
 
     # 3. Load the difficulty levels for micro-topics using the passed JSON
-    #    JSON is of the form : [{macro : { .., micros : { ... } }}, { macro : { .., micros : { ... } }}]
+    #    JSON is of the form : [{vertical : { .., micros : { ... } }}, { vertical : { .., micros : { ... } }}]
 
     for a in json
-      macro = a.macro
-      continue if not macro.in is true # don't waste time w/ these
+      vertical = a.vertical
+      continue if not vertical.in is true # don't waste time w/ these
 
-      micros = macro.micros
-      start = selected.children "div[marker=#{macro.id}]:first"
+      micros = vertical.micros
+      start = selected.children "div[marker=#{vertical.id}]:first"
       start.addClass 'hidden'
 
       for b in micros
@@ -29,7 +29,7 @@ window.adminUtil = {
 
   mnmToggle : (type, id, customization = null) ->
     ### 
-      type = 'selected' OR 'deselected', id = of the macro
+      type = 'selected' OR 'deselected', id = of the vertical
       If 'type' = selected, then we are moving a 'selected' element 
       to the 'deselected' list. Otherwise, the other way round
     ###

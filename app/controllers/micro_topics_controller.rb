@@ -7,9 +7,9 @@ class MicroTopicsController < ApplicationController
     category_name = options.delete :new_category
 
     if category_name.blank? 
-      @topic = MicroTopic.new :name => options[:name], :macro_topic_id => options[:category]
+      @topic = MicroTopic.new :name => options[:name], :vertical_id => options[:category]
     else 
-      category = MacroTopic.where(:name => category_name).first || MacroTopic.new(:name => category_name) 
+      category = Vertical.where(:name => category_name).first || Vertical.new(:name => category_name) 
       category.save if category.new_record? 
 
       @topic = category.micro_topics.new :name => options[:name]
@@ -22,7 +22,7 @@ class MicroTopicsController < ApplicationController
   end 
 
   def list 
-    @categories = MacroTopic.order(:name).all 
+    @categories = Vertical.order(:name).all 
     respond_with @categories 
   end 
 

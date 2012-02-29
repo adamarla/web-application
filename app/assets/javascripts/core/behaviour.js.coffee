@@ -246,21 +246,21 @@ jQuery ->
     return true
 
   ###
-    If a radio button within the macro-selected-list is clicked, then 
+    If a radio button within the vertical-selected-list is clicked, then 
     make the corresponding micro-topics in #micro-selected-list visible.
     But do this only if #micro-selected-list is in view - that is - 
     not in the #toolbox. And leave any other context specific customization
     to the context specific JS file
   ###
 
-  $('#macro-selected-list').on 'click', 'input[type="radio"]', ->
+  $('#vertical-selected-list').on 'click', 'input[type="radio"]', ->
     return if $('#toolbox').children('#micro-selected-list').length isnt 0
 
     marker = $(this).attr 'marker'
-    for macro in $('#micro-selected-list').children("div[marker]")
-      id = $(macro).attr 'marker'
+    for vertical in $('#micro-selected-list').children("div[marker]")
+      id = $(vertical).attr 'marker'
       hide = if id is marker then false else true
-      if hide then $(macro).addClass('hidden') else $(macro).removeClass('hidden')
+      if hide then $(vertical).addClass('hidden') else $(vertical).removeClass('hidden')
     return true
 
   ###

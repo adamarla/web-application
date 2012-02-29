@@ -4,13 +4,13 @@
     %li
       %a{ :href => '#examiner-untagged' }= "Pending"
     %li
-      %a{ :href => '#macro-selection' }= "Macros"
+      %a{ :href => '#vertical-selection' }= "Verticals"
     %li
       %a{ :href => '#micro-selection' }= "Micros"
     %li
       %a{ :href => '#misc-traits' }= "Misc"
   #examiner-untagged
-  #macro-selection
+  #vertical-selection
   #micro-selection
   #misc-traits
     = semantic_form_for :misc, :remote => true, :url => '/question', :method => :put do |f|

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: macro_topics
+# Table name: verticals
 #
 #  id         :integer         not null, primary key
 #  name       :string(255)
@@ -8,7 +8,7 @@
 #  updated_at :datetime
 #
 
-class MacroTopic < ActiveRecord::Base
+class Vertical < ActiveRecord::Base
   has_many :micro_topics 
 
   validates :name, :presence => true

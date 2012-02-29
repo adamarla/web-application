@@ -153,7 +153,7 @@ module ApplicationHelper
     case what 
       when :boards then return Board.where('id IS NOT NULL')
       when :micro_topics then return MicroTopic.where('id IS NOT NULL')
-      when :macro_topics then return MacroTopic.where('id IS NOT NULL')
+      when :verticals then return Vertical.where('id IS NOT NULL')
       else return []
     end 
   end 

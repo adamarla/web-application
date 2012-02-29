@@ -1,8 +1,8 @@
 
-collection @macros => :macros
+collection @verticals => :verticals
   attributes :id
   code :in do |m|
-    @course.covers_macro_topic? m.id
+    @course.covers_vertical? m.id
   end 
 
   child :micro_topics => :micros do 

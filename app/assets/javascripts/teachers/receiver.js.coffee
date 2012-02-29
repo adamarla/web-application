@@ -19,8 +19,8 @@ jQuery ->
       here = $('#quiz-builder-form').find '.search-results:first'
       here.empty()
 
-      coreUtil.mnmlists.redistribute json.macros
-      coreUtil.mnmlists.customize 'macro', {}
+      coreUtil.mnmlists.redistribute json.verticals
+      coreUtil.mnmlists.customize 'vertical', {}
       coreUtil.mnmlists.customize 'micro', {checkbox:true}
 
       results = coreUtil.mnmlists.asAccordion 'selected'
@@ -41,9 +41,9 @@ jQuery ->
     else if url.match(/teacher\/courses/)
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
-    else if url.match(/course\/macros/)
-      here = $('#macro-selection-list > form:first > .form-fields')
-      coreUtil.interface.displayJson json.macros, here, 'macro', {checkbox:true}
+    else if url.match(/course\/verticals/)
+      here = $('#vertical-selection-list > form:first > .form-fields')
+      coreUtil.interface.displayJson json.verticals, here, 'vertical', {checkbox:true}
     else if url.match(/course\/applicable_micros/)
       flipchart.next '#build-quiz'
       here = $('#micro-selection-list > form:first > .form-fields')

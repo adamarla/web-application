@@ -43,16 +43,16 @@ class Course < ActiveRecord::Base
     board.blank? ? where('board_id IS NOT NULL') : where(:board_id => board)
   end 
 
-  def covers_macro_topic?(id)
+  def covers_vertical?(id)
     a = self.micro_topic_ids 
-    b = MacroTopic.find(id).micro_topic_ids
+    b = Vertical.find(id).micro_topic_ids
 
     return !((a & b).empty?)
   end
 
-  def macros
-    ids = self.micro_topics.map(&:macro_topic_id).uniq
-    return MacroTopic.where(:id => ids).order(:name)
+  def verticals
+    ids = self.micro_topics.map(&:vertical_id).uniq
+    return Vertical.where(:id => ids).order(:name)
   end
 
   # [:name,:board_id,:klass,:subject] ~> [:admin] 

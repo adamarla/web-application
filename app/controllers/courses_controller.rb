@@ -52,18 +52,18 @@ class CoursesController < ApplicationController
 
   def coverage
     @course = Course.find params[:id]
-    @macros = MacroTopic.where('id IS NOT NULL').order(:name) # basically, everyone
+    @verticals = Vertical.where('id IS NOT NULL').order(:name) # basically, everyone
   end 
 
-  def macros
+  def verticals
     course = Course.find params[:id]
     head :bad_request if course.nil?
-    @macros = course.macros
+    @verticals = course.verticals
   end
 
   def applicable_micros 
-    macro_ids = params[:checked].keys.map(&:to_i)
-    @micros = MicroTopic.where(:macro_topic_id => macro_ids).order(:name)
+    vertical_ids = params[:checked].keys.map(&:to_i)
+    @micros = MicroTopic.where(:vertical_id => vertical_ids).order(:name)
   end 
 
   def get_relevant_questions

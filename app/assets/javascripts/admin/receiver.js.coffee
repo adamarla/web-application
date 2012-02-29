@@ -29,7 +29,7 @@ jQuery ->
     matched = settings.url.match(/schools\/list/) or
               settings.url.match(/courses\/list/) or
               settings.url.match(/questions\/list/) or
-              settings.url.match(/macros\/list/) or
+              settings.url.match(/verticals\/list/) or
               settings.url.match(/examiner\/pending_quizzes/) or
               settings.url.match(/examiner\/pending_pages/)
     return if matched is null
@@ -44,12 +44,12 @@ jQuery ->
       when 'questions/list'
         # flipchart initialized in core/behaviour 
         coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
-      when 'macros/list'
+      when 'verticals/list'
         coreUtil.mnmlists.redistribute true
-        coreUtil.mnmlists.customize 'macro'
+        coreUtil.mnmlists.customize 'vertical'
         coreUtil.mnmlists.customize 'micro'
 
-        coreUtil.mnmlists.attach 'macro', '#macro-selection'
+        coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
         coreUtil.mnmlists.attach 'micro', '#micro-selection'
       when 'examiner/pending_quizzes'
         coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
@@ -86,14 +86,14 @@ jQuery ->
         coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick
         $('#edit-yardstick').dialog 'open'
       when 'course/coverage'
-        coreUtil.mnmlists.redistribute json.macros
-        coreUtil.mnmlists.customize 'macro'
+        coreUtil.mnmlists.redistribute json.verticals
+        coreUtil.mnmlists.customize 'vertical'
 
-        target = $('#macro-selection')
-        $('#macro-selected-list').insertAfter target.children('legend').eq(0)
-        $('#macro-deselected-list').insertAfter target.children('legend').eq(1)
+        target = $('#vertical-selection')
+        $('#vertical-selected-list').insertAfter target.children('legend').eq(0)
+        $('#vertical-deselected-list').insertAfter target.children('legend').eq(1)
 
-        adminUtil.buildSyllabiEditForm json.macros
+        adminUtil.buildSyllabiEditForm json.verticals
 
   ###
     AJAX successes the right-panel is supposed to respond to.
@@ -103,7 +103,7 @@ jQuery ->
     matched = settings.url.match(/teachers\/roster/) or
               settings.url.match(/school\/unassigned-students/) or
               settings.url.match(/sektions\/students/) or
-              settings.url.match(/macros\/list/) or
+              settings.url.match(/verticals\/list/) or
               settings.url.match(/school\.json/)
     return if matched is null
   
@@ -119,11 +119,11 @@ jQuery ->
         coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
       when 'school.json'
         coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
-      when 'macros/list'
+      when 'verticals/list'
         # Customize swiss-knives within microTopics to include just one enabled radio-button
         microTopics = $('#micro-topic-list')
-        for macro in microTopics.find 'div[marker]'
-          for e in $(macro).children()
+        for vertical in microTopics.find 'div[marker]'
+          for e in $(vertical).children()
             swissKnife.customize $(e), {radio:true}, true
 
   ###

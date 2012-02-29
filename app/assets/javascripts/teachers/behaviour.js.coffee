@@ -99,7 +99,7 @@ jQuery ->
     chart = $(this).closest '.ui-tabs-panel'
     id = $(this).attr 'marker'
     switch chart.attr 'id'
-      when 'courses-taught' then $.get "course/macros.json?id=#{id}"
+      when 'courses-taught' then $.get "course/verticals.json?id=#{id}"
 
 
   ###

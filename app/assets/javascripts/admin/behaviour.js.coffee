@@ -31,7 +31,7 @@ jQuery ->
       when 'courses-link' then $.get 'courses/list'
       when 'workbench-link'
         $.get 'questions/list.json'
-        $.get 'macros/list.json'
+        $.get 'verticals/list.json'
     return true
 
   ###
@@ -101,12 +101,12 @@ jQuery ->
   ###
     Connect sortable lists for Admin
   ###
-  $('#macro-selected-list').sortable 'option', 'connectWith', '#macro-deselected-list'
-  $('#macro-deselected-list').sortable 'option', 'connectWith', '#macro-selected-list'
+  $('#vertical-selected-list').sortable 'option', 'connectWith', '#vertical-deselected-list'
+  $('#vertical-deselected-list').sortable 'option', 'connectWith', '#vertical-selected-list'
 
   ###
     edit-syllabi form should acquire or lose elements depending on whether a 
-    macro-topic has been moved from selected -> deselected or the other way round
+    vertical has been moved from selected -> deselected or the other way round
   ###
   $('.sortable').on 'sortreceive', (event, ui) ->
     parent = ui.item.closest '.sortable'
