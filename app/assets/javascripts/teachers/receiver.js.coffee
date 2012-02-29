@@ -46,7 +46,7 @@ jQuery ->
       coreUtil.interface.displayJson json.verticals, here, 'vertical', {checkbox:true}
     else if url.match(/course\/applicable_micros/)
       flipchart.next '#build-quiz'
-      here = $('#micro-selection-list > form:first > .form-fields')
+      here = $('#topic-selection-list > form:first > .form-fields')
       coreUtil.interface.displayJson json.micros, here, 'micro', {checkbox:true}
     else if url.match(/course\/questions/)
       flipchart.next '#build-quiz'

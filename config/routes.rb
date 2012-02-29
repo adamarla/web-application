@@ -31,7 +31,7 @@ Webapp::Application.routes.draw do
   match 'courses/list' => 'courses#list', :via => :get
   match 'course/profile' => 'courses#profile', :via => :get
   match 'course/coverage' => 'courses#coverage', :via => :get
-  match 'course/macros' => 'courses#macros', :via => :get
+  match 'course/verticals' => 'courses#verticals', :via => :get
   match 'course/applicable_micros' => 'courses#applicable_micros', :via => :put
   match 'course/questions' => 'courses#get_relevant_questions', :via => :put
 
@@ -54,11 +54,11 @@ Webapp::Application.routes.draw do
 
   # Verticals 
   match 'vertical/micros_in_course' => 'verticals#micros_in_course', :via => :get
-  match 'macros/list' => 'verticals#list', :via => :get
+  match 'verticals/list' => 'verticals#list', :via => :get
 
-  # Micro Topic 
-  resource :micro_topic, :only => [:create, :update]
-  match 'topics/list' => 'micro_topics#list', :via => :get
+  # Topic 
+  resource :topic, :only => [:create, :update]
+  match 'topics/list' => 'topics#list', :via => :get
 
   # Question
   resource :question, :only => [:create, :update], :controller => :question

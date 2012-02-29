@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: micro_topics
+# Table name: topics
 #
 #  id          :integer         not null, primary key
 #  name        :string(255)
@@ -16,7 +16,7 @@
 #    |__:belongs_to__|  |___:has_many___| |__:belongs_to__|
 #    
 
-class MicroTopic < ActiveRecord::Base
+class Topic < ActiveRecord::Base
   validates :name, :presence => true
 
   has_many :courses, :through => :syllabi
@@ -26,7 +26,7 @@ class MicroTopic < ActiveRecord::Base
   def difficulty_in(course_id)
     course = Course.find course_id
     unless course.nil? 
-      in_syllabi = Syllabus.where(:course_id => course_id, :micro_topic_id => self.id).first
+      in_syllabi = Syllabus.where(:course_id => course_id, :topic_id => self.id).first
       return in_syllabi.nil? ? 0 : in_syllabi.difficulty
     end 
     return 0

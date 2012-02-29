@@ -2,15 +2,15 @@
 window.adminUtil = {
 
   buildSyllabiEditForm : (json) ->
-    # 1. Move #micro-selected-list to within #edit-syllabi-form
+    # 1. Move #topic-selected-list to within #edit-syllabi-form
     target = $('#edit-syllabi-form > form:first')
-    selected = $('#micro-selected-list').detach()
+    selected = $('#topic-selected-list').detach()
     selected.appendTo target
     
     # 2. Customize swiss-knives to have only the <select> visible & enabled
     swissKnife.customizeWithin selected, {select:true}, true
 
-    # 3. Load the difficulty levels for micro-topics using the passed JSON
+    # 3. Load the difficulty levels for topics using the passed JSON
     #    JSON is of the form : [{vertical : { .., micros : { ... } }}, { vertical : { .., micros : { ... } }}]
 
     for a in json
@@ -36,8 +36,8 @@ window.adminUtil = {
 
     other = if type is 'selected' then 'deselected' else 'selected'
 
-    source = $("#micro-#{type}-list").children("div[marker=#{id}]").detach()
-    target = $("#micro-#{other}-list")
+    source = $("#topic-#{type}-list").children("div[marker=#{id}]").detach()
+    target = $("#topic-#{other}-list")
     source.appendTo target
 
     if type is 'selected'

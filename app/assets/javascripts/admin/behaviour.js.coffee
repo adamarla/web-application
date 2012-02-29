@@ -187,10 +187,10 @@ jQuery ->
     return true
 
   ###
-    When a micro-topic in #micro-selection is selected, then set the 
+    When a topic in #topic-selection is selected, then set the 
     hidden <input> field in #misc-traits > form with the selected topic's id
   ###
-  $('#micro-selection').on 'click', 'input[type="radio"]', ->
+  $('#topic-selection').on 'click', 'input[type="radio"]', ->
     id = $(this).attr 'marker'
     target = $('#misc-traits input#misc_micro_topic_id').first() # formtastic generated id
     target.val id

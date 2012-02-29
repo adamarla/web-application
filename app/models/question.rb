@@ -2,22 +2,22 @@
 #
 # Table name: questions
 #
-#  id             :integer         not null, primary key
-#  uid            :string(255)
-#  attempts       :integer         default(0)
-#  created_at     :datetime
-#  updated_at     :datetime
-#  examiner_id    :integer
-#  micro_topic_id :integer
-#  teacher_id     :integer
-#  mcq            :boolean         default(FALSE)
-#  multi_correct  :boolean         default(FALSE)
-#  multi_part     :boolean         default(FALSE)
-#  num_parts      :integer
-#  difficulty     :integer         default(1)
-#  half_page      :boolean         default(FALSE)
-#  full_page      :boolean         default(TRUE)
-#  marks          :integer
+#  id            :integer         not null, primary key
+#  uid           :string(255)
+#  attempts      :integer         default(0)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  examiner_id   :integer
+#  topic_id      :integer
+#  teacher_id    :integer
+#  mcq           :boolean         default(FALSE)
+#  multi_correct :boolean         default(FALSE)
+#  multi_part    :boolean         default(FALSE)
+#  num_parts     :integer
+#  difficulty    :integer         default(1)
+#  half_page     :boolean         default(FALSE)
+#  full_page     :boolean         default(TRUE)
+#  marks         :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -51,7 +51,7 @@ class Question < ActiveRecord::Base
   validates :num_parts, :numericality => {:only_integer => true, :greater_than => 0}, :if => :multi_part?
 
   belongs_to :examiner
-  belongs_to :micro_topic
+  belongs_to :topic
   belongs_to :teacher # non-nil if question came from a teacher
 
   has_many :q_selections

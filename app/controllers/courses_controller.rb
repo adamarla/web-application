@@ -61,9 +61,9 @@ class CoursesController < ApplicationController
     @verticals = course.verticals
   end
 
-  def applicable_micros 
+  def applicable_topics 
     vertical_ids = params[:checked].keys.map(&:to_i)
-    @micros = MicroTopic.where(:vertical_id => vertical_ids).order(:name)
+    @topics = Topic.where(:vertical_id => vertical_ids).order(:name)
   end 
 
   def get_relevant_questions

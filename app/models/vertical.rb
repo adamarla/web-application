@@ -9,7 +9,7 @@
 #
 
 class Vertical < ActiveRecord::Base
-  has_many :micro_topics 
+  has_many :topics 
 
   validates :name, :presence => true
 end

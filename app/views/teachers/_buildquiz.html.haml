@@ -6,7 +6,7 @@
     %li
       %a{ :href => '#vertical-selection-list' }= "broadly"
     %li
-      %a{ :href => '#micro-selection-list' }= "specific"
+      %a{ :href => '#topic-selection-list' }= "specific"
     %li
       %a{ :href => '#question-options' }= "pick"
   #courses-taught
@@ -15,7 +15,7 @@
       .submit-buttons
         = submit_tag 'next'
       .form-fields
-  #micro-selection-list
+  #topic-selection-list
     = form_tag 'course/applicable_questions', :remote => true, :method => :put do |f| 
       .submit-buttons
         = submit_tag 'next'

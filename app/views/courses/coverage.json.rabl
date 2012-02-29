@@ -5,7 +5,7 @@ collection @verticals => :verticals
     @course.covers_vertical? m.id
   end 
 
-  child :micro_topics => :micros do 
+  child :topics => :micros do 
     attributes :id
 
     # The JSON generated here is loaded onto an HTML element that includes - 

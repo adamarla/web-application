@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120229184125) do
+ActiveRecord::Schema.define(:version => 20120229200321) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -102,13 +102,6 @@ ActiveRecord::Schema.define(:version => 20120229184125) do
     t.datetime "updated_at"
   end
 
-  create_table "micro_topics", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "vertical_id"
-  end
-
   create_table "q_selections", :force => true do |t|
     t.integer  "quiz_id"
     t.integer  "question_id"
@@ -120,19 +113,19 @@ ActiveRecord::Schema.define(:version => 20120229184125) do
 
   create_table "questions", :force => true do |t|
     t.string   "uid"
-    t.integer  "attempts",       :default => 0
+    t.integer  "attempts",      :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.integer  "micro_topic_id"
+    t.integer  "topic_id"
     t.integer  "teacher_id"
-    t.boolean  "mcq",            :default => false
-    t.boolean  "multi_correct",  :default => false
-    t.boolean  "multi_part",     :default => false
+    t.boolean  "mcq",           :default => false
+    t.boolean  "multi_correct", :default => false
+    t.boolean  "multi_part",    :default => false
     t.integer  "num_parts"
-    t.integer  "difficulty",     :default => 1
-    t.boolean  "half_page",      :default => false
-    t.boolean  "full_page",      :default => true
+    t.integer  "difficulty",    :default => 1
+    t.boolean  "half_page",     :default => false
+    t.boolean  "full_page",     :default => true
     t.integer  "marks"
   end
 
@@ -193,10 +186,10 @@ ActiveRecord::Schema.define(:version => 20120229184125) do
 
   create_table "syllabi", :force => true do |t|
     t.integer  "course_id"
-    t.integer  "micro_topic_id"
+    t.integer  "topic_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "difficulty",     :default => 1
+    t.integer  "difficulty", :default => 1
   end
 
   create_table "teachers", :force => true do |t|
@@ -212,6 +205,13 @@ ActiveRecord::Schema.define(:version => 20120229184125) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "topics", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "vertical_id"
   end
 
   create_table "verticals", :force => true do |t|

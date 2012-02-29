@@ -50,7 +50,7 @@ jQuery ->
         coreUtil.mnmlists.customize 'micro'
 
         coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
-        coreUtil.mnmlists.attach 'micro', '#micro-selection'
+        coreUtil.mnmlists.attach 'micro', '#topic-selection'
       when 'examiner/pending_quizzes'
         coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
       when 'examiner/pending_pages'
@@ -120,9 +120,9 @@ jQuery ->
       when 'school.json'
         coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
       when 'verticals/list'
-        # Customize swiss-knives within microTopics to include just one enabled radio-button
-        microTopics = $('#micro-topic-list')
-        for vertical in microTopics.find 'div[marker]'
+        # Customize swiss-knives within topics to include just one enabled radio-button
+        topics = $('#topic-list')
+        for vertical in topics.find 'div[marker]'
           for e in $(vertical).children()
             swissKnife.customize $(e), {radio:true}, true
 

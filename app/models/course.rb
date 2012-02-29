@@ -23,7 +23,7 @@ class Course < ActiveRecord::Base
   belongs_to :board 
   belongs_to :subject
 
-  has_many :micro_topics, :through => :syllabi
+  has_many :topics, :through => :syllabi
   has_many :syllabi
 
   validates :name, :presence => true
@@ -44,14 +44,14 @@ class Course < ActiveRecord::Base
   end 
 
   def covers_vertical?(id)
-    a = self.micro_topic_ids 
-    b = Vertical.find(id).micro_topic_ids
+    a = self.topic_ids 
+    b = Vertical.find(id).topic_ids
 
     return !((a & b).empty?)
   end
 
   def verticals
-    ids = self.micro_topics.map(&:vertical_id).uniq
+    ids = self.topics.map(&:vertical_id).uniq
     return Vertical.where(:id => ids).order(:name)
   end
 
@@ -62,12 +62,12 @@ class Course < ActiveRecord::Base
     status = :ok
     ids = syllabi.keys.find_all { |key| syllabi[key].to_i > 0 }
     ids = ids.map { |id| id.to_i }
-    topics = ids.map { |index| MicroTopic.find index }
-    self.micro_topics = topics # requisite additions & deletions to the join-table
+    topics = ids.map { |index| Topic.find index }
+    self.topics = topics # requisite additions & deletions to the join-table
 
     syllabi.each do |id,difficulty| 
       if difficulty.to_i > 0
-        item = Syllabus.where(:course_id => self.id, :micro_topic_id => id.to_i).first
+        item = Syllabus.where(:course_id => self.id, :topic_id => id.to_i).first
         status = item.update_attribute(:difficulty, difficulty.to_i) ? :ok : :bad_request
         break if status == :bad_request
       end
@@ -77,8 +77,8 @@ class Course < ActiveRecord::Base
 
   def relevant_questions(topic_ids = [])
     @questions = []
-    Syllabus.where(:course_id => self.id, :micro_topic_id => topic_ids).each do |j|
-      @questions |= Question.where(:micro_topic_id => j.micro_topic_id, :difficulty => j.difficulty)
+    Syllabus.where(:course_id => self.id, :topic_id => topic_ids).each do |j|
+      @questions |= Question.where(:topic_id => j.topic_id, :difficulty => j.difficulty)
     end
 
     return @questions

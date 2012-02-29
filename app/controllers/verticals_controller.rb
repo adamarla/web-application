@@ -2,12 +2,12 @@ class VerticalsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json
 
-  def micros_in_course
+  def topics_in_course
     me = Vertical.find params[:id]
     unless me.nil? 
       @course = Course.find params[:course]
-      @micros = MicroTopic.where :vertical_id => me.id 
-      respond_with @course, @micros
+      @topics = Topic.where :vertical_id => me.id 
+      respond_with @course, @topics
     else 
       head :bad_request
     end

@@ -1,16 +1,16 @@
 
-#micro-masterlist.hidden
+#topic-masterlist.hidden
   - list = get_list_of :verticals
   - list.each do |vertical|
     %div.hidden{ :marker => "#{vertical.id}" }
-      - micros = MicroTopic.where(:vertical_id => vertical.id).order(:name)
+      - micros = Topic.where(:vertical_id => vertical.id).order(:name)
       - micros.each do |micro|
         = render :partial => 'toolbox/swiss_knife', 
                  :locals => { :marker => "#{micro.id}", :label => "#{micro.name}" }
 
 -# All "applicable" micros (context specific) listed within this ...
-#micro-selected-list.sortable.put-back
+#topic-selected-list.sortable.put-back
 
--# .. and every other micro-topic, within this 
-#micro-deselected-list.sortable.put-back
+-# .. and every other topic, within this 
+#topic-deselected-list.sortable.put-back
 

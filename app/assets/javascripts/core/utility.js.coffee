@@ -71,10 +71,10 @@ resetPanel = (id, moveAlso = true) ->
 ###
   The list of vertical and micro topics is known at the time of HTML rendering - 
   and is therefore statically rendered within the 2 master-lists : 
-  vertical-masterlist and micro-masterlist 
+  vertical-masterlist and topic-masterlist 
 
   However, depending on the context, some verticals - and as a result, some 
-  micro-topics - are "applicable" while others are not. And the ones that are 
+  topics - are "applicable" while others are not. And the ones that are 
   "applicable" we want in one list while those that aren't we want in another. 
   This next set of functions manages that required sorting 
 
@@ -87,7 +87,7 @@ resetPanel = (id, moveAlso = true) ->
   The keys HAVE TO BE as shown. And conversely, if you want to use the functions
   below, you will have to structure the JSON response as shown. The [in] key is an optional
   boolean. But its always interpreted as follows : 
-    1. vertical - and resulting micro-topics - are "applicable" if in=true
+    1. vertical - and resulting topics - are "applicable" if in=true
        and "not applicable" if in=anyting else
 ###
 
@@ -105,7 +105,7 @@ window.coreUtil = {
 
     asAccordion : (type = 'selected') -> # type = [selected, deselected]
       verticals = $("#vertical-#{type}-list")
-      micros = $("#micro-#{type}-list")
+      micros = $("#topic-#{type}-list")
       accordion = $('<div class="as-accordion" />')
 
       for vertical in verticals.children()
@@ -127,7 +127,7 @@ window.coreUtil = {
       for type in ['vertical', 'micro']
         master = $("##{type}-masterlist") # Eg. vertical-masterlist
         for j in ['selected', 'deselected']
-          source = $("##{type}-#{j}-list") # Eg. micro-selected-list
+          source = $("##{type}-#{j}-list") # Eg. topic-selected-list
           for child in source.children()
             child = $(child).detach()
             child.appendTo master
@@ -150,13 +150,13 @@ window.coreUtil = {
       # Now, based on the JSON, sort into selected and deselected lists
       verticalS = $('#vertical-selected-list')
       verticalU = $('#vertical-deselected-list')
-      microS = $('#micro-selected-list')
-      microU = $('#micro-deselected-list')
+      microS = $('#topic-selected-list')
+      microU = $('#topic-deselected-list')
 
       for vertical in $('#vertical-masterlist').children()
         id = $(vertical).attr 'marker'
         selected = idInVerticalJson parseInt(id), json
-        micro = $('#micro-masterlist').children("[marker=#{id}]").first()
+        micro = $('#topic-masterlist').children("[marker=#{id}]").first()
 
         if selected
           verticalS.append $(vertical).detach()

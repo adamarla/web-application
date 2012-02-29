@@ -1,4 +1,4 @@
-class MicroTopicsController < ApplicationController
+class TopicsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json
 
@@ -7,12 +7,12 @@ class MicroTopicsController < ApplicationController
     category_name = options.delete :new_category
 
     if category_name.blank? 
-      @topic = MicroTopic.new :name => options[:name], :vertical_id => options[:category]
+      @topic = Topic.new :name => options[:name], :vertical_id => options[:category]
     else 
       category = Vertical.where(:name => category_name).first || Vertical.new(:name => category_name) 
       category.save if category.new_record? 
 
-      @topic = category.micro_topics.new :name => options[:name]
+      @topic = category.topics.new :name => options[:name]
     end 
     @topic.save ? respond_with(@topic) : head(:bad_request) 
   end 

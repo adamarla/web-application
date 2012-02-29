@@ -1,5 +1,5 @@
 
-collection @micros => :micros
+collection @topics => :topics
   attributes :name, :id
 
   # The JSON generated here is loaded onto an HTML element that includes - 
@@ -11,6 +11,6 @@ collection @micros => :micros
   # difficulty below, we use the more generic term :select
 
   code :select do |m|
-    x = Syllabus.where(:course_id => @course.id, :micro_topic_id => m.id).first
+    x = Syllabus.where(:course_id => @course.id, :topic_id => m.id).first
     x.nil? ? nil : x.difficulty
   end 

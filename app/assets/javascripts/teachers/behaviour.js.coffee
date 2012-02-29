@@ -103,9 +103,9 @@ jQuery ->
 
 
   ###
-    Step 3 of the 'quiz-building' process: micro-topic selection 
+    Step 3 of the 'quiz-building' process: topic selection 
   ###
-  $('#micro-selection-list').submit ->
+  $('#topic-selection-list').submit ->
     courseId = $('#build-quiz').attr 'marker'
     form = $(this).children 'form:first'
     form.attr 'action', "course/questions.json?id=#{courseId}"

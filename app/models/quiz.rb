@@ -84,7 +84,7 @@ class Quiz < ActiveRecord::Base
   def set_name
     subject = Subject.where(:id => self.subject_id).select(:name).first.name
 
-    topics = MicroTopic.where(:id => self.micros).map(&:name).join(', ')
+    topics = Topic.where(:id => self.micros).map(&:name).join(', ')
     topics = topics.split[0...2].join(' ') # take the first 2 words only ...
     topics += ' ...'
 
@@ -169,7 +169,7 @@ class Quiz < ActiveRecord::Base
 
   # Returns the list of micro-topics touched upon in this Quiz - as an array of indices
   def micros
-    self.questions.map{|q| q.micro_topic_id}.uniq
+    self.questions.map{|q| q.topic_id}.uniq
   end
 
 end # of class

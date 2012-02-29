@@ -6,17 +6,17 @@
     %li
       %a{ :href => '#vertical-selection' }= "Verticals"
     %li
-      %a{ :href => '#micro-selection' }= "Micros"
+      %a{ :href => '#topic-selection' }= "Micros"
     %li
       %a{ :href => '#misc-traits' }= "Misc"
   #examiner-untagged
   #vertical-selection
-  #micro-selection
+  #topic-selection
   #misc-traits
     = semantic_form_for :misc, :remote => true, :url => '/question', :method => :put do |f|
       = f.inputs do
         = f.input :id, :wrapper_html => { :class => 'hidden' }
-        = f.input :micro_topic_id, :wrapper_html => { :class => 'hidden' }
+        = f.input :topic_id, :wrapper_html => { :class => 'hidden' }
         = f.input :marks, :as => :select, :include_blank => false,
                   :collection => [*1..6], 
                   :wrapper_html => {:class => 'full-width'}

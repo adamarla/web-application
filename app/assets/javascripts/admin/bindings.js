@@ -32,7 +32,7 @@ $(function() {
      }) ;
   }) ;
 
-  /* Add a new Micro Topic */ 
+  /* Add a new Topic */ 
   $('#add-topic-link').click( function() { 
     $('#new-topic').dialog({ title : 'New Topic' }).dialog('open') ;
   }) ; 
@@ -41,7 +41,7 @@ $(function() {
     In #edit-syllabi-megaform, enable drop downs ONLY IF the sibling
     checkbox is checked 
 
-  $('#edit-syllabi-megaform').on('click', '.micro-topic input[type="checkbox"]', function() {
+  $('#edit-syllabi-megaform').on('click', '.topic input[type="checkbox"]', function() {
     var dropDown = $(this).closest('div[marker]').children('.dropdown:first').find('select:first') ;
 
     dropDown.prop('disabled', !($(this).prop('checked')) ) ;
