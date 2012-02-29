@@ -13,7 +13,7 @@ jQuery ->
     to come back and be processed before proceeding 
   ###
   window.setTimeout () ->
-    $('#scan-loader-link').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+    $('#scan-loader-link').attr 'href', "#{gutenberg.server}/scanbot/dist/launch.jnlp"
   , 1000
 
   ###
