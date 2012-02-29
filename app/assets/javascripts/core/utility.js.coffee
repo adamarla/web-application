@@ -69,7 +69,7 @@ resetPanel = (id, moveAlso = true) ->
 ###
 
 ###
-  The list of vertical and micro topics is known at the time of HTML rendering - 
+  The list of vertical and topics is known at the time of HTML rendering - 
   and is therefore statically rendered within the 2 master-lists : 
   vertical-masterlist and topic-masterlist 
 
@@ -93,10 +93,10 @@ resetPanel = (id, moveAlso = true) ->
 
 window.coreUtil = {
 
-  # Namespace for functions related to vertical and micro lists
+  # Namespace for functions related to vertical and topic lists
   mnmlists : {
 
-    attach : (type, here) -> # type = [vertical,micro]
+    attach : (type, here) -> # type = [vertical,topic]
       return if not type? and not here?
       here = if typeof here is 'string' then $(here) else here
       source = $("##{type}-selected-list").detach()
@@ -105,7 +105,7 @@ window.coreUtil = {
 
     asAccordion : (type = 'selected') -> # type = [selected, deselected]
       verticals = $("#vertical-#{type}-list")
-      micros = $("#topic-#{type}-list")
+      topics = $("#topic-#{type}-list")
       accordion = $('<div class="as-accordion" />')
 
       for vertical in verticals.children()
@@ -114,7 +114,7 @@ window.coreUtil = {
         header = $(vertical).clone()
         header.addClass 'accordion-heading'
 
-        content = micros.children("[marker=#{id}]:first").clone()
+        content = topics.children("[marker=#{id}]:first").clone()
         content.removeClass 'hidden'
         content.addClass 'accordion-content'
 
@@ -124,7 +124,7 @@ window.coreUtil = {
       return accordion
 
     restore : () ->
-      for type in ['vertical', 'micro']
+      for type in ['vertical', 'topic']
         master = $("##{type}-masterlist") # Eg. vertical-masterlist
         for j in ['selected', 'deselected']
           source = $("##{type}-#{j}-list") # Eg. topic-selected-list
@@ -144,26 +144,26 @@ window.coreUtil = {
       # Cool trick : If you know that everything is to go in the 
       # selected(deselected) list, then simply pass json = true(false)
 
-      # That said, first bring everything back into vertical & micro master lists
+      # That said, first bring everything back into vertical & topic master lists
       coreUtil.mnmlists.restore()
 
       # Now, based on the JSON, sort into selected and deselected lists
       verticalS = $('#vertical-selected-list')
       verticalU = $('#vertical-deselected-list')
-      microS = $('#topic-selected-list')
-      microU = $('#topic-deselected-list')
+      topicS = $('#topic-selected-list')
+      topicU = $('#topic-deselected-list')
 
       for vertical in $('#vertical-masterlist').children()
         id = $(vertical).attr 'marker'
         selected = idInVerticalJson parseInt(id), json
-        micro = $('#topic-masterlist').children("[marker=#{id}]").first()
+        topic = $('#topic-masterlist').children("[marker=#{id}]").first()
 
         if selected
           verticalS.append $(vertical).detach()
-          microS.append micro.detach()
+          topicS.append topic.detach()
         else
           verticalU.append $(vertical).detach()
-          microU.append micro.detach()
+          topicU.append topic.detach()
       return true
 
   } # end of namespace 'mnmlists'

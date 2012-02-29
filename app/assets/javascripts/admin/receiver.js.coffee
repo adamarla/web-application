@@ -47,10 +47,10 @@ jQuery ->
       when 'verticals/list'
         coreUtil.mnmlists.redistribute true
         coreUtil.mnmlists.customize 'vertical'
-        coreUtil.mnmlists.customize 'micro'
+        coreUtil.mnmlists.customize 'topic'
 
         coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
-        coreUtil.mnmlists.attach 'micro', '#topic-selection'
+        coreUtil.mnmlists.attach 'topic', '#topic-selection'
       when 'examiner/pending_quizzes'
         coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
       when 'examiner/pending_pages'

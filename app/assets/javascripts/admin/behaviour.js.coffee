@@ -192,7 +192,7 @@ jQuery ->
   ###
   $('#topic-selection').on 'click', 'input[type="radio"]', ->
     id = $(this).attr 'marker'
-    target = $('#misc-traits input#misc_micro_topic_id').first() # formtastic generated id
+    target = $('#misc-traits input#misc_topic_id').first() # formtastic generated id
     target.val id
     return true
 

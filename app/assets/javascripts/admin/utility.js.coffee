@@ -11,20 +11,20 @@ window.adminUtil = {
     swissKnife.customizeWithin selected, {select:true}, true
 
     # 3. Load the difficulty levels for topics using the passed JSON
-    #    JSON is of the form : [{vertical : { .., micros : { ... } }}, { vertical : { .., micros : { ... } }}]
+    #    JSON is of the form : [{vertical : { .., topics : { ... } }}, { vertical : { .., topics : { ... } }}]
 
     for a in json
       vertical = a.vertical
       continue if not vertical.in is true # don't waste time w/ these
 
-      micros = vertical.micros
+      topics = vertical.topics
       start = selected.children "div[marker=#{vertical.id}]:first"
       start.addClass 'hidden'
 
-      for b in micros
-        micro = b.micro
-        select = start.children("div[marker=#{micro.id}]:first").children("select:first")
-        select.val micro.select
+      for b in topics
+        topic = b.topic
+        select = start.children("div[marker=#{topic.id}]:first").children("select:first")
+        select.val topic.select
     return true
 
   mnmToggle : (type, id, customization = null) ->

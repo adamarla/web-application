@@ -21,7 +21,7 @@ jQuery ->
 
       coreUtil.mnmlists.redistribute json.verticals
       coreUtil.mnmlists.customize 'vertical', {}
-      coreUtil.mnmlists.customize 'micro', {checkbox:true}
+      coreUtil.mnmlists.customize 'topic', {checkbox:true}
 
       results = coreUtil.mnmlists.asAccordion 'selected'
       results.appendTo here
@@ -44,10 +44,10 @@ jQuery ->
     else if url.match(/course\/verticals/)
       here = $('#vertical-selection-list > form:first > .form-fields')
       coreUtil.interface.displayJson json.verticals, here, 'vertical', {checkbox:true}
-    else if url.match(/course\/applicable_micros/)
+    else if url.match(/course\/applicable_topics/)
       flipchart.next '#build-quiz'
       here = $('#topic-selection-list > form:first > .form-fields')
-      coreUtil.interface.displayJson json.micros, here, 'micro', {checkbox:true}
+      coreUtil.interface.displayJson json.topics, here, 'topic', {checkbox:true}
     else if url.match(/course\/questions/)
       flipchart.next '#build-quiz'
       here = $('#question-options > form:first > .form-fields')
