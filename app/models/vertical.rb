@@ -10,9 +10,8 @@
 
 class Vertical < ActiveRecord::Base
   has_many :topics 
-
   validates :name, :presence => true
-
+  validates :name, :uniqueness => true
   before_save :humanize_name
 
   private 
