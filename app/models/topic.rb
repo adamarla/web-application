@@ -24,7 +24,7 @@ class Topic < ActiveRecord::Base
   has_many :syllabi
   belongs_to :vertical
 
-  before_save :humanize_name
+  before_validation :humanize_name
 
   def difficulty_in(course_id)
     course = Course.find course_id
@@ -38,7 +38,7 @@ class Topic < ActiveRecord::Base
   private 
 
     def humanize_name
-      self.name = self.name.humanize
+      self.name = self.name.strip!.humanize
     end
 
 end

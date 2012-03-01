@@ -12,12 +12,12 @@ class Vertical < ActiveRecord::Base
   has_many :topics 
   validates :name, :presence => true
   validates :name, :uniqueness => true
-  before_save :humanize_name
+  before_validation :humanize_name
 
   private 
 
     def humanize_name
-      self.name = self.name.humanize
+      self.name = self.name.strip!.humanize
     end
 
 end
