@@ -27,6 +27,7 @@ jQuery ->
     $.get 'vertical'
 
   $('#main-links a').click ->
+    return if $(this).attr('block_ajax') is "true"
     id = $(this).attr 'id'
     switch id
       when 'account-link' then $.get 'examiners/list'

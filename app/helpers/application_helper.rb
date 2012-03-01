@@ -30,6 +30,7 @@ module ApplicationHelper
     with = options[:with] 
     default = options[:default].nil? ? false : options[:default]
     label = options[:as] || name
+    block_ajax = options[:block_ajax] || false
 
     if type == :main
       singular = name.singularize
@@ -58,7 +59,8 @@ module ApplicationHelper
     link = link_to label.humanize, href, :id => "#{name}-link", :class => class_attr, 
                                :side => panels[:side], :middle => panels[:middle], 
                                :right => panels[:right], :wide => panels[:wide], 
-                               'load-controls' => controls, :default => default
+                               'load-controls' => controls, :default => default,
+                               :block_ajax => "#{block_ajax ? true : nil}"
 
     return content_tag(:li, link, :id => "#{name}-anchor") 
   end 
