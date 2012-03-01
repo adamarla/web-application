@@ -23,6 +23,8 @@ class Topic < ActiveRecord::Base
   has_many :syllabi
   belongs_to :vertical
 
+  before_save :humanize_name
+
   def difficulty_in(course_id)
     course = Course.find course_id
     unless course.nil? 
@@ -31,5 +33,11 @@ class Topic < ActiveRecord::Base
     end 
     return 0
   end 
+
+  private 
+
+    def humanize_name
+      self.name = self.name.humanize
+    end
 
 end
