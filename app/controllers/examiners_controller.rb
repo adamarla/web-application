@@ -27,6 +27,10 @@ class ExaminersController < ApplicationController
     head :bad_request if @examiner.nil?
   end
 
+  def list 
+    @examiners = Examiner.order(:last_name)
+  end 
+
   def pending_quizzes
     @quizzes = Examiner.pending_quizzes
   end

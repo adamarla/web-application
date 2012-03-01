@@ -26,6 +26,9 @@ jQuery ->
   $('#add-verticals-n-topics-link').click ->
     $.get 'vertical'
 
+  $('#account-link').click ->
+    $.get 'examiners/list'
+
   $('#main-links a').click ->
     id = $(this).attr 'id'
     switch id

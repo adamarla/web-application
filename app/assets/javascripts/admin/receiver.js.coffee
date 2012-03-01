@@ -109,7 +109,8 @@ jQuery ->
               settings.url.match(/school\/unassigned-students/) or
               settings.url.match(/sektions\/students/) or
               settings.url.match(/verticals\/list/) or
-              settings.url.match(/school\.json/)
+              settings.url.match(/school\.json/) or
+              settings.url.match(/examiners\/list/)
     return if matched is null
   
     e.stopPropagation()
@@ -130,6 +131,9 @@ jQuery ->
         for vertical in topics.find 'div[marker]'
           for e in $(vertical).children()
             swissKnife.customize $(e), {radio:true}, true
+      when 'examiners/list'
+        here = $('#examiners-list')
+        coreUtil.interface.displayJson json.examiners, here, 'examiner', {}
 
   ###
     AJAX successes the right-panel is supposed to respond to.
