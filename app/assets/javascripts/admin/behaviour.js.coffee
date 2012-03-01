@@ -23,9 +23,6 @@ jQuery ->
   $('#add-examiner-link').click ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
-  $('#add-vertical-link').click ->
-    $('#new-vertical').dialog('option', 'title', 'New Vertical').dialog('open')
-
   $('#main-links a').click ->
     id = $(this).attr 'id'
     switch id

@@ -32,11 +32,6 @@ $(function() {
      }) ;
   }) ;
 
-  /* Add a new Topic */ 
-  $('#add-topic-link').click( function() { 
-    $('#new-topic').dialog({ title : 'New Topic' }).dialog('open') ;
-  }) ; 
-
   /* 
     In #edit-syllabi-megaform, enable drop downs ONLY IF the sibling
     checkbox is checked 
