@@ -26,15 +26,13 @@ jQuery ->
   $('#add-verticals-n-topics-link').click ->
     $.get 'vertical'
 
-  $('#account-link').click ->
-    $.get 'examiners/list'
-
   $('#main-links a').click ->
     id = $(this).attr 'id'
     switch id
-      when 'schools-link' then $.get 'schools/list'
+      when 'account-link' then $.get 'examiners/list'
       when 'boards-link' then $.get 'boards/summary'
       when 'courses-link' then $.get 'courses/list'
+      when 'schools-link' then $.get 'schools/list'
       when 'workbench-link'
         $.get 'questions/list.json'
         $.get 'verticals/list.json'
