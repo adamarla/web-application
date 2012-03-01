@@ -1,10 +1,14 @@
 
-#new-examiner.new-entity.close-on-submit
-  = semantic_form_for :examiner, :remote => true, :url => examiner_path do |f|
-    = f.inputs do
-      = f.input :first_name
-      = f.input :last_name 
-      = f.input :is_admin, :label => 'Admin ?', :as => :boolean
 
+#new-examiners.clear-after-submit
+  %p.instructions
+    Check the box to give Admin priviliges
+  = semantic_form_for :examiner, :remote => true, :url => examiner_path do |f| 
     .submit-buttons
-      %input{:type => :submit, :role => :button, :value => "Create", :name => "commit"}
+      = submit_tag 'add examiners'
+
+    = f.inputs do 
+      - [*1..5].each do |i|
+        = f.input :name, :input_html => {:name => "examiners[#{i}][name]", :id => "examiner_#{i}"}, :label => "##{i}"
+        %input.right{ :type => :checkbox, :name => "examiners[#{i}][admin]" }
+

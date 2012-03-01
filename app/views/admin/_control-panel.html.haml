@@ -10,6 +10,7 @@
   = main_link :for => :yardsticks
   = main_link :for => 'scan-loader'
 
-  = main_link :for => :account, :as => 'console'
+  = main_link :for => :account, :as => 'console', 
+              :with => {:panels => { :middle => '#new-examiners' } }
   = main_link :for => :logout, :href => "/logout", :dynamic => false
 

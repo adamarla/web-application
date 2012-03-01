@@ -3,13 +3,23 @@ class ExaminersController < ApplicationController
   respond_to :json
 
   def create 
-    @examiner = Examiner.new params[:examiner] 
-    username = create_username_for @examiner, (@examiner.is_admin ? :admin : :examiner) 
-    email = params[:examiner].delete(:email) || "#{username}@drona.com" 
-    account = @examiner.build_account :email => email, :username => username, 
-                                      :password => "123456", :password_confirmation => "123456"
+    added = true
+    params[:examiners].each_value do |v,index|
+      name = v[:name]
+      as_admin = v[:admin].blank? ? false : true
 
-    @examiner.save ? respond_with(@examiner) : head(:bad_request) 
+      next if name.blank?
+      #puts "#{name} --> #{as_admin}"
+
+      examiner = Examiner.new :name => name, :is_admin => as_admin
+      username = create_username_for examiner, (as_admin ? :admin : :examiner)
+      email = "#{username}@drona.com" # default. Can be changed later by the examiner
+      account = examiner.build_account :email => email, :username => username, 
+                                       :password => "123456", :password_confirmation => "123456"
+      added &= examiner.save
+      break if !added 
+    end
+    added ? head(:ok) : head(:bad_request)
   end 
 
   def show
