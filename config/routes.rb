@@ -53,6 +53,7 @@ Webapp::Application.routes.draw do
   match 'school/sektions' => 'schools#sektions', :via => :get
 
   # Verticals 
+  resource :vertical, :only => [:create]
   match 'vertical/micros_in_course' => 'verticals#micros_in_course', :via => :get
   match 'verticals/list' => 'verticals#list', :via => :get
 

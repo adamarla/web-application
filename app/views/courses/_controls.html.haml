@@ -2,6 +2,7 @@
 #course-controls.top-panel-controls
   %ul.no-bullets
     = minor_link :for => 'add-course', :as => "New Course"  
+    = minor_link :for => 'add-vertical', :as => "New Vertical"  
     = minor_link :for => 'add-topic', :as => "New Topic"  
   = form_tag courses_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
     = drop_down_menu_for :subjects

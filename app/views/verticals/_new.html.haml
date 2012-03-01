@@ -1,0 +1,7 @@
+
+#new-vertical.new-entity.close-on-submit
+  = semantic_form_for :vertical, :remote => true, :url => vertical_path do |f| 
+    = f.inputs do 
+      = f.input :name, :label => "Vertical"
+    .submit-buttons
+      = submit_tag 'add new vertical'
