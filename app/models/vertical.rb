@@ -17,7 +17,7 @@ class Vertical < ActiveRecord::Base
   private 
 
     def humanize_name
-      self.name = self.name.strip!.humanize
+      self.name = self.name.strip.humanize
     end
 
 end
