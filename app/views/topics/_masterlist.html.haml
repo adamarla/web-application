@@ -3,12 +3,12 @@
   - list = get_list_of :verticals
   - list.each do |vertical|
     %div.hidden{ :marker => "#{vertical.id}" }
-      - micros = Topic.where(:vertical_id => vertical.id).order(:name)
-      - micros.each do |micro|
+      - topics = Topic.where(:vertical_id => vertical.id).order(:name)
+      - topics.each do |topic|
         = render :partial => 'toolbox/swiss_knife', 
-                 :locals => { :marker => "#{micro.id}", :label => "#{micro.name}" }
+                 :locals => { :marker => "#{topic.id}", :label => "#{topic.name}" }
 
--# All "applicable" micros (context specific) listed within this ...
+-# All "applicable" topics (context specific) listed within this ...
 #topic-selected-list.sortable.put-back
 
 -# .. and every other topic, within this 
