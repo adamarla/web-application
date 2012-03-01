@@ -15,13 +15,14 @@
 class Examiner < ActiveRecord::Base
   has_one :account, :as => :loggable
   has_many :graded_responses
+  before_save :humanize_name
 
   # [:all] ~> [:admin]
   # [:num_contested] ~> [:student]
   #attr_accessible :num_contested
 
   def name 
-    return "#{self.first_name} #{self.last_name} (#{self.account.username})"
+    return "#{self.last_name}, #{self.first_name}"
   end 
 
   def name=(name)
@@ -161,5 +162,12 @@ class Examiner < ActiveRecord::Base
     end # of unless
     return failures
   end
+
+  private
+    
+    def humanize_name
+      self.first_name = self.first_name.humanize
+      self.last_name = self.last_name.humanize
+    end 
 
 end # of class
