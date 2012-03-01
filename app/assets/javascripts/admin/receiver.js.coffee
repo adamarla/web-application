@@ -64,7 +64,8 @@ jQuery ->
     matched = settings.url.match(/yardstick\.json/) or
               settings.url.match(/teachers\/list/) or
               settings.url.match(/school\/sektions/) or
-              settings.url.match(/course\/coverage/)
+              settings.url.match(/course\/coverage/) or
+              settings.url.match(/vertical/) # POST-request
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -94,6 +95,10 @@ jQuery ->
         $('#vertical-deselected-list').insertAfter target.children('legend').eq(1)
 
         adminUtil.buildSyllabiEditForm json.verticals
+      when 'vertical'
+        if onDisplay.attr('id') is 'new-topics'
+          select = onDisplay.find 'form select:first'
+          coreUtil.dom.loadJsonToSelect select, json.verticals, 'vertical'
 
   ###
     AJAX successes the right-panel is supposed to respond to.

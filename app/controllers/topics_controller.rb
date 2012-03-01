@@ -3,9 +3,16 @@ class TopicsController < ApplicationController
   respond_to :json
 
   def create 
-    options = params[:topic] 
-		@topic = Topic.new :name => options[:name], :vertical_id => options[:vertical]
-		@topic.save ? respond_with(@topic) : head(:bad_request)
+    vertical = params[:vertical]
+    added = true 
+
+    params[:names].each_value do |v|
+      next if v.blank?
+      topic = Topic.new :name => v, :vertical_id => vertical
+      added &= topic.save
+      break if !added
+    end
+    added ? head(:ok) : head(:bad_request)
   end 
 
   def update 

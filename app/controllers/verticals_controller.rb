@@ -3,8 +3,24 @@ class VerticalsController < ApplicationController
   respond_to :json
 
   def create
-    vertical = Vertical.new :name => params[:vertical][:name]
-    vertical.save ? head(:ok) : head(:bad_request)
+    added = true
+    params[:names].each_value do |v|
+      next if v.blank?
+      vertical = Vertical.new :name => v
+      added &= vertical.save
+      break if !added
+    end 
+
+    if added 
+      @verticals = Vertical.order :name 
+      respond_with @verticals
+    else
+      head :bad_request
+    end
+  end
+
+  def show
+    @verticals = Vertical.order :name
   end
 
   def topics_in_course

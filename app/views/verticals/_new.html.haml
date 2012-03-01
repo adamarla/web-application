@@ -1,7 +1,13 @@
 
-#new-vertical.new-entity.close-on-submit
+#new-verticals.clear-after-submit
+  %legend
+    %span.target= "Verticals"
+    %span.operation= "Represent broad areas of study"
   = semantic_form_for :vertical, :remote => true, :url => vertical_path do |f| 
-    = f.inputs do 
-      = f.input :name, :label => "Vertical"
     .submit-buttons
-      = submit_tag 'add new vertical'
+      = submit_tag 'add verticals'
+
+    = f.inputs do 
+      - [*1..5].each do |i|
+        = f.input :name, :input_html => {:name => "names[#{i}]", :id => "vertical_#{i}"},
+                         :label => "Vertical ##{i}"

@@ -1,9 +1,15 @@
 
-#new-topic.new-entity.close-on-submit
+#new-topics.clear-after-submit
+  %legend
+    %span.target= "Topics"
+    %span.operation= "Select a vertical & then add"
   = semantic_form_for :topic, :remote => true, :url => topic_path do |f| 
-    = f.inputs do 
-      = f.input :name, :label => 'Topic'
-      = f.input :vertical, :label => 'Vertical', :as => :select, 
-                           :collection => Vertical.order(:name), :include_blank => false
     .submit-buttons
-      = submit_tag 'add new topic'
+      = submit_tag 'add topics'
+
+    = f.inputs do 
+      = f.input :vertical, :as => :select, :collection => [],
+                          :input_html => { :name => "vertical" }
+      - [*1..5].each do |i|
+        = f.input :name, :input_html => {:name => "names[#{i}]", :id => "topic_#{i}"}, 
+                         :label => "topic ##{i}"
