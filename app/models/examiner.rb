@@ -24,6 +24,12 @@ class Examiner < ActiveRecord::Base
     return "#{self.first_name} #{self.last_name} (#{self.account.username})"
   end 
 
+  def name=(name)
+    split = name.split(' ', 2)
+    self.first_name = split.first
+    self.last_name = split.last
+  end
+
   def self.pending_quizzes
     pending = GradedResponse.ungraded.map(&:q_selection_id).uniq
     quiz_ids = QSelection.where(:id => pending).map(&:quiz_id).uniq
