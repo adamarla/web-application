@@ -23,8 +23,7 @@ class ExaminersController < ApplicationController
   end 
 
   def show
-    @examiner = Examiner.find params[:id] 
-    head :bad_request if @examiner.nil?
+    render :nothing => true, :layout => 'examiner'
   end
 
   def list 
