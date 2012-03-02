@@ -11,7 +11,7 @@
       %a{ :href => '#question-options' }= "pick"
   #courses-taught
   #vertical-selection-list
-    = form_tag 'course/applicable_micros', :remote => true, :method => :put do |f| 
+    = form_tag 'course/applicable_topics', :remote => true, :method => :put do |f| 
       .submit-buttons
         = submit_tag 'next'
       .form-fields
