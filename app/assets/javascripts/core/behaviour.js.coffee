@@ -19,10 +19,37 @@ window.gutenberg = {
 
 
 jQuery ->
+  $(document).keydown (event) ->
+    return if $('#wide-panel').hasClass 'hidden'
+
+    preview = $('#wide-panel').children().first()
+    return if preview.length is 0 or not preview.hasClass 'ppy-placeholder'
+
+    verticalTabs = $('#side-panel').find '.vertical-tabs:first > ul' # if present, we need the ui-tabs-nav
+    unless verticalTabs.length is 0
+      numTabs = verticalTabs.find('li').length
+      index = verticalTabs.find('li.ui-tabs-selected').index()
+      next = (index + 1) % numTabs
+      prev = if index > 0 then index - 1 else numTabs - 1
+
+    key = event.keyCode
+    switch key
+      when 37 # 37 = left-key 
+        backBtn = preview.find '.ppy-prev:first'
+        unless backBtn.length is 0
+          backBtn.click()
+          verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
+      when 39 # 39 = right-key
+        fwdBtn = preview.find '.ppy-next:first'
+        unless fwdBtn.length is 0
+          fwdBtn.click()
+          verticalTabs.children('li').eq(next).children('a:first').click() if next?
+
+
   ###
     This next call is unassuming but rather important. We initialize 
-    variables within the JS based on the results the servthe server being accessed 
-    returns
+    variables within the JS based on the results the server being accessed returns
+
     The response is captured by #wide-panel in receiver. But it could have been any other 
     DOM element. Its just that at the time of writing, #wide-panel was the only 
     DOM element being referenced there
