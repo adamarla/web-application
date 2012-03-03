@@ -101,7 +101,7 @@ class Quiz < ActiveRecord::Base
     pg_used = 0 # a fraction b/w 0 and 1
     index = 1
 
-    questions.each do |q|
+    questions.each_with_index do |q, index|
       pg_reqd = (q.mcq ? 0.25 : (q.half_page ? 0.5 : 1))
       if ((pg_used + pg_reqd) > 1)
         page += 1
@@ -112,7 +112,6 @@ class Quiz < ActiveRecord::Base
 
       in_quiz = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
       in_quiz.update_attributes :page => page, :index => index
-      index += 1
     end
   end # lay_it_out
 
