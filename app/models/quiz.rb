@@ -103,10 +103,13 @@ class Quiz < ActiveRecord::Base
 
     questions.each do |q|
       pg_reqd = (q.mcq ? 0.25 : (q.half_page ? 0.5 : 1))
-      if (pg_used + pg_reqd) > 1
+      if ((pg_used + pg_reqd) > 1)
         page += 1
         pg_used = pg_reqd # coz this new question will go on the next page 
-      end
+      else
+        pg_used += pg_reqd
+      end 
+
       in_quiz = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
       in_quiz.update_attributes :page => page, :index => index
       index += 1
