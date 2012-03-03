@@ -155,20 +155,19 @@ jQuery ->
 
     if lastMinor.length is 0
       $.get "school/sektions.json?id=#{marker}"
-      return
-
-    switch lastMinor.attr 'id'
-      when 'edit-roster-link'
-        # Clear out the #right-panel which has sektion-information
-        for e in $('#right-panel').find '.purgeable'
-          $(e).empty()
-        # Then issue the AJAX request
-        $.get "teachers/list.json?id=#{marker}"
-      when 'edit-studygroups-link'
-        $.get "school/sektions.json?id=#{marker}"
-        $.get "school/unassigned-students.json?id=#{marker}"
-      when 'add-n-edit-school-link'
-        $.get "school.json?id=#{marker}"
+    else
+      switch lastMinor.attr 'id'
+        when 'edit-roster-link'
+          # Clear out the #right-panel which has sektion-information
+          for e in $('#right-panel').find '.purgeable'
+            $(e).empty()
+          # Then issue the AJAX request
+          $.get "teachers/list.json?id=#{marker}"
+        when 'edit-studygroups-link'
+          $.get "school/sektions.json?id=#{marker}"
+          $.get "school/unassigned-students.json?id=#{marker}"
+        when 'add-n-edit-school-link'
+          $.get "school.json?id=#{marker}"
     return true
 
   ###########################################################################
@@ -181,7 +180,7 @@ jQuery ->
   ###########################################################################
 
   $('#minor-links').on 'click', 'a', (event) ->
-    return unless $(this).attr 'select_sth'
+    return true unless $(this).attr 'select_sth'
 
     id = $(this).attr 'id'
     switch id
