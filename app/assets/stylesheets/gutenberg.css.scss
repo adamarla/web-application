@@ -85,7 +85,7 @@ body {
   margin-bottom : 20px ;
 }
 
-form.formtastic > .submit-buttons > input {
+.submit-buttons > input[type="submit"] {
   border: {
     style: none ;
     radius: 4px ;
