@@ -140,7 +140,8 @@ jQuery ->
     
 
   ###########################################################################
-  # AJAX requests to issue when radio-buttons in various panels are clicked
+  # If sth. is selected in the side-panel and then a minor link is clicked, 
+  # then load the applicable information for that selection. 
   ###########################################################################
 
   $('#courses-summary').on 'click', 'input[type="radio"]', ->
@@ -168,6 +169,40 @@ jQuery ->
         $.get "school/unassigned-students.json?id=#{marker}"
       when 'add-n-edit-school-link'
         $.get "school.json?id=#{marker}"
+    return true
+
+  ###########################################################################
+  # Conversely, if a minor-link is clicked before a selection is made, then 
+  # complain if sth. needs to have been selected first. Put all such logic here
+  # 
+  # Catch the event however at #minor-links itself so that you can block it 
+  # if needed before it percolates up to #control-panel ( where the core behaviour
+  # is bound )
+  ###########################################################################
+
+  $('#minor-links').on 'click', 'a', (event) ->
+    return unless $(this).attr 'select_sth'
+
+    id = $(this).attr 'id'
+    switch id
+      when 'edit-roster-link', 'new-studygroups-link', 'edit-studygroups-link'
+        marker = $('#side-panel').attr 'marker'
+        if not marker?
+          event.stopPropagation event
+          alert 'Select a school first'
+
+    # if ok to go, then go
+    switch id
+      when 'edit-roster-link'
+        # Clear out the #right-panel which has sektion-information
+        for e in $('#right-panel').find '.purgeable'
+          $(e).empty()
+        # Then issue the AJAX request
+        $.get "teachers/list.json?id=#{marker}"
+      when 'edit-studygroups-link'
+        $.get "school/sektions.json?id=#{marker}"
+        $.get "school/unassigned-students.json?id=#{marker}"
+
     return true
 
   $('#teachers-list').on 'click', 'input[type="radio"]', ->
