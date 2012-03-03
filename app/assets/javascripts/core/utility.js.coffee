@@ -3,6 +3,7 @@ putBack = (node) ->
   node = node.detach()
   node.appendTo '#toolbox'
 
+###
 buildHierarchy = (selector) ->
   needed = selector.split ' >'
   start = $(needed[0])
@@ -20,6 +21,7 @@ buildHierarchy = (selector) ->
         next = next.detach()
         next.appendTo current
   return start
+###
 
 idInVerticalJson = (id, json) ->
   return json if typeof json is 'boolean'
@@ -44,24 +46,27 @@ purgeable and put-back. The former has been around for some time
 while the latter is being introduced with the benefit of hindsight 
 ###
 
-resetPanel = (id, moveAlso = true) ->
-  start = if typeof id is 'string' then $(id) else id
+resetPanel = (id) ->
+  panel = if typeof id is 'string' then $(id) else id
 
-  me = id.children().first()
-  return if me.length is 0
-   ###
-     If 'me' has any data under a <div class="data empty-on-putback"> within its
-     hierarchy, then empty that data first. Note, that it is assumed that
-     the emptied out data can re-got from an AJAX query. In other words,
-     if some data is too valuable to lose, then *do not* put it under
-     .purgeable.empty-on-putback
-   ###
-  for node in me.find '.purgeable'
-    $(node).empty()
-  for node in me.find '.put-back' # children that need to be put back separately
-    putBack $(node)
+  panel.attr 'marker', null
 
-  putBack me if moveAlso is true
+  for e in panel.find 'input[type="checkbox"], input[type="radio"]'
+    $(e).prop 'checked', false
+  return true
+
+purge = (id) ->
+  node = if typeof id is 'string' then $(id) else id
+  for child in node.find '.purgeable'
+    $(child).empty()
+  return true
+
+backInToolbox = (id) ->
+  node = if typeof id is 'string' then $(id) else id
+
+  for child in node.find '.put-back' # children that need to be put back separately
+    putBack $(child)
+  putBack node
   return true
 
 ###
@@ -174,19 +179,23 @@ window.coreUtil = {
       link = if typeof link is 'string' then $(link) else link
 
       for type in ['side', 'middle', 'right', 'wide']
-        needed = link.attr type
         target = $("##{type}-panel")
 
-        if not needed?
-          continue if link.hasClass('minor-link') and type is 'side'
-          target.addClass 'hidden'
-          resetPanel target
+        if type is 'side'
+          resetPanel target if link.hasClass('main-link')
+          continue if link.hasClass('minor-link')
+
+        current = target.children().first()
+        needed = $(link.attr type)
+
+        purge target
+        backInToolbox current unless current is needed
+        if needed.length is 0
+          target.addClass('hidden')
         else
-          continue if target.find(needed).length isnt 0 # already present
-          resetPanel target
-          e = buildHierarchy needed
-          $(target).removeClass('hidden')
-          if e isnt null then e.appendTo(target).hide().fadeIn('slow')
+          target.removeClass('hidden')
+          needed.appendTo(target).hide().fadeIn('slow')
+
       return true
 
     ###
