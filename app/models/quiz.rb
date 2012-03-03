@@ -96,16 +96,16 @@ class Quiz < ActiveRecord::Base
   end
 
   def lay_it_out
-    questions = Question.where(:id => self.question_ids).order(:full_page).order(:half_page)
+    questions = Question.where(:id => self.question_ids).order(:marks).order(:full_page).order(:half_page)
     page = 1
-    score = 0
+    pg_used = 0 # a fraction b/w 0 and 1
     index = 1
 
     questions.each do |q|
-      score += (q.mcq ? 0.25 : (q.half_page ? 0.5 : 1))
-      if score > 1
+      pg_reqd = (q.mcq ? 0.25 : (q.half_page ? 0.5 : 1))
+      if (pg_used + pg_reqd) > 1
         page += 1
-        score = 0
+        pg_used = pg_reqd # coz this new question will go on the next page 
       end
       in_quiz = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
       in_quiz.update_attributes :page => page, :index => index
