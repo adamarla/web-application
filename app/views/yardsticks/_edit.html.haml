@@ -5,10 +5,8 @@
       = f.input :annotation, :as => :text, :input_html => {:rows => 1, :marker => :annotation} 
       = f.input :meaning, :as => :text, :input_html => {:rows => 7, :marker => :meaning} 
       = f.input :example, :as => :text, :input_html => {:rows => 7, :columns => 60, :marker => :example} 
-      = f.input :mcq, :label => "MCQ ?", :as => :boolean ,:input_html => {:marker => :mcq} 
-      = f.input :default_allotment, :label => 'assign', :as => :select, 
-                :collection => [*0..20].map {|x| x*5}, :include_blank => false,
-                :input_html => {:marker => :default_allotment, :class => :right}
+      = f.input :mcq, :label => " mcq?", :as => :radio ,:input_html => {:marker => :mcq}, 
+                :collection => ["yes", ["no"]], :hint => "yes, if pertains to mcq"
 
     .submit-buttons
       = submit_tag 'update yardstick'

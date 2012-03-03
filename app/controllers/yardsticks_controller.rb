@@ -8,7 +8,8 @@ class YardsticksController < ApplicationController
   def update 
     yardstick = Yardstick.where(:id => params[:id]).first
     head :bad_request if yardstick.nil?
-    head (yardstick.update_attribute(:default_allotment, params[:yardstick][:default_allotment]) ? :ok : :bad_request)
+    ok = yardstick.update_attributes params[:yardstick]
+    head (ok ? :ok : :bad_request)
   end 
 
   def create
