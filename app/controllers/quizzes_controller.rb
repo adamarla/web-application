@@ -14,7 +14,7 @@ class QuizzesController < ApplicationController
 
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
-    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL').order(:klass)
+    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL').order(:klass).order('created_at DESC')
   end
 
   def preview
