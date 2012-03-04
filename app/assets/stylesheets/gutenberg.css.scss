@@ -85,25 +85,27 @@ body {
   margin-bottom : 20px ;
 }
 
-.submit-buttons > input[type="submit"] {
-  border: {
-    style: none ;
-    radius: 4px ;
-  }
+.submit-buttons { 
+  > input[type="submit"], > input[type="button"] {
+    border: {
+      style: none ;
+      radius: 4px ;
+    }
 
-  font: {
-    family: inherit ;
-    size: 12px ;
-    weight: bold ;
+    font: {
+      family: inherit ;
+      size: 12px ;
+      weight: bold ;
+    }
+    color: white ; 
+    background-color: #6ca7ab ;
+    -moz-border-radius: 4px ;
+    padding: 6px ;
+    text-align : center ;
+    text-decoration: none ;
+    min-width: 50px ;
+    margin-bottom: 18px ;
   }
-  color: white ; 
-  background-color: #6ca7ab ;
-  -moz-border-radius: 4px ;
-  padding: 6px ;
-  text-align : center ;
-  text-decoration: none ;
-  min-width: 50px ;
-  margin-bottom: 18px ;
 }
 
 #side-panel {
