@@ -32,6 +32,8 @@ gem 'therubyracer'
 gem 'rabl'
 gem 'savon'
 
+gem 'delayed_job_active_record'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 

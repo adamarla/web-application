@@ -112,8 +112,8 @@ class TeachersController < ApplicationController
     head :bad_request if (teacher.nil? || course.nil?)
 
     question_ids = params[:checked].keys.map(&:to_i)
-    response, status = teacher.build_quiz_with question_ids, course
-    render :json => response, :status => status
+    Delayed::Job.enqueue BuildQuiz.new(teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
+    head :ok
   end
 
 end # of class
