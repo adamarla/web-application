@@ -7,9 +7,12 @@ class QuizzesController < ApplicationController
     head :bad_request if quiz.nil?
     teacher = quiz.teacher 
 
-    students = Student.where(:id => params[:checked].keys)
-    response = quiz.assign_to students
-    render :json => response, :status => (response[:manifest].blank? ? :bad_request : :ok)
+    #students = Student.where(:id => params[:checked].keys)
+    #response = quiz.assign_to students
+    students = params[:checked].keys   # we need just the IDs
+    Delayed::Job.enqueue BuildTestpaper.new(quiz.id, students), :priority => 0, :run_at => Time.zone.now
+    #render :json => response, :status => (response[:manifest].blank? ? :bad_request : :ok)
+    head :ok
   end
 
   def list
