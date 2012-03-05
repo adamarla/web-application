@@ -52,8 +52,7 @@ class SektionsController < ApplicationController
     section = Sektion.find params[:id] 
     head :bad_request if section.nil? 
 
-    section.update_student_list params[:checked]
-    head :ok
+    render :json => { :status => "Done" }, :status => (section.update_student_list(params[:checked]) ? :ok : :bad_request)
   end 
 
   def students 

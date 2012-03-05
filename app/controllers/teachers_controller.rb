@@ -103,7 +103,7 @@ class TeachersController < ApplicationController
       end 
     }
     teacher.sektions = retain 
-    head :ok
+    render :json => { :status => 'Done' }, :status => :ok
   end 
 
   def build_quiz 
@@ -113,7 +113,7 @@ class TeachersController < ApplicationController
 
     question_ids = params[:checked].keys.map(&:to_i)
     Delayed::Job.enqueue BuildQuiz.new(teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
-    head :ok
+    render :json => { :status => "Qeued" }, :status => :ok
   end
 
 end # of class

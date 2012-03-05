@@ -12,9 +12,10 @@ class BoardsController < ApplicationController
       courses.each { |id, attributes| 
         @board.courses.build attributes 
       } 
+      render :json => {:status => "Done"}, :status => (@board.save ? :ok : :bad_request)
+    else
+      render :json => { :status => "Oops" }, :status => :bad_request
     end 
-    status = (@board && @board.save) ? :ok : :bad_request 
-    head status 
   end 
 
   def update 

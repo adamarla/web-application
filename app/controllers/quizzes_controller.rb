@@ -1,18 +1,15 @@
 class QuizzesController < ApplicationController
   before_filter :authenticate_account!
-  respond_to :json, :xml
+  respond_to :json
 
   def assign_to
     quiz = Quiz.where(:atm_key => params[:id]).first 
     head :bad_request if quiz.nil?
     teacher = quiz.teacher 
 
-    #students = Student.where(:id => params[:checked].keys)
-    #response = quiz.assign_to students
     students = params[:checked].keys   # we need just the IDs
     Delayed::Job.enqueue BuildTestpaper.new(quiz.id, students), :priority => 0, :run_at => Time.zone.now
-    #render :json => response, :status => (response[:manifest].blank? ? :bad_request : :ok)
-    head :ok
+    render :json => { :status => "queued" }, :status => :ok
   end
 
   def list
