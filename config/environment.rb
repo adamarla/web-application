@@ -12,3 +12,5 @@ SavonClient = Savon::Client.new do
   wsdl.document = "#{Gutenberg['wsdl']}"
   wsdl.endpoint = "#{Gutenberg['axis2']}"
 end
+
+SavonClient.http.read_timeout = 600 # 10 mins seems good enough to finish most SOAP operations
