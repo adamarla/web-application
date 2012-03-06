@@ -1,5 +1,5 @@
 
-- yardsticks = Yardstick.order(:default_allotment).order(:mcq)
+- yardsticks = Yardstick.order('mcq DESC').order(:default_allotment)
 - role = current_account.role
 
 #yardsticks-summary.left

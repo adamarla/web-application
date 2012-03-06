@@ -32,7 +32,7 @@ class YardsticksController < ApplicationController
   end 
 
   def preview
-    @yardsticks = Yardstick.order(:default_allotment).order(:mcq)
+    @yardsticks = Yardstick.order('mcq DESC').order(:default_allotment)
   end
 
 end
