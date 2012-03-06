@@ -6,7 +6,6 @@ jQuery ->
   ########################################################
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
-
     json = $.parseJSON xhr.responseText
     url = settings.url
     matched = true
@@ -53,6 +52,16 @@ jQuery ->
       here = $('#question-options > form:first > .form-fields')
       coreUtil.interface.displayJson json.questions, here, 'question', {checkbox:true}
       preview.loadJson json, 'vault'
+    else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
+      at = parseInt(json.at)
+      eet = (at + 1) * 3 # est = expected end time
+
+      title = $('#queue-status').children('h3:first')
+      title.text "Your request is ##{at} in the queue"
+      implication = $('#queue-status').children('p:first')
+      implication.text "It should be available for download #{eet} minutes from now"
+
+      $('#queue-status').dialog('open')
     else
       matched = false
 

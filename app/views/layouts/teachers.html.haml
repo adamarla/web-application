@@ -11,13 +11,14 @@
     = render :partial => 'teachers/roster'
     = render :partial => 'teachers/assignquiz'
     = render :partial => 'teachers/buildquiz'
+    = render :partial => 'teachers/queue_status'
 
-    = render :partial => 'toolbox/swiss_knife'
-    = render :partial => 'toolbox/katana'
     = render :partial => 'toolbox/document_preview'
-    = render :partial => 'toolbox/inline_error'
-    = render :partial => 'toolbox/nail_file'
     = render :partial => 'toolbox/edit_account'
+    = render :partial => 'toolbox/inline_error'
+    = render :partial => 'toolbox/katana'
+    = render :partial => 'toolbox/nail_file'
+    = render :partial => 'toolbox/swiss_knife'
 
     = render :partial => 'yardsticks/list'
 
@@ -37,7 +38,6 @@
           = render :partial => 'teachers/control-panel'
         -# Links required in the currently loaded context
         #minor-links
-
       #side-panel.panel.left.slim
       #middle-panel.panel.slim.left
       #right-panel.panel.slim.left
