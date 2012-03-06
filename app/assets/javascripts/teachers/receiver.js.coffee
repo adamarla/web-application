@@ -53,13 +53,13 @@ jQuery ->
       coreUtil.interface.displayJson json.questions, here, 'question', {checkbox:true}
       preview.loadJson json, 'vault'
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
-      at = parseInt(json.at)
+      at = json.at
       eet = (at + 1) * 3 # est = expected end time
 
-      title = $('#queue-status').children('h3:first')
+      title = $('#queue-status').children('h4:first')
       title.text "Your request is ##{at} in the queue"
       implication = $('#queue-status').children('p:first')
-      implication.text "It should be available for download #{eet} minutes from now"
+      implication.text "In about #{eet} minutes, your document should be available for download"
 
       $('#queue-status').dialog('open')
     else
