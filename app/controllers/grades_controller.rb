@@ -5,7 +5,11 @@ class GradesController < ApplicationController
   def update
     grade = Grade.where(:yardstick_id => params[:id], :teacher_id => params[:teacher_id]).first
     head :bad_request if grade.nil?
-    head (grade.update_attribute(:allotment, params[:grade][:allotment]) ? :ok : :bad_request)
+    if grade.update_attribute :allotment, params[:grade][:allotment]
+      render :json => { :status => "Updated!" }, :status => :ok
+    else
+      render :json => { :status => "Oops" }, :status => :bad_request
+    end
   end
 
 end
