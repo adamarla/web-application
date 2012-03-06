@@ -113,7 +113,8 @@ class TeachersController < ApplicationController
 
     question_ids = params[:checked].keys.map(&:to_i)
     Delayed::Job.enqueue BuildQuiz.new(teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
-    render :json => { :status => "Queued", :at => Delayed::Job.count }, :status => :ok
+    at = Delayed::Job.where('failed_at IS NULL').count
+    render :json => { :status => "Queued", :at => at }, :status => :ok
   end
 
 end # of class
