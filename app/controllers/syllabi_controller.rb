@@ -4,7 +4,13 @@ class SyllabiController < ApplicationController
 
   def update 
     course = Course.find params[:id]
-    head (course.nil? ? :bad_request : course.update_syllabus(params[:difficulty]))
+    unless course.nil?
+      course.update_syllabus(params[:difficulty]) ? 
+                            render(:json => { :status => "Updated" }, :status => :ok) :
+                            render(:json => { :status => "Oops !" }, :status => :bad_request)
+    else
+      render :json => { :status => "Record not found!" }, :status => :bad_request
+    end
   end 
 
   def show 
