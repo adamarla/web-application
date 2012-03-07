@@ -152,8 +152,12 @@ jQuery ->
     c = options.eq(currPg)
     n = options.eq(next)
 
+    ###
     c.children().attr 'disabled', true
     n.children().attr 'disabled', false
+    ###
+    c.removeClass 'selected'
+    n.addClass 'selected'
 
     return true
 
