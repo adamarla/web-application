@@ -26,15 +26,6 @@ jQuery ->
     coreUtil.forms.modifyAction $(this), "quiz/assign.json?id=#{quiz}", 'put'
     return true
 
-
-  # Load the student list into #enrolled-student-list on section selection 
-  $('#sektion-list').on 'click', 'input[type="radio"]', ->
-    section = $(this).attr 'marker'
-    return if not section?
-    $.get "sektions/students.json?id=#{section}"
-    return true
-
-
   ########################################################
   #  Key-press event processing. Best to attach to $(document)
   # so that event is always caught, even when focus in NOT 
@@ -102,9 +93,18 @@ jQuery ->
   ###
   $('.flipchart').on 'click', 'input[type="radio"]', ->
     chart = $(this).closest '.ui-tabs-panel'
-    id = $(this).attr 'marker'
-    switch chart.attr 'id'
-      when 'courses-taught' then $.get "course/verticals.json?id=#{id}"
+    marker = $(this).attr 'marker'
+    id = chart.attr 'id'
+
+    switch id
+      when 'courses-taught'
+        $.get "course/verticals.json?id=#{marker}"
+      when 'sektion-list'
+        $.get "sektions/students.json?id=#{marker}"
+      when 'testpaper'
+        $.get "testpaper/students.json?id=#{marker}"
+
+    return true
 
 
   ###
