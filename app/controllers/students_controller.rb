@@ -19,4 +19,13 @@ class StudentsController < ApplicationController
     @student.save ? respond_with(@student) : head(:bad_request)  
   end 
 
+  def responses
+    student = Student.find params[:id]
+    testpaper = Testpaper.find params[:testpaper]
+    head :bad_request if (student.nil? || testpaper.nil?)
+
+    all = student.responses testpaper
+    @with_scans = all.where('scan IS NOT NULL')
+  end
+
 end

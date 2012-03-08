@@ -128,6 +128,11 @@ class Teacher < ActiveRecord::Base
     return Course.where :board_id => board, :klass => klasses, :subject_id => subjects
   end
 
+  def testpapers
+    quiz_ids = Quiz.where(:teacher_id => self.id).order(:klass).map(&:id)
+    @testpapers = Testpaper.where(:quiz_id => quiz_ids).order('created_at DESC')
+  end
+
   private 
     
     def reset_login_info

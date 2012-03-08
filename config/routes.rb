@@ -76,6 +76,7 @@ Webapp::Application.routes.draw do
 
   # Student 
   resource :student, :only => [:create, :update]
+  match 'student/responses' => 'students#responses', :via => :get
 
   # Study Group 
   resource :sektion, :only => [:create, :update]
@@ -95,6 +96,10 @@ Webapp::Application.routes.draw do
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/courses' => 'teachers#courses', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => :put
+  match 'teacher/testpapers' => 'teachers#testpapers', :via => :get
+
+  # Testpaper
+  match 'testpaper/students' => 'testpapers#students', :via => :get
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]

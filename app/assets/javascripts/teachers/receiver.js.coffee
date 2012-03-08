@@ -62,6 +62,14 @@ jQuery ->
       implication.text "In about #{eet} minutes, your document should be available for download"
 
       $('#queue-status').dialog('open')
+    else if url.match(/teacher\/testpapers/)
+      here = $('#testpaper')
+      coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true}
+    else if url.match(/testpaper\/students/)
+      here = $('#student')
+      coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
+    else if url.match(/student\/responses/)
+      preview.loadJson json, 'locker'
     else
       matched = false
 

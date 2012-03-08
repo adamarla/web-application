@@ -48,6 +48,7 @@ jQuery ->
         when 'vault' then base = "#{server}/vault"
         when 'atm' then base = "#{server}/atm"
         when 'frontdesk-yardsticks' then base = "#{server}/front-desk/previews/yardsticks"
+        when 'locker' then base = "#{server}/locker"
         else base = null
 
       return false if base is null
@@ -72,6 +73,10 @@ jQuery ->
             thumb = "#{base}/#{index}/thumbnail.jpeg"
             full = "#{base}/#{index}/preview.jpeg"
             alt = "#{j.toString(16).toUpperCase()}"
+          when 'locker'
+            thumb = "#{base}/#{j}"
+            full = "#{base}/#{j}"
+            alt = "page ##{index}"
           else break
 
         img = $("<li marker=#{index}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")

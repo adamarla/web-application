@@ -103,6 +103,9 @@ jQuery ->
         $.get "sektions/students.json?id=#{marker}"
       when 'testpaper'
         $.get "testpaper/students.json?id=#{marker}"
+      when 'student'
+        testpaper = $('#side-panel').attr 'marker'
+        $.get "student/responses.json?id=#{marker}&testpaper=#{testpaper}"
 
     return true
 

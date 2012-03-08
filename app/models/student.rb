@@ -72,6 +72,12 @@ class Student < ActiveRecord::Base
     return quiz_ids
   end
 
+  def responses(testpaper_id)
+    quiz = Testpaper.where(:id => testpaper_id).first.quiz
+    num_pages = quiz.num_pages
+    GradedResponse.of_student(self.id).in_quiz(quiz.id).on_page([*1..num_pages])
+  end
+
   private 
     def destroyable? 
       return false 
