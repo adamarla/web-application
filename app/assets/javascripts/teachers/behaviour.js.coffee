@@ -1,10 +1,15 @@
 
 jQuery ->
 
-  $('#quizzes-link').click ->
+  $('#main-links a').click ->
     teacher = $('#control-panel').attr 'marker'
-    $.get 'quizzes/list.json'
-    $.get "teachers/roster.json?id=#{teacher}"
+    id = $(this).attr 'id'
+    switch id
+      when 'quizzes-link'
+        $.get 'quizzes/list.json'
+        $.get "teachers/roster.json?id=#{teacher}"
+      when 'report-cards-link'
+        $.get "teacher/testpapers.json?id=#{teacher}"
     return true
 
   # Assigning a Quiz to students selected in #student-list
