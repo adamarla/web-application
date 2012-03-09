@@ -25,6 +25,10 @@ class Testpaper < ActiveRecord::Base
       names.push({ :id => s.id, :name => s.name })
     end
 
+    puts " +++++ "
+    puts " #{names}" 
+    puts " +++++ "
+
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
 
     response = SavonClient.request :wsdl, :assign_quiz do  

@@ -62,6 +62,8 @@ class Quiz < ActiveRecord::Base
       # Don't issue the same quiz to the same students
       next if s.quiz_ids.include? self.id
 
+      puts " ---- #{s.name}"
+
       testpaper.students << s # (2) 
       questions.each do |q|
         testpaper.graded_responses << GradedResponse.new(:q_selection_id => q.id, :student_id => s.id) #(3) & (4)
@@ -69,6 +71,7 @@ class Quiz < ActiveRecord::Base
     end # student loop 
 
     if testpaper.students.empty?
+      puts " --- empty testpaper students list "
       return {}
     else
       response = (self.save) ? testpaper.compile_tex : {}
