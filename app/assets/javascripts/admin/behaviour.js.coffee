@@ -46,6 +46,8 @@ jQuery ->
     id = $(this).attr 'id'
     switch id
       when 'grading-link' then $.get 'examiner/pending_quizzes'
+      when 'tagged-ques-link'
+        $.get 'questions/list.json?type=tagged'
     return true
 
   ###

@@ -2,11 +2,11 @@
 #workbenches-summary.flipchart
   %ul
     %li
-      %a{ :href => '#examiner-untagged' }= "Pending"
+      %a{ :href => '#examiner-untagged' }= "Question"
     %li
-      %a{ :href => '#vertical-selection' }= "Verticals"
+      %a{ :href => '#vertical-selection' }= "Vertical"
     %li
-      %a{ :href => '#topic-selection' }= "Topics"
+      %a{ :href => '#topic-selection' }= "Topic"
     %li
       %a{ :href => '#misc-traits' }= "Misc"
   #examiner-untagged
@@ -41,4 +41,5 @@
                  :with => {:panels => {:side => '#ungraded-responses'}}
     = minor_link :for => 'db-slots', :as => 'add questions to db'
     = minor_link :for => 'new-scans', :as => 'get new scans'
+    = minor_link :for => 'tagged-ques', :as => 'tagged questions'
     
