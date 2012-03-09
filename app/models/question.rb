@@ -43,7 +43,6 @@
 
 class Question < ActiveRecord::Base
   before_save :set_mcq_if_multi_correct
-  before_save :set_space_requirement
 
   # UID is an alphanumeric string representing the millisecond time at
   # which the folder was created in the 'vault'
@@ -75,17 +74,6 @@ class Question < ActiveRecord::Base
     return true 
     # if self.mcq results to 'false' and the 'false' is then returned, 
     # then the save operation would be aborted (needlessly)
-  end
-
-  def set_space_requirement
-    # Ok, there should be no need for the logic below if I was 
-    # ready to re-work samurai-sword to have 3 radio buttons instead of 
-    # 3 checkboxes. But I am too lazy to do that
-    # So, here is what we do. If 'mcq' was selected, then it sets half & full-pages to false
-    # And if half-page is true, then full-page is false
-    self.half_page &= !self.mcq
-    self.full_page &= !self.half_page
-    return true # return true lest the results of last operation abort the save 
   end
 
 end

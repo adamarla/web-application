@@ -36,10 +36,13 @@ class QuestionController < ApplicationController
 
     page_length = options.delete :page_length
     case page_length
-      when 1 then question.mcq = true 
-      when 2 then question.half_page = true
-      when 3 then question.full_page = true
+      when "1" then mcq, half_page, full_page = true, false, false 
+      when "2" then mcq, half_page, full_page = false, true, false 
+      when "3" then mcq, half_page, full_page = false, false, true 
     end 
+
+    # Return of the prodigal
+    options.merge!({:mcq => mcq, :half_page => half_page, :full_page => full_page})
 
     if question.update_attributes(options)
       render :json => { :status => 'Done' }, :status => :ok
