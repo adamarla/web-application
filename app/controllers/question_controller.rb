@@ -41,7 +41,11 @@ class QuestionController < ApplicationController
       when 3 then question.full_page = true
     end 
 
-    head question.update_attributes(options) ? :ok : :bad_request
+    if question.update_attributes(options)
+      render :json => { :status => 'Done' }, :status => :ok
+    else
+      render :json => { :status => 'Oops !' }, :status => :bad_request
+    end
   end
 
   def preview
