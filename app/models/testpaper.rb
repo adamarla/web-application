@@ -41,10 +41,8 @@ class Testpaper < ActiveRecord::Base
     return response.to_hash[:assign_quiz_response]
   end #of method
 
-  def students
-    # Students who got this testpaper
-    student_ids = CoursePack.where(:testpaper_id => self.id).map(&:student_id)
-    @students = Student.where(:id => student_ids)
+  def assignees
+    @students = self.students
   end
 
 end # of class

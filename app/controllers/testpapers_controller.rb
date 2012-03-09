@@ -4,7 +4,7 @@ class TestpapersController < ApplicationController
     # students who got this testpaper
     testpaper = Testpaper.find params[:id]
     head :bad_request if testpaper.nil?
-    @students = testpaper.students
+    @students = testpaper.assignees
   end
 
 end
