@@ -35,6 +35,11 @@ class Topic < ActiveRecord::Base
     return 0
   end 
 
+  def name
+    n_questions = Question.where(:topic_id => self.id).count
+    return "#{self.name} (#{n_questions})"
+  end
+
   private 
 
     def humanize_name
