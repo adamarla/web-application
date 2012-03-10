@@ -12,7 +12,8 @@ class TopicsController < ApplicationController
       added &= topic.save
       break if !added
     end
-    added ? head(:ok) : head(:bad_request)
+    added ? render(:json => {:status => 'Done'}, :status => :ok) : 
+            render(:json => {:status => 'Oops!'}, :status => :bad_request)
   end 
 
   def update 
