@@ -35,12 +35,10 @@ class Topic < ActiveRecord::Base
     return 0
   end 
 
-=begin
-  def name
+  def print_name
     n_questions = Question.where(:topic_id => self.id).count
     return "#{self.name} (#{n_questions})"
   end
-=end
 
   private 
 

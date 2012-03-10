@@ -14,6 +14,11 @@ class Vertical < ActiveRecord::Base
   validates :name, :uniqueness => true
   before_validation :humanize_name
 
+  def print_name
+    n_questions = Question.where(:topic_id => self.topics.map(&:id)).count
+    return "#{self.name} (#{n_questions})"
+  end
+
   private 
 
     def humanize_name

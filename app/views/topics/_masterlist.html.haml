@@ -6,7 +6,7 @@
       - topics = Topic.where(:vertical_id => vertical.id).order(:name)
       - topics.each do |topic|
         = render :partial => 'toolbox/swiss_knife', 
-                 :locals => { :marker => "#{topic.id}", :label => "#{topic.name}" }
+                 :locals => { :marker => "#{topic.id}", :label => "#{topic.print_name}" }
 
 -# All "applicable" topics (context specific) listed within this ...
 #topic-selected-list.sortable.put-back

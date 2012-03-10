@@ -2,7 +2,7 @@
 #vertical-masterlist.hidden
   - list = get_list_of :verticals
   - list.each do |item|
-    = render :partial => 'toolbox/swiss_knife', :locals => { :marker => "#{item.id}", :label => "#{item.name}" }
+    = render :partial => 'toolbox/swiss_knife', :locals => { :marker => "#{item.id}", :label => "#{item.print_name}" }
 
 -# All "applicable" verticals (context specific) listed within this ...
 #vertical-selected-list.sortable.put-back.selected

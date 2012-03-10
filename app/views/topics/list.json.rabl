@@ -1,4 +1,5 @@
 
 collection @categories => :topics
-  attributes :name, :id
+  attribute :print_name => :name
+  attribute :id
 
