@@ -673,6 +673,13 @@
                     });
                     
                     ppyStage.click(function(){
+                        /*
+                          [Abhinav]: Do *not* toggle between thumbnail & image w/ every click
+                          The full-image is all that we want to see. Moreover, we want mouse 
+                          clicks to have special meaning when doing on-the-fly online image 
+                          manipulation
+                        */ 
+                        return false ;
                         if(enlarged) {
                             showThumb(cur);
                         }
