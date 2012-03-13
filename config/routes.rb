@@ -37,8 +37,7 @@ Webapp::Application.routes.draw do
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
-  match 'examiner/pending_quizzes' => 'examiners#pending_quizzes', :via => :get
-  match 'examiner/pending_pages' => 'examiners#pending_pages', :via => :get
+  match 'examiner/pending' => 'examiners#pending', :via => :get
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
   match 'examiner/update_workset' => 'examiners#update_workset', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get

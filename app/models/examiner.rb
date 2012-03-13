@@ -37,6 +37,10 @@ class Examiner < ActiveRecord::Base
     @quizzes = Quiz.where :id => quiz_ids
   end
 
+  def pending 
+    @pending = GradedResponse.where(:examiner_id => self.id).where('scan IS NOT NULL').where('grade_id IS NULL')
+  end
+
   def self.pages( quiz = nil, type = :pending ) # other option is :graded
     # Find all the pages from passed quiz assigned to this particular examiner
     return [] if quiz.nil?

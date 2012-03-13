@@ -34,6 +34,11 @@ class ExaminersController < ApplicationController
     @quizzes = Examiner.pending_quizzes
   end
 
+  def pending
+    examiner = Examiner.where(:id => current_account.loggable_id).first
+    @pending = examiner.nil? ? [] : examiner.pending
+  end
+
   def pending_pages
     quiz = Quiz.find params[:id]
     @pages = Examiner.pages quiz, :pending

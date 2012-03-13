@@ -13,7 +13,7 @@ jQuery ->
     to come back and be processed before proceeding 
   ###
   window.setTimeout () ->
-    $('#scan-loader-link').attr 'href', "#{gutenberg.server}/scanbot/dist/launch.jnlp"
+    $('#scan-loader-link').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
   , 1000
 
   ###
@@ -45,19 +45,10 @@ jQuery ->
   $('#control-panel').on 'click', '#minor-links a', ->
     id = $(this).attr 'id'
     switch id
-      when 'grading-link' then $.get 'examiner/pending_quizzes'
+      when 'grading-link' then $.get 'examiner/pending'
       when 'tagged-ques-link'
         $.get 'questions/list.json?type=tagged'
     return true
-
-  ###
-    When a radio-button within a flipchart is clicked 
-  ###
-  $('.flipchart').on 'click', 'input[type="radio"]', ->
-    chart = $(this).closest '.ui-tabs-panel'
-    id = $(this).attr 'marker'
-    switch chart.attr 'id'
-      when 'pending-quizzes' then $.get "examiner/pending_pages.json?id=#{id}"
 
   ###
     Edit <form> actions

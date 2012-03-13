@@ -30,8 +30,8 @@ jQuery ->
               settings.url.match(/courses\/list/) or
               settings.url.match(/questions\/list/) or
               settings.url.match(/verticals\/list/) or
-              settings.url.match(/examiner\/pending_quizzes/) or
-              settings.url.match(/examiner\/pending_pages/)
+              settings.url.match(/examiner\/pending/)
+              #settings.url.match(/examiner\/pending_pages/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -51,10 +51,8 @@ jQuery ->
 
         coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
         coreUtil.mnmlists.attach 'topic', '#topic-selection'
-      when 'examiner/pending_quizzes'
-        coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
-      when 'examiner/pending_pages'
-        coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
+      when 'examiner/pending'
+        coreUtil.interface.displayJson json.pending, '#list-ungraded-responses', 'pending', {}
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
