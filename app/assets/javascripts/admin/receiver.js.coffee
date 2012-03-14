@@ -31,7 +31,6 @@ jQuery ->
               settings.url.match(/questions\/list/) or
               settings.url.match(/verticals\/list/) or
               settings.url.match(/examiner\/pending/)
-              #settings.url.match(/examiner\/pending_pages/)
     return if matched is null
 
     json = $.parseJSON xhr.responseText
@@ -52,7 +51,8 @@ jQuery ->
         coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
         coreUtil.mnmlists.attach 'topic', '#topic-selection'
       when 'examiner/pending'
-        coreUtil.interface.displayJson json.pending, '#list-ungraded-responses', 'pending', {}
+        #coreUtil.interface.displayJson json.pending, '#list-ungraded-responses', 'pending', {}
+        coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
 
   ###
     AJAX successes the middle-panel is supposed to respond to.
