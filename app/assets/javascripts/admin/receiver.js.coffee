@@ -53,6 +53,7 @@ jQuery ->
       when 'examiner/pending'
         #coreUtil.interface.displayJson json.pending, '#list-ungraded-responses', 'pending', {}
         coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
+        canvas.loadNth 0
 
   ###
     AJAX successes the middle-panel is supposed to respond to.

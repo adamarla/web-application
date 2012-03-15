@@ -21,7 +21,7 @@ jQuery ->
   ###
 
   $('#grading-canvas').on 'click', (event) ->
-    gradingCanvas.record event
+    canvas.record event
 
   $('#add-examiner-link').click ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
@@ -50,7 +50,7 @@ jQuery ->
     switch id
       when 'grading-link'
         $.get 'examiner/pending'
-        gradingCanvas.initialize '#grading-canvas'
+        canvas.initialize '#grading-canvas'
       when 'tagged-ques-link'
         $.get 'questions/list.json?type=tagged'
     return true
