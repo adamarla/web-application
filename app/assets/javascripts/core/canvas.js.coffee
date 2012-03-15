@@ -2,13 +2,15 @@
 window.canvas = {
 
   object: null,
+  ctx: null,
   clicks: null,
   xoff: 0,
   yoff: 0,
-  last:0,
+  last:0, # insert before updating index 
 
   initialize: (id) ->
     canvas.object = if typeof id is 'string' then $(id) else id
+    canvas.ctx = canvas.object[0].getContext('2d')
     offset = canvas.object.offset()
     canvas.xoff = offset.left
     canvas.yoff = offset.top
@@ -18,15 +20,13 @@ window.canvas = {
     
 
   # n: 0-indexed
-  loadNth: (n, list = '#ungraded-responses', id = '#grading-canvas') ->
+  loadNth: (n, list = '#ungraded-responses') ->
     list = $(list).find('ul:first')
     nImages = list.children('li').length
     return if nImages < 1
     
     n %= nImages
-    me = if typeof id is 'string' then $(id) else id
-    
-    ctx = me[0].getContext('2d')
+    ctx = canvas.ctx
     image = new Image()
     src = list.children('li').eq(n).text()
     image.onload = () ->
@@ -57,6 +57,19 @@ window.canvas = {
   clear: () ->
     canvas.clicks = new Array()
     canvas.last = 0
+
+  undo: () ->
+    if canvas.last % 2 is 1
+      canvas.clicks.pop()
+      canvas.last -= 1
+    else
+      last = canvas.last
+      rect = canvas.calcRectangle canvas.clicks[last-1], canvas.clicks[last-2]
+      canvas.last -= 2
+      canvas.ctx.strokeStyle = "white"
+      canvas.ctx.strokeRect rect.x, rect.y, rect.width, rect.height
+      canvas.ctx.strokeStyle = "#fd9105"
+    return true
   
   calcRectangle: (first, second) -> # points are of the form [x,y]
     rectangle = { x:null, y:null, width:null, height:null }
@@ -69,7 +82,7 @@ window.canvas = {
       rectangle.width = second[0] - first[0]
 
     if first[1] > second[1] # comparing y-coordinates
-      retangle.y = second[1]
+      rectangle.y = second[1]
       rectangle.height = first[1]-second[1]
     else
       rectangle.y = first[1]

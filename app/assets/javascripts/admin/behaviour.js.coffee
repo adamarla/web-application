@@ -278,4 +278,10 @@ jQuery ->
     $.get 'examiner/update_workset'
     return true
 
+  ###
+    Clicking the undo button when grading
+  ###
+  $('#undo-btn').click ->
+    canvas.undo()
+
 
