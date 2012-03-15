@@ -49,27 +49,31 @@ window.canvas = {
       first = canvas.clicks[last-1] #first click
       second = canvas.clicks[last] # second click
 
-      if first[0] > second[0] # comparing x-coordinates
-        a = second[0]
-        width = first[0]-second[0]
-      else
-        a = first[0]
-        width = second[0] - first[0]
-
-      if first[1] > second[1] # comparing y-coordinates
-        b = second[1]
-        height = first[1]-second[1]
-      else
-        b = first[1]
-        height = second[1] - first[1]
-
-      #alert "#{width} --> #{height}"
-
+      rect = canvas.calcRectangle first, second
       ctx = canvas.object[0].getContext('2d')
-      ctx.strokeRect a,b,width,height
+      ctx.strokeRect rect.x, rect.y, rect.width, rect.height
     return true
     
   clear: () ->
     canvas.clicks = new Array()
     canvas.last = 0
+  
+  calcRectangle: (first, second) -> # points are of the form [x,y]
+    rectangle = { x:null, y:null, width:null, height:null }
+
+    if first[0] > second[0] # comparing x-coordinates
+      rectangle.x = second[0]
+      rectangle.width = first[0]-second[0]
+    else
+      rectangle.x = first[0]
+      rectangle.width = second[0] - first[0]
+
+    if first[1] > second[1] # comparing y-coordinates
+      retangle.y = second[1]
+      rectangle.height = first[1]-second[1]
+    else
+      rectangle.y = first[1]
+      rectangle.height = second[1] - first[1]
+
+    return rectangle
 }
