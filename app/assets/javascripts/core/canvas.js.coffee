@@ -66,9 +66,16 @@ window.canvas = {
       last = canvas.last
       rect = canvas.calcRectangle canvas.clicks[last-1], canvas.clicks[last-2]
       canvas.last -= 2
-      canvas.ctx.strokeStyle = "white"
+
+      # We choose in 'invert' of the colour we drew the original line in
+      # It is the colour that when overlaid would produce white
+      canvas.ctx.strokeStyle = "#026efa"
+      canvas.ctx.globalCompositeOperation = "lighter"
       canvas.ctx.strokeRect rect.x, rect.y, rect.width, rect.height
+
+      # Now, revert back to original stroke style
       canvas.ctx.strokeStyle = "#fd9105"
+      canvas.ctx.globalCompositeOperation = "source-over"
     return true
   
   calcRectangle: (first, second) -> # points are of the form [x,y]
