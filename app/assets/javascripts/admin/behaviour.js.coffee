@@ -20,6 +20,9 @@ jQuery ->
     #new-examiner-link
   ###
 
+  $('#grading-canvas').on 'click', (event) ->
+    gradingCanvas.record event
+
   $('#add-examiner-link').click ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
@@ -45,7 +48,9 @@ jQuery ->
   $('#control-panel').on 'click', '#minor-links a', ->
     id = $(this).attr 'id'
     switch id
-      when 'grading-link' then $.get 'examiner/pending'
+      when 'grading-link'
+        $.get 'examiner/pending'
+        gradingCanvas.initialize '#grading-canvas'
       when 'tagged-ques-link'
         $.get 'questions/list.json?type=tagged'
     return true
