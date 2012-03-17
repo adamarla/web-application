@@ -139,9 +139,13 @@ class Examiner < ActiveRecord::Base
         image = file.split('.').first # get rid of the jpg extension 
         quiz, testpaper, student, page = image.split('-').map(&:to_i)
 
-        db_record = GradedResponse.in_quiz(quiz).on_page(page).of_student(student).first
-        if db_record
-          db_record.update_attribute :scan, entry
+        # There can be > 1 question on a page and hence > 1 GradedResponses that
+        # share the same scan 
+        db_records = GradedResponse.in_quiz(quiz).on_page(page).of_student(student)
+        unless db_records.empty?
+          db_records.each do |x|
+            x.update_attribute :scan, image
+          end
         else
           name = Student.find(student).name
           failures.push({:name => name, :id => page}) 
