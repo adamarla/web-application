@@ -96,7 +96,7 @@ class Examiner < ActiveRecord::Base
         n_students = students.count 
         n_reqd_examiners = (n_students / limit) + 1
         graders = (n_reqd_examiners > n_examiners) ? examiners : examiners.slice(0, n_reqd_examiners)
-        per_grader = (students/graders.count)
+        per_grader = (n_students/graders.count)
 
         remaining = students
 
