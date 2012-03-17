@@ -49,7 +49,7 @@ jQuery ->
     id = $(this).attr 'id'
     switch id
       when 'grading-link'
-        $.get 'examiner/pending'
+        $.get 'examiner/pending_quizzes'
         canvas.initialize '#grading-canvas'
       when 'tagged-ques-link'
         $.get 'questions/list.json?type=tagged'
@@ -283,5 +283,26 @@ jQuery ->
   ###
   $('#undo-btn').click ->
     canvas.undo()
+
+  ###
+    Selecting a pending quiz in #pending-quizzes
+  ###
+  $('#pending-quizzes').on 'click', 'input[type="radio"]', ->
+    examiner = $('#control-panel').attr 'marker'
+    quiz = $(this).attr 'marker'
+    $.get "quiz/pending_pages.json?id=#{quiz}&examiner_id=#{examiner}"
+    return true
+
+  ###
+    Selecting a pending page in #pending-pages should load all the scans
+    assigned to the logged-in examiner
+  ###
+  $('#pending-pages').on 'click', 'input[type="radio"]', ->
+    examiner = $('#control-panel').attr 'marker'
+    quiz = $('#side-panel').attr 'marker'
+    page = $(this).attr 'marker'
+    $.get "quiz/pending_scans.json?id=#{quiz}&examiner_id=#{examiner}&page=#{page}"
+    return true
+
 
 

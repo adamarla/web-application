@@ -29,7 +29,7 @@ class GradedResponse < ActiveRecord::Base
 
   def self.on_page(page)
     # Returns all respones on passed page of all Quizzes
-    where(:q_selection_id => QSelection.where(:page => page).map(&:id)) 
+    where(:q_selection_id => QSelection.where(:page => page).order('index ASC').map(&:id)) 
   end
 
   def self.in_quiz(id)

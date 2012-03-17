@@ -27,6 +27,8 @@ jQuery ->
 
     if images.hasClass 'ppy-placeholder'
       preview.scrollImg images, event
+    else if images.attr('id') is 'grading-canvas'
+      canvas.scrollImg images, event
     return true
 
 

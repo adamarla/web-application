@@ -20,12 +20,9 @@ window.canvas = {
     
 
   # n: 0-indexed
-  loadNth: (n, list = '#ungraded-responses') ->
+  loadNth: (n, list = '#pending-scans') ->
     list = $(list).find('ul:first')
-    nImages = list.children('li').length
-    return if nImages < 1
     
-    n %= nImages
     ctx = canvas.ctx
     image = new Image()
     src = list.children('li').eq(n).text()
@@ -96,4 +93,23 @@ window.canvas = {
       rectangle.height = second[1] - first[1]
 
     return rectangle
+
+  scrollImg: (images, event) ->
+    list = $('#list-pending')
+    nScans = list.attr 'length'
+    current = list.attr 'current'
+
+    key = event.keyCode
+    switch key
+      when 37 # 37 = left-key 
+        next = if current > 0 then current - 1 else nScans - 1
+      when 39 # 39 = right-key
+        next = (current + 1) % nScans
+
+    canvas.loadNth next
+    list.attr 'current', next
+    return true
+
+
+  scrollSidePnlList: (event) ->
 }

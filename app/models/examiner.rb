@@ -31,24 +31,10 @@ class Examiner < ActiveRecord::Base
     self.last_name = split.last
   end
 
-  def self.pending_quizzes
-    pending = GradedResponse.ungraded.map(&:q_selection_id).uniq
+  def pending_quizzes
+    pending = GradedResponse.with_scan.assigned_to(self.id).ungraded.map(&:q_selection_id).uniq
     quiz_ids = QSelection.where(:id => pending).map(&:quiz_id).uniq
     @quizzes = Quiz.where :id => quiz_ids
-  end
-
-  def pending 
-    @pending = GradedResponse.where(:examiner_id => self.id).where('scan IS NOT NULL').where('grade_id IS NULL')
-  end
-
-  def self.pages( quiz = nil, type = :pending ) # other option is :graded
-    # Find all the pages from passed quiz assigned to this particular examiner
-    return [] if quiz.nil?
-
-    responses = GradedResponse.in_quiz(quiz.id)
-    responses = (type == :pending) ? responses.ungraded : responses.where('grade_id IS NOT NULL')
-
-    @pages = QSelection.where(:id => responses.map(&:q_selection_id).uniq).map(&:page).uniq
   end
 
   def block_db_slots

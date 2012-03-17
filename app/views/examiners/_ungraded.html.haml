@@ -1,6 +1,16 @@
 
-#ungraded-responses
-  #list-ungraded-responses.list.hidden
-  #yardstick-buttons
+#ungraded-responses.flipchart
+  %ul
+    %li
+      %a{ :href => '#pending-quizzes' }= "Quizzes"
+    %li
+      %a{ :href => '#pending-pages' }= "Pages"
+    %li
+      %a{ :href => '#pending-scans' }= "Scans"
+
+  #pending-quizzes
+  #pending-pages
+  #pending-scans
+    %ul#list-pending.purgeable.hidden
     .submit-buttons
       %input#undo-btn{ :type => :button, :value => "Undo Last" }
