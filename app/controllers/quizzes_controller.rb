@@ -23,4 +23,22 @@ class QuizzesController < ApplicationController
     head :bad_request if @quiz.nil?
   end
 
+  def pending_pages
+    quiz = Quiz.find params[:id]
+    examiner = Examiner.find params[:examiner_id]
+    head :bad_request if (quiz.nil? || examiner.nil?)
+
+    @pages = quiz.pending_pages examiner
+  end
+
+  def pending_scans
+    quiz = Quiz.find params[:id]
+    examiner = Examiner.find params[:examiner_id]
+    page = params[:page]
+    head :bad_request if (quiz.nil? || examiner.nil? || page.nil?)
+
+    @scans = quiz.pending_scans examiner.id, page
+    render :json => @scans
+  end
+
 end

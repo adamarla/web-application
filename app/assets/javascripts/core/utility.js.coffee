@@ -290,6 +290,18 @@ window.coreUtil = {
         $(checkbox).prop 'checked', false
       return true
 
+    mkListFromJson : (json, here, key, ordered = false) ->
+      # Assumes JSON has at least a key called 'name'
+      here = if typeof here is 'string' then $(here) else here
+
+      l = if ordered is true then $('<ol></ol>') else $('<ul></ul>')
+      l.appendTo here
+
+      for record in json
+        data = record[key]
+        l.append "<li>#{data.name}</li>"
+      return true
+
     ###
       The next function will create <options> for any <selects> within the passed 
       object. The function is agnostic to who, why and how the <select>s were created

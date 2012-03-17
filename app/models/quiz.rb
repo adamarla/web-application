@@ -174,4 +174,22 @@ class Quiz < ActiveRecord::Base
     self.questions.map{|q| q.topic_id}.uniq
   end
 
+  def pending_pages(examiner_id)
+    responses = GradedResponse.assigned_to(examiner_id).ungraded.with_scan.in_quiz(self.id)
+    qsel_ids = responses.map(&:q_selection_id).uniq
+    @pages = QSelection.where(:id => qsel_ids).order(:page).map(&:page)
+  end
+
+  def pending_scans(examiner, page)
+    responses = GradedResponse.assigned_to(examiner).on_page(page).in_quiz(self.id).ungraded.with_scan
+    scans = responses.map(&:scan).uniq
+
+    @ret = {:scans => []}
+    scans.each do |s|
+      indices = responses.where(:scan => s).map(&:id)
+      (@ret[:scans]).push({:scan => s, :indices => indices})
+    end
+    return @ret
+  end
+
 end # of class

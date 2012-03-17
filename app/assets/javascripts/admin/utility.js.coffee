@@ -45,4 +45,16 @@ window.adminUtil = {
     else
       source.addClass 'hidden'
       swissKnife.customizeWithin source, customization, true
+
+  buildPendingScanList: (json) ->
+    here = $('#list-pending')
+    here.empty() # purge any old lists
+    for item in json
+      e = $("<li>#{item.scan}</li>")
+      e.appendTo here
+    nImages = here.children('li').length
+    here.attr 'length', nImages
+    here.attr 'current', 0
+    return true
+
 }

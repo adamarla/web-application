@@ -26,35 +26,33 @@ jQuery ->
   ###
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/schools\/list/) or
-              settings.url.match(/courses\/list/) or
-              settings.url.match(/questions\/list/) or
-              settings.url.match(/verticals\/list/) or
-              settings.url.match(/examiner\/pending_quizzes/) or
-              settings.url.match(/examiner\/pending_pages/)
-    return if matched is null
-
     json = $.parseJSON xhr.responseText
-    switch matched.pop()
-      when 'schools/list'
-        coreUtil.interface.displayJson json.schools, '#schools-summary', 'school'
-      when 'courses/list'
-        coreUtil.interface.displayJson json.courses, '#courses-summary', 'course', {radio:true, button:true}
-        swissKnife.setButtonCaption '#courses-summary', 'edit'
-      when 'questions/list'
-        # flipchart initialized in core/behaviour 
-        coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
-      when 'verticals/list'
-        coreUtil.mnmlists.redistribute true
-        coreUtil.mnmlists.customize 'vertical'
-        coreUtil.mnmlists.customize 'topic'
+    if settings.url.match(/schools\/list/)
+      coreUtil.interface.displayJson json.schools, '#schools-summary', 'school'
+    else if settings.url.match(/courses\/list/)
+      coreUtil.interface.displayJson json.courses, '#courses-summary', 'course', {radio:true, button:true}
+      swissKnife.setButtonCaption '#courses-summary', 'edit'
+    else if settings.url.match(/questions\/list/)
+      # flipchart initialized in core/behaviour 
+      coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
+    else if settings.url.match(/verticals\/list/)
+      coreUtil.mnmlists.redistribute true
+      coreUtil.mnmlists.customize 'vertical'
+      coreUtil.mnmlists.customize 'topic'
+      coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
+      coreUtil.mnmlists.attach 'topic', '#topic-selection'
+    else if settings.url.match(/examiner\/pending_quizzes/)
+      coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
+      #coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
+      canvas.loadNth 0
+    else if settings.url.match(/quiz\/pending_pages/)
+      coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
+    else if settings.url.match(/quiz\/pending_scans/)
+      adminUtil.buildPendingScanList json.scans
+      canvas.loadNth 0
 
-        coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
-        coreUtil.mnmlists.attach 'topic', '#topic-selection'
-      when 'examiner/pending_quizzes'
-        coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
-      when 'examiner/pending_pages'
-        coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
+    return true
+      
 
   ###
     AJAX successes the middle-panel is supposed to respond to.

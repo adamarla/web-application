@@ -20,6 +20,9 @@ jQuery ->
     #new-examiner-link
   ###
 
+  $('#grading-canvas').on 'click', (event) ->
+    canvas.record event
+
   $('#add-examiner-link').click ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
@@ -45,19 +48,12 @@ jQuery ->
   $('#control-panel').on 'click', '#minor-links a', ->
     id = $(this).attr 'id'
     switch id
-      when 'grading-link' then $.get 'examiner/pending_quizzes'
+      when 'grading-link'
+        $.get 'examiner/pending_quizzes'
+        canvas.initialize '#grading-canvas'
       when 'tagged-ques-link'
         $.get 'questions/list.json?type=tagged'
     return true
-
-  ###
-    When a radio-button within a flipchart is clicked 
-  ###
-  $('.flipchart').on 'click', 'input[type="radio"]', ->
-    chart = $(this).closest '.ui-tabs-panel'
-    id = $(this).attr 'marker'
-    switch chart.attr 'id'
-      when 'pending-quizzes' then $.get "examiner/pending_pages.json?id=#{id}"
 
   ###
     Edit <form> actions
@@ -281,5 +277,32 @@ jQuery ->
     event.stopPropagation()
     $.get 'examiner/update_workset'
     return true
+
+  ###
+    Clicking the undo button when grading
+  ###
+  $('#undo-btn').click ->
+    canvas.undo()
+
+  ###
+    Selecting a pending quiz in #pending-quizzes
+  ###
+  $('#pending-quizzes').on 'click', 'input[type="radio"]', ->
+    examiner = $('#control-panel').attr 'marker'
+    quiz = $(this).attr 'marker'
+    $.get "quiz/pending_pages.json?id=#{quiz}&examiner_id=#{examiner}"
+    return true
+
+  ###
+    Selecting a pending page in #pending-pages should load all the scans
+    assigned to the logged-in examiner
+  ###
+  $('#pending-pages').on 'click', 'input[type="radio"]', ->
+    examiner = $('#control-panel').attr 'marker'
+    quiz = $('#side-panel').attr 'marker'
+    page = $(this).attr 'marker'
+    $.get "quiz/pending_scans.json?id=#{quiz}&examiner_id=#{examiner}&page=#{page}"
+    return true
+
 
 

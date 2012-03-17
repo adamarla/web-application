@@ -31,12 +31,9 @@ class ExaminersController < ApplicationController
   end 
 
   def pending_quizzes
-    @quizzes = Examiner.pending_quizzes
-  end
-
-  def pending_pages
-    quiz = Quiz.find params[:id]
-    @pages = Examiner.pages quiz, :pending
+    examiner = Examiner.where(:id => current_account.loggable_id).first
+    head :bad_request if examiner.nil?
+    @quizzes = examiner.pending_quizzes 
   end
 
   def block_db_slots

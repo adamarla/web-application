@@ -125,5 +125,54 @@ jQuery ->
       caption.text newCaption
       return true
 
+    scrollImg: (images, event) ->
+      verticalTabs = $('#side-panel').find '.vertical-tabs:first > ul' # if present, we need the ui-tabs-nav
+      unless verticalTabs.length is 0
+        numTabs = verticalTabs.find('li').length
+        index = verticalTabs.find('li.ui-tabs-selected').index()
+        next = (index + 1) % numTabs
+        prev = if index > 0 then index - 1 else numTabs - 1
+
+      key = event.keyCode
+      switch key
+        when 37 # 37 = left-key 
+          backBtn = images.find '.ppy-prev:first'
+          unless backBtn.length is 0
+            backBtn.click()
+            verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
+        when 39 # 39 = right-key
+          fwdBtn = images.find '.ppy-next:first'
+          unless fwdBtn.length is 0
+            fwdBtn.click()
+            verticalTabs.children('li').eq(next).children('a:first').click() if next?
+      return true
+
+    scrollSidePnlList: (event) ->
+      ques = $('#side-panel').find '#question-options:first'
+      return if ques.length is 0 or ques.hasClass 'ui-tabs-hide' # ie. if not showing
+
+      options = ques.find '.swiss-knife'
+      nQues = options.length
+      pOuter = $('#document-preview > .ppy-outer:first')
+      pCurr = pOuter.find('.ppy-current:first') # would not be present if # pages = 1
+      currPg = if pCurr.length isnt 0 then parseInt(pCurr.text())-1 else 0 # Note: 0-indexed
+
+      key = event.keyCode
+      switch key
+        when 37 # 37 = left-key 
+          next = if currPg > 0 then currPg - 1 else nQues - 1
+        when 39 # 39 = right-key
+          next = (currPg + 1) % nQues
+
+      c = options.eq(currPg)
+      n = options.eq(next)
+
+      ###
+      c.children().attr 'disabled', true
+      n.children().attr 'disabled', false
+      ###
+      c.removeClass 'selected'
+      n.addClass 'selected'
+      return true
 
   }
