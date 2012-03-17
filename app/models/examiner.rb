@@ -105,8 +105,8 @@ class Examiner < ActiveRecord::Base
             pick = remaining.slice(0, per_grader)
             remaining = remaining - pick
             pick.each do |id|
-              on_this_pg.where(:student_id => id).each do |response|
-                response.update_attribute :examiner_id, g.id
+              on_this_pg.each do |response|
+                response.update_attribute(:examiner_id, g.id) if response.student_id == id
               end #1
             end # pick
             g.update_attribute :last_workset_on, Time.now
