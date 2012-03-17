@@ -92,7 +92,7 @@ class Examiner < ActiveRecord::Base
         on_this_pg = scans & GradedResponse.in_quiz(quiz.id).on_page(page).order(:student_id)
         next if on_this_pg.count == 0 
 
-        students = on_this_page.map(&:student_id).uniq
+        students = on_this_pg.map(&:student_id).uniq
         n_students = students.count 
         n_reqd_examiners = (n_students / limit) + 1
         graders = (n_reqd_examiners > n_examiners) ? examiners : examiners.slice(0, n_reqd_examiners)
@@ -105,7 +105,7 @@ class Examiner < ActiveRecord::Base
             pick = remaining.slice(0, per_grader)
             remaining = remaining - pick
             pick.each do |id|
-              on_this_page.where(:student_id => id).each do |response|
+              on_this_pg.where(:student_id => id).each do |response|
                 response.update_attribute :examiner_id, g.id
               end #1
             end # pick
