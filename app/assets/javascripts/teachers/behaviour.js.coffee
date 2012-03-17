@@ -138,34 +138,11 @@ jQuery ->
   $(document).keydown (event) ->
     return if $('#wide-panel').hasClass 'hidden'
 
-    preview = $('#wide-panel').children().first()
-    return if preview.length is 0 or not preview.hasClass 'ppy-placeholder'
-
-    ques = $('#side-panel').find '#question-options:first'
-    return if ques.length is 0 or ques.hasClass 'ui-tabs-hide' # ie. if not showing
-
-    options = ques.find '.swiss-knife'
-    nQues = options.length
-    pOuter = $('#document-preview > .ppy-outer:first')
-    pCurr = pOuter.find('.ppy-current:first') # would not be present if # pages = 1
-    currPg = if pCurr.length isnt 0 then parseInt(pCurr.text())-1 else 0 # Note: 0-indexed
-
-    key = event.keyCode
-    switch key
-      when 37 # 37 = left-key 
-        next = if currPg > 0 then currPg - 1 else nQues - 1
-      when 39 # 39 = right-key
-        next = (currPg + 1) % nQues
-
-    c = options.eq(currPg)
-    n = options.eq(next)
-
-    ###
-    c.children().attr 'disabled', true
-    n.children().attr 'disabled', false
-    ###
-    c.removeClass 'selected'
-    n.addClass 'selected'
+    images = $('#wide-panel').children().first()
+    return if images.length is 0
+    
+    if images.hasClass 'ppy-placeholder'
+      preview.scrollSidePnlList event
 
     return true
 
