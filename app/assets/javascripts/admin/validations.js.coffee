@@ -44,3 +44,19 @@ jQuery ->
       }
     }
   }
+
+  $('#misc-traits > form').isHappy {
+    fields: {
+      '#misc_marks': {
+        required: 'sometimes',
+        test: happy.validate.notBlank,
+        message: 'required'
+      }
+
+      '#misc_page_length': {
+        required: 'sometimes',
+        test: happy.validate.notBlank,
+        message: 'required'
+      }
+    }
+  }

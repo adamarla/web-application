@@ -27,5 +27,9 @@ window.happy = {
       matchAgainst = $(y).val()
       
       if passedValue == matchAgainst then return true else return false
+
+    notBlank: () ->
+      l = arguments[0].length
+      if l == 0 then return false else return true
   }
 }
