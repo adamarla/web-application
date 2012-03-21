@@ -36,19 +36,29 @@ class QuestionController < ApplicationController
 
     page_length = options.delete :page_length
     case page_length
-      when "1" then mcq, half_page, full_page = true, false, false 
-      when "2" then mcq, half_page, full_page = false, true, false 
-      when "3" then mcq, half_page, full_page = false, false, true 
+      when "1"
+        page_length = "mcq"
+        mcq, half_page, full_page = true, false, false 
+      when "2"
+        page_length = "halfpage"
+        mcq, half_page, full_page = false, true, false 
+      when "3"
+        page_length = "fullpage"
+        mcq, half_page, full_page = false, false, true 
     end 
+    
+    # First, issue the Savon request to update the TeX, only then update the DB
+    manifest = question.set_length_and_marks page_length, options[:marks]
+    unless manifest.nil?
+      # Return of the prodigal
+      options.merge!({:mcq => mcq, :half_page => half_page, :full_page => full_page})
 
-    # Return of the prodigal
-    options.merge!({:mcq => mcq, :half_page => half_page, :full_page => full_page})
-
-    if question.update_attributes(options)
-      render :json => { :status => 'Done' }, :status => :ok
-    else
-      render :json => { :status => 'Oops !' }, :status => :bad_request
-    end
+      if question.update_attributes(options)
+        render :json => { :status => 'Done' }, :status => :ok
+      else
+        render :json => { :status => 'Oops !' }, :status => :bad_request
+      end
+    end # of unless 
   end
 
   def preview

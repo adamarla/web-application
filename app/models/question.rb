@@ -76,4 +76,17 @@ class Question < ActiveRecord::Base
     # then the save operation would be aborted (needlessly)
   end
 
+  def set_length_and_marks(length, marks)
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['tag_question']}" 
+    response = SavonClient.request :wsdl, :tag_question do  
+      soap.body = { 
+         :id => self.uid,
+         :marks => marks,
+         :length => length
+      }
+     end # of response 
+     # As long as the response does not have an error, we are good
+     return response[:tag_question_response][:manifest]
+  end
+
 end
