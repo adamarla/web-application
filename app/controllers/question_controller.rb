@@ -18,7 +18,8 @@ class QuestionController < ApplicationController
     unless author_id.nil?
       case type 
         when :tagged
-          @questions = Question.where(:examiner_id => author_id).where('topic_id IS NOT NULL')
+          #@questions = Question.where(:examiner_id => author_id).where('topic_id IS NOT NULL')
+          @questions = Question.where('topic_id IS NOT NULL')
         when :any
           @questions = Question.where(:examiner_id => author_id)
         else
