@@ -6,6 +6,7 @@ $purple:#3a4d4e ;
 $black:black ;
 $red:red ;
 $gray:#191919 ;
+$pink:#e3105a ;
 $light-gray: lighten($gray, 30%) ;
 
 // Vertical jQuery tabs via CSS 
@@ -94,31 +95,31 @@ $light-gray: lighten($gray, 30%) ;
   } // end of <div>
 
   #tab-ys-0:not([class~="ui-tabs-selected"]) {
-    background-color: lighten($orange, 20%)
+    background-color: lighten($pink, 30%)
   }
   
   #tab-ys-1:not([class~="ui-tabs-selected"]) {
-    background-color: lighten($orange, 10%);
+    background-color: lighten($pink, 20%);
   }
 
   #tab-ys-2:not([class~="ui-tabs-selected"]) {
-    background-color: lighten($orange, 10%);
+    background-color: lighten($pink, 10%);
   }
 
   #tab-ys-3:not([class~="ui-tabs-selected"]) {
-    background-color: saturate($orange, 10%);
+    background-color: lighten($orange, 10%);
   }
 
   #tab-ys-4:not([class~="ui-tabs-selected"]) {
-    background-color: saturate($orange, 20%);
+    background-color: saturate($orange, 0%);
   }
 
   #tab-ys-5:not([class~="ui-tabs-selected"]) {
-    background-color: lighten($black, 70%);
+    background-color: lighten($black, 40%);
   }
 
   #tab-ys-6:not([class~="ui-tabs-selected"]) {
-    background-color: lighten($black, 60%);
+    background-color: lighten($black, 20%);
   }
 
   #tab-ys-7:not([class~="ui-tabs-selected"]) {
