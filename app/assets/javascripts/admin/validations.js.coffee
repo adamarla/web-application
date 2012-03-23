@@ -15,6 +15,23 @@ jQuery ->
         required: true,
         message: 'required'
       }
+      '#school_tag': {
+        required: true,
+        message: 'required'
+      }
+      '#school_zip_code': {
+        required: true,
+        message: 'required'
+      }
+      '#school_board_id': {
+        required: true,
+        message: 'required'
+      }
+      '#school_email': {
+        required: true,
+        test: happy.validate.email,
+        message: 'invalid e-mail address'
+      }
     }
   }
 
@@ -60,3 +77,5 @@ jQuery ->
       }
     }
   }
+
+

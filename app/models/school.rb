@@ -21,7 +21,9 @@ class School < ActiveRecord::Base
   has_many :teachers
   has_many :sektions
 
-  validates :name, :street_address, :city, :state, :zip_code, :presence => true 
+  validates :name, :presence =>true
+  validates :tag, :presence => true
+  validates :zip_code, :presence => true
   validates :board_id, :presence => true
 
   scope :state_matches, lambda { |criterion| (criterion.nil? || criterion[:state].blank?) ? 
