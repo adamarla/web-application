@@ -44,7 +44,7 @@ class SchoolsController < ApplicationController
 
   def show 
     @school = School.find params[:id]
-    respond_with @school
+    head :bad_request if @school.nil?
   end 
 
   def update 
