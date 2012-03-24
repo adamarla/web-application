@@ -17,7 +17,8 @@ $light-gray: lighten($gray, 30%) ;
   position: relative ;
   padding-left: 6.5em ;
 
-  .ui-tabs-nav {
+  ul.ui-tabs-nav {
+    border: transparent ;
     position: absolute ;
     left: 0.25em ;
     top: 0.25em ;
@@ -27,29 +28,34 @@ $light-gray: lighten($gray, 30%) ;
 
     li {
       right: 1px ;
+      width: 50px ;
       border: {
         right: none ;
         bottom-width: 1px !important ;
-        radius: 0px;  
+        radius: 4px 1px 1px 4px ;  
       }
-      -moz-border-radius: 0px ; 
-      -webkit-border-radius: 0px ; 
+      -moz-border-radius: 4px 1px 1px 4px ; 
+      -webkit-border-radius: 4px 1px 1px 4px ; 
       overflow: hidden ;
       margin-bottom: 5px ;
 
-      a {
+      > a {
         color: white ;
+        padding: 0.5em 10px ;
       }
     }
 
     li.ui-tabs-selected {
-      background-color: #6ca7ab ; 
+      background: transparent;
+      color: #fd9105 ;
+      border: 1px solid #fd9105 ;
+      margin-bottom: 5px ;
     }
 
     a {
       float: right ;
       width: 20% ;
-      text-align: right ;
+      text-align: center ;
     }
 
   }
