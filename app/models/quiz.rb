@@ -177,7 +177,7 @@ class Quiz < ActiveRecord::Base
   def pending_pages(examiner_id)
     responses = GradedResponse.assigned_to(examiner_id).ungraded.with_scan.in_quiz(self.id)
     qsel_ids = responses.map(&:q_selection_id).uniq
-    @pages = QSelection.where(:id => qsel_ids).order(:page).map(&:page)
+    @pages = QSelection.where(:id => qsel_ids).order(:page).map(&:page).uniq
   end
 
   def pending_scans(examiner, page)
@@ -187,7 +187,7 @@ class Quiz < ActiveRecord::Base
     @ret = {:scans => []}
     scans.each do |s|
       indices = responses.where(:scan => s).map(&:id)
-      (@ret[:scans]).push({:scan => s, :indices => indices})
+      (@ret[:scans]).push({:scan => s, :indices => indices}) unless indices.empty?
     end
     return @ret
   end
