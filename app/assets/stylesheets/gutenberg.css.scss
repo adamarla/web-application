@@ -192,7 +192,7 @@ span.unhappyMessage {
   }
 }
 
-.ticker, .ys-ticker {
+.ticker, .ys-ticker, .grd-ticker {
   color: $orange ;
   font: {
     size: 24pt ;
@@ -200,7 +200,25 @@ span.unhappyMessage {
   }
 }
 
-.ys-slider.ui-slider-horizontal {
+
+.grd-control {
+  height: 45px ;
+}
+
+.grd-label {
+  font-size: 14px ;
+  max-width: 30% ;
+  margin-top: 13px ;
+  margin-right: 20px ;
+}
+
+.grd-slider {
+  margin-top: 20px ;
+  width: 50% ;
+
+}
+
+.grd-slider.ui-slider-horizontal, .ys-slider.ui-slider-horizontal {
   height: 0.5px ;
   border: {
     style: solid ;

@@ -14,3 +14,15 @@
     %ul#list-pending.purgeable.hidden
     .submit-buttons
       %input#undo-btn{ :type => :button, :value => "Undo Last" }
+    #grading-panel
+      = semantic_form_for :grade, :remote => true, :method => :put, :url => '#' do |f|
+        - [*1..4].each do |index|
+          .grd-control{ :id => "grd-control-#{index}" }
+            .grd-label.left= "Q#{index}."
+            .grd-slider.left{ :id => "grd-slider-#{index}" }
+            .grd-ticker.right{ :id => "grd-ticker-#{index}" }
+            = f.input "assigned_#{index}", :as => :number, :wrapper_html => { :class => :hidden},
+              :input_html => { :name => "grade[#{index}]" }
+        .submit-buttons
+          = submit_tag "Assign"
+

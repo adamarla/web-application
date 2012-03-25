@@ -336,3 +336,21 @@ jQuery ->
       formInput.val ui.value if formInput?
   }
 
+  $('.grd-slider').slider {
+    value: -1,
+    min: -1,
+    max: 7,
+    step: 1,
+    slide: (event, ui) ->
+      dom = $(ui.handle).parent()
+      #alert $(ui.handle).attr 'class'
+      ticker = dom.siblings '.grd-ticker:first'
+      formInput = dom.siblings('li:first').find 'input:first'
+
+      #alert formInput.attr 'id' if formInput.length
+
+      ticker.text "#{ui.value}" if ticker?
+      formInput.val ui.value if formInput?
+  }
+
+
