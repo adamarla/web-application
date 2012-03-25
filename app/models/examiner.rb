@@ -87,7 +87,7 @@ class Examiner < ActiveRecord::Base
       num_pages = quiz.num_pages
 
       [*1..num_pages].each do |page|
-        examiner_ids = Examiner.order(:last_workset_on).map(&:id) # allocation order
+        examiner_ids = Examiner.order{|a,b| a.last_workset_on <=> b.last_workset_on}.map(&:id) # allocation order
         responses_on_this_pg = scans & GradedResponse.in_quiz(qid).on_page(page)
         uniq_pg_scans = responses_on_this_pg.map(&:scan).uniq
         uniq_count = uniq_pg_scans.count
