@@ -181,7 +181,7 @@ class Quiz < ActiveRecord::Base
   end
 
   def pending_scans(examiner, page)
-    responses = GradedResponse.assigned_to(examiner).on_page(page).in_quiz(self.id).ungraded.with_scan
+    responses = GradedResponse.assigned_to(examiner).on_page(page).in_quiz(self.id).ungraded.with_scan.order(:id)
     scans = responses.map(&:scan).uniq
 
     @ret = {:scans => []}
