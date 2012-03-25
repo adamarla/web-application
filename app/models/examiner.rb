@@ -68,53 +68,52 @@ class Examiner < ActiveRecord::Base
 
   def self.distribute_work
 =begin
-    The prep work an examiner needs to do before starting to grade is, really, 
-    the same for each new work-set. So, don't make the examiner spend that time
-    over just a few scans
+  Distribution algorithm
+  -----------------------
+  For each quiz, find the available scans that are as yet unassigned. Note that there
+  is one scan per page AND there can be >1 graded responses per page ( and therefore, scan ) 
 
-    In other words, if there are 10 scans and 10 examiners, then it makes more sense
-    to assign 5 scans each to two examiners than to assign one scan each to the 
-    10 examiners 
-    examiners = Examiner.order(:last_workset_on)
-    n_examiners = examiners.count
-    start_pt = 0
+  Distribute the scans equally amongst the available examiners. As a result, all 
+  graded responses on the scan will get assigned to the examiner who gets the scan
+
 =end
     scans = GradedResponse.with_scan.unassigned
     quiz_ids = scans.map(&:q_selection).map(&:quiz_id).uniq
     limit = 20
+    num_examiners = Examiner.count
 
-    Quiz.where(:id => quiz_ids).each_with_index do |quiz, index|
-      last_page = quiz.num_pages 
-      examiners = Examiner.order(:last_workset_on)
-      n_examiners = examiners.count
+    quiz_ids.each do |qid|
+      quiz = Quiz.find qid 
+      num_pages = quiz.num_pages
 
-      [*1..last_page].each do |page|
-        on_this_pg = scans & GradedResponse.in_quiz(quiz.id).on_page(page).order(:student_id)
-        next if on_this_pg.count == 0 
+      [*1..num_pages].each do |page|
+        examiner_ids = Examiner.order(:last_workset_on).map(&:id) # allocation order
+        responses_on_this_pg = scans & GradedResponse.in_quiz(qid).on_page(page)
+        uniq_pg_scans = responses_on_this_pg.map(&:scan).uniq
+        uniq_count = uniq_pg_scans.count
 
-        students = on_this_pg.map(&:student_id).uniq
-        n_students = students.count 
-        n_reqd_examiners = (n_students / limit) + 1
-        graders = (n_reqd_examiners > n_examiners) ? examiners : examiners.slice(0, n_reqd_examiners)
-        per_grader = (n_students/graders.count)
+        # Estimate the number of examiners needed to process a reasonable chunk
+        # of work ( = 20 scans of one page of one quiz )
+        num_reqd_examiners = (uniq_count / limit) + 1
+        num_reqd_examiners = (num_reqd_examiners > num_examiners) ? num_examiners : num_reqd_examiners
+        per_examiner = uniq_count / num_reqd_examiners
+        start = 0 # start index
+        allocate_to = examiner_ids.slice 0, num_reqd_examiners
 
-        remaining = students
+        # Now, start allocating 
+        allocate_to.each do |allottee|
+          allot = uniq_pg_scans.slice start, per_examiner
+          start += per_examiner
+          pick = responses_on_this_pg.select {|a| allot.include? a.scan}
+          examiner = Examiner.find allottee
 
-        graders.each do |g|
-          while (remaining.empty? == false)
-            pick = remaining.slice(0, per_grader)
-            remaining = remaining - pick
-            pick.each do |id|
-              on_this_pg.each do |response|
-                response.update_attribute(:examiner_id, g.id) if response.student_id == id
-              end #1
-            end # pick
-            g.update_attribute :last_workset_on, Time.now
-          end # while
-        end # graders
-
-      end # of page 
-    end # of Quiz do...
+          pick.each do |r|
+            r.update_attribute :examiner_id, allottee
+          end 
+          examiner.update_attribute :last_workset_on, Time.now
+        end
+      end # num_pages
+    end # quiz_ids
 
   end
 
