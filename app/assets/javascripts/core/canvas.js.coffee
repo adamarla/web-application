@@ -25,12 +25,31 @@ window.canvas = {
     
     ctx = canvas.ctx
     image = new Image()
-    src = list.children('div[scan]').eq(n).attr 'scan'
+    scanDiv = list.children('div[scan]').eq(n)
+    src = scanDiv.attr 'scan'
     image.onload = () ->
       ctx.drawImage(image,15,0)
       ctx.strokeStyle="#fd9105"
       ctx.lineJoin="round"
     image.src = "#{gutenberg.server}/locker/#{src}"
+
+    ###
+      If the grading-panel is in the side panel, then: 
+        1. display the appropriate # of grd-sliders (max 4)
+        2. change the 'name' attribute of the (hidden) input[type="number"]
+           field that is tied to the slider
+    ###
+    if $('#side-panel').find('#grading-panel').length isnt 0
+      responses = scanDiv.children('div[response_id]')
+      nResponses = responses.length # should be <= 4
+      gradeControls = $('#grading-panel').find '.grd-control'
+
+      for g,index in gradeControls
+        if (index < nResponses) then $(g).removeClass('hidden') else $(g).addClass('hidden')
+        response_id = scanDiv.children('div[response_id]').eq(index).attr 'response_id'
+        $(g).find('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
+
+    return true
 
   record: (event) ->
     x = event.pageX - canvas.xoff
