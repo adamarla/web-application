@@ -304,5 +304,11 @@ jQuery ->
     $.get "quiz/pending_scans.json?id=#{quiz}&examiner_id=#{examiner}&page=#{page}"
     return true
 
+  $('#grading-panel > form').submit ->
+    ret = canvas.decompile()
+    clicks = $(this).find 'input[name="clicks"]:first'
+    clicks.val ret
+    return true
+
 
 
