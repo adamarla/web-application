@@ -61,7 +61,7 @@ class GradedResponse < ActiveRecord::Base
     where('scan IS NOT NULL')
   end
 
-  def assign_grade(grade, examiner = nil)
+  def assign_grade(grade)
     quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
     question = Question.where(:id => self.q_selection.question_id).first # to question? 
 
@@ -73,10 +73,7 @@ class GradedResponse < ActiveRecord::Base
     allotment = grade.nil? ? nil : grade.allotment
     marks = question.marks
     assigned = (marks * (allotment/100.0)).round(1)
-    return (self.update_attributes(:grade_id => grade.id, :marks => assigned, :examiner_id => examiner) ? :ok : :bad_request)
+    return (self.update_attributes(:grade_id => grade.id, :marks => assigned) ? :ok : :bad_request)
   end
 
-  # [:all] ~> [:admin, :cron]
-  # [:grade_id] ~> [:examiner, :teacher]
-  #attr_accessible
 end

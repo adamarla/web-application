@@ -44,6 +44,7 @@ Webapp::Application.routes.draw do
 
   # Grade
   resource :grade, :only => [:update]
+  match 'assignGrades' => 'grades#assign', :via => :put
 
   # School 
   resource :school, :only => [:show, :create, :update]

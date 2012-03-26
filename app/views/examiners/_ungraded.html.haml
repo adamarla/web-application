@@ -15,7 +15,7 @@
     .submit-buttons
       %input#undo-btn{ :type => :button, :value => "Undo Last" }
     #grading-panel
-      = semantic_form_for :grade, :remote => true, :method => :put, :url => 'course/questions' do |f|
+      = semantic_form_for :grade, :remote => true, :method => :put, :url => 'assignGrades' do |f|
         - [*1..4].each do |index|
           .grd-control{ :id => "grd-control-#{index}" }
             .grd-label.left= "Q#{index}."

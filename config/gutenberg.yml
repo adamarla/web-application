@@ -3,6 +3,7 @@ operations : &tasks
   build_quiz : http://gutenberg/blocs/buildQuiz
   assign_quiz : http://gutenberg/blocs/assignQuiz
   receive_scans : http://gutenberg/blocs/receiveScans
+  annotate_scan : http://gutenberg/blocs/annotateScan
 
 development : &non_production_settings
   axis2 : http://localhost:8080/axis2/services/documentMaster
