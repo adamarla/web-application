@@ -52,7 +52,7 @@ window.adminUtil = {
     for item in json
       e = $("<div scan=#{item.scan}/>")
       for index in item.indices
-        $("<div respose_id=#{index}/>").appendTo e
+        $("<div response_id=#{index}/>").appendTo e
       e.appendTo here
     nImages = here.children('div[scan]').length
     here.attr 'length', nImages
