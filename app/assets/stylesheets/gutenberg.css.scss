@@ -1,8 +1,11 @@
 
-$blue:#00007f ;
 $gray:#191919 ;
 $light-gray: lighten($gray, 30%) ;
-$orange:#fd9105 ;
+
+$pink:#e3105a ;
+$blue:#00007f ;
+$orange:#f48d07 ;
+$green:#168816 ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -257,3 +260,64 @@ span.unhappyMessage {
 .selected {
   color: $orange ;
 }
+
+.grade-btns-mcq.ui-buttonset, .grade-btns-non-mcq.ui-buttonset {
+  margin-bottom: 20px ;
+  > label {
+    color: white ;
+    border: {
+      radius: 4px ;
+    }
+    margin-right: 0px ;
+    > span {
+      padding: 0.4em 5px ;
+    }
+
+  }
+
+  > label.clicked {
+    background-color: transparent ;
+    color: white ; 
+    border: 1px solid #fd9105 ;
+  }
+
+  > label[color="non-mcq-1"]:not([class~="clicked"]) {
+    background-color: lighten($pink, 30%) ;
+  }
+  > label[color="non-mcq-2"]:not([class~="clicked"]) {
+    background-color: lighten($pink, 20%) ;
+  }
+  > label[color="non-mcq-3"]:not([class~="clicked"]) {
+    background-color: lighten($pink, 10%) ;
+  }
+  > label[color="non-mcq-4"]:not([class~="clicked"]) {
+    background-color: lighten($orange, 10%) ;
+  }
+  > label[color="non-mcq-5"]:not([class~="clicked"]) {
+    background-color: lighten($orange, 0%) ;
+  }
+  > label[color="non-mcq-6"]:not([class~="clicked"]) {
+    background-color: lighten($green, 13%) ;
+  }
+  > label[color="non-mcq-7"]:not([class~="clicked"]) {
+    background-color: saturate($green, 50%) ;
+  }
+
+  > label[color="mcq-1"]:not([class~="clicked"]) {
+    background-color: lighten($blue, 50%) ;
+  }
+  > label[color="mcq-2"]:not([class~="clicked"]) {
+    background-color: lighten($blue, 40%) ;
+  }
+  > label[color="mcq-3"]:not([class~="clicked"]) {
+    background-color: lighten($blue, 30%) ;
+  }
+  > label[color="mcq-4"]:not([class~="clicked"]) {
+    background-color: lighten($blue, 20%) ;
+  }
+  > label[color="mcq-5"]:not([class~="clicked"]) {
+    background-color: lighten($blue, 10%) ;
+  }
+
+}
+

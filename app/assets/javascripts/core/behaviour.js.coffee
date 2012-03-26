@@ -196,6 +196,19 @@ jQuery ->
         panel.attr 'marker', marker
     return true
 
+  $('#grade-controls').on 'click', 'input[type="radio"]', ->
+    for label in $(this).siblings('label')
+      $(label).removeClass 'clicked'
+
+    label = $(this).next('label')
+    label.addClass 'clicked' unless label.length is 0
+
+    # There is one %input[type=>number] to store the marker of 
+    # the clicked radio-button. Update it
+    number = $(this).siblings('input[type="number"]').first()
+    number.val $(this).attr('marker') unless number.length is 0
+    return true
+
   ###
     All fields in forms that have the class attribute "clear-after-submit"
     should be cleared on successful AJAX submission. Three things to remember/take
@@ -352,5 +365,8 @@ jQuery ->
       ticker.text "#{ui.value}" if ticker?
       formInput.val ui.value if formInput?
   }
+
+  $('#toolbox').find('.grade-btns-non-mcq:first').buttonset()
+  $('#toolbox').find('.grade-btns-mcq:first').buttonset()
 
 

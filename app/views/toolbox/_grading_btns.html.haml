@@ -1,0 +1,23 @@
+
+-# The 'id' and 'for' attributes set here are temporary and required
+-# only so that subsequent call to buttonset() behaves properly. buttonset()
+-# needs to match a distinct input with a distinct label
+
+-# However, as the buttons below are the same for each graded response,
+-# they cannot afford to have the same ID and 'for' attributes across 
+-# all responses. If they do, then the browser wouldn't know how to 
+-# distinguish between clicks to 2 inputs that have the same ID here 
+
+- mcq = Yardstick.order(:default_allotment).select{ |y| y.mcq }.map(&:id)
+.grade-btns-mcq
+  %input.hidden{ :type => :number, :name => 'tbd' }
+  - mcq.each_with_index do |m, index|
+    %input{ :type => :radio, :id => "mcq-#{index}", :marker => "#{index}"}
+    %label{ :for => "mcq-#{index}", :color => "mcq-#{index+1}" }= "M#{index+1}"
+
+- non_mcq = Yardstick.order(:default_allotment).select{ |y| !y.mcq }.map(&:id)
+.grade-btns-non-mcq
+  %input.hidden{ :type => :number, :name => 'tbd' }
+  - non_mcq.each_with_index do |m, index|
+    %input{ :type => :radio, :id =>"non-#{m}", :marker => "#{index}" }
+    %label{ :for => "non-#{m}", :color => "non-mcq-#{index+1}" }= "G#{index+1}"

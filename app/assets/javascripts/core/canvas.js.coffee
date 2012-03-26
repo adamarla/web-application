@@ -42,13 +42,27 @@ window.canvas = {
     if $('#side-panel').find('#grading-panel').length isnt 0
       responses = scanDiv.children('div[response_id]')
       nResponses = responses.length # should be <= 4
-      gradeControls = $('#grading-panel').find '.grd-control'
 
-      for g,index in gradeControls
-        if (index < nResponses) then $(g).removeClass('hidden') else $(g).addClass('hidden')
-        response_id = scanDiv.children('div[response_id]').eq(index).attr 'response_id'
-        $(g).find('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
+      gradeControls = $('#grade-controls')
+      nonMcq = $('#toolbox').find '.grade-btns-non-mcq:first'
+      mcq = $('#toolbox').find '.grade-btns-mcq:first'
 
+      gradeControls.empty() # purge any previous controls
+      for i in [0...nResponses]
+        c = nonMcq.clone()
+        c.appendTo gradeControls
+
+        response_id = responses.eq(i).attr 'response_id'
+        c.children('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
+
+        # Set 'id' on input[type="radio"] and 'for' on the adjoining <label>
+        # See comment in 'toolbox/grading_btns'
+
+        for radio,index in c.children 'input[type="radio"]'
+          label = $(radio).next 'label'
+          v = "grd-#{response_id}-#{index}"
+          $(radio).attr 'id', "#{v}"
+          label.attr 'for', "#{v}"
     return true
 
   record: (event) ->
