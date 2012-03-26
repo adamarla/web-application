@@ -131,4 +131,18 @@ window.canvas = {
 
 
   scrollSidePnlList: (event) ->
+
+  decompile: () ->
+    ###
+      Returns the list of points clicked on the canvas in the form: 
+        |a,b|c,d|e,f|g,h     ----> '|' is a separator
+      It is understood that (a,b) and (c,d) are corners of one rectangle
+      - as are (e,f) and (g,h). in the rails code, one always picks 
+      pairs of points 
+    ###
+    ret = ""
+    for pt in canvas.clicks
+      ret += "|#{pt[0]},#{pt[1]}" # pt[0] = x, pt[1] = y
+    return ret
+
 }
