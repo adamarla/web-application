@@ -21,11 +21,11 @@ window.canvas = {
 
   # n: 0-indexed
   loadNth: (n, list = '#pending-scans') ->
-    list = $(list).find('ul:first')
+    list = $(list).find('.purgeable:first')
     
     ctx = canvas.ctx
     image = new Image()
-    src = list.children('li').eq(n).text()
+    src = list.children('div[scan]').eq(n).attr 'scan'
     image.onload = () ->
       ctx.drawImage(image,15,0)
       ctx.strokeStyle="#fd9105"

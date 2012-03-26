@@ -50,9 +50,11 @@ window.adminUtil = {
     here = $('#list-pending')
     here.empty() # purge any old lists
     for item in json
-      e = $("<li>#{item.scan}</li>")
+      e = $("<div scan=#{item.scan}/>")
+      for index in item.indices
+        $("<div respose_id=#{index}/>").appendTo e
       e.appendTo here
-    nImages = here.children('li').length
+    nImages = here.children('div[scan]').length
     here.attr 'length', nImages
     here.attr 'current', 0
     return true
