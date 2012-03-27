@@ -49,10 +49,12 @@ window.canvas = {
 
       gradeControls.empty() # purge any previous controls
       for i in [0...nResponses]
-        c = nonMcq.clone()
-        c.appendTo gradeControls
+        rDiv = responses.eq(i)
+        isMcq = if rDiv.attr('mcq') is "true" then true else false
+        response_id = rDiv.attr 'response_id'
 
-        response_id = responses.eq(i).attr 'response_id'
+        c = if isMcq then mcq.clone() else nonMcq.clone()
+        c.appendTo gradeControls
         c.children('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
 
         # Set 'id' on input[type="radio"] and 'for' on the adjoining <label>

@@ -186,8 +186,10 @@ class Quiz < ActiveRecord::Base
 
     @ret = {:scans => []}
     scans.each do |s|
-      indices = responses.where(:scan => s).map(&:id)
-      (@ret[:scans]).push({:scan => s, :indices => indices}) unless indices.empty?
+      pick = responses.where(:scan => s)
+      indices = pick.map(&:id)
+      type = pick.map{ |a| a.q_selection.question.mcq }
+      (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type}) unless indices.empty?
     end
     return @ret
   end
