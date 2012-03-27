@@ -14,7 +14,7 @@ window.canvas = {
     offset = canvas.object.offset()
     canvas.xoff = offset.left
     canvas.yoff = offset.top
-    canvas.clear()
+    canvas.clicks = new Array()
 
     return true
     
@@ -23,6 +23,9 @@ window.canvas = {
   loadNth: (n, list = '#pending-scans') ->
     list = $(list).find('.purgeable:first')
     
+    # Clear 'clicks' array for the new canvas image 
+    canvas.clear() if canvas.clicks?
+
     ctx = canvas.ctx
     image = new Image()
     scanDiv = list.children('div[scan]').eq(n)
@@ -87,7 +90,8 @@ window.canvas = {
     return true
     
   clear: () ->
-    canvas.clicks = new Array()
+    # The better way to clear a JS array is to set its length to 0
+    canvas.clicks.length = 0 if canvas.clicks?
     canvas.last = 0
 
   undo: () ->
