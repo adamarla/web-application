@@ -59,6 +59,10 @@ jQuery ->
       root = json.preview.id
       scans = json.preview.indices
 
+      # Relevant only when rendering yardstick examples 
+      isMcq = false
+      counter = 1
+
       for scan,j in scans
         switch source
           when 'atm'
@@ -70,9 +74,14 @@ jQuery ->
             full = "#{base}/#{scan}/#{scan}-answer.jpeg"
             alt = "#{j}"
           when 'frontdesk-yardsticks'
+            type = json.preview.mcq[j]
+            if type isnt isMcq
+              counter = 1
+              isMcq = type
+
             thumb = "#{base}/#{scan}/thumbnail.jpeg"
             full = "#{base}/#{scan}/preview.jpeg"
-            alt = "#{j.toString(16).toUpperCase()}"
+            alt = if isMcq then "M#{counter++}" else "G#{counter++}"
           when 'locker'
             thumb = "#{base}/#{scan}"
             full = "#{base}/#{scan}"

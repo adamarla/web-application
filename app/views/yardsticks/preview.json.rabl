@@ -12,6 +12,10 @@ object false => :preview
     @yardsticks.map { |x| x.id }
   end 
 
+  code :mcq do
+    @yardsticks.map { |x| x.mcq ? true : false }
+  end
+
   code :id do
     :preview
   end

@@ -6,7 +6,7 @@
   .vertical-tabs 
     %ul
       - yardsticks.each_with_index do |y,j|
-        - label = y.mcq ? "M#{j}" : "G#{j+1}"
+        - label = y.mcq ? "M#{j-6}" : "G#{j+1}"
         - j_as_hex = j.to_s(16).upcase
         %li{ :id => "tab-ys-#{j_as_hex}" }
           %a{ :href => "#ys-#{j}", :marker => "#{y.id}" }= "#{label}"
