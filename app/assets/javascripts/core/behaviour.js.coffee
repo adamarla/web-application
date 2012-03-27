@@ -270,7 +270,8 @@ jQuery ->
         e.stopPropagation()
         button = $(form).find 'input[type="submit"]:first'
         if button?
-          button.val('Oops !')
+          json = $.parseJSON xhr.responseText
+          if json.status? then button.val(json.status) else button.val("Oops!")
     return true
 
   ###
