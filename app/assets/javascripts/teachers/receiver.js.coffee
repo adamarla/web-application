@@ -68,6 +68,7 @@ jQuery ->
     else if url.match(/testpaper\/students/)
       here = $('#student')
       coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
+      reportCard.overview json.students, here, 'student'
     else if url.match(/student\/responses/)
       preview.loadJson json, 'locker'
     else
