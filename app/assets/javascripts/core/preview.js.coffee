@@ -57,29 +57,29 @@ jQuery ->
 
       target = $('#document-preview').find 'ul:first'
       root = json.preview.id
-      indices = json.preview.indices
+      scans = json.preview.indices
 
-      for index,j in indices
+      for scan,j in scans
         switch source
           when 'atm'
-            thumb = "#{base}/#{root}/answer-key/preview/page-#{index}-thumbnail.jpeg"
-            full = "#{base}/#{root}/answer-key/preview/page-#{index}-preview.jpeg"
-            alt = "##{index + 1}"
+            thumb = "#{base}/#{root}/answer-key/preview/page-#{scan}-thumbnail.jpeg"
+            full = "#{base}/#{root}/answer-key/preview/page-#{scan}-preview.jpeg"
+            alt = "##{j + 1}"
           when 'vault'
-            thumb = "#{base}/#{index}/#{index}-thumb.jpeg"
-            full = "#{base}/#{index}/#{index}-answer.jpeg"
-            alt = "#{index}"
+            thumb = "#{base}/#{scan}/#{scan}-thumb.jpeg"
+            full = "#{base}/#{scan}/#{scan}-answer.jpeg"
+            alt = "#{j}"
           when 'frontdesk-yardsticks'
-            thumb = "#{base}/#{index}/thumbnail.jpeg"
-            full = "#{base}/#{index}/preview.jpeg"
+            thumb = "#{base}/#{scan}/thumbnail.jpeg"
+            full = "#{base}/#{scan}/preview.jpeg"
             alt = "#{j.toString(16).toUpperCase()}"
           when 'locker'
-            thumb = "#{base}/#{j}"
-            full = "#{base}/#{j}"
-            alt = "page ##{index}"
+            thumb = "#{base}/#{scan}"
+            full = "#{base}/#{scan}"
+            alt = "pg-#{j+1}"
           else break
 
-        img = $("<li marker=#{index}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
+        img = $("<li marker=#{scan}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
         img.appendTo target
 
       # Now, call the preview
