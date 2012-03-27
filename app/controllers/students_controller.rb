@@ -25,7 +25,7 @@ class StudentsController < ApplicationController
     head :bad_request if (student.nil? || testpaper.nil?)
 
     all = student.responses testpaper
-    @with_scans = all.where('scan IS NOT NULL')
+    @scans = all.with_scan
   end
 
 end
