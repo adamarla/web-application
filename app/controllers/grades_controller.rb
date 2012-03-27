@@ -13,24 +13,26 @@ class GradesController < ApplicationController
   end
 
   def assign
-    yardsticks = Yardstick.order(:default_allotment).select{ |a| !a.mcq }.map(&:id)
-    given = params[:grade].map{ |k,v| { k.to_i => v.blank? || v.to_i < 0 ? nil : v.to_i } }
-
-    given.each do |h|
-      id = h.keys.first 
-      grade = h[id]
-      y = grade.nil? ? nil : yardsticks[grade]
-      next if y.nil? 
-
-      response = GradedResponse.find id 
-      response.assign_grade y # will assign grade and calculate marks as per teacher's marking scheme
-    end
+    # 1. Check that there is some scan associated with passed responses. If not, 
+    # then there is no point proceeding 
 
     response_ids = params[:grade].keys.map(&:to_i).select{ |e| e > 0 }
     scan = GradedResponse.where(:id => response_ids).map(&:scan).uniq.first
+    render(:json => { :status => "No Scan!" }, :status => :bad_request) if scan.nil?
 
-    head :bad_request if scan.nil? 
+    # 2. Scan present => continue with grade capture
+    given = params[:grade].map{ |k,v| { k.to_i => v.blank? || v.to_i < 0 ? nil : v.to_i } }
 
+    given.each do |g|
+      id = g.keys.first # graded_response_id 
+      grade = g[id].nil? ? nil : g[id]
+      next if grade.nil? 
+
+      response = GradedResponse.find id 
+      response.assign_grade grade # will assign grade and calculate marks as per teacher's marking scheme
+    end
+    
+    # 3. Send coordinates of any clicks on the scan so that it can be annotated 
     clicks = params[:clicks]
     clicks = clicks.split '|'
     coordinates = [] 
@@ -52,7 +54,7 @@ class GradesController < ApplicationController
     if error.nil?
       render( :json => { :status => "Done"}, :status => :ok )
     else
-      render( :json => { :status => "Oops!"}, :status => :bad_request )
+      render( :json => { :status => "Annotation Failed!"}, :status => :bad_request )
     end 
 
   end 
