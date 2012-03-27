@@ -80,14 +80,16 @@ class Examiner < ActiveRecord::Base
     scans = GradedResponse.with_scan.unassigned
     quiz_ids = scans.map(&:q_selection).map(&:quiz_id).uniq
     limit = 20
-    num_examiners = Examiner.count
+
+    examiners = Examiner.where(:is_admin => true) # Temporary change until a better basis can be found
+    num_examiners = examiners.count
 
     quiz_ids.each do |qid|
       quiz = Quiz.find qid 
       num_pages = quiz.num_pages
 
       [*1..num_pages].each do |page|
-        examiner_ids = Examiner.order{|a,b| a.last_workset_on <=> b.last_workset_on}.map(&:id) # allocation order
+        examiner_ids = examiners.order{|a,b| a.last_workset_on <=> b.last_workset_on}.map(&:id) # allocation order
         responses_on_this_pg = scans & GradedResponse.in_quiz(qid).on_page(page)
         uniq_pg_scans = responses_on_this_pg.map(&:scan).uniq
         uniq_count = uniq_pg_scans.count
