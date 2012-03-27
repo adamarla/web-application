@@ -11,6 +11,7 @@
 #  klass         :integer
 #  subject_id    :integer
 #  atm_key       :integer
+#  total         :integer
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -45,6 +46,15 @@ class Quiz < ActiveRecord::Base
   before_validation :set_name, :if => :new_record?
   after_create :lay_it_out
   after_destroy :shred_pdfs
+
+  def total? 
+    return self.total unless self.total.nil? 
+    question_ids = QSelection.where(:quiz_id => self.id).map(&:question_id)
+    marks = Question.where(:id => question_ids).map(&:marks)
+    total = marks.inject(:+)
+    self.update_attribute :total, total
+    return total
+  end
 
   def assign_to (students) 
     # students : an array of selected students from the DB

@@ -11,6 +11,7 @@
 #  klass         :integer
 #  subject_id    :integer
 #  atm_key       :integer
+#  total         :integer
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
