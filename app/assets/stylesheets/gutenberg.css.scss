@@ -204,11 +204,25 @@ span.unhappyMessage {
 }
 
 .micro-ticker {
-  color: $orange ;
+  color: #fd9105 ; 
   font: {
     size: 10pt ;
-    weight: normal ;
+    weight: normal ; 
     variant: small-caps;
+  }
+}
+
+.micro-ticker.box {
+  width: 30px ;
+  color: white ;
+  font-weight: bold ;
+  border: {
+    radius: 4px ;
+  }
+  text-align: center ;
+  padding: {
+    top: 2px ;
+    bottom: 2px ;
   }
 }
 
@@ -330,3 +344,37 @@ span.unhappyMessage {
 
 }
 
+  div.micro-ticker[color="non-mcq-1"]{
+    background-color: lighten($pink, 30%) ;
+  }
+  div.micro-ticker[color="non-mcq-2"]{
+    background-color: lighten($pink, 20%) ;
+  }
+  div.micro-ticker[color="non-mcq-3"]{
+    background-color: lighten($pink, 10%) ;
+  }
+  div.micro-ticker[color="non-mcq-4"]{
+    background-color: lighten($orange, 10%) ;
+  }
+  div.micro-ticker[color="non-mcq-5"]{
+    background-color: lighten($orange, 0%) ;
+  }
+  div.micro-ticker[color="non-mcq-6"]{
+    background-color: lighten($green, 13%) ;
+  }
+  div.micro-ticker[color="non-mcq-7"]{
+    background-color: saturate($green, 50%) ;
+  }
+
+  div.micro-ticker[color="mcq-1"]{
+    background-color: lighten($blue, 50%) ;
+  }
+  div.micro-ticker[color="mcq-2"]{
+    background-color: lighten($blue, 40%) ;
+  }
+  div.micro-ticker[color="mcq-3"]{
+    background-color: lighten($blue, 30%) ;
+  }
+  div.micro-ticker[color="mcq-4"]{
+    background-color: lighten($blue, 20%) ;
+  }

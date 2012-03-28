@@ -18,7 +18,8 @@ window.reportCard = {
       e = d[key]
       id = e.id
       graded = e.graded
-      marks = if graded then e.marks else null
+      marks = e.marks
+      color = e.color
 
       # Find the swiss-knife whose marker is = id
       sk = here.children(".swiss-knife[marker=#{id}]").eq(0)
@@ -28,6 +29,10 @@ window.reportCard = {
       if graded is false
         ticker.text 'pending'
       else if marks?
-        ticker.text "#{marks}%"
+        ticker.text "#{marks}"
+        ticker.addClass 'box'
+
+      if color?
+        ticker.attr 'color', color
     return true
 }

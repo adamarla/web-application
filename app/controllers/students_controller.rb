@@ -25,7 +25,14 @@ class StudentsController < ApplicationController
     head :bad_request if (student.nil? || testpaper.nil?)
 
     all = student.responses testpaper
+    by_index = all.to_a.sort{ |x,y| x.q_selection.index <=> y.q_selection.index }
+    @info = by_index.map{ |x| {:question => { :id => x.q_selection.index, 
+          :name => "Question #{x.q_selection.index + 1}", 
+          :marks => x.marks, 
+          :color => x.colour? }} }
     @scans = all.with_scan
+
+    respond_with @info, @scans
   end
 
 end
