@@ -7,7 +7,7 @@
 #  testpaper_id :integer
 #  created_at   :datetime
 #  updated_at   :datetime
-#  marks        :integer
+#  marks        :float
 #  graded       :boolean         default(FALSE)
 #
 
