@@ -41,4 +41,26 @@ class CoursePack < ActiveRecord::Base
     return marks
   end
 
+  def marks_thus_far?
+    # Returns marks earned till now. This number will change as more 
+    # and more of the student's testpaper is graded 
+    return self.marks? if self.graded?
+
+    quiz_id = self.testpaper.quiz.id
+    graded = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).graded
+    thus_far = graded.map(&:marks).inject(:+)
+    return thus_far.nil? ? 0 : thus_far
+  end
+
+  def graded_thus_far?
+    # Returns the total (of quiz) graded till now. This number will change as more 
+    # and more of the student's testpaper is graded 
+    return self.testpaper.quiz.total? if self.graded?
+
+    quiz_id = self.testpaper.quiz.id
+    graded = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).graded
+    thus_far = graded.map(&:q_selection).map(&:question).map(&:marks).inject(:+)
+    return thus_far.nil? ? 0 : thus_far
+  end
+
 end
