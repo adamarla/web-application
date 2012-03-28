@@ -45,6 +45,11 @@ window.flipchart = {
     last = root.tabs 'length'
     return if next is last
 
+  closestActiveTabTo: (obj) ->
+    flipchart = obj.closest '.flipchart'
+    return null if flipchart.length is 0
+    return flipchart.find('ul > li.ui-tabs-selected').eq(0)
+
     next = root.children('.ui-tabs-panel').eq(next)
     for type in ['radio', 'checkbox']
       for obj in next.find "input[type=#{type}]"
@@ -57,14 +62,24 @@ jQuery ->
   
   $('.flipchart').on 'click', 'input[type="radio"], .accordion-heading', (event) ->
     chart = $(this).closest '.flipchart'
+    marker = $(this).attr 'marker'
+
     ###
-      The first tab is special because it marks the beginning of the 'diving-in'
-      process. Whatever is selected in the first tab is, therefore, important 
-      and usually the only thing we want to track
+      Previously, we assumed that a radio button in the first tab was special 
+      and only its marker needed to be tracked. This is no longer true. We should
+      track the marker for any radio button in any tab. 
+      Where should we track it then? On the containing tab! Where else?
     ###
+
+    if $(this).is 'input[type="radio"]'
+      tab = flipchart.closestActiveTabTo $(this)
+      tab.attr 'marker', marker
+    else
+      event.stopPropagation()
+
     current = chart.tabs 'option', 'selected'
-    chart.attr 'marker', $(this).attr 'marker' if current is 0
+    chart.attr 'marker', marker if current is 0
     flipchart.next chart unless $(this).hasClass 'accordion-heading' # let the accordion expand
     flipchart.resetNext chart
-    event.stopPropagation() unless $(this).is 'input[type="radio"]'
+
     return true
