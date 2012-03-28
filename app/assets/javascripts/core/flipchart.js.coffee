@@ -45,16 +45,17 @@ window.flipchart = {
     last = root.tabs 'length'
     return if next is last
 
-  closestActiveTabTo: (obj) ->
+  containingTab: (obj) ->
     flipchart = obj.closest '.flipchart'
     return null if flipchart.length is 0
-    return flipchart.find('ul > li.ui-tabs-selected').eq(0)
 
-    next = root.children('.ui-tabs-panel').eq(next)
-    for type in ['radio', 'checkbox']
-      for obj in next.find "input[type=#{type}]"
-        $(obj).prop 'checked', false
-    return true
+    panel = obj.closest '.ui-tabs-panel'
+    return null if panel.length is 0
+
+    id = panel.attr 'id'
+    tab = flipchart.find("ul > li > a[href='##{id}']").eq(0).closest('li')
+    return tab
+
     
 }
 
@@ -72,7 +73,7 @@ jQuery ->
     ###
 
     if $(this).is 'input[type="radio"]'
-      tab = flipchart.closestActiveTabTo $(this)
+      tab = flipchart.containingTab $(this)
       tab.attr 'marker', marker
     else
       event.stopPropagation()
