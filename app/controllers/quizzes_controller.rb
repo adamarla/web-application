@@ -24,11 +24,12 @@ class QuizzesController < ApplicationController
   end
 
   def pending_pages
-    quiz = Quiz.find params[:id]
-    examiner = Examiner.find params[:examiner_id]
-    head :bad_request if (quiz.nil? || examiner.nil?)
+    @quiz = Quiz.find params[:id]
+    @examiner = Examiner.find params[:examiner_id]
+    head :bad_request if (@quiz.nil? || @examiner.nil?)
 
-    @pages = quiz.pending_pages examiner
+    @pages = @quiz.pending_pages @examiner
+    respond_with @pages, @examiner, @quiz
   end
 
   def pending_scans
