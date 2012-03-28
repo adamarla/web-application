@@ -299,8 +299,9 @@ jQuery ->
   ###
   $('#pending-pages').on 'click', 'input[type="radio"]', ->
     examiner = $('#control-panel').attr 'marker'
-    quiz = $('#side-panel').attr 'marker'
     page = $(this).attr 'marker'
+    tab = flipchart.containingTab $(this)
+    quiz = tab.prev('li').attr 'marker'
     $.get "quiz/pending_scans.json?id=#{quiz}&examiner_id=#{examiner}&page=#{page}"
     return true
 
