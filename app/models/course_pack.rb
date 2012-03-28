@@ -49,7 +49,7 @@ class CoursePack < ActiveRecord::Base
     quiz_id = self.testpaper.quiz.id
     graded = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).graded
     thus_far = graded.map(&:marks).inject(:+)
-    return thus_far.nil? ? 0 : thus_far
+    return thus_far.nil? ? 0 : thus_far.round(1)
   end
 
   def graded_thus_far?
@@ -60,7 +60,7 @@ class CoursePack < ActiveRecord::Base
     quiz_id = self.testpaper.quiz.id
     graded = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).graded
     thus_far = graded.map(&:q_selection).map(&:question).map(&:marks).inject(:+)
-    return thus_far.nil? ? 0 : thus_far
+    return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 
 end
