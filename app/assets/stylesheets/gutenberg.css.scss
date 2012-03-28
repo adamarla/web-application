@@ -215,7 +215,10 @@ span.unhappyMessage {
 .micro-ticker.box {
   width: 30px ;
   color: white ;
-  font-weight: bold ;
+  font: {
+    size: 14px ;
+    weight: bold ;
+  }
   border: {
     radius: 4px ;
   }
