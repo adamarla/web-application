@@ -104,7 +104,9 @@ jQuery ->
       when 'testpaper'
         $.get "testpaper/students.json?id=#{marker}"
       when 'student'
-        testpaper = $('#side-panel').attr 'marker'
+        tab = flipchart.containingTab $(this)
+        previous = tab.prev 'li'
+        testpaper = previous.attr 'marker'
         $.get "student/responses.json?id=#{marker}&testpaper=#{testpaper}"
 
     return true
