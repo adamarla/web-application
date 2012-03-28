@@ -15,6 +15,13 @@ class CoursePack < ActiveRecord::Base
   belongs_to :student
   belongs_to :testpaper 
 
+  def complete?
+    # Complete if scans are available for every graded response
+    quiz_id = Testpaper.where(:id => self.testpaper_id).first.quiz.id
+    missing = GradedResponse.of_student(student_id).in_quiz(quiz_id).without_scan.count
+    return (missing > 0 ? false : true)
+  end
+
   def graded? 
     return true if self.graded
     quiz_id = self.testpaper.quiz.id

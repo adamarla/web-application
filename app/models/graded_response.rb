@@ -61,6 +61,10 @@ class GradedResponse < ActiveRecord::Base
     where('scan IS NOT NULL')
   end
 
+  def self.without_scan
+    where('scan IS NULL')
+  end
+
   def assign_grade(grade)
     quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
     question = Question.where(:id => self.q_selection.question_id).first # to question? 
