@@ -53,6 +53,10 @@ class GradedResponse < ActiveRecord::Base
     where(:examiner_id => nil)
   end
   
+  def self.graded
+    where('grade_id IS NOT NULL')
+  end 
+
   def self.ungraded
     where(:grade_id => nil)
   end
@@ -78,6 +82,14 @@ class GradedResponse < ActiveRecord::Base
     marks = question.marks
     assigned = (marks * (allotment/100.0)).round(1)
     return (self.update_attributes(:grade_id => grade.id, :marks => assigned) ? :ok : :bad_request)
+  end
+
+  def colour? 
+    return nil if self.grade_id.nil?
+    y = self.grade.yardstick 
+    all = Yardstick.order(:default_allotment)
+    family = y.mcq ? all.select{ |x| x.mcq }.map(&:id) : all.select{ |x| !x.mcq }.map(&:id)
+    return (y.mcq ? "mcq-#{family.index(y.id) + 1}" : "non-mcq-#{family.index(y.id) + 1}")
   end
 
 end
