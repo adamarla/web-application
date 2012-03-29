@@ -350,7 +350,7 @@ jQuery ->
     return anchor
 
   $('.ys-slider').slider {
-    value: 50,
+    value: 0,
     min:0,
     max:100,
     slide: (event, ui) ->
