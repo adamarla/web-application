@@ -9,7 +9,11 @@ class YardsticksController < ApplicationController
     yardstick = Yardstick.where(:id => params[:id]).first
     head :bad_request if yardstick.nil?
     ok = yardstick.update_attributes params[:yardstick]
-    head (ok ? :ok : :bad_request)
+    if ok
+      render :json => { :status => "Updated" }, :status => :ok
+    else
+      render :json => { :status => "Oops!" }, :status => :bad_request
+    end
   end 
 
   def create
