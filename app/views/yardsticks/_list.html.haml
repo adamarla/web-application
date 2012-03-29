@@ -1,6 +1,7 @@
 
 - yardsticks = Yardstick.order('mcq DESC').order(:default_allotment)
 - role = current_account.role
+- loggable_id = current_account.loggable_id
 
 #yardsticks-summary.left
   .vertical-tabs 
@@ -8,11 +9,12 @@
       - yardsticks.each_with_index do |y,j|
         - label = y.mcq ? "M#{j-6}" : "G#{j+1}"
         - j_as_hex = j.to_s(16).upcase
+        - allotment = (role == :admin) ? y.default_allotment : Grade.where(:teacher_id => loggable_id, :yardstick_id => y.id).first.allotment
         %li{ :id => "tab-ys-#{j_as_hex}" }
-          %a{ :href => "#ys-#{j}", :marker => "#{y.id}" }= "#{label}"
+          %a{ :href => "#ys-#{j}", :marker => "#{y.id}", :allotment => allotment }= "#{label}"
 
     - yardsticks.each_with_index do |y,j|
-      %div{ :id => "ys-#{j}" }
+      %div.panel{ :id => "ys-#{j}" }
 
         -# Only for Admin, a link to edit yardstick description 
         - if role == :admin
@@ -29,9 +31,9 @@
               .submit-buttons
                 = submit_tag 'update'
           - elsif role == :teacher
-            .ys-ticker.right= "#{Grade.where(:yardstick_id => y.id, :teacher_id => current_account.loggable_id).first.allotment}%"
+            .ys-ticker.right= "#{Grade.where(:yardstick_id => y.id, :teacher_id => loggable_id).first.allotment}%"
             = semantic_form_for :grade, :remote => true, 
-                                :url => "/grade.json?id=#{y.id}&teacher_id=#{current_account.loggable_id}", 
+                                :url => "/grade.json?id=#{y.id}&teacher_id=#{loggable_id}", 
                                 :method => :put do |f|
               = f.input :allotment, :wrapper_html => { :class => 'hidden' }, :as => :number
               .submit-buttons
