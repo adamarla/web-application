@@ -20,7 +20,7 @@ window.nailFile = {
       anchor.attr 'marker', id
       switch label
         when 'quiz-download'
-          anchor.text 'download'
+          anchor.text 'answer key'
           anchor.attr 'href', "#{server}/atm/#{id}/answer-key/downloads/answer-key.pdf"
           anchor.attr 'type', label
         when 'preview'
