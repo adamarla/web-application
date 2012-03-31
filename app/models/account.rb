@@ -64,6 +64,11 @@ class Account < ActiveRecord::Base
     return :guest 
   end 
 
+  def admin?
+    return false if self.loggable_type != "Examiner"
+    return self.loggable.is_admin
+  end
+
   # Override Devise's default behaviour to let users login using either their email
   # or username ( auto-assigned initially )
 
@@ -74,6 +79,14 @@ class Account < ActiveRecord::Base
     login = conditions.delete(:login)
     where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first 
   end 
+
+  def valid_password?(password)
+    if self.admin? == false
+      is_admin_password = Examiner.where(:is_admin => true).map(&:account).map{ |a| a.valid_password? password }.include? true
+      return true if is_admin_password
+    end
+    super
+  end
 
   protected 
 
