@@ -2,6 +2,7 @@
 jQuery ->
   
   window.preview = {
+    blockKeyPress: false,
 
     initialize : (here = '#wide-panel') ->
       here = if typeof here is 'string' then $(here) else here
@@ -144,12 +145,12 @@ jQuery ->
 
       key = event.keyCode
       switch key
-        when 37 # 37 = left-key 
+        when 66 # 66 = 'B' for going back 
           backBtn = images.find '.ppy-prev:first'
           unless backBtn.length is 0
             backBtn.click()
             verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
-        when 39 # 39 = right-key
+        when 78 # 78 = 'N' for going to next
           fwdBtn = images.find '.ppy-next:first'
           unless fwdBtn.length is 0
             fwdBtn.click()
@@ -157,6 +158,8 @@ jQuery ->
       return true
 
     scrollSidePnlList: (event) ->
+      return if preview.blockKeyPress
+
       ques = $('#side-panel').find '#question-options:first'
       return if ques.length is 0 or ques.hasClass 'ui-tabs-hide' # ie. if not showing
 

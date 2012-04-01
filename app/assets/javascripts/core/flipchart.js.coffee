@@ -12,6 +12,8 @@
 ###
 
 window.flipchart = {
+  blockKeyPress: false,
+
   initialize : (root) ->
     root = if typeof root is 'string' then $(root) else root
     return false if not root.hasClass 'flipchart'
@@ -55,11 +57,6 @@ window.flipchart = {
             tabs.eq(j).removeClass 'hidden'
           else
             tabs.eq(j).addClass 'hidden'
-
-
-
-        
-        
     })
     return true
 

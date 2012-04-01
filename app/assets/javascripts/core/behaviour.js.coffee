@@ -26,11 +26,10 @@ jQuery ->
     return if images.length is 0
 
     if images.hasClass 'ppy-placeholder'
-      preview.scrollImg images, event
+      preview.scrollImg(images, event) unless preview.blockKeyPress
     else if images.attr('id') is 'grading-canvas'
-      canvas.scrollImg images, event
+      canvas.scrollImg(images, event) unless canvas.blockKeyPress
     return true
-
 
 
   ###
@@ -63,7 +62,15 @@ jQuery ->
   for poppable in $('.new-entity, .update-entity')
     $(poppable).dialog {
       modal : true,
-      autoOpen : false
+      autoOpen : false,
+      open: (event, ui) ->
+        preview.blockKeyPress = true
+        canvas.blockKeyPress = true
+        return true
+      close: (event, ui) ->
+        preview.blockKeyPress = false
+        canvas.blockKeyPress = false
+        return true
     }
 
   ###

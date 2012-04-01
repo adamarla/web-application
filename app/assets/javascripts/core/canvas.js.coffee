@@ -1,6 +1,6 @@
 
 window.canvas = {
-
+  blockKeyPress: false,
   object: null,
   ctx: null,
   clicks: null,
@@ -140,9 +140,9 @@ window.canvas = {
 
     key = event.keyCode
     switch key
-      when 37 # 37 = left-key 
+      when 66 # 'B' for going back to previous image 
         next = if current > 0 then current - 1 else nScans - 1
-      when 39 # 39 = right-key
+      when 78 # 78 = 'N' for going to next image
         next = (current + 1) % nScans
 
     canvas.loadNth next
