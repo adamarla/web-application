@@ -89,5 +89,25 @@ window.swissKnife = {
       continue if $(button).hasClass 'hidden'
       $(button).val caption
     return true
+
+  setJsonAsAttribute: (json, within, key, which, setOn = { button: true} ) ->
+    here = if typeof within is 'string' then $(within) else within
+
+    buttons = here.find 'input[type="button"]'
+    radios = here.find 'input[type="radio"]'
+    checks = here.find 'input[type="checkbox"]'
+    selects = here.find 'select'
+
+    for d, index in json
+      e = d[key]
+      value = e[which]
+
+      if setOn.button then buttons.eq(index).attr "#{which}", value
+      if setOn.radio then radios.eq(index).attr "#{which}", value
+      if setOn.checkbox then checkboxes.eq(index).attr "#{which}", value
+      if setOn.select then selects.eq(index).attr "#{which}", value
+
+    return true
+
 }
 
