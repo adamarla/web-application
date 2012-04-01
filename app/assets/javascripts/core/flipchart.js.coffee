@@ -16,6 +16,11 @@ window.flipchart = {
     root = if typeof root is 'string' then $(root) else root
     return false if not root.hasClass 'flipchart'
 
+    nav = root.children('ul').eq(0)
+    nTabs = nav.children('li').length
+    if (nTabs > 3)
+      nav.children('li').eq(j).addClass('hidden') for j in [3...nTabs]
+
     root.tabs({
       selected : 0,
       show : (event, ui) ->
@@ -23,6 +28,38 @@ window.flipchart = {
         next = ui.index + 1
         return if next is last
         $(this).tabs 'option', 'disabled', [next...last]
+
+      select: (event, ui) ->
+        current = ui.index
+        last = $(this).tabs('length') - 1
+
+        if current is 0
+          show = [0..2]
+          disable = [1..2]
+        else if current is last
+          show = [current-2..current]
+          disable = []
+        else
+          show = [current-1..current+1]
+          disable = [current + 1..last]
+
+        #alert "#{current} --> #{show}"
+
+        $(this).tabs 'option', 'disabled', disable
+        tabs = $(this).children('ul').eq(0).children('li')
+
+        for j in [0..last]
+          at = show.indexOf j
+          #alert "#{j} --> #{at}"
+          if at isnt -1
+            tabs.eq(j).removeClass 'hidden'
+          else
+            tabs.eq(j).addClass 'hidden'
+
+
+
+        
+        
     })
     return true
 
