@@ -24,32 +24,20 @@ class CoursePack < ActiveRecord::Base
 
   def graded? 
     return true if self.graded
+
     quiz_id = self.testpaper.quiz.id
-    graded = GradedResponse.in_quiz(quiz_id).of_student(student_id).map{ |x| !x.grade_id.nil? }.inject(:&)
-    self.update_attribute(:graded, graded) if graded
-    return graded
+    fully_graded = GradedResponse.ungraded.in_quiz(quiz_id).of_student(self.student_id).count > 0 ? false : true
+    self.update_attribute(:graded, fully_graded) if fully_graded 
+    return fully_graded
   end 
 
-  def marks? 
-    return nil unless self.graded?
-    return self.marks unless self.marks.nil? 
-
-    # Ok, total the marks because they haven't been till now 
-    quiz_id = self.testpaper.quiz.id
-    marks = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).map(&:marks).inject(:+)
-    self.update_attribute :marks, marks
-    return marks
-  end
-
-  def marks_thus_far?
-    # Returns marks earned till now. This number will change as more 
-    # and more of the student's testpaper is graded 
-    return self.marks? if self.graded?
+  def marks?
+    return self.marks unless self.marks.nil?
 
     quiz_id = self.testpaper.quiz.id
-    graded = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).graded
-    thus_far = graded.map(&:marks).inject(:+)
-    return thus_far.nil? ? 0 : thus_far.round(1)
+    marks = GradedResponse.graded.in_quiz(quiz_id).of_student(self.student_id).map(&:marks).inject(:+)
+    self.update_attribute(:marks, marks) if self.graded?
+    return marks.nil? ? 0 : marks
   end
 
   def graded_thus_far?
