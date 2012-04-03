@@ -13,11 +13,11 @@ class Testpaper < ActiveRecord::Base
   belongs_to :quiz
 
   has_many :graded_responses, :dependent => :destroy 
-  has_many :course_packs, :dependent => :destroy
-  has_many :students, :through => :course_packs
+  has_many :answer_sheets, :dependent => :destroy
+  has_many :students, :through => :answer_sheets
 
   def compile_tex
-    student_ids = CoursePack.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
+    student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
     students = Student.where(:id => student_ids)
 
     names = []

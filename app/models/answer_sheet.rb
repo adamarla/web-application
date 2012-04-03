@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: course_packs
+# Table name: answer_sheets
 #
 #  id           :integer         not null, primary key
 #  student_id   :integer
@@ -11,7 +11,7 @@
 #  graded       :boolean         default(FALSE)
 #
 
-class CoursePack < ActiveRecord::Base
+class AnswerSheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :testpaper 
 
