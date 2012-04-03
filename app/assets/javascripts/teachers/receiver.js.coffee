@@ -65,7 +65,7 @@ jQuery ->
     else if url.match(/teacher\/testpapers/)
       here = $('#testpaper')
       coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true}
-    else if url.match(/testpaper\/students/)
+    else if url.match(/testpaper\/summary/)
       here = $('#student')
       coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
       reportCard.overview json.students, here, 'student'

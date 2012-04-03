@@ -102,7 +102,7 @@ jQuery ->
       when 'sektion-list'
         $.get "sektions/students.json?id=#{marker}"
       when 'testpaper'
-        $.get "testpaper/students.json?id=#{marker}"
+        $.get "testpaper/summary.json?id=#{marker}"
       when 'student'
         tab = flipchart.containingTab $(this)
         previous = tab.prev 'li'

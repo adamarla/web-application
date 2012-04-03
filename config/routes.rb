@@ -101,7 +101,7 @@ Webapp::Application.routes.draw do
   match 'teacher/testpapers' => 'teachers#testpapers', :via => :get
 
   # Testpaper
-  match 'testpaper/students' => 'testpapers#students', :via => :get
+  match 'testpaper/summary' => 'testpapers#summary', :via => :get
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]
