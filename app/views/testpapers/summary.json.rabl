@@ -2,6 +2,7 @@
 object @testpaper => false 
   node(:mean) { |testpaper| testpaper.mean? }
 
+  index = 0
   child :students do |s|
     attributes :name, :id
     code do |m|
@@ -9,6 +10,7 @@ object @testpaper => false
       marks = a.marks? 
       thus_far = a.graded_thus_far?
       p = (thus_far > 0) ? ((marks/thus_far)*100).round(2) : 0
-      { :marks => marks, :graded => a.graded?, :graded_thus_far => thus_far, :percentage => p }
+      index += 1
+      { :marks => marks, :graded => a.graded?, :graded_thus_far => thus_far, :x => p, :y => index }
     end
   end
