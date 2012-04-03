@@ -2,17 +2,12 @@
 collection @students => :students 
   attributes :name, :id
 
-  code :graded do |s|
+  node do |s|
     c = CoursePack.where(:student_id => s.id, :testpaper_id => @testpaper.id).first
-    c.graded?
+    marks = c.marks?
+    thus_far = c.graded_thus_far? 
+    p = (thus_far > 0) ? ((marks/thus_far)*100).round(2) : 0
+
+    { :graded => c.graded?, :marks => marks, :graded_thus_far => thus_far, :percentage => p } 
   end
 
-  code :marks do |s|
-    c = CoursePack.where(:student_id => s.id, :testpaper_id => @testpaper.id).first
-    c.marks?
-  end
-
-  code :graded_thus_far do |s|
-    c = CoursePack.where(:student_id => s.id, :testpaper_id => @testpaper.id).first
-    c.graded_thus_far?
-  end
