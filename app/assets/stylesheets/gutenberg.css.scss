@@ -35,6 +35,14 @@ body {
   margin-left: 20px ;
 }
 
+.data-point-label {
+  font: {
+    size: 11px ;
+    weight: normal ;
+  }
+  position: absolute ;
+}
+
 .instructions {
   text-align: justify ;
   font: {

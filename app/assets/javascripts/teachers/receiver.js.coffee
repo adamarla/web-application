@@ -71,7 +71,7 @@ jQuery ->
       reportCard.overview json.students, here, 'student'
 
       pts = graphs.getPlotPts json.students, 'student', json.mean, (p) -> p.graded_thus_far > 0
-      $.plot $("#flot-chart"), [
+      p = $.plot $("#flot-chart"), [
         {
           data: pts,
           lines: {show: true},
@@ -85,6 +85,19 @@ jQuery ->
           aboveData: false
         }
       }
+
+      # Ref: http://stackoverflow.com/questions/1174298/flot-data-labels
+
+      for j,index in p.getData()[0].data by 3
+        continue if not j?
+        id = index / 3
+
+        o = p.pointOffset { x:j[0], y:j[1] }
+        $("<div class='data-point-label'>#{json.students[id].student.name}</div>").css({
+          top: o.top - 20,
+          left: o.left + 5
+        }).appendTo(p.getPlaceholder()).fadeIn('slow')
+
     else if url.match(/student\/responses/)
       coreUtil.interface.displayJson json.preview.questions, "#preview", 'question', {}
       reportCard.overview json.preview.questions, "#preview", 'question'
