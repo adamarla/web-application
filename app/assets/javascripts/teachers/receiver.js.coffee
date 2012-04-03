@@ -69,6 +69,22 @@ jQuery ->
       here = $('#student')
       coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
       reportCard.overview json.students, here, 'student'
+
+      pts = graphs.getPlotPts json.students, 'student', json.mean, (p) -> p.graded_thus_far > 0
+      $.plot $("#flot-chart"), [
+        {
+          data: pts, lines: {show: true},
+          points: {show:true, radius: 6}
+        }
+      ],
+      {
+        xaxis: { tickLength: 0 },
+        yaxis: {tickLength: 0 },
+        grid: {
+          borderWidth: 0,
+          aboveData: false
+        }
+      }
     else if url.match(/student\/responses/)
       coreUtil.interface.displayJson json.preview.questions, "#preview", 'question', {}
       reportCard.overview json.preview.questions, "#preview", 'question'

@@ -10,12 +10,18 @@
 
 
 window.graphs = {
-  getPlotPts: (json, key, consider = null) ->
+  getPlotPts: (json, key, xCorrection = null, consider = null) ->
     ret = []
 
     for d in json
       p = d[key]
       continue if consider? && consider(p) is false
-      ret.push [p.x, p.y]
+      if xCorrection?
+        xbar = p.x - xCorrection
+        ret.push([xbar, p.y], [0, p.y], null)
+      else
+        xbar = p.x
+        ret.push([xbar, p.y])
+       
     return ret
 }
