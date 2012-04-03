@@ -78,7 +78,6 @@ jQuery ->
         }
       ],
       {
-        xaxis: { tickLength: 0 },
         yaxis: {tickLength: 0 },
         grid: {
           borderWidth: 0,
