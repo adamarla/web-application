@@ -73,8 +73,9 @@ jQuery ->
       pts = graphs.getPlotPts json.students, 'student', json.mean, (p) -> p.graded_thus_far > 0
       $.plot $("#flot-chart"), [
         {
-          data: pts, lines: {show: true},
-          points: {show:true, radius: 6}
+          data: pts,
+          lines: {show: true},
+          points: {show:true, radius: 4}
         }
       ],
       {
