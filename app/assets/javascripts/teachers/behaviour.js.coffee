@@ -102,9 +102,14 @@ jQuery ->
       when 'sektion-list'
         $.get "sektions/students.json?id=#{marker}"
       when 'testpaper'
+        wide = $('#wide-panel')
+        first = wide.children().eq(0).attr 'id'
+        wide.empty() if first isnt 'flot-chart'
+        $('#flot-chart').empty().detach().appendTo wide
         $.get "testpaper/summary.json?id=#{marker}"
       when 'student'
         tab = flipchart.containingTab $(this)
+        $('#flot-chart').detach().appendTo('#toolbox')
         previous = tab.prev 'li'
         testpaper = previous.attr 'marker'
         $.get "student/responses.json?id=#{marker}&testpaper=#{testpaper}"
