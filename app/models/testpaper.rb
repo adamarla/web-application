@@ -37,4 +37,22 @@ class Testpaper < ActiveRecord::Base
     return response.to_hash[:assign_quiz_response]
   end #of method
 
+  def mean?
+    # Returns the average % for the class/group that took this testpaper
+    # Only graded responses and only those students that have
+    # some or all of their answer-sheet graded are considered. Hence, know 
+    # that this number will change with time before settling to a final value
+
+    individual_scores = []
+    AnswerSheet.where(:testpaper_id => self.id).each do |a|
+      thus_far = a.graded_thus_far?
+      next if thus_far == 0
+      marks = a.marks? 
+      score = ((marks/thus_far)*100).round(2)
+      individual_scores.push score
+    end
+    total = individual_scores.inject(:+)
+    return (total / individual_scores.count).round(2)
+  end
+
 end # of class
