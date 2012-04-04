@@ -13,20 +13,26 @@ window.graph = {
   x: null,
   y:null,
   labels: null, # x,y and labels are arrays. And (x[i],y[i],label[i]) ALWAYS go together
+  initialized: false,
 
   initialize: () ->
-    graph.x = new Array()
-    graph.y = new Array()
-    graph.labels = new Array()
+    if graph.initialized
+      graph.clear()
+    else
+      graph.x = new Array()
+      graph.y = new Array()
+      graph.labels = new Array()
+      graph.initialized = true
     return true
 
   loadJson: (json, key, label = null, pick = null, using = null) ->
+    nElements = json.length
     for d in json
       e = d[key]
       if pick? && using?
         continue if pick(e, using) is false
       graph.x.push e.x
-      graph.y.push e.y
+      graph.y.push(nElements - e.y)
       graph.labels.push e[label] if label?
     return true
 
