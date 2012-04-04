@@ -3,7 +3,7 @@ object @testpaper => false
   node(:mean) { |testpaper| testpaper.mean? }
 
   index = 0
-  child :students do |s|
+  child :takers do |s|
     attributes :name, :id
     code do |m|
       a = AnswerSheet.where(:student_id => m.id, :testpaper_id => @testpaper.id).first

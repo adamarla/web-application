@@ -55,4 +55,8 @@ class Testpaper < ActiveRecord::Base
     return (total / individual_scores.count).round(2)
   end
 
+  def takers
+    self.students.order(:first_name)
+  end
+
 end # of class
