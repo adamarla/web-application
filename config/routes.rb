@@ -77,7 +77,7 @@ Webapp::Application.routes.draw do
   match 'quiz/pending_scans' => 'quizzes#pending_scans', :via => :get
 
   # Student 
-  resource :student, :only => [:create, :update]
+  resource :student, :only => [:create, :update, :show]
   match 'student/responses' => 'students#responses', :via => :get
 
   # Study Group 

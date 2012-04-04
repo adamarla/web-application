@@ -1,0 +1,31 @@
+
+- content_for :toolbox do 
+  #toolbox.hidden 
+    = render :partial => 'toolbox/document_preview'
+    = render :partial => 'toolbox/edit_account'
+    = render :partial => 'toolbox/inline_error'
+    = render :partial => 'toolbox/swiss_knife'
+    #flot-chart
+
+!!!5
+
+%html{html_attrs}
+  %head 
+    = javascript_include_tag "application"
+    = stylesheet_link_tag "application" 
+    = csrf_meta_tag
+
+  %body 
+    - default_marker = "#{current_account.nil? ? :tbd : current_account.loggable_id}"
+    #visible-active-area
+      #control-panel.panel.horizontal{ :marker => default_marker } 
+        #main-links 
+          = render :partial => 'students/control-panel'
+        -# Links required in the currently loaded context
+        #minor-links
+      #side-panel.panel.left.slim
+      #middle-panel.panel.slim.left
+      #right-panel.panel.slim.left
+      #wide-panel.panel.wide.left
+
+    = yield :toolbox

@@ -2,6 +2,10 @@ class StudentsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json
 
+  def show
+    render :nothing => true, :layout => 'students'
+  end
+
   def create 
     school = School.find params[:id] 
     head :bad_request if school.nil?

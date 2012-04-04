@@ -8,6 +8,8 @@ class WelcomeController < ApplicationController
           redirect_to '/admin'
         when :teacher 
           redirect_to teacher_path
+        when :student 
+          redirect_to student_path
       end 
     end 
   end
