@@ -42,7 +42,7 @@ class Student < ActiveRecord::Base
   
   def name (who_wants_to_know = :guest) 
     case who_wants_to_know 
-      when :teacher, :admin, :school
+      when :admin, :school
         return "#{self.first_name} #{self.last_name} (#{self.username?})"
       else 
         return "#{self.first_name} #{self.last_name}"
