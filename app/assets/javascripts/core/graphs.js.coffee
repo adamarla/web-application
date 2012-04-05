@@ -68,7 +68,7 @@ window.graph = {
     p = $.plot $('#flot-chart'), [
       {
         data: pts,
-        lines: {show: true},
+        lines: {show: !singlePt},
         points: {show: true, radius: 4}
       }
     ],
