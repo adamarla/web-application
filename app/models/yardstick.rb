@@ -10,6 +10,7 @@
 #  mcq               :boolean         default(FALSE)
 #  annotation        :string(255)
 #  meaning           :string(255)
+#  colour            :integer
 #
 
 #     __:belongs_to___     __:belongs_to___  

@@ -10,6 +10,7 @@
 #  mcq               :boolean         default(FALSE)
 #  annotation        :string(255)
 #  meaning           :string(255)
+#  colour            :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

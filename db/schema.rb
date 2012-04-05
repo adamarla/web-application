@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120403110555) do
+ActiveRecord::Schema.define(:version => 20120405064349) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -247,6 +247,7 @@ ActiveRecord::Schema.define(:version => 20120403110555) do
     t.boolean  "mcq",               :default => false
     t.string   "annotation"
     t.string   "meaning"
+    t.integer  "colour"
   end
 
 end
