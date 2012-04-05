@@ -73,6 +73,10 @@ class GradedResponse < ActiveRecord::Base
     select{ |m| m.grade && m.grade.yardstick.colour == colour }
   end
 
+  def self.on_topic(topic_id)
+    select{ |m| m.q_selection.question.topic.id == topic_id }
+  end
+
   def assign_grade(grade)
     quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
     question = Question.where(:id => self.q_selection.question_id).first # to question? 
