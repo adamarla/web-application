@@ -88,7 +88,9 @@ class Student < ActiveRecord::Base
     return 0 if g.count == 0
     weighted = g.map{ |m| m.q_selection.question.marks * m.grade.yardstick.colour }.inject(:+).to_f
     total = g.map{ |m| m.q_selection.question.marks }.inject(:+)
-    average = (weighted/total).round(0) 
+    average = (weighted/total)
+    ceiling = average.ceil
+    average = (ceiling - average) > 0.15 ? average.floor : ceiling
     return average
   end
 
