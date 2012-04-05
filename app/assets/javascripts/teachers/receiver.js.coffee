@@ -32,7 +32,11 @@ jQuery ->
       list.appendTo here
       list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
     else if url.match(/teachers\/roster/)
-      here = $('#sektion-list')
+      child = $('#side-panel').children().eq(0).attr 'id'
+      if child is 'deep-dive'
+        here = $('#deep-dive-section')
+      else
+        here = $('#sektion-list')
       coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}
     else if url.match(/sektions\/students/)
       here = $('#student-list')
@@ -74,12 +78,17 @@ jQuery ->
       graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'graded_thus_far'
       graph.draw [json.mean], false
 
-      #pts = graphs.getPlotPts json.students, 'student', json.mean, (p) -> p.graded_thus_far > 0
-
     else if url.match(/student\/responses/)
       coreUtil.interface.displayJson json.preview.questions, "#preview", 'question', {}
       reportCard.overview json.preview.questions, "#preview", 'question'
       preview.loadJson json, 'locker'
+    else if url.match(/teacher\/topics_this_section/)
+      here = $('#deep-dive-topic')
+      coreUtil.interface.displayJson json.topics, here, 'topic'
+    else if url.match(/sektion\/mastery_level/)
+      graph.initialize()
+      graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'x'
+      graph.draw()
     else
       matched = false
 

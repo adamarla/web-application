@@ -113,6 +113,18 @@ jQuery ->
         previous = tab.prev 'li'
         testpaper = previous.attr 'marker'
         $.get "student/responses.json?id=#{marker}&testpaper=#{testpaper}"
+      when 'deep-dive-section'
+        tab = flipchart.containingTab $(this)
+        marker = tab.attr 'marker'
+        teacher = $('#control-panel').attr 'marker'
+        $.get "teacher/topics_this_section.json?id=#{teacher}&section_id=#{marker}"
+      when 'deep-dive-topic'
+        tab = flipchart.containingTab $(this)
+        marker = tab.attr 'marker'
+        previous = tab.prev 'li'
+        section = previous.attr 'marker'
+        $.get "sektion/mastery_level.json?id=#{section}&topic=#{marker}"
+        
 
     return true
 
@@ -151,5 +163,10 @@ jQuery ->
     if images.hasClass 'ppy-placeholder'
       preview.scrollSidePnlList event
 
+    return true
+
+  $('#deep-dive-link').click ->
+    teacher = $('#control-panel').attr 'marker'
+    $.get "teachers/roster.json?id=#{teacher}"
     return true
 

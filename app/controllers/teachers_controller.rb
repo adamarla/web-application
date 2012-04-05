@@ -49,6 +49,16 @@ class TeachersController < ApplicationController
     @verticals.nil? ? head(:bad_request) : respond_with(@verticals)
   end
 
+  def topics_this_section
+    teacher = Teacher.find params[:id]
+    section = Sektion.find params[:section_id]
+    head :bad_request if (teacher.nil? || section.nil?)
+    subject = teacher.subjects.first 
+    board = teacher.school.board_id
+    course = Course.where(:board_id => board, :klass => section.klass, :subject_id => subject.id).first
+    @topics = course.topics
+  end
+
   def courses
     teacher = Teacher.find params[:id]
     head :bad_request if teacher.nil? 

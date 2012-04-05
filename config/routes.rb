@@ -80,11 +80,12 @@ Webapp::Application.routes.draw do
   resource :student, :only => [:create, :update, :show]
   match 'student/responses' => 'students#responses', :via => :get
 
-  # Study Group 
+  # Sektion 
   resource :sektion, :only => [:create, :update]
   match 'sektions/list' => 'sektions#list', :via => :get
   match 'sektions/update_student_list' => 'sektions#update_student_list', :via => :put
   match 'sektions/students' => 'sektions#students', :via => :get
+  match 'sektion/mastery_level' => 'sektions#mastery_level', :via => :get
 
   # Syllabus
   resource :syllabus, :only => [:show, :update]
@@ -99,6 +100,7 @@ Webapp::Application.routes.draw do
   match 'teacher/courses' => 'teachers#courses', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => :put
   match 'teacher/testpapers' => 'teachers#testpapers', :via => :get
+  match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get
