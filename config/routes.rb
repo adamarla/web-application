@@ -85,7 +85,7 @@ Webapp::Application.routes.draw do
   match 'sektions/list' => 'sektions#list', :via => :get
   match 'sektions/update_student_list' => 'sektions#update_student_list', :via => :put
   match 'sektions/students' => 'sektions#students', :via => :get
-  match 'sektion/mastery_level' => 'sektions#mastery_level', :via => :get
+  match 'sektion/proficiency' => 'sektions#proficiency', :via => :get
 
   # Syllabus
   resource :syllabus, :only => [:show, :update]

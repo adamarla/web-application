@@ -78,7 +78,7 @@ class Student < ActiveRecord::Base
     GradedResponse.of_student(self.id).in_quiz(quiz.id).on_page([*1..num_pages])
   end
 
-  def mastery_level?(topic_id)
+  def proficiency?(topic_id)
     # Return values:
     #    0: no data or not enough data
     #    1: pink => conceptual problems

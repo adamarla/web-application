@@ -60,7 +60,7 @@ class SektionsController < ApplicationController
     @who_wants_to_know = current_account.nil? ? :guest : current_account.role
   end 
 
-  def mastery_level
+  def proficiency
     sektion = Sektion.find params[:id]
     @topic = Topic.find params[:topic]
     head :bad_request if (sektion.nil? || @topic.nil?)

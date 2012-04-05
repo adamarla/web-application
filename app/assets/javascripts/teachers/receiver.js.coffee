@@ -85,7 +85,7 @@ jQuery ->
     else if url.match(/teacher\/topics_this_section/)
       here = $('#deep-dive-topic')
       coreUtil.interface.displayJson json.topics, here, 'topic'
-    else if url.match(/sektion\/mastery_level/)
+    else if url.match(/sektion\/proficiency/)
       graph.initialize()
       graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'x'
       graph.draw()

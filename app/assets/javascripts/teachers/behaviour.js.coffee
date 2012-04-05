@@ -123,7 +123,7 @@ jQuery ->
         marker = tab.attr 'marker'
         previous = tab.prev 'li'
         section = previous.attr 'marker'
-        $.get "sektion/mastery_level.json?id=#{section}&topic=#{marker}"
+        $.get "sektion/proficiency.json?id=#{section}&topic=#{marker}"
         
 
     return true
