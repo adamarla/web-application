@@ -69,6 +69,10 @@ class GradedResponse < ActiveRecord::Base
     where('scan IS NULL')
   end
 
+  def self.of_colour(colour) # colour => { pink: 1, orange:2, green: 3 }
+    select{ |m| m.grade && m.grade.yardstick.colour == colour }
+  end
+
   def assign_grade(grade)
     quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
     question = Question.where(:id => self.q_selection.question_id).first # to question? 
