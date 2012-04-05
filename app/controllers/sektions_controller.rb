@@ -62,8 +62,8 @@ class SektionsController < ApplicationController
 
   def mastery_level
     sektion = Sektion.find params[:id]
-    @topic = params[:topic]
-    head :bad_request if (sektion.nil? || @topic.blank?)
+    @topic = Topic.find params[:topic]
+    head :bad_request if (sektion.nil? || @topic.nil?)
     @students = sektion.students
     respond_with @students, @topic
   end
