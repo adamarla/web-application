@@ -78,6 +78,20 @@ class Student < ActiveRecord::Base
     GradedResponse.of_student(self.id).in_quiz(quiz.id).on_page([*1..num_pages])
   end
 
+  def mastery_level?(topic_id)
+    # Return values:
+    #    0: no data or not enough data
+    #    1: pink => conceptual problems
+    #    2: orange => basic understanding but needs more work 
+    #    3: green => doing fine/well
+    g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
+    return 0 if g.count == 0
+    weighted = g.map{ |m| m.q_selection.question.marks * m.grade.yardstick.colour }
+    total = g.map{ |m| m.q_selection.question.marks }
+    average = weighted.inject(:+)/total.inject(:+)
+    return average
+  end
+
   private 
     def destroyable? 
       return false 
