@@ -12,3 +12,21 @@
   #testpaper
   #student
   #preview
+
+#report-card-controls.top-panel-controls
+  %ul.no-bullets
+    = minor_link :for => 'deep-dive', :as => 'deep dive',
+                 :with => {:panels => {:side => '#deep-dive', :wide => '#flot-chart' }}
+
+#deep-dive.flipchart
+  %ul
+    %li
+      %a{ :href => '#deep-dive-topic' }= "topic"
+    %li
+      %a{ :href => '#deep-dive-section' }= "section"
+    %li
+      %a{ :href => '#deep-dive-student' }= "student"
+
+  #deep-dive-topic
+  #deep-dive-section
+  #deep-dive-student
