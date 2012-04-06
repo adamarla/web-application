@@ -88,7 +88,8 @@ jQuery ->
     else if url.match(/sektion\/proficiency/)
       graph.initialize()
       graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'x'
-      graph.draw()
+      options = $.extend {}, graph.options, { xaxis: { position: "top", min:1, max:3 } }
+      graph.draw [], true, options
     else
       matched = false
 

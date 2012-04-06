@@ -15,6 +15,7 @@ window.graph = {
   labels: null, # x,y and labels are arrays. And (x[i],y[i],label[i]) ALWAYS go together
   initialized: false,
 
+
   initialize: () ->
     if graph.initialized
       graph.clear()
@@ -63,7 +64,7 @@ window.graph = {
       if record[field] is 0 then return false else return true
   }
 
-  draw: (correction = [], singlePt = true) ->
+  draw: (correction = [], singlePt = true, options = $.extend({}, graph.options)) ->
     pts = graph.collate correction, singlePt
     p = $.plot $('#flot-chart'), [
       {
@@ -71,14 +72,8 @@ window.graph = {
         lines: {show: !singlePt},
         points: {show: true, radius: 4}
       }
-    ],
-    {
-      yaxis: { tickLength: 0 },
-      grid: {
-        borderWidth: 0,
-        aboveData: false
-      }
-    }
+    ], options
+
     # Now set the names of students as labels on the extremity point
     # Ref: http://stackoverflow.com/questions/1174298/flot-data-labels
 
@@ -99,4 +94,18 @@ window.graph = {
         left: rendered.left + 5
       }).appendTo(placeholder).fadeIn('slow')
     return true
+
+  ###
+    Methods pertaining to modifying/copying/getting the options object
+  ###
+
+  options: {
+    yaxis: { ticks: [] },
+    xaxis: { position: "top" },
+    grid: {
+      borderWidth: 0,
+      aboveData: false
+    }
+  }  # base options shared by all plots. Call modifyOption to edit
+
 }
