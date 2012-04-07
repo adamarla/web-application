@@ -125,6 +125,7 @@ fieldset.inputs li.boolean.input {
 } 
 
 .main-link[selected], .minor-link[selected] {
+  padding-bottom: 4px ;
   border-bottom : 2px solid #6ca7ab ;
 }
 
