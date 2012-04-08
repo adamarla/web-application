@@ -73,7 +73,7 @@ jQuery ->
           when 'vault'
             thumb = "#{base}/#{scan}/#{scan}-thumb.jpeg"
             full = "#{base}/#{scan}/#{scan}-answer.jpeg"
-            alt = "#{j}"
+            alt = "#{scans[j]}"
           when 'frontdesk-yardsticks'
             type = json.preview.mcq[j]
             if type isnt isMcq
