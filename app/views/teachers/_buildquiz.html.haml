@@ -24,4 +24,14 @@
     = form_tag 'teacher/build_quiz', :remote => true, :method => :put do |f| 
       .submit-buttons
         = submit_tag 'build quiz'
+      #queue-graphic.hidden
+        #queue-last-at
+          .inline-label.left= "Queue Posn."
+          .led.right
+        #est-start-time
+          .inline-label.left= "Starts in (est)"
+          .led.right
+        #est-processing-time
+          .inline-label.left= "Processing Time (est)"
+          .led.right
       .form-fields

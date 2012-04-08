@@ -227,6 +227,13 @@ span.unhappyMessage {
   }
 }
 
+.led {
+  color: #fd9105 ;
+  font: {
+    size: 12pt ;
+  }
+}
+
 .micro-ticker.complete {
   color: #6ca7ab ;
 }
@@ -400,3 +407,23 @@ span.unhappyMessage {
   div.micro-ticker[color="mcq-4"]{
     background-color: lighten($blue, 20%) ;
   }
+
+#queue-graphic {
+  height: 100px ;
+  width: 100% ; 
+  margin-bottom: 20px ;
+
+  > div {
+    min-height: 30px ;
+    margin-top: 5px ;
+    border-bottom: 1px solid #6ca7ab ;
+  }
+
+  .inline-label {
+    max-width: 70% ;
+    font-size: 14px ;
+    color: #6ca2ab ;
+    text-transform: lowercase ;
+    font-variant: normal ; 
+  }
+}

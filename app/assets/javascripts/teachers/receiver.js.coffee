@@ -60,12 +60,17 @@ jQuery ->
       at = json.at
       eet = (at + 1) * 3 # est = expected end time
 
-      title = $('#queue-status').children('h4:first')
-      title.text "Your request is ##{at} in the queue"
-      implication = $('#queue-status').children('p:first')
-      implication.text "In about #{eet} minutes, your document should be available for download"
+      g = $('#queue-graphic')
+      g.removeClass 'hidden'
 
-      $('#queue-status').dialog('open')
+      for ticker,index in g.find('.led')
+          if index is 0 then $(ticker).text "##{at}"
+          else if index is 1 then $(ticker).text "#{2*at} min."
+          else if index is 2 then $(ticker).text "2 min."
+
+      g.hide().fadeIn('slow').fadeOut(8000).addClass('hidden')
+      return true
+
     else if url.match(/teacher\/testpapers/)
       here = $('#testpaper')
       coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true}
