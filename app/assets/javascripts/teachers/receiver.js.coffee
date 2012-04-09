@@ -95,10 +95,10 @@ jQuery ->
       graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'x'
       options = $.extend {}, graph.options, { xaxis: { position: "top", min:1,
       max:3,
-      ticks : [[1, "Revisit Topic"],
-               [1.5, "Brush-up on basics"],
-               [2, "Needs more practice"],
-               [2.5, "Doing well"],
+      ticks : [[1, "Revisit Topic >"],
+               [1.5, "Brush-up on basics >"],
+               [2, "Needs practice >"],
+               [2.5, "Doing well >"],
                [3, "Teacher?"]
               ] }
       }
