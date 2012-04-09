@@ -112,7 +112,8 @@ window.graph = {
     xaxis: { position: "top" },
     grid: {
       borderWidth: 0,
-      aboveData: false
+      aboveData: false,
+      labelMargin: 20
     }
   }  # base options shared by all plots. Call modifyOption to edit
 
