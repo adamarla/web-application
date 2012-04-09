@@ -44,6 +44,14 @@ body {
   position: absolute ;
 }
 
+.tickLabel {
+  font: {
+    size: 12px ;
+  }
+  color: #6ca7ab ;
+  text-transform: lowercase ;
+}
+
 .instructions {
   text-align: justify ;
   font: {
