@@ -62,6 +62,14 @@ window.graph = {
   filter: {
     notZero: (record, field) ->
       if record[field] is 0 then return false else return true
+
+    between: (record, field, low, high) ->
+      v = record[field]
+      return false if not v?
+      if v < low || v >= high then return false else return true
+
+    xBetween: (record, low, high) ->
+      return graph.filter.between record, 'x', low, high
   }
 
   draw: (correction = [], singlePt = true, options = $.extend({}, graph.options)) ->
