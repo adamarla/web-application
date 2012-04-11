@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120410093323) do
+ActiveRecord::Schema.define(:version => 20120411235407) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -205,11 +205,13 @@ ActiveRecord::Schema.define(:version => 20120410093323) do
 
   create_table "subparts", :force => true do |t|
     t.integer "question_id"
-    t.boolean "mcq",           :default => false
-    t.boolean "half_page",     :default => false
-    t.boolean "full_page",     :default => true
+    t.boolean "mcq",            :default => false
+    t.boolean "half_page",      :default => false
+    t.boolean "full_page",      :default => true
     t.integer "marks"
-    t.boolean "multi_correct", :default => false
+    t.boolean "multi_correct",  :default => false
+    t.integer "relative_index"
+    t.integer "relative_pg"
   end
 
   create_table "syllabi", :force => true do |t|
