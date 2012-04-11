@@ -10,14 +10,14 @@
 #  examiner_id   :integer
 #  topic_id      :integer
 #  teacher_id    :integer
-#  mcq           :boolean         default(FALSE)
-#  multi_correct :boolean         default(FALSE)
 #  multi_part    :boolean         default(FALSE)
 #  num_parts     :integer
 #  difficulty    :integer         default(1)
+#  marks         :integer
+#  mcq           :boolean         default(FALSE)
+#  multi_correct :boolean         default(FALSE)
 #  half_page     :boolean         default(FALSE)
 #  full_page     :boolean         default(TRUE)
-#  marks         :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -56,6 +56,7 @@ class Question < ActiveRecord::Base
   has_many :q_selections
   has_many :quizzes, :through => :q_selections
   has_many :graded_responses
+  has_many :subparts, :dependent => :destroy
 
   def mcq? 
     return mcq
@@ -74,6 +75,13 @@ class Question < ActiveRecord::Base
     return true 
     # if self.mcq results to 'false' and the 'false' is then returned, 
     # then the save operation would be aborted (needlessly)
+  end
+
+  def marks?
+    return self.marks unless self.marks.nil?
+    total = self.subparts.map(&:marks).inject(:+)
+    self.update_attribute :marks, total
+    return total
   end
 
   def set_length_and_marks(length, marks)

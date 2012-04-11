@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120405064349) do
+ActiveRecord::Schema.define(:version => 20120410093323) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -137,14 +137,14 @@ ActiveRecord::Schema.define(:version => 20120405064349) do
     t.integer  "examiner_id"
     t.integer  "topic_id"
     t.integer  "teacher_id"
-    t.boolean  "mcq",           :default => false
-    t.boolean  "multi_correct", :default => false
     t.boolean  "multi_part",    :default => false
     t.integer  "num_parts"
     t.integer  "difficulty",    :default => 1
+    t.integer  "marks"
+    t.boolean  "mcq",           :default => false
+    t.boolean  "multi_correct", :default => false
     t.boolean  "half_page",     :default => false
     t.boolean  "full_page",     :default => true
-    t.integer  "marks"
   end
 
   create_table "quizzes", :force => true do |t|
@@ -201,6 +201,15 @@ ActiveRecord::Schema.define(:version => 20120405064349) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "subparts", :force => true do |t|
+    t.integer "question_id"
+    t.boolean "mcq",           :default => false
+    t.boolean "half_page",     :default => false
+    t.boolean "full_page",     :default => true
+    t.integer "marks"
+    t.boolean "multi_correct", :default => false
   end
 
   create_table "syllabi", :force => true do |t|

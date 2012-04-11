@@ -10,14 +10,14 @@
 #  examiner_id   :integer
 #  topic_id      :integer
 #  teacher_id    :integer
-#  mcq           :boolean         default(FALSE)
-#  multi_correct :boolean         default(FALSE)
 #  multi_part    :boolean         default(FALSE)
 #  num_parts     :integer
 #  difficulty    :integer         default(1)
+#  marks         :integer
+#  mcq           :boolean         default(FALSE)
+#  multi_correct :boolean         default(FALSE)
 #  half_page     :boolean         default(FALSE)
 #  full_page     :boolean         default(TRUE)
-#  marks         :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
