@@ -97,4 +97,26 @@ class Question < ActiveRecord::Base
      return response[:tag_question_response][:manifest]
   end
 
+  def resize_subparts_list_to( num_subparts ) # num_subparts = 1 for a stand-alone question
+    return false if num_parts < 1
+
+    subparts = Subpart.where(:question_id => self.id)
+    existing = subparts.length
+    additional = num_subparts - existing
+
+    if additional > 0
+      [*0...additional].each do |index|
+        s = self.subparts.build :relative_index => (existing + index)
+        s.save
+      end
+    elsif additional < 0 
+      retain = subparts.slice(0, num_subparts)
+      remove = subparts - retain
+      remove.each do |s|
+        s.destroy 
+      end
+    end
+    self.update_attribute :num_parts, num_subparts
+  end # of method 
+
 end
