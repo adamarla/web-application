@@ -98,7 +98,7 @@ class Question < ActiveRecord::Base
   end
 
   def resize_subparts_list_to( num_subparts ) # num_subparts = 1 for a stand-alone question
-    return false if num_parts < 1
+    return false if num_subparts < 1
 
     subparts = Subpart.where(:question_id => self.id)
     existing = subparts.length
@@ -118,5 +118,24 @@ class Question < ActiveRecord::Base
     end
     self.update_attribute :num_parts, num_subparts
   end # of method 
+
+=begin
+  This next method was written when support for subparts was being added.
+  Its sole purpose was/is to transfer data from the parent Question to the
+  newly created Subpart. As - at the time of writing - all existing tagged 
+  questions were single part, this method could be called. However, it is 
+  NOT for calling in the normal course. Subparts should get their data/tags 
+  from the tagging process 
+=end 
+  def transfer_data_to_subpart 
+    return false if self.subparts.length > 0 # if subparts exist, then transition has probably already happened
+    return false if self.topic_id.nil? # ignore untagged questions. Subparts will be created during tagging
+
+    self.resize_subparts_list_to 1
+    s = self.subparts.first
+    s.update_attributes :mcq => self.mcq, :half_page => self.half_page,
+                        :full_page => self.full_page, :marks => self.marks,
+                        :multi_correct => self.multi_correct, :relative_pg => 0
+  end
 
 end
