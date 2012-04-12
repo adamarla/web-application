@@ -80,14 +80,14 @@ window.flipchart = {
     return if next is last
 
   containingTab: (obj) ->
-    flipchart = obj.closest '.flipchart'
-    return null if flipchart.length is 0
+    chart = obj.closest '.flipchart'
+    return null if chart.length is 0
 
     panel = obj.closest '.ui-tabs-panel'
     return null if panel.length is 0
 
     id = panel.attr 'id'
-    tab = flipchart.find("ul > li > a[href='##{id}']").eq(0).closest('li')
+    tab = chart.find("ul > li > a[href='##{id}']").eq(0).closest('li')
     return tab
 
     
