@@ -62,7 +62,8 @@ class Question < ActiveRecord::Base
   end 
 
   def num_parts?
-    return (self.subparts.length - 1) # a standalone question has one subpart
+    n = self.subparts.length
+    return (( n == 1) ? 0 : n)
   end 
 
   def marks? # total marks over all sub-parts
