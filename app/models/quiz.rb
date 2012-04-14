@@ -50,7 +50,7 @@ class Quiz < ActiveRecord::Base
   def total? 
     return self.total unless self.total.nil? 
     question_ids = QSelection.where(:quiz_id => self.id).map(&:question_id)
-    marks = Question.where(:id => question_ids).map(&:marks)
+    marks = Question.where(:id => question_ids).map(&:marks?)
     total = marks.inject(:+)
     self.update_attribute :total, total
     return total
@@ -63,10 +63,10 @@ class Quiz < ActiveRecord::Base
     #   1. quiz <-> testpaper
     #   2. student <-> testpaper
     #   3. graded_response <-> testpaper
-    #   3. graded_response <-> student
+    #   4. graded_response <-> student
 
     testpaper = self.testpapers.new :name => "#{Date.today.strftime "%B %d, %Y"}" # (1)
-    questions = QSelection.where(:quiz_id => self.id).order(:page).select(:id)
+    questions = QSelection.where(:quiz_id => self.id).order(:start)
 
     students.each do |s|
       # Don't issue the same quiz to the same students
@@ -74,7 +74,12 @@ class Quiz < ActiveRecord::Base
 
       testpaper.students << s # (2) 
       questions.each do |q|
-        testpaper.graded_responses << GradedResponse.new(:q_selection_id => q.id, :student_id => s.id) #(3) & (4)
+        subparts = Subpart.where(:question_id => q.question.id).order(:index)
+        subparts.each do |p|
+          g = GradedResponse.new(:q_selection_id => q.id, :student_id => s.id, :subpart_id => p.id)
+          testpaper.graded_responses << g
+        end
+        #testpaper.graded_responses << GradedResponse.new(:q_selection_id => q.id, :student_id => s.id) #(3) & (4)
       end
     end # student loop 
 
@@ -102,26 +107,60 @@ class Quiz < ActiveRecord::Base
   end 
   
   def num_pages
-    return QSelection.where(:quiz_id => self.id).order(:page).last.page
+    return QSelection.where(:quiz_id => self.id).order(:end).last.to
   end
 
   def lay_it_out
-    questions = Question.where(:id => self.question_ids).order(:marks).order(:full_page).order(:half_page)
-    page = 1
-    pg_used = 0 # a fraction b/w 0 and 1
-    index = 1
+=begin
+    Layout in two steps:
+      1. First, layout all the standalone questions. Try to waste as 
+         little space as possible
+      2. Then, layout out the multipart questions. These questions take a 
+         whole number of pages
+=end
+    questions = Question.where(:id => self.question_ids)
+    standalone = questions.standalone.sort{ |m,n| m.span? <=> n.span? }
+    multipart = questions - standalone
 
-    questions.each_with_index do |q, index|
-      pg_reqd = (q.mcq ? 0.25 : (q.half_page ? 0.5 : 1))
-      if ((pg_used + pg_reqd) > 1)
-        page += 1
-        pg_used = pg_reqd # coz this new question will go on the next page 
-      else
-        pg_used += pg_reqd
-      end 
+    spans = standalone.map(&:span?)
+    start = 0 
+    stop = -1
+    last = spans.length - 1
+    layout = []
 
-      in_quiz = QSelection.where(:question_id => q.id, :quiz_id => self.id).first
-      in_quiz.update_attributes :page => page, :index => index
+    # Code below tries to slice 'spans' into chunks where the sum of spans in 
+    # each chunk <= 1. A bit inefficient in terms of iterations but easy to read
+    while (start <= last)
+      [*start..last].each do |i|
+        sum = spans.slice(start..i).inject(:+)
+        stop = i if ( sum == 1 || i == last )
+        stop = i-1 if sum > 1
+        if (stop != -1)
+          layout.push standalone.slice(start..stop).map(&:id)
+          break 
+        end
+      end
+      start = stop + 1
+      stop = -1
+    end
+
+    current_index = 1 
+    layout.each_with_index do |ids, j|
+      QSelection.where(:question_id => ids, :quiz_id => self.id).each_with_index do |s,k|
+        s.update_attributes :start => j + 1, :end => j + 1, :index => current_index
+        current_index += 1
+      end
+    end
+    
+    # Now, the multipart questions 
+    spans = multipart.map(&:span?)
+    current_page = layout.length + 1
+
+    spans.each_with_index do |span, index|
+      qid = multipart[index].id
+      s = QSelection.where(:question_id => qid, :quiz_id => self.id).first
+      s.update_attributes :start => current_page, :end => (current_page + span - 1), :index => (last_standalone + index + 1)
+      current_page += span
     end
   end # lay_it_out
 
@@ -131,12 +170,12 @@ class Quiz < ActiveRecord::Base
     # The form of the layout returned from here is determined by the WSDL. We 
     # really don't have much choice 
 
-    j = self.q_selections.order(:page).select('question_id, page')
+    j = self.q_selections.order(:start).select('question_id, from')
     last = j.last.page 
     layout = [] 
 
     [*1..last].each do |page|
-      q_on_page = j.where(:page => page).map(&:question_id)
+      q_on_page = j.where(:start => page).map(&:question_id)
       q_on_page.each_with_index do |qid, index|
         # Previously, we sent the question's DB id. Now, we send the containing
         # folder's name - which really is just the millisecond time-stamp at 
@@ -187,7 +226,7 @@ class Quiz < ActiveRecord::Base
   def pending_pages(examiner_id)
     responses = GradedResponse.assigned_to(examiner_id).ungraded.with_scan.in_quiz(self.id)
     qsel_ids = responses.map(&:q_selection_id).uniq
-    @pages = QSelection.where(:id => qsel_ids).order(:page).map(&:page).uniq
+    @pages = QSelection.where(:id => qsel_ids).order(:start).map(&:start).uniq
   end
 
   def pending_scans(examiner, page)
@@ -198,7 +237,7 @@ class Quiz < ActiveRecord::Base
     scans.each do |s|
       pick = responses.where(:scan => s)
       indices = pick.map(&:id)
-      type = pick.map{ |a| a.q_selection.question.mcq }
+      type = pick.map{ |a| a.q_selection.question.mcq? }
       (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type}) unless indices.empty?
     end
     return @ret

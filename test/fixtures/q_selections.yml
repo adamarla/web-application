@@ -5,10 +5,11 @@
 #  id          :integer         not null, primary key
 #  quiz_id     :integer
 #  question_id :integer
-#  page        :integer
+#  start       :integer
 #  created_at  :datetime
 #  updated_at  :datetime
 #  index       :integer
+#  end         :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

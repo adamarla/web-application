@@ -218,19 +218,15 @@ jQuery ->
   ###
   $('#examiner-untagged').on 'click', 'input[type="radio"]', ->
     id = $(this).attr 'marker'
-    target = $('#misc-traits input#misc_id').first() # formtastic generated id
-    target.val id
     $.get "question/preview.json?id=#{id}"
     return true
 
-  ###
-    When a topic in #topic-selection is selected, then set the 
-    hidden <input> field in #misc-traits > form with the selected topic's id
-  ###
-  $('#topic-selection').on 'click', 'input[type="radio"]', ->
-    id = $(this).attr 'marker'
-    target = $('#misc-traits input#misc_topic_id').first() # formtastic generated id
-    target.val id
+  $('#misc-traits > form').submit ->
+    tab = flipchart.containingTab $(this)
+    return false if tab.length is 0 # block submission
+    topic = tab.prev('li').attr 'marker'
+    question = tab.prev('li').prev('li').prev('li').attr 'marker'
+    $(this).attr 'action', "/question?id=#{question}&topic=#{topic}"
     return true
 
   ###
@@ -245,7 +241,7 @@ jQuery ->
   $('#block-db-slots').on 'click', '#btn-cancel', (event) ->
     event.stopPropagation()
     $('#block-db-slots').dialog 'close'
-    return true
+    return false
 
   ###
     Issue request for new slots if #btn-submit in #block-db-slots is clicked 
@@ -309,6 +305,26 @@ jQuery ->
     ret = canvas.decompile()
     clicks = $(this).find 'input[name="clicks"]:first'
     clicks.val ret
+    return true
+
+  ###
+    During question-tagging, show selects for only as many sub-parts as have 
+    been picked by the examiner. For stand-alone questions, select '0' as
+    number of subparts. Saying that a question has one sub-part makes no sense. 
+    Either it has none or has a minimum of two
+  ###
+  $('#misc_num_parts').change ->
+    val = parseInt($(this).val())
+    val = val - 1 if val > 0
+
+    subpartTags = $(this).parent().siblings('.subpart-tags')
+    for j in [0...10]
+      tag = subpartTags.eq(j)
+
+      # pick the 2nd value in both the marks & length select. This means 
+      # marks = 2 and length = half-page, by default 
+      tag.find('select').val 2
+      if (j <= val) then tag.removeClass('hidden') else tag.addClass('hidden')
     return true
 
 

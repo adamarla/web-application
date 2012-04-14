@@ -13,6 +13,7 @@
 #  marks          :float
 #  testpaper_id   :integer
 #  scan           :string(255)
+#  subpart_id     :integer
 #
 
 # Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#
@@ -23,13 +24,14 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :grade
   belongs_to :q_selection
   belongs_to :testpaper
+  belongs_to :subpart
 
   validates :q_selection_id, :presence => true
   validates :student_id, :presence => true
 
   def self.on_page(page)
     # Returns all respones on passed page of all Quizzes
-    where(:q_selection_id => QSelection.where(:page => page).order('index ASC').map(&:id)) 
+    where(:q_selection_id => QSelection.where(:start => page).order('index ASC').map(&:id)) 
   end
 
   def self.in_quiz(id)
@@ -75,6 +77,15 @@ class GradedResponse < ActiveRecord::Base
 
   def self.on_topic(topic_id)
     select{ |m| m.q_selection.question.topic.id == topic_id }
+  end
+
+  def self.to_subpart(subpart)
+    select{ |m| m.subpart.index == subpart }
+  end
+
+  def self.standalone
+    # Relatively time expensive. Chain towards the end 
+    select{ |m| m.q_selection.question.num_parts? == 0 }
   end
 
   def assign_grade(grade)

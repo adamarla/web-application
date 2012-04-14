@@ -61,7 +61,8 @@ jQuery ->
       }
     }
   }
-
+  
+###
   $('#misc-traits > form').isHappy {
     fields: {
       '#misc_marks': {
@@ -77,5 +78,8 @@ jQuery ->
       }
     }
   }
+###
+  
+
 
 

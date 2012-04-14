@@ -30,6 +30,7 @@ class QuestionController < ApplicationController
     end 
   end # of method
 
+=begin
   def update
     options = params[:misc]
     question = Question.find options[:id]
@@ -60,6 +61,42 @@ class QuestionController < ApplicationController
         render :json => { :status => 'Oops !' }, :status => :bad_request
       end
     end # of unless 
+  end
+=end
+  def update
+    question = Question.find params[:id]
+
+    unless question.nil?
+      topic = params[:topic].to_i
+      values = params[:misc]
+
+      unless values[:num_parts].blank?
+        nparts = values[:num_parts].to_i 
+        difficulty = values[:difficulty].to_i
+
+        # 1. Update the parent question
+        question.update_attributes :topic_id => topic, :difficulty => difficulty
+
+        # 2. Create/remove subparts in the DB as needed. If more subparts are needed then already
+        # present in the DB, then create new ones. If fewer subparts are needed, then remove 
+        # extra ones
+        updated = question.resize_subparts_list_to nparts
+
+        if updated
+          lengths = params[:length].values.slice(0, nparts).map(&:to_i)
+          marks = params[:marks].values.slice(0, nparts).map(&:to_i)
+          question.tag_subparts lengths, marks
+
+          render :json => { :status => 'Done' }, :status => :ok
+        else
+          render :json => { :status => 'Oops !' }, :status => :bad_request
+        end
+      else # subpart count missing
+        render :json => { :status => "Specify subpart count!"}, :status => :bad_request
+      end
+    else # unless 
+        render :json => { :status => 'Missing Question' }, :status => :bad_request
+    end
   end
 
   def preview

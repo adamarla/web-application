@@ -13,6 +13,7 @@
 #  marks          :float
 #  testpaper_id   :integer
 #  scan           :string(255)
+#  subpart_id     :integer
 #
 
 require 'test_helper'

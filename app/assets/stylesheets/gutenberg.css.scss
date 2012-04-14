@@ -136,7 +136,6 @@ body {
 
 #side-panel {
   width: 320px ;
-  border-right: 3px solid lighten($gray, 30%) ;
   padding-right: 10px ;
   min-height: 400px ;
 
@@ -433,5 +432,23 @@ span.unhappyMessage {
     color: #6ca2ab ;
     text-transform: lowercase ;
     font-variant: normal ; 
+  }
+}
+
+.subpart-tags {
+  width: 100% ;
+  min-height: 50px ;
+
+  > li {
+    margin-right: 10px ;
+  }
+
+  > li.marks {
+    width: 60% ;
+    float: left ;
+  }
+
+  > li.length {
+    float: right ;
   }
 }

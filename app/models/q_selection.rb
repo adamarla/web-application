@@ -5,10 +5,11 @@
 #  id          :integer         not null, primary key
 #  quiz_id     :integer
 #  question_id :integer
-#  page        :integer
+#  start       :integer
 #  created_at  :datetime
 #  updated_at  :datetime
 #  index       :integer
+#  end         :integer
 #
 
 #     __:has_many_____     ___:has_many___  

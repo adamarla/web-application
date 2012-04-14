@@ -6,7 +6,8 @@ class CreateSubparts < ActiveRecord::Migration
       t.boolean :half_page, :default => false
       t.boolean :full_page, :default => true
       t.integer :marks
-      t.boolean :multi_correct, :default => false
+      t.integer :index
+      t.integer :offset
     end
   end
 end

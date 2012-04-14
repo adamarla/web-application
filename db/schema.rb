@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120411235407) do
+ActiveRecord::Schema.define(:version => 20120414073521) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20120411235407) do
     t.float    "marks"
     t.integer  "testpaper_id"
     t.string   "scan"
+    t.integer  "subpart_id"
   end
 
   create_table "grades", :force => true do |t|
@@ -123,28 +124,24 @@ ActiveRecord::Schema.define(:version => 20120411235407) do
   create_table "q_selections", :force => true do |t|
     t.integer  "quiz_id"
     t.integer  "question_id"
-    t.integer  "page"
+    t.integer  "start"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "index"
+    t.integer  "end"
   end
 
   create_table "questions", :force => true do |t|
     t.string   "uid"
-    t.integer  "attempts",      :default => 0
+    t.integer  "attempts",    :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
     t.integer  "topic_id"
     t.integer  "teacher_id"
-    t.boolean  "multi_part",    :default => false
-    t.integer  "num_parts"
-    t.integer  "difficulty",    :default => 1
+    t.integer  "difficulty",  :default => 1
     t.integer  "marks"
-    t.boolean  "mcq",           :default => false
-    t.boolean  "multi_correct", :default => false
-    t.boolean  "half_page",     :default => false
-    t.boolean  "full_page",     :default => true
+    t.float    "length"
   end
 
   create_table "quizzes", :force => true do |t|
@@ -205,13 +202,12 @@ ActiveRecord::Schema.define(:version => 20120411235407) do
 
   create_table "subparts", :force => true do |t|
     t.integer "question_id"
-    t.boolean "mcq",            :default => false
-    t.boolean "half_page",      :default => false
-    t.boolean "full_page",      :default => true
+    t.boolean "mcq",         :default => false
+    t.boolean "half_page",   :default => false
+    t.boolean "full_page",   :default => true
     t.integer "marks"
-    t.boolean "multi_correct",  :default => false
-    t.integer "relative_index"
-    t.integer "relative_pg"
+    t.integer "index"
+    t.integer "offset"
   end
 
   create_table "syllabi", :force => true do |t|

@@ -1,4 +1,7 @@
 
+-# A question can have either no sub-parts (standalone) or a minimum of two sub-parts
+-# Saying that a question has one sub-part makes no sense
+
 #workbenches-summary.flipchart
   %ul
     %li
@@ -8,32 +11,32 @@
     %li
       %a{ :href => '#topic-selection' }= "Topic"
     %li
-      %a{ :href => '#misc-traits' }= "Misc"
+      %a{ :href => '#misc-traits' }= "Tag Question"
   #examiner-untagged
   #vertical-selection
   #topic-selection
   #misc-traits
     = semantic_form_for :misc, :remote => true, :url => '/question', :method => :put do |f|
       = f.inputs do
-        = f.input :id, :wrapper_html => { :class => 'hidden' }
-        = f.input :topic_id, :wrapper_html => { :class => 'hidden' }
-        = f.input :marks, :as => :select, :include_blank => true,
-                  :collection => [*1..6], 
-                  :wrapper_html => {:class => 'full-width'}
         = f.input :difficulty, :as => :select, :include_blank => false,
                   :collection => {:introductory => 1, :intermediate => 2, :advanced => 3},
                   :wrapper_html => {:class => 'full-width'},
                   :label => 'topic treatment'
-        = f.input :page_length, :as => :select, :include_blank => true,
-                  :collection => {'mcq' => 1, 'half-page' => 2, 'full-page' => 3},
-                  :wrapper_html => {:class => 'full-width'}
-        = f.input :multi_correct, :as => :select, :include_blank => false,
-                  :collection => {:no => false, :yes => true}, :label => '>1 choice correct',
-                  :wrapper_html => {:class => 'full-width'}
-        = f.input :num_parts, :as => :select, :include_blank => false, :label => '# sub-parts',
-                  :collection => [*1...6], :wrapper_html => {:class => 'full-width'}
+        = f.input :num_parts, :as => :select, :include_blank => true, :label => '# sub-parts',
+                  :collection => [*0..9]-[1], :wrapper_html => {:class => 'full-width'}
+        - for k in [*0..9]-[1]
+          - label = ( k == 0 ) ? "main OR ##{k+1}" : "subpart ##{k}"
+          %div{ :id => "subpart-tags-#{k}", :class => 'subpart-tags full-width hidden'}
+            = f.input :length, :as => :select, :collection => { :mcq => 1, 'half-page' => 2, 'full-page' => 3 },
+                      :include_blank => true, :label => false, 
+                      :input_html => { :name => "length[#{k}]", :id => "subpart_#{k}" },
+                      :wrapper_html => { :class => 'length' }
+            = f.input :marks, :as => :select, :collection => [*1..6], :include_blank => true,
+                      :input_html => { :name => "marks[#{k}]", :id => "subpart_marks_#{k}" },
+                      :wrapper_html => { :class => 'marks' },
+                      :label => label
       .submit-buttons
-        = submit_tag 'submit'
+        = submit_tag 'update'
 
 #workbench-controls.top-panel-controls
   %ul.no-bullets
