@@ -77,12 +77,7 @@ class Examiner < ActiveRecord::Base
   graded responses on the scan will get assigned to the examiner who gets the scan
 
 =end
-    scans = GradedResponse.with_scan.unassigned
-    standalone = scans.standlone # ungraded responses to standalone questions w/ scans
-    multipart = scans - standalone # ungraded responses to multi-part questions
-
-    self.distribute_standalone_questions standalone
-    self.distribute_multipart_questions multipart
+    self.distribute_standalone
   end
 
   def self.receive_scans
@@ -128,48 +123,37 @@ class Examiner < ActiveRecord::Base
       self.last_name = self.last_name.humanize
     end 
 
-    def self.distribute_standalone_questions(scans)
-      quiz_ids = scans.map(&:q_selection).map(&:quiz_id).uniq
-      limit = 20
+    def self.distribute_standalone
+      unassigned = GradedResponse.unassigned.with_scan.standalone
+      limit = 15
 
-      examiners = Examiner.where(:is_admin => true) # Temporary change until a better basis can be found
-      num_examiners = examiners.count
+      scans = unassigned.sort{ |m,n| m.scan <=> n.scan }.map(&:scan).uniq
+      scans.each do |s|
+        quiz, testpaper, student, page = s.split('-').map(&:to_i)
+        todo = unassigned & GradedResponse.unassigned.where(:testpaper_id => testpaper).on_page(page)
+        next if todo.empty?
 
-      quiz_ids.each do |qid|
-        quiz = Quiz.find qid 
-        num_pages = quiz.num_pages
+        student_ids = todo.map(&:student_id).uniq
+        nstudents = student_ids.count # students whose scans for page N in testpaper M have come in
+        examiners = Examiner.order(:last_workset_on)
+        nexaminers = examiners.count
+        reqd = (nstudents/limit) + 1
+        reqd = (reqd > nexaminers) ? nexaminers : reqd
+        workload = (nstudents / reqd) + 1
+        grader_ids = examiners.map(&:id).slice(0, reqd) # use these graders
 
-        [*1..num_pages].each do |page|
-          examiner_ids = examiners.order{|a,b| a.last_workset_on <=> b.last_workset_on}.map(&:id) # allocation order
-          responses_on_this_pg = scans & GradedResponse.in_quiz(qid).on_page(page)
-          uniq_pg_scans = responses_on_this_pg.map(&:scan).uniq
-          uniq_count = uniq_pg_scans.count
-
-          # Estimate the number of examiners needed to process a reasonable chunk
-          # of work ( = 20 scans of one page of one quiz )
-          num_reqd_examiners = (uniq_count / limit) + 1
-          num_reqd_examiners = (num_reqd_examiners > num_examiners) ? num_examiners : num_reqd_examiners
-          per_examiner = uniq_count / num_reqd_examiners
-          start = 0 # start index
-          allocate_to = examiner_ids.slice 0, num_reqd_examiners
-
-          # Now, start allocating 
-          allocate_to.each do |allottee|
-            allot = uniq_pg_scans.slice start, per_examiner
-            start += per_examiner
-            pick = responses_on_this_pg.select {|a| allot.include? a.scan}
-            examiner = Examiner.find allottee
-
-            pick.each do |r|
-              r.update_attribute :examiner_id, allottee
-            end 
-            examiner.update_attribute :last_workset_on, Time.now
+        start = 0 
+        grader_ids.each do |g|
+          pick = student_ids.slice(start, workload)
+          start += workload
+          todo.select{ |m| pick.include? m.student_id }.each do |t|
+            t.update_attribute :examiner_id, g
           end
-        end # num_pages
-      end # quiz_ids
-    end # of method
+        end #grader_ids 
 
-    def self.distribute_multipart_questions(scans)
-    end
+        unassigned = GradedResponse.unassigned.with_scan.standalone
+        break if unassigned.empty?
+      end #scans 
+    end # of method 
 
 end # of class
