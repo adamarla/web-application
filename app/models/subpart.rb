@@ -24,10 +24,10 @@ class Subpart < ActiveRecord::Base
     id = QSelection.where(:quiz_id => quiz_id, :question_id => parent.id).map(&:index).first
     nparts = parent.num_parts?
     if nparts == 0
-      return "Ques. #{id}"
+      return "Question #{id}"
     else
       c = [*'A'..'K'][self.index]
-      return "Ques. #{id}#{c}"
+      return "Question #{id}#{c}"
     end
   end
 
