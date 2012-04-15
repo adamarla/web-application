@@ -78,6 +78,7 @@ class Examiner < ActiveRecord::Base
 
 =end
     self.distribute_standalone
+    self.distribute_multipart
   end
 
   def self.receive_scans
@@ -155,5 +156,40 @@ class Examiner < ActiveRecord::Base
         break if unassigned.empty?
       end #scans 
     end # of method 
+
+    def self.distribute_multipart
+      # This is a private method. So, it can't be called willy-nilly
+      # It is called, however, imeediately after distribute_standalone - by
+      # which time all the standalone questions have been distributed. So, 
+      # the only ones left are the multipart ones
+
+      unassigned = GradedResponse.unassigned.with_scan
+
+      # The unassigned responses are for some questions and from some students
+      # And for each student, therefore, we ensure that scans are available for 
+      # each sub-part of each question under consideration. If scans are available
+      # for only some parts and not others, then we skip assigning that whole question
+      # for grading. We will wait until all scans are available 
+
+      student_ids = unassigned.map(&:student_id).uniq
+      student_ids.each do |s|
+        responses = GradedResponse.unassigned.with_scan.of_student(s)
+        question_ids = responses.map{ |m| m.q_selection.question_id }.uniq 
+
+        question_ids.each do |q|
+          # Remember: one graded response per student for each subpart 
+          with_scan = responses & GradedResponse.unassigned.with_scan.to_question(q)
+          question = Question.find q
+          nparts = question.num_parts?
+          next if with_scan.count != nparts
+
+          grader = Examiner.order(:last_workset_on).first
+          with_scan.each do |p|
+            p.update_attribute :examiner_id, grader.id
+          end
+        end # questions loop 
+      end # student loop
+
+    end # of method
 
 end # of class
