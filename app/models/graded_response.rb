@@ -90,15 +90,15 @@ class GradedResponse < ActiveRecord::Base
 
   def assign_grade(grade)
     quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
-    question = Question.where(:id => self.q_selection.question_id).first # to question? 
+    subpart = self.subpart
 
-    return :bad_request if (quiz.nil? || question.nil?)
+    return :bad_request if (quiz.nil? || subpart.nil?)
 
     teacher = Teacher.where(:id => quiz.teacher_id).first # quiz by which teacher?
     grade = Grade.where(:teacher_id => teacher.id, :yardstick_id => grade).first
 
     allotment = grade.nil? ? nil : grade.allotment
-    marks = question.marks
+    marks = subpart.marks
     assigned = (marks * (allotment/100.0)).round(1)
     return (self.update_attributes(:grade_id => grade.id, :marks => assigned) ? :ok : :bad_request)
   end
