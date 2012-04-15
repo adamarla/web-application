@@ -111,4 +111,12 @@ class GradedResponse < ActiveRecord::Base
     return (y.mcq ? "mcq-#{family.index(y.id) + 1}" : "non-mcq-#{family.index(y.id) + 1}")
   end
 
+  def siblings?
+    qselection = self.q_selection
+    student = self.student_id
+    quiz = qselection.quiz_id 
+    question = qselection.question_id 
+    return GradedResponse.of_student(student).in_quiz(quiz).to_question(question) - [self]
+  end
+
 end
