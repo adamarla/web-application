@@ -97,6 +97,7 @@ class Question < ActiveRecord::Base
   end
 
   def set_length_and_marks(length, marks)
+    length = length.map{ |m| m == 1 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['tag_question']}" 
     response = SavonClient.request :wsdl, :tag_question do  
       soap.body = { 

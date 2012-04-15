@@ -30,67 +30,40 @@ class QuestionController < ApplicationController
     end 
   end # of method
 
-=begin
-  def update
-    options = params[:misc]
-    question = Question.find options[:id]
-    head :bad_request if question.nil? 
-
-    page_length = options.delete :page_length
-    case page_length
-      when "1"
-        page_length = "mcq"
-        mcq, half_page, full_page = true, false, false 
-      when "2"
-        page_length = "halfpage"
-        mcq, half_page, full_page = false, true, false 
-      when "3"
-        page_length = "fullpage"
-        mcq, half_page, full_page = false, false, true 
-    end 
-    
-    # First, issue the Savon request to update the TeX, only then update the DB
-    manifest = question.set_length_and_marks page_length, options[:marks]
-    unless manifest.nil?
-      # Return of the prodigal
-      options.merge!({:mcq => mcq, :half_page => half_page, :full_page => full_page})
-
-      if question.update_attributes(options)
-        render :json => { :status => 'Done' }, :status => :ok
-      else
-        render :json => { :status => 'Oops !' }, :status => :bad_request
-      end
-    end # of unless 
-  end
-=end
   def update
     question = Question.find params[:id]
 
     unless question.nil?
-      topic = params[:topic].to_i
       values = params[:misc]
 
       unless values[:num_parts].blank?
         nparts = values[:num_parts].to_i 
-        difficulty = values[:difficulty].to_i
+        lengths = params[:length].values.slice(0, nparts).map(&:to_i)
+        marks = params[:marks].values.slice(0, nparts).map(&:to_i)
 
-        # 1. Update the parent question
-        question.update_attributes :topic_id => topic, :difficulty => difficulty
+        # Step 1: Set the marks and lengths in TeX. Only when that succeeds
+        # should one update the DB
 
-        # 2. Create/remove subparts in the DB as needed. If more subparts are needed then already
-        # present in the DB, then create new ones. If fewer subparts are needed, then remove 
-        # extra ones
-        updated = question.resize_subparts_list_to nparts
+        manifest = question.set_length_and_marks lengths, marks
+        unless manifest.nil?
+          topic = params[:topic].to_i
+          difficulty = values[:difficulty].to_i
 
-        if updated
-          lengths = params[:length].values.slice(0, nparts).map(&:to_i)
-          marks = params[:marks].values.slice(0, nparts).map(&:to_i)
-          question.tag_subparts lengths, marks
+          # 1. Update the parent question
+          question.update_attributes :topic_id => topic, :difficulty => difficulty
 
-          render :json => { :status => 'Done' }, :status => :ok
-        else
-          render :json => { :status => 'Oops !' }, :status => :bad_request
-        end
+          # 2. Create/remove subparts in the DB as needed. If more subparts are needed then already
+          # present in the DB, then create new ones. If fewer subparts are needed, then remove 
+          # extra ones
+          updated = question.resize_subparts_list_to nparts
+
+          if updated
+            question.tag_subparts lengths, marks
+            render :json => { :status => 'Done' }, :status => :ok
+          else
+            render :json => { :status => 'Oops !' }, :status => :bad_request
+          end
+        end # manifest 
       else # subpart count missing
         render :json => { :status => "Specify subpart count!"}, :status => :bad_request
       end
