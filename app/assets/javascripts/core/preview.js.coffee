@@ -71,9 +71,9 @@ jQuery ->
             full = "#{base}/#{root}/answer-key/preview/page-#{scan}-preview.jpeg"
             alt = "##{j + 1}"
           when 'vault'
-            thumb = "#{base}/#{scan}/#{scan}-thumb.jpeg"
-            full = "#{base}/#{scan}/#{scan}-answer.jpeg"
-            alt = "#{scans[j]}"
+            thumb = "#{base}/#{root}/page-#{scan}.jpeg"
+            full = "#{base}/#{root}/page-#{scan}.jpeg"
+            alt = "#{root}"
           when 'frontdesk-yardsticks'
             type = json.preview.mcq[j]
             if type isnt isMcq

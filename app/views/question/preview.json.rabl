@@ -1,9 +1,9 @@
 
-# Returned json : { :preview => { :id => 5, :indices => [5] } }
+# Returned json : { :preview => { :id => '1-4hy-9020j', :indices => [0,1,2,3] } }
 # This form is in keeping with what is used in quizzes/preview & 
 # quizzes/get_candidates
 
 object @question => false
   code :preview do |q| 
-    { :id => q.id, :indices => [q.uid] }
+    { :id => q.uid, :indices => [*1..q.span?] }
   end 
