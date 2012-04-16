@@ -9,6 +9,4 @@
 
 object @quiz => :preview  
   attribute :atm_key => :id
-  code :indices do |m|
-    [*0...m.num_pages]
-  end
+  node(:indices) { |m| [*1..@quiz.num_pages] }

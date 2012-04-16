@@ -107,7 +107,7 @@ class Quiz < ActiveRecord::Base
   end 
   
   def num_pages
-    return QSelection.where(:quiz_id => self.id).order(:end).last.to
+    return QSelection.where(:quiz_id => self.id).order(:index).last.end
   end
 
   def lay_it_out

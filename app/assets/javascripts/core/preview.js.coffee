@@ -67,9 +67,9 @@ jQuery ->
       for scan,j in scans
         switch source
           when 'atm'
-            thumb = "#{base}/#{root}/answer-key/preview/page-#{scan}-thumbnail.jpeg"
-            full = "#{base}/#{root}/answer-key/preview/page-#{scan}-preview.jpeg"
-            alt = "##{j + 1}"
+            full = "#{base}/#{root}/answer-key/preview/page-#{scan}.jpeg"
+            thumb = "#{base}/#{root}/answer-key/preview/page-#{scan}.jpeg"
+            alt = "##{scan}"
           when 'vault'
             thumb = "#{base}/#{root}/page-#{scan}.jpeg"
             full = "#{base}/#{root}/page-#{scan}.jpeg"
