@@ -63,7 +63,9 @@ class QuestionController < ApplicationController
           else
             render :json => { :status => 'Oops !' }, :status => :bad_request
           end
-        end # manifest 
+        else # Savon request error !!
+          render :json => { :status => 'Tagging failed!' }, :status => :bad_request
+        end 
       else # subpart count missing
         render :json => { :status => "Specify subpart count!"}, :status => :bad_request
       end
