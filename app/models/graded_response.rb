@@ -119,4 +119,28 @@ class GradedResponse < ActiveRecord::Base
     return GradedResponse.of_student(student).in_quiz(quiz).to_question(question) - [self]
   end
 
+  def name?
+    # The name of a graded response is a function of the quiz it is in, the
+    # index of the parent question in the quiz and the index of the corresponding sub-part 
+    # relative to the parent question 
+
+    s = self.q_selection
+    question = s.question
+    quiz_id = s.quiz_id 
+    subpart_id = self.subpart_id 
+
+    # Index of the question within the quiz 
+    id = QSelection.where(:quiz_id => quiz_id, :question_id => question.id).map(&:index).first
+
+    nparts = question.num_parts?
+    if nparts == 0
+      return "Question #{id}"
+    else
+      subpart_index = Subpart.where(:id => subpart_id).map(&:index).first
+      c = [*'A'..'K'][subpart_index]
+      return "Question #{id}#{c}"
+    end
+  end
+
+
 end
