@@ -5,5 +5,5 @@
 
 object @question => false
   code :preview do |q| 
-    { :id => q.uid, :indices => [*1..q.span?] }
+    { :id => q.uid, :indices => [*1..q.answer_key_span?] }
   end 

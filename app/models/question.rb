@@ -96,6 +96,17 @@ class Question < ActiveRecord::Base
     return (self.multi_part? ? length.ceil : length)
   end
 
+  def answer_key_span?
+    # The # of pages needed to show an individual question's answer-key 
+    # can be different from the # of pages the question needs when laid out
+    # in a quiz. This method *guesses* the former for multipart questions
+    # and returns 1 for standalone questions
+    return 1 if self.num_parts? == 0
+
+    guess = self.subparts.map{ |m| m.full_page ? 0.5 : 0.25 }
+    return guess.inject(:+).ceil
+  end
+
   def set_length_and_marks(length, marks)
     length = length.map{ |m| m == 1 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['tag_question']}" 
