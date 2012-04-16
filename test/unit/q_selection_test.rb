@@ -5,11 +5,11 @@
 #  id          :integer         not null, primary key
 #  quiz_id     :integer
 #  question_id :integer
-#  start       :integer
+#  start_page  :integer
 #  created_at  :datetime
 #  updated_at  :datetime
 #  index       :integer
-#  end         :integer
+#  end_page    :integer
 #
 
 require 'test_helper'

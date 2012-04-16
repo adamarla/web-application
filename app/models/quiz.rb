@@ -66,7 +66,7 @@ class Quiz < ActiveRecord::Base
     #   4. graded_response <-> student
 
     testpaper = self.testpapers.new :name => "#{Date.today.strftime "%B %d, %Y"}" # (1)
-    questions = QSelection.where(:quiz_id => self.id).order(:start)
+    questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
     students.each do |s|
       # Don't issue the same quiz to the same students
@@ -107,7 +107,7 @@ class Quiz < ActiveRecord::Base
   end 
   
   def num_pages
-    return QSelection.where(:quiz_id => self.id).order(:index).last.end
+    return QSelection.where(:quiz_id => self.id).order(:index).last.end_page
   end
 
   def lay_it_out
@@ -147,7 +147,7 @@ class Quiz < ActiveRecord::Base
     current_index = 1 
     layout.each_with_index do |ids, j|
       QSelection.where(:question_id => ids, :quiz_id => self.id).each_with_index do |s,k|
-        s.update_attributes :start => j + 1, :end => j + 1, :index => current_index
+        s.update_attributes :start_page => j + 1, :end_page => j + 1, :index => current_index
         current_index += 1
       end
     end
@@ -159,7 +159,8 @@ class Quiz < ActiveRecord::Base
     spans.each_with_index do |span, index|
       qid = multipart[index].id
       s = QSelection.where(:question_id => qid, :quiz_id => self.id).first
-      s.update_attributes :start => current_page, :end => (current_page + span - 1), :index => (last_standalone + index + 1)
+      s.update_attributes :start_page => current_page, :end_page => (current_page + span - 1), 
+                          :index => (last_standalone + index + 1)
       current_page += span
     end
   end # lay_it_out
@@ -170,12 +171,12 @@ class Quiz < ActiveRecord::Base
     # The form of the layout returned from here is determined by the WSDL. We 
     # really don't have much choice 
 
-    j = self.q_selections.order(:start).select('question_id, from')
+    j = self.q_selections.order(:start_page).select('question_id, from')
     last = j.last.page 
     layout = [] 
 
     [*1..last].each do |page|
-      q_on_page = j.where(:start => page).map(&:question_id)
+      q_on_page = j.where(:start_page => page).map(&:question_id)
       q_on_page.each_with_index do |qid, index|
         # Previously, we sent the question's DB id. Now, we send the containing
         # folder's name - which really is just the millisecond time-stamp at 
@@ -226,7 +227,7 @@ class Quiz < ActiveRecord::Base
   def pending_pages(examiner_id)
     responses = GradedResponse.assigned_to(examiner_id).ungraded.with_scan.in_quiz(self.id)
     qsel_ids = responses.map(&:q_selection_id).uniq
-    @pages = QSelection.where(:id => qsel_ids).order(:start).map(&:start).uniq
+    @pages = QSelection.where(:id => qsel_ids).order(:start_page).map(&:start_page).uniq
   end
 
   def pending_scans(examiner, page)

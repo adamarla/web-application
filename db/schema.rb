@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120414073521) do
+ActiveRecord::Schema.define(:version => 20120416140137) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -124,11 +124,11 @@ ActiveRecord::Schema.define(:version => 20120414073521) do
   create_table "q_selections", :force => true do |t|
     t.integer  "quiz_id"
     t.integer  "question_id"
-    t.integer  "start"
+    t.integer  "start_page"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "index"
-    t.integer  "end"
+    t.integer  "end_page"
   end
 
   create_table "questions", :force => true do |t|
