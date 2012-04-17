@@ -207,4 +207,36 @@ class Question < ActiveRecord::Base
     select{ |m| m.marks? > 0 }.sort{ |m,n| m.marks? <=> n.marks? }
   end
 
+  private 
+    def page_breaks(length)
+      # Returns the 0-indexed array of subpart indices AFTER which a 
+      # \newpage should be inserted
+
+      return [] if self.num_parts? == 0
+      l = length.map{ |m| m == 1 ? 0.25 : ((m == 2) ? 0.5 : 1) }
+      breaks = []
+
+      puts breaks
+
+      used = 0
+      last = l.count - 1
+
+      l.each_with_index do |m, index|
+        used += m
+        remaining = 1 - used 
+
+        if index != last
+          next_one = l[index + 1]
+
+          if ((next_one == 1 && remaining < 0.75) ||
+             (next_one == 0.5 && remaining < 0.5) || 
+             (next_one == 0.25 && remaining < 0.25))
+             breaks.push index
+             used = 0
+          end
+        end
+      end # each
+      return breaks 
+    end # of method 
+
 end # of class
