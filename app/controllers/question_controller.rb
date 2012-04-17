@@ -52,13 +52,7 @@ class QuestionController < ApplicationController
           # 1. Update the parent question
           question.update_attributes :topic_id => topic, :difficulty => difficulty
 
-          # 2. Create/remove subparts in the DB as needed. If more subparts are needed then already
-          # present in the DB, then create new ones. If fewer subparts are needed, then remove 
-          # extra ones
-          updated = question.resize_subparts_list_to nparts
-
-          if updated
-            question.tag_subparts lengths, marks
+          if question.tag_subparts lengths, marks
             render :json => { :status => 'Done' }, :status => :ok
           else
             render :json => { :status => 'Oops !' }, :status => :bad_request

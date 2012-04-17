@@ -108,48 +108,32 @@ class Question < ActiveRecord::Base
   end
 
   def set_length_and_marks(length, marks)
-    length = length.map{ |m| m == 1 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['tag_question']}" 
-    response = SavonClient.request :wsdl, :tag_question do  
-      soap.body = { 
-         :id => self.uid,
-         :marks => marks,
-         :length => length
-      }
-     end # of response 
-     # As long as the response does not have an error, we are good
-     return response[:tag_question_response][:manifest]
+    if resize_subparts_list_to length.count
+      breaks = page_breaks length
+      length = length.map{ |m| m == 1 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }
+
+      SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['tag_question']}" 
+      response = SavonClient.request :wsdl, :tag_question do  
+        soap.body = { 
+           :id => self.uid,
+           :marks => marks,
+           :length => length,
+           :breaks => breaks
+        }
+       end # of response 
+
+       # As long as the response does not have an error, we are good
+       return response[:tag_question_response][:manifest]
+    else # re-sizing failed
+      return nil
+    end
   end
 
-  def resize_subparts_list_to( nparts ) # nparts = 0 for a stand-alone question
-    # however, internally we create 1 subpart object for even a standalone question
-    nparts = (nparts == 0) ? 1 : nparts 
-
-    subparts = Subpart.where(:question_id => self.id)
-    existing = subparts.length
-    additional = nparts - existing
-    success = true
-
-    if additional > 0
-      [*0...additional].each do |index|
-        s = self.subparts.build :index => (existing + index)
-        success &= s.save
-        break if !success
-      end
-    elsif additional < 0 
-      retain = subparts.slice(0, nparts)
-      remove = subparts - retain
-      remove.each do |s|
-        success &= s.destroy 
-        break if !success
-      end
-    end
-    return success
-  end # of method 
 
   def tag_subparts(lengths, marks) 
     # 'lengths' & 'marks' are arrays of equal length sent by the controller
     subparts = Subpart.where(:question_id => self.id).order(:index)
+    success = true
 
     subparts.each_with_index do |s,j|
       l = lengths[j]
@@ -162,14 +146,15 @@ class Question < ActiveRecord::Base
       end
 
       m = m == 0 ? 3 : m # if no marks are specified, then default to marks = 3
-      s.update_attributes :mcq => mcq, :half_page => half, :full_page => full, :marks => m
+      success &= s.update_attributes(:mcq => mcq, :half_page => half, :full_page => full, :marks => m)
+      break if !success
     end
 
     # force recomputation of question's length and total marks by setting 
     # marks and length to nil. Recomputation will happen the next time 
     # marks? or length? is called 
-
-    self.update_attributes :length => nil, :marks => nil
+    self.update_attributes :length => nil, :marks => nil if success
+    return success
   end
 
 =begin
@@ -216,8 +201,6 @@ class Question < ActiveRecord::Base
       l = length.map{ |m| m == 1 ? 0.25 : ((m == 2) ? 0.5 : 1) }
       breaks = []
 
-      puts breaks
-
       used = 0
       last = l.count - 1
 
@@ -237,6 +220,32 @@ class Question < ActiveRecord::Base
         end
       end # each
       return breaks 
+    end # of method 
+
+    def resize_subparts_list_to( nparts ) # nparts = 0 for a stand-alone question
+      # however, internally we create 1 subpart object for even a standalone question
+      nparts = (nparts == 0) ? 1 : nparts 
+
+      subparts = Subpart.where(:question_id => self.id)
+      existing = subparts.length
+      additional = nparts - existing
+      success = true
+
+      if additional > 0
+        [*0...additional].each do |index|
+          s = self.subparts.build :index => (existing + index)
+          success &= s.save
+          break if !success
+        end
+      elsif additional < 0 
+        retain = subparts.slice(0, nparts)
+        remove = subparts - retain
+        remove.each do |s|
+          success &= s.destroy 
+          break if !success
+        end
+      end
+      return success
     end # of method 
 
 end # of class
