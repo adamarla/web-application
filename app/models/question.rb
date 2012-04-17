@@ -130,9 +130,11 @@ class Question < ActiveRecord::Base
   end
 
 
-  def tag_subparts(lengths, marks) 
+  def update_subpart_info(lengths, marks) 
     # 'lengths' & 'marks' are arrays of equal length sent by the controller
     subparts = Subpart.where(:question_id => self.id).order(:index)
+    breaks = page_breaks lengths
+    nbreaks = breaks.count
     success = true
 
     subparts.each_with_index do |s,j|
@@ -146,7 +148,11 @@ class Question < ActiveRecord::Base
       end
 
       m = m == 0 ? 3 : m # if no marks are specified, then default to marks = 3
-      success &= s.update_attributes(:mcq => mcq, :half_page => half, :full_page => full, :marks => m)
+      offset = breaks.index(breaks.select{ |m| m >= j }.first)
+      offset = nbreaks if offset.nil? # for subparts on the last page
+
+      success &= s.update_attributes(:mcq => mcq, :half_page => half, 
+                                     :full_page => full, :marks => m, :offset => offset)
       break if !success
     end
 

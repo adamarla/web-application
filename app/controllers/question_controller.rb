@@ -52,7 +52,7 @@ class QuestionController < ApplicationController
           # 1. Update the parent question
           question.update_attributes :topic_id => topic, :difficulty => difficulty
 
-          if question.tag_subparts lengths, marks
+          if question.update_subpart_info lengths, marks
             render :json => { :status => 'Done' }, :status => :ok
           else
             render :json => { :status => 'Oops !' }, :status => :bad_request
