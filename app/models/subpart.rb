@@ -33,7 +33,10 @@ class Subpart < ActiveRecord::Base
     else 
       return pg == n
     end
-
   end # of method
+
+  def self.in_quiz(quiz)
+    where(:question_id => QSelection.where(:quiz_id => quiz).map(&:question_id))
+  end
 
 end
