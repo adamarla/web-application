@@ -107,7 +107,7 @@ class Question < ActiveRecord::Base
     return guess.inject(:+).ceil
   end
 
-  def set_length_and_marks(length, marks)
+  def edit_tex_layout(length, marks)
     if resize_subparts_list_to length.count
       breaks = page_breaks length
       length = length.map{ |m| m == 1 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }

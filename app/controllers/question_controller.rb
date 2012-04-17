@@ -44,7 +44,7 @@ class QuestionController < ApplicationController
         # Step 1: Set the marks and lengths in TeX. Only when that succeeds
         # should one update the DB
 
-        manifest = question.set_length_and_marks lengths, marks
+        manifest = question.edit_tex_layout lengths, marks
         unless manifest.nil?
           topic = params[:topic].to_i
           difficulty = values[:difficulty].to_i
