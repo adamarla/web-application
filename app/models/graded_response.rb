@@ -148,11 +148,11 @@ class GradedResponse < ActiveRecord::Base
 
     nparts = question.num_parts?
     if nparts == 0
-      return "Q-#{id}"
+      return "Q.#{id}"
     else
       subpart_index = Subpart.where(:id => subpart_id).map(&:index).first
       c = [*'A'..'K'][subpart_index]
-      return "Q-#{id}.#{c}"
+      return "Q.#{id}#{c}"
     end
   end
 
