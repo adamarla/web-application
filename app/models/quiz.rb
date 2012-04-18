@@ -150,11 +150,12 @@ class Quiz < ActiveRecord::Base
         s.update_attributes :start_page => j + 1, :end_page => j + 1, :index => current_index
         current_index += 1
       end
-    end
+    end # of while 
     
     # Now, the multipart questions 
     spans = multipart.map(&:span?)
     current_page = layout.length + 1
+    last_standalone = standalone.count
 
     spans.each_with_index do |span, index|
       qid = multipart[index].id
@@ -224,22 +225,27 @@ class Quiz < ActiveRecord::Base
     self.questions.map{|q| q.topic_id}.uniq
   end
 
+  def pending_questions
+    a = GradedResponse.in_quiz(self.id).ungraded
+  end
+
   def pending_pages(examiner_id)
-    responses = GradedResponse.assigned_to(examiner_id).ungraded.with_scan.in_quiz(self.id)
-    qsel_ids = responses.map(&:q_selection_id).uniq
-    @pages = QSelection.where(:id => qsel_ids).order(:start_page).map(&:start_page).uniq
+    pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner_id)
+    @pages = pending.map(&:page?).uniq.sort
+    return @pages
   end
 
   def pending_scans(examiner, page)
-    responses = GradedResponse.assigned_to(examiner).on_page(page).in_quiz(self.id).ungraded.with_scan.order(:id)
-    scans = responses.map(&:scan).uniq
+    pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
+    scans = pending.map(&:scan).uniq.sort
 
     @ret = {:scans => []}
     scans.each do |s|
-      pick = responses.where(:scan => s)
+      pick = pending.select{ |m| m.scan == s }.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
       indices = pick.map(&:id)
-      type = pick.map{ |a| a.q_selection.question.mcq? }
-      (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type}) unless indices.empty?
+      type = pick.map{ |m| m.subpart.mcq }
+      labels = pick.map(&:name?)
+      (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type, :labels => labels}) unless indices.empty?
     end
     return @ret
   end
