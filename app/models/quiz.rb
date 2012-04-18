@@ -239,6 +239,10 @@ class Quiz < ActiveRecord::Base
     pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
     scans = pending.map(&:scan).uniq.sort
 
+    puts "******** pending count ***********"
+    puts "#{pending.count} ----> #{scans.count}"
+    puts "******** pending count ***********"
+
     @ret = {:scans => []}
     scans.each do |s|
       pick = pending.select{ |m| m.scan == s }.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
