@@ -57,61 +57,116 @@ jQuery ->
       preview.initialize()
 
       target = $('#document-preview').find 'ul:first'
-      root = json.preview.id
+      roots = json.preview.id
+
+      ###
+        When we didn't have multi-part support, we had questions that could 
+        be laid out on one page. We could therefore get away with specifying 
+        just the folder name (in vault) for the question when generating previews
+        of candidate questions because we knew that there would be atmost 
+        JPEG within that folder
+
+        However, multipart questions can span multiple pages. And we 
+        need to be able to pick up all pages for preview. Couple this with the
+        need to show multiple questions and we have no choice but to prepare
+        for a situation where both 'preview.json.id' and 'preview.json.scans'
+        are arrays
+      ###
+
+      if roots instanceof Array
+        nRoots = roots.length
+        multiRoot = true
+      else
+        nRoots = 1
+        multiRoot = false
+
       scans = json.preview.scans
 
       # Relevant only when rendering yardstick examples 
       isMcq = false
       counter = 1
 
-      for scan,j in scans
-        switch source
-          when 'atm'
-            full = "#{base}/#{root}/answer-key/preview/page-#{scan}.jpeg"
-            thumb = "#{base}/#{root}/answer-key/preview/page-#{scan}.jpeg"
-            alt = "##{scan}"
-          when 'vault'
-            thumb = "#{base}/#{root}/page-#{scan}.jpeg"
-            full = "#{base}/#{root}/page-#{scan}.jpeg"
-            alt = "#{root}"
-          when 'frontdesk-yardsticks'
-            type = json.preview.mcq[j]
-            if type isnt isMcq
-              counter = 1
-              isMcq = type
+      for i in [0 .. nRoots - 1]
+        if multiRoot
+          root = roots[i]
+          pages = scans[i]
+        else
+          root = roots
+          pages = scans
 
-            thumb = "#{base}/#{scan}/thumbnail.jpeg"
-            full = "#{base}/#{scan}/preview.jpeg"
-            alt = if isMcq then "M#{counter++}" else "G#{counter++}"
-          when 'locker'
-            thumb = "#{base}/#{scan}"
-            full = "#{base}/#{scan}"
-            alt = "pg-#{j+1}"
-          else break
+        for page,j in pages
+          hop = if (not multiRoot || (multiRoot && j == 0)) then true else false
+          switch source
+            when 'atm'
+              full = "#{base}/#{root}/answer-key/preview/page-#{page}.jpeg"
+              thumb = "#{base}/#{root}/answer-key/preview/page-#{page}.jpeg"
+              alt = "##{page}"
+            when 'vault'
+              thumb = "#{base}/#{root}/page-#{page}.jpeg"
+              full = "#{base}/#{root}/page-#{page}.jpeg"
+              alt = "#{root}"
+            when 'frontdesk-yardsticks'
+              type = json.preview.mcq[j]
+              if type isnt isMcq
+                counter = 1
+                isMcq = type
 
-        img = $("<li marker=#{scan}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
-        img.appendTo target
+              thumb = "#{base}/#{page}/thumbnail.jpeg"
+              full = "#{base}/#{page}/preview.jpeg"
+              alt = if isMcq then "M#{counter++}" else "G#{counter++}"
+            when 'locker'
+              thumb = "#{base}/#{page}"
+              full = "#{base}/#{page}"
+              alt = "pg-#{j+1}"
+            else break
+
+          img = $("<li hop=#{hop}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
+          img.appendTo target
 
       # Now, call the preview
       preview.execute()
       return true
 
     # Returns the index of the currently displayed image, starting with 0
-    currIndex : (loadedPreview = '#document-preview') ->
-      loadedPreview = if typeof loadedPreview is 'string' then $(loadedPreview) else loadedPreview
-      return null if loadedPreview.hasClass 'hidden'
-      counter = loadedPreview.find '.ppy-counter:first'
+    currIndex : (display = '#document-preview') ->
+      display = if typeof display is 'string' then $(display) else display
+      return null if display.hasClass 'hidden'
+      counter = display.find '.ppy-counter:first'
       if counter.length isnt 0
         return parseInt(counter.text()) - 1
       else return 0 # => single image preview
 
-    # Returns the DB Id of the question being viewed currently 
-    currDBId : (loadedPreview = '#document-preview') ->
-      index = preview.currIndex()
-      return null if index is null
-      start = $(loadedPreview).find '.ppy-imglist:first'
-      current = start.children('li').eq(index)
-      return current.attr 'marker'
+    ###
+      Hops backwards or forward to the next <li> in image list 
+      that has 'hop' attribute = 'true'
+    ###
+    hop: (fwd = true, display = '#document-preview') ->
+      display = if typeof display is 'string' then $(display) else display
+      imgList = display.find('.ppy-imglist').eq(0)
+      currId = preview.currIndex display
+
+      images = imgList.children('li')
+      nImages = images.length
+      current = images.eq(currId)
+      rocks = imgList.children('li[hop="true"]')
+
+      if fwd
+        hopTo = current.next 'li[hop="true"]'
+        hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
+        rockAt = images.index(hopTo)
+        pressBtn = display.find '.ppy-next:first'
+        nClicks = if (rockAt > currId) then rockAt - currId else (nImages - currId + rockAt)
+      else
+        hopTo = current.prev 'li[hop="true"]'
+        hopTo = if hopTo.length is 0 then rocks.eq(rocks.length - 1) else hopTo
+        rockAt = images.index(hopTo)
+        pressBtn = display.find '.ppy-prev:first'
+        nClicks = if (rockAt < currId) then currId - rockAt else (nImages - rockAt) # wrapping back from 0
+      
+      # Now click whichever button needs to be clicked 'nClicks' times
+      for m in [1 .. nClicks]
+        pressBtn.click()
+      return true
 
     hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
       return if (not imgId? or not newCaption?)
@@ -127,10 +182,10 @@ jQuery ->
       captions[imgId] = newCaption
       return true
 
-    softSetImgCaption : (newCaption, loadedPreview = '#document-preview') ->
-      loadedPreview = if typeof loadedPreview is 'string' then $(loadedPreview) else loadedPreview
-      return null if loadedPreview.hasClass 'hidden'
-      caption = loadedPreview.find '.ppy-text:first'
+    softSetImgCaption : (newCaption, display = '#document-preview') ->
+      display = if typeof display is 'string' then $(display) else display
+      return null if display.hasClass 'hidden'
+      caption = display.find '.ppy-text:first'
       return null if caption.length is 0
       caption.text newCaption
       return true
@@ -146,15 +201,23 @@ jQuery ->
       key = event.keyCode
       switch key
         when 66 # 66 = 'B' for going back 
+          preview.hop false, images
+          verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
+          
+          ###
           backBtn = images.find '.ppy-prev:first'
           unless backBtn.length is 0
             backBtn.click()
-            verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
+          ###
         when 78 # 78 = 'N' for going to next
+          preview.hop true, images
+          verticalTabs.children('li').eq(next).children('a:first').click() if next?
+          
+          ###
           fwdBtn = images.find '.ppy-next:first'
           unless fwdBtn.length is 0
             fwdBtn.click()
-            verticalTabs.children('li').eq(next).children('a:first').click() if next?
+          ###
       return true
 
     scrollSidePnlList: (event) ->
