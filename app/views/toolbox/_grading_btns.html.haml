@@ -10,14 +10,12 @@
 
 - mcq = Yardstick.order(:default_allotment).select{ |y| y.mcq }.map(&:id)
 .grade-btns-mcq
-  %input.hidden{ :type => :number, :name => 'tbd' }
   - mcq.each_with_index do |m, index|
-    %input{ :type => :radio, :id => "mcq-#{index}", :marker => "#{m}"}
+    %input{ :type => :radio, :id => "mcq-#{index}", :marker => "#{m}", :name => 'tbd', :value => "#{m.id}" }
     %label{ :for => "mcq-#{index}", :color => "mcq-#{index+1}" }= "M#{index+1}"
 
 - non_mcq = Yardstick.order(:default_allotment).select{ |y| !y.mcq }.map(&:id)
 .grade-btns-non-mcq
-  %input.hidden{ :type => :number, :name => 'tbd' }
   - non_mcq.each_with_index do |m, index|
-    %input{ :type => :radio, :id =>"non-#{m}", :marker => "#{m}" }
+    %input{ :type => :radio, :id =>"non-#{m}", :marker => "#{m}", :name => 'tbd', :value => "#{m.id}"}
     %label{ :for => "non-#{m}", :color => "non-mcq-#{index+1}" }= "G#{index+1}"

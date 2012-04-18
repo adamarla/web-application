@@ -58,12 +58,18 @@ window.canvas = {
 
         c = if isMcq then mcq.clone() else nonMcq.clone()
         c.appendTo gradeControls
-        c.children('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
+        #c.children('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
 
-        # Set 'id' on input[type="radio"] and 'for' on the adjoining <label>
-        # See comment in 'toolbox/grading_btns'
+        ###
+          Two things need to be done now:
+            1. Bind the radio-buttons to <label> so that buttonset() can work properly
+            2. For each graded response on the scanned page, set the *same*
+               'name' attribute on each of the grade radio-buttons. The value
+               submitted has already been defined in the toolbox
+        ###
 
         for radio,index in c.children 'input[type="radio"]'
+          $(radio).attr 'name', "grade[#{response_id}]"
           label = $(radio).next 'label'
           v = "grd-#{response_id}-#{index}"
           $(radio).attr 'id', "#{v}"
