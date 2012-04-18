@@ -30,8 +30,7 @@ class GradedResponse < ActiveRecord::Base
   validates :student_id, :presence => true
 
   def self.on_page(page)
-    # Returns all respones on passed page of all Quizzes
-    where(:q_selection_id => QSelection.where(:start_page => page).order('index ASC').map(&:id)) 
+    select{ |m| m.page? == page }
   end
 
   def self.in_quiz(id)
@@ -101,6 +100,17 @@ class GradedResponse < ActiveRecord::Base
     marks = subpart.marks
     assigned = (marks * (allotment/100.0)).round(1)
     return (self.update_attributes(:grade_id => grade.id, :marks => assigned) ? :ok : :bad_request)
+  end
+
+  def page?
+    if self.scan
+      quiz, testpaper, student, page = self.scan.split('-').map(&:to_i)
+    else
+      start_pg = QSelection.where(:id => self.q_selection_id).select(:start_page).first.start_page
+      offset = Subpart.where(:id => self.subpart_id).select(:relative_page).first.relative_page
+      page = start_pg + offset
+    end
+    return page
   end
 
   def colour? 
