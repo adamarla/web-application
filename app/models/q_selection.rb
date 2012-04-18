@@ -27,4 +27,11 @@ class QSelection < ActiveRecord::Base
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible 
+
+  def self.on_page(n)
+    # Return QSelections that either lie on page 'n' or that span
+    # pages including page 'n'
+    where('start_page <= ?', n).where('end_page >= ?', n)
+  end
+
 end
