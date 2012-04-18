@@ -2,14 +2,14 @@
 #
 # Table name: subparts
 #
-#  id          :integer         not null, primary key
-#  question_id :integer
-#  mcq         :boolean         default(FALSE)
-#  half_page   :boolean         default(FALSE)
-#  full_page   :boolean         default(TRUE)
-#  marks       :integer
-#  index       :integer
-#  offset      :integer
+#  id            :integer         not null, primary key
+#  question_id   :integer
+#  mcq           :boolean         default(FALSE)
+#  half_page     :boolean         default(FALSE)
+#  full_page     :boolean         default(TRUE)
+#  marks         :integer
+#  index         :integer
+#  relative_page :integer
 #
 
 class Subpart < ActiveRecord::Base
@@ -26,7 +26,7 @@ class Subpart < ActiveRecord::Base
     return false if s.empty? 
 
     start_pg = s.select(:start_page).first.start_page
-    pg = start_pg + self.offset
+    pg = start_pg + self.relative_page
 
     if n.class == Array
       return n.include? pg

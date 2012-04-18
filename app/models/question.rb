@@ -152,7 +152,7 @@ class Question < ActiveRecord::Base
       offset = nbreaks if offset.nil? # for subparts on the last page
 
       success &= s.update_attributes(:mcq => mcq, :half_page => half, 
-                                     :full_page => full, :marks => m, :offset => offset)
+                                     :full_page => full, :marks => m, :relative_page => offset)
       break if !success
     end
 
@@ -177,7 +177,7 @@ class Question < ActiveRecord::Base
     self.resize_subparts_list_to 1
     s = self.subparts.first
     s.update_attributes :mcq => self.mcq, :half_page => self.half_page,
-                        :full_page => self.full_page, :marks => self.marks, :offset => 0
+                        :full_page => self.full_page, :marks => self.marks, :relative_page => 0
   end
 
   def rebuild_from_subparts
