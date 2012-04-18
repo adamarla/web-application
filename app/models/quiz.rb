@@ -241,6 +241,9 @@ class Quiz < ActiveRecord::Base
 
     puts "******** pending count ***********"
     puts "#{pending.count} ----> #{scans.count}"
+    puts " (page is a string) " if page.class == String
+    puts " (examiner is a string) " if examiner.class == String
+    puts " (examiner is a number) " if examiner.class == Fixnum
     puts "******** pending count ***********"
 
     @ret = {:scans => []}
