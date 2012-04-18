@@ -38,6 +38,10 @@ class GradedResponse < ActiveRecord::Base
     where(:q_selection_id => QSelection.where(:quiz_id => id).map(&:id)) 
   end
 
+  def self.in_testpaper(id)
+    where(:testpaper_id => id)
+  end
+
   def self.of_student(id)
     where(:student_id => id)
   end
