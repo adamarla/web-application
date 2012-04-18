@@ -1,6 +1,6 @@
 
   node :preview do 
-    { :id => @course.id, :indices => @questions.map(&:uid) }
+    { :id => @course.id, :scans => @questions.map(&:uid) }
   end
 
   node :questions do

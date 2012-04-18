@@ -58,7 +58,7 @@ jQuery ->
 
       target = $('#document-preview').find 'ul:first'
       root = json.preview.id
-      scans = json.preview.indices
+      scans = json.preview.scans
 
       # Relevant only when rendering yardstick examples 
       isMcq = false

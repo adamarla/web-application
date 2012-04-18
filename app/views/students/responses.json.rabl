@@ -1,6 +1,6 @@
 
 object false => :preview 
-  code :indices do
+  code :scans do
     @scans
   end
 

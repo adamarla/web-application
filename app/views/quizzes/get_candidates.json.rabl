@@ -3,4 +3,4 @@
 # create a preview. See also quizzes/preview.json.rabl
 
 object false => :preview
-  node(:indices) { |m| @questions }
+  node(:scans) { |m| @questions }
