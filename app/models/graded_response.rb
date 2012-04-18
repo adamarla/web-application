@@ -144,15 +144,15 @@ class GradedResponse < ActiveRecord::Base
     subpart_id = self.subpart_id 
 
     # Index of the question within the quiz 
-    id = QSelection.where(:quiz_id => quiz_id, :question_id => question.id).map(&:index).first
+    id = QSelection.where(:quiz_id => quiz_id, :question_id => question.id).map(&:index).first + 1
 
     nparts = question.num_parts?
     if nparts == 0
-      return "Q#{id}"
+      return "Q-#{id}"
     else
       subpart_index = Subpart.where(:id => subpart_id).map(&:index).first
       c = [*'A'..'K'][subpart_index]
-      return "Q#{id}.#{c}"
+      return "Q-#{id}.#{c}"
     end
   end
 
