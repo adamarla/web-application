@@ -73,7 +73,7 @@ class Student < ActiveRecord::Base
   end
 
   def responses(testpaper_id)
-    a = GradedResponse.of_student(self.id).in_testpaper(testpaper_id)
+    a = GradedResponse.of_student(self.id).in_testpaper(testpaper_id).with_scan
     return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
   end
 
