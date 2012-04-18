@@ -239,27 +239,14 @@ class Quiz < ActiveRecord::Base
     pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
     scans = pending.map(&:scan).uniq.sort
 
-    puts "******** pending count ***********"
-    puts "#{pending.count} ----> #{scans.count}"
-    puts " (page is a string) " if page.class == String
-    puts " (examiner is a string) " if examiner.class == String
-    puts " (examiner is a number) " if examiner.class == Fixnum
-    puts "******** pending count ***********"
-
     @ret = {:scans => []}
     scans.each do |s|
       pick = pending.select{ |m| m.scan == s }.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
       indices = pick.map(&:id)
-      puts "***** indices ****************"
-      puts indices
-      puts "******************************"
       type = pick.map{ |m| m.subpart.mcq }
       labels = pick.map(&:name?)
       (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type, :labels => labels}) unless indices.empty?
     end
-    puts "******************************"
-    puts @ret 
-    puts "******************************"
     return @ret
   end
 

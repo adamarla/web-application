@@ -35,8 +35,8 @@ class QuizzesController < ApplicationController
   def pending_scans
     quiz = Quiz.find params[:id]
     examiner = Examiner.find params[:examiner_id]
-    page = params[:page]
-    head :bad_request if (quiz.nil? || examiner.nil? || page.nil?)
+    page = params[:page].nil? ? -1 : params[:page].to_i
+    head :bad_request if (quiz.nil? || examiner.nil? || page < 0) 
 
     @scans = quiz.pending_scans examiner.id, page
     render :json => @scans
