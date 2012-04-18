@@ -320,6 +320,15 @@ span.unhappyMessage {
   color: $orange ;
 }
 
+.grade-panel-question-label {
+  height: 30px ;
+  font: {
+    weight: bold ;
+    size: 16px ;
+  }
+  color: white ;
+}
+
 .grade-btns-mcq.ui-buttonset, .grade-btns-non-mcq.ui-buttonset {
   margin-bottom: 20px ;
   > label {

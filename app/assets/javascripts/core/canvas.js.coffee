@@ -56,6 +56,9 @@ window.canvas = {
         isMcq = if rDiv.attr('mcq') is "true" then true else false
         response_id = rDiv.attr 'response_id'
 
+        # Append a div to display the question # just before the grade controls
+        $("<div class='grading-panel-question-label'>#{rDiv.attr('qlabel')}</div>").appendTo gradeControls
+
         c = if isMcq then mcq.clone() else nonMcq.clone()
         c.appendTo gradeControls
         #c.children('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
