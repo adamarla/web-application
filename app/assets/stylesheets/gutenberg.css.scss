@@ -320,12 +320,13 @@ span.unhappyMessage {
   color: $orange ;
 }
 
-.grade-panel-question-label {
+.grading-panel-question-label {
   height: 30px ;
   font: {
     weight: bold ;
     size: 16px ;
   }
+  margin-bottom: 7px ;
   color: white ;
 }
 
