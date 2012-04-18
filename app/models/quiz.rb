@@ -245,7 +245,7 @@ class Quiz < ActiveRecord::Base
       indices = pick.map(&:id)
       type = pick.map{ |m| m.subpart.mcq }
       labels = pick.map(&:name?)
-      (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type, :labels => labels}) unless indices.empty?
+      (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type}) unless indices.empty?
     end
     return @ret
   end
