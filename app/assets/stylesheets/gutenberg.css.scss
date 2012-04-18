@@ -324,9 +324,11 @@ span.unhappyMessage {
   height: 30px ;
   font: {
     weight: bold ;
-    size: 16px ;
+    size: 14px ;
   }
   margin-bottom: 7px ;
+  padding-bottom: 3px; 
+  border-bottom: 2px solid $light-gray ;
   color: white ;
 }
 
