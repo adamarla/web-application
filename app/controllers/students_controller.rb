@@ -28,6 +28,18 @@ class StudentsController < ApplicationController
     testpaper = Testpaper.find params[:testpaper]
     head :bad_request if (student.nil? || testpaper.nil?)
 
+    answers = student.responses testpaper
+    @info = answers.map{ |m| { :question => { 
+      :id => m.q_selection.index,
+      :name => m.name?,
+      :marks => m.marks,
+      :color => m.colour?
+    } } }
+
+    @scans = answers.map(&:scan).uniq.sort
+    respond_with @info, @scans
+
+=begin
     all = student.responses testpaper
     by_index = all.to_a.sort{ |x,y| x.q_selection.index <=> y.q_selection.index }
     @info = by_index.map{ |x| {:question => { :id => x.q_selection.index, 
@@ -35,8 +47,7 @@ class StudentsController < ApplicationController
           :marks => x.marks, 
           :color => x.colour? }} }
     @scans = all.with_scan
-
-    respond_with @info, @scans
+=end
   end
 
 end

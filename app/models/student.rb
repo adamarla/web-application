@@ -73,9 +73,8 @@ class Student < ActiveRecord::Base
   end
 
   def responses(testpaper_id)
-    quiz = Testpaper.where(:id => testpaper_id).first.quiz
-    num_pages = quiz.num_pages
-    GradedResponse.of_student(self.id).in_quiz(quiz.id).on_page([*1..num_pages])
+    a = GradedResponse.of_student(self.id).in_testpaper(testpaper_id)
+    return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
   end
 
   def proficiency?(topic_id)
