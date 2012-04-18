@@ -137,7 +137,7 @@ jQuery ->
 
     scrollImg: (images, event) ->
       verticalTabs = $('#side-panel').find '.vertical-tabs:first > ul' # if present, we need the ui-tabs-nav
-      unless verticalTabs.length is 0
+      unless verticalTabs.length is 0 # => previewing yardsticks
         numTabs = verticalTabs.find('li').length
         index = verticalTabs.find('li.ui-tabs-selected').index()
         next = (index + 1) % numTabs
@@ -171,9 +171,9 @@ jQuery ->
 
       key = event.keyCode
       switch key
-        when 37 # 37 = left-key 
+        when 66 # 66 = 'B' for going back 
           next = if currPg > 0 then currPg - 1 else nQues - 1
-        when 39 # 39 = right-key
+        when 78 # 78 = 'N' for going to next
           next = (currPg + 1) % nQues
 
       c = options.eq(currPg)
