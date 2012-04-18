@@ -133,6 +133,13 @@ class Teacher < ActiveRecord::Base
     @testpapers = Testpaper.where(:quiz_id => quiz_ids).order('created_at DESC')
   end
 
+  def build_grade_table
+    Yardstick.select('id, default_allotment').each do |y|
+      grade = self.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
+      break if !grade.save
+    end
+  end 
+
   private 
     
     def reset_login_info
@@ -159,11 +166,5 @@ class Teacher < ActiveRecord::Base
       self.last_name = self.last_name.humanize
     end 
 
-    def build_grade_table
-      Yardstick.select('id, default_allotment').each do |y|
-        grade = self.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
-        break if !grade.save
-      end
-    end 
 
 end
