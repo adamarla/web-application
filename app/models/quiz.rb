@@ -173,7 +173,7 @@ class Quiz < ActiveRecord::Base
     # really don't have much choice 
 
     j = self.q_selections.order(:start_page).select('question_id, start_page')
-    last = j.last.page 
+    last = j.last.start_page 
     layout = [] 
 
     [*1..last].each do |page|
