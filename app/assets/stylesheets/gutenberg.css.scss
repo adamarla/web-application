@@ -52,6 +52,11 @@ body {
   text-transform: lowercase ;
 }
 
+.what-next, .what-now { 
+  min-height: 80px ;
+  margin-bottom: 20px ;
+} 
+
 .instructions {
   text-align: justify ;
   font: {
@@ -425,34 +430,13 @@ span.unhappyMessage {
     background-color: lighten($blue, 20%) ;
   }
 
-/*
 #queue-graphic {
-  height: 100px ;
-  width: 100% ; 
-  margin-bottom: 20px ;
+  width: 90% ;
+  min-height: 100px ;
 
-  > div {
-    min-height: 30px ;
-    margin-top: 5px ;
-    border-bottom: 1px solid #6ca7ab ;
-  }
-
-  .inline-label {
-    max-width: 70% ;
-    font-size: 14px ;
-    color: #6ca2ab ;
-    text-transform: lowercase ;
-    font-variant: normal ; 
-  }
-}
-*/
-#queue-graphic {
-  width: 100% ;
-  height: 100px ;
-
-  > .big-ticker {
+  .big-ticker {
     width: 50% ;
-    height: 30px ;
+    min-height: 30px ;
 
     > .ticker-display-value {
       font: {

@@ -58,12 +58,15 @@ jQuery ->
       preview.loadJson json, 'vault'
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
-      eet = "#{Math.floor(at/60)}h:#{at % 60}min" # about a minute per document
+      hours = Math.floor(at/60)
+      minutes = (at % 60)
+      minutes = if minutes < 10 then "0#{minutes}" else "#{minutes}"
+      eet = "#{hours}h:#{minutes}min" # about a minute per document
 
       g = $('#queue-graphic')
 
-      g.children('#job-position:first').children('.ticker-display-value').text "##{at}"
-      g.children('#job-eta:first').children('.ticker-display-value').text "#{eet}"
+      g.find('#job-position:first').children('.ticker-display-value').text "##{at}"
+      g.find('#job-eta:first').children('.ticker-display-value').text "#{eet}"
 
       return true
 

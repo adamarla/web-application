@@ -29,11 +29,25 @@
       .form-fields
 
   #queue-graphic
-    #job-position.big-ticker.left
-      .ticker-margin-note= "Your request is"
-      .ticker-display-value
-      .ticker-margin-note= "in the queue"
-    #job-eta.big-ticker.right
-      .ticker-margin-note= "Check back after"
-      .ticker-display-value
-      .ticker-margin-note= "to download the PDF"
+    .what-now
+      #job-position.big-ticker.left
+        .ticker-margin-note= "Your request is"
+        .ticker-display-value
+        .ticker-margin-note= "in the queue"
+      #job-eta.big-ticker.right
+        .ticker-margin-note= "Check back after"
+        .ticker-display-value
+        .ticker-margin-note= "to download the PDF"
+    .what-next
+      %legend
+        %span.target= "What happens now?"
+        %p.instructions 
+          Your request has been placed in a queue and will be 
+          picked up after some time for processing
+      %legend
+        %span.target= "Can I logout now?"
+        %p.instructions 
+          Sure you can. If there is nothing else you need to do
+          at this time, then - by all means - logout. Or, continue using 
+          the site. Either way, your request is safely in the queue
+          and will be processed
