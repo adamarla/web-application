@@ -141,18 +141,17 @@ jQuery ->
     ###
     hop: (fwd = true, display = '#document-preview') ->
       display = if typeof display is 'string' then $(display) else display
-      imgList = display.find('.ppy-imglist').eq(0)
+      images = display.find('.ppy-imglist').eq(0)
+      li = images.children('li')
       currId = preview.currIndex display
 
-      images = imgList.children('li')
-      nImages = images.length
-      current = images.eq(currId)
-      rocks = imgList.children('li[hop="true"]')
+      nImages = li.length
+      rocks = images.children('li[hop="true"]')
 
       if fwd
-        hopTo = current.next('li[hop="true"]')
+        hopTo = images.children("li[hop='true']:gt(#{currId})")
         hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
-        rockAt = images.index(hopTo)
+        rockAt = li.index(hopTo)
         pressBtn = display.find '.ppy-next:first'
         nClicks = if (rockAt > currId) then rockAt - currId else (nImages - currId + rockAt)
         alert "#{nImages} --> #{currId} --> #{rockAt} --> #{nClicks}"
