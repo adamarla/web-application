@@ -49,18 +49,20 @@ class SchoolsController < ApplicationController
 
   def update 
     school = School.find params[:id] 
-    status = :ok 
+    status = :ok
 
     unless school.nil? 
       active = params[:account][:active] == 'true' ? true : false 
       status = school.update_attributes(params[:school]) ? :ok : :bad_request
       unless status == :bad_request
         status = school.account.update_attribute(:active, active) ? :ok : :bad_request
-      end 
+      end
     else 
       status = :bad_request 
     end 
-    head status 
+
+    render(:json => { :status => "Done" }, :status => status) if status == :ok
+    render(:json => { :status => "Update failed!" }, :status => status) if status == :bad_request
   end 
 
   def list 
