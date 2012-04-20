@@ -147,6 +147,7 @@ jQuery ->
 
       nImages = li.length
       rocks = images.children('li[hop="true"]')
+      alert "#{rocks.length}"
       current = li.eq(currId)
 
       if fwd
