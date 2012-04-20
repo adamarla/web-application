@@ -58,17 +58,13 @@ jQuery ->
       preview.loadJson json, 'vault'
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
-      eet = (at + 1) * 3 # est = expected end time
+      eet = "#{Math.floor(at/60)}h:#{at % 60}min" # about a minute per document
 
       g = $('#queue-graphic')
-      g.removeClass 'hidden'
 
-      for ticker,index in g.find('.led')
-          if index is 0 then $(ticker).text "##{at}"
-          else if index is 1 then $(ticker).text "#{2*at} min."
-          else if index is 2 then $(ticker).text "2 min."
+      g.children('#job-position:first').children('.ticker-display-value').text "##{at}"
+      g.children('#job-eta:first').children('.ticker-display-value').text "#{eet}"
 
-      g.hide().fadeIn('slow').fadeOut(8000).addClass('hidden')
       return true
 
     else if url.match(/teacher\/testpapers/)

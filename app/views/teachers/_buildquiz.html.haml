@@ -9,6 +9,8 @@
       %a{ :href => '#topic-selection-list' }= "specific"
     %li
       %a{ :href => '#question-options' }= "pick"
+    %li
+      %a{ :href => '#queue-graphic'}= "summary"
   #courses-taught
   #vertical-selection-list
     = form_tag 'course/applicable_topics', :remote => true, :method => :put do |f| 
@@ -24,14 +26,14 @@
     = form_tag 'teacher/build_quiz', :remote => true, :method => :put do |f| 
       .submit-buttons
         = submit_tag 'build quiz'
-      #queue-graphic.hidden
-        #queue-last-at
-          .inline-label.left= "Queue Posn."
-          .led.right
-        #est-start-time
-          .inline-label.left= "Starts in (est)"
-          .led.right
-        #est-processing-time
-          .inline-label.left= "Processing Time (est)"
-          .led.right
       .form-fields
+
+  #queue-graphic
+    #job-position.big-ticker.left
+      .ticker-margin-note= "Your request is"
+      .ticker-display-value
+      .ticker-margin-note= "in the queue"
+    #job-eta.big-ticker.right
+      .ticker-margin-note= "Check back after"
+      .ticker-display-value
+      .ticker-margin-note= "to download the PDF"

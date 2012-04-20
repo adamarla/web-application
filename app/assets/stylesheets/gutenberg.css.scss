@@ -425,6 +425,7 @@ span.unhappyMessage {
     background-color: lighten($blue, 20%) ;
   }
 
+/*
 #queue-graphic {
   height: 100px ;
   width: 100% ; 
@@ -443,6 +444,33 @@ span.unhappyMessage {
     text-transform: lowercase ;
     font-variant: normal ; 
   }
+}
+*/
+#queue-graphic {
+  width: 100% ;
+  height: 100px ;
+
+  > .big-ticker {
+    width: 50% ;
+    height: 30px ;
+
+    > .ticker-display-value {
+      font: {
+        size: 25px ;
+      }
+      color: #6ca7ab ;
+      margin-bottom: 5px ;
+    }
+    
+    > .ticker-margin-note {
+      font: {
+        size: 13px ;
+      }
+      text-transform: lowercase ;
+      color: white ; 
+    }
+  }
+
 }
 
 .subpart-tags {

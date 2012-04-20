@@ -123,6 +123,7 @@ jQuery ->
 
     form = $(this).children 'form:first'
     form.attr 'action', "teacher/build_quiz.json?course_id=#{courseId}&id=#{teacherId}"
+    flipchart.next '#build-quiz'
     return true
 
   ###
