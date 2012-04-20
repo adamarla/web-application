@@ -259,6 +259,7 @@ window.coreUtil = {
        added a 'marker' attribute = DB field-name for each input. The input field gets
        value = data[marker] if it has a marker
       ###
+      return if not data?
       form = if typeof form is 'string' then $(form) else form
 
       for input in form.find 'input[marker],textarea[marker],select[marker]'
