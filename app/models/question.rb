@@ -2,17 +2,18 @@
 #
 # Table name: questions
 #
-#  id          :integer         not null, primary key
-#  uid         :string(255)
-#  attempts    :integer         default(0)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  examiner_id :integer
-#  topic_id    :integer
-#  teacher_id  :integer
-#  difficulty  :integer         default(1)
-#  marks       :integer
-#  length      :float
+#  id              :integer         not null, primary key
+#  uid             :string(255)
+#  attempts        :integer         default(0)
+#  created_at      :datetime
+#  updated_at      :datetime
+#  examiner_id     :integer
+#  topic_id        :integer
+#  teacher_id      :integer
+#  difficulty      :integer         default(1)
+#  marks           :integer
+#  length          :float
+#  answer_key_span :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -97,10 +98,15 @@ class Question < ActiveRecord::Base
   end
 
   def answer_key_span?
-    # The # of pages needed to show an individual question's answer-key 
-    # can be different from the # of pages the question needs when laid out
-    # in a quiz. This method *guesses* the former for multipart questions
-    # and returns 1 for standalone questions
+    # Returns the # of pages over which the solution to this question spans. 
+    # This is a number that cannot be guessed because it really depends on 
+    # how the question writer wrote the solution. Moreover, this # is also 
+    # different from what span? returns because there we leave known amount of 
+    # blank space for a known # of subparts 
+
+    return self.answer_key_span unless self.answer_key_span.nil?
+
+    # Not set yet? Guess ..
     return 1 if self.num_parts? == 0
 
     guess = self.subparts.map{ |m| m.full_page ? 0.5 : 0.25 }

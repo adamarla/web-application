@@ -46,11 +46,17 @@ class QuestionController < ApplicationController
 
         manifest = question.edit_tex_layout lengths, marks
         unless manifest.nil?
+          # The manifest returns the # of jpegs created - one per page - for
+          # this question's answer key. This is something that cannot be calculated
+          # because it really depends on how the solution was written for this question
+          n_answer_key = manifest[:image].count
+
           topic = params[:topic].to_i
           difficulty = values[:difficulty].to_i
 
           # 1. Update the parent question
-          question.update_attributes :topic_id => topic, :difficulty => difficulty
+          question.update_attributes :topic_id => topic, :difficulty => difficulty, 
+                                     :answer_key_span => n_answer_key
 
           if question.update_subpart_info lengths, marks
             render :json => { :status => 'Done' }, :status => :ok
