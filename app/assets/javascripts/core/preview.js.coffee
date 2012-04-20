@@ -150,8 +150,8 @@ jQuery ->
       current = li.eq(currId)
 
       if fwd
-        #hopTo = images.children("li[hop='true']:gt(#{currId})").eq(0)
-        hopTo = current.next "li[hop='true']:gt(#{currId})"
+        hopTo = images.children("li[hop='true']:gt(#{currId})").eq(0)
+        #hopTo = current.next "li[hop='true']:gt(#{currId})"
         hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
         rockAt = li.index(hopTo)
         pressBtn = display.find '.ppy-next:first'
