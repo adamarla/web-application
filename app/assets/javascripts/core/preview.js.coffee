@@ -150,14 +150,14 @@ jQuery ->
       rocks = imgList.children('li[hop="true"]')
 
       if fwd
-        hopTo = current.next('li').next('li[hop="true"]')
+        hopTo = current.next().next('li[hop="true"]')
         hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
         rockAt = images.index(hopTo)
         pressBtn = display.find '.ppy-next:first'
         nClicks = if (rockAt > currId) then rockAt - currId else (nImages - currId + rockAt)
         alert "#{nImages} --> #{currId} --> #{rockAt} --> #{nClicks}"
       else
-        hopTo = current.prev('li').prev('li[hop="true"]')
+        hopTo = current.prev().prev('li[hop="true"]')
         hopTo = if hopTo.length is 0 then rocks.eq(rocks.length - 1) else hopTo
         rockAt = images.index(hopTo)
         pressBtn = display.find '.ppy-prev:first'
