@@ -153,6 +153,8 @@ jQuery ->
         hopTo = current.siblings("li[hop='true']:gt(#{currId}").eq(0)
         if hopTo.length isnt 0
           alert " abhinav --> #{li.index(hopTo)} --> #{hopTo.index()} "
+        else
+          alert " hopTo is null "
         hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
         rockAt = li.index(hopTo)
         guess2 = hopTo.index()
