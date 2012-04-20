@@ -149,7 +149,7 @@ jQuery ->
       rocks = images.children('li[hop="true"]')
 
       if fwd
-        hopTo = images.children("li[hop='true']:gt(#{currId})")
+        hopTo = images.children("li[hop='true']:gt(#{currId})").eq(0)
         hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
         rockAt = hopTo.index()
         pressBtn = display.find '.ppy-next:first'
