@@ -151,7 +151,8 @@ jQuery ->
       current = li.eq(currId)
 
       if fwd
-        hopTo = current.siblings("li[hop='true']:gt(#{currId}").eq(0)
+        #hopTo = current.siblings("li[hop='true']:gt(#{currId}").eq(0)
+        hopTo = current.siblings('li[hop="true"]').filter("li:gt(#{currId})").eq(0)
         if hopTo.length isnt 0
           alert " abhinav --> #{li.index(hopTo)} --> #{hopTo.index()} "
         else
