@@ -153,7 +153,7 @@ jQuery ->
         hopTo = images.children("li[hop='true']:gt(#{currId})").eq(0)
         #hopTo = current.next "li[hop='true']:gt(#{currId})"
         hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
-        rockAt = li.index(hopTo)
+        rockAt = li.index(hopTo) - 1
         pressBtn = display.find '.ppy-next:first'
         nClicks = if (rockAt >= currId) then rockAt - currId else (nImages - currId + rockAt)
         alert "#{nImages} --> #{currId} --> #{rockAt} --> #{nClicks}"
