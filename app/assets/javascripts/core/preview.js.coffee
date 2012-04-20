@@ -155,14 +155,14 @@ jQuery ->
         rockAt = images.index(hopTo)
         pressBtn = display.find '.ppy-next:first'
         nClicks = if (rockAt > currId) then rockAt - currId else (nImages - currId + rockAt)
-        alert "#{current} --> #{currId} --> #{rockAt} --> #{nClicks}"
+        alert "#{nImages} --> #{currId} --> #{rockAt} --> #{nClicks}"
       else
         hopTo = current.prev 'li[hop="true"]'
         hopTo = if hopTo.length is 0 then rocks.eq(rocks.length - 1) else hopTo
         rockAt = images.index(hopTo)
         pressBtn = display.find '.ppy-prev:first'
         nClicks = if (rockAt < currId) then currId - rockAt else (nImages - rockAt) # wrapping back from 0
-        alert "#{current} --> #{currId} --> #{rockAt} --> #{nClicks}"
+        alert "#{nImages} --> #{currId} --> #{rockAt} --> #{nClicks}"
       
       # Now click whichever button needs to be clicked 'nClicks' times
       for m in [1 .. nClicks]
