@@ -132,10 +132,9 @@ jQuery ->
       display = if typeof display is 'string' then $(display) else display
       return null if display.hasClass 'hidden'
       counter = display.find '.ppy-counter:first'
-      if counter.length isnt 0
-        return parseInt(counter.text()) - 1
-      else return 0 # => single image preview
-
+      counter = if counter.length isnt 0 then parseInt(counter.text()) - 1 else 0
+      return counter
+      
     ###
       Hops backwards or forward to the next <li> in image list 
       that has 'hop' attribute = 'true'
@@ -156,12 +155,14 @@ jQuery ->
         rockAt = images.index(hopTo)
         pressBtn = display.find '.ppy-next:first'
         nClicks = if (rockAt > currId) then rockAt - currId else (nImages - currId + rockAt)
+        alert "#{current} --> #{currId} --> #{rockAt} --> #{nClicks}"
       else
         hopTo = current.prev 'li[hop="true"]'
         hopTo = if hopTo.length is 0 then rocks.eq(rocks.length - 1) else hopTo
         rockAt = images.index(hopTo)
         pressBtn = display.find '.ppy-prev:first'
         nClicks = if (rockAt < currId) then currId - rockAt else (nImages - rockAt) # wrapping back from 0
+        alert "#{current} --> #{currId} --> #{rockAt} --> #{nClicks}"
       
       # Now click whichever button needs to be clicked 'nClicks' times
       for m in [1 .. nClicks]
