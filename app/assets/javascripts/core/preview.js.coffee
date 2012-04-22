@@ -144,31 +144,26 @@ jQuery ->
       images = display.find('.ppy-imglist').eq(0)
       li = images.children('li')
       currId = preview.currIndex display
-
       nImages = li.length
-      rocks = images.children('li[hop="true"]')
-      current = li.eq(currId)
 
       if fwd
         hopTo = li.filter("li:gt(#{currId})").filter('li[hop="true"]').eq(0)
-        alert " no hop-to" if hopTo.length is 0
+        #alert " no hop-to" if hopTo.length is 0
 
         next = if hopTo.length isnt 0 then li.index(hopTo) else 0
-        #nextId = li.index(next)
-
         pressBtn = display.find '.ppy-next:first'
         nClicks = if (next > currId) then next - currId else (nImages - currId + next)
-        alert "#{nImages} --> #{currId} --> #{next} --> #{nClicks}"
+        #alert "#{nImages} --> #{currId} --> #{next} --> #{nClicks}"
       else
         hopTo = li.filter("li:lt(#{currId})").filter('li[hop="true"]').last() # the last is closest on way back
         hopTo = if hopTo.length is 0 then li.filter('li[hop="true"]').last() else hopTo
-        alert " (prev) no hop-to" if hopTo.length is 0
+        #alert " (prev) no hop-to" if hopTo.length is 0
 
         prev = li.index(hopTo)
 
         pressBtn = display.find '.ppy-prev:first'
         nClicks = if (prev < currId) then currId - prev else (nImages - prev) # wrapping back from 0
-        alert "#{nImages} --> #{currId} --> #{prev} --> #{nClicks}"
+        #alert "#{nImages} --> #{currId} --> #{prev} --> #{nClicks}"
       
       # Now click whichever button needs to be clicked 'nClicks' times
       for m in [1 .. nClicks]
