@@ -205,44 +205,32 @@ jQuery ->
       switch key
         when 66 # 66 = 'B' for going back 
           n = preview.hop false, images
-          preview.sidePanelScrollTo n
+          preview.sideScrollFwd true
           verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
         when 78 # 78 = 'N' for going to next
           n = preview.hop true, images
-          preview.sidePanelScrollTo n
+          preview.sideScrollFwd false
           verticalTabs.children('li').eq(next).children('a:first').click() if next?
       return true
 
-    sidePanelScrollTo: (n) ->
+    sideScrollFwd: (fwd) ->
       return if preview.blockKeyPress
 
       ques = $('#side-panel').find '#question-options:first'
       return if ques.length is 0 or ques.hasClass 'ui-tabs-hide' # ie. if not showing
 
-      options = ques.find '.swiss-knife'
+      options = ques.find('.swiss-knife')
+      nOptions = options.length
+      selected = options.filter('class=selected').first()
+      current = options.index selected
+
+      if fwd
+        next = (current + 1) % nOptions
+      else
+        next = if current > 0 then current - 1 else nOptions - 1
+
       for m,j in options
-        if j == n then $(m).addClass('selected') else $(m).removeClass('selected')
+        if j == next then $(m).addClass('selected') else $(m).removeClass('selected')
       return true
-
-      ###
-      #nQues = options.length
-      #pOuter = $('#document-preview > .ppy-outer:first')
-      #pCurr = pOuter.find('.ppy-current:first') # would not be present if # pages = 1
-      #currPg = if pCurr.length isnt 0 then parseInt(pCurr.text())-1 else 0 # Note: 0-indexed
-      
-      key = event.keyCode
-      switch key
-        when 66 # 66 = 'B' for going back 
-          next = if currPg > 0 then currPg - 1 else nQues - 1
-        when 78 # 78 = 'N' for going to next
-          next = (currPg + 1) % nQues
-
-      m = options.eq(currPg)
-      o = options.eq(next)
-
-      m.removeClass 'selected'
-      o.addClass 'selected'
-      return true
-      ###
 
   }
