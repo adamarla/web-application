@@ -221,7 +221,7 @@ jQuery ->
 
       options = ques.find '.swiss-knife'
       for m,j in options
-        if j == n then $(m).addClass('selected') else $(m)removeClass('selected')
+        if j == n then $(m).addClass('selected') else $(m).removeClass('selected')
       return true
 
       ###
