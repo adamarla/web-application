@@ -130,8 +130,11 @@ jQuery ->
     # Returns the index of the currently displayed image, starting with 0
     currIndex : (display = '#document-preview') ->
       display = if typeof display is 'string' then $(display) else display
+      alert "1"
       return null if display.hasClass 'hidden'
+      alert "2"
       counter = display.find '.ppy-counter:first'
+      alert counter.text()
       counter = if counter.length isnt 0 then parseInt(counter.text()) - 1 else 0
       return counter
       
@@ -144,12 +147,21 @@ jQuery ->
       images = display.find('.ppy-imglist').eq(0)
       li = images.children('li')
       currId = preview.currIndex display
+      alert currId
 
       nImages = li.length
       rocks = images.children('li[hop="true"]')
-      alert "#{rocks.length}"
       current = li.eq(currId)
+      next = current.next("li[hop='true']:gt(#{currId})")
 
+      #alert " #{currId} ---> #{li.index(next)} "
+      ###
+      for child in rocks
+        alert "#{li.index(child)}
+      ###
+
+
+      ###
       if fwd
         #hopTo = current.siblings("li[hop='true']:gt(#{currId}").eq(0)
         hopTo = current.siblings('li[hop="true"]').filter("li:gt(#{currId})").eq(0)
@@ -174,6 +186,7 @@ jQuery ->
       # Now click whichever button needs to be clicked 'nClicks' times
       for m in [1 .. nClicks]
         pressBtn.click()
+      ###
       return true
 
     hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
