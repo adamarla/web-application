@@ -160,7 +160,7 @@ jQuery ->
         nClicks = if (next > currId) then next - currId else (nImages - currId + next)
         alert "#{nImages} --> #{currId} --> #{next} --> #{nClicks}"
       else
-        hopTo = li.filter("li:lt(#{currId})").filter('li[hop="true"]').eq(0)
+        hopTo = li.filter("li:lt(#{currId})").filter('li[hop="true"]').last() # the last is closest on way back
         hopTo = if hopTo.length is 0 then li.filter('li[hop="true"]').last() else hopTo
         alert " (prev) no hop-to" if hopTo.length is 0
 
