@@ -224,10 +224,13 @@ jQuery ->
       selected = options.filter('class=selected').first()
       current = options.index selected
 
+
       if fwd
         next = (current + 1) % nOptions
       else
         next = if current > 0 then current - 1 else nOptions - 1
+
+      alert "#{current} --> #{next} --> #{nOptions}"
 
       for m,j in options
         if j == next then $(m).addClass('selected') else $(m).removeClass('selected')
