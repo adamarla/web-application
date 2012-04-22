@@ -148,44 +148,31 @@ jQuery ->
       nImages = li.length
       rocks = images.children('li[hop="true"]')
       current = li.eq(currId)
-      next = li.filter("li:gt(#{currId})").filter('li[hop="true"]').eq(0)
-      nextId = li.index(next)
 
-      alert "#{currId} ---> #{nextId}"
-
-      #alert " #{currId} ---> #{li.index(next)} "
-      ###
-      for child in rocks
-        alert "#{li.index(child)}
-      ###
-
-
-      ###
       if fwd
-        #hopTo = current.siblings("li[hop='true']:gt(#{currId}").eq(0)
-        hopTo = current.siblings('li[hop="true"]').filter("li:gt(#{currId})").eq(0)
-        if hopTo.length isnt 0
-          alert " abhinav --> #{li.index(hopTo)} --> #{hopTo.index()} "
-        else
-          alert " hopTo is null "
-        hopTo = if hopTo.length is 0 then rocks.eq(0) else hopTo
-        rockAt = li.index(hopTo)
-        guess2 = hopTo.index()
+        hopTo = li.filter("li:gt(#{currId})").filter('li[hop="true"]').eq(0)
+        alert " no hop-to" if hopTo.length is 0
+
+        next = if hopTo.length isnt 0 then li.index(hopTo) else 0
+        #nextId = li.index(next)
+
         pressBtn = display.find '.ppy-next:first'
-        nClicks = if (rockAt >= currId) then rockAt - currId else (nImages - currId + rockAt)
-        alert "#{nImages} --> #{currId} --> #{rockAt} --> #{nClicks} --> #{guess2}"
+        nClicks = if (next > currId) then next - currId else (nImages - currId + next)
+        alert "#{nImages} --> #{currId} --> #{next} --> #{nClicks}"
       else
-        hopTo = images.children("li[hop='true']:lt(#{currId})").eq(0)
-        hopTo = if hopTo.length is 0 then rocks.eq(rocks.length - 1) else hopTo
-        rockAt = hopTo.index() - 1
+        hopTo = li.filter("li:lt(#{currId})").filter('li[hop="true"]').eq(0)
+        hopTo = if hopTo.length is 0 then li.filter('li[hop="true"]').last() else hopTo
+        alert " (prev) no hop-to" if hopTo.length is 0
+
+        prev = li.index(hopTo)
+
         pressBtn = display.find '.ppy-prev:first'
-        nClicks = if (rockAt < currId) then currId - rockAt else (nImages - rockAt) # wrapping back from 0
-        alert "#{nImages} --> #{currId} --> #{rockAt} --> #{nClicks}"
+        nClicks = if (prev < currId) then currId - prev else (nImages - prev) # wrapping back from 0
+        alert "#{nImages} --> #{currId} --> #{prev} --> #{nClicks}"
       
       # Now click whichever button needs to be clicked 'nClicks' times
       for m in [1 .. nClicks]
         pressBtn.click()
-      ###
       return true
 
     hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
