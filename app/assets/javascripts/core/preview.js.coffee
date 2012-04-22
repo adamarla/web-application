@@ -221,8 +221,8 @@ jQuery ->
 
       options = ques.find('.swiss-knife')
       nOptions = options.length
-      selected = options.filter('class=selected').first()
-      current = if selected? then selected.index() else 0
+      selected = options.filter('.selected').first()
+      current = if selected.length isnt 0 then selected.index() else 0
 
       if fwd
         next = (current + 1) % nOptions
