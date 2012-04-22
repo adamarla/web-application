@@ -126,22 +126,6 @@ jQuery ->
     flipchart.next '#build-quiz'
     return true
 
-  ###
-    When reviewing choices of questions, synchronize scrolling in the document preview 
-    with choices shown in the side-panel. In particular, enable only the choice for
-    which the preview is being shown
-  $(document).keydown (event) ->
-    return if $('#wide-panel').hasClass 'hidden'
-
-    images = $('#wide-panel').children().first()
-    return if images.length is 0
-    
-    if images.hasClass 'ppy-placeholder'
-      preview.scrollSidePnlList event
-
-    return true
-  ###
-
   $('#deep-dive-link').click ->
     teacher = $('#control-panel').attr 'marker'
     $.get "teachers/roster.json?id=#{teacher}"
