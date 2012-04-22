@@ -38,6 +38,7 @@ class QuestionController < ApplicationController
 
       unless values[:num_parts].blank?
         nparts = values[:num_parts].to_i 
+        nparts = nparts == 0 ? 1 : nparts # for a standalone question, we still create one sub-part
         lengths = params[:length].values.slice(0, nparts).map(&:to_i)
         marks = params[:marks].values.slice(0, nparts).map(&:to_i)
 
