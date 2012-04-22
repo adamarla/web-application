@@ -205,11 +205,11 @@ jQuery ->
       switch key
         when 66 # 66 = 'B' for going back 
           n = preview.hop false, images
-          preview.sideScrollFwd true
+          preview.sideScrollFwd false
           verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
         when 78 # 78 = 'N' for going to next
           n = preview.hop true, images
-          preview.sideScrollFwd false
+          preview.sideScrollFwd true
           verticalTabs.children('li').eq(next).children('a:first').click() if next?
       return true
 
@@ -228,8 +228,6 @@ jQuery ->
         next = (current + 1) % nOptions
       else
         next = if current > 0 then current - 1 else nOptions - 1
-
-      alert "#{current} --> #{next} --> #{nOptions}"
 
       for m,j in options
         if j == next then $(m).addClass('selected') else $(m).removeClass('selected')
