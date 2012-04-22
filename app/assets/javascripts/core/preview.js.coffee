@@ -168,7 +168,8 @@ jQuery ->
       # Now click whichever button needs to be clicked 'nClicks' times
       for m in [1 .. nClicks]
         pressBtn.click()
-      return true
+
+      return (if fwd then next else prev)
 
     hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
       return if (not imgId? or not newCaption?)
@@ -203,37 +204,32 @@ jQuery ->
       key = event.keyCode
       switch key
         when 66 # 66 = 'B' for going back 
-          preview.hop false, images
+          n = preview.hop false, images
+          preview.sidePanelScrollTo n
           verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
-          
-          ###
-          backBtn = images.find '.ppy-prev:first'
-          unless backBtn.length is 0
-            backBtn.click()
-          ###
         when 78 # 78 = 'N' for going to next
-          preview.hop true, images
+          n = preview.hop true, images
+          preview.sidePanelScrollTo n
           verticalTabs.children('li').eq(next).children('a:first').click() if next?
-          
-          ###
-          fwdBtn = images.find '.ppy-next:first'
-          unless fwdBtn.length is 0
-            fwdBtn.click()
-          ###
       return true
 
-    scrollSidePnlList: (event) ->
+    sidePanelScrollTo: (n) ->
       return if preview.blockKeyPress
 
       ques = $('#side-panel').find '#question-options:first'
       return if ques.length is 0 or ques.hasClass 'ui-tabs-hide' # ie. if not showing
 
       options = ques.find '.swiss-knife'
-      nQues = options.length
-      pOuter = $('#document-preview > .ppy-outer:first')
-      pCurr = pOuter.find('.ppy-current:first') # would not be present if # pages = 1
-      currPg = if pCurr.length isnt 0 then parseInt(pCurr.text())-1 else 0 # Note: 0-indexed
+      for m,j in options
+        if j == n then $(m).addClass('selected') else $(m)removeClass('selected')
+      return true
 
+      ###
+      #nQues = options.length
+      #pOuter = $('#document-preview > .ppy-outer:first')
+      #pCurr = pOuter.find('.ppy-current:first') # would not be present if # pages = 1
+      #currPg = if pCurr.length isnt 0 then parseInt(pCurr.text())-1 else 0 # Note: 0-indexed
+      
       key = event.keyCode
       switch key
         when 66 # 66 = 'B' for going back 
@@ -241,15 +237,12 @@ jQuery ->
         when 78 # 78 = 'N' for going to next
           next = (currPg + 1) % nQues
 
-      c = options.eq(currPg)
-      n = options.eq(next)
+      m = options.eq(currPg)
+      o = options.eq(next)
 
-      ###
-      c.children().attr 'disabled', true
-      n.children().attr 'disabled', false
-      ###
-      c.removeClass 'selected'
-      n.addClass 'selected'
+      m.removeClass 'selected'
+      o.addClass 'selected'
       return true
+      ###
 
   }
