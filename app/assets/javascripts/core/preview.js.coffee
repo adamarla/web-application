@@ -148,7 +148,7 @@ jQuery ->
       nImages = li.length
       rocks = images.children('li[hop="true"]')
       current = li.eq(currId)
-      next = li.filter("li:gt(#{currId})").eq(0)
+      next = li.filter("li:gt(#{currId})").filter('li[hop="true"]').eq(0)
       nextId = li.index(next)
 
       alert "#{currId} ---> #{nextId}"
