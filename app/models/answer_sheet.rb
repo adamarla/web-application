@@ -35,7 +35,7 @@ class AnswerSheet < ActiveRecord::Base
     return self.marks unless self.marks.nil?
 
     quiz_id = self.testpaper.quiz.id
-    marks = GradedResponse.graded.in_quiz(quiz_id).of_student(self.student_id).map(&:marks).inject(:+)
+    marks = GradedResponse.graded.in_quiz(quiz_id).of_student(self.student_id).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     self.update_attribute(:marks, marks) if self.graded?
     return marks.nil? ? 0 : marks
   end
