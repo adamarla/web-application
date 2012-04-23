@@ -85,8 +85,8 @@ class Student < ActiveRecord::Base
     #    3: green => doing fine/well
     g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
     return 0 if g.count == 0
-    weighted = g.map{ |m| m.q_selection.question.marks * m.grade.yardstick.colour }.inject(:+).to_f
-    total = g.map{ |m| m.q_selection.question.marks }.inject(:+)
+    weighted = g.map{ |m| m.q_selection.question.marks? * m.grade.yardstick.colour }.inject(:+).to_f
+    total = g.map{ |m| m.q_selection.question.marks? }.inject(:+)
     average = (weighted/total).round(2)
     #ceiling = average.ceil
     #average = (ceiling - average) > 0.15 ? average.floor : ceiling
