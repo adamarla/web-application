@@ -52,6 +52,14 @@ class Question < ActiveRecord::Base
   has_many :graded_responses
   has_many :subparts, :dependent => :destroy
 
+  
+  def self.author(id)
+    where(:examiner_id => id)
+  end
+
+  def self.of_difficulty(m)
+    where(:difficulty => m)
+  end
 
   def mcq? 
     mcq = Subpart.where(:question_id => self.id).map(&:mcq).inject(:&)
