@@ -25,6 +25,10 @@ class Examiner < ActiveRecord::Base
     return "#{self.last_name}, #{self.first_name}"
   end 
 
+  def abbreviated_name
+    return "#{self.first_name} #{self.last_name[0]}."
+  end
+
   def name=(name)
     split = name.split(' ', 2)
     self.first_name = split.first
