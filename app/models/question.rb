@@ -65,6 +65,10 @@ class Question < ActiveRecord::Base
     where(:topic_id => Vertical.find(m).topic_ids)
   end
 
+  def self.untagged
+    where('topic_id IS NULL')
+  end
+
   def mcq? 
     mcq = Subpart.where(:question_id => self.id).map(&:mcq).inject(:&)
     return mcq
