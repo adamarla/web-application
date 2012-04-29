@@ -4,7 +4,7 @@
 #
 #  id              :integer         not null, primary key
 #  uid             :string(255)
-#  attempts        :integer         default(0)
+#  n_picked        :integer         default(0)
 #  created_at      :datetime
 #  updated_at      :datetime
 #  examiner_id     :integer
