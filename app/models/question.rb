@@ -189,6 +189,11 @@ class Question < ActiveRecord::Base
     return success
   end
 
+  def increment_picked_count
+    n = self.n_picked 
+    self.update_attribute :n_picked, n + 1
+  end
+
 =begin
   The next 2 methods weer written when support for subparts was being added.
   They are to be called ONLY from within a migration file and nowhere else.

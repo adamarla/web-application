@@ -81,6 +81,11 @@ class Teacher < ActiveRecord::Base
         atm_key = Quiz.extract_atm_key response[:manifest][:root]
         @quiz.update_attribute :atm_key, atm_key
         response = {:atm_key => atm_key, :name => @quiz.name }
+
+        # Increment n_picked for each of the questions picked for this quiz
+        Question.where(:id => question_ids).each do |m|
+          m.increment_picked_count
+        end 
       end
     end
     return response, status
