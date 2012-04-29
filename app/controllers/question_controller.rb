@@ -3,32 +3,17 @@ class QuestionController < ApplicationController
   respond_to :json
 
   def list
-    me = current_account.role
-    type = params[:type].blank? ? :untagged : params[:type].to_sym
+    p = params[:qsearch] 
+    p = p.blank? ? {} : p 
 
-    case me
-      when :admin
-        author_id = params[:id].blank? ? current_account.loggable_id : params[:id]
-      when :examiner
-        author_id = current_account.loggable_id #ignore params[:id] even if specified
-      else
-        author_id = nil
-    end 
+    @questions = p[:by].blank? ? Question.author(current_account.loggable_id) 
+                               : Question.author(p[:by].to_i)
+    @questions = (p[:tagged] == "true") ? @questions.tagged : @questions.untagged
+    @questions = p[:on].blank? ? @questions : @questions.broadly_on(p[:on].to_i)
 
-    unless author_id.nil?
-      case type 
-        when :tagged
-          #@questions = Question.where(:examiner_id => author_id).where('topic_id IS NOT NULL')
-          @questions = Question.where('topic_id IS NOT NULL')
-        when :any
-          @questions = Question.where(:examiner_id => author_id)
-        else
-          @questions = Question.where(:examiner_id => author_id).where('topic_id IS NULL')
-      end
-    else
-      @questions = []
-    end 
-  end # of method
+    @questions = p[:difficulty].blank? ? @questions 
+                                       : @questions.difficulty(p[:difficulty].to_i)
+  end 
 
   def update
     question = Question.find params[:id]

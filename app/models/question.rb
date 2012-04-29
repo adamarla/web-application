@@ -57,12 +57,16 @@ class Question < ActiveRecord::Base
     where(:examiner_id => id)
   end
 
-  def self.of_difficulty(m)
+  def self.difficulty(m)
     where(:difficulty => m)
   end
 
   def self.broadly_on(m)
     where(:topic_id => Vertical.find(m).topic_ids)
+  end
+
+  def self.tagged
+    where('topic_id IS NOT NULL')
   end
 
   def self.untagged

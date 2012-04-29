@@ -474,3 +474,13 @@ span.unhappyMessage {
     float: right ;
   }
 }
+
+#workbench-controls {
+  > form {
+    min-width: 40% ;
+
+    > li {
+      float: left ;
+    }
+  }
+}

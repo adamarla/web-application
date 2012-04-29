@@ -44,5 +44,11 @@
                  :with => {:panels => {:side => '#ungraded-responses', :wide => '#grading-canvas'}}
     = minor_link :for => 'db-slots', :as => 'add questions to db'
     = minor_link :for => 'new-scans', :as => 'get new scans'
-    = minor_link :for => 'tagged-ques', :as => 'tagged questions'
+
+  = form_tag questions_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
+    = semantic_fields_for :qsearch do |a|
+      = a.input :by, :as => :select, :collection => Examiner.order(:last_name).map{ |m| {m.name => m.id} }.inject(:merge)
+      = a.input :on, :as => :select, :collection => Vertical.order(:name).map{ |m| {m.name => m.id} }.inject(:merge)
+      = a.input :tagged, :as => :select, :collection => {:no => false, :yes => true}, :include_blank => false
+    = submit_tag 'Search'
     

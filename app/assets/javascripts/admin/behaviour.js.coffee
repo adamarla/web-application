@@ -51,8 +51,6 @@ jQuery ->
       when 'grading-link'
         $.get 'examiner/pending_quizzes'
         canvas.initialize '#grading-canvas'
-      when 'tagged-ques-link'
-        $.get 'questions/list.json?type=tagged'
     return true
 
   ###
