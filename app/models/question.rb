@@ -61,6 +61,10 @@ class Question < ActiveRecord::Base
     where(:difficulty => m)
   end
 
+  def self.broadly_on(m)
+    where(:topic_id => Vertical.find(m).topic_ids)
+  end
+
   def mcq? 
     mcq = Subpart.where(:question_id => self.id).map(&:mcq).inject(:&)
     return mcq
