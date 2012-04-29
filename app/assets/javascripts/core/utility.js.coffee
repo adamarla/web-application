@@ -325,6 +325,7 @@ window.coreUtil = {
         select = obj.find('select').eq(nth)
         break if select.length is 0
 
+        select.empty() # empty any previously added <option>
         select.prop 'disabled', false
         choices = for posn,choice of options
           select.append "<option value=#{posn}>#{choice}</option>"
