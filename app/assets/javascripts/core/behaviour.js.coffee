@@ -392,4 +392,15 @@ jQuery ->
   $('#toolbox').find('.grade-btns-non-mcq:first').buttonset()
   $('#toolbox').find('.grade-btns-mcq:first').buttonset()
 
+  ###
+    If #quiz_name gets focus when building a Quiz, then don't interpret 
+    keys 'B' and 'N' as one normally would during previews. Resume 
+    interpretation as usual when #quiz_name loses focus
+  ###
+
+  $('#quiz_name').focus () ->
+    preview.blockKeyPress = true
+  .blur () ->
+    preview.blockKeyPress = false
+
 
