@@ -128,7 +128,9 @@ class TeachersController < ApplicationController
     head :bad_request if (teacher.nil? || course.nil?)
 
     question_ids = params[:checked].keys.map(&:to_i)
-    Delayed::Job.enqueue BuildQuiz.new(teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
+    name = params[:quiz_name]
+
+    Delayed::Job.enqueue BuildQuiz.new(name, teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
     at = Delayed::Job.where('failed_at IS NULL').count
     render :json => { :status => "Queued", :at => at }, :status => :ok
   end

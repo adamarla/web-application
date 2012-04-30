@@ -137,6 +137,16 @@ body {
     min-width: 50px ;
     margin-bottom: 18px ;
   }
+
+  > input[type="text"] {
+    float: left ; 
+    width: 60% ;
+    padding: 5px 6px 5px 6px ;
+    font-size: 13px ;
+    border-radius: 0px ;
+    margin-right: 10px ;
+  }
+  
 }
 
 #side-panel {

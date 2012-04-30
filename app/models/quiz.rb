@@ -43,7 +43,7 @@ class Quiz < ActiveRecord::Base
   validates :teacher_id, :presence => true, :numericality => true
   validates :name, :presence => true
   
-  before_validation :set_name, :if => :new_record?
+  #before_validation :set_name, :if => :new_record?
   after_create :lay_it_out
   after_destroy :shred_pdfs
 
@@ -96,6 +96,7 @@ class Quiz < ActiveRecord::Base
     Teacher.find self.teacher_id
   end 
 
+=begin
   def set_name
     subject = Subject.where(:id => self.subject_id).select(:name).first.name
 
@@ -105,6 +106,7 @@ class Quiz < ActiveRecord::Base
 
     self.name = "#{self.klass}-#{subject}: #{topics}" 
   end 
+=end
   
   def num_pages
     return QSelection.where(:quiz_id => self.id).order(:index).last.end_page

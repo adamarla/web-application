@@ -1,8 +1,8 @@
 
-class BuildQuiz < Struct.new(:teacher_id, :question_ids, :course)
+class BuildQuiz < Struct.new(:name, :teacher_id, :question_ids, :course)
   def perform
     @teacher = Teacher.find teacher_id
-    response,status = @teacher.build_quiz_with question_ids, course
+    response,status = @teacher.build_quiz_with name, question_ids, course
   end 
 
   def error(job, exception)

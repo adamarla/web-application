@@ -58,10 +58,11 @@ class Teacher < ActiveRecord::Base
   #after_validation :setup_account, :if => :first_time_save?
   before_destroy :destroyable? 
 
-  def build_quiz_with (question_ids, course)
+  def build_quiz_with (name, question_ids, course)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
                      :num_questions => question_ids.count, 
-                     :subject_id => course.subject_id, :klass => course.klass
+                     :subject_id => course.subject_id, :klass => course.klass,
+                     :name => name
 
     # Ideally, one should ask for the TeX to be compiled before saving
     # @quiz into the database. But in this case, we need a quiz-ID and its layout 
