@@ -26,3 +26,12 @@ jQuery ->
       }
     }
   }
+
+  $('#question-options > form').isHappy {
+    fields: {
+      '#quiz_name': {
+        required: true,
+        message: 'mandatory'
+      }
+    }
+  }
