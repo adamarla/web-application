@@ -100,7 +100,7 @@ module ApplicationHelper
       when :klasses 
         collection = [*9..12] 
       when :difficulty 
-        collection = {:introductory => 1, :intermediate => 2, :advanced => 3}
+        collection = {'junior school(<9)' => 1, 'middle(9-10)' => 2, 'senior(11-12)' => 3}
       when :subjects 
         collection = Subject.all
       when :states 
