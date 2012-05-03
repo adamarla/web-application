@@ -183,9 +183,9 @@ window.coreUtil = {
 
         if type is 'side'
           resetPanel target if link.hasClass('main-link')
-          if link.hasClass 'minor-link'
-            side = link.attr 'side' # rarely happens, but can happen. Eg. #new-quiz-link
-            continue if not side?
+          side = link.attr 'side'
+          continue if not side? or $("#{side}").length is 0
+          # Rarely happens, but can happen. Examples: scan-loader-link(main) and new-quiz-link(minor)
 
         current = target.children().first()
         needed = $(link.attr type)
