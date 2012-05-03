@@ -70,8 +70,11 @@ class CoursesController < ApplicationController
     @course = Course.find params[:id]
     head :bad_request if @course.nil? 
 
+    skip_used = params[:skip_previously_used] == "true" ? true : false
+    teacher = skip_used ? params[:teacher_id].to_i : nil
+
     topic_ids = params[:checked].keys.map(&:to_i)
-    @questions = @course.relevant_questions topic_ids
+    @questions = @course.relevant_questions topic_ids, teacher
     respond_with @questions, @course
   end
 

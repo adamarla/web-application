@@ -18,8 +18,11 @@
         = submit_tag 'next'
       .form-fields
   #topic-selection-list
-    = form_tag 'course/applicable_questions', :remote => true, :method => :put do |f| 
+    = form_tag 'course/relevant_questions', :remote => true, :method => :put do |f| 
       .submit-buttons
+        .filters
+          = label_tag :skip_previously_used, "skip questions used before"
+          = check_box_tag :skip_previously_used, true
         = submit_tag 'next'
       .form-fields
   #question-options

@@ -494,3 +494,17 @@ span.unhappyMessage {
     }
   }
 }
+
+.filters {
+  float:left ;
+  margin-right: 30px ;
+
+  > label {
+    color:#6ca7ab;
+    font: {
+      size: 12px ;
+    }
+    float:right ;
+    margin-left: 5px ;
+  }
+}

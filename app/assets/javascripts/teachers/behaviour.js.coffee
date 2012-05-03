@@ -124,8 +124,9 @@ jQuery ->
   ###
   $('#topic-selection-list').submit ->
     courseId = $('#build-quiz').attr 'marker'
+    teacherId = $('#control-panel').attr 'marker'
     form = $(this).children 'form:first'
-    form.attr 'action', "course/questions.json?id=#{courseId}"
+    form.attr 'action', "course/questions.json?id=#{courseId}&teacher_id=#{teacherId}"
     return true
 
   ###

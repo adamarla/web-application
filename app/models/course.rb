@@ -75,12 +75,20 @@ class Course < ActiveRecord::Base
     return (status == :bad_request) ? :bad_request : :ok
   end # of function
 
-  def relevant_questions(topic_ids = [])
+  def relevant_questions(topic_ids = [], teacher_id = nil)
     @questions = []
     Syllabus.where(:course_id => self.id, :topic_id => topic_ids).each do |j|
       @questions |= Question.where(:topic_id => j.topic_id, :difficulty => j.difficulty)
     end
 
+    # If teacher_id is non-nil, then return only those questions 
+    # from @questions that have never been used by the said teacher before
+    unless teacher_id.nil?
+      quiz_ids = Quiz.where(:teacher_id => teacher_id).map(&:id)
+      used = QSelection.where(:quiz_id => quiz_ids).map(&:question_id).uniq
+      unused = @questions.map(&:id).uniq - used
+      @questions = Question.where(:id => unused)
+    end
     return @questions
   end
 
