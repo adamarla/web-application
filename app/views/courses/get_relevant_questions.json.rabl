@@ -6,7 +6,7 @@
   end
 
   node :questions do
-    @questions.map{ |q| { :question => { :id => q.id, :name => q.uid } } }
+    @questions.map{ |q| { :question => { :id => q.id, :name => q.name? } } }
   end
 
 

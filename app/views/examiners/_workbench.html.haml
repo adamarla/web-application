@@ -22,6 +22,10 @@
                   :collection => {'junior school (<9)' => 1, 'middle (9-10)' => 2, 'senior (11-12)' => 3},
                   :wrapper_html => {:class => 'full-width'},
                   :label => 'topic treatment'
+        = f.input :calculation_aid, :as => :select, :include_blank => false, 
+                  :collection => {'none' => 0, 'scientific calc.' => 2, 'graphing calc.' => 4},
+                  :wrapper_html => {:class => 'full-width'},
+                  :label => 'calculators ?'
         = f.input :num_parts, :as => :select, :include_blank => true, :label => '# sub-parts',
                   :collection => [*0..9]-[1], :wrapper_html => {:class => 'full-width'}
         - for k in [*0..9]-[1]

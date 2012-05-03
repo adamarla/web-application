@@ -14,6 +14,7 @@
 #  marks           :integer
 #  length          :float
 #  answer_key_span :integer
+#  calculation_aid :integer         default(0)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

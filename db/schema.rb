@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120429185024) do
+ActiveRecord::Schema.define(:version => 20120503175311) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20120429185024) do
     t.integer  "marks"
     t.float    "length"
     t.integer  "answer_key_span"
+    t.integer  "calculation_aid", :default => 0
   end
 
   create_table "quizzes", :force => true do |t|

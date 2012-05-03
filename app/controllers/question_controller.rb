@@ -39,10 +39,11 @@ class QuestionController < ApplicationController
 
           topic = params[:topic].to_i
           difficulty = values[:difficulty].to_i
+          calculation_aid = values[:calculation_aid].to_i
 
           # 1. Update the parent question
           question.update_attributes :topic_id => topic, :difficulty => difficulty, 
-                                     :answer_key_span => n_answer_key
+                                     :answer_key_span => n_answer_key, :calculation_aid => calculation_aid
 
           if question.update_subpart_info lengths, marks
             render :json => { :status => 'Done' }, :status => :ok

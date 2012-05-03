@@ -14,6 +14,7 @@
 #  marks           :integer
 #  length          :float
 #  answer_key_span :integer
+#  calculation_aid :integer         default(0)
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
@@ -71,6 +72,27 @@ class Question < ActiveRecord::Base
 
   def self.untagged
     where('topic_id IS NULL')
+  end
+
+  def self.needs_graphing_calculator
+    where(:calculation_aid => 4)
+  end
+
+  def self.needs_scientific_calculator
+    where(:calculation_aid => 2)
+  end
+
+  def self.needs_calculation_aid
+    where('calculation_aid <> ?', 0)
+  end
+
+  def name?
+    # uid + calculation-aid (if any)
+    case self.calculation_aid
+      when 4 then return "#{self.uid} ( graphing calculator )"
+      when 2 then return "#{self.uid} ( scientific calculator )"
+      else return "#{self.uid}"
+    end
   end
 
   def mcq? 

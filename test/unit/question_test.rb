@@ -14,6 +14,7 @@
 #  marks           :integer
 #  length          :float
 #  answer_key_span :integer
+#  calculation_aid :integer         default(0)
 #
 
 require 'test_helper'
