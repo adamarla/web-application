@@ -152,7 +152,8 @@ body {
 #side-panel {
   width: 320px ;
   padding-right: 10px ;
-  min-height: 400px ;
+  min-height: 820px ;
+  border-right: 3px solid lighten($gray,30%) ;
 
   .ui-state-active {
     a:link {
