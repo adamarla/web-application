@@ -21,9 +21,9 @@
     = form_tag 'course/relevant_questions', :remote => true, :method => :put do |f| 
       .submit-buttons
         .filters
-          = label_tag :skip_previously_used, "skip questions used before"
           = check_box_tag :skip_previously_used, true
-        = submit_tag 'next'
+          = label_tag :skip_previously_used, "skip questions used before"
+        = submit_tag 'next', :class => :right
       .form-fields
   #question-options
     = form_tag 'teacher/build_quiz', :remote => true, :method => :put do |f| 
