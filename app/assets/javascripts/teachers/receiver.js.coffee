@@ -31,6 +31,7 @@ jQuery ->
       list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', ['quiz-download']
       list.appendTo here
       list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+      here.find('.accordion-heading').eq(0).click() # open preview for the first quiz automatically
     else if url.match(/teachers\/roster/)
       child = $('#side-panel').children().eq(0).attr 'id'
       if child is 'deep-dive'
