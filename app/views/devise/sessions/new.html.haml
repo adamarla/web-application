@@ -2,11 +2,10 @@
 #sign-in-form
   = semantic_form_for :account, :url => session_path(:account) do |f|
     = f.inputs do
-      = f.input :login
-      = f.input :password, :as => :password
-    .reminders.right
-      - if devise_mapping.recoverable? && controller_name != 'passwords'
-        = link_to 'Forgot your password?', new_password_path(:account)
-    .submit-buttons
+      = f.input :login, :wrapper_html => { :class => :left }
+      = f.input :password, :as => :password, :wrapper_html => { :class => :left }
       = submit_tag 'login'
+  -#recover-password
+    - if devise_mapping.recoverable? && controller_name != 'passwords'
+      = link_to 'Forgot your password?', new_password_path(:account)
 

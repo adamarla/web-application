@@ -21,43 +21,6 @@ li.code, p.code {
   font-size : 13px ;
 } 
 
-#sign-in-form { 
-  width : 400px ;
-  margin-left : 45% ;
-  margin-top : 150px ;
-  border : 5px solid #6ca7ab ;
-  border-radius : 10px ;
-  -moz-border-radius : 10px ;
-  padding-left : 30px ;
-  padding-right : 10px ;
-  padding-top : 20px ;
-  padding-bottom : 20px ;
-  color : #6ca7ab ;
-} 
-
-#sign-in-form label {
-  font-size : 14px ;
-  font-weight : normal ;
-  text-transform : uppercase;
-}
-
-#sign-in-form input[type="text"], #sign-in-form input[type="password"] {
-  padding : 8px ;
-  border : 1px solid #6ca7ab ;
-  border-radius : 5px ;
-  -moz-border-radius : 5px ;
-  background : white ;
-  font-size : 16px ;
-  max-width : 60% ;
-}
-
-#sign-in-form .reminders > a {
-  text-decoration : none ;
-  font-size : 13px ;
-  text-transform : lowercase ;
-  margin-right : 18px ;
-}
-
 #visible-active-area { 
   padding : 20px ;
 } 

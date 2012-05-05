@@ -29,6 +29,17 @@ body {
   color: white ;
 } 
 
+#public-links {
+  height: 50px ;
+  width: 95% ;
+  margin: {
+    top: 75px ;
+    left: 10% ;
+  }
+  //border-bottom: 3px solid #fd9105 ;
+  border-bottom: 3px solid #6ca7ab ; 
+} 
+
 #flot-chart {
   width: 600px ;
   height: 800px ;
@@ -513,3 +524,87 @@ span.unhappyMessage {
     float:left ;
   }
 }
+
+#sign-in-form {
+  width: 850px ;
+  margin-left: 15% ;
+  margin-top: 50px ;
+
+  > form {
+    min-height: 80px ;
+    width: 100% ;
+  }
+
+  fieldset.inputs {
+    width: 90% ;
+    float: left ;
+
+    li {
+      min-width: 40% ;
+      margin-right: 20px ;
+
+      > input[type="text"], > input[type="password"] {
+        padding: 8px ;
+        font-size: 16px ;
+        width: 90% ;
+        border: {
+          radius: 5px ;
+          style: solid ;
+          width: 1px ;
+        }
+        -moz-border-radius: 5px ;
+        background: white ;
+      }
+
+      > label { 
+        float: none ;
+        margin-bottom: 5px ;
+        font: {
+          size: 17px ;
+          weight: normal ;
+        }
+        color: #6ca7ab ; 
+      } 
+
+    }
+
+    input[type="submit"] {
+      border: {
+        style: none ;
+        radius: 5px;
+      }
+      font: {
+        family: inherit ;
+        weight: bold ;
+        size: 17px ;
+      }
+      color: white ; 
+      background-color: $pink ;
+      padding: 8px 6px 8px 6px ;
+      text: {
+        align: center ;
+        decoration: none ;
+      }
+
+      margin-top: 27px ;
+      width: 12% ;
+      height: 40px ;
+    }
+
+  }
+}
+
+#recover-password {
+  float: none ;
+  width: 20% ;
+  margin: {
+    left: 40% ;
+  }
+  > a { 
+    text-decoration: none ;
+    font-size: 13px ;
+    color: #6ca7ab ;
+    text-transform: lowercase ;
+  } 
+}
+
