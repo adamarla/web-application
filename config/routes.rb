@@ -1,4 +1,5 @@
 Webapp::Application.routes.draw do
+
   # post "question/insert_new"
 
   # The :path_prefix is important to disambiguate paths devise creates 
@@ -57,6 +58,11 @@ Webapp::Application.routes.draw do
   resource :vertical, :only => [:create, :show]
   match 'vertical/topics_in_course' => 'verticals#topics_in_course', :via => :get
   match 'verticals/list' => 'verticals#list', :via => :get
+
+  # Videos 
+  resource :video, :only => [:create]
+  match 'videos/list' => 'videos#list'
+  match 'howtos' => 'videos#howtos'
 
   # Topic 
   resource :topic, :only => [:create, :update]

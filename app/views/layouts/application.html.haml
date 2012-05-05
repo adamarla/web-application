@@ -8,8 +8,10 @@
     = csrf_meta_tag
   
   %body 
-    #public-links
-      %ul.no-bullets
-        = main_link :for => :videos, :as => 'how-to videos'
-        = main_link :for => :register, :as => 'get invited to try'
-    = yield 
+    #viewport
+      #public-links
+        %ul.no-bullets
+          = main_link :for => :videos, :as => 'how-to videos', :href => howtos_path
+          = main_link :for => :register, :as => 'get invited to try'
+          = main_link :for => :main, :as => 'back to login', :href => root_path
+      = yield 
