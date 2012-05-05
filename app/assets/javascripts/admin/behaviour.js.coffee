@@ -29,6 +29,9 @@ jQuery ->
   $('#add-verticals-n-topics-link').click ->
     $.get 'vertical'
 
+  $('#videos-link').click ->
+    $('#new-video').dialog('option', 'title', 'New Video').dialog('open')
+
   $('#main-links a').click ->
     return if $(this).attr('block_ajax') is "true"
     id = $(this).attr 'id'

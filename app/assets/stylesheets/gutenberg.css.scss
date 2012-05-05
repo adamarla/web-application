@@ -29,14 +29,20 @@ body {
   color: white ;
 } 
 
-#public-links {
-  height: 50px ;
-  width: 95% ;
+#viewport {
+  width: 850px ;
+  min-height: 100px ;
   margin: {
     top: 75px ;
     left: 10% ;
+    right: 10% ;
   }
   //border-bottom: 3px solid #fd9105 ;
+}
+
+#public-links {
+  height: 50px ;
+  width: 95% ;
   border-bottom: 3px solid #6ca7ab ; 
 } 
 
@@ -526,8 +532,7 @@ span.unhappyMessage {
 }
 
 #sign-in-form {
-  width: 850px ;
-  margin-left: 15% ;
+  //margin-left: 15% ;
   margin-top: 50px ;
 
   > form {
@@ -608,3 +613,12 @@ span.unhappyMessage {
   } 
 }
 
+#video-titles {
+  width: 30% ;
+  color: white ;
+}
+
+#embedded-video {
+  width: 65% ;
+  margin-top: 50px ;
+}
