@@ -53,6 +53,14 @@ jQuery ->
     return true
 
   ###
+    Whenever an a.howto-video is clicked, replace any existing <embed> or <iframe>
+    within #embedded-video with that link's url
+  ###
+  $('a.howto-video').click (event) ->
+    marker = $(this).attr 'marker'
+    $.get "video/load.json?id=#{marker}"
+
+  ###
     Any form for creating or editing a record that needs to be opened as a dialog
     - as opposed to being rendered inline - should have one of new-entity or update-entity
     class attributes. And if these forms need to auto-close on submit, then an

@@ -11,12 +11,13 @@ class VideosController < ApplicationController
     end
   end
 
-  def list
-    restricted = params[:restricted].blank? ? true : false
-    @videos = Video.where(:restricted => restricted).order(:created_at)
-  end
+  def load
+    @video = Video.where(:id => params[:id])
+    head :bad_request if @video.nil?
+  end 
 
   def howtos
+    @videos = Video.all
   end
 
 end

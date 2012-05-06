@@ -27,3 +27,15 @@ jQuery ->
           gutenberg.server = gutenberg.serverOptions.local
       when 'yardsticks/preview'
         preview.loadJson json, 'frontdesk-yardsticks'
+    return true
+  
+  $('#embedded-video').ajaxSuccess (e,xhr,settings) ->
+    url = settings.url
+
+    if url.match(/video\/load/) isnt null
+      e.stopImmediatePropagation()
+      json = $.parseJSON xhr.responseText
+      $(this).empty() # clear any previous video
+      $(json[0].video.url).appendTo $(this)
+      return true
+

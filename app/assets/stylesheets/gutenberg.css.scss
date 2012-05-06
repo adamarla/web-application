@@ -616,6 +616,17 @@ span.unhappyMessage {
 #video-titles {
   width: 30% ;
   color: white ;
+  margin-top: 40px ;
+
+  > a {
+    text: {
+      decoration: none ;
+      transform: lowercase ;
+    }
+    color: #6ca7ab ; 
+    font-size: 14px ;
+    margin-bottom: 5px ;
+  }
 }
 
 #embedded-video {

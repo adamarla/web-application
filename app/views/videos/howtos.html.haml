@@ -1,3 +1,6 @@
 
 #video-titles.left
+  - @videos.each_with_index do |m,j|
+    = link_to "##{j+1}: #{m.title}", '#', :class => "howto-video", :marker => "#{m.id}"
+
 #embedded-video.right

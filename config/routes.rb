@@ -61,8 +61,8 @@ Webapp::Application.routes.draw do
 
   # Videos 
   resource :video, :only => [:create]
-  match 'videos/list' => 'videos#list'
   match 'howtos' => 'videos#howtos'
+  match 'video/load' => 'videos#load'
 
   # Topic 
   resource :topic, :only => [:create, :update]
