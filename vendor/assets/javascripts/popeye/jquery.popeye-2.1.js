@@ -625,13 +625,16 @@
                         
                         // previous image button
                         ppyPrev.click(function(e){
-                            e.stopPropagation();
+                            // e.stopPropagation(); 
+                            // [Abhinav]: allow event to percolate into core/preview where
+                            // the arrow keys are synchronized with the side-panel list. Same
+                            // goes for the next button
                             previous();
                         });
                         
                         // next image button
                         ppyNext.click(function(e){
-                            e.stopPropagation();
+                            // e.stopPropagation();
                             next();
                         });
                     
