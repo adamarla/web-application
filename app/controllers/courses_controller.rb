@@ -63,7 +63,7 @@ class CoursesController < ApplicationController
 
   def applicable_topics 
     vertical_ids = params[:checked].keys.map(&:to_i)
-    @topics = Topic.where(:vertical_id => vertical_ids).order(:name)
+    @topics = Topic.where(:vertical_id => vertical_ids).order(:vertical_id).order(:name)
   end 
 
   def get_relevant_questions
