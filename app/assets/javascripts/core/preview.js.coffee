@@ -27,7 +27,7 @@ jQuery ->
     execute : () ->
       p = $('#document-preview')
       return if p.parent().hasClass '.ppy-placeholder'
-      p.popeye({ navigation : 'permanent', caption : 'permanent', zindex:1000})
+      p.popeye({ navigation : 'hover', caption : 'permanent', zindex:1000, opacity:0})
 
     loadJson : (json, source) ->
       ###
@@ -136,40 +136,36 @@ jQuery ->
       return counter
       
     ###
-      Hops backwards or forward to the next <li> in image list 
-      that has 'hop' attribute = 'true'
+      Hop backwards/forwards one image. And when displaying the list of questions 
+      to pick from for a quiz, update the side panel bearing in mind that some 
+      questions can span multiple pages/images
     ###
+
     hop: (fwd = true, display = '#document-preview') ->
       display = if typeof display is 'string' then $(display) else display
       images = display.find('.ppy-imglist').eq(0)
       li = images.children('li')
-      currId = preview.currIndex display
       nImages = li.length
+      current = preview.currIndex display # 0-indexed
+      hcurr = li.eq(current).attr 'hop'
 
       if fwd
-        hopTo = li.filter("li:gt(#{currId})").filter('li[hop="true"]').eq(0)
-        #alert " no hop-to" if hopTo.length is 0
-
-        next = if hopTo.length isnt 0 then li.index(hopTo) else 0
+        next = if (current + 1) < nImages then (current + 1) else 0
         pressBtn = display.find '.ppy-next:first'
-        nClicks = if (next > currId) then next - currId else (nImages - currId + next)
-        #alert "#{nImages} --> #{currId} --> #{next} --> #{nClicks}"
       else
-        hopTo = li.filter("li:lt(#{currId})").filter('li[hop="true"]').last() # the last is closest on way back
-        hopTo = if hopTo.length is 0 then li.filter('li[hop="true"]').last() else hopTo
-        #alert " (prev) no hop-to" if hopTo.length is 0
-
-        prev = li.index(hopTo)
-
+        next = if current is 0 then nImages - 1 else current - 1
         pressBtn = display.find '.ppy-prev:first'
-        nClicks = if (prev < currId) then currId - prev else (nImages - prev) # wrapping back from 0
-        #alert "#{nImages} --> #{currId} --> #{prev} --> #{nClicks}"
-      
-      # Now click whichever button needs to be clicked 'nClicks' times
-      for m in [1 .. nClicks]
-        pressBtn.click()
 
-      return (if fwd then next else prev)
+      hnext = li.eq(next).attr 'hop'
+      if fwd
+        # update side-panel if (hcurrent -> hnext) = (false -> true) OR (true -> true)
+        preview.sideScrollFwd(true) if hnext is "true"
+      else
+        # update side-panel if (hcurrent -> hnext) = (true -> false) OR (true -> true)
+        preview.sideScrollFwd(false) if hcurr is "true"
+      pressBtn.click()
+      return true
+
 
     hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
       return if (not imgId? or not newCaption?)
@@ -205,11 +201,9 @@ jQuery ->
       switch key
         when 66 # 66 = 'B' for going back 
           n = preview.hop false, images
-          preview.sideScrollFwd false
           verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
         when 78 # 78 = 'N' for going to next
           n = preview.hop true, images
-          preview.sideScrollFwd true
           verticalTabs.children('li').eq(next).children('a:first').click() if next?
       return true
 
@@ -234,20 +228,5 @@ jQuery ->
       return true
 
   }
-
-  $('#document-preview').on 'click', '.ppy-prev:first', ->
-    current = $('#document-preview').find('strong').eq(0)  # ppy-current
-    at = if current.length is 0 then 0 else parseInt(current.text()) - 1
-    alert at
-    if at > 0
-      images = $('#document-preview').children('ul').eq(0) # ppy-imglist
-      return if images.children('li').eq(at).attr('hop') is "false"
-
-    preview.sideScrollFwd(false)
-    return true
-
-    # hop from true -> false or from true -> true should trigger a change in the side panel
-    # hop from false -> false or from false -> true should do nothing
-
 
 
