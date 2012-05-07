@@ -234,3 +234,20 @@ jQuery ->
       return true
 
   }
+
+  $('#document-preview').on 'click', '.ppy-prev:first', ->
+    current = $('#document-preview').find('strong').eq(0)  # ppy-current
+    at = if current.length is 0 then 0 else parseInt(current.text()) - 1
+    alert at
+    if at > 0
+      images = $('#document-preview').children('ul').eq(0) # ppy-imglist
+      return if images.children('li').eq(at).attr('hop') is "false"
+
+    preview.sideScrollFwd(false)
+    return true
+
+    # hop from true -> false or from true -> true should trigger a change in the side panel
+    # hop from false -> false or from false -> true should do nothing
+
+
+
