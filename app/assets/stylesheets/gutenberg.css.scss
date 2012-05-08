@@ -633,3 +633,12 @@ span.unhappyMessage {
   width: 65% ;
   margin-top: 50px ;
 }
+
+#preview-navigation {
+  min-height: 50px ;
+  width: 90% ;
+
+  > .ticker {
+    margin-top: 5px ;
+  }
+}
