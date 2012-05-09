@@ -643,3 +643,9 @@ span.unhappyMessage {
     margin-top: 5px ;
   }
 }
+
+li {
+  > label {
+    color: #6ca7ab ;
+  }
+}
