@@ -11,7 +11,7 @@
   #pending-quizzes
   #pending-pages
   #pending-scans
-    %p.instructions= "N = next image | B = back to previous "
+    = render :partial => 'toolbox/preview_nav'
     #list-pending.purgeable.hidden
     .submit-buttons
       %input#undo-btn{ :type => :button, :value => "Undo Last" }
