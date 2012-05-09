@@ -38,6 +38,7 @@ jQuery ->
     return if not quiz?
 
     coreUtil.forms.modifyAction $(this), "quiz/assign.json?id=#{quiz}", 'put'
+    flipchart.next '#quizzes-summary'
     return true
 
   ###

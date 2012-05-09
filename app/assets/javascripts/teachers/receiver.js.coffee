@@ -64,7 +64,7 @@ jQuery ->
       minutes = if minutes < 10 then "0#{minutes}" else "#{minutes}"
       eet = "#{hours}h:#{minutes}min" # about a minute per document
 
-      g = $('#queue-graphic')
+      if url.match(/teacher\/build_quiz/) then g = $('#build-quiz-receipt') else g = $('#assign-quiz-receipt')
 
       g.find('#job-position:first').children('.ticker-display-value').text "##{at}"
       g.find('#job-eta:first').children('.ticker-display-value').text "#{eet}"

@@ -8,7 +8,7 @@
     %li
       %a{ :href => '#student-list' }= "students"
     %li
-      %a{ :href => '#assign-quiz-receipt' }= "fyi"
+      %a{ :href => '#assign-quiz-receipt' }= "summary"
   #past-quizzes
   #sektion-list
   #student-list
@@ -18,3 +18,23 @@
         = submit_tag 'assign', :class => 'right'
       .purgeable
   #assign-quiz-receipt
+    .what-now
+      #job-position.big-ticker.left
+        .ticker-margin-note= "Your request is"
+        .ticker-display-value
+        .ticker-margin-note= "in the queue"
+      #job-eta.big-ticker.right
+        .ticker-margin-note= "Check back after"
+        .ticker-display-value
+        .ticker-margin-note= "to download the PDF"
+    .what-next
+      %legend
+        %span.target= "What happens now?"
+        %p.instructions 
+          Your request has been placed in a queue and will be 
+          picked up automatically for processing
+      %legend
+        %span.target= "Can I logout now?"
+        %p.instructions 
+          Sure you can. If there is nothing else you need to do
+          on the site at this time, then - by all means - logout. 
