@@ -75,11 +75,11 @@ class Question < ActiveRecord::Base
   end
 
   def self.needs_graphing_calculator
-    where(:calculation_aid => 4)
+    where(:calculation_aid => 2)
   end
 
   def self.needs_scientific_calculator
-    where(:calculation_aid => 2)
+    where(:calculation_aid => 1)
   end
 
   def self.needs_calculation_aid
@@ -89,8 +89,9 @@ class Question < ActiveRecord::Base
   def name?
     # uid + calculation-aid (if any)
     case self.calculation_aid
-      when 4 then return "#{self.uid} ( graphing calculator )"
-      when 2 then return "#{self.uid} ( scientific calculator )"
+      when 1 then return "#{self.uid} ( scientific calculator )"
+      when 2 then return "#{self.uid} ( graphing calculator )"
+      when 3 then return "#{self.uid} ( log tables )"
       else return "#{self.uid}"
     end
   end
