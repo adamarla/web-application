@@ -78,6 +78,10 @@ class Question < ActiveRecord::Base
     where(:calculation_aid => 2)
   end
 
+  def self.needs_log_tables
+    where(:calculation_aid => 3)
+  end
+
   def self.needs_scientific_calculator
     where(:calculation_aid => 1)
   end
