@@ -34,6 +34,10 @@ gem 'savon'
 
 gem 'delayed_job_active_record'
 
+group :production do 
+  gem 'thin'
+end
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
