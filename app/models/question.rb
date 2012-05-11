@@ -91,6 +91,7 @@ class Question < ActiveRecord::Base
   end
 
   def name?
+=begin
     # uid + calculation-aid (if any)
     case self.calculation_aid
       when 1 then return "#{self.uid} ( scientific calculator )"
@@ -98,6 +99,8 @@ class Question < ActiveRecord::Base
       when 3 then return "#{self.uid} ( log tables )"
       else return "#{self.uid}"
     end
+=end
+    return "#{self.uid} (#{self.topic.name})"
   end
 
   def mcq? 
