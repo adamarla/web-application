@@ -66,16 +66,23 @@ class CoursesController < ApplicationController
     @topics = Topic.where(:vertical_id => vertical_ids).order(:vertical_id).order(:name)
   end 
 
-  def get_relevant_questions
-    @course = Course.find params[:id]
-    head :bad_request if @course.nil? 
+  def topics_in
+    course = Course.find params[:id]
+    vertical = params[:vertical].to_i
+    @topics = course.topics_in vertical
+  end
+
+  def questions
+    course = Course.find params[:id]
+    head :bad_request if course.nil? 
 
     skip_used = params[:skip_previously_used] == "true" ? true : false
     teacher = skip_used ? params[:teacher_id].to_i : nil
 
     topic_ids = params[:checked].keys.map(&:to_i)
-    @questions = @course.relevant_questions topic_ids, teacher
-    respond_with @questions, @course
+    @questions = course.questions_on topic_ids, teacher
+    @topics = Topic.where(:id => topic_ids)
+    respond_with @questions, @topics
   end
 
 end

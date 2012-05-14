@@ -119,6 +119,20 @@ jQuery ->
 
     return true
 
+  ###
+    Step 2 of the 'quiz-building' process: topic selection
+  ###
+  $('#topic-selection-list').on 'click', '.scroll-heading', ->
+    content = $(this).next()
+    return if content.children().length isnt 0
+    # if list already populated then do *not* repopulate it. 
+    # It is highly unlikely that the list of topics will change during the session
+
+    id = $(this).attr 'marker'
+    course = flipchart.containingTab($(this)).prev().attr 'marker'
+    $.get "course/topics_in.json?id=#{course}&vertical=#{id}"
+    return true
+   
 
   ###
     Step 3 of the 'quiz-building' process: topic selection 

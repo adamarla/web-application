@@ -55,6 +55,11 @@ class Course < ActiveRecord::Base
     return Vertical.where(:id => ids).order(:name)
   end
 
+  def topics_in( vertical )
+    topic_ids = Syllabus.where(:course_id => self.id).map(&:topic_id)
+    @topics = Topic.where(:id => topic_ids).where(:vertical_id => vertical)
+  end
+
   # [:name,:board_id,:klass,:subject] ~> [:admin] 
   #attr_accessible 
 
@@ -75,7 +80,7 @@ class Course < ActiveRecord::Base
     return (status == :bad_request) ? :bad_request : :ok
   end # of function
 
-  def relevant_questions(topic_ids = [], teacher_id = nil)
+  def questions_on (topic_ids = [], teacher_id = nil)
     @questions = []
     Syllabus.where(:course_id => self.id, :topic_id => topic_ids).each do |j|
       @questions |= Question.where(:topic_id => j.topic_id, :difficulty => j.difficulty)

@@ -46,17 +46,19 @@ jQuery ->
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
     else if url.match(/course\/verticals/)
-      here = $('#vertical-selection-list > form:first > .form-fields')
-      coreUtil.interface.displayJson json.verticals, here, 'vertical', {checkbox:true}
-    else if url.match(/course\/applicable_topics/)
-      flipchart.next '#build-quiz'
       here = $('#topic-selection-list > form:first > .form-fields')
-      coreUtil.interface.displayJson json.topics, here, 'topic', {checkbox:true}
+      scroll.initialize json.verticals, 'vertical', here
+      here.accordion({ header:'.scroll-heading', collapsible:true, active:false })
+      #coreUtil.interface.displayJson json.verticals, here, 'vertical', {checkbox:true}
+    else if url.match(/course\/topics_in/)
+      here = $('#topic-selection-list > form:first > .form-fields')
+      scroll.loadJson json.topics, 'topic', here
     else if url.match(/course\/questions/)
       flipchart.next '#build-quiz'
       here = $('#question-options > form:first > .form-fields')
-      coreUtil.interface.displayJson json.questions, here, 'question', {checkbox:true}
-      preview.loadJson json, 'vault'
+      scroll.initialize json.topics, 'topic', here
+      here.accordion({ header:'.scroll-heading', collapsible:true, active:false, fillSpace:true })
+      scroll.loadJson json.questions, 'question', here
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
       hours = Math.floor(at/60)

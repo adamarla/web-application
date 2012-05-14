@@ -4,21 +4,14 @@
     %li
       %a{ :href => '#courses-taught' }= "courses"
     %li
-      %a{ :href => '#vertical-selection-list' }= "broadly"
+      %a{ :href => '#topic-selection-list' }= "topics"
     %li
-      %a{ :href => '#topic-selection-list' }= "specific"
-    %li
-      %a{ :href => '#question-options' }= "pick"
+      %a{ :href => '#question-options' }= "questions"
     %li
       %a{ :href => '#build-quiz-receipt'}= "summary"
   #courses-taught
-  #vertical-selection-list
-    = form_tag 'course/applicable_topics', :remote => true, :method => :put do |f| 
-      .submit-buttons
-        = submit_tag 'next'
-      .form-fields
   #topic-selection-list
-    = form_tag 'course/relevant_questions', :remote => true, :method => :put do |f| 
+    = form_tag course_questions_path, :remote => true, :method => :put do |f| 
       .submit-buttons
         .filters
           = check_box_tag :skip_previously_used, true
@@ -26,7 +19,6 @@
         = submit_tag 'next', :class => :right
       .form-fields
   #question-options
-    = render :partial => 'toolbox/preview_nav'
     = form_tag 'teacher/build_quiz', :remote => true, :method => :put do |f| 
       .submit-buttons
         = text_field_tag :quiz_name, nil, :placeholder => "give the quiz a name", :size => 20
