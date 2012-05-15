@@ -6,8 +6,7 @@ jQuery ->
   ########################################################
 
   $('#wide-panel').ajaxSuccess (e, xhr, settings) ->
-    matched = settings.url.match(/quiz\/candidate_questions/) or
-              settings.url.match(/quiz\/preview/) or
+    matched = settings.url.match(/quiz\/preview/) or
               settings.url.match(/question\/preview/) or
               settings.url.match(/ping/) or
               settings.url.match(/yardsticks\/preview/)
