@@ -23,7 +23,7 @@ jQuery ->
       This method therefore assumes the following for json[key]:
         {name: ..., id: ..., parent: ...} where json itself is an array
     ###
-    loadJson: (json, key, here) ->
+    loadJson: (json, key, here, ticker = null) ->
       return if not key?
       here = if typeof here is 'string' then $(here) else here
 
@@ -39,6 +39,11 @@ jQuery ->
         continue if content.length is 0
 
         item = swissKnife.forge m, key, {checkbox:true}
+        if ticker?
+          v = n[ticker]
+          t = item.children().eq(3)
+          t.text v
+
         item.appendTo content
       return true
       

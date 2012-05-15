@@ -122,7 +122,8 @@ jQuery ->
   ###
     Step 2 of the 'quiz-building' process: topic selection
   ###
-  $('#topic-selection-list').on 'click', '.scroll-heading', ->
+  $('#topic-selection-list').on 'click', '.scroll-heading', (event) ->
+    event.stopPropagation()
     content = $(this).next()
     return if content.children().length isnt 0
     # if list already populated then do *not* repopulate it. 
@@ -155,6 +156,14 @@ jQuery ->
     form.attr 'action', "teacher/build_quiz.json?course_id=#{courseId}&id=#{teacherId}"
     flipchart.next '#build-quiz'
     return true
+
+  $('#question-options').on 'click', '.swiss-knife', (event) ->
+    event.stopPropagation()
+    for m in $(this).siblings()
+      $(m).removeClass 'selected'
+    $(this).addClass 'selected'
+    return true
+    
 
   $('#deep-dive-link').click ->
     teacher = $('#control-panel').attr 'marker'

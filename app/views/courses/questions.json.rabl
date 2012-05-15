@@ -6,7 +6,7 @@ node :topics do
 end
 
 node :questions do 
-  @questions.map{ |m| { :question => {:name => m.name?, :id => m.id, :parent => m.topic_id} } }
+  @questions.map{ |m| { :question => {:name => m.uid, :id => m.id, :parent => m.topic_id, :marks => "#{m.marks?} points"} } }
 end
 
 
