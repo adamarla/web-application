@@ -172,8 +172,8 @@ jQuery ->
         steps = from - to
 
       if steps > (nImages / 2)
-        fwd = not fwd
         steps = if fwd then (last - to + from) else (last - from + to)
+        fwd = not fwd
 
       alert "last --> #{last}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
 
