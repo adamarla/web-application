@@ -167,7 +167,6 @@ jQuery ->
     stop = preview.isAt uid
     current = preview.currIndex()
     preview.jump current, stop
-    alert "start --> #{current}, stop --> #{at}"
     return true
     
 
