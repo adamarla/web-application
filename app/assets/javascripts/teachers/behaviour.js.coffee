@@ -167,9 +167,11 @@ jQuery ->
     pdfv = $('#pdf-viewer').documentViewer()
     pdfv.close() # close any previously opened preview before loading new one 
     pdfv.load("#{gutenberg.server}/vault/#{uid}/#{uid}-answer.pdf", {
+      path: '/assets/media-viewer/documentViewer/',
       height: 800,
       width: 600,
-      debug:true
+      debug:true,
+      autoLoadDependencies:true
     })
     return true
     
