@@ -175,10 +175,10 @@ jQuery ->
         fwd = not fwd
         steps = if fwd then (last - to + from) else (last - from + to)
 
-      alert "last --> #{last}, from --> #{from}, to --> #{to}, steps --> #{steps}"
+      alert "last --> #{last}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
 
       btn = if fwd then display.find('.ppy-next:first') else display.find('.ppy-prev:first')
-      for j in [1..steps]
+      for j in [0...steps]
         btn.click()
       return true
 
