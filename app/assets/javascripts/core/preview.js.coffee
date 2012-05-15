@@ -134,7 +134,53 @@ jQuery ->
       counter = display.find '.ppy-counter:first'
       counter = if counter.length isnt 0 then parseInt(counter.text()) - 1 else 0
       return counter
-      
+
+    # Given a question UID, returns its position in the image-list (0-indexed)
+    # Returns -1 if not found 
+
+    isAt : (uid, display = '#document-preview') ->
+      return -1 if not uid?
+      display = if typeof display is 'string' then $(display) else display
+      return -1 if display.hasClass 'hidden'
+
+      images = display.children('.ppy-imglist').eq(0).children('li[hop="true"]')
+      at = -1
+
+      for image, j in images
+        title = $(image).find('img:first').attr('alt')
+        if title is uid
+          at = images.index image
+          break
+      return at
+
+    jump : (from, to, display = '#document-preview') ->
+      return if not from? or not to?
+      return if to is -1
+
+      display = if typeof display is 'string' then $(display) else display
+      return if display.hasClass 'hidden'
+
+      images = display.children('.ppy-imglist').eq(0).children('li[hop="true"]')
+      nImages = images.length
+
+      if to > false
+        fwd = true
+        steps = to - from
+      else
+        fwd = false
+        steps = from - to
+
+      if steps > (nImages / 2)
+        fwd = not fwd
+        steps = if fwd then (nImages - to + from) else (nImages - from + to)
+
+      alert "#{fwd} ---> #{steps}"
+
+      btn = if fwd then display.find('.ppy-next:first') else display.find('.ppy-prev:first')
+      for j in [1..steps]
+        btn.click()
+      return true
+
     ###
       Hop backwards/forwards one image. And when displaying the list of questions 
       to pick from for a quiz, update the side panel bearing in mind that some 

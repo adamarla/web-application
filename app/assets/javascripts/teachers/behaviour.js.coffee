@@ -164,15 +164,10 @@ jQuery ->
     $(this).addClass 'selected'
 
     uid = $(this).children().eq(2).text()
-    pdfv = $('#pdf-viewer').documentViewer()
-    pdfv.close() # close any previously opened preview before loading new one 
-    pdfv.load("#{gutenberg.server}/vault/#{uid}/#{uid}-answer.pdf", {
-      #path: '/assets/media-viewer/documentViewer/',
-      height: 800,
-      width: 600,
-      debug:true,
-      autoLoadDependencies:false
-    })
+    stop = preview.isAt uid
+    current = preview.currIndex()
+    preview.jump current, stop
+    alert "start --> #{current}, stop --> #{at}"
     return true
     
 
