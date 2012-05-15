@@ -162,7 +162,6 @@ jQuery ->
 
       images = display.children('.ppy-imglist').eq(0).children('li')
       nImages = images.length
-      last = nImages - 1
 
       if to > from
         fwd = true
@@ -175,7 +174,7 @@ jQuery ->
         steps = nImages - steps
         fwd = not fwd
 
-      alert "last --> #{last}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
+      #alert "nImages --> #{nImages}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
 
       btn = if fwd then display.find('.ppy-next:first') else display.find('.ppy-prev:first')
       for j in [1..steps]
