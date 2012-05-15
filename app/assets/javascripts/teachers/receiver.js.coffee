@@ -59,6 +59,7 @@ jQuery ->
       scroll.initialize json.topics, 'topic', here
       here.accordion({ header:'.scroll-heading', collapsible:true, active:false, fillSpace:true })
       scroll.loadJson json.questions, 'question', here, 'marks'
+      preview.loadJson json, 'vault'
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
       hours = Math.floor(at/60)

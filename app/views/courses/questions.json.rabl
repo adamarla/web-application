@@ -9,5 +9,9 @@ node :questions do
   @questions.map{ |m| { :question => {:name => m.uid, :id => m.id, :parent => m.topic_id, :marks => "#{m.marks?} points"} } }
 end
 
+node :preview do
+  { :id => @questions.map(&:uid), :scans => @questions.map{ |m| [*1..m.answer_key_span?] } }
+end
+
 
 
