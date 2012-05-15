@@ -144,14 +144,14 @@ jQuery ->
       return -1 if display.hasClass 'hidden'
 
       images = display.children('.ppy-imglist').eq(0).children('li[hop="true"]')
-      at = -1
+      posn = -1
 
       for image, j in images
         title = $(image).find('img:first').attr('alt')
         if title is uid
-          at = images.index image
+          posn = images.index image
           break
-      return at
+      return posn
 
     jump : (from, to, display = '#document-preview') ->
       return if not from? or not to?
