@@ -160,8 +160,8 @@ jQuery ->
       display = if typeof display is 'string' then $(display) else display
       return if display.hasClass 'hidden'
 
-      images = display.children('.ppy-imglist').eq(0).children('li[hop="true"]')
-      nImages = images.length
+      images = display.children('.ppy-imglist').eq(0).children('li')
+      last = images.length - 1
 
       if to > false
         fwd = true
@@ -170,9 +170,9 @@ jQuery ->
         fwd = false
         steps = from - to
 
-      if steps > (nImages / 2)
+      if steps > (last / 2)
         fwd = not fwd
-        steps = if fwd then (nImages - to + from) else (nImages - from + to)
+        steps = if fwd then (last - to + from) else (last - from + to)
 
       alert "#{fwd} ---> #{steps}"
 
