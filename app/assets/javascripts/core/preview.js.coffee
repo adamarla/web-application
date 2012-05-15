@@ -161,8 +161,8 @@ jQuery ->
       return if display.hasClass 'hidden'
 
       images = display.children('.ppy-imglist').eq(0).children('li')
-      last = images.length - 1
-
+      nImages = images.length
+      last = nImages - 1
 
       if to > from
         fwd = true
@@ -171,7 +171,7 @@ jQuery ->
         fwd = false
         steps = from - to
 
-      if steps > (last / 2)
+      if steps > (nImages / 2)
         fwd = not fwd
         steps = if fwd then (last - to + from) else (last - from + to)
 
