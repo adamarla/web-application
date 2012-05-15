@@ -169,7 +169,7 @@ jQuery ->
     pdfv.load("#{gutenberg.server}/vault/#{uid}/#{uid}-answer.pdf", {
       height: 800,
       width: 600,
-      autoLoadDependencies:true
+      debug:true
     })
     return true
     
