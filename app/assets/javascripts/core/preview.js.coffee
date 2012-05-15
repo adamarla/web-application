@@ -156,6 +156,7 @@ jQuery ->
     jump : (from, to, display = '#document-preview') ->
       return if not from? or not to?
       return if to is -1
+      return if from is to
 
       display = if typeof display is 'string' then $(display) else display
       return if display.hasClass 'hidden'
