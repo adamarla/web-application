@@ -175,7 +175,6 @@ jQuery ->
         steps = if fwd then (last - to + from) else (last - from + to)
         fwd = not fwd
 
-      return if steps < 1
       alert "last --> #{last}, from --> #{from}, to --> #{to}, steps --> #{steps}"
 
       btn = if fwd then display.find('.ppy-next:first') else display.find('.ppy-prev:first')
