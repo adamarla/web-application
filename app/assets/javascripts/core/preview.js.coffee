@@ -143,7 +143,7 @@ jQuery ->
       display = if typeof display is 'string' then $(display) else display
       return -1 if display.hasClass 'hidden'
 
-      images = display.children('.ppy-imglist').eq(0).children('li[hop="true"]')
+      images = display.children('.ppy-imglist').eq(0).children('li')
       posn = -1
 
       for image, j in images
