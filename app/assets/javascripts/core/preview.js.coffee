@@ -164,7 +164,7 @@ jQuery ->
       last = images.length - 1
 
 
-      if to > false
+      if to > from
         fwd = true
         steps = to - from
       else
