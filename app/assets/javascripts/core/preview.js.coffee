@@ -172,8 +172,8 @@ jQuery ->
         steps = from - to
 
       if steps > (last / 2)
-        steps = if fwd then (last - to + from) else (last - from + to)
         fwd = not fwd
+        steps = if fwd then (last - to + from) else (last - from + to)
 
       alert "last --> #{last}, from --> #{from}, to --> #{to}, steps --> #{steps}"
 
