@@ -9,6 +9,8 @@
 #  created_at    :datetime
 #  updated_at    :datetime
 #  title         :string(255)
+#  active        :boolean         default(FALSE)
+#  index         :integer         default(-1)
 #
 
 require 'test_helper'
