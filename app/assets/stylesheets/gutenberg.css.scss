@@ -677,3 +677,14 @@ form .scroll-content.ui-accordion-content {
     margin-top: 4px ;
   }
 }
+
+// Create a border around the <object> Vimeo inserts 
+object {
+  border: {
+    style: solid ;
+    width: 2px ;
+    color: #6ca7ab ;
+    radius: 8px ;
+  }
+  -moz-border-radius: 8px ;
+}
