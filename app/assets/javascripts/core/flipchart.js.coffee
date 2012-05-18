@@ -60,6 +60,14 @@ window.flipchart = {
     })
     return true
 
+  rewind: (root) ->
+    root = if typeof root is 'string' then $(root) else root
+    return false if not root.hasClass 'flipchart'
+
+    root.tabs 'enable', 0
+    root.tabs 'select', 0
+    return true
+
   next : (root) ->
     root = if typeof root is 'string' then $(root) else root
     return false if not root.hasClass 'flipchart'
@@ -71,6 +79,7 @@ window.flipchart = {
     root.tabs 'select', next
     return true
 
+  ###
   resetNext : (root) ->
     root = if typeof root is 'string' then $(root) else root
     return false if not root.hasClass 'flipchart'
@@ -78,6 +87,7 @@ window.flipchart = {
     next = root.tabs('option', 'selected') + 1
     last = root.tabs 'length'
     return if next is last
+  ###
 
   containingTab: (obj) ->
     chart = obj.closest '.flipchart'
@@ -115,6 +125,6 @@ jQuery ->
     current = chart.tabs 'option', 'selected'
     chart.attr 'marker', marker if current is 0
     flipchart.next chart unless $(this).hasClass 'accordion-heading' # let the accordion expand
-    flipchart.resetNext chart
+    #flipchart.resetNext chart
 
     return true
