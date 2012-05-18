@@ -8,7 +8,12 @@ jQuery ->
         Method assumes that json[key] is of the form {name:XYZ, id:MNO}.
         'json' itself is an array hashes with primary key = key 
       ###
+
       here.empty()
+      here.accordion('destroy')
+      # Imp: destroy any previously attached accordion object and re-create it
+      # in the new run. Otherwise, one would see different behaviour in each run
+      
       for m,j in json
         n = m[key]
         $("<div class='scroll-heading' marker=#{n.id}>#{n.name}</div>").appendTo here
