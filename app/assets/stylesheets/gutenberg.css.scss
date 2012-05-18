@@ -679,6 +679,10 @@ form .scroll-content.ui-accordion-content {
     margin-top: 4px ;
     border-bottom: 1px solid white ;
   }
+
+  > .swiss-knife.selected {
+    color: #fd9105 ;
+  }
 }
 
 // Create a border around the <object> Vimeo inserts 
