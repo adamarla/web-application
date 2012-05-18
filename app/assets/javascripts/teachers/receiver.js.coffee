@@ -49,7 +49,6 @@ jQuery ->
       here = $('#topic-selection-list > form:first > .form-fields')
       scroll.initialize json.verticals, 'vertical', here
       here.accordion({ header:'.scroll-heading', collapsible:true, active:false })
-      #coreUtil.interface.displayJson json.verticals, here, 'vertical', {checkbox:true}
     else if url.match(/course\/topics_in/)
       here = $('#topic-selection-list > form:first > .form-fields')
       scroll.loadJson json.topics, 'topic', here
