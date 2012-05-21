@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120516203225) do
+ActiveRecord::Schema.define(:version => 20120521060508) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -249,7 +249,7 @@ ActiveRecord::Schema.define(:version => 20120516203225) do
   end
 
   create_table "videos", :force => true do |t|
-    t.string   "url"
+    t.text     "url"
     t.boolean  "restricted",    :default => true
     t.boolean  "instructional", :default => false
     t.datetime "created_at"
