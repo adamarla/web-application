@@ -59,6 +59,18 @@ jQuery ->
     return true
 
   ###
+    Rebuild the accordion for past-quizzes everytime the tab under which 
+    past quizzes are listed is clicked. Otherwise, the accordion does not 
+    work properly when the tab is re-clicked after the first time
+  ###
+  $('#quizzes-summary > ul:first > li > a[href="#past-quizzes"]').click ->
+    a = $('#past-quizzes > .as-accordion').eq(0)
+    alert('nothing') if not a? or a.length is 0
+    a.accordion('destroy')
+    a.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+    return true
+
+  ###
     (Process all minor-links > a here)
 
     1. clicking the new-quiz-link should should load the list of courses 
