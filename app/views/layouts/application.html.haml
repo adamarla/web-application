@@ -1,16 +1,31 @@
+- content_for :sign_in_form do 
+  #sign_in_form
+    = render :partial => 'welcome/sign_in_form'
+- content_for :about_us do 
+  #about_us.hidden
+    = render :partial => 'welcome/about_us'
+- content_for :footer do 
+  #footer
+    = render :partial => 'welcome/footer'
+
+
 !!!5
 
 %html{html_attrs}
   %head 
     %title= "Grades will happen ..."
     = stylesheet_link_tag "application" 
-    = javascript_include_tag "application"
+    = javascript_include_tag "application", "welcome"
     = csrf_meta_tag
-  
   %body 
     #viewport
       #public-links
         %ul.no-bullets
-          = main_link :for => :main, :as => 'home', :href => root_path
-          = main_link :for => :videos, :as => 'how-tos', :href => howtos_path
-      = yield 
+          = main_link :for => :main, :as => 'home', :href => '#'
+          = main_link :for => :videos, :as => 'video tutorials', :href => howtos_path
+          = main_link :for => :how_it_works, :as => 'how it works', :href => '#'
+          = main_link :for => :scan_loader, :as => 'download', :href => '#'
+          = main_link :for => :about_us, :as => 'about us', :href => '#'
+      = yield :sign_in_form
+      = yield :about_us
+    = yield :footer

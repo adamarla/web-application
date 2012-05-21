@@ -53,6 +53,20 @@ body {
   margin-top: 40px ;
 }
 
+#footer {
+  width: 850px ;
+  text-align: center ;
+  border-top: 1px solid $light-gray ;
+  font: {
+    size: 12px ;
+    weight: normal ; 
+    style: italic ;
+  }
+  bottom: 8% ;
+  left: 10% ;
+  position: absolute ;
+}
+
 .data-point-label {
   font: {
     size: 11px ;
@@ -598,6 +612,25 @@ span.unhappyMessage {
 
   }
 }
+
+#about_us {
+  margin-top: 50px ;
+
+  > #question {
+    min-height: 80px ;
+    width: 100% ;
+    font-size: 18px ;
+    color: #6ca7ab ;
+    > p {
+      font-size: 16px ;
+      color: white ;
+      > a {
+	    color: #6ca7ab ;
+	  }
+	}
+  }
+}
+  
 
 #recover-password {
   float: none ;
