@@ -59,6 +59,18 @@ jQuery ->
     return true
 
   ###
+    Rebuild the accordion for past-quizzes everytime the tab under which 
+    past quizzes are listed is clicked. Otherwise, the accordion does not 
+    work properly when the tab is re-clicked after the first time
+  ###
+  $('#quizzes-summary > ul:first > li > a[href="#past-quizzes"]').click ->
+    a = $('#past-quizzes > .as-accordion').eq(0)
+    alert('nothing') if not a? or a.length is 0
+    a.accordion('destroy')
+    a.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+    return true
+
+  ###
     (Process all minor-links > a here)
 
     1. clicking the new-quiz-link should should load the list of courses 
@@ -119,6 +131,21 @@ jQuery ->
 
     return true
 
+  ###
+    Step 2 of the 'quiz-building' process: topic selection
+  ###
+  $('#topic-selection-list').on 'click', '.scroll-heading', (event) ->
+    event.stopPropagation()
+    content = $(this).next()
+    return if content.children().length isnt 0
+    # if list already populated then do *not* repopulate it. 
+    # It is highly unlikely that the list of topics will change during the session
+
+    id = $(this).attr 'marker'
+    course = flipchart.containingTab($(this)).prev().attr 'marker'
+    $.get "course/topics_in.json?id=#{course}&vertical=#{id}"
+    return true
+   
 
   ###
     Step 3 of the 'quiz-building' process: topic selection 
@@ -141,6 +168,19 @@ jQuery ->
     form.attr 'action', "teacher/build_quiz.json?course_id=#{courseId}&id=#{teacherId}"
     flipchart.next '#build-quiz'
     return true
+
+  $('#question-options').on 'click', '.swiss-knife', (event) ->
+    event.stopPropagation()
+    for m in $(this).siblings()
+      $(m).removeClass 'selected'
+    $(this).addClass 'selected'
+
+    uid = $(this).children().eq(2).text()
+    stop = preview.isAt uid
+    current = preview.currIndex()
+    preview.jump current, stop
+    return true
+    
 
   $('#deep-dive-link').click ->
     teacher = $('#control-panel').attr 'marker'

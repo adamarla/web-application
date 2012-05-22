@@ -352,6 +352,13 @@ jQuery ->
         slider.slider { value: "#{allotment}" }
     })
 
+  $('#yardsticks-summary a').click ->
+    current = $(this).closest('.vertical-tabs').tabs 'option', 'selected'
+    last = preview.currIndex()
+    
+    preview.jump last, current
+    return true
+
   ###
     In Admin & Teacher consoles, allotments for various yardsticks can be 
     changed using a slider. These sliders - when slid - update a ticker

@@ -90,6 +90,14 @@ class Question < ActiveRecord::Base
     where('calculation_aid <> ?', 0)
   end
 
+  def self.standalone
+    select{ |m| m.num_parts? == 0 }
+  end
+
+  def self.order_by_marks
+    select{ |m| m.marks? > 0 }.sort{ |m,n| m.marks? <=> n.marks? }
+  end
+
   def name?
 =begin
     # uid + calculation-aid (if any)
@@ -100,7 +108,7 @@ class Question < ActiveRecord::Base
       else return "#{self.uid}"
     end
 =end
-    return "#{self.uid} (#{self.topic.name})"
+    self.multi_part? ? "#{self.uid} (multi-part)" : "#{self.uid} ( #{self.marks?} points )" 
   end
 
   def mcq? 
@@ -249,14 +257,6 @@ class Question < ActiveRecord::Base
     self.update_attributes :mcq => s.mcq, :half_page => s.half_page,
                         :full_page => s.full_page, :marks => s.marks,
                         :multi_correct => false, :num_parts => 0
-  end
-
-  def self.standalone
-    select{ |m| m.num_parts? == 0 }
-  end
-
-  def self.order_by_marks
-    select{ |m| m.marks? > 0 }.sort{ |m,n| m.marks? <=> n.marks? }
   end
 
   private 

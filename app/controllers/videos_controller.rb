@@ -17,7 +17,7 @@ class VideosController < ApplicationController
   end 
 
   def howtos
-    @videos = Video.all
+    @videos = Video.where(:active => true).order(:index)
   end
 
 end

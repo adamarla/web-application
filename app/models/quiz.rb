@@ -65,7 +65,12 @@ class Quiz < ActiveRecord::Base
     #   3. graded_response <-> testpaper
     #   4. graded_response <-> student
 
-    testpaper = self.testpapers.new :name => "#{Date.today.strftime "%B %d, %Y"}" # (1)
+    # Testpaper names have the following form:
+    #    Test #4: Apr 20, 2012
+
+    ntests = Testpaper.where(:quiz_id => self.id).count
+    assigned_name = "Test ##{ntests + 1}: #{Date.today.strftime("%b %d, %Y")}"
+    testpaper = self.testpapers.new :name => assigned_name # (1)
     questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
     students.each do |s|

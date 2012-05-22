@@ -33,8 +33,8 @@ Webapp::Application.routes.draw do
   match 'course/profile' => 'courses#profile', :via => :get
   match 'course/coverage' => 'courses#coverage', :via => :get
   match 'course/verticals' => 'courses#verticals', :via => :get
-  match 'course/applicable_topics' => 'courses#applicable_topics', :via => :put
-  match 'course/questions' => 'courses#get_relevant_questions', :via => :put
+  match 'course/questions' => 'courses#questions', :via => :put
+  match 'course/topics_in' => 'courses#topics_in', :via => :get
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
@@ -75,7 +75,6 @@ Webapp::Application.routes.draw do
 
   # Quiz
   resource :quiz, :only => [:show]
-  match 'quiz/candidate_questions' => 'quizzes#get_candidates', :via => :get
   match 'quizzes/list' => 'quizzes#list', :via => :get
   match 'quiz/preview' => 'quizzes#preview', :via => :get
   match 'quiz/assign' => 'quizzes#assign_to', :via => :put

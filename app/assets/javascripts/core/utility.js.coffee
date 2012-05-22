@@ -97,6 +97,11 @@ backInToolbox = (id) ->
 ###
 
 window.coreUtil = {
+  removeJQueryClasses: (obj) ->
+    obj = if typeof obj is 'string' then $(obj) else obj
+    classes = obj.attr 'class'
+    obj.removeClass classes.match(/ui[\w\W]+/g) # space separated array of ui-* classes
+    return true
 
   # Namespace for functions related to vertical and topic lists
   mnmlists : {
@@ -185,7 +190,7 @@ window.coreUtil = {
           resetPanel target if link.hasClass('main-link')
           side = link.attr 'side'
           continue if not side? or $("#{side}").length is 0
-          # Rarely happens, but can happen. Examples: scan-loader-link(main) and new-quiz-link(minor)
+          # Rarely happens, but can happen. Examples: scan-loader-link(main)
 
         current = target.children().first()
         needed = $(link.attr type)
@@ -197,6 +202,7 @@ window.coreUtil = {
         else
           target.removeClass('hidden')
           needed.appendTo(target).hide().fadeIn('slow')
+          #flipchart.rewind needed if needed.hasClass 'flipchart'
 
       return true
 

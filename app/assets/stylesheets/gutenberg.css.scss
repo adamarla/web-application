@@ -160,12 +160,13 @@ body {
 }
 
 .swiss-knife { 
-  min-height: 25px ;
-  border-bottom: 1px solid lighten($gray, 30%) ; 
-  padding-top: 3px ;
+  min-height: 22px ;
+  border-bottom: 1px solid #6ca7ab ; 
+  padding-top: 0px ;
   color: white ;
   font-size: 12px ;
   font-weight: normal ;
+  cursor: pointer ;
 } 
 
 .as-accordion .swiss-knife { /* when within an accordion */
@@ -247,7 +248,7 @@ body {
   padding-left: 20px ;
 }
 
-#vertical-selection > legend { 
+#topic-selection > legend { 
   width: 100% ;
   
   margin: {
@@ -310,10 +311,10 @@ span.unhappyMessage {
 .micro-ticker {
   color: #fd9105 ; 
   font: {
-    size: 10pt ;
+    size: 9pt ;
     weight: normal ; 
-    variant: small-caps;
   }
+  margin-right: 3% ;
 }
 
 .led {
@@ -694,9 +695,13 @@ span.unhappyMessage {
       decoration: none ;
       transform: lowercase ;
     }
-    color: #6ca7ab ; 
+    color: white ; 
     font-size: 14px ;
-    margin-bottom: 5px ;
+    margin-bottom: 10px ;
+    width: 95% ;
+    float: right ;
+    padding: 4px 3px 4px 3px ;
+    border-bottom: 1px solid #6ca7ab ;
   }
 }
 
@@ -720,3 +725,37 @@ li {
     color: #6ca7ab ;
   }
 }
+
+#topic-selection-list, #question-options {
+  .scroll-heading {
+    border-bottom: 1px solid #6ca7ab ; 
+    font-size: 13px ;
+    padding: {
+      top: 5px ;
+      bottom: 5px ; 
+    }
+    color: white ;
+    cursor: pointer ;
+  }
+
+  > form {
+    min-height: 300px ;
+  }
+}
+
+form .scroll-content.ui-accordion-content {
+  width: 90% ;
+  padding: 0pt ;
+  min-height: 100px ;
+
+  > .swiss-knife {
+    color: #6ca7ab ;
+    margin-top: 4px ;
+    border: none ;
+  }
+
+  > .swiss-knife.selected {
+    color: #fd9105 ;
+  }
+}
+
