@@ -26,7 +26,7 @@ body {
               sans-serif;
   width : 1020px ;
   background-color: darken($blue, 30%) ;
-  color: white ;
+  color: $gray ;
 } 
 
 #viewport {
@@ -46,11 +46,60 @@ body {
   border-bottom: 3px solid #6ca7ab ; 
 } 
 
+#company-logo {
+  min-height: 40px ;
+  width: 100% ;
+  margin-bottom: 50px ;
+  
+  > #gradians_logo {
+    margin-right: 40px ;
+    float: right ;
+  }
+  
+  > #motto {
+    font-size: 14px ; 
+    color: #6ca7ab ;
+    float: none ;
+  }
+}
+
 #flot-chart {
   width: 600px ;
   height: 800px ;
   margin-left: 40px ;
   margin-top: 40px ;
+}
+
+#footer {
+  width: 80% ;
+  text-align: center ;
+  border-top: 1px solid $light-gray ;
+  margin: {
+    left: 10% ;
+  }
+  
+  > #copyright-notice {
+    width: 80% ;
+    margin: {
+      left: 10% ;
+      top: 2% ;
+    }
+    
+    font: {
+      size: 12px ;
+      weight: normal ; 
+      style: italic ;
+    }
+    color: $light-gray ;
+  
+    > img {
+  	  margin-left: 30px ;
+    }
+  
+    #copyright-validity {
+  	  float: left ;
+    } 
+  }
 }
 
 .data-point-label {
@@ -535,6 +584,7 @@ span.unhappyMessage {
 #sign-in-form {
   //margin-left: 15% ;
   margin-top: 50px ;
+  min-height: 300px ;
 
   > form {
     min-height: 80px ;
@@ -599,6 +649,27 @@ span.unhappyMessage {
 
   }
 }
+
+#about_us {
+  margin: {
+    bottom: 20px ;
+  }
+
+  > #question {
+    min-height: 80px ;
+    width: 100% ;
+    font-size: 14px ;
+    color: #6ca7ab ;
+    > p {
+      font-size: 14px ;
+      color: darken(white, 15%) ;
+      > a {
+	    color: #6ca7ab ;
+	  }
+	}
+  }
+}
+  
 
 #recover-password {
   float: none ;

@@ -1,2 +1,5 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+// The recommended practice is not to include any JS code 
+// in a manifest file - like this one. Instead, split JS code 
+// in other .js files and require them as needed
+
+//= require_directory ./welcome 
