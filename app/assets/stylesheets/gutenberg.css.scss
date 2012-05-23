@@ -74,6 +74,8 @@ body {
   width: 80% ;
   text-align: center ;
   border-top: 1px solid $light-gray ;
+  float: left ;
+
   margin: {
     left: 10% ;
   }
@@ -782,7 +784,8 @@ span.unhappyMessage {
 
 #embedded-video {
   width: 65% ;
-  margin-top: 50px ;
+  min-height: 700px ;
+  margin-top: -50px ;
 }
 
 #preview-navigation {

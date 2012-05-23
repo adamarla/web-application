@@ -43,7 +43,7 @@ jQuery ->
       gutenberg.server = gutenberg.serverOptions.local
     
   pingargs =
-  	url: '/ping' 
+  	url: '/ping'
   	success: pinghandler
   	async: false
   	
@@ -58,14 +58,6 @@ jQuery ->
   $('#yardsticks-link').click (event) ->
     $.get 'yardsticks/preview'
     return true
-
-  ###
-    Whenever an a.howto-video is clicked, replace any existing <embed> or <iframe>
-    within #embedded-video with that link's url
-  ###
-  $('a.howto-video').click (event) ->
-    marker = $(this).attr 'marker'
-    $.get "video/load.json?id=#{marker}"
 
   ###
     Any form for creating or editing a record that needs to be opened as a dialog
