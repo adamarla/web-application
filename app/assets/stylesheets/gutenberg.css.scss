@@ -765,7 +765,6 @@ span.unhappyMessage {
 #video-titles {
   width: 30% ;
   color: white ;
-  margin-top: 40px ;
 
   > a {
     text: {
@@ -779,6 +778,10 @@ span.unhappyMessage {
     float: right ;
     padding: 4px 3px 4px 3px ;
     border-bottom: 1px solid #6ca7ab ;
+  }
+
+  span.target { 
+    font-size: 30px ;
   }
 }
 
