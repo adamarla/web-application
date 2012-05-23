@@ -60,6 +60,13 @@ jQuery ->
     return true
 
   ###
+    Load the first video when #videos-link is clicked. Let users have something to play
+  ###
+  $('#videos-link').click (event) ->
+    $('#video-titles > a.howto-video:first').click()
+    return true
+
+  ###
     Any form for creating or editing a record that needs to be opened as a dialog
     - as opposed to being rendered inline - should have one of new-entity or update-entity
     class attributes. And if these forms need to auto-close on submit, then an
