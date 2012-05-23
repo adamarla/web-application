@@ -581,10 +581,12 @@ span.unhappyMessage {
   }
 }
 
-#sign-in-form {
-  //margin-left: 15% ;
+#mainstage {
   margin-top: 50px ;
   min-height: 300px ;
+}
+
+#sign-in-form {
 
   > form {
     min-height: 80px ;
@@ -650,10 +652,7 @@ span.unhappyMessage {
   }
 }
 
-#about_us {
-  margin: {
-    bottom: 20px ;
-  }
+#about-us {
 
   > #question {
     min-height: 80px ;
@@ -668,6 +667,73 @@ span.unhappyMessage {
 	  }
 	}
   }
+}
+
+#how-it-works {
+
+  > img {
+    float: left ;
+  }
+  
+  > #synopsis {
+    margin: {
+      right: 5% ;
+    }
+    float: right ;
+    width: 38% ;
+    font-size: 14px ;
+    color: darken(white, 15%) ;
+  }
+
+}
+
+
+#download {
+
+  > img {
+    float: left ;
+  }
+
+  > #download-button {
+    border: {
+      style: none ;
+      radius: 5px;
+    }
+    font: {
+      family: inherit ;
+      weight: bold ;
+      size: 17px ;
+    }
+    color: black ; 
+    background-color: #fd9105 ; 
+    > #label {
+      width: 75% ;
+      decoration: none ;
+      margin: {
+        left: auto ;
+        right: auto ;
+        top: 40px ;
+      }
+    }
+    margin: {
+      right: 15% ;
+    }    
+    float: right ;
+    width: 250px ;
+    height: 100px ;
+  }
+  
+  > #instruction {
+    margin: {
+      top: 5% ;
+      right: 5% ;
+    }
+    float: right ;
+    width: 45% ;
+    font-size: 14px ;
+    color: darken(white, 15%) ;
+  }
+
 }
   
 
