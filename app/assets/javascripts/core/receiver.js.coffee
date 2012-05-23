@@ -8,7 +8,6 @@ jQuery ->
   $('#wide-panel').ajaxSuccess (e, xhr, settings) ->
     matched = settings.url.match(/quiz\/preview/) or
               settings.url.match(/question\/preview/) or
-              settings.url.match(/ping/) or
               settings.url.match(/yardsticks\/preview/)
     return if matched is null
 
@@ -19,11 +18,6 @@ jQuery ->
         preview.loadJson json, 'vault'
       when 'quiz/preview'
         preview.loadJson json, 'atm'
-      when 'ping'
-        if json.deployment is 'production'
-          gutenberg.server = gutenberg.serverOptions.remote
-        else
-          gutenberg.server = gutenberg.serverOptions.local
       when 'yardsticks/preview'
         preview.loadJson json, 'frontdesk-yardsticks'
     return true
