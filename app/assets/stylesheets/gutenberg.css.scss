@@ -687,41 +687,53 @@ span.unhappyMessage {
 
 }
 
+#download-screenshots { 
+  max-width: 40% ;
+  + .right {
+    max-width: 50% ;
+  }
+}
 
-#download {
+#download-btn {
+  background-color: #6ca7ab ;
+  max-width: 50% ; 
+  height: 40px ;
+  color: white ;
 
-  > img {
-    float: left ;
+  border: {
+    radius: 20px ;
+    style: none ;
   }
 
-  > #download-button {
-    border: {
-      style: none ;
-      radius: 5px;
-    }
-    font: {
-      family: inherit ;
-      weight: bold ;
-      size: 17px ;
-    }
-    color: black ; 
-    background-color: #fd9105 ; 
-    > #label {
-      width: 75% ;
-      decoration: none ;
-      margin: {
-        left: auto ;
-        right: auto ;
-        top: 40px ;
-      }
-    }
-    margin: {
-      right: 15% ;
-    }    
-    float: right ;
-    width: 250px ;
-    height: 100px ;
+  padding: {
+    top: 18px ;
+    bottom: 0px ;
   }
+
+  text: {
+    transform: lowercase ;
+    align: center ;
+  }
+
+  > a {
+    color: white ;
+    text-decoration: none ;
+  }
+
+  margin-bottom: 40px ;
+}
+
+#download-what-it-means { 
+  width: 90% ;
+  text: { 
+    align: justify ;
+  }
+  color: white ;
+  font: { 
+    size: 14px ;
+  }
+}
+
   
   > #instruction {
     margin: {
@@ -733,9 +745,6 @@ span.unhappyMessage {
     font-size: 14px ;
     color: darken(white, 15%) ;
   }
-
-}
-  
 
 #recover-password {
   float: none ;

@@ -1,12 +1,15 @@
-#download
+
+#download-screenshots.left
   = image_tag("security-warning-small.png", alt: "warning", id: "warning_popup")
-  #download-button
-    #label 
-      = link_to 'Download Scan Loader', '#'
-  #instruction 
+
+.right
+  #download-btn
+    = link_to 'Download Scan Loader', '#'
+  #download-what-it-means
     The first time you download this utility you'll be prompted with a |
     security warning of the kind you see on the the left. Select the |
     check-box 'Always trust content from this publisher' so that you never |
     see this warning again. Continue to download by clicking the 'Run' |
     button. Doing so will install and run the Scan Loader application on this |
     computer so that you can feed scans into gradians.com |
+
