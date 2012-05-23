@@ -669,6 +669,25 @@ span.unhappyMessage {
   }
 }
 
+#how-it-works {
+
+  > img {
+    float: left ;
+  }
+  
+  > #synopsis {
+    margin: {
+      right: 5% ;
+    }
+    float: right ;
+    width: 38% ;
+    font-size: 14px ;
+    color: darken(white, 15%) ;
+  }
+
+}
+
+
 #download {
 
   > img {
