@@ -1,7 +1,7 @@
 
 #video-titles.left
   - @videos.each_with_index do |m,j|
-    = link_to "##{j+1}: #{m.title}", video_load_path(:id => m.id), :remote => true, 
+    = link_to "#{m.title}", video_load_path(:id => m.id), :remote => true, 
       :class => "howto-video", :marker => "#{m.id}"
 
 #embedded-video.right
