@@ -2,11 +2,29 @@ jQuery ->
   ###
     Show/hide the main tabs on the welcome screen (on click)
   ###
-  $('#about_us-link').click ->
-    $("#sign_in_form").hide()
-    $("#about_us").show()
-
+  
+  hide_all = ->
+    $("#sign-in-form").hide()
+    $("#about-us").hide()
+    $("#how-it-works").hide()
+    $("#download").hide()    
+    
+  hide_all()    
+  $("#sign-in-form").show()
+    
   $('#main-link').click ->
-    $("#sign_in_form").show()
-    $("#about_us").hide()
+    hide_all()
+    $("#sign-in-form").show()
+
+  $('#about_us-link').click ->
+    hide_all()
+    $("#about-us").show()
+
+  $('#how_it_works-link').click ->
+    hide_all()
+    $("#how-it-works").show()
+
+  $('#download-link').click ->
+    hide_all()
+    $("#download").show()
       
