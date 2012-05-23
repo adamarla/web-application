@@ -1,30 +1,15 @@
 jQuery ->
+    
   ###
-    Show/hide the main tabs on the welcome screen (on click)
-  ###
+  download_args =
+    url: "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+    async: false
+  $('#download-button').click ->    
+    $.ajax download_args
+    $.get "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+    xmlhttp = new XMLHttpRequest()
+    xmlhttp.open("GET", "#{gutenberg.server}/scanLoader/scanLoader.jnlp", false)
+    xmlhttp.send()
+  ###  
+  $("[href='#']").attr("href", "#{gutenberg.server}/scanLoader/scanLoader.jnlp")	
   
-  hide_all = ->
-    $("#sign-in-form").hide()
-    $("#about-us").hide()
-    $("#how-it-works").hide()
-    $("#download").hide()    
-    
-  hide_all()    
-  $("#sign-in-form").show()
-    
-  $('#main-link').click ->
-    hide_all()
-    $("#sign-in-form").show()
-
-  $('#about_us-link').click ->
-    hide_all()
-    $("#about-us").show()
-
-  $('#how_it_works-link').click ->
-    hide_all()
-    $("#how-it-works").show()
-
-  $('#download-link').click ->
-    hide_all()
-    $("#download").show()
-      

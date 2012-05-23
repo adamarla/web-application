@@ -109,6 +109,11 @@ Webapp::Application.routes.draw do
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get
+  
+  # Welcome
+  match 'about_us' => 'welcome#about_us', :via => :get
+  match 'download' => 'welcome#download', :via => :get
+  match 'how_it_works' => 'welcome#how_it_works', :via => :get
 
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]

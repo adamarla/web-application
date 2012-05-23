@@ -13,5 +13,17 @@ class WelcomeController < ApplicationController
       end 
     end 
   end
+  
+  def about_us
+  
+  end
+  
+  def how_it_works
+  
+  end
+  
+  def download
+  
+  end
 
 end

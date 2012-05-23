@@ -35,12 +35,19 @@ jQuery ->
   ###
     This next call is unassuming but rather important. We initialize 
     variables within the JS based on the results the server being accessed returns
-
-    The response is captured by #wide-panel in receiver. But it could have been any other 
-    DOM element. Its just that at the time of writing, #wide-panel was the only 
-    DOM element being referenced there
   ###
-  $.get 'ping'
+  pinghandler = (response) ->
+    if response.deployment is 'production'
+      gutenberg.server = gutenberg.serverOptions.remote
+    else
+      gutenberg.server = gutenberg.serverOptions.local
+    
+  pingargs =
+  	url: '/ping' 
+  	success: pinghandler
+  	async: false
+  	
+  $.ajax pingargs
 
   ###
     Load 'example' jpegs of student responses on #yardsticks-link click. 
