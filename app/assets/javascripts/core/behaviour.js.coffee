@@ -50,6 +50,14 @@ jQuery ->
   $.ajax pingargs
 
   ###
+    Now that we know what type of server we are interacting with, we can tweak 
+    the scanloader download button to work with that server 
+  ###
+
+  $('#download-btn').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+  $('#download-btn').button()
+
+  ###
     Load 'example' jpegs of student responses on #yardsticks-link click. 
     If someone has clicked on the link, then it means that he/she wants to 
     edit/review their marking scheme. In which case, showing example 
