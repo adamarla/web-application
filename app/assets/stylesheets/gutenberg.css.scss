@@ -672,19 +672,25 @@ span.unhappyMessage {
 }
 
 #how-it-works {
+  width: 90% ; 
 
-  > img {
-    float: left ;
-  }
-  
-  > #synopsis {
-    margin: {
-      right: 5% ;
+  > .half-column {
+    width: 50% ;
+    > .step {
+      width: 90% ;
+      min-height: 70px ;
+
+      > img { 
+        float: left ; 
+      } 
+
+      > .right { 
+        max-width: 50% ;
+        font-size: 13px ;
+        color: #6ca7ab ;
+        text-align: left; 
+      }
     }
-    float: right ;
-    width: 38% ;
-    font-size: 14px ;
-    color: darken(white, 15%) ;
   }
 
 }

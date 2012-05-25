@@ -1,16 +1,22 @@
 #how-it-works
-  = image_tag("process_flow.png", alt: "process_flow", id: "process_flow")
-  #synopsis
-    %p
-      At a high level, the process flow looks something like the diagram |
-      you see on the left. A teacher starts things off by using the question |
-      bank in our system to make a quiz
-    %p
-      Next, the teacher can assign this quiz any number of times to any |
-      number of students (over time). For each assignment, the student would |
-      solve the questions on the paper itself and solutions would be scanned |
-      and sent to us. |
-    %p
-      The final piece would be our system that would evaluate the solution and |
-      assign it a rating or a status. According to this status and the scoring |
-      scheme set by the teacher, the student would receive a final score. |   
+  .half-column.left
+    .step
+      = image_tag "1-small.png"
+      .right= "Teacher picks questions from our database to build a quiz"
+    .step
+      = image_tag "2-small.png"
+      .right= "Download and printout the quiz"
+    .step
+      = image_tag "3-small.png"
+      .right= "Students take the quiz"
+  .half-column.right
+    .step
+      = image_tag "4-small.png"
+      .right= "Teacher scans the returned answer sheets"
+    .step
+      = image_tag "5-small.png"
+      .right= "She then uploads the scans using the scan-loader application"
+    .step
+      = image_tag "6-small.png"
+      .right= "We grade the responses. Teachers and students can then view their results"
+
