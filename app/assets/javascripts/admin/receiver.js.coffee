@@ -50,6 +50,10 @@ jQuery ->
     else if settings.url.match(/quiz\/pending_scans/)
       adminUtil.buildPendingScanList json.scans
       canvas.loadNth 0
+    else if settings.url.match(/question?/) # rewind flipchart on successful question tagging
+      child = $(this).children().eq(0)
+      return if child.attr('id') isnt 'workbenches-summary'
+      flipchart.rewind '#workbenches-summary'
 
     return true
       
