@@ -672,12 +672,12 @@ span.unhappyMessage {
 }
 
 #how-it-works {
-  width: 90% ; 
+  width: 100% ; 
 
   > .half-column {
     width: 50% ;
     > .step {
-      width: 90% ;
+      width: 100% ;
       min-height: 70px ;
       margin-bottom: 7% ;
 
@@ -686,10 +686,12 @@ span.unhappyMessage {
       } 
 
       > .right { 
-        max-width: 50% ;
+        width: 55% ;
         font-size: 13px ;
-        color: #6ca7ab ;
+        color: white ; 
         text-align: left; 
+        margin-top: 14px ;
+        padding-right: 20px ;
       }
     }
   }
