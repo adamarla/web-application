@@ -54,8 +54,8 @@ jQuery ->
     the scanloader download button to work with that server 
   ###
 
-  $('#download-btn').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
-  $('#download-btn').button()
+  $('#download-btn > a').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+  $('#download-btn > a').button()
 
   ###
     Load 'example' jpegs of student responses on #yardsticks-link click. 

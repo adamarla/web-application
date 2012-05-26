@@ -671,11 +671,16 @@ span.unhappyMessage {
   }
 }
 
+.half-column { 
+  width: 45% ;
+  float: left ; 
+  margin-right: 5% ;
+} 
+
 #how-it-works {
   width: 100% ; 
 
   > .half-column {
-    width: 50% ;
     > .step {
       width: 100% ;
       min-height: 70px ;
@@ -690,56 +695,65 @@ span.unhappyMessage {
         font-size: 13px ;
         color: white ; 
         text-align: left; 
-        margin-top: 14px ;
-        padding-right: 20px ;
+        margin: { 
+          left: 5px ;
+          top: 12px ;
+        }
       }
     }
   }
 
 }
 
-#download-screenshots { 
+#scanbot-image {
   max-width: 40% ;
-  + .right {
-    max-width: 50% ;
+  + .left {
+    max-width: 60% ;
+    margin-left: 20px ;
   }
 }
+
+#scanbot-manual {
+  h4 {
+    font: {
+      size: 13px ;
+      weight: normal ;
+    }
+    color: $orange ;
+  }
+
+  p {
+    font: {
+      size: 12px ;
+      weight: normal ;
+    }
+    text-align: justify ;
+    color: white ;
+  }
+} 
 
 #download-btn {
-  background-color: #6ca7ab ;
-  max-width: 50% ; 
-  color: white ;
-
-  border: {
-    radius: 7px ;
-    style: none ;
-  }
-
-  text: {
-    transform: lowercase ;
-    align: center ;
-  }
-
+  width: 50% ;
+  height: 40px ;
   > a {
+    background-color: #6ca7ab ;
+    width: 100% ; 
     color: white ;
-    text-decoration: none ;
-  }
 
-  margin-bottom: 40px ;
+    border: {
+      radius: 7px ;
+      style: none ;
+    }
+
+    text: {
+      transform: lowercase ;
+      align: center ;
+      decoration: none ;
+    }
+  }
+  margin-bottom: 15px ;
 }
 
-#download-what-it-means { 
-  width: 90% ;
-  text: { 
-    align: justify ;
-  }
-  color: white ;
-  font: { 
-    size: 12px ;
-  }
-}
-
-  
   > #instruction {
     margin: {
       top: 5% ;

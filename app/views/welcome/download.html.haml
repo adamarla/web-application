@@ -1,14 +1,25 @@
 
-#download-screenshots.left
+#scanbot-image.left
   = image_tag "scanbot-trans.png"
 
-.right
-  = link_to 'Download Scan Loader', '#', :id => 'download-btn'
-  #download-what-it-means
-    The first time you download this utility you'll be prompted with a |
-    security warning of the kind you see on the the left. Select the |
-    check-box 'Always trust content from this publisher' so that you never |
-    see this warning again. Continue to download by clicking the 'Run' |
-    button. Doing so will install and run the Scan Loader application on this |
-    computer so that you can feed scans into gradians.com |
-
+#scanbot-manual.left
+  #download-btn
+    = link_to 'Download Scan Loader', '#'
+  .half-column
+    %h4= "What is this?"
+    %p
+      The 'scanbot' is a downloadable application that will detect, collect and then 
+      transmit testpaper scans stored on your computer.  All you need to do is tell 
+      the scanbot where that place on your computer is and it will do the rest
+    %h4= "Where can I see how to use scanbot ?"
+    %p
+      See our screencast titled - "How to send scans"
+  .half-column
+    %h4= "When I download the application, I get a warning message. What should I do ?"
+    %p
+      The warning message is coming from your web-browser and is entirely expected. The
+      browser just wants to make sure that you are OK with downloading this application
+      from the web. Just say 'yes' - or 'OK' - and proceed
+    %p 
+      That said, do not say 'yes' to every application from the web. The 'scanbot' is a
+      nice, happy application. But there are many others out there that are not
