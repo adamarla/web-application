@@ -4,7 +4,7 @@ $light-gray: lighten($gray, 30%) ;
 
 $pink:#e3105a ;
 $blue:#00007f ;
-$orange:#f48d07 ;
+$orange:#ffa500 ;
 $green:#168816 ;
 
 /*
@@ -37,7 +37,7 @@ body {
     left: 10% ;
     right: 10% ;
   }
-  //border-bottom: 3px solid #fd9105 ;
+  //border-bottom: 3px solid #ffa500 ;
 }
 
 #public-links {
@@ -226,7 +226,7 @@ body {
 
   .ui-state-active {
     a:link {
-      color: #fd9105 ;
+      color: #ffa500 ;
     }
   }
   .ui-state-disabled {
@@ -294,7 +294,7 @@ fieldset.inputs {
 } 
 
 span.unhappyMessage {
-  color: #fd9105 ;
+  color: #ffa500 ;
   font: {
     weight: normal ;
     style: italic; 
@@ -311,7 +311,7 @@ span.unhappyMessage {
 }
 
 .micro-ticker {
-  color: #fd9105 ; 
+  color: #ffa500 ; 
   font: {
     size: 9pt ;
     weight: normal ; 
@@ -320,7 +320,7 @@ span.unhappyMessage {
 }
 
 .led {
-  color: #fd9105 ;
+  color: #ffa500 ;
   font: {
     size: 12pt ;
   }
@@ -432,7 +432,7 @@ span.unhappyMessage {
   > label.clicked {
     background-color: transparent ;
     color: white ; 
-    border: 1px solid #fd9105 ;
+    border: 1px solid #ffa500 ;
   }
 
   > label[color="non-mcq-1"]:not([class~="clicked"]) {
@@ -639,7 +639,7 @@ span.unhappyMessage {
         size: 17px ;
       }
       color: black ; 
-      background-color: #fd9105 ; 
+      background-color: #ffa500 ; 
       padding: 8px 6px 8px 6px ;
       text: {
         align: center ;
@@ -853,7 +853,7 @@ form .scroll-content.ui-accordion-content {
   }
 
   > .swiss-knife.selected {
-    color: #fd9105 ;
+    color: #ffa500 ;
   }
 }
 

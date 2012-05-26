@@ -59,7 +59,7 @@ fieldset.inputs li.boolean.input {
 
 .inline-error > .heading {
   font-size : 14px ;
-  color : #fd9105 ; 
+  color : #ffa500 ; 
   text-transform : lowercase ;
   font-weight : normal ;
 } 
@@ -108,7 +108,7 @@ fieldset.inputs li.boolean.input {
 .minor-link { 
   font-size : 14px ;
   text-align : center ;
-  color : #fd9105 ;
+  color : #ffa500 ;
 } 
 
 .panel:not([id="control-panel"][class="no-style"]) form input[type="submit"] {
@@ -119,7 +119,7 @@ fieldset.inputs li.boolean.input {
 #logout-anchor > a { 
   float : right ;
   margin-right : 50px ; 
-  color : #fd9105 ;
+  color : #ffa500 ;
 } 
 
 #minor-links { 
@@ -222,7 +222,7 @@ legend {
 legend > span.target { 
   font-size : 14px ;
   font-weight : normal ;
-  color : #fd9105 ;
+  color : #ffa500 ;
   margin-right: 20px ;
 } 
 
