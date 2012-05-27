@@ -1,10 +1,9 @@
 
 #video-titles.left
-  %legend
-    %span.target= "How do I ... ?"
-    %span.operation= "select one"
-  - @videos.each_with_index do |m,j|
-    = link_to "#{m.title}", video_load_path(:id => m.id), :remote => true, 
-      :class => "howto-video", :marker => "#{m.id}"
+  = image_tag "tv.png"
+  #video-links
+    - @videos.each_with_index do |m,j|
+      = link_to "##{j+1}: #{m.title}", video_load_path(:id => m.id), :remote => true, 
+        :class => "howto-video", :marker => "#{m.id}"
 
 #embedded-video.right

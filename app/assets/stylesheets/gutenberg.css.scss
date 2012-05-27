@@ -790,22 +790,23 @@ span.unhappyMessage {
   width: 30% ;
   color: white ;
 
-  > a {
-    text: {
-      decoration: none ;
-      transform: lowercase ;
+  > #video-links {
+    margin-top: 30px ;
+    > a {
+      text: {
+        decoration: none ;
+        transform: lowercase ;
+      }
+      color: white ; 
+      font-size: 14px ;
+      width: 95% ;
+      float: right ;
+      padding: 4px 3px 4px 3px ;
+      border-radius: 8px ;
+      background-color: #6ca7ab ;
+      margin-bottom: 16px ;
+      text-align: center ;
     }
-    color: white ; 
-    font-size: 14px ;
-    margin-bottom: 10px ;
-    width: 95% ;
-    float: right ;
-    padding: 4px 3px 4px 3px ;
-    border-bottom: 1px solid #6ca7ab ;
-  }
-
-  span.target { 
-    font-size: 30px ;
   }
 }
 
