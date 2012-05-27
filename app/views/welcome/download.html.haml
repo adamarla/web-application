@@ -3,23 +3,24 @@
   = image_tag "scanbot-trans.png"
 
 #scanbot-manual.left
-  #download-btn
-    = link_to 'Download Scan Application', '#'
-  .half-column
+  #scanbot-about
     %h4= "What is this?"
     %p
       The 'scanbot' is a downloadable application that will detect, collect and then 
       transmit testpaper scans stored on your computer.  All you need to do is tell 
-      the scanbot where that place on your computer is and it will do the rest
-    %h4= "Where can I see how to use scanbot ?"
+      the scanbot which folder/directory the scans are in and it will do the rest 
+  #scanbot-getting-it
+    .half-column
+      %h4= "STEP 1"
+      = link_to 'Click to download', '#'
+    .half-column
+      %h4= "STEP 2"
+      %p
+        Your browser will pop-up a message asking you to confirm whether or not you want
+        to download this application. This is expected and is - in fact - desirable behaviour.
+        And for the scanbot, you can safely click on 'OK' or 'Accept'
+  #scanbot-video
+    %h4= "Video Tutorial"
     %p
-      See our screencast titled - "How to send scans"
-  .half-column
-    %h4= "When I download the application, I get a warning message. What should I do ?"
-    %p
-      The warning message is coming from your web-browser and is entirely expected. The
-      browser just wants to make sure that you are OK with downloading this application
-      from the web. Just say 'yes' - or 'OK' - and proceed
-    %p 
-      That said, do not say 'yes' to every application from the web. The 'scanbot' is a
-      nice, happy application. But there are many others out there that are not
+      To see how to use the 'scanbot', please see the video tutorial titled "How to scan". 
+      Its quite simple, really

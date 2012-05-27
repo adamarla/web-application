@@ -53,9 +53,11 @@ jQuery ->
     Now that we know what type of server we are interacting with, we can tweak 
     the scanloader download button to work with that server 
   ###
+  
+  scanbotDownload = $('#scanbot-getting-it a:first')
 
-  $('#download-btn > a').attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
-  $('#download-btn > a').button()
+  scanbotDownload.attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
+  scanbotDownload.button()
 
   ###
     Load 'example' jpegs of student responses on #yardsticks-link click. 

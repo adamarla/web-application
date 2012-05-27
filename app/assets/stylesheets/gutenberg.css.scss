@@ -708,12 +708,17 @@ span.unhappyMessage {
 #scanbot-image {
   max-width: 40% ;
   + .left {
-    max-width: 60% ;
-    margin-left: 20px ;
+    max-width: 65% ;
+    margin-left: 30px ;
   }
 }
 
 #scanbot-manual {
+  > * {
+    width: 100% ;
+    min-height: 30px ;
+  }
+
   h4 {
     font: {
       size: 13px ;
@@ -732,24 +737,25 @@ span.unhappyMessage {
   }
 } 
 
-#download-btn {
-  width: 50% ;
-  height: 40px ;
-  > a {
+#scanbot-getting-it {
+  a {
     background-color: #6ca7ab ;
-    width: 100% ; 
+    width: 85% ; 
+    height: 45px ;
     color: white ;
 
     border: {
       radius: 7px ;
       style: none ;
     }
+    font-size: 14px ;
 
     text: {
       transform: lowercase ;
       align: center ;
       decoration: none ;
     }
+    padding-top: 15px ;
   }
   margin-bottom: 15px ;
 }
