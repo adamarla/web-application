@@ -591,6 +591,8 @@ span.unhappyMessage {
 #mainstage {
   margin-top: 50px ;
   min-height: 300px ;
+  font-size: 13px ;
+  letter-spacing: 0.4px ; 
 }
 
 #sign-in-form {
@@ -727,7 +729,6 @@ span.unhappyMessage {
 
   h4 {
     font: {
-      size: 13px ;
       weight: normal ;
     }
     color: $orange ;
@@ -735,10 +736,8 @@ span.unhappyMessage {
 
   p {
     font: {
-      size: 12px ;
       weight: normal ;
     }
-    text-align: justify ;
     color: white ;
   }
 } 
