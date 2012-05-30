@@ -172,7 +172,7 @@ p > a, div > a {
   border-bottom: 1px solid #6ca7ab ; 
   padding-top: 0px ;
   color: white ;
-  font-size: 12px ;
+  font-size: 13px ;
   font-weight: normal ;
   cursor: pointer ;
 } 
@@ -837,7 +837,7 @@ li {
   }
 }
 
-#topic-selection-list, #question-options {
+#quizzes-summary, #topic-selection-list, #question-options {
   .scroll-heading {
     border-bottom: 1px solid #6ca7ab ; 
     font-size: 13px ;
@@ -854,7 +854,7 @@ li {
   }
 }
 
-form .scroll-content.ui-accordion-content {
+.scroll-content.ui-accordion-content {
   width: 90% ;
   padding: 0pt ;
   min-height: 100px ;
@@ -868,5 +868,8 @@ form .scroll-content.ui-accordion-content {
   > .swiss-knife.selected {
     color: #ffa500 ;
   }
-}
 
+  > a { 
+    color: #6ca7ab ;
+  } 
+}
