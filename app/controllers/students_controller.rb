@@ -32,7 +32,7 @@ class StudentsController < ApplicationController
     @info = answers.map{ |m| { :question => { 
       :id => m.q_selection.index,
       :name => m.name?,
-      :marks => m.marks,
+      :marks => "#{m.marks} / #{m.subpart.marks}",
       :color => m.colour?
     } } }
 
