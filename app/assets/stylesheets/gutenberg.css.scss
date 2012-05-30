@@ -234,11 +234,16 @@ p > a, div > a {
     a:link {
       color: #ffa500 ;
     }
+    border: none ;
   }
   .ui-state-disabled {
     a:link {
       color: white ; 
     }
+  }
+
+  .ui-state-hover {
+    border:none ;
   }
 
   .ui-widget-header, .ui-tabs-nav {
@@ -871,5 +876,16 @@ li {
 
   > a { 
     color: #6ca7ab ;
+    float: left ;
+    width: 100% ;
   } 
+}
+
+#past-quizzes-list a.btn {
+  width: 60% ;
+  font-size: 11px ;
+  color: white ; 
+  background-color: #6ca7ab ;
+  border-radius: 5px ;
+  margin-bottom: 20px ;
 }
