@@ -1,6 +1,6 @@
 
 form.formtastic { 
-  font-family : "Trebuchet MS", Helvetica, Arial, sans-serif;
+  font-family : Ubuntu, "Trebuchet MS", Helvetica, Arial, sans-serif;
 } 
 
 form.formtastic fieldset.inputs p.inline-hints {
