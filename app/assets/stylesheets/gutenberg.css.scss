@@ -16,14 +16,16 @@ $green:#168816 ;
 
 
 body {
-  font-family: 
-              Ubuntu,
-              "Trebuchet MS",
-              "Lucida Grande",
-              "Lucida Sans",
-              "DejaVu Sans",
-              "Lucida Sans Unicode",
-              sans-serif;
+  font: {
+   family: Ubuntu,
+            "Trebuchet MS",
+            "Lucida Grande",
+            "Lucida Sans",
+            "DejaVu Sans",
+            "Lucida Sans Unicode",
+            sans-serif;
+    size: 12px ;
+  }
   width : 1020px ;
   background-color: $gray ; 
   color: $gray ;
@@ -175,8 +177,6 @@ p > a, div > a {
     bottom: 1px ;
   }
   color: white ;
-  font-size: 13px ;
-  font-weight: normal ;
   cursor: pointer ;
 } 
 
@@ -345,12 +345,8 @@ span.unhappyMessage {
 }
 
 .micro-ticker.box {
-  width: 30px ;
+  width: 20% ;
   color: white ;
-  font: {
-    size: 14px ;
-    weight: bold ;
-  }
   border: {
     radius: 4px ;
   }
@@ -848,7 +844,6 @@ li {
 #quizzes-summary, #topic-selection-list, #question-options {
   .scroll-heading {
     border-bottom: 1px solid #6ca7ab ; 
-    font-size: 13px ;
     padding: {
       top: 5px ;
       bottom: 5px ; 
