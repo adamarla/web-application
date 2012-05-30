@@ -367,48 +367,5 @@ window.coreUtil = {
       return true
   } # end of namespace 'messaging'
 
-  accordion : {
-    build : (json, firstIter, secondHandle, secondIter, sharedBtns = []) ->
-      ### 
-      Example :
-        json = quizzes
-        parent = json.quiz
-        family = json.quiz.testpapers
-        child = json.quiz.testpapers.testpaper
-      ###
-
-      accordion = $("<div class='as-accordion'/>")
-
-      for parentList in json
-        parent = parentList[firstIter]
-        family = parent[secondHandle]
-        continue if not parent.id?
-
-        ###
-          Generally speaking, give preference to a randomized_id - if available -
-          over plain id
-        ###
-        id = if parent.randomized_id? then parent.randomized_id else parent.id
-
-        heading = $("<div class='accordion-heading' marker=#{id}>#{parent.name}</div>")
-        heading.appendTo accordion
-        content = $("<div class='accordion-content'/>")
-        content.appendTo accordion
-
-        # Quiz-specific links - shared by all 
-        shared = $('#toolbox > .nail-file:first').clone()
-        nailFile.customize shared, parent, sharedBtns
-        shared.appendTo content
-
-        for children in family
-          child = children[secondIter]
-          item = $('#toolbox > .nail-file:first').clone()
-          nailFile.customize item, child, ['test-download'], parent
-          item.appendTo content
-          #alert "#{child.id} ---> #{parent.id}"
-
-      return accordion
-  }
-
 } # end of namespace 'coreUtil'
 

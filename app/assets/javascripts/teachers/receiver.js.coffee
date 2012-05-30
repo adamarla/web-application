@@ -26,12 +26,30 @@ jQuery ->
       results.appendTo here
       results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
     else if url.match(/quizzes\/list/)
-      here = $('#past-quizzes')
-      here.empty()
-      list = coreUtil.accordion.build json.quizzes, 'quiz', 'testpapers', 'testpaper', ['quiz-download']
-      list.appendTo here
-      list.accordion({ header : '.accordion-heading', collapsible:true, active:false })
-      here.find('.accordion-heading').eq(0).click() # open preview for the first quiz automatically
+      here = $('#past-quizzes-list')
+      scroll.initialize json.quizzes, 'quiz', here
+      here.accordion({ header:'.scroll-heading', collapsible:true, active:false, fillSpace:true })
+    else if url.match(/quiz\/testpapers/)
+      here = $('#past-quizzes-list')
+
+      # Create the <a> that will become the download button for the answer key
+      for m in here.find '.scroll-heading'
+        id = $(m).attr 'marker'
+        c = $(m).next()
+        btn = $("<a class='btn' href=#{gutenberg.server}/atm/#{id}/answer-key/downloads/answer-key.pdf>download pdf</a>")
+        btn.appendTo c
+        btn.button()
+
+      scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.as.anchor
+      # Change the href on the <a> to point to PDFs in atm/
+      for a in here.find 'a'
+        key = $(a).attr 'parent'
+        id = $(a).attr 'marker'
+        pId = $(a).attr 'p_id'
+
+        continue if not key? or not id? or not pId?
+        $(a).attr 'href', "#{gutenberg.server}/atm/#{key}/#{id}/downloads/assignment-#{pId}-#{id}.pdf"
+
     else if url.match(/teachers\/roster/)
       child = $('#side-panel').children().eq(0).attr 'id'
       if child is 'deep-dive'
