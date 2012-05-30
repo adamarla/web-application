@@ -668,8 +668,9 @@ span.unhappyMessage {
 
 #about-us {
 
+  margin-top: -20px ;
+
   > #question {
-    min-height: 80px ;
     width: 100% ;
     font-size: 14px ;
     color: #6ca7ab ;
@@ -877,6 +878,10 @@ li {
     float: left ;
     width: 100% ;
   } 
+}
+
+#try_us-link {
+  color: $orange ;
 }
 
 #past-quizzes-list a.btn {

@@ -13,7 +13,7 @@
   %body 
     #viewport
       #company-logo
-        = image_tag("gradians-small-blue.png", alt: "gradians", id: "gradians_logo")
+        = image_tag("gradians-small-blue-beta.png", alt: "gradians", id: "gradians_logo")
       #public-links
         %ul.no-bullets      
           = main_link :for => :main, :as => 'home', :href => root_path
@@ -21,6 +21,7 @@
           = main_link :for => :how_it_works, :as => 'how it works', :href => how_it_works_path
           = main_link :for => :download, :as => 'download', :href => download_path
           = main_link :for => :about_us, :as => 'about us', :href => about_us_path
+          = main_link :for => :try_us, :as => 'try it!', :href => try_us_path
       #mainstage
         = yield
     = yield :footer
