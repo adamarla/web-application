@@ -31,12 +31,8 @@ jQuery ->
       here.accordion({ header:'.scroll-heading', collapsible:true, active:false, fillSpace:true })
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
-
-      # Create the <a> that will become the download button for the answer key
-      for m in here.find '.scroll-heading'
-        id = $(m).attr 'marker'
-
       scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.as.anchor
+
       # Change the href on the <a> to point to PDFs in atm/
       for a in here.find 'a'
         key = $(a).attr 'parent'
