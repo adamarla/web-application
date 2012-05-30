@@ -49,7 +49,7 @@ jQuery ->
     # Get the list of testpapers only once. Its unlikely to have changed 
     # in the lifetime of a user-session 
     content = $(this).next()
-    return true if content.children().length > 1 # there will always be the one download button
+    return true if content.children().length isnt 0 # there will always be the one download button
     btn = $("<a class='btn' href=#{gutenberg.server}/atm/#{id}/answer-key/downloads/answer-key.pdf>download pdf</a>")
     btn.appendTo content
     btn.button()
