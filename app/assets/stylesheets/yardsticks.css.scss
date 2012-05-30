@@ -29,13 +29,14 @@ $light-gray: lighten($gray, 30%) ;
     li {
       right: 1px ;
       width: 50px ;
+      font-size: 17px ;
       border: {
         right: none ;
         bottom-width: 1px !important ;
-        radius: 4px 1px 1px 4px ;  
+        radius: 8px 1px 1px 8px ;  
       }
-      -moz-border-radius: 4px 1px 1px 4px ; 
-      -webkit-border-radius: 4px 1px 1px 4px ; 
+      -moz-border-radius: 8px 1px 1px 8px ; 
+      -webkit-border-radius: 8px 1px 1px 8px ; 
       overflow: hidden ;
       margin-bottom: 5px ;
 
