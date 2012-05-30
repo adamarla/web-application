@@ -112,6 +112,7 @@ Webapp::Application.routes.draw do
   
   # Welcome
   match 'about_us' => 'welcome#about_us', :via => :get
+  match 'try_us' => 'welcome#try_us', :via => :get
   match 'download' => 'welcome#download', :via => :get
   match 'how_it_works' => 'welcome#how_it_works', :via => :get
 
