@@ -38,7 +38,7 @@ jQuery ->
     This is being done first within #past-quizzes when assigning a quiz. Not 
     sure if this behaviour is desired everytime and should hence be in core 
   ###
-  $('#past-quizzes').on 'click', '.scroll-heading', (event) ->
+  $('#past-quizzes-list').on 'click', '.scroll-heading', (event) ->
     event.stopPropagation()
 
     chart = $(this).closest '.flipchart'
@@ -48,7 +48,7 @@ jQuery ->
     # Get the list of testpapers only once. Its unlikely to have changed 
     # in the lifetime of a user-session 
     content = $(this).next()
-    return true if content.children().length > 1 # there will always be the one download button
+    return true if content.children().length isnt 0 # there will always be the one download button
 
     $.get "quiz/testpapers.json?id=#{$(this).attr 'marker'}"
     return true
