@@ -35,10 +35,6 @@ jQuery ->
       # Create the <a> that will become the download button for the answer key
       for m in here.find '.scroll-heading'
         id = $(m).attr 'marker'
-        c = $(m).next()
-        btn = $("<a class='btn' href=#{gutenberg.server}/atm/#{id}/answer-key/downloads/answer-key.pdf>download pdf</a>")
-        btn.appendTo c
-        btn.button()
 
       scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.as.anchor
       # Change the href on the <a> to point to PDFs in atm/

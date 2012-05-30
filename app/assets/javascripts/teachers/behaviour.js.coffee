@@ -43,14 +43,18 @@ jQuery ->
 
     chart = $(this).closest '.flipchart'
     chart.tabs 'enable', 1
-    $.get "quiz/preview.json?id=#{$(this).attr 'marker'}"
+    id = $(this).attr 'marker'
+    $.get "quiz/preview.json?id=#{id}"
 
     # Get the list of testpapers only once. Its unlikely to have changed 
     # in the lifetime of a user-session 
     content = $(this).next()
-    return true if content.children().length isnt 0 # there will always be the one download button
+    return true if content.children().length > 1 # there will always be the one download button
+    btn = $("<a class='btn' href=#{gutenberg.server}/atm/#{id}/answer-key/downloads/answer-key.pdf>download pdf</a>")
+    btn.appendTo content
+    btn.button()
 
-    $.get "quiz/testpapers.json?id=#{$(this).attr 'marker'}"
+    $.get "quiz/testpapers.json?id=#{id}"
     return true
 
   ###
