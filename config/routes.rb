@@ -80,6 +80,7 @@ Webapp::Application.routes.draw do
   match 'quiz/assign' => 'quizzes#assign_to', :via => :put
   match 'quiz/pending_pages' => 'quizzes#pending_pages', :via => :get
   match 'quiz/pending_scans' => 'quizzes#pending_scans', :via => :get
+  match 'quiz/testpapers' => 'quizzes#testpapers', :via => :get
 
   # Student 
   resource :student, :only => [:create, :update, :show]

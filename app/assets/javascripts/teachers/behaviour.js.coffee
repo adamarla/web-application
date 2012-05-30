@@ -38,22 +38,19 @@ jQuery ->
     This is being done first within #past-quizzes when assigning a quiz. Not 
     sure if this behaviour is desired everytime and should hence be in core 
   ###
-  $('#past-quizzes').on 'click', '.accordion-heading', ->
+  $('#past-quizzes').on 'click', '.scroll-heading', (event) ->
+    event.stopPropagation()
+
     chart = $(this).closest '.flipchart'
     chart.tabs 'enable', 1
     $.get "quiz/preview.json?id=#{$(this).attr 'marker'}"
-    return true
 
-  ###
-    Rebuild the accordion for past-quizzes everytime the tab under which 
-    past quizzes are listed is clicked. Otherwise, the accordion does not 
-    work properly when the tab is re-clicked after the first time
-  ###
-  $('#quizzes-summary > ul:first > li > a[href="#past-quizzes"]').click ->
-    a = $('#past-quizzes > .as-accordion').eq(0)
-    alert('nothing') if not a? or a.length is 0
-    a.accordion('destroy')
-    a.accordion({ header : '.accordion-heading', collapsible:true, active:false })
+    # Get the list of testpapers only once. Its unlikely to have changed 
+    # in the lifetime of a user-session 
+    content = $(this).next()
+    return true if content.children().length isnt 0
+
+    $.get "quiz/testpapers.json?id=#{$(this).attr 'marker'}"
     return true
 
   ###

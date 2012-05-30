@@ -115,6 +115,7 @@ p > a, div > a {
     weight: normal ;
   }
   position: absolute ;
+  color: $orange ;
 }
 
 .tickLabel {
@@ -171,7 +172,7 @@ p > a, div > a {
   border-bottom: 1px solid #6ca7ab ; 
   padding-top: 0px ;
   color: white ;
-  font-size: 12px ;
+  font-size: 13px ;
   font-weight: normal ;
   cursor: pointer ;
 } 
@@ -233,11 +234,16 @@ p > a, div > a {
     a:link {
       color: #ffa500 ;
     }
+    border: none ;
   }
   .ui-state-disabled {
     a:link {
       color: white ; 
     }
+  }
+
+  .ui-state-hover {
+    border:none ;
   }
 
   .ui-widget-header, .ui-tabs-nav {
@@ -837,7 +843,7 @@ li {
   }
 }
 
-#topic-selection-list, #question-options {
+#quizzes-summary, #topic-selection-list, #question-options {
   .scroll-heading {
     border-bottom: 1px solid #6ca7ab ; 
     font-size: 13px ;
@@ -854,7 +860,7 @@ li {
   }
 }
 
-form .scroll-content.ui-accordion-content {
+.scroll-content.ui-accordion-content {
   width: 90% ;
   padding: 0pt ;
   min-height: 100px ;
@@ -868,9 +874,24 @@ form .scroll-content.ui-accordion-content {
   > .swiss-knife.selected {
     color: #ffa500 ;
   }
+
+  > a { 
+    color: #6ca7ab ;
+    float: left ;
+    width: 100% ;
+  } 
 }
 
 #try_us-link {
   color: $orange ;
 }
 
+#past-quizzes-list a.btn {
+  width: 60% ;
+  font-size: 13px ;
+  color: white ; 
+  background-color: #6ca7ab ;
+  border-radius: 10px ;
+  margin-bottom: 20px ;
+  text-align: center ;
+}

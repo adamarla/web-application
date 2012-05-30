@@ -20,6 +20,13 @@ jQuery ->
         $("<div class='scroll-content'></div>").appendTo here
       return true
 
+    # Enum to specify how passed JSON should be rendered by the 'loadJson' method
+    as : {
+      itemWithCheck : 1,
+      itemWithRadio : 2,
+      anchor : 3
+    }
+
     ###
       'initialize' creates just the accordion headers. This next method 
       fills up the next <div> - which is for the content - with data corresponding
@@ -28,14 +35,17 @@ jQuery ->
       This method therefore assumes the following for json[key]:
         {name: ..., id: ..., parent: ...} where json itself is an array
     ###
-    loadJson: (json, key, here, ticker = null) ->
+
+    loadJson: (json, key, here, ticker = null, render = scroll.as.itemWithCheck) ->
       return if not key?
       here = if typeof here is 'string' then $(here) else here
 
       for m,j in json
         n = m[key]
-        parent= n.parent
+        parent = n.parent
         continue if not parent?
+        parentId = n.parent_id
+
         # First, find the accordion heading within which to append the new data
         header = here.children(".scroll-heading[marker=#{parent}]").eq(0)
         continue if header.length is 0
@@ -43,7 +53,10 @@ jQuery ->
         content = header.next() # the immediately following element has to be the content
         continue if content.length is 0
 
-        item = swissKnife.forge m, key, {checkbox:true}
+        switch render
+          when scroll.as.itemWithCheck then item = swissKnife.forge m, key, {checkbox:true}
+          when scroll.as.itemWithRadio then item = swissKnife.forge m, key, {radio:true}
+          when scroll.as.anchor then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
         if ticker?
           v = n[ticker]
           t = item.children().eq(3)

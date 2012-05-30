@@ -42,4 +42,11 @@ class QuizzesController < ApplicationController
     render :json => @scans
   end
 
+  def testpapers
+    @quiz = Quiz.where(:atm_key => params[:id]).first
+    head :bad_request if @quiz.nil? 
+    @testpapers = Testpaper.where(:quiz_id => @quiz.id).order(:created_at)
+    respond_with @testpapers, @quiz
+  end
+
 end
