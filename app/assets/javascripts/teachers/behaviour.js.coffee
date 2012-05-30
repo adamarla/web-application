@@ -48,7 +48,7 @@ jQuery ->
     # Get the list of testpapers only once. Its unlikely to have changed 
     # in the lifetime of a user-session 
     content = $(this).next()
-    return true if content.children().length isnt 0
+    return true if content.children().length > 1 # there will always be the one download button
 
     $.get "quiz/testpapers.json?id=#{$(this).attr 'marker'}"
     return true
