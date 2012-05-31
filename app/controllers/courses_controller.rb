@@ -90,12 +90,14 @@ class CoursesController < ApplicationController
 
     unless current_account.nil?
       case current_account.loggable_type
-        when "Examiner" then @questions
-        when "Teacher" then current_account.trial ? @questions.select{ |m| m.restricted == false } : @questions
-        else @questions.select{ |m| m.topic_id == -1 } # basically, nothing 
+        when "Examiner"
+        when "Teacher"
+          @questions = current_account.trial ? @questions.select{ |m| m.topic_id == -1} : @questions
+        else 
+          @questions = @questions.select{ |m| m.topic_id == -1 } # basically, nothing 
       end
     else
-      @questions.select{ |m| m.topic_id == -1 } # basically, nothing
+      @questions = @questions.select{ |m| m.topic_id == -1 } # basically, nothing
     end
     @topics = Topic.where(:id => topic_ids)
     respond_with @questions, @topics
