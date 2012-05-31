@@ -15,6 +15,7 @@
 #  length          :float
 #  answer_key_span :integer
 #  calculation_aid :integer         default(0)
+#  restricted      :boolean         default(TRUE)
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__

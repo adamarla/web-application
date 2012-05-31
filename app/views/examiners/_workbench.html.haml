@@ -26,6 +26,9 @@
                   :collection => {'none' => 0, 'scientific calc.' => 1, 'graphing calc.' => 2, 'log tables' => 3},
                   :wrapper_html => {:class => 'full-width'},
                   :label => 'calculators ?'
+        = f.input :restricted, :as => :select, :include_blank => false,
+                  :collection => {'yes' => true, 'no' => false },
+                  :label => 'restricted ?'
         = f.input :num_parts, :as => :select, :include_blank => true, :label => '# sub-parts',
                   :collection => [*0..9]-[1], :wrapper_html => {:class => 'full-width'}
         - for k in [*0..9]-[1]
