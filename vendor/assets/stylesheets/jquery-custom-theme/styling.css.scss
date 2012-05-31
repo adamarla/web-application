@@ -231,7 +231,9 @@
   background-image: image-url("jquery-custom-theme/ui-icons_222222_256x240.png"); }
 
 .ui-widget-header .ui-icon, .ui-state-default .ui-icon {
-  background-image: image-url("jquery-custom-theme/ui-icons_b83400_256x240.png"); }
+  //background-image: image-url("jquery-custom-theme/ui-icons_b83400_256x240.png"); 
+  background-image: image-url("jquery-custom-theme/plus-minus.png"); 
+}
 
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
   background-image: image-url("jquery-custom-theme/ui-icons_ffffff_256x240.png"); }
