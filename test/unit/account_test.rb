@@ -19,6 +19,7 @@
 #  loggable_type          :string(255)
 #  active                 :boolean         default(TRUE)
 #  username               :string(255)
+#  trial                  :boolean         default(TRUE)
 #
 
 require 'test_helper'
