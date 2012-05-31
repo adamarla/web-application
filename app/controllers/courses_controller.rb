@@ -81,6 +81,22 @@ class CoursesController < ApplicationController
 
     topic_ids = params[:checked].keys.map(&:to_i)
     @questions = course.questions_on topic_ids, teacher
+
+=begin
+    Paying customers can see any question relevant to their syllabus. 
+    Non-paying customers - who might only be trialing - see a smaller set 
+    of questions. The code below realizes this logic
+=end
+
+    unless current_account.nil?
+      case current_account.loggable_type
+        when "Examiner" then @questions
+        when "Teacher" then current_account.trial ? @questions.select{ |m| m.restricted == false } : @questions
+        else @questions.select{ |m| m.topic_id == -1 } # basically, nothing 
+      end
+    else
+      @questions.select{ |m| m.topic_id == -1 } # basically, nothing
+    end
     @topics = Topic.where(:id => topic_ids)
     respond_with @questions, @topics
   end
