@@ -92,7 +92,7 @@ class CoursesController < ApplicationController
       case current_account.loggable_type
         when "Examiner"
         when "Teacher"
-          @questions = current_account.trial ? @questions.select{ |m| m.topic_id == -1} : @questions
+          @questions = current_account.trial ? @questions.select{ |m| m.restricted == false } : @questions
         else 
           @questions = @questions.select{ |m| m.topic_id == -1 } # basically, nothing 
       end
