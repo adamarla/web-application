@@ -59,6 +59,8 @@ jQuery ->
       target = $('#document-preview').find 'ul:first'
       roots = json.preview.id
 
+      return false if roots.length is 0
+
       ###
         When we didn't have multi-part support, we had questions that could 
         be laid out on one page. We could therefore get away with specifying 
