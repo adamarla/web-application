@@ -36,7 +36,7 @@ class Topic < ActiveRecord::Base
   end 
 
   def print_name
-    n_questions = Question.where(:topic_id => self.id).count
+    n_questions = Question.on_topic(self.id).count
     return "#{self.name} (#{n_questions})"
   end
 

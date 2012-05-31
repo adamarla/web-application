@@ -15,7 +15,7 @@ class Vertical < ActiveRecord::Base
   before_validation :humanize_name
 
   def print_name
-    n_questions = Question.where(:topic_id => self.topics.map(&:id)).count
+    n_questions = Question.on_topic(self.topics.map(&:id)).count
     return "#{self.name} (#{n_questions})"
   end
 

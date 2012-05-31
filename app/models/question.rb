@@ -63,6 +63,10 @@ class Question < ActiveRecord::Base
     where(:difficulty => m)
   end
 
+  def self.on_topic(m)
+    where(:topic_id => m)
+  end
+
   def self.broadly_on(m)
     where(:topic_id => Vertical.find(m).topic_ids)
   end

@@ -83,7 +83,7 @@ class Course < ActiveRecord::Base
   def questions_on (topic_ids = [], teacher_id = nil)
     @questions = []
     Syllabus.where(:course_id => self.id, :topic_id => topic_ids).each do |j|
-      @questions |= Question.where(:topic_id => j.topic_id, :difficulty => j.difficulty)
+      @questions |= Question.on_topic(j.topic_id).difficulty(j.difficulty)
     end
 
     # If teacher_id is non-nil, then return only those questions 
