@@ -28,13 +28,7 @@ jQuery ->
     else if url.match(/quizzes\/list/)
       here = $('#past-quizzes-list')
       scroll.initialize json.quizzes, 'quiz', here
-      here.accordion({
-        header:'.scroll-heading',
-        collapsible:true,
-        active:false,
-        fillSpace:true,
-        icons: {'header': 'ui-icon-plus', 'headerSelected':'ui-icon-minus'}
-      })
+      here.accordion scroll.options
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
       scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.as.anchor
@@ -64,12 +58,7 @@ jQuery ->
     else if url.match(/course\/verticals/)
       here = $('#topic-selection-list > form:first > .form-fields')
       scroll.initialize json.verticals, 'vertical', here
-      here.accordion({
-        header:'.scroll-heading',
-        collapsible:true,
-        active:false,
-        icons: {'header': 'ui-icon-plus', 'headerSelected':'ui-icon-minus'}
-      })
+      here.accordion scroll.options
     else if url.match(/course\/topics_in/)
       here = $('#topic-selection-list > form:first > .form-fields')
       scroll.loadJson json.topics, 'topic', here
@@ -77,13 +66,7 @@ jQuery ->
       flipchart.next '#build-quiz'
       here = $('#question-options > form:first > .form-fields')
       scroll.initialize json.topics, 'topic', here
-      here.accordion({
-        header:'.scroll-heading',
-        collapsible:true,
-        active:false,
-        fillSpace:true,
-        icons: {'header':'ui-icon-plus', 'headerSelected':'ui-icon-minus'}
-      })
+      here.accordion scroll.options
       scroll.loadJson json.questions, 'question', here, 'marks'
       preview.loadJson json, 'vault'
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)

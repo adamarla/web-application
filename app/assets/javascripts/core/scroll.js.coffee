@@ -1,6 +1,15 @@
 
 jQuery ->
   window.scroll = {
+
+    options : {
+      header:'.scroll-heading',
+      collapsible:true,
+      active:false,
+      fillSpace:true,
+      icons: {'header': 'ui-icon-circlesmall-plus', 'headerSelected':'ui-icon-circlesmall-minus'}
+    }
+
     initialize: (json, key, here) ->
       return if not key?
       here = if typeof here is 'string' then $(here) else here
