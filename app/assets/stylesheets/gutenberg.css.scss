@@ -686,9 +686,18 @@ span.unhappyMessage {
 
 .half-column { 
   width: 45% ;
-  float: left ; 
   margin-right: 5% ;
 } 
+
+.one-third-column {
+  width: 30% ;
+  margin-right: 5% ;
+}
+
+.two-third-column {
+  width: 63% ;
+  margin-right: 5% ;
+}
 
 #how-it-works {
   width: 100% ; 
@@ -893,4 +902,12 @@ li {
   border-radius: 10px ;
   margin-bottom: 20px ;
   text-align: center ;
+}
+
+#trial-user-info-1, #trial-user-info-2 {
+  input {
+    padding: 8px ;
+    font-size: 16px ;
+    max-width: 47% ;
+  }
 }
