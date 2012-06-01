@@ -7,7 +7,7 @@ jQuery ->
       collapsible:true,
       active:false,
       fillSpace:true,
-      icons: {'header': 'ui-icon-circlesmall-plus', 'headerSelected':'ui-icon-circlesmall-minus'}
+      icons: {'header': 'ui-icon-circle-plus', 'headerSelected':'ui-icon-circle-minus'}
     }
 
     initialize: (json, key, here) ->
