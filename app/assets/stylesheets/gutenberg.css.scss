@@ -641,29 +641,37 @@ span.unhappyMessage {
     }
 
     input[type="submit"] {
-      border: {
-        style: none ;
-        radius: 5px;
-      }
-      font: {
-        family: inherit ;
-        weight: bold ;
-        size: 17px ;
-      }
-      color: black ; 
-      background-color: #ffa500 ; 
-      padding: 8px 6px 8px 6px ;
-      text: {
-        align: center ;
-        decoration: none ;
-      }
-
       margin-top: 27px ;
       width: 12% ;
-      height: 40px ;
     }
 
   }
+}
+
+#try-us form input[type="submit"] {
+  margin-top: 10px ;
+  float: right ;
+  min-width: 50% ;
+}
+
+.orange-submit-btn {
+  border: {
+    style: none ;
+    radius: 5px;
+  }
+  font: {
+    family: inherit ;
+    weight: bold ;
+    size: 17px ;
+  }
+  color: black ; 
+  background-color: #ffa500 ; 
+  padding: 8px 6px 8px 6px ;
+  text: {
+    align: center ;
+    decoration: none ;
+  }
+  height: 40px ;
 }
 
 #about-us {
@@ -690,8 +698,8 @@ span.unhappyMessage {
 } 
 
 .one-third-column {
-  width: 30% ;
-  margin-right: 5% ;
+  width: 32% ;
+  margin-right: 4% ;
 }
 
 .two-third-column {
@@ -904,10 +912,20 @@ li {
   text-align: center ;
 }
 
-#trial-user-info-1, #trial-user-info-2 {
-  input {
-    padding: 8px ;
-    font-size: 16px ;
-    max-width: 47% ;
+#trial-user-signup {
+  > div {
+    width: 97% ; 
+    
+    > li {
+      margin: 0px ;
+      padding: 0.2em 0em ;
+
+      input, select {
+        padding: 6px 9px;
+        font-size: 13px ;
+        width: 100% ;
+        border-radius: 0px ;
+      }
+    }
   }
 }

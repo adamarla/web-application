@@ -31,6 +31,13 @@ jQuery ->
       canvas.scrollImg(images, event) unless canvas.blockKeyPress
     return true
 
+  # If on the trial signup page, then render the country <select> as an
+  # auto-complete widget using the country-select plugin
+
+  countrySelect = $('#trial_country')
+  if countrySelect.length isnt 0
+    countrySelect.selectToAutocomplete()
+    countrySelect.find('+ input').attr 'placeholder', 'country'
 
   ###
     This next call is unassuming but rather important. We initialize 
