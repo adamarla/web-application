@@ -6,6 +6,7 @@ $pink:#e3105a ;
 $blue:#00007f ;
 $orange:#ffa500 ;
 $green:#168816 ;
+$my-blue: #6ca7ab ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -32,7 +33,7 @@ body {
 } 
 
 input::-webkit-input-placeholder {
-  color: #6ca7ab ;
+  color: $my-blue ;
   font : {
     family: Ubuntu, "Trebuchet MS", "Lucida Grande", sans-serif; 
     size: 13px ;
@@ -41,7 +42,7 @@ input::-webkit-input-placeholder {
 
 p > a, div > a { 
   text-decoration: none ;
-  color: #6ca7ab ;
+  color: $my-blue ;
 } 
 
 #viewport {
@@ -58,7 +59,7 @@ p > a, div > a {
 #public-links {
   height: 30px ;
   width: 95% ;
-  border-bottom: 3px solid #6ca7ab ; 
+  border-bottom: 3px solid $my-blue ; 
 } 
 
 #company-logo {
@@ -73,7 +74,7 @@ p > a, div > a {
   
   > #motto {
     font-size: 14px ; 
-    color: #6ca7ab ;
+    color: $my-blue ;
     float: none ;
   }
 }
@@ -132,7 +133,7 @@ p > a, div > a {
   font: {
     size: 12px ;
   }
-  color: #6ca7ab ;
+  color: $my-blue ;
   text-transform: lowercase ;
 }
 
@@ -179,7 +180,7 @@ p > a, div > a {
 
 .swiss-knife { 
   min-height: 22px ;
-  border-bottom: 1px solid #6ca7ab ; 
+  border-bottom: 1px solid $my-blue ; 
   padding: {
     top: 2px ;
     bottom: 1px ;
@@ -215,7 +216,7 @@ p > a, div > a {
       weight: bold ;
     }
     color: white ; 
-    background-color: #6ca7ab ;
+    background-color: $my-blue ;
     -moz-border-radius: 4px ;
     padding: 6px ;
     text-align : center ;
@@ -349,7 +350,7 @@ span.unhappyMessage {
 }
 
 .micro-ticker.complete {
-  color: #6ca7ab ;
+  color: $my-blue ;
 }
 
 .micro-ticker.box {
@@ -540,7 +541,7 @@ span.unhappyMessage {
       font: {
         size: 25px ;
       }
-      color: #6ca7ab ;
+      color: $my-blue ;
       margin-bottom: 5px ;
     }
     
@@ -588,7 +589,7 @@ span.unhappyMessage {
   margin-right: 30px ;
 
   > label {
-    color:#6ca7ab;
+    color:$my-blue;
     font: {
       size: 12px ;
     }
@@ -643,7 +644,7 @@ span.unhappyMessage {
           size: 17px ;
           weight: normal ;
         }
-        color: #6ca7ab ; 
+        color: $my-blue ; 
       } 
 
     }
@@ -689,12 +690,12 @@ span.unhappyMessage {
   > #question {
     width: 100% ;
     font-size: 14px ;
-    color: #6ca7ab ;
+    color: $my-blue ;
     > p {
       font-size: 14px ;
       color: darken(white, 15%) ;
       > a {
-	    color: #6ca7ab ;
+	    color: $my-blue ;
 	  }
 	}
   }
@@ -781,7 +782,7 @@ span.unhappyMessage {
 
 #scanbot-getting-it {
   a {
-    background-color: #6ca7ab ;
+    background-color: $my-blue ;
     width: 85% ; 
     height: 45px ;
     color: white ;
@@ -822,7 +823,7 @@ span.unhappyMessage {
   > a { 
     text-decoration: none ;
     font-size: 13px ;
-    color: #6ca7ab ;
+    color: $my-blue ;
     text-transform: lowercase ;
   } 
 }
@@ -844,7 +845,7 @@ span.unhappyMessage {
       float: right ;
       padding: 4px 3px 4px 3px ;
       border-radius: 8px ;
-      background-color: #6ca7ab ;
+      background-color: $my-blue ;
       margin-bottom: 16px ;
       text-align: center ;
     }
@@ -869,13 +870,13 @@ span.unhappyMessage {
 
 li {
   > label {
-    color: #6ca7ab ;
+    color: $my-blue ;
   }
 }
 
 #quizzes-summary, #topic-selection-list, #question-options {
   .scroll-heading {
-    border-bottom: 1px solid #6ca7ab ; 
+    border-bottom: 1px solid $my-blue ; 
     padding: {
       top: 5px ;
       bottom: 5px ; 
@@ -896,7 +897,7 @@ li {
   min-height: 100px ;
 
   > .swiss-knife {
-    color: #6ca7ab ;
+    color: $my-blue ;
     margin-top: 4px ;
     border: none ;
   }
@@ -906,7 +907,7 @@ li {
   }
 
   > a { 
-    color: #6ca7ab ;
+    color: $my-blue ;
     float: left ;
     width: 100% ;
   } 
@@ -920,7 +921,7 @@ li {
   width: 60% ;
   font-size: 13px ;
   color: white ; 
-  background-color: #6ca7ab ;
+  background-color: $my-blue ;
   border-radius: 10px ;
   margin-bottom: 20px ;
   text-align: center ;
@@ -977,7 +978,7 @@ li {
   > .two-third-column {
     margin-left: -100px ;
     h2 { 
-      color: #6ca7ab ;
+      color: $my-blue ;
     }
 
     p {
