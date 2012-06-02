@@ -1,5 +1,8 @@
 #try-us
-  .two-third-column.left
+  .one-third-column.left
+    #try-us-icon
+      = image_tag "tryUs.png"
+  .one-third-column.left
   .one-third-column.right
     = semantic_form_for :trial, :url => trial_account_path, :method => :post do |f|
       #trial-user-signup
