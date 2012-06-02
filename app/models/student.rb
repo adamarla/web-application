@@ -106,8 +106,7 @@ class Student < ActiveRecord::Base
     def reset_login_info
       new_prefix = username_prefix_for(self, :student)
       u = self.account.username.sub(/^\w+\./, "#{new_prefix}.")
-      e = self.account.email.sub(/^\w+\./, "#{new_prefix}.")
-      self.account.update_attributes(:username => u, :email => e)
+      self.account.update_attributes :username => u
     end
 
 end # of class 
