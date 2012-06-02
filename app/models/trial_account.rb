@@ -12,4 +12,9 @@
 #
 
 class TrialAccount < ActiveRecord::Base
+  belongs_to :teacher
+
+  validates :school, :presence => true
+  validates :zip_code, :presence => true
+  validates :country, :presence => true
 end

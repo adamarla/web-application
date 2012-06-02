@@ -32,6 +32,7 @@ class Teacher < ActiveRecord::Base
   has_many :quizzes, :dependent => :destroy 
   belongs_to :school 
   has_one :account, :as => :loggable
+  has_one :trial_account
 
   has_many :faculty_rosters
   has_many :sektions, :through => :faculty_rosters
