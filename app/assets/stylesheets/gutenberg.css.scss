@@ -968,3 +968,22 @@ li {
     }
   }
 }
+
+#trial-registration-success {
+  #thumbs-up {
+    margin-left: 10px ;
+  }
+
+  > .two-third-column {
+    margin-left: -100px ;
+    h2 { 
+      color: #6ca7ab ;
+    }
+
+    p {
+      font-size: 14px ;
+      text-align: justify ;
+      color: white ;
+    }
+  }
+}
