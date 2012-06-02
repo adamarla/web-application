@@ -1,7 +1,7 @@
 #try-us
   .two-third-column.left
   .one-third-column.right
-    = semantic_form_for :trial, :remote => true, :method => :put do |f|
+    = semantic_form_for :trial, :url => trial_account_path, :method => :put do |f|
       #trial-user-signup
         %div
           = f.input :name, :as => :string, :label => false, 
