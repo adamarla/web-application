@@ -7,6 +7,7 @@ $blue:#00007f ;
 $orange:#ffa500 ;
 $green:#168816 ;
 $my-blue: #6ca7ab ;
+$my-gray: #4c4c4c ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -652,6 +653,7 @@ span.unhappyMessage {
     input[type="submit"] {
       margin-top: 27px ;
       width: 12% ;
+      font-size: 15px ;
     }
 
   }
@@ -671,10 +673,10 @@ span.unhappyMessage {
   font: {
     family: inherit ;
     weight: bold ;
-    size: 17px ;
+    size: 15px ;
   }
-  color: black ; 
-  background-color: #ffa500 ; 
+  color: $gray ; 
+  background-color: $orange ; 
   padding: 8px 6px 8px 6px ;
   text: {
     align: center ;
