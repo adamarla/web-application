@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: trial_accounts
+#
+#  id         :integer         not null, primary key
+#  teacher_id :integer
+#  school     :string(255)
+#  zip_code   :string(255)
+#  country    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  teacher_id: 1
+  school: MyString
+  zip_code: MyString
+  country: 1
+
+two:
+  teacher_id: 1
+  school: MyString
+  zip_code: MyString
+  country: 1

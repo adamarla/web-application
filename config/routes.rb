@@ -110,6 +110,9 @@ Webapp::Application.routes.draw do
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get
+
+  # Trial Account 
+  resource :trial_account, :only => [:create], :controller => :trial_account
   
   # Welcome
   match 'about_us' => 'welcome#about_us', :via => :get
