@@ -933,3 +933,24 @@ li {
 #try-us-icon {
   margin-top: -20px ;
 }
+
+#try-us-next-steps {
+  margin-left: -100px ;
+  width: 35% ;
+
+  > .step { 
+    width: 100% ;
+    min-height: 60px ;
+    margin-bottom: 7px ;
+
+    .text {
+      font-size: 14px ;
+      color: white ; 
+      margin: {
+        top: 5px ;
+        left: 8px ;
+      }
+      max-width: 80% ;
+    }
+  }
+}

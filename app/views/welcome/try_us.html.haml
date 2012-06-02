@@ -2,7 +2,23 @@
   .one-third-column.left
     #try-us-icon
       = image_tag "tryUs.png"
-  .one-third-column.left
+  #try-us-next-steps.one-third-column.left
+    .step
+      .ticker.left= "1"
+      .text.left= "Fill the form alongside to register"
+    .step
+      .ticker.left= "2"
+      .text.left= "View our video tutorials"
+    .step
+      .ticker.left= "3"
+      .text.left= "Login and create quizzes and testpapers based on our sample syllabus"
+    .step
+      .ticker.left= "4"
+      .text.left
+        Write responses on one testpaper as though you are the student.
+        Scan the testpaper and send to us for grading
+    
+        
   .one-third-column.right
     = semantic_form_for :trial, :url => trial_account_path, :method => :post do |f|
       #trial-user-signup
