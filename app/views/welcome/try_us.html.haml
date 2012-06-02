@@ -13,7 +13,7 @@
         %div
           = f.input :school, :as => :string, :label => false, 
                     :input_html => { :placeholder => 'school' }
-          = f.input :zip, :as => :string, :label => false, 
+          = f.input :zip_code, :as => :string, :label => false, 
                     :input_html => { :placeholder => "school's zip-code" }
         %div
           = f.input :country, :as => :select, :collection => Country.all, :label => false
