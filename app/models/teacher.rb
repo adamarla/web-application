@@ -106,7 +106,7 @@ class Teacher < ActiveRecord::Base
   end 
 
   def name=(name)
-    split = name.split(' ', 2)
+    split = name.split
     self.first_name = split.first
     self.last_name = split.last
   end
