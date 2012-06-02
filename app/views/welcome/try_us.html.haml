@@ -5,18 +5,24 @@
   #try-us-next-steps.one-third-column.left
     .step
       .ticker.left= "1"
-      .text.left= "Fill the form alongside to register"
+      .text.left
+        Fill and submit the form here to activate your trial account
     .step
       .ticker.left= "2"
-      .text.left= "View our video tutorials"
+      .text.left
+        Login as a teacher and build quizzes & testpapers based on our sample
+        syllabus. During trial, you will have access to a subset of our question-bank
     .step
       .ticker.left= "3"
-      .text.left= "Login and create quizzes and testpapers based on our sample syllabus"
+      .text.left
+        Printout a testpaper and write answers on it as if you were a student.
+        Then scan the testpaper and send it to us for grading. Do this as many
+        times as you would like
     .step
       .ticker.left= "4"
       .text.left
-        Write responses on one testpaper as though you are the student.
-        Scan the testpaper and send to us for grading
+        Need help? Write to us at help@gradians.com. Our video tutorials are also
+        a good source of information on the website's basics
     
         
   .one-third-column.right
@@ -36,4 +42,4 @@
                     :input_html => { :placeholder => "school's zip-code" }
         %div
           = f.input :country, :as => :select, :collection => Country.all, :label => false
-          = submit_tag 'sign-up for trial', :id => 'signup-btn', :class => 'orange-submit-btn'
+          = submit_tag 'submit', :id => 'signup-btn', :class => 'orange-submit-btn'
