@@ -122,7 +122,7 @@ jQuery ->
               alt = "pg-#{j+1}"
             else break
 
-          img = $("<li hop=#{hop}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
+          img = $("<li hop=#{hop} alt=#{alt} m=#{j}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
           img.appendTo target
 
       # Now, call the preview
@@ -177,7 +177,7 @@ jQuery ->
         steps = nImages - steps
         fwd = not fwd
 
-      #alert "nImages --> #{nImages}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
+      alert "nImages --> #{nImages}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
 
       btn = if fwd then display.find('.ppy-next:first') else display.find('.ppy-prev:first')
       for j in [1..steps]
