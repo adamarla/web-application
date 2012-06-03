@@ -6,11 +6,14 @@ node :topics do
 end
 
 node :questions do 
-  @questions.map{ |m| { :question => {:name => m.uid, :id => m.id, :parent => m.topic_id, :marks => "#{m.marks?} points"} } }
+  @questions.map{ |m| { :question => {:name => m.uid, :id => m.id, 
+                        :parent => m.topic_id, 
+                        :marks => "#{m.marks?} pt, #{m.answer_key_span?} pg"} } }
 end
 
 node :preview do
-  { :id => @questions.map(&:uid), :scans => @questions.map{ |m| [*1..m.answer_key_span?] } }
+  { :id => @questions.map(&:uid), 
+    :scans => @questions.map{ |m| [*1..m.answer_key_span?] } }
 end
 
 
