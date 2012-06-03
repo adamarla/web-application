@@ -89,6 +89,11 @@ window.flipchart = {
     return if next is last
   ###
 
+  tabsList: (obj) ->
+    chart = obj.closest '.flipchart'
+    return null if chart.length is 0
+    return chart.children('ul').eq(0)
+
   containingTab: (obj) ->
     chart = obj.closest '.flipchart'
     return null if chart.length is 0
