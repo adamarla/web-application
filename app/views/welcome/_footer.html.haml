@@ -1,5 +1,12 @@
 #footer
   #copyright-notice
-    #copyright-validity= "Copyright 2012-2013 Gradians. This site is best viewed using"      
-    = link_to image_tag("firefox.png", alt: "Firefox"), 'http://www.mozilla.com/en-US/firefox/'  
-    = link_to image_tag("chrome.png", alt: "Chrome"), 'http://google.com/chrome'
+    #copyright-validity.left= "www.gradians.com is best viewed using"
+    #firefox-icon.left.browser-icon
+      = link_to 'Firefox 3.5+', 'http://www.mozilla.com/en-US/firefox/'
+      = image_tag "firefox-gray.png"
+    #chrome-icon.left.browser-icon
+      = link_to 'Chrome', 'http://www.google.com/chrome'
+      = image_tag "chrome-gray.png"
+    #ie-icon.left.browser-icon
+      = link_to 'IE 9+','http://windows.microsoft.com/en-IN/internet-explorer/downloads/ie-9/worldwide-languages'
+      = image_tag "ie-gray.png"
