@@ -14,14 +14,12 @@ jQuery ->
 
   # Assigning a Quiz to students selected in #student-list
   $('#student-list > form:first').submit ->
-    ###
-      This thing will need the quiz's ID. And that is available 
-      as 'marker' on the 'side' panel
-    ###
-    chart = $(this).closest '.flipchart'
-    return false if chart.length is 0
-    quiz = chart.attr 'marker'
+    tabs = flipchart.tabsList $(this)
+
+    quizTab = tabs.children('li').eq(0)
+    quiz = quizTab.attr 'marker'
     return if not quiz?
+    # alert quiz
 
     coreUtil.forms.modifyAction $(this), "quiz/assign.json?id=#{quiz}", 'put'
     flipchart.next '#quizzes-summary'
@@ -42,8 +40,12 @@ jQuery ->
     event.stopPropagation()
 
     chart = $(this).closest '.flipchart'
-    chart.tabs 'enable', 1
+    tab = flipchart.containingTab $(this)
+
     id = $(this).attr 'marker'
+    chart.tabs 'enable', 1
+    tab.attr 'marker', id
+
     $.get "quiz/preview.json?id=#{id}"
 
     # Get the list of testpapers only once. Its unlikely to have changed 
