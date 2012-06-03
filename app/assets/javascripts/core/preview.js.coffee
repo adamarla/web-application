@@ -177,7 +177,7 @@ jQuery ->
         steps = nImages - steps
         fwd = not fwd
 
-      alert "nImages --> #{nImages}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
+      #alert "nImages --> #{nImages}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
 
       btn = if fwd then display.find('.ppy-next:first') else display.find('.ppy-prev:first')
       for j in [1..steps]
