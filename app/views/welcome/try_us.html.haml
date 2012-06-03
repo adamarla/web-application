@@ -29,17 +29,12 @@
     = semantic_form_for :trial, :url => trial_account_path, :method => :post do |f|
       #trial-user-signup
         %div
-          = f.input :name, :as => :string, :label => false, 
-                    :input_html => { :placeholder => 'full name' }
-          = f.input :email, :as => :string, :label => false, 
-                    :input_html => { :placeholder => 'email' }
-          = f.input :email_confirm, :as => :string, :label => false, 
-                    :input_html => { :placeholder => 're-enter email' }
+          = f.input :name, :as => :string
+          = f.input :email, :as => :string
+          = f.input :email_confirm, :as => :string, :label => "confirm e-mail"
         %div
-          = f.input :school, :as => :string, :label => false, 
-                    :input_html => { :placeholder => 'school' }
-          = f.input :zip_code, :as => :string, :label => false, 
-                    :input_html => { :placeholder => "school's zip-code" }
+          = f.input :school, :as => :string
+          = f.input :zip_code, :as => :string, :label => "school's zip-code"
         %div
-          = f.input :country, :as => :select, :collection => Country.all, :label => false
+          = f.input :country, :as => :select, :collection => Country.all
           = submit_tag 'submit', :id => 'signup-btn', :class => 'orange-submit-btn'

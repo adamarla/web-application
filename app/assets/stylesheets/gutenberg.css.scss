@@ -659,10 +659,23 @@ span.unhappyMessage {
   }
 }
 
-#try-us form input[type="submit"] {
-  margin-top: 10px ;
-  float: right ;
-  min-width: 50% ;
+#try-us { 
+  form {
+    input[type="submit"] {
+      margin-top: 10px ;
+      float: right ;
+      min-width: 50% ;
+    }
+    
+    li {
+      > label { 
+        width: 100% ;
+        font-size: 12px ;
+        margin-bottom: 3px ;
+        text-transform: lowercase ;
+      } 
+    }
+  }
 }
 
 .orange-submit-btn {
