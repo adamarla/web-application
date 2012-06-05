@@ -2,4 +2,5 @@
 // in a manifest file - like this one. Instead, split JS code 
 // in other .js files and require them as needed
 
+//= require_directory ./guest
 //= require_directory ../../../vendor/assets/javascripts/country-selector 
