@@ -6,6 +6,5 @@
 //= require jquery_ujs 
 //= require jquery-ui
 //= require_directory ../../../vendor/assets/javascripts/popeye 
-//= require_directory ./shared
 //= require_directory ./core
 //= require_directory ../../../vendor/assets/javascripts/happy 
