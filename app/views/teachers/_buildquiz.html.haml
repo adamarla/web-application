@@ -17,13 +17,13 @@
           = check_box_tag :skip_previously_used, true
           = label_tag :skip_previously_used, "skip questions used before"
         = submit_tag 'next', :class => :right
-      .form-fields
+      .form-fields.as-accordion
   #question-options
     = form_tag 'teacher/build_quiz', :remote => true, :method => :put do |f| 
       .submit-buttons
         = text_field_tag :quiz_name, nil, :placeholder => "give the quiz a name", :size => 20
         = submit_tag 'build quiz'
-      .form-fields
+      .form-fields.as-accordion
 
   #build-quiz-receipt
     .what-now

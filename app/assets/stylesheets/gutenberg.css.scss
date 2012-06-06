@@ -884,7 +884,8 @@ li {
   }
 }
 
-#quizzes-summary, #topic-selection-list, #question-options {
+//#quizzes-summary, #topic-selection-list, #question-options {
+.as-accordion {
   .scroll-heading {
     border-bottom: 1px solid $my-blue ; 
     padding: {
