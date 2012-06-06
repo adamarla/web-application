@@ -41,7 +41,7 @@ jQuery ->
       '#trial_email_confirm': {
         required: 'sometimes',
         test: happy.validate.sameToSame,
-        arg: '#account_password',
+        arg: '#trial_email',
         message: 'must match e-mail above'
       }
 
