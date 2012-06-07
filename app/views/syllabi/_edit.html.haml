@@ -1,8 +1,7 @@
 
 #edit-syllabi-form
-  %legend
-    %span.target= "specific topics"
-    %span.operation= "select, set and submit"
   = form_tag '/syllabus', :method => :put, :remote => true do |f|
     .submit-buttons
-      = submit_tag 'add selected to course'
+      %legend.left= "edit existing course"
+      = submit_tag 'update', :class => :right
+    #edit-course-topics.as-accordion

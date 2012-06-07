@@ -201,6 +201,9 @@ p > a, div > a {
 }
 
 .submit-buttons { 
+  min-height: 40px ;
+  margin-bottom: 10px ;
+
   > input[type="submit"], > input[type="button"] {
     border: {
       style: none ;
@@ -230,7 +233,13 @@ p > a, div > a {
     border-radius: 0px ;
     margin-right: 10px ;
   }
-  
+
+  > legend { 
+    color: $orange ;
+    font-size: 13px ;
+    margin-top: 4px ;
+    text-transform: lowercase ;
+  }
 }
 
 #side-panel {
@@ -654,10 +663,9 @@ span.unhappyMessage {
   }
 }
 
-#try-us { 
+#try-us, #new-course { 
   form {
     input[type="submit"] {
-      margin-top: 10px ;
       float: right ;
       min-width: 50% ;
     }
@@ -671,6 +679,19 @@ span.unhappyMessage {
       } 
     }
   }
+}
+
+#new-course { 
+  form { 
+    > div {
+      min-height: 40px ;
+      margin-bottom:10px ;
+      fieldset { 
+        width: 75% ;
+        float: left ;
+      } 
+    }
+  } 
 }
 
 .orange-submit-btn {
@@ -884,7 +905,6 @@ li {
   }
 }
 
-//#quizzes-summary, #topic-selection-list, #question-options {
 .as-accordion {
   .scroll-heading {
     border-bottom: 1px solid $my-blue ; 
@@ -902,10 +922,10 @@ li {
   }
 }
 
-.scroll-content.ui-accordion-content {
-  width: 90% ;
+.as-accordion > .scroll-content.ui-accordion-content {
+  width: 100% ;
   padding: 0pt ;
-  min-height: 100px ;
+  min-height: 150px ;
 
   > .swiss-knife {
     color: $my-blue ;
@@ -921,6 +941,7 @@ li {
     color: $my-blue ;
     float: left ;
     width: 100% ;
+    text-align:center ;
   } 
 }
 
@@ -929,13 +950,16 @@ li {
 }
 
 #past-quizzes-list a.btn {
-  width: 60% ;
-  font-size: 13px ;
+  width: 40% ;
+  font-size: 12px ;
   color: white ; 
   background-color: $my-blue ;
   border-radius: 10px ;
-  margin-bottom: 20px ;
-  text-align: center ;
+  margin: {
+    left: 23px ;
+    top: 10px ;
+    bottom: 20px ;
+  }
 }
 
 #trial-user-signup {
@@ -1012,5 +1036,8 @@ li {
     float: left ;
     text-transform: lowercase ;
   }
+} 
 
+#courses-summary { 
+  margin-top: 53px ;
 } 
