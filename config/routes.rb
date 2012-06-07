@@ -55,9 +55,10 @@ Webapp::Application.routes.draw do
   match 'school/sektions' => 'schools#sektions', :via => :get
 
   # Verticals 
-  resource :vertical, :only => [:create, :show]
+  resource :vertical, :only => [:create]
   match 'vertical/topics_in_course' => 'verticals#topics_in_course', :via => :get
   match 'verticals/list' => 'verticals#list', :via => :get
+  match 'vertical/topics' => 'verticals#topics', :via => :get
 
   # Videos 
   resource :video, :only => [:create]

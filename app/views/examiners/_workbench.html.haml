@@ -7,14 +7,12 @@
     %li
       %a{ :href => '#examiner-untagged' }= "Question"
     %li
-      %a{ :href => '#vertical-selection' }= "Vertical"
-    %li
       %a{ :href => '#topic-selection' }= "Topic"
     %li
       %a{ :href => '#misc-traits' }= "Tag Question"
   #examiner-untagged
-  #vertical-selection
   #topic-selection
+    #tag-question-topics.as-accordion
   #misc-traits
     = semantic_form_for :misc, :remote => true, :url => '/question', :method => :put do |f|
       = f.inputs do

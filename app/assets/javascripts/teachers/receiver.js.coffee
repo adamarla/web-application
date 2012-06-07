@@ -14,18 +14,7 @@ jQuery ->
     # by now that you're going to be updating this panel
     $(this).find('.inline-error').remove()
 
-    if url.match(/teacher\/coverage/)
-      here = $('#quiz-builder-form').find '.search-results:first'
-      here.empty()
-
-      coreUtil.mnmlists.redistribute json.verticals
-      coreUtil.mnmlists.customize 'vertical', {}
-      coreUtil.mnmlists.customize 'topic', {checkbox:true}
-
-      results = coreUtil.mnmlists.asAccordion 'selected'
-      results.appendTo here
-      results.accordion({ header : '.accordion-heading', collapsible:true, active:false })
-    else if url.match(/quizzes\/list/)
+    if url.match(/quizzes\/list/)
       here = $('#past-quizzes-list')
       scroll.initialize json.quizzes, 'quiz', here
       here.accordion scroll.options
@@ -119,18 +108,4 @@ jQuery ->
       matched = false
 
     e.stopPropagation() if matched is true
-
-  .ajaxError (e,xhr,settings) ->
-    matched = settings.url.match(/teacher\/coverage/)
-    return if matched is null
-
-    # Remove any prior error messages and search-results - unconditionally. 
-    # You know by now that there has been an error !
-    $(this).find('.search-results').empty()
-    $(this).find('.inline-error').remove()
-
-    switch matched.pop()
-      when 'teacher/coverage'
-        here = $('#quiz-builder-form')
-        coreUtil.messaging.inlineError here, 'we apologize ...', "the requisite course isn't currently present in our database"
-
+    return true

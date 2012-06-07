@@ -196,29 +196,6 @@ fieldset.inputs li.boolean.input {
   min-height : 27px ;
 }
 
-/*
-form > .controls {
-  margin-bottom : 13px ;
-  min-height : 20px ;
-} 
-
-form > .controls > input {
-  font-size : 13px ;
-  font-family : "Trebuchet MS" ;
-  color : white ;
-  background : #6ca7ab ;
-  font-weight : normal ;
-  padding : 8px ;
-  -moz-border-radius : 5px ;
-  border-radius : 5px ;
-}
-*/
-
-legend {
-  margin-top: -10px ;
-  margin-bottom: 30px ;
-} 
-
 legend > span.target { 
   font-size : 14px ;
   font-weight : normal ;

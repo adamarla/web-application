@@ -33,7 +33,8 @@ jQuery ->
     as : {
       itemWithCheck : 1,
       itemWithRadio : 2,
-      anchor : 3
+      anchor : 3,
+      itemWithSelect: 4
     }
 
     ###
@@ -53,7 +54,7 @@ jQuery ->
         n = m[key]
         parent = n.parent
         continue if not parent?
-        parentId = n.parent_id
+        parentId = n.parent_id # part of JSON returned by quiz/testpapers
 
         # First, find the accordion heading within which to append the new data
         header = here.children(".scroll-heading[marker=#{parent}]").eq(0)
@@ -65,6 +66,7 @@ jQuery ->
         switch render
           when scroll.as.itemWithCheck then item = swissKnife.forge m, key, {checkbox:true}
           when scroll.as.itemWithRadio then item = swissKnife.forge m, key, {radio:true}
+          when scroll.as.itemWithSelect then item = swissKnife.forge m, key, {select:true}
           when scroll.as.anchor then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
         if ticker?
           v = n[ticker]

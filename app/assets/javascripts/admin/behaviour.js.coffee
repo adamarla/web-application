@@ -23,11 +23,12 @@ jQuery ->
     switch id
       when 'account-link' then $.get 'examiners/list'
       when 'boards-link' then $.get 'boards/summary'
-      when 'courses-link' then $.get 'courses/list'
+      when 'courses-link'
+        $.get 'courses/list'
       when 'schools-link' then $.get 'schools/list'
       when 'workbench-link'
         $.get 'questions/list.json'
-        $.get 'verticals/list.json'
+        $.get 'verticals/list'
     return true
 
   ###
@@ -89,9 +90,9 @@ jQuery ->
 
   ###
     Connect sortable lists for Admin
-  ###
   $('#vertical-selected-list').sortable 'option', 'connectWith', '#vertical-deselected-list'
   $('#vertical-deselected-list').sortable 'option', 'connectWith', '#vertical-selected-list'
+  ###
 
   ###
     edit-syllabi form should acquire or lose elements depending on whether a 
@@ -211,7 +212,7 @@ jQuery ->
     tab = flipchart.containingTab $(this)
     return false if tab.length is 0 # block submission
     topic = tab.prev('li').attr 'marker'
-    question = tab.prev('li').prev('li').prev('li').attr 'marker'
+    question = tab.prev('li').prev('li').attr 'marker'
     $(this).attr 'action', "/question?id=#{question}&topic=#{topic}"
     return true
 
@@ -314,4 +315,32 @@ jQuery ->
     return true
 
 
+  ###
+    (New Course): Clicking on a scroll-heading that represents a vertical should
+    load the list of available topics within that vertical
+  ###
+  $('#tag-question-topics, #define-course-topics').on 'click', '.scroll-heading', (event) ->
+    event.stopPropagation()
+    content = $(this).next()
+
+    if content.children().length is 0 # empty thus far
+      id = $(this).attr 'marker'
+      $.get "vertical/topics.json?id=#{id}"
+    return true
+
+  ###
+    When editing a course, one must not only load all the topics but also 
+    the difficulty level of each covered topic in the course. A course
+    must therefore be selected first
+  ###
+
+  $('#edit-course-topics').on 'click', '.scroll-heading', (event) ->
+    event.stopPropagation()
+    course = $('#side-panel').attr 'marker'
+    if not course?
+      alert 'select a course first'
+      return false
+
+    #$.get "course/coverage.json?id=#{course}"
+    return true
 

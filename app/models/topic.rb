@@ -27,12 +27,8 @@ class Topic < ActiveRecord::Base
   before_validation :humanize_name
 
   def difficulty_in(course_id)
-    course = Course.find course_id
-    unless course.nil? 
-      in_syllabi = Syllabus.where(:course_id => course_id, :topic_id => self.id).first
-      return in_syllabi.nil? ? 0 : in_syllabi.difficulty
-    end 
-    return 0
+    entry = Syllabus.where(:course_id => course_id, :topic_id => self.id).first
+    return entry.nil? ? 0 : entry.difficulty
   end 
 
   def print_name
