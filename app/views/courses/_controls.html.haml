@@ -1,7 +1,7 @@
 
 #course-controls.top-panel-controls
   %ul.no-bullets
-    = minor_link :for => 'add-course', :as => "New Course"  
+    = minor_link :for => 'add-boards', :as => "new school boards"  
     = minor_link :for => 'add-verticals-n-topics', :as => "Quickly",
                  :with => { :panels => { :middle => '#new-topics', :right => '#new-verticals' } }
   = form_tag courses_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
