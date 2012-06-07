@@ -27,20 +27,22 @@ class Course < ActiveRecord::Base
   has_many :syllabi
 
   validates :name, :presence => true
+=begin
   validates :klass, :presence => true, \
             :numericality => {:only_integer => true, :greater_than => 0}
   validates :subject_id, :board_id, :presence => true
+=end
 
   def self.klass?(klass = nil)
-    klass.blank? ? where('klass IS NOT NULL') : where(:klass => klass)
+    klass.blank? ? where('id IS NOT NULL') : where(:klass => klass)
   end 
 
   def self.subject?(subject = nil)
-    subject.blank? ? where('subject_id IS NOT NULL') : where(:subject_id => subject)
+    subject.blank? ? where('id IS NOT NULL') : where(:subject_id => subject)
   end 
 
   def self.board?(board = nil)
-    board.blank? ? where('board_id IS NOT NULL') : where(:board_id => board)
+    board.blank? ? where('id IS NOT NULL') : where(:board_id => board)
   end 
 
   def covers_vertical?(id)
