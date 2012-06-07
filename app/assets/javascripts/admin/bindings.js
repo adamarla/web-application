@@ -3,12 +3,6 @@
 */ 
 
 $(function() { 
-  /*
-    Add a new Course to the DB
-  */ 
-  $('#add-course-link').click( function() {
-    $('#new-course').dialog({ title : 'Add Course'}).dialog('open') ;
-  }) ;
 
   $('#edit-course-link').click( function() { 
      // If #edit-course-link is visible, then it means #side-panel is showing
