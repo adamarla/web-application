@@ -11,9 +11,6 @@ jQuery ->
   $('#add-examiner-link').click ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
-  $('#add-verticals-n-topics-link').click ->
-    $.get 'vertical'
-
   $('#videos-link').click ->
     $('#new-video').dialog('option', 'title', 'New Video').dialog('open')
 
@@ -87,24 +84,6 @@ jQuery ->
 
     coreUtil.forms.modifyAction $(this), action, method
     return true
-
-  ###
-    Connect sortable lists for Admin
-  $('#vertical-selected-list').sortable 'option', 'connectWith', '#vertical-deselected-list'
-  $('#vertical-deselected-list').sortable 'option', 'connectWith', '#vertical-selected-list'
-  ###
-
-  ###
-    edit-syllabi form should acquire or lose elements depending on whether a 
-    vertical has been moved from selected -> deselected or the other way round
-  ###
-  $('.sortable').on 'sortreceive', (event, ui) ->
-    parent = ui.item.closest '.sortable'
-    return if parent.get(0) isnt $(this).get(0)
-
-    id = ui.item.attr 'marker'
-    type = if parent.hasClass 'selected' then 'deselected' else 'selected'
-    adminUtil.mnmToggle type, id, {select:true}
 
   ###########################################################################
   # AJAX requests triggered by other actions 

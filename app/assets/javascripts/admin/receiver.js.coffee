@@ -93,6 +93,10 @@ jQuery ->
       for here,j in ['#tag-question-topics', '#edit-course-topics', '#define-course-topics']
         scroll.initialize json.verticals, 'vertical', $(here)
         $(here).accordion scroll.options
+      m = $('#new-topics').find('select').eq(0)
+      coreUtil.dom.loadJsonToSelect m, json.verticals, 'vertical'
+    else if url.match(/vertical$/) # /vertical POST request response. Notice the regexp strict match
+      $.get "verticals/list.json"
     else
       matched = false
 
