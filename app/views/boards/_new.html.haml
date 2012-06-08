@@ -1,15 +1,8 @@
 
-- new_board = Board.new 
-
-#new-board-form.close-on-submit
+#new-board-form.new-entity.close-on-submit
   = semantic_form_for :board, :url => board_path, :remote => true do |f| 
     = f.inputs do 
-      = f.input :name 
-
-    %a#new-course-link.link-within-form{ :href => '#'}= "Add Course"
-    .appendable{ :next => 0 }
-      
+      - for j in [*1..5] do
+        = f.input "new_#{j}", :as => :string, :label => "board ##{j}", :input_html => { :name => "board[#{j}]" }
     .submit-buttons
-      %input{:type => :submit, :role => :button, :value => "Add", :name => "commit"}
-    
-
+      = submit_tag 'submit'

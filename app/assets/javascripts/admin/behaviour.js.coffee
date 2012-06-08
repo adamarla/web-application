@@ -14,6 +14,9 @@ jQuery ->
   $('#videos-link').click ->
     $('#new-video').dialog('option', 'title', 'New Video').dialog('open')
 
+  $('#add-boards-link').click ->
+    $('#new-board-form').dialog('option', 'title', 'school boards').dialog('open')
+
   $('#main-links a').click ->
     return if $(this).attr('block_ajax') is "true"
     id = $(this).attr 'id'
