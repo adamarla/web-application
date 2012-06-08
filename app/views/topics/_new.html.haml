@@ -1,11 +1,9 @@
 
 #new-topics.clear-after-submit
-  %legend
-    %span.target= "Topics"
-    %span.operation= "Select a vertical & then add"
+  .form-title= "New topics"
   = semantic_form_for :topic, :remote => true, :url => topic_path do |f| 
     .submit-buttons
-      = submit_tag 'add topics'
+      = submit_tag 'add topics', :class => :right
 
     = f.inputs do 
       = f.input :vertical, :as => :select, :collection => [],

@@ -41,6 +41,18 @@ input::-webkit-input-placeholder {
   }
 }
 
+.form-title {
+  color: $orange ;
+  margin-bottom: 20px ;
+  font: { 
+    size: 15px ;
+  }
+  text: {
+    align: center ;
+    transform: lowercase ;
+  }
+}
+
 p > a, div > a { 
   text-decoration: none ;
   color: $my-blue ;
