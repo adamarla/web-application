@@ -40,6 +40,16 @@ jQuery ->
     countrySelect.find('+ input').attr 'placeholder', 'country'
 
   ###
+    Store the value attribute of each and every input[type='submit'] button as a 
+    separate attribute called 'reset-to'. We will reset button text to this value 
+    2 seconds after the AJAX response is received 
+  ###
+  for m in $("input[type='submit']")
+    v = $(m).val()
+    continue if not v?
+    $(m).attr 'reset-to', v
+
+  ###
     This next call is unassuming but rather important. We initialize 
     variables within the JS based on the results the server being accessed returns
   ###
@@ -300,6 +310,13 @@ jQuery ->
         if button?
           json = $.parseJSON xhr.responseText
           if json.status? then button.val(json.status) else button.val("Done")
+
+          reset = button.attr 'reset-to'
+          if reset?
+            window.setTimeout ->
+              button.val reset
+            , 1300
+            
     return true
   .ajaxError (e,xhr,settings) ->
     forms = $(this).find 'form'
