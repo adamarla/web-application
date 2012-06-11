@@ -1,8 +1,6 @@
 
 #new-student.clear-after-submit
-  %legend
-    %span.target= "Student"
-    %span.operation= "Quick Add"
+  %legend= "New Student"
   = semantic_form_for :student, :remote => true, :url => '#' do |f| 
     .submit-buttons
       = submit_tag 'add students'

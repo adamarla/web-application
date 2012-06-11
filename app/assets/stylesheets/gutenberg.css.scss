@@ -300,6 +300,18 @@ p > a, div > a {
   }
 } 
 
+legend {
+  margin: {
+    top: -5px ;
+    bottom: 20px ;
+  }
+  font-size: 14px ;
+  color: $orange ;
+  text-transform: lowercase ;
+  border-bottom: 1px solid $light-gray ;
+  padding-bottom: 20px ;
+}
+
 legend + form {
   margin: {
     top: -13px ;

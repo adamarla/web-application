@@ -196,25 +196,6 @@ fieldset.inputs li.boolean.input {
   min-height : 27px ;
 }
 
-legend > span.target { 
-  font-size : 14px ;
-  font-weight : normal ;
-  color : #ffa500 ;
-  margin-right: 20px ;
-} 
-
-legend > span.operation { 
-  text-transform : lowercase ; 
-  font-size : 13px ;
-  color : #654b24 ;
-} 
-
-legend > a { 
-  font-size : 13px ; 
-  text-decoration : none ; 
-  margin-right : 8px ;
-} 
-
 .colored, .light-orange, .light-green { 
   color : white ; 
   -moz-border-radius : 10px ; 
