@@ -1,8 +1,6 @@
 
 #new-school.clear-after-submit
-  %legend
-    %span.target= "Quick Add"
-    %span.operation= "School"
+  %legend= "New School"
   = semantic_form_for :school, :remote => true, :url => school_path do |f| 
     .submit-buttons
       = submit_tag 'new school'

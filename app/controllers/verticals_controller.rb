@@ -23,6 +23,15 @@ class VerticalsController < ApplicationController
     @verticals = Vertical.order :name
   end
 
+  def topics
+    me = Vertical.find params[:id]
+    unless me.nil?
+      @topics = me.topics
+    else
+      head :bad_request
+    end
+  end
+
   def topics_in_course
     me = Vertical.find params[:id]
     unless me.nil? 

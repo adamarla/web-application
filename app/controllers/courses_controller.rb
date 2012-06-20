@@ -26,17 +26,19 @@ class CoursesController < ApplicationController
   end 
 
   def create 
-   board_name = params[:course].delete :board 
-   unless board_name.empty? 
-     board = Board.where(:name => board_name).first 
-     board = board.nil? ? Board.new(:name => board_name) : board 
-     board.save if board.new_record? # Have to save board first else @course.board_id = nil
-     @course = board.courses.new params[:course]
-   else  
-     @course = Course.new params[:course] 
-   end 
-   @course.save ? respond_with(@course) : head(:bad_request) 
-  end 
+    name = params[:course][:name]
+    unless name.empty?
+      course = Course.new :name => name
+      if course.save
+        course.update_syllabus params[:difficulty]
+        render :json => { :status => "done" }, :status => :ok
+      else
+        render :json => { :status => "phat gayee!" }, :status => :bad_request
+      end
+    else
+      render :json => { :status => "give a name" }, :status => :bad_request
+    end
+  end
 
   def list
     criterion = params[:criterion]
@@ -51,8 +53,10 @@ class CoursesController < ApplicationController
   end 
 
   def coverage
-    @course = Course.find params[:id]
-    @verticals = Vertical.where('id IS NOT NULL').order(:name) # basically, everyone
+    @topics = Topic.order(:id) # basically, every topic 
+    @course = params[:id]
+
+    respond_with @course, @topics
   end 
 
   def verticals

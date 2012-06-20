@@ -2,21 +2,18 @@ class BoardsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
-  def create 
-    name = params[:board][:name]
-    status = :ok 
+  def create
+    boards = params[:board]
 
-    @board = name.empty? ? nil : Board.new(:name => name)
-    unless @board.nil? 
-      courses = params[:courses] 
-      courses.each { |id, attributes| 
-        @board.courses.build attributes 
-      } 
-      render :json => {:status => "Done"}, :status => (@board.save ? :ok : :bad_request)
-    else
-      render :json => { :status => "Oops" }, :status => :bad_request
-    end 
-  end 
+    boards.keys.each do |k|
+      name = boards[k]
+      unless name.empty?
+        m = Board.new :name => name
+        m.save
+      end
+    end
+    render :json => { :status => "done" }, :status => :ok
+  end
 
   def update 
     head :ok
@@ -27,16 +24,4 @@ class BoardsController < ApplicationController
     respond_with @boards 
   end 
 
-=begin
-  def get_course_details
-    @board = Board.find params[:board_id]
-
-    unless @board.nil? 
-      respond_with @board
-    else
-      head :bad_request
-    end 
-  end 
-=end
-
-end
+end # of controller

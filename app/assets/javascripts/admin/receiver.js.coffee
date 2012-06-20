@@ -26,34 +26,42 @@ jQuery ->
   ###
 
   $('#side-panel').ajaxSuccess (e,xhr,settings) ->
+    url = settings.url
     json = $.parseJSON xhr.responseText
-    if settings.url.match(/schools\/list/)
+    matched = true
+
+    if url.match(/schools\/list/)
       coreUtil.interface.displayJson json.schools, '#schools-summary', 'school'
-    else if settings.url.match(/courses\/list/)
+    else if url.match(/courses\/list/)
       coreUtil.interface.displayJson json.courses, '#courses-summary', 'course', {radio:true, button:true}
       swissKnife.setButtonCaption '#courses-summary', 'edit'
-    else if settings.url.match(/questions\/list/)
+    else if url.match(/questions\/list/)
       # flipchart initialized in core/behaviour 
       coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
-    else if settings.url.match(/verticals\/list/)
-      coreUtil.mnmlists.redistribute true
-      coreUtil.mnmlists.customize 'vertical'
-      coreUtil.mnmlists.customize 'topic'
-      coreUtil.mnmlists.attach 'vertical', '#vertical-selection'
-      coreUtil.mnmlists.attach 'topic', '#topic-selection'
-    else if settings.url.match(/examiner\/pending_quizzes/)
+    else if url.match(/examiner\/pending_quizzes/)
       coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
       #coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
       canvas.loadNth 0
-    else if settings.url.match(/quiz\/pending_pages/)
+    else if url.match(/quiz\/pending_pages/)
       coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
-    else if settings.url.match(/quiz\/pending_scans/)
+    else if url.match(/quiz\/pending_scans/)
       adminUtil.buildPendingScanList json.scans
       canvas.loadNth 0
-    else if settings.url.match(/question\?/) # rewind flipchart on successful question tagging
+    else if url.match(/question\?/) # rewind flipchart on successful question tagging
       child = $(this).children().eq(0)
       return if child.attr('id') isnt 'workbenches-summary'
       flipchart.rewind '#workbenches-summary'
+    else if url.match(/course\/coverage/)
+      here = $('#edit-course-topics')
+      # we will get the full list of topics irrespective of whether or not a topic
+      # is covered in the said course or not. Hence, we must empty out the .scroll-contents
+      # and recreate the topic list afresh 
+
+      for m in here.children('.scroll-content')
+        $(m).empty()
+      scroll.loadJson json.topics, 'topic', here, null, scroll.as.itemWithSelect
+    else
+      matched = false
 
     return true
       
@@ -63,79 +71,66 @@ jQuery ->
   ###
 
   $('#middle-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/yardstick\.json/) or
-              settings.url.match(/teachers\/list/) or
-              settings.url.match(/school\/sektions/) or
-              settings.url.match(/course\/coverage/) or
-              settings.url.match(/vertical/) # POST-request
-    return if matched is null
-
     json = $.parseJSON xhr.responseText
     onDisplay = $(this).children().first()
-    e.stopPropagation()
+    matched = true
+    url = settings.url
 
-    switch matched.pop()
-      when 'teachers/list'
-        coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher', {radio:true,button:true}
-        swissKnife.setButtonCaption '#teachers-list', 'edit'
-      when 'school/sektions'
-        if onDisplay.attr('id') is 'new-student'
-          select = onDisplay.find 'form select:first' # the first select is for sektions 
-          coreUtil.dom.loadJsonToSelect select, json.sektions, 'sektion'
-        else
-          coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
-      when 'yardstick.json'
-        coreUtil.dom.unsetCheckboxesIn '#edit-yardstick'
-        coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick
-        $('#edit-yardstick').dialog 'open'
-      when 'course/coverage'
-        coreUtil.mnmlists.redistribute json.verticals
-        coreUtil.mnmlists.customize 'vertical'
+    if url.match(/teachers\/list/)
+      coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher', {radio:true,button:true}
+      swissKnife.setButtonCaption '#teachers-list', 'edit'
+    else if url.match(/school\/sektions/)
+      if onDisplay.attr('id') is 'new-student'
+        select = onDisplay.find 'form select:first' # the first select is for sektions 
+        coreUtil.dom.loadJsonToSelect select, json.sektions, 'sektion'
+      else
+        coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
+    else if url.match(/yardstick.json/)
+      coreUtil.dom.unsetCheckboxesIn '#edit-yardstick'
+      coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick
+      $('#edit-yardstick').dialog 'open'
+    else if url.match(/verticals\/list/)
+      for here,j in ['#tag-question-topics', '#edit-course-topics', '#define-course-topics']
+        scroll.initialize json.verticals, 'vertical', $(here)
+        $(here).accordion scroll.options
+      m = $('#new-topics').find('select').eq(0)
+      coreUtil.dom.loadJsonToSelect m, json.verticals, 'vertical'
+    else if url.match(/vertical$/) # /vertical POST request response. Notice the regexp strict match
+      $.get "verticals/list.json"
+    else
+      matched = false
 
-        target = $('#vertical-selection')
-        $('#vertical-selected-list').insertAfter target.children('legend').eq(0)
-        $('#vertical-deselected-list').insertAfter target.children('legend').eq(1)
-
-        adminUtil.buildSyllabiEditForm json.verticals
-      when 'vertical'
-        if onDisplay.attr('id') is 'new-topics'
-          select = onDisplay.find 'form select:first'
-          coreUtil.dom.loadJsonToSelect select, json.verticals, 'vertical'
+    e.stopPropagation() if matched is true
+    return true
 
   ###
     AJAX successes the right-panel is supposed to respond to.
   ###
 
   $('#right-panel').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/teachers\/roster/) or
-              settings.url.match(/school\/unassigned-students/) or
-              settings.url.match(/sektions\/students/) or
-              settings.url.match(/verticals\/list/) or
-              settings.url.match(/school\.json/) or
-              settings.url.match(/examiners\/list/)
-    return if matched is null
-  
-    e.stopPropagation()
     json = $.parseJSON xhr.responseText
+    matched = true
+    url = settings.url
 
-    switch matched.pop()
-      when 'teachers/roster'
-        here = $('#edit-student-klass-mapping').children 'form:first'
-        coreUtil.interface.displayJson json.sektions, here, 'sektion', {checkbox:true}
-      when 'school/unassigned-students', 'sektions/students'
-        here = $('#student-list').children 'form:first'
-        coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
-      when 'school.json'
-        coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
-      when 'verticals/list'
-        # Customize swiss-knives within topics to include just one enabled radio-button
-        topics = $('#topic-list')
-        for vertical in topics.find 'div[marker]'
-          for e in $(vertical).children()
-            swissKnife.customize $(e), {radio:true}, true
-      when 'examiners/list'
-        here = $('#examiners-list')
-        coreUtil.interface.displayJson json.examiners, here, 'examiner', {}
+    if url.match(/teachers\/roster/)
+      here = $('#edit-student-klass-mapping').children 'form:first'
+      coreUtil.interface.displayJson json.sektions, here, 'sektion', {checkbox:true}
+    else if url.match(/school\/unassigned-students/) or url.match(/sektions\/students/)
+      here = $('#student-list').children 'form:first'
+      coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
+    else if url.match(/school/)
+      coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
+    else if url.match(/vertical\/topics/)
+      for here,j in ['#tag-question-topics', '#define-course-topics']
+        if j isnt 0
+          scroll.loadJson json.topics, 'topic', $(here), null, scroll.as.itemWithSelect
+        else
+          scroll.loadJson json.topics, 'topic', $(here), null, scroll.as.itemWithRadio
+    else
+      matched = false
+
+    e.stopPropagation() if matched is true
+    return true
 
   ###
     AJAX successes the right-panel is supposed to respond to.
