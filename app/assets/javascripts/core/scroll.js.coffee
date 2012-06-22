@@ -30,12 +30,13 @@ jQuery ->
       return true
 
     # Enum to specify how passed JSON should be rendered by the 'loadJson' method
-    as : {
-      itemWithCheck : 1,
-      itemWithRadio : 2,
+    having : {
+      check : 1,
+      radio : 2,
       anchor : 3,
-      itemWithSelect: 4
+      select : 4
     }
+    
 
     ###
       'initialize' creates just the accordion headers. This next method 
@@ -46,7 +47,7 @@ jQuery ->
         {name: ..., id: ..., parent: ...} where json itself is an array
     ###
 
-    loadJson: (json, key, here, ticker = null, render = scroll.as.itemWithCheck) ->
+    loadJson: (json, key, here, ticker = null, render = scroll.having.check) ->
       return if not key?
       here = if typeof here is 'string' then $(here) else here
 
@@ -64,10 +65,10 @@ jQuery ->
         continue if content.length is 0
 
         switch render
-          when scroll.as.itemWithCheck then item = swissKnife.forge m, key, {checkbox:true}
-          when scroll.as.itemWithRadio then item = swissKnife.forge m, key, {radio:true}
-          when scroll.as.itemWithSelect then item = swissKnife.forge m, key, {select:true}
-          when scroll.as.anchor then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
+          when scroll.having.check then item = swissKnife.forge m, key, {checkbox:true}
+          when scroll.having.radio then item = swissKnife.forge m, key, {radio:true}
+          when scroll.having.select then item = swissKnife.forge m, key, {select:true}
+          when scroll.having.link then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
         if ticker?
           v = n[ticker]
           t = item.children().eq(3)

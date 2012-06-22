@@ -59,7 +59,7 @@ jQuery ->
 
       for m in here.children('.scroll-content')
         $(m).empty()
-      scroll.loadJson json.topics, 'topic', here, null, scroll.as.itemWithSelect
+      scroll.loadJson json.topics, 'topic', here, null, scroll.having.select
     else
       matched = false
 
@@ -123,9 +123,9 @@ jQuery ->
     else if url.match(/vertical\/topics/)
       for here,j in ['#tag-question-topics', '#define-course-topics']
         if j isnt 0
-          scroll.loadJson json.topics, 'topic', $(here), null, scroll.as.itemWithSelect
+          scroll.loadJson json.topics, 'topic', $(here), null, scroll.having.select
         else
-          scroll.loadJson json.topics, 'topic', $(here), null, scroll.as.itemWithRadio
+          scroll.loadJson json.topics, 'topic', $(here), null, scroll.having.radio
     else
       matched = false
 
