@@ -177,9 +177,11 @@ jQuery ->
       if not favourited? or favourited is "false"
         $.get "teacher/favourite.json?id=#{id}"
         trigger.attr 'favourited', true
+        trigger.attr 'title', 'remove from favourites list'
       else
         $.get "teacher/unfavourite.json?id=#{id}"
         trigger.attr 'favourited', false
+        trigger.attr 'title', 'add to favourites list'
     return true
 
   $('#deep-dive-link').click ->
