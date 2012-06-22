@@ -56,7 +56,7 @@ jQuery ->
       here = $('#question-options > form:first > .form-fields')
       scroll.initialize json.topics, 'topic', here
       here.accordion scroll.options
-      scroll.loadJson json.questions, 'question', here, 'marks'
+      scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check_btn
       preview.loadJson json, 'vault'
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
