@@ -1071,15 +1071,13 @@ li {
 #question-options { 
   .scroll-content {
     input[type="button"] {
+      background: url('unfavourited.png') no-repeat scroll 0% 0% transparent ;
       border:none ;
       margin-right: 10px ;
       cursor: pointer ;
     }
     input[favourited="true"] {
       background: url('favourited.png') no-repeat scroll 0% 0% transparent ;
-    }
-    input[favourited="false"] {
-      background: url('unfavourited.png') no-repeat scroll 0% 0% transparent ;
     }
   }
 }
