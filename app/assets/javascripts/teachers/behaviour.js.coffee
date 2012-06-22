@@ -173,15 +173,14 @@ jQuery ->
 
     if trigger.is 'input[type="button"]'
       id = $(this).attr 'marker'
+      favourited = trigger.attr('favourited')
+      if not favourited? or favourited is false
+        #$.get "teacher/favourite.json?id=#{id}"
+        trigger.attr 'favourited', true
+      else
+        #$.get "teacher/unfavourite.json?id=#{id}"
+        trigger.attr 'favourited', false
     return true
-
-  $('#question-options .swiss-knife').on 'click', 'input[type="button"]', (event) ->
-    event.stopPropagation()
-    p = $(this).closest('.swiss-knife')
-    id = p.attr 'marker'
-    alert id
-    return true
-    
 
   $('#deep-dive-link').click ->
     teacher = $('#control-panel').attr 'marker'
