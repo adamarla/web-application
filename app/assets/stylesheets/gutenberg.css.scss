@@ -1067,3 +1067,11 @@ li {
 #courses-summary { 
   margin-top: 53px ;
 } 
+
+#question-options { 
+  .scroll-content {
+    input[type="button"] {
+      background-image: url('cog_16x16.png') no-repeat ;
+    }
+  }
+}
