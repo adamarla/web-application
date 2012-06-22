@@ -201,6 +201,7 @@ p > a, div > a {
 .as-accordion .swiss-knife { /* when within an accordion */
   min-height : 17px ;
   border : none ;
+  float: left ;
 }
 
 .swiss-knife > .label {
@@ -955,7 +956,6 @@ li {
 
   > .swiss-knife {
     color: $my-blue ;
-    border-bottom: 1px solid $my-blue ;
     font-size: 12px ;
     padding: 5px 0px 5px 0px ;
   }
