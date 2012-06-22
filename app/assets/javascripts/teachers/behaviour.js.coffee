@@ -174,7 +174,7 @@ jQuery ->
     if trigger.is 'input[type="button"]'
       id = $(this).attr 'marker'
       favourited = trigger.attr('favourited')
-      if not favourited? or favourited is false
+      if not favourited? or favourited is "false"
         #$.get "teacher/favourite.json?id=#{id}"
         trigger.attr 'favourited', true
       else
