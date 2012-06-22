@@ -169,6 +169,13 @@ jQuery ->
     current = preview.currIndex()
     preview.jump current, stop
     return true
+
+  $('#question-options .swiss-knife').on 'click', 'input[type="button"]', (event) ->
+    event.stopPropagation()
+    p = $(this).closest('.swiss-knife')
+    id = p.attr 'marker'
+    alert id
+    return true
     
 
   $('#deep-dive-link').click ->
