@@ -173,7 +173,6 @@ jQuery ->
 
     if trigger.is 'input[type="button"]'
       id = $(this).attr 'marker'
-      alert "teri to #{id}"
     return true
 
   $('#question-options .swiss-knife').on 'click', 'input[type="button"]', (event) ->
