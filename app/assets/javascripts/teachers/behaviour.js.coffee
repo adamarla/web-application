@@ -168,6 +168,10 @@ jQuery ->
     stop = preview.isAt uid
     current = preview.currIndex()
     preview.jump current, stop
+
+    if event.target.is 'input[type="button"]'
+      id = $(this).attr 'marker'
+      alert "teri to #{id}"
     return true
 
   $('#question-options .swiss-knife').on 'click', 'input[type="button"]', (event) ->
