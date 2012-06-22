@@ -1,0 +1,18 @@
+# == Schema Information
+#
+# Table name: favourites
+#
+#  id          :integer         not null, primary key
+#  teacher_id  :integer
+#  question_id :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  teacher_id: 1
+  question_id: 1
+
+two:
+  teacher_id: 1
+  question_id: 1

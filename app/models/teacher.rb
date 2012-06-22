@@ -43,6 +43,8 @@ class Teacher < ActiveRecord::Base
   has_many :specializations
   has_many :subjects, :through => :specializations
 
+  has_many :favourites, :dependent => :destroy
+
   validates :first_name, :last_name, :presence => true  
 
   before_save  :humanize_name
@@ -146,6 +148,19 @@ class Teacher < ActiveRecord::Base
       break if !grade.save
     end
   end 
+
+  def add_to_favourites(question_id)
+    m = Favourite.where(:teacher_id => self.id, :question_id => question_id)
+    return unless m.empty? # no double-addition
+    self.favourites.create :question_id => question_id # will also save to the DB
+  end
+
+  def remove_from_favourites(question_id)
+    m = Favourite.where(:teacher_id => self.id, :question_id => question_id)
+    return if m.empty?
+    m = m.first
+    self.favourites.delete m # will also destroy because of the :dependent => :destroy
+  end
 
   private 
     
