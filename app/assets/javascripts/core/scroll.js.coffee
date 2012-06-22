@@ -33,7 +33,7 @@ jQuery ->
     having : {
       check : 1,
       radio : 2,
-      anchor : 3,
+      link : 3,
       select : 4,
       check_btn: 5,
       radio_btn : 6
