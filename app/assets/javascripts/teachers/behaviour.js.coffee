@@ -169,7 +169,9 @@ jQuery ->
     current = preview.currIndex()
     preview.jump current, stop
 
-    if event.target.is 'input[type="button"]'
+    trigger = $(event.target)
+
+    if trigger.is 'input[type="button"]'
       id = $(this).attr 'marker'
       alert "teri to #{id}"
     return true
