@@ -34,7 +34,9 @@ jQuery ->
       check : 1,
       radio : 2,
       anchor : 3,
-      select : 4
+      select : 4,
+      check_btn: 5,
+      radio_btn : 6
     }
     
 
@@ -68,6 +70,8 @@ jQuery ->
           when scroll.having.check then item = swissKnife.forge m, key, {checkbox:true}
           when scroll.having.radio then item = swissKnife.forge m, key, {radio:true}
           when scroll.having.select then item = swissKnife.forge m, key, {select:true}
+          when scroll.having.check_btn then item = swissKnife.forge m, key, {checkbox:true, button:true}
+          when scroll.having.radio_btn then item = swissKnife.forge m, key, {radio:true, button:true}
           when scroll.having.link then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
         if ticker?
           v = n[ticker]
