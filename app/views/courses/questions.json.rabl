@@ -11,6 +11,10 @@ node :questions do
                         :marks => "#{m.marks?} points" } } }
 end
 
+node :favourites do 
+  @fav 
+end
+
 node :preview do
   { :id => @questions.map(&:uid), 
     :scans => @questions.map{ |m| [*1..m.answer_key_span?] } }

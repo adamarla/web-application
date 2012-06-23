@@ -58,6 +58,12 @@ jQuery ->
       here.accordion scroll.options
       scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check_btn
       preview.loadJson json, 'vault'
+
+      # Mark the questions that have been favourited by the teacher in the past 
+      for f in json.favourites
+        q = here.find ".swiss-knife[marker=#{f}]:first"
+        continue if not q?
+        q.attr 'favourited', true
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
       hours = Math.floor(at/60)

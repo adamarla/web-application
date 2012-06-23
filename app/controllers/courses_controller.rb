@@ -104,7 +104,9 @@ class CoursesController < ApplicationController
       @questions = @questions.select{ |m| m.topic_id == -1 } # basically, nothing
     end
     @topics = Topic.where(:id => topic_ids)
-    respond_with @questions, @topics
+    @fav = current_account.nil? ? [] : Favourite.where(:teacher_id => current_account.loggable_id).map(&:question_id)
+    @fav = @fav & @questions.map(&:id) 
+    respond_with @questions, @topics, @fav
   end
 
 end
