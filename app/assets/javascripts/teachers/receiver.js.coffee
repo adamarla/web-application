@@ -59,12 +59,12 @@ jQuery ->
       scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check_btn
       preview.loadJson json, 'vault'
 
-      # Mark the questions that have been favourited by the teacher in the past 
+      # Mark the questions that have been liked by the teacher in the past 
       for f in json.favourites
         q = here.find ".swiss-knife[marker=#{f}]:first"
         continue if not q?
         b = q.children 'input[type="button"]'
-        b.attr 'favourited', true
+        b.attr 'liked', true
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
       hours = Math.floor(at/60)

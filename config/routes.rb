@@ -108,8 +108,8 @@ Webapp::Application.routes.draw do
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => :put
   match 'teacher/testpapers' => 'teachers#testpapers', :via => :get
   match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
-  match 'teacher/favourite' => 'teachers#add_to_favourites', :via => :get
-  match 'teacher/unfavourite' => 'teachers#remove_from_favourites', :via => :get
+  match 'teacher/like_q' => 'teachers#like_question', :via => :get
+  match 'teacher/unlike_q' => 'teachers#unlike_question', :via => :get
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get
