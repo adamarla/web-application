@@ -63,7 +63,8 @@ jQuery ->
       for f in json.favourites
         q = here.find ".swiss-knife[marker=#{f}]:first"
         continue if not q?
-        q.attr 'favourited', true
+        b = q.children 'input[type="button"]'
+        b.attr 'favourited', true
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
       hours = Math.floor(at/60)
