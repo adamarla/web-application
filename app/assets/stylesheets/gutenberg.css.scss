@@ -618,18 +618,18 @@ span.unhappyMessage {
 .filters {
   max-width: 70% ;
   margin-right: 30px ;
+  min-height: 30px ;
+  float:left ;
 
   > label {
     color:$my-blue;
     font: {
       size: 12px ;
     }
-    float:left ;
     margin-left: 5px ;
   }
   
   > input[type="checkbox"] {
-    float:left ;
   }
 }
 

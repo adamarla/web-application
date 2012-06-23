@@ -16,6 +16,8 @@
         .filters
           = check_box_tag :skip_previously_used, true
           = label_tag :skip_previously_used, "skip questions used before"
+          = check_box_tag :liked, true
+          = label_tag :liked, "only my favourites"
         = submit_tag 'next', :class => :right
       .form-fields.as-accordion
   #question-options
