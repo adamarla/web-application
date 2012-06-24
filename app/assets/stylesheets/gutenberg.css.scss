@@ -1074,8 +1074,10 @@ li {
     input[type="button"] {
       background: url('unliked.png') no-repeat scroll 0% 0% transparent ;
       border:none ;
-      margin-right: 10px ;
       cursor: pointer ;
+      width: 45px ;
+      color: $my-blue ;
+      text-align: center ;
     }
     input[liked="true"] {
       background: url('liked.png') no-repeat scroll 0% 0% transparent ;
