@@ -621,15 +621,15 @@ span.unhappyMessage {
   min-height: 30px ;
   float:left ;
 
-  > label {
-    color:$my-blue;
-    font: {
-      size: 12px ;
+  > .filter { 
+    width: 100% ;
+    > label {
+      color:$my-blue;
+      font: {
+        size: 12px ;
+      }
+      margin-left: 5px ;
     }
-    margin-left: 5px ;
-  }
-  
-  > input[type="checkbox"] {
   }
 }
 
