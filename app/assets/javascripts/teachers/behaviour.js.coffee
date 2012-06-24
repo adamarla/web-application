@@ -140,9 +140,14 @@ jQuery ->
     Step 3 of the 'quiz-building' process: topic selection 
   ###
   $('#topic-selection-list').submit ->
+    form = $(this).children 'form:first'
+    nChecked = coreUtil.forms.numChecked form
+    if nChecked is 0
+      alert 'Pick at least one question for the quiz ..'
+      return false
+
     courseId = $('#build-quiz').attr 'marker'
     teacherId = $('#control-panel').attr 'marker'
-    form = $(this).children 'form:first'
     form.attr 'action', "course/questions.json?id=#{courseId}&teacher_id=#{teacherId}"
     return true
 
@@ -150,10 +155,14 @@ jQuery ->
     Step 4 of the 'quiz-building' process: Submitting the question selection 
   ###
   $('#question-options').submit ->
+    form = $(this).children 'form:first'
+    nChecked = coreUtil.forms.numChecked form
+    if nChecked is 0
+      alert 'Pick at least one question for the quiz ..'
+      return false
+
     courseId = $('#build-quiz').attr 'marker'
     teacherId = $('#control-panel').attr 'marker'
-
-    form = $(this).children 'form:first'
     form.attr 'action', "teacher/build_quiz.json?course_id=#{courseId}&id=#{teacherId}"
     flipchart.next '#build-quiz'
     return true
