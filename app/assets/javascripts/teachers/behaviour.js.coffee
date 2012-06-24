@@ -194,6 +194,7 @@ jQuery ->
         $.get "teacher/unlike_q.json?id=#{id}"
         trigger.attr 'liked', false
         trigger.attr 'title', 'add to favourites list'
+        trigger.val 35
     return true
 
   $('#deep-dive-link').click ->
