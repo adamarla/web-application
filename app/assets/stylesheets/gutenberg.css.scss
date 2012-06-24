@@ -1082,3 +1082,20 @@ li {
     }
   }
 }
+
+.ui-dialog.alert {
+  border: {
+    radius: 18px ;
+  }
+  background: {
+    color: $light-gray ;
+  }
+  > .ui-widget-header {
+    font-size: 14px ;
+    text-transform : lowercase ;
+    color: white ;
+  }
+  .ui-widget-content {
+    color: $orange ;
+  }
+}
