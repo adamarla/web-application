@@ -62,8 +62,9 @@ jQuery ->
       # Set the # of likeys on each question 
       for q in json.questions
         m = q.question
-        id = m.id
         nLiked = m.liked
+        continue if nLiked is 0
+        id = m.id
         k = here.find ".swiss-knife[marker=#{id}]:first"
         continue if not k?
         b = k.children 'input[type="button"]'
