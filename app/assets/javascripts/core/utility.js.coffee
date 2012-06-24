@@ -213,6 +213,18 @@ window.coreUtil = {
         check.prop 'checked', state
       return true
 
+    numChecked : (form) ->
+      ###
+        Returns the number of checkboxes checked within the form. 
+        The return value can be used to validate in case a min # of checkboxes
+        need to be checked 
+      ###
+      form = if typeof form is 'string' then $(form) else form
+      count = 0
+      for m in form.find 'input[type="checkbox"]'
+        count = count + 1 if $(m).prop('checked')
+      return count
+
   } # end of namespace 'forms'
 
   dom : {
