@@ -162,6 +162,19 @@ window.coreUtil = {
           startPt = $('#main-links')
       if startPt? then return startPt.find 'a[selected]:first' else return null
 
+    modalMsg : (title, paras = []) ->
+      head = $('<div class="modal-msg"></div>')
+
+      for p in paras
+        $("<p>#{p}</p>").appendTo head
+
+      head.dialog {
+        modal: true,
+        title: "#{title}",
+        resizable: false,
+        dialogClass: "alert"
+      }
+
   } # end of namespace 'interface'
 
   # Namespace for functions pertaining to forms 
