@@ -143,7 +143,7 @@ jQuery ->
     form = $(this).children 'form:first'
     nChecked = coreUtil.forms.numChecked form
     if nChecked is 0
-      alert 'Pick at least one question for the quiz ..'
+      alert 'You need to pick a topic - or topics - to cover in the quiz'
       return false
 
     courseId = $('#build-quiz').attr 'marker'
@@ -158,7 +158,7 @@ jQuery ->
     form = $(this).children 'form:first'
     nChecked = coreUtil.forms.numChecked form
     if nChecked is 0
-      alert 'Pick at least one question for the quiz ..'
+      alert 'Pick at least one question to include in the quiz'
       return false
 
     courseId = $('#build-quiz').attr 'marker'
