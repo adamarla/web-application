@@ -1090,11 +1090,12 @@ li {
   background: {
     color: $light-gray ;
   }
-  color: $my-blue ;
   > .ui-widget-header {
     font-size: 14px ;
     text-transform : lowercase ;
+    color: $my-blue ;
   }
   .ui-widget-content {
+    color: $my-blue ;
   }
 }
