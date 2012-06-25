@@ -27,7 +27,7 @@ class Mailbot < ActionMailer::Base
     @quiz = @testpaper.quiz
     @mean = @testpaper.mean?
     teacher = @quiz.teacher
-    mail :to => teacher.account.email, :subject => "(gradians.com) Testpaper graded"
+    mail :to => "abhinav@gradians.com", :subject => "(gradians.com) Testpaper graded"
   end
 
 end
