@@ -12,7 +12,13 @@ class Mailbot < ActionMailer::Base
   
   def welcome_email(new_account)
     @account = new_account
-    @password = new_account.school.zip_code
+    me = @account.loggable
+    if @account.trial
+      t = TrialAccount.where(:teacher_id => me.id).first
+      @password = t.zip_code
+    else
+      @password = me.school.zip_code
+    end
     mail :to => @account.email, :subject => "Welcome to Gradians.com"
   end
 
