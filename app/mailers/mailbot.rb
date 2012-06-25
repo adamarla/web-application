@@ -22,4 +22,12 @@ class Mailbot < ActionMailer::Base
     mail :to => @account.email, :subject => "Welcome to Gradians.com"
   end
 
+  def grading_done(testpaper)
+    @testpaper = testpaper 
+    @quiz = @testpaper.quiz
+    @mean = @testpaper.mean?
+    teacher = @quiz.teacher
+    mail :to => teacher.account.email, :subject => "(gradians.com) Testpaper graded"
+  end
+
 end

@@ -141,7 +141,9 @@ class TeachersController < ApplicationController
     unless teacher.nil?
       qid = params[:id].to_i
       teacher.like_question qid
-      Mailbot.welcome_email(current_account).deliver
+
+      test = Testpaper.find 24
+      Mailbot.grading_done(test).deliver
       head :ok
     else
       head :bad_request
