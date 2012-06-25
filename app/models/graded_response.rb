@@ -92,7 +92,9 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def assign_grade(grade)
-    quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
+    testpaper = self.testpaper
+    quiz = testpaper.quiz
+    #quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
     subpart = self.subpart
 
     return :bad_request if (quiz.nil? || subpart.nil?)
@@ -103,7 +105,15 @@ class GradedResponse < ActiveRecord::Base
     allotment = grade.nil? ? nil : grade.allotment
     marks = subpart.marks
     assigned = (marks * (allotment/100.0)).round(1)
-    return (self.update_attributes(:grade_id => grade.id, :marks => assigned) ? :ok : :bad_request)
+
+    # Notify the teacher as soon as the last response has been graded
+    if self.update_attributes(:grade_id => grade.id, :marks => assigned)
+      remaining = GradedResponse.in_testpaper(testpaper.id).with_scan.ungraded.count
+      Mailbot.grading_done(testpaper) if remaining == 0
+      return :ok
+    else
+      return :bad_request
+    end
   end
 
   def page?
