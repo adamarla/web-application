@@ -109,7 +109,7 @@ class GradedResponse < ActiveRecord::Base
     # Notify the teacher as soon as the last response has been graded
     if self.update_attributes(:grade_id => grade.id, :marks => assigned)
       remaining = GradedResponse.in_testpaper(testpaper.id).with_scan.ungraded.count
-      Mailbot.grading_done(testpaper) if remaining == 0
+      Mailbot.grading_done(testpaper).deliver if remaining == 0
       return :ok
     else
       return :bad_request
