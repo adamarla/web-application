@@ -21,6 +21,7 @@ class TrialAccountController < ApplicationController
       trial = @teacher.build_trial_account :school => p[:school], 
                 :zip_code => p[:zip_code], :country => p[:country].to_i
       if @teacher.save
+        Mailbot.welcome_email(account).deliver
         render 'trial_account/success'
       end
     else
