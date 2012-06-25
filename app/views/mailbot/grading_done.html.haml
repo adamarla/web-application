@@ -1,9 +1,7 @@
 
 %p
   This is to let you know that <b>#{@testpaper.name}</b> for quiz <b>#{@quiz.name}</b>
-  has been graded
-%p
-  The mean score was <b>#{@mean} percent</b>. You can view individual results for students
-  by logging in
+  has been graded. The mean score - over the <b>#{@testpaper.student_ids.count}</b> student(s) - 
+  is <b>#{@mean} percent</b>. You can view individual results for students by logging-in into your account
 %p
   <b>Gradians Support Team</b>
