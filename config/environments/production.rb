@@ -37,6 +37,19 @@ Webapp::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
+  # Configuring ActionMailer to work with Gmail's SMTP server
+  #   Ref: http://guides.rubyonrails.org/action_mailer_basics.html
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :address => 'smtp.gmail.com',
+    :port => 587, 
+    :domain => 'gradians.com',
+    :user_name => 'help@gradians.com',
+    :password => 'shibb0leth',
+    :authentication => :plain, 
+    :enable_starttls_auto => true
+  }
+
   # Enable threaded mode
   # config.threadsafe!
 
