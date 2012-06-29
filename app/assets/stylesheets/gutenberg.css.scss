@@ -279,10 +279,6 @@ p > a, div > a {
         &.ui-tabs-selected { 
           a { color: $my-blue ; border: none ; cursor: pointer ; }
         }
-        &.ui-state-hover {
-          border-left: none ;
-          border-right: none ;
-        }
       }
     }
     .ui-tabs-panel {

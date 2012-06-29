@@ -154,8 +154,9 @@
     text-decoration: none; } }
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-  border: 1px solid #654b24;
-  /*background: #654b24 image-url("jquery-custom-theme/ui-bg_fine-grain_65_654b24_60x60.png") 50% 50% repeat;*/
+  // border: 1px solid #654b24;
+  // background: #654b24 image-url("jquery-custom-theme/ui-bg_fine-grain_65_654b24_60x60.png") 50% 50% repeat;
+  border: none ;
   background: transparent ;
   font-weight: normal;
   color: #ffffff; }
