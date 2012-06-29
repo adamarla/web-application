@@ -262,20 +262,32 @@ p > a, div > a {
   min-height: 820px ;
   border-right: 3px solid lighten($gray,30%) ;
 
-  .ui-state-active {
-    a:link {
-      color: #ffa500 ;
-    }
-    border: none ;
-  }
-  .ui-state-disabled {
-    a:link {
-      color: white ; 
-    }
-  }
+  .ui-tabs.flipchart {
+    .ui-tabs-nav {
+      li.ui-state-default { 
+        border: none ;
+        border-top: 3px solid white ;
+        width: 30% ;
+        margin-right: 3% ;
 
-  .ui-state-hover {
-    border:none ;
+        &.ui-state-disabled {
+          border-top: 3px solid $light-gray ;
+          a { color: $light-gray ; }
+        }
+        &.ui-state-active {
+        }
+        &.ui-tabs-selected { 
+          a { color: $my-blue ; border: none ; cursor: pointer ; }
+        }
+        &.ui-state-hover {
+          border-left: none ;
+          border-right: none ;
+        }
+      }
+    }
+    .ui-tabs-panel {
+      .ui-state-hover { border: none ;  color: $orange ; }
+    }
   }
 
   .ui-widget-header, .ui-tabs-nav {
