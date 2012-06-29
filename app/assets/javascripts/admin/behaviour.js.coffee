@@ -181,9 +181,7 @@ jQuery ->
   $('#main-links a[default="true"]:first').click()
 
   ###
-    When an untagged question in #examiner-untagged is selected, then set the 
-    hidden <input> field in #misc-traits > form with the selected question's id.
-    Also, load the preview
+    When a question - tagged or untagged - in #examiner-untagged is selected
   ###
   $('#examiner-untagged').on 'click', 'input[type="radio"]', ->
     id = $(this).attr 'marker'
