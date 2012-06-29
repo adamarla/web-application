@@ -5,5 +5,5 @@
 
 object @question => false
   code :preview do |q| 
-    { :id => q.uid, :scans => [*1..q.answer_key_span?], :restricted => q.restricted, :difficulty => q.difficulty}
+    { :id => q.uid, :scans => [*1..q.answer_key_span?], :restricted => (q.restricted ? "yes" : "no"), :difficulty => q.difficulty}
   end 
