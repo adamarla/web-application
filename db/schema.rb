@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120621175944) do
+ActiveRecord::Schema.define(:version => 20120623080103) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -54,6 +54,13 @@ ActiveRecord::Schema.define(:version => 20120621175944) do
   create_table "countries", :force => true do |t|
     t.string "name"
     t.string "alpha_2_code"
+  end
+
+  create_table "course_packs", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "testpaper_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "courses", :force => true do |t|
@@ -222,6 +229,25 @@ ActiveRecord::Schema.define(:version => 20120621175944) do
     t.integer "marks"
     t.integer "index"
     t.integer "relative_page"
+  end
+
+  create_table "suggested_questions", :force => true do |t|
+    t.integer  "suggestion_id"
+    t.integer  "question_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "suggested_questions", ["question_id"], :name => "index_suggested_questions_on_question_id", :unique => true
+  add_index "suggested_questions", ["suggestion_id"], :name => "index_suggested_questions_on_suggestion_id"
+
+  create_table "suggestions", :force => true do |t|
+    t.integer  "teacher_id"
+    t.integer  "examiner_id"
+    t.boolean  "completed"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "timestamp"
   end
 
   create_table "syllabi", :force => true do |t|

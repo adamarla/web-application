@@ -44,6 +44,7 @@ class Teacher < ActiveRecord::Base
   has_many :subjects, :through => :specializations
 
   has_many :favourites, :dependent => :destroy
+  has_many :suggestions
 
   validates :first_name, :last_name, :presence => true  
 

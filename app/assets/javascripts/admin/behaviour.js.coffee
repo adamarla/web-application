@@ -40,6 +40,8 @@ jQuery ->
       when 'grading-link'
         $.get 'examiner/pending_quizzes'
         canvas.initialize '#grading-canvas'
+      when 'suggestions-link'
+        $.get 'examiner/pending_suggestions'
     return true
 
   ###
@@ -324,5 +326,13 @@ jQuery ->
       return false
 
     #$.get "course/coverage.json?id=#{course}"
+    return true
+
+  ###
+    Selecting a pending_suggestion in #pending_suggestions
+  ###
+  $('#pending-suggestions').on 'click', 'input[type="radio"]', ->
+    suggestion = $(this).attr 'marker'
+    $.get "suggestion/pending_pages.json?id=#{suggestion}"
     return true
 

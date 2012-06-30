@@ -42,6 +42,8 @@ jQuery ->
       coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
       #coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
       canvas.loadNth 0
+    else if url.match(/examiner\/pending_suggestions/)
+      coreUtil.interface.displayJson json.suggestions, '#pending-suggestions', 'suggestion', radio:true
     else if url.match(/quiz\/pending_pages/)
       coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
     else if url.match(/quiz\/pending_scans/)

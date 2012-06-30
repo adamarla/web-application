@@ -1,0 +1,15 @@
+
+#unexamined-suggestions.flipchart
+  %ul
+    %li
+      %a{ :href => '#pending-suggestions' }= "Suggestions"
+    %li
+      %a{ :href => '#pending-suggestion' }= "Questions"
+  #pending-suggestions
+  #pending-suggestion
+    = semantic_form_for :suggestion, :remote => true, :url => '/suggestion', :method => :put do |f|
+      = f.inputs do
+        = f.input :num_items, :as => :select, :include_blank => true, :label => '# items',
+                  :collection => [*1..9], :wrapper_html => {:class => 'full-width'}
+      .submit-buttons
+        = submit_tag 'Create Slots'
