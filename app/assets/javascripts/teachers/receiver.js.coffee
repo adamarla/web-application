@@ -20,7 +20,7 @@ jQuery ->
       here.accordion scroll.options
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
-      scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.as.anchor
+      scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.having.link
 
       # Change the href on the <a> to point to PDFs in atm/
       for a in here.find 'a'
@@ -56,8 +56,26 @@ jQuery ->
       here = $('#question-options > form:first > .form-fields')
       scroll.initialize json.topics, 'topic', here
       here.accordion scroll.options
-      scroll.loadJson json.questions, 'question', here, 'marks'
+      scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check_btn
       preview.loadJson json, 'vault'
+
+      # Set the # of likeys on each question 
+      for q in json.questions
+        m = q.question
+        nLiked = m.liked
+        continue if nLiked is 0
+        id = m.id
+        k = here.find ".swiss-knife[marker=#{id}]:first"
+        continue if not k?
+        b = k.children 'input[type="button"]'
+        b.val "#{nLiked}"
+
+      # Mark the questions that have been liked by the teacher in the past 
+      for f in json.favourites
+        q = here.find ".swiss-knife[marker=#{f}]:first"
+        continue if not q?
+        b = q.children 'input[type="button"]'
+        b.attr 'liked', true
     else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
       at = json.at
       hours = Math.floor(at/60)

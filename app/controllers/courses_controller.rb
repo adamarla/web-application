@@ -80,11 +80,15 @@ class CoursesController < ApplicationController
     course = Course.find params[:id]
     head :bad_request if course.nil? 
 
+    tid = current_account.loggable_id # has to be a teacher. If not, then sth is wrong !
     skip_used = params[:skip_previously_used] == "true" ? true : false
-    teacher = skip_used ? params[:teacher_id].to_i : nil
-
+    only_liked = params[:liked] == "true" ? true : false
     topic_ids = params[:checked].keys.map(&:to_i)
-    @questions = course.questions_on topic_ids, teacher
+    liked = Favourite.where(:teacher_id => tid).map(&:question_id)
+
+    candidates = course.questions_on topic_ids, (skip_used ? tid : nil)
+    qids = candidates.map(&:id)
+    @questions = Question.where(:id => (only_liked ? liked & qids : qids))
 
 =begin
     Paying customers can see any question relevant to their syllabus. 
@@ -104,7 +108,9 @@ class CoursesController < ApplicationController
       @questions = @questions.select{ |m| m.topic_id == -1 } # basically, nothing
     end
     @topics = Topic.where(:id => topic_ids)
-    respond_with @questions, @topics
+    @fav = current_account.nil? ? [] : Favourite.where(:teacher_id => current_account.loggable_id).map(&:question_id)
+    @fav = @fav & @questions.map(&:id) 
+    respond_with @questions, @topics, @fav
   end
 
 end

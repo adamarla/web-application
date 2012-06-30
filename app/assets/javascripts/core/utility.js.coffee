@@ -162,6 +162,19 @@ window.coreUtil = {
           startPt = $('#main-links')
       if startPt? then return startPt.find 'a[selected]:first' else return null
 
+    modalMsg : (title, paras = []) ->
+      head = $('<div class="modal-msg"></div>')
+
+      for p in paras
+        $("<p>#{p}</p>").appendTo head
+
+      head.dialog {
+        modal: true,
+        title: "#{title}",
+        resizable: false,
+        dialogClass: "alert"
+      }
+
   } # end of namespace 'interface'
 
   # Namespace for functions pertaining to forms 
@@ -212,6 +225,18 @@ window.coreUtil = {
         continue if check.hasClass 'hidden'
         check.prop 'checked', state
       return true
+
+    numChecked : (form) ->
+      ###
+        Returns the number of checkboxes checked within the form. 
+        The return value can be used to validate in case a min # of checkboxes
+        need to be checked 
+      ###
+      form = if typeof form is 'string' then $(form) else form
+      count = 0
+      for m in form.find 'input[type="checkbox"]'
+        count = count + 1 if $(m).prop('checked')
+      return count
 
   } # end of namespace 'forms'
 

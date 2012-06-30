@@ -149,13 +149,13 @@ class Teacher < ActiveRecord::Base
     end
   end 
 
-  def add_to_favourites(question_id)
+  def like_question(question_id)
     m = Favourite.where(:teacher_id => self.id, :question_id => question_id)
     return unless m.empty? # no double-addition
     self.favourites.create :question_id => question_id # will also save to the DB
   end
 
-  def remove_from_favourites(question_id)
+  def unlike_question(question_id)
     m = Favourite.where(:teacher_id => self.id, :question_id => question_id)
     return if m.empty?
     m = m.first

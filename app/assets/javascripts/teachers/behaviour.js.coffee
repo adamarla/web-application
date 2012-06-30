@@ -140,9 +140,15 @@ jQuery ->
     Step 3 of the 'quiz-building' process: topic selection 
   ###
   $('#topic-selection-list').submit ->
+    form = $(this).children 'form:first'
+    nChecked = coreUtil.forms.numChecked form
+    if nChecked is 0
+      coreUtil.interface.modalMsg "Pick at least one topic",
+              ["These are topics you want to cover in the quiz. Select one or more from the list below"]
+      return false
+
     courseId = $('#build-quiz').attr 'marker'
     teacherId = $('#control-panel').attr 'marker'
-    form = $(this).children 'form:first'
     form.attr 'action', "course/questions.json?id=#{courseId}&teacher_id=#{teacherId}"
     return true
 
@@ -150,10 +156,16 @@ jQuery ->
     Step 4 of the 'quiz-building' process: Submitting the question selection 
   ###
   $('#question-options').submit ->
+    form = $(this).children 'form:first'
+    nChecked = coreUtil.forms.numChecked form
+    if nChecked is 0
+      coreUtil.interface.modalMsg "Select questions for the quiz",
+              ["A question is selected when the checkbox alongside it is checked. Pick one or more questions before proceeding",
+               "And don't forget to give the quiz a name"]
+      return false
+
     courseId = $('#build-quiz').attr 'marker'
     teacherId = $('#control-panel').attr 'marker'
-
-    form = $(this).children 'form:first'
     form.attr 'action', "teacher/build_quiz.json?course_id=#{courseId}&id=#{teacherId}"
     flipchart.next '#build-quiz'
     return true
@@ -168,8 +180,21 @@ jQuery ->
     stop = preview.isAt uid
     current = preview.currIndex()
     preview.jump current, stop
+
+    trigger = $(event.target)
+
+    if trigger.is 'input[type="button"]'
+      id = $(this).attr 'marker'
+      liked = trigger.attr('liked')
+      if not liked? or liked is "false"
+        $.get "teacher/like_q.json?id=#{id}"
+        trigger.attr 'liked', true
+        trigger.attr 'title', 'remove from favourites list'
+      else
+        $.get "teacher/unlike_q.json?id=#{id}"
+        trigger.attr 'liked', false
+        trigger.attr 'title', 'add to favourites list'
     return true
-    
 
   $('#deep-dive-link').click ->
     teacher = $('#control-panel').attr 'marker'

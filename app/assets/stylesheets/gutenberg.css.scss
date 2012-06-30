@@ -201,10 +201,12 @@ p > a, div > a {
 .as-accordion .swiss-knife { /* when within an accordion */
   min-height : 17px ;
   border : none ;
+  float: left ;
 }
 
 .swiss-knife > .label {
   margin-left : 5px ;
+  font-variant: small-caps ;
 }
 
 .flipchart .submit-buttons {
@@ -260,20 +262,28 @@ p > a, div > a {
   min-height: 820px ;
   border-right: 3px solid lighten($gray,30%) ;
 
-  .ui-state-active {
-    a:link {
-      color: #ffa500 ;
-    }
-    border: none ;
-  }
-  .ui-state-disabled {
-    a:link {
-      color: white ; 
-    }
-  }
+  .ui-tabs.flipchart {
+    .ui-tabs-nav {
+      li.ui-state-default { 
+        border: none ;
+        border-top: 3px solid white ;
+        width: 30% ;
+        margin-right: 3% ;
 
-  .ui-state-hover {
-    border:none ;
+        &.ui-state-disabled {
+          border-top: 3px solid $light-gray ;
+          a { color: $light-gray ; }
+        }
+        &.ui-state-active {
+        }
+        &.ui-tabs-selected { 
+          a { color: $my-blue ; border: none ; cursor: pointer ; }
+        }
+      }
+    }
+    .ui-tabs-panel {
+      .ui-state-hover { border: none ;  color: $orange ; }
+    }
   }
 
   .ui-widget-header, .ui-tabs-nav {
@@ -616,18 +626,18 @@ span.unhappyMessage {
 .filters {
   max-width: 70% ;
   margin-right: 30px ;
+  min-height: 30px ;
+  float:left ;
 
-  > label {
-    color:$my-blue;
-    font: {
-      size: 12px ;
+  > .filter { 
+    width: 100% ;
+    > label {
+      color:$my-blue;
+      font: {
+        size: 12px ;
+      }
+      margin-left: 5px ;
     }
-    float:left ;
-    margin-left: 5px ;
-  }
-  
-  > input[type="checkbox"] {
-    float:left ;
   }
 }
 
@@ -954,9 +964,8 @@ li {
 
   > .swiss-knife {
     color: $my-blue ;
-    margin-top: 4px ;
-    // border: none ;
     font-size: 12px ;
+    padding: 5px 0px 5px 0px ;
   }
 
   > .swiss-knife.selected {
@@ -1067,3 +1076,34 @@ li {
 #courses-summary { 
   margin-top: 53px ;
 } 
+
+#question-options { 
+  .scroll-content {
+    input[type="button"] {
+      background: url('unliked.png') no-repeat scroll 0% 0% transparent ;
+      border:none ;
+      cursor: pointer ;
+      width: 40px ;
+      color: $my-blue ;
+      text-align: center ;
+    }
+    input[liked="true"] {
+      background: url('liked.png') no-repeat scroll 0% 0% transparent ;
+    }
+  }
+}
+
+.ui-dialog.alert {
+  border: {
+    radius: 18px ;
+  }
+  background: {
+    color: $light-gray ;
+  }
+  > .ui-widget-header {
+    font-size: 14px ;
+    text-transform : lowercase ;
+  }
+  .ui-widget-content {
+  }
+}

@@ -131,7 +131,7 @@
 .ui-widget-header {
   /*border: 1px solid #d4d1bf;*/
   border-bottom: 2px solid gray ;
-  background: white image-url("jquery-custom-theme/ui-bg_fine-grain_15_ffffff_60x60.png") 50% 50% repeat;
+  // background: white image-url("jquery-custom-theme/ui-bg_fine-grain_15_ffffff_60x60.png") 50% 50% repeat;
   color: #453821;
   font-weight: normal;
   a {
@@ -154,8 +154,9 @@
     text-decoration: none; } }
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
-  border: 1px solid #654b24;
-  /*background: #654b24 image-url("jquery-custom-theme/ui-bg_fine-grain_65_654b24_60x60.png") 50% 50% repeat;*/
+  // border: 1px solid #654b24;
+  // background: #654b24 image-url("jquery-custom-theme/ui-bg_fine-grain_65_654b24_60x60.png") 50% 50% repeat;
+  border: none ;
   background: transparent ;
   font-weight: normal;
   color: #ffffff; }
@@ -802,8 +803,9 @@
 /* Overlays */
 
 .ui-widget-overlay {
-  background: #6e4f1c image-url("jquery-custom-theme/ui-bg_diagonal-maze_20_6e4f1c_10x10.png") 50% 50% repeat;
+  // background: #6e4f1c image-url("jquery-custom-theme/ui-bg_diagonal-maze_20_6e4f1c_10x10.png") 50% 50% repeat;
   opacity: .60;
+  background-color: #7f7f7f ;
   filter: Alpha(Opacity = 60); }
 
 .ui-widget-shadow {

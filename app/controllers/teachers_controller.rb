@@ -135,4 +135,28 @@ class TeachersController < ApplicationController
     render :json => { :status => "Queued", :at => at }, :status => :ok
   end
 
+  def like_question
+    tid = current_account.loggable_id
+    teacher = Teacher.find tid
+    unless teacher.nil?
+      qid = params[:id].to_i
+      teacher.like_question qid
+      head :ok
+    else
+      head :bad_request
+    end
+  end
+
+  def unlike_question
+    tid = current_account.loggable_id
+    teacher = Teacher.find tid
+    unless teacher.nil?
+      qid = params[:id].to_i
+      teacher.unlike_question qid
+      head :ok
+    else
+      head :bad_request
+    end
+  end
+
 end # of class
