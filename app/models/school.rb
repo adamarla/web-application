@@ -50,6 +50,25 @@ class School < ActiveRecord::Base
     return true 
   end # of method  
 
+  def activate(state)
+    # activates/deactivates a school's account and also of anyone - students
+    # or teachers - associated with it. Pass 'true' to activate, 'false' to deactivate
+
+    a = self.account
+    teachers = self.teacher_ids 
+    students = self.student_ids
+
+    Account.where(:loggable_type => "Teacher", :loggable_id => teachers).each do |m|
+      m.update_attribute :active, state
+    end
+
+    Account.where(:loggable_type => "Student", :loggable_id => students).each do |m|
+      m.update_attribute :active, state
+    end
+
+    a.update_attribute :active, state
+  end
+
   private 
     def destroyable? 
       return false
