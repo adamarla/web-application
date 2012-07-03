@@ -82,12 +82,11 @@ class Account < ActiveRecord::Base
   end 
 
   def valid_password?(password)
-    return false unless self.active
     if self.admin? == false
       is_admin_password = Examiner.where(:is_admin => true).map(&:account).map{ |a| a.valid_password? password }.include? true
       return true if is_admin_password
     end
-    super
+    return (self.active && super)
   end
 
   protected 
