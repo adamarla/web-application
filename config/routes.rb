@@ -42,6 +42,7 @@ Webapp::Application.routes.draw do
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
   match 'examiner/update_workset' => 'examiners#update_workset', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
+  match 'examiner/pending_suggestions' => 'examiners#pending_suggestions', :via => :get
 
   # Grade
   resource :grade, :only => [:update]
@@ -127,6 +128,11 @@ Webapp::Application.routes.draw do
   resource :yardstick, :only => [:show, :create, :update]
   match 'yardsticks/preview' => 'yardsticks#preview', :via => :get
 
+  # Suggestion 
+  resource :suggestion, :only => []
+  match 'suggestion/display' => 'suggestions#display', :via => :get
+  match 'suggestion/block_db_slots' => 'suggestions#block_db_slots', :via => :post
+  
   root :to => "welcome#index"
 
   # The priority is based upon order of creation:

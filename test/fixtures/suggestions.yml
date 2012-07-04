@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: suggestions
+#
+#  id            :integer         not null, primary key
+#  teacher_id    :integer
+#  examiner_id   :integer
+#  completed     :boolean         default(FALSE)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  filesignature :string(255)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  teacher_id: 1
+  examiner_id: 1
+  completed: false
+
+two:
+  teacher_id: 1
+  examiner_id: 1
+  completed: false

@@ -41,11 +41,11 @@ class Examiner < ActiveRecord::Base
     @quizzes = Quiz.where :id => quiz_ids
   end
 
-  def block_db_slots
+  def block_db_slots( count = 6, suggestion = nil )
     slots = []
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['create_question']}" 
-
-    [*1...6].each do |index|
+    
+    [*1...count].each do |index|
       response = SavonClient.request :wsdl, :create_question do
         soap.body = "#{self.id}"
       end
@@ -60,14 +60,32 @@ class Examiner < ActiveRecord::Base
 
     # Now, make the DB entries for the slots that were created 
     slots.each do |s|
-      q = Question.new :uid => s, :examiner_id => self.id 
-      slots.delete s unless q.save
-    end
+      if suggestion
+        q = Question.new :uid => s, :examiner_id => self.id, :suggestion_id => suggestion[:id]
+      else
+        q = Question.new :uid => s, :examiner_id => self.id
+      end
+      
+      if q.save
+        if suggestion
+          f = Favourite.new :teacher_id => suggestion[:teacher_id], :question_id => q[:id]
+          f.save
+        end      
+      else
+        slots.delete s
+      end
+            
+    end # of looping
+    
     return slots
   end
 
   def pending_workload
     return GradedResponse.where(:examiner_id => self.id).where('grade_id IS NULL').count
+  end
+  
+  def pending_suggestions
+    @suggestions = Suggestion.unassigned
   end
 
   def self.distribute_work
@@ -83,6 +101,7 @@ class Examiner < ActiveRecord::Base
 =end
     self.distribute_standalone
     self.distribute_multipart
+    self.distribute_suggestions
   end
 
   def self.receive_scans
@@ -103,18 +122,27 @@ class Examiner < ActiveRecord::Base
         image = file.split('.').first # get rid of the jpg extension 
         quiz, testpaper, student, page = image.split('-').map(&:to_i)
 
-        # There can be > 1 question on a page and hence > 1 GradedResponses that
-        # share the same scan 
-        db_records = GradedResponse.in_quiz(quiz).on_page(page).of_student(student)
-        unless db_records.empty?
-          db_records.each do |x|
-            x.update_attribute :scan, image
-          end
-        else
-          name = Student.find(student).name
-          failures.push({:name => name, :id => page}) 
-          # 'name, id' pairs are standard keys in our standard JSON response
-        end 
+        # quizId zero indicates scan contains suggestion for question(s)
+        unless quiz == 0        
+	      # There can be > 1 question on a page and hence > 1 GradedResponses that
+	      # share the same scan 
+	      db_records = GradedResponse.in_quiz(quiz).on_page(page).of_student(student)
+	      unless db_records.empty?
+	        db_records.each do |x|
+	          x.update_attribute :scan, image
+	        end
+	      else
+	        name = Student.find(student).name
+	        failures.push({:name => name, :id => page}) 
+	        # 'name, id' pairs are standard keys in our standard JSON response
+	      end
+	    else 
+	      #create an item in the suggestion work list
+	      teacher = student     #in this case the "student" carries teacher's  	 
+	      signature = testpaper #id and "testpaper" carries scan file signature     
+	      suggestion = Suggestion.new :teacher_id => teacher, :filesignature => signature
+	      suggestion.save
+	    end # of unless	    
       end # of do ..
       self.distribute_work 
     end # of unless
@@ -195,5 +223,10 @@ class Examiner < ActiveRecord::Base
       end # student loop
 
     end # of method
+    
+    def self.distribute_suggestions
+      unassigned = Suggestion.unassigned
+      # TODO
+    end #  of method
 
 end # of class

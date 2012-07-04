@@ -48,6 +48,10 @@ class QuestionController < ApplicationController
                                      :calculation_aid => calculation_aid,
                                      :restricted => restricted
 
+          # 2. If parent question is part of a suggestion, update that
+          suggestion = Suggestion.find(question[:suggestion_id]).first
+          suggestion.update
+
           if question.update_subpart_info lengths, marks
             render :json => { :status => 'Done' }, :status => :ok
           else
