@@ -36,6 +36,25 @@ class Topic < ActiveRecord::Base
     return "#{self.name} (#{n_questions})"
   end
 
+  def mv(target)
+    # Like the UNIX mv command, changes references to self anywhere to target (topic)
+    # Unlike unix mv, however, the target should exist. Note that self is destroyed also
+    return false if Topic.where(:id => target).empty?
+
+    # Change question topic_ids 
+    Question.where(:topic_id => self.id).each do |m|
+      m.update_attribute :topic_id, topic
+    end
+
+    # Change syllabus entries for any course that previously contained self
+    Syllabus.where(:topic_id => self.id).each do |m|
+      m.update_attribute :topic_id, topic
+    end
+
+    # Now, you may destroy self
+    self.destroy 
+  end
+
   private 
 
     def humanize_name
