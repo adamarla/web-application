@@ -2,13 +2,13 @@
 #build-quiz.flipchart
   %ul
     %li
-      %a{ :href => '#courses-taught' }= "courses"
+      %a{ :href => '#courses-taught' }= "1. Courses"
     %li
-      %a{ :href => '#topic-selection-list' }= "topics"
+      %a{ :href => '#topic-selection-list' }= "2. Topics"
     %li
-      %a{ :href => '#question-options' }= "questions"
+      %a{ :href => '#question-options' }= "3. Questions"
     %li
-      %a{ :href => '#build-quiz-receipt'}= "summary"
+      %a{ :href => '#build-quiz-receipt'}= "4. Summary"
   #courses-taught
   #topic-selection-list
     = form_tag course_questions_path, :remote => true, :method => :put do |f| 
