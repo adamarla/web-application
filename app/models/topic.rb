@@ -43,12 +43,12 @@ class Topic < ActiveRecord::Base
 
     # Change question topic_ids 
     Question.where(:topic_id => self.id).each do |m|
-      m.update_attribute :topic_id, topic
+      m.update_attribute :topic_id, target
     end
 
     # Change syllabus entries for any course that previously contained self
     Syllabus.where(:topic_id => self.id).each do |m|
-      m.update_attribute :topic_id, topic
+      m.update_attribute :topic_id, target
     end
 
     # Now, you may destroy self
