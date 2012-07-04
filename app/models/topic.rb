@@ -47,9 +47,19 @@ class Topic < ActiveRecord::Base
     end
 
     # Change syllabus entries for any course that previously contained self
-    Syllabus.where(:topic_id => self.id).each do |m|
-      m.update_attribute :topic_id, target
-    end
+    # Look out for double entries, that is, courses that have both self and target
+
+    courses = Syllabus.where(:topic_id => self.id).map(&:course_id)
+    Course.where(:id => courses).each do |m| 
+      s = Syllabus.where(:course_id => m.id)
+      if s.where(:topic_id => target).empty? 
+        orig = s.where(:topic_id => self.id).first
+        orig.update_attribute :topic_id, target
+      else # both target and self in syllabus 
+        topics = s.map(&:topic_id)
+        m.topic_ids = (topics - [self.id])
+      end
+    end 
 
     # Now, you may destroy self
     self.destroy 
