@@ -2,14 +2,16 @@
 #unexamined-suggestions.flipchart
   %ul
     %li
-      %a{ :href => '#pending-suggestions' }= "Suggestions"
+      %a{ :href => '#suggestions' }= "Suggestions"
     %li
-      %a{ :href => '#pending-suggestion' }= "Questions"
-  #pending-suggestions
-  #pending-suggestion
-    = semantic_form_for :suggestion, :remote => true, :url => '/suggestion', :method => :put do |f|
+      %a{ :href => '#suggestion' }= "Questions"
+  #suggestions
+  #suggestion      
+    = semantic_form_for :suggestion, :remote => true, :url => suggestion_block_db_slots_path, :method => :post do |f|
       = f.inputs do
-        = f.input :num_items, :as => :select, :include_blank => true, :label => '# items',
+        = f.input :num_items, :as => :select, :include_blank => true, :label => '# of questions',
                   :collection => [*1..9], :wrapper_html => {:class => 'full-width'}
       .submit-buttons
-        = submit_tag 'Create Slots'
+        = submit_tag 'block slots'
+    #instruction Submitting this form will create the selected number of slots in the database.
+        

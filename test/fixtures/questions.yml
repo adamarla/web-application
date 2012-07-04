@@ -9,7 +9,7 @@
 #  updated_at      :datetime
 #  examiner_id     :integer
 #  topic_id        :integer
-#  teacher_id      :integer
+#  suggestion_id   :integer
 #  difficulty      :integer         default(1)
 #  marks           :integer
 #  length          :float

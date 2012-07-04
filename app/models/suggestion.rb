@@ -13,30 +13,37 @@
 
 class Suggestion < ActiveRecord::Base
   
-  has_many :suggested_questions, dependent: :destroy
+  has_many :questions
   belongs_to :teacher  
   
   def self.unassigned
     where(:examiner_id => nil)
   end  
   
-  def complete
-    #update record
-    #send email to teacher from examiner
-  end
-
-  def outstanding?
-    #returns outstanding questions that have yet to be
-    #incorporated as part of this suggestion
-  end
-  
-  def as_json(*args)
-    hash = super(*args)
-    teacher = Teacher.find @teacher_id
-    puts "Suggestion.as_json {#teacher.name}"
-    hash[:name] = teacher.print_name 
+  def update( question_id )
+  	qs = Question.find_by_suggestion_id( self[:id] )
+  	qs.each do |q|
+  	  break unless q[:topic_id].nil
+  	end
+  	  	
+  	self.complete
   end
   
-
-  EMAIL_TEXT = "Dear teacher_name, Thank you for providing the questions." 
+  private
+    def complete      
+      self[:complete] = true
+      self.save
+      
+      #send email to teacher from examiner  
+    end
+        
+    def send_mail
+      
+      return EMAIL_TEXT
+    end
+  
+  EMAIL_TEXT = "Dear teacher_name, Thank you for the suggestions you sent us on date. " +
+  				"The questions have been uploaded by us to gradians.com along with their solutions " +
+  				"They will appear in your favourites when you sign in to the site and create a quiz."
+   
 end

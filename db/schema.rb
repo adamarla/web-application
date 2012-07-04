@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120625125400) do
+ActiveRecord::Schema.define(:version => 20120703115921) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(:version => 20120625125400) do
     t.datetime "updated_at"
     t.integer  "examiner_id"
     t.integer  "topic_id"
-    t.integer  "teacher_id"
+    t.integer  "suggestion_id"
     t.integer  "difficulty",      :default => 1
     t.integer  "marks"
     t.float    "length"

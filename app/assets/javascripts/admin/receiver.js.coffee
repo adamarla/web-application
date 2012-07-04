@@ -42,13 +42,23 @@ jQuery ->
       coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
       #coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
       canvas.loadNth 0
-    else if url.match(/examiner\/pending_suggestions/)
-      coreUtil.interface.displayJson json.suggestions, '#pending-suggestions', 'suggestion', radio:true
     else if url.match(/quiz\/pending_pages/)
       coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
     else if url.match(/quiz\/pending_scans/)
       adminUtil.buildPendingScanList json.scans
       canvas.loadNth 0
+    else if url.match(/examiner\/pending_suggestions/)
+      coreUtil.interface.displayJson json.suggestions, '#suggestions', 'suggestion', radio:true
+    else if url.match(/suggestion\/display/)
+      preview.loadJson json, 'locker'
+    else if url.match(/suggestion\/block_db_slots/)
+      target = $('#created-slots')
+      target.hide()
+      target.empty() # purge any old summary from previous call
+      for slot in json.slots
+        $("<li class='code'>#{slot}</li>").appendTo target
+      target.fadeIn('slow')
+      flipchart.rewind '#unexamined-suggestions'      
     else if url.match(/question\?/) # rewind flipchart on successful question tagging
       child = $(this).children().eq(0)
       return if child.attr('id') isnt 'workbenches-summary'
