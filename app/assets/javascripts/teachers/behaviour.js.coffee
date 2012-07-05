@@ -29,6 +29,9 @@ jQuery ->
     On load, auto-click the first main-link > a that has attribute default='true'
   ###
   $('#main-links a[default="true"]:first').click()
+  teacher = $('#control-panel').attr 'marker'
+  $('#suggestion-link').attr 'href', "#{gutenberg.server}/front-desk/suggestion-forms/#{teacher}.pdf"
+  
 
   ###
     If an accordion is rendered within a flipchart page, then opening the 
