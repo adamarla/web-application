@@ -39,7 +39,7 @@ jQuery ->
       # flipchart initialized in core/behaviour 
       coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
     else if url.match(/examiner\/pending_quizzes/)
-      coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
+      coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz', {radio:true, button:true}
       #coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
       canvas.loadNth 0
     else if url.match(/quiz\/pending_pages/)
