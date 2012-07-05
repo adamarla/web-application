@@ -231,16 +231,6 @@ ActiveRecord::Schema.define(:version => 20120703115921) do
     t.integer "relative_page"
   end
 
-  create_table "suggested_questions", :force => true do |t|
-    t.integer  "suggestion_id"
-    t.integer  "question_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "suggested_questions", ["question_id"], :name => "index_suggested_questions_on_question_id", :unique => true
-  add_index "suggested_questions", ["suggestion_id"], :name => "index_suggested_questions_on_suggestion_id"
-
   create_table "suggestions", :force => true do |t|
     t.integer  "teacher_id"
     t.integer  "examiner_id"
