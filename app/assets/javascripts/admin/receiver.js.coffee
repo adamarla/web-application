@@ -44,7 +44,7 @@ jQuery ->
       for m in $('#pending-quizzes').find '.swiss-knife'
         id = $(m).attr 'marker'
         downloadBtn = $(m).children('input[type="button"]').eq(0)
-        downloadBtn.replaceWith '<a href="#{gutenberg.server}/mint/#{id}/answer-key/downloads/answer-key.pdf">answer-key</a>'
+        downloadBtn.replaceWith "<a href=#{gutenberg.server}/mint/#{id}/answer-key/downloads/answer-key.pdf>answer-key</a>"
       canvas.loadNth 0
     else if url.match(/quiz\/pending_pages/)
       coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
