@@ -24,26 +24,14 @@ class Suggestion < ActiveRecord::Base
   	qs = Question.find_by_suggestion_id( self[:id] )
   	qs.each do |q|
   	  break unless q[:topic_id].nil
-  	end
-  	  	
+  	end  	  	
   	self.complete
   end
   
   private
     def complete      
       self[:complete] = true
-      self.save
-      
-      #send email to teacher from examiner  
+      Mailbot.suggestion_accepted(self).deliver if self.save
     end
-        
-    def send_mail
-      
-      return EMAIL_TEXT
-    end
-  
-  EMAIL_TEXT = "Dear teacher_name, Thank you for the suggestions you sent us on date. " +
-  				"The questions have been uploaded by us to gradians.com along with their solutions " +
-  				"They will appear in your favourites when you sign in to the site and create a quiz."
-   
+    
 end

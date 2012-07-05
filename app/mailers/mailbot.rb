@@ -29,5 +29,12 @@ class Mailbot < ActionMailer::Base
     teacher = @quiz.teacher
     mail(:to => teacher.account.email, :subject => "(gradians.com) Testpaper graded") unless teacher.account.email.nil?
   end
+  
+  def suggestion_accepted(suggestion)
+    teacher = Teacher.find( suggestion[:teacher_id] ).first
+    @teacher_name = teacher.print_name
+    @date = suggestion[:created_on]
+    mail(:to => teacher.account.email, :subject => Suggestion accepted)
+  end
 
 end
