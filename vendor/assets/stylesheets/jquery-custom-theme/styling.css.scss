@@ -1244,7 +1244,7 @@ button.ui-button::-moz-focus-inner {
 * http://docs.jquery.com/UI/Tabs#theming
 */
 
-.ui-tabs {
+.ui-tabs:not([class~="vertical-tabs"]) {
   position: relative;
   padding: .2em;
   zoom: 1;
