@@ -179,8 +179,8 @@ class Quiz < ActiveRecord::Base
     # The form of the layout returned from here is determined by the WSDL. We 
     # really don't have much choice 
 
-    j = self.q_selections.order(:start_page).select('question_id, start_page')
-    last = j.last.start_page 
+    j = self.q_selections.order(:start_page).select('question_id, end_page')
+    last = j.last.end_page 
     layout = [] 
 
     [*1..last].each do |page|
