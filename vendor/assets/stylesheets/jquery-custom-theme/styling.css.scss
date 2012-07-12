@@ -119,7 +119,7 @@
               "DejaVu Sans",
               "Lucida Sans Unicode",
               sans-serif;
-    font-size: 1em; } }
+    font-size: 11px; } }
 
 .ui-widget-content {
   // border: 1px solid #d9d6c4;
@@ -1244,12 +1244,12 @@ button.ui-button::-moz-focus-inner {
 * http://docs.jquery.com/UI/Tabs#theming
 */
 
-.ui-tabs {
+.ui-tabs:not([class~="vertical-tabs"]) {
   position: relative;
   padding: .2em;
   zoom: 1;
   .ui-tabs-nav {
-    margin: 0;
+    margin: 0 0 10px 0 ;
     padding: .2em .2em 0;
     li {
       list-style: none;
@@ -1281,7 +1281,7 @@ button.ui-button::-moz-focus-inner {
   .ui-tabs-panel {
     display: block;
     border-width: 0;
-    padding: 1em 1.4em;
+    // padding: 1em 1.4em;
     background: none; }
   .ui-tabs-hide {
     display: none !important; } }

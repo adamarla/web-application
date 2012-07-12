@@ -39,8 +39,12 @@ jQuery ->
       # flipchart initialized in core/behaviour 
       coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
     else if url.match(/examiner\/pending_quizzes/)
-      coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz'
-      #coreUtil.dom.mkListFromJson json.pending, '#list-ungraded-responses', 'pending'
+      coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz', {radio:true, button:true}
+      swissKnife.setButtonCaption '#pending-quizzes', 'answer-key'
+      for m in $('#pending-quizzes').find '.swiss-knife'
+        id = $(m).attr 'marker'
+        downloadBtn = $(m).children('input[type="button"]').eq(0)
+        downloadBtn.replaceWith "<a href=#{gutenberg.server}/mint/#{id}/answer-key/downloads/answer-key.pdf>answer-key</a>"
       canvas.loadNth 0
     else if url.match(/quiz\/pending_pages/)
       coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'

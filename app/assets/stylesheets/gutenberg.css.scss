@@ -196,7 +196,16 @@ p > a, div > a {
   }
   color: white ;
   cursor: pointer ;
+
 } 
+
+#pending-quizzes {
+  a { 
+    color: $my-blue ;
+    font-size: 11px ;
+    float: right ;
+  } 
+}
 
 .as-accordion .swiss-knife { /* when within an accordion */
   min-height : 17px ;

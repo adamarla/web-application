@@ -54,11 +54,20 @@ $light-gray: lighten($gray, 30%) ;
     }
 
     a {
-      float: right ;
+      float: left ;
       width: 20% ;
       text-align: center ;
     }
 
+  }
+  .ui-tabs-panel {
+    display: block ;
+    border-width: 0 ;
+    background: none ;
+    width: 100% ;
+  }
+  .ui-tabs-hide {
+    display: none !important ;
   }
 
   > div {
