@@ -176,7 +176,7 @@ jQuery ->
       $(m).removeClass 'selected'
     $(this).addClass 'selected'
 
-    uid = $(this).children().eq(2).text()
+    uid = $(this).children('.label').eq(0).text()
     stop = preview.isAt uid
     current = preview.currIndex()
     preview.jump current, stop
