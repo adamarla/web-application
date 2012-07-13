@@ -19,8 +19,8 @@ window.swissKnife = {
     clone.attr 'marker', id
 
     for child in clone.children()
-      if $(child).hasClass 'hidden'
-        continue unless $(child).hasClass 'trojan'
+      #if $(child).hasClass 'hidden'
+      #  continue unless $(child).hasClass 'trojan'
 
       marker = $(child).attr 'marker'
       name = $(child).attr 'name'
@@ -62,11 +62,14 @@ window.swissKnife = {
 
     element.removeClass 'blueprint'
 
-    for key in ['radio', 'checkbox', 'select', 'button']
+    for key in ['label', 'radio', 'checkbox', 'select', 'button']
+      retain = (key is 'label') or (visible[key]? and visible[key] is true)
       thing = element.find ".#{key}:first"
-      if not(visible[key]?) or (visible[key] is false)
-        thing.addClass 'hidden'
-        thing.prop 'disabled', true # hidden elements get no choice
+      #if not(visible[key]?) or (visible[key] is false)
+      if not retain
+        thing.remove()
+        # thing.addClass 'hidden'
+        # thing.prop 'disabled', true # hidden elements get no choice
       else
         thing.removeClass 'hidden'
         thing.prop 'disabled', not enable
