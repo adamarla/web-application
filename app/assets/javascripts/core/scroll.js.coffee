@@ -75,8 +75,8 @@ jQuery ->
           when scroll.having.link then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
         if ticker?
           v = n[ticker]
-          t = item.children().eq(3)
-          t.text v
+          t = item.children('.micro-ticker').eq(0)
+          t.text v if t?
 
         item.appendTo content
       return true

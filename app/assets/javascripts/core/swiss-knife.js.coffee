@@ -66,7 +66,7 @@ window.swissKnife = {
       retain = (key is 'label') or (visible[key]? and visible[key] is true)
       thing = element.find ".#{key}:first"
       #if not(visible[key]?) or (visible[key] is false)
-      if not retain
+      if retain is false
         thing.remove()
         # thing.addClass 'hidden'
         # thing.prop 'disabled', true # hidden elements get no choice
