@@ -40,6 +40,8 @@ jQuery ->
       when 'grading-link'
         $.get 'examiner/pending_quizzes'
         canvas.initialize '#grading-canvas'
+      when 'suggestions-link'
+        $.get 'examiner/pending_suggestions'
     return true
 
   ###
@@ -207,6 +209,7 @@ jQuery ->
   ###
   $('#block-db-slots').on 'click', '#btn-cancel', (event) ->
     event.stopPropagation()
+    $('#created-slots').empty() # purge any old summary from previous call
     $('#block-db-slots').dialog 'close'
     return false
 
@@ -324,3 +327,18 @@ jQuery ->
     #$.get "course/coverage.json?id=#{course}"
     return true
 
+  ###
+    Selecting a pending suggestion from #suggestions
+  ###
+  $('#suggestions').on 'click', 'input[type="radio"]', ->
+    suggestion = $(this).attr 'marker'
+    $.get "suggestion/display.json?id=#{suggestion}"
+    return true
+
+  $('#suggestion > form').submit ->
+    tab = flipchart.containingTab $(this)
+    return false if tab.length is 0 # block submission
+    suggestion_id = tab.prev('li').attr 'marker'
+    $('#block-db-operation-summary').dialog 'open'    
+    $(this).attr 'action', "suggestion/block_db_slots?id=#{suggestion_id}"
+    return true

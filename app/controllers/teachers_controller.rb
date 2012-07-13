@@ -19,7 +19,12 @@ class TeachersController < ApplicationController
       account = @teacher.build_account :email => email, :username => username, 
                   :password => password, :password_confirmation => password
       @teacher.set_subjects subjects 
-      (@teacher.save) ? respond_with(@teacher) : :bad_request
+      if @teacher.save
+        @teacher.generate_suggestion_form
+        respond_with(@teacher)
+      else
+        :bad_request
+      end #if      
     else
       head :bad_request
     end 

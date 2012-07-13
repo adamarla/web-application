@@ -9,7 +9,7 @@
 #  updated_at      :datetime
 #  examiner_id     :integer
 #  topic_id        :integer
-#  teacher_id      :integer
+#  suggestion_id   :integer
 #  difficulty      :integer         default(1)
 #  marks           :integer
 #  length          :float
@@ -47,7 +47,7 @@ class Question < ActiveRecord::Base
 
   belongs_to :examiner
   belongs_to :topic
-  belongs_to :teacher # non-nil if question came from a teacher
+  belongs_to :suggestion # non-nil if question came from a teacher
 
   has_many :q_selections
   has_many :quizzes, :through => :q_selections

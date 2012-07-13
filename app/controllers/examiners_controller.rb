@@ -47,4 +47,9 @@ class ExaminersController < ApplicationController
     render :json => failures, :status => :ok
   end
 
+  def pending_suggestions
+    puts "pending_suggestions"
+    examiner = Examiner.where(:id => current_account.loggable_id).first
+    @suggestions = examiner.pending_suggestions 
+  end
 end

@@ -44,6 +44,7 @@ class Teacher < ActiveRecord::Base
   has_many :subjects, :through => :specializations
 
   has_many :favourites, :dependent => :destroy
+  has_many :suggestions
 
   validates :first_name, :last_name, :presence => true  
 
@@ -160,6 +161,17 @@ class Teacher < ActiveRecord::Base
     return if m.empty?
     m = m.first
     self.favourites.delete m # will also destroy because of the :dependent => :destroy
+  end
+  
+  def generate_suggestion_form
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_suggestion_form']}" 
+    response = SavonClient.request :wsdl, :generate_suggestion_form do  
+      soap.body = {
+         :teacher => {:id => self.id, :name => "#{self.first_name}-#{self.last_name}"},
+         :school => {:id => self.school.id, :name => self.school.name }
+      }
+    end # of response 
+    # not a top priority operation so never mind if there is an error
   end
 
   private 
