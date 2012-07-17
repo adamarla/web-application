@@ -122,27 +122,25 @@ class Examiner < ActiveRecord::Base
         image = file.split('.').first # get rid of the jpg extension 
         quiz, testpaper, student, page = image.split('-').map(&:to_i)
 
-        # quizId zero indicates scan contains suggestion for question(s)
-        unless quiz == 0        
-	      # There can be > 1 question on a page and hence > 1 GradedResponses that
-	      # share the same scan 
-	      db_records = GradedResponse.in_quiz(quiz).on_page(page).of_student(student)
-	      unless db_records.empty?
-	        db_records.each do |x|
-	          x.update_attribute :scan, image
-	        end
-	      else
-	        name = Student.find(student).name
-	        failures.push({:name => name, :id => page}) 
-	        # 'name, id' pairs are standard keys in our standard JSON response
-	      end
-	    else 
-	      #create an item in the suggestion work list
-	      teacher = student     #in this case the "student" carries teacher's  	 
-	      signature = testpaper #id and "testpaper" carries scan file signature     
-	      suggestion = Suggestion.new :teacher_id => teacher, :filesignature => signature
-	      suggestion.save
-	    end # of unless	    
+        unless quiz == 0 # => standard response scan  
+          # There can be > 1 question on a page and hence > 1 GradedResponses that
+          # share the same scan 
+          db_records = GradedResponse.in_quiz(quiz).on_page(page).of_student(student)
+          unless db_records.empty?
+            db_records.each do |x|
+              x.update_attribute :scan, image
+            end
+          else
+            name = Student.find(student).name
+            failures.push({:name => name, :id => page}) 
+            # 'name, id' pairs are standard keys in our standard JSON response
+          end
+        else # => suggestion scan 
+          teacher = student     #in this case the "student" carries teacher's     
+          signature = testpaper #id and "testpaper" carries scan file signature     
+          suggestion = Suggestion.new :teacher_id => teacher, :filesignature => signature
+          suggestion.save
+        end # of unless      
       end # of do ..
       self.distribute_work 
     end # of unless
