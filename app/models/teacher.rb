@@ -31,16 +31,16 @@ include ApplicationUtil
 class Teacher < ActiveRecord::Base
   has_many :quizzes, :dependent => :destroy 
   belongs_to :school 
-  has_one :account, :as => :loggable
-  has_one :trial_account
+  has_one :account, :as => :loggable, :dependent => :destroy
+  has_one :trial_account, :dependent => :destroy
 
-  has_many :faculty_rosters
+  has_many :faculty_rosters, :dependent => :destroy
   has_many :sektions, :through => :faculty_rosters
 
-  has_many :grades
+  has_many :grades, :dependent => :destroy
   has_many :yardsticks, :through => :grades
 
-  has_many :specializations
+  has_many :specializations, :dependent => :destroy
   has_many :subjects, :through => :specializations
 
   has_many :favourites, :dependent => :destroy
@@ -52,15 +52,17 @@ class Teacher < ActiveRecord::Base
   after_create :build_grade_table
   after_save   :reset_login_info
 
-  # When would one want to 'destroy' a teacher? And what would it mean? 
-  # 
-  # My guess is that a teacher should NEVER be 'destroyed' even if he/she 
-  # is expected to quit teaching for the forseeable future (say, due to child birth). 
-  # You never know, he/she might just get back to teaching. Moreover, the teacher's 
-  # past record can be a good reference for the new school.
+=begin
+  Destroying a teacher should be a very rare event. It probably 
+  shouldn't be done even if the teachers leaves the school. But then
+  again, there might be situations - like when rationalizing DB records - 
+  when one might have to destroy some teacher records 
+
+  The point is - cross the bridge when it comes 
+=end
 
   #after_validation :setup_account, :if => :first_time_save?
-  before_destroy :destroyable? 
+  #before_destroy :destroyable? 
 
   def build_quiz_with (name, question_ids, course)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
