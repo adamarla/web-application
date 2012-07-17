@@ -34,7 +34,7 @@ class Mailbot < ActionMailer::Base
     teacher = Teacher.find( suggestion[:teacher_id] ).first
     @teacher_name = teacher.print_name
     @date = suggestion[:created_on]
-    mail(:to => teacher.account.email, :subject => Suggestion accepted)
+    mail :to => teacher.account.email, :subject => "Your questions have been typeset"
   end
 
 end
