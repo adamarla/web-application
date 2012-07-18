@@ -29,10 +29,4 @@ class Suggestion < ActiveRecord::Base
     return false
   end
 
-  private
-    def complete      
-      self[:complete] = true
-      Mailbot.suggestion_accepted(self).deliver if self.save
-    end
-    
-end
+end # of class
