@@ -139,7 +139,7 @@ class Examiner < ActiveRecord::Base
         else # => suggestion scan 
           teacher = student     #in this case the "student" carries teacher's     
           signature = testpaper #id and "testpaper" carries scan file signature     
-          suggestion = Suggestion.new :teacher_id => teacher, :filesignature => signature
+          suggestion = Suggestion.new :teacher_id => teacher, :signature => signature
           suggestion.save
         end # of unless      
       end # of do ..

@@ -2,13 +2,13 @@
 #
 # Table name: suggestions
 #
-#  id            :integer         not null, primary key
-#  teacher_id    :integer
-#  examiner_id   :integer
-#  completed     :boolean         default(FALSE)
-#  created_at    :datetime
-#  updated_at    :datetime
-#  filesignature :string(255)
+#  id          :integer         not null, primary key
+#  teacher_id  :integer
+#  examiner_id :integer
+#  completed   :boolean         default(FALSE)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  signature   :string(255)
 #
 
 require 'test_helper'
