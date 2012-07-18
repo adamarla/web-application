@@ -29,7 +29,7 @@ jQuery ->
       return if p.parent().hasClass '.ppy-placeholder'
       p.popeye({ navigation : 'hover', caption : 'permanent', zindex:1000, opacity:0.8})
 
-    loadJson : (json, source) ->
+    loadJson : (json, source, obviousAlt = false) ->
       ###
         This method will create the preview in all situations - 
         when viewing candidate question in the 'vault', existing 
@@ -120,7 +120,7 @@ jQuery ->
             when 'locker'
               thumb = "#{base}/#{page}"
               full = "#{base}/#{page}"
-              alt = "pg-#{j+1}"
+              alt = if obviousAlt then "#{page}" else "pg-#{j+1}"
             else break
 
           img = $("<li hop=#{hop} alt=#{alt} m=#{j}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
