@@ -1,0 +1,17 @@
+
+#pending-suggestions.flipchart
+  %ul
+    %li
+      %a{ :href => '#suggestions-from' }= "Teacher"
+    %li
+      %a{ :href => '#suggestion-scans' }= "Scans"
+  #suggestions-from
+  #suggestion-scans
+    = semantic_form_for :suggestion, :remote => true, :url => suggestion_block_db_slots_path, :method => :post do |f|
+      = f.inputs do
+        = f.input :num_items, :as => :select, :include_blank => true, :label => '# of questions',
+                  :collection => [*1..9], :wrapper_html => {:class => 'full-width'}
+      .submit-buttons
+        = submit_tag 'block slots'
+    .instructions= "Don't count sub-parts as separate questions!"
+        
