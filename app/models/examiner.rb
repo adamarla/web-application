@@ -224,8 +224,14 @@ class Examiner < ActiveRecord::Base
     end # of method
     
     def self.distribute_suggestions
-      unassigned = Suggestion.unassigned
-      # TODO
+      # last_workset_on is updated ONLY when graded_responses are assigned. So, if you 
+      # aren't grading, then you must typeset some questions 
+      e_ids = Examiner.where(:is_admin => true).order(:last_workset_on).map(&:id)
+      n = e_ids.count
+
+      Suggestion.unassigned.each_with_index do |m, j|
+        m.update_attribute :examiner_id, e_ids[j % n]
+      end
     end #  of method
 
 end # of class
