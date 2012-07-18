@@ -20,6 +20,14 @@ class Suggestion < ActiveRecord::Base
     where(:examiner_id => nil)
   end  
 
+  def self.assigned_to(id)
+    where(:examiner_id => id)
+  end
+
+  def self.pending
+    where(:completed => false)
+  end
+
   def check_for_completeness
     return true if self.completed 
     untagged = Question.where(:suggestion_id => self.id).untagged 
@@ -31,6 +39,20 @@ class Suggestion < ActiveRecord::Base
 
   def days_since_receipt
     return (Date.today - self.created_at.to_date).to_i
+  end
+
+  def weeks_since_receipt(categorize = false)
+    # categorize groups scans into one of 4 buckets that are shown in #days-since-receipt
+    w = self.days_since_receipt / 7
+    return (categorize ? (w > 4 ? 4 : w) : w)
+  end
+
+  def label
+    self.created_at.strftime "%b %d, %Y"
+  end
+
+  def image
+    return "0-#{self.signature}-1-1"
   end
 
 end # of class
