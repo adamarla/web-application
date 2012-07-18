@@ -48,9 +48,13 @@ class QuestionController < ApplicationController
                                      :calculation_aid => calculation_aid,
                                      :restricted => restricted
 
-          # 2. If parent question is part of a suggestion, update that
-          suggestion = Suggestion.find(question[:suggestion_id]).first
-          suggestion.update
+          # If the question was sent by a teacher, then update the corresponding 
+          # suggestion record. Note that > 1 questions might have been sent in the 
+          # same suggestion form. And so, send mail to teacher only when all questions have 
+          # been typeset and tagged 
+
+          m = question.suggestion_id.nil? ? nil : Suggestion.where(:id => question.suggestion_id).first
+          m.check_for_completeness unless m.nil?
 
           if question.update_subpart_info lengths, marks
             render :json => { :status => 'Done' }, :status => :ok

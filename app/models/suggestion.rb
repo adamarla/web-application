@@ -19,15 +19,16 @@ class Suggestion < ActiveRecord::Base
   def self.unassigned
     where(:examiner_id => nil)
   end  
-  
-  def update( question_id )
-  	qs = Question.find_by_suggestion_id( self[:id] )
-  	qs.each do |q|
-  	  break unless q[:topic_id].nil
-  	end  	  	
-  	self.complete
+
+  def check_for_completeness
+    return true if self.completed 
+    untagged = Question.where(:suggestion_id => self.id).untagged 
+    if untagged.count == 0
+      Mailbot.suggestion_typeset(self).deliver if self.update_attribute(:completed, true)
+    end
+    return false
   end
-  
+
   private
     def complete      
       self[:complete] = true
