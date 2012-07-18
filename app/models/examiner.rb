@@ -119,6 +119,7 @@ class Examiner < ActiveRecord::Base
     unless manifest.nil?
       manifest[:image].each_with_index do |entry, index|
         file = entry[:id]
+        next if file == "SAVON_BUG_SKIP"
         image = file.split('.').first # get rid of the jpg extension 
         quiz, testpaper, student, page = image.split('-').map(&:to_i)
 
