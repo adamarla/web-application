@@ -50,7 +50,7 @@
     = minor_link :for => 'db-slots', :as => 'add questions to db'
     = minor_link :for => 'new-scans', :as => 'get new scans'
     = minor_link :for => 'suggestions', :as => 'suggestions', 
-                 :with => {:panels => {:side => '#unexamined-suggestions', :wide => '#'}}
+                 :with => {:panels => {:side => '#pending-suggestions', :wide => '#'}}
 
 
   = form_tag questions_list_path, :method => :get, :remote => true, :class => 'right' do |f| 

@@ -328,17 +328,17 @@ jQuery ->
     return true
 
   ###
-    Selecting a pending suggestion from #suggestions
+    Selecting the teacher who sent in the suggestion
   ###
-  $('#suggestions').on 'click', 'input[type="radio"]', ->
+  $('#suggestions-from').on 'click', 'input[type="radio"]', ->
     suggestion = $(this).attr 'marker'
     $.get "suggestion/display.json?id=#{suggestion}"
     return true
 
-  $('#suggestion > form').submit ->
+  $('#suggestion-scans > form').submit ->
     tab = flipchart.containingTab $(this)
     return false if tab.length is 0 # block submission
     suggestion_id = tab.prev('li').attr 'marker'
-    $('#block-db-operation-summary').dialog 'open'    
+    $('#block-db-operation-summary').dialog 'open'
     $(this).attr 'action', "suggestion/block_db_slots?id=#{suggestion_id}"
     return true
