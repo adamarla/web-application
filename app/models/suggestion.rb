@@ -29,4 +29,8 @@ class Suggestion < ActiveRecord::Base
     return false
   end
 
+  def days_since_receipt
+    return (Date.today - self.created_at.to_date).to_i
+  end
+
 end # of class
