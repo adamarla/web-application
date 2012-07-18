@@ -85,7 +85,7 @@ class Examiner < ActiveRecord::Base
   end
   
   def pending_suggestions
-    @suggestions = Suggestion.unassigned
+    @pending = Suggestion.assigned_to(self.id).pending
   end
 
   def self.distribute_work

@@ -49,6 +49,6 @@ class ExaminersController < ApplicationController
 
   def pending_suggestions
     examiner = Examiner.where(:id => current_account.loggable_id).first
-    @suggestions = examiner.pending_suggestions 
+    @pending = examiner.pending_suggestions 
   end
 end

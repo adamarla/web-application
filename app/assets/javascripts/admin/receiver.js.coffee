@@ -52,9 +52,10 @@ jQuery ->
       adminUtil.buildPendingScanList json.scans
       canvas.loadNth 0
     else if url.match(/examiner\/pending_suggestions/)
-      coreUtil.interface.displayJson json.suggestions, '#suggestions-from', 'suggestion', radio:true
-    else if url.match(/suggestion\/display/)
-      preview.loadJson json, 'locker'
+      here = $('#days-since-receipt')
+      scroll.loadJson json.suggestions, 'suggestion', here, 'image', scroll.having.radio
+      here.accordion scroll.options
+      preview.loadJson json, 'locker', true
     else if url.match(/suggestion\/block_db_slots/)
       target = $('#created-slots')
       target.hide()

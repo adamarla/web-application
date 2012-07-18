@@ -328,11 +328,13 @@ jQuery ->
     return true
 
   ###
-    Selecting the teacher who sent in the suggestion
   ###
-  $('#suggestions-from').on 'click', 'input[type="radio"]', ->
-    suggestion = $(this).attr 'marker'
-    $.get "suggestion/display.json?id=#{suggestion}"
+
+  $('#days-since-receipt').on 'click', 'input[type="radio"]', ->
+    uid = $(this).siblings('.micro-ticker').eq(0).text()
+    stop = preview.isAt uid
+    current = preview.currIndex()
+    preview.jump current, stop
     return true
 
   $('#suggestion-scans > form').submit ->

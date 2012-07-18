@@ -129,8 +129,6 @@ Webapp::Application.routes.draw do
   match 'yardsticks/preview' => 'yardsticks#preview', :via => :get
 
   # Suggestion 
-  resource :suggestion, :only => []
-  match 'suggestion/display' => 'suggestions#display', :via => :get
   match 'suggestion/block_db_slots' => 'suggestions#block_db_slots', :via => :post
   
   root :to => "welcome#index"

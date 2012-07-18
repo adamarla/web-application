@@ -2,10 +2,19 @@
 #pending-suggestions.flipchart
   %ul
     %li
-      %a{ :href => '#suggestions-from' }= "Teacher"
+      %a{ :href => '#typeset-pending' }= "Pendency"
     %li
-      %a{ :href => '#suggestion-scans' }= "Scans"
-  #suggestions-from
+      %a{ :href => '#suggestion-scans' }= "Block slots"
+  #typeset-pending
+    #days-since-receipt.as-accordion
+      .scroll-heading{ :marker => 0 }= "This week"
+      .scroll-content
+      .scroll-heading{ :marker => 1 }= "7-14 days"
+      .scroll-content
+      .scroll-heading{ :marker => 2 }= "15 days - 1 month"
+      .scroll-content
+      .scroll-heading{ :marker => 3 }= "> 1 month"
+      .scroll-content
   #suggestion-scans
     = semantic_form_for :suggestion, :remote => true, :url => suggestion_block_db_slots_path, :method => :post do |f|
       = f.inputs do
