@@ -62,8 +62,13 @@ window.swissKnife = {
 
     element.removeClass 'blueprint'
 
-    for key in ['label', 'radio', 'checkbox', 'select', 'button']
-      retain = (key is 'label') or (visible[key]? and visible[key] is true)
+    for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link']
+      # retain = (key is 'label') or (visible[key]? and visible[key] is true)
+      if key isnt 'label'
+        retain = (visible[key]? and visible[key] is true)
+      else
+        retain = (not visible[key]? or visible[key] is true)
+
       thing = element.find ".#{key}:first"
       #if not(visible[key]?) or (visible[key] is false)
       if retain is false
@@ -74,6 +79,19 @@ window.swissKnife = {
         thing.removeClass 'hidden'
         thing.prop 'disabled', not enable
     return true
+
+  editAnchor: (element, json) ->
+    # json has the following keys: 
+    #   mandatory: name, id
+    #   optional:  parent and parent_id
+    return false if not element.hasClass 'swiss-knife'
+    a = element.children('a').eq(0)
+    a.attr 'marker', json.id
+    a.attr 'parent', json.parent if json.parent?
+    a.attr 'p_id', json.parent_id if json.parent_id?
+    a.text json.name
+    return true
+
 
   ###
     Customize all swiss-knives within passed hierarchy
