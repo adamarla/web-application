@@ -20,7 +20,7 @@ jQuery ->
       here.accordion scroll.options
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
-      scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.having.link
+      scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.having.link | scroll.having.nolabel
 
       # Change the href on the <a> to point to PDFs in atm/
       for a in here.find 'a'
@@ -56,7 +56,7 @@ jQuery ->
       here = $('#question-options > form:first > .form-fields')
       scroll.initialize json.topics, 'topic', here
       here.accordion scroll.options
-      scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check_btn
+      scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check | scroll.having.button
       preview.loadJson json, 'vault'
 
       # Set the # of likeys on each question 

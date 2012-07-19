@@ -33,10 +33,10 @@ jQuery ->
     having : {
       check : 1,
       radio : 2,
-      link : 3,
-      select : 4,
-      check_btn: 5,
-      radio_btn : 6
+      link : 4,
+      select : 8,
+      button : 16,
+      nolabel : 32
     }
     
 
@@ -66,6 +66,16 @@ jQuery ->
         content = header.next() # the immediately following element has to be the content
         continue if content.length is 0
 
+        show = { radio:false, checkbox:false, select:false, button:false, link:false, label:true }
+        e = ['checkbox', 'radio', 'link', 'select', 'button', 'label'] # must stay in sync with scroll.having
+
+        for element, k in e
+          #continue if element is 'link'
+          show[element] = not show[element] if (render & (1 << k))
+
+        item = swissKnife.forge m, key, show
+        swissKnife.editAnchor(item, n) if show['link']
+        ###
         switch render
           when scroll.having.check then item = swissKnife.forge m, key, {checkbox:true}
           when scroll.having.radio then item = swissKnife.forge m, key, {radio:true}
@@ -73,6 +83,7 @@ jQuery ->
           when scroll.having.check_btn then item = swissKnife.forge m, key, {checkbox:true, button:true}
           when scroll.having.radio_btn then item = swissKnife.forge m, key, {radio:true, button:true}
           when scroll.having.link then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
+        ###
         if ticker?
           v = n[ticker]
           t = item.children('.micro-ticker').eq(0)
