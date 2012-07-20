@@ -330,8 +330,8 @@ jQuery ->
   ###
   ###
 
-  $('#days-since-receipt').on 'click', 'input[type="radio"]', ->
-    uid = $(this).siblings('.micro-ticker').eq(0).text()
+  $('#days-since-receipt').on 'click', '.swiss-knife', ->
+    uid = $(this).children('.micro-ticker').eq(0).text()
     stop = preview.isAt uid
     current = preview.currIndex()
     preview.jump current, stop
