@@ -337,11 +337,3 @@ jQuery ->
     current = preview.currIndex()
     preview.jump current, stop
     return true
-
-  $('#suggestion-scans > form').submit ->
-    tab = flipchart.containingTab $(this)
-    return false if tab.length is 0 # block submission
-    suggestion_id = tab.prev('li').attr 'marker'
-    $('#block-db-operation-summary').dialog 'open'
-    $(this).attr 'action', "suggestion/block_db_slots?id=#{suggestion_id}"
-    return true

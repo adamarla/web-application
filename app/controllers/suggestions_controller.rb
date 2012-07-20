@@ -1,17 +1,13 @@
 class SuggestionsController < ApplicationController
 
   def block_db_slots
-=begin
-    num_items = params[:suggestion][:num_items].to_i + 1
-    examiner = Examiner.where(:id => current_account.loggable_id).first
-        
-    suggestion = Suggestion.find params[:id]
-    suggestion[:examiner_id] = examiner[:id]
-    suggestion.save
-        
-    slots = examiner.block_db_slots( num_items, suggestion )
-    render :json => {:slots => slots}, :status => :ok
-=end
+    m = params[:num_slots]
+
+    m.keys.each do |n|
+      n_slots = m[n].to_i
+      s_id = n.to_i
+      Delayed::Job.enqueue BlockDbSlots.new(n_slots, s_id), :priority => 0, :run_at => Time.zone.now unless n_slots < 1
+    end
     render :json => { :status => 'done' }, :status => :ok
   end
 

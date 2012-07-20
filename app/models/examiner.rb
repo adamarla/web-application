@@ -41,11 +41,11 @@ class Examiner < ActiveRecord::Base
     @quizzes = Quiz.where :id => quiz_ids
   end
 
-  def block_db_slots( count = 6, suggestion = nil )
+  def block_db_slots( n = 6 )
     slots = []
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['create_question']}" 
     
-    [*1...count].each do |index|
+    [*1..n].each do |index|
       response = SavonClient.request :wsdl, :create_question do
         soap.body = "#{self.id}"
       end
@@ -60,23 +60,9 @@ class Examiner < ActiveRecord::Base
 
     # Now, make the DB entries for the slots that were created 
     slots.each do |s|
-      if suggestion
-        q = Question.new :uid => s, :examiner_id => self.id, :suggestion_id => suggestion[:id]
-      else
-        q = Question.new :uid => s, :examiner_id => self.id
-      end
-      
-      if q.save
-        if suggestion
-          f = Favourite.new :teacher_id => suggestion[:teacher_id], :question_id => q[:id]
-          f.save
-        end      
-      else
-        slots.delete s
-      end
-            
-    end # of looping
-    
+      q = Question.new :uid => s, :examiner_id => self.id
+      slots.delete s unless q.save # return only those slots that got created
+    end
     return slots
   end
 
