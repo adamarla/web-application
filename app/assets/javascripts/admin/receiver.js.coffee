@@ -51,7 +51,7 @@ jQuery ->
     else if url.match(/quiz\/pending_scans/)
       adminUtil.buildPendingScanList json.scans
       canvas.loadNth 0
-    else if url.match(/examiner\/pending_suggestions/)
+    else if url.match(/examiner\/suggestions_just_in/)
       here = $('#days-since-receipt')
       scroll.loadJson json.suggestions, 'suggestion', here, 'image', scroll.having.select
       swissKnife.rebuildSelect $(s), 'num_slots', [0..9] for s in here.find '.swiss-knife'

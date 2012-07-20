@@ -41,7 +41,7 @@ jQuery ->
         $.get 'examiner/pending_quizzes'
         canvas.initialize '#grading-canvas'
       when 'suggestions-link'
-        $.get 'examiner/pending_suggestions'
+        $.get 'examiner/suggestions_just_in' # those with no slots
     return true
 
   ###
