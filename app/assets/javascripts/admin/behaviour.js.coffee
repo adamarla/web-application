@@ -330,7 +330,8 @@ jQuery ->
   ###
   ###
 
-  $('#days-since-receipt').on 'click', '.swiss-knife', ->
+  $('#days-since-receipt').on 'click', '.swiss-knife', (event) ->
+    event.stopPropagation()
     uid = $(this).children('.micro-ticker').eq(0).text()
     stop = preview.isAt uid
     current = preview.currIndex()
