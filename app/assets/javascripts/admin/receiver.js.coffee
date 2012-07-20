@@ -53,7 +53,8 @@ jQuery ->
       canvas.loadNth 0
     else if url.match(/examiner\/pending_suggestions/)
       here = $('#days-since-receipt')
-      scroll.loadJson json.suggestions, 'suggestion', here, 'image', scroll.having.radio
+      scroll.loadJson json.suggestions, 'suggestion', here, 'image', scroll.having.radio | scroll.having.select
+      swissKnife.rebuildSelect $(s), 'num_slots', [0..9] for s in here.find '.swiss-knife'
       here.accordion scroll.options
       preview.loadJson json, 'locker', true
     else if url.match(/suggestion\/block_db_slots/)

@@ -92,6 +92,23 @@ window.swissKnife = {
     a.text json.name
     return true
 
+  ###
+    Sets new option values for <select> within a swiss-knife
+  ###
+  rebuildSelect: (e, name, values=[], text=[]) ->
+    # 1-to-1 mapping b/w values & text
+    return false if not e.hasClass 'swiss-knife'
+    s = e.children('select').eq(0)
+    return false if not s?
+    s.empty() # empty out any old options 
+    id = e.attr 'marker'
+    s.attr 'name', "#{name}[#{id}]"
+
+    tl = text.length
+    for v,j in values
+      t = if j < tl then text[j] else v
+      $("<option value=#{v}>#{t}</option>").appendTo s
+    return true
 
   ###
     Customize all swiss-knives within passed hierarchy
