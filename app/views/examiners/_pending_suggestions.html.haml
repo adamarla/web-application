@@ -3,24 +3,17 @@
   %ul
     %li
       %a{ :href => '#typeset-pending' }= "Pendency"
-    %li
-      %a{ :href => '#suggestion-scans' }= "Block slots"
   #typeset-pending
-    #days-since-receipt.as-accordion
-      .scroll-heading{ :marker => 0 }= "This week"
-      .scroll-content
-      .scroll-heading{ :marker => 1 }= "7-14 days"
-      .scroll-content
-      .scroll-heading{ :marker => 2 }= "15 days - 1 month"
-      .scroll-content
-      .scroll-heading{ :marker => 3 }= "> 1 month"
-      .scroll-content
-  #suggestion-scans
-    = semantic_form_for :suggestion, :remote => true, :url => suggestion_block_db_slots_path, :method => :post do |f|
-      = f.inputs do
-        = f.input :num_items, :as => :select, :include_blank => true, :label => '# of questions',
-                  :collection => [*1..9], :wrapper_html => {:class => 'full-width'}
-      .submit-buttons
-        = submit_tag 'block slots'
-    .instructions= "Don't count sub-parts as separate questions!"
+    = semantic_form_for :suggestions, :url => suggestion_block_db_slots_path, :remote => true do |f|
+      .submit-buttons.full-width
+        = submit_tag 'block db slots', :class => 'right'
+      #days-since-receipt.as-accordion
+        .scroll-heading{ :marker => 3 }= "> 1 month"
+        .scroll-content
+        .scroll-heading{ :marker => 2 }= "15 days - 1 month"
+        .scroll-content
+        .scroll-heading{ :marker => 1 }= "7-14 days"
+        .scroll-content
+        .scroll-heading{ :marker => 0 }= "This week"
+        .scroll-content
         

@@ -57,14 +57,6 @@ jQuery ->
       swissKnife.rebuildSelect $(s), 'num_slots', [0..9] for s in here.find '.swiss-knife'
       here.accordion scroll.options
       preview.loadJson json, 'locker', true
-    else if url.match(/suggestion\/block_db_slots/)
-      target = $('#created-slots')
-      target.hide()
-      target.empty() # purge any old summary from previous call
-      for slot in json.slots
-        $("<li class='code'>#{slot}</li>").appendTo target
-      target.fadeIn('slow')
-      flipchart.rewind '#pending-suggestions'
     else if url.match(/question\?/) # rewind flipchart on successful question tagging
       child = $(this).children().eq(0)
       return if child.attr('id') isnt 'workbenches-summary'
