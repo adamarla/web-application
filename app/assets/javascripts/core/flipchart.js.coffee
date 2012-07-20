@@ -79,6 +79,14 @@ window.flipchart = {
     root.tabs 'select', next
     return true
 
+  enableAll : (root) ->
+    root = if typeof root is 'string' then $(root) else root
+    return false if not root.hasClass 'flipchart'
+
+    last = root.tabs 'length'
+    root.tabs 'option', 'disabled', []
+    return true
+
   ###
   resetNext : (root) ->
     root = if typeof root is 'string' then $(root) else root
