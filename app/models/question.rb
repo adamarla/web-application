@@ -137,9 +137,10 @@ class Question < ActiveRecord::Base
 
     subparts = Subpart.where(:question_id => self.id)
     mcqs = subparts.select{ |m| m.mcq }.count
+    shorts = subparts.select{ |m| m.few_lines }.count
     halves = subparts.select{ |m| m.half_page }.count
     fulls = subparts.select{ |m| m.full_page }.count
-    total = (mcqs * 0.25 + halves * 0.5 + fulls * 1)
+    total = ((mcqs + shorts) * 0.25 + halves * 0.5 + fulls * 1)
     self.update_attribute :length, total
     return total
   end
