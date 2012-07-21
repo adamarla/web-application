@@ -10,6 +10,7 @@
 #  marks         :integer
 #  index         :integer
 #  relative_page :integer
+#  few_lines     :boolean         default(FALSE)
 #
 
 class Subpart < ActiveRecord::Base

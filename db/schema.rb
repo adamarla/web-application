@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120718142948) do
+ActiveRecord::Schema.define(:version => 20120721195710) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(:version => 20120718142948) do
     t.integer "marks"
     t.integer "index"
     t.integer "relative_page"
+    t.boolean "few_lines",     :default => false
   end
 
   create_table "suggestions", :force => true do |t|

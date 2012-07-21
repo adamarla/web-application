@@ -32,7 +32,8 @@
         - for k in [*0..9]-[1]
           - label = ( k == 0 ) ? "main OR ##{k+1}" : "subpart ##{k}"
           %div{ :id => "subpart-tags-#{k}", :class => 'subpart-tags full-width hidden'}
-            = f.input :length, :as => :select, :collection => { :mcq => 1, 'half-page' => 2, 'full-page' => 3 },
+            = f.input :length, :as => :select, 
+                      :collection => { :mcq => 1, 'few lines' => 4, 'half-page' => 2, 'full-page' => 3 },
                       :include_blank => true, :label => false, 
                       :input_html => { :name => "length[#{k}]", :id => "subpart_#{k}" },
                       :wrapper_html => { :class => 'length' }

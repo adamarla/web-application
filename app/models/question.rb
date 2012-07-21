@@ -170,7 +170,7 @@ class Question < ActiveRecord::Base
   def edit_tex_layout(length, marks)
     if resize_subparts_list_to length.count
       breaks = page_breaks length
-      length = length.map{ |m| m == 1 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }
+      length = length.map{ |m| m == 1 || m == 4 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }
 
       SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['tag_question']}" 
       response = SavonClient.request :wsdl, :tag_question do  
@@ -201,17 +201,18 @@ class Question < ActiveRecord::Base
       l = lengths[j]
       m = marks[j]
       case l
-        when 0 then mcq, half, full = false, true, false
-        when 1 then mcq, half, full = true, false, false 
-        when 2 then mcq, half, full = false, true, false
-        when 3 then mcq, half, full = false, false, true 
+        when 0 then mcq, half, full, few_lines = false, true, false, false
+        when 1 then mcq, half, full, few_lines = true, false, false, false 
+        when 2 then mcq, half, full, few_lines = false, true, false, false
+        when 3 then mcq, half, full, few_lines = false, false, true, false
+        when 4 then mcq, half, full, few_lines = false, false, false, true
       end
 
       m = m == 0 ? 3 : m # if no marks are specified, then default to marks = 3
       offset = breaks.index(breaks.select{ |m| m >= j }.first)
       offset = nbreaks if offset.nil? # for subparts on the last page
 
-      success &= s.update_attributes(:mcq => mcq, :half_page => half, 
+      success &= s.update_attributes(:mcq => mcq, :few_lines => few_lines, :half_page => half, 
                                      :full_page => full, :marks => m, :relative_page => offset)
       break if !success
     end
@@ -229,7 +230,7 @@ class Question < ActiveRecord::Base
   end
 
 =begin
-  The next 2 methods weer written when support for subparts was being added.
+  The next 2 methods were written when support for subparts was being added.
   They are to be called ONLY from within a migration file and nowhere else.
 
   The first takes us from question -> subpart (up) and the second reverses the process
@@ -261,7 +262,7 @@ class Question < ActiveRecord::Base
       # \newpage should be inserted
 
       return [] if self.num_parts? == 0
-      l = length.map{ |m| m == 1 ? 0.25 : ((m == 2) ? 0.5 : 1) }
+      l = length.map{ |m| m == 1 || m == 4 ? 0.25 : ((m == 2) ? 0.5 : 1) }
       breaks = []
 
       used = 0
