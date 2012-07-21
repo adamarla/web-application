@@ -116,7 +116,7 @@ class Examiner < ActiveRecord::Base
         unless quiz == 0 # => standard response scan  
           # There can be > 1 question on a page and hence > 1 GradedResponses that
           # share the same scan 
-          db_records = GradedResponse.in_quiz(quiz).on_page(page).of_student(student)
+          db_records = GradedResponse.in_quiz(quiz).of_student(student).on_page(page)
           unless db_records.empty?
             db_records.each do |x|
               x.update_attribute :scan, image
