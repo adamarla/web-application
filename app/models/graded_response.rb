@@ -154,7 +154,7 @@ class GradedResponse < ActiveRecord::Base
     subpart_id = self.subpart_id 
 
     # Index of the question within the quiz 
-    id = QSelection.where(:quiz_id => quiz_id, :question_id => question.id).map(&:index).first + 1
+    id = QSelection.where(:quiz_id => quiz_id, :question_id => question.id).map(&:index).first
 
     nparts = question.num_parts?
     if nparts == 0
