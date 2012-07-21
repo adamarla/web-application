@@ -1,9 +1,9 @@
 
--# teacher = current_account.loggable
--# server = "#{Gutenberg['server']}"
+- teacher = current_account.loggable
+- server = "#{Gutenberg['server']}"
 
 #quiz-controls.top-panel-controls
   %ul.no-bullets
     = minor_link :for => 'new-quiz', :label => 'make new quiz',
                  :with => { :panels => {:side => '#build-quiz'} }
-    -#= minor_link :for => 'suggestion', :as => 'suggest questions', :href => "#{server}/front-desk/suggestion-forms/#{teacher.id}-#{teacher.first_name}.pdf"
+    = minor_link :for => 'suggestion', :as => 'suggest questions', :href => "#{server}/front-desk/suggestion-forms/#{teacher.id}-#{teacher.first_name}.pdf"
