@@ -42,7 +42,7 @@ class SektionsController < ApplicationController
         else 
           @sektions = [] 
       end 
-      respond_with @sektions.order(:klass).order(:section)
+      respond_with @sektions.order(:klass).order(:name)
     else
       head :bad_request 
     end 

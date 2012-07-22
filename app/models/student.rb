@@ -50,8 +50,8 @@ class Student < ActiveRecord::Base
   end 
 
   def print_name
-    sektion = Sektion.where(:id => self.sektion_id).select('section,klass').first
-    return "#{self.first_name} #{self.last_name} (#{sektion.klass} - #{sektion.section})"
+    sektion = Sektion.where(:id => self.sektion_id).select('name,klass').first
+    return "#{self.first_name} #{self.last_name} (#{sektion.klass} - #{sektion.name})"
   end
 
   def name=(name)

@@ -56,11 +56,11 @@ class TeachersController < ApplicationController
 
   def topics_this_section
     teacher = Teacher.find params[:id]
-    section = Sektion.find params[:section_id]
-    head :bad_request if (teacher.nil? || section.nil?)
+    sektion = Sektion.find params[:section_id]
+    head :bad_request if (teacher.nil? || sektion.nil?)
     subject = teacher.subjects.first 
     board = teacher.school.board_id
-    course = Course.where(:board_id => board, :klass => section.klass, :subject_id => subject.id).first
+    course = Course.where(:board_id => board, :klass => sektion.klass, :subject_id => subject.id).first
     @topics = course.topics
   end
 
@@ -106,7 +106,7 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id] 
     head :bad_request if @teacher.nil? 
 
-    @sektions = Sektion.where(:school_id => @teacher.school_id).order(:klass).order(:section)
+    @sektions = Sektion.where(:school_id => @teacher.school_id).order(:klass).order(:name)
     respond_with @sektions, @teacher
   end 
 

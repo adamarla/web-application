@@ -37,12 +37,12 @@ class School < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
-  def create_sektions(klasses, sections) 
-    # 'klasses' and 'sections' are arrays 
+  def create_sektions(klasses, names) 
+    # 'klasses' and 'names' are arrays 
 
     klasses.each { |klass|
-      sections.each { |section| 
-        grp = self.sektions.new :klass => klass, :section => section 
+      names.each { |name| 
+        grp = self.sektions.new :klass => klass, :name => name 
         grp.save 
         # 'save' can fail because of uniqueness validation. That's ok
       }

@@ -77,7 +77,7 @@ class SchoolsController < ApplicationController
   end 
 
   def sektions 
-    @sektions = Sektion.where(:school_id => params[:id]).order(:klass).order(:section)
+    @sektions = Sektion.where(:school_id => params[:id]).order(:klass).order(:name)
   end 
 
 end

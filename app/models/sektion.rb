@@ -5,16 +5,16 @@
 #  id         :integer         not null, primary key
 #  school_id  :integer
 #  klass      :integer
-#  section    :string(255)
+#  name       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
 #
 
 class Sektion < ActiveRecord::Base
   validates :klass, :presence => true 
-  validates :section, :presence => true 
+  validates :name, :presence => true 
 
-  validates :section, :uniqueness => { :scope => [:klass, :school_id] } 
+  validates :name, :uniqueness => { :scope => [:klass, :school_id] } 
 
   belongs_to :school
   has_many :students
@@ -23,7 +23,7 @@ class Sektion < ActiveRecord::Base
   has_many :teachers, :through => :faculty_rosters
 
   def name 
-    return "#{self.klass.to_s}-#{self.section} (#{self.students.count})"
+    return "#{self.klass.to_s}-#{self.name} (#{self.students.count})"
   end 
 
   def taught_by? (teacher) 
