@@ -89,6 +89,18 @@ class Account < ActiveRecord::Base
     return (self.active && super)
   end
 
+  def email_is_real?
+    # E-mails of the form xyz@drona.com are generated for new users. 
+    # However, these are not real e-mail addresses. This method detects that 
+    domain = self.email[/@drona.com/]
+    return domain.nil?
+  end
+
+  def real_email
+    # Returns the real email - as defined by the method above - and nil otherwise
+    return (self.email_is_real? ? self.email : nil)
+  end
+
   protected 
 
     # Overriding Devise's default email-required validation. 
