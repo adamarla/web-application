@@ -9,7 +9,6 @@
 #  last_name   :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  sektion_id  :integer
 #
 
 include ApplicationUtil
@@ -17,7 +16,11 @@ include ApplicationUtil
 class Student < ActiveRecord::Base
   belongs_to :guardian
   belongs_to :school
-  belongs_to :sektion
+
+  has_many :student_rosters, :dependent => :destroy 
+  has_many :sektions, :through => :student_rosters
+
+  # belongs_to :sektion
   has_one :account, :as => :loggable, :dependent => :destroy
 
   has_many :graded_responses

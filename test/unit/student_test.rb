@@ -9,7 +9,6 @@
 #  last_name   :string(255)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  sektion_id  :integer
 #
 
 require 'test_helper'
