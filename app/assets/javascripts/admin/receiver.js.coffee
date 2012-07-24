@@ -90,11 +90,7 @@ jQuery ->
       coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher', {radio:true,button:true}
       swissKnife.setButtonCaption '#teachers-list', 'edit'
     else if url.match(/school\/sektions/)
-      if onDisplay.attr('id') is 'new-student'
-        select = onDisplay.find 'form select:first' # the first select is for sektions 
-        coreUtil.dom.loadJsonToSelect select, json.sektions, 'sektion'
-      else
-        coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
+      coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
     else if url.match(/yardstick.json/)
       coreUtil.dom.unsetCheckboxesIn '#edit-yardstick'
       coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick

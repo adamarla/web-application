@@ -64,7 +64,7 @@ jQuery ->
         action = "school.json"
       when 'new-student'
         return false if not school?
-        action = "school/students/add.json?id=#{school}"
+        action = "add_students.json?id=#{school}"
       when 'new-teacher'
         return false if not school?
         action = "teacher.json?id=#{school}"
@@ -122,9 +122,7 @@ jQuery ->
     lastMinor = coreUtil.interface.lastClicked 'minor'
     marker = $(this).attr 'marker'
 
-    if lastMinor.length is 0
-      $.get "school/sektions.json?id=#{marker}"
-    else
+    if lastMinor.length isnt 0
       switch lastMinor.attr 'id'
         when 'edit-roster-link'
           # Clear out the #right-panel which has sektion-information

@@ -7,7 +7,7 @@ class SchoolsController < ApplicationController
     head :bad_request if @school.nil?
 
     status = :ok
-    sektion = Sektion.find params[:sektion]
+    klass = params[:klass].to_i
 
     params[:names].each do |i, name|
       next if name.blank?
@@ -18,7 +18,7 @@ class SchoolsController < ApplicationController
       email = "#{username}@drona.com"
       student.school = @school
       password = @school.zip_code
-      student.sektion = sektion unless sektion.nil?
+      student.klass = klass
 
       account = student.build_account :username => username, :email => email,
                                       :password => password, 

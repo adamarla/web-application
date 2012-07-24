@@ -51,7 +51,7 @@ Webapp::Application.routes.draw do
 
   # School 
   resource :school, :only => [:show, :create, :update]
-  match 'school/students/add' => 'schools#add_students', :via => :post
+  match 'add_students' => 'schools#add_students', :via => :post
   match 'schools/list' => 'schools#list', :via => :get 
   match 'school/unassigned-students' => 'schools#unassigned_students', :via => :get
   match 'school/sektions' => 'schools#sektions', :via => :get
