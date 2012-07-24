@@ -40,6 +40,14 @@ class Student < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
+  def self.in_klass(klass)
+    where(:klass => klass)
+  end
+
+  def self.in_school(id)
+    where(:school_id => id)
+  end
+
   def username?
     self.account.username
   end 
