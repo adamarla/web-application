@@ -1,5 +1,5 @@
 class ExaminersController < ApplicationController
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, :except => [:update_workset]
   respond_to :json
 
   def create 
