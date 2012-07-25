@@ -24,6 +24,14 @@ class Sektion < ActiveRecord::Base
   has_many :faculty_rosters
   has_many :teachers, :through => :faculty_rosters
 
+  def self.of_klass(k)
+    where(:klass => k)
+  end
+
+  def self.in_school(s)
+    where(:school_id => s)
+  end
+
   def name 
     return "#{self.klass.to_s}-#{self.name} (#{self.students.count})"
   end 
