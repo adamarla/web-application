@@ -1,0 +1,10 @@
+
+#teacher-specialization
+  #specialization-chart.as-accordion 
+    - Subject.all.each do |sbj|
+      .scroll-heading{ :marker => "#{sbj.id}" }= "#{sbj.name}"
+      .scroll-content
+        - [*9..12].each do |grd|
+          .list-item
+            = check_box_tag "spl[#{sbj.id}][#{grd}]", true
+            = label_tag "spl[#{sbj.id}][#{grd}]", "Grade #{grd}"

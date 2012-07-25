@@ -322,13 +322,11 @@ p > a, div > a {
 legend {
   margin: {
     top: -5px ;
-    bottom: 20px ;
   }
-  font-size: 14px ;
-  color: $orange ;
-  text-transform: lowercase ;
-  border-bottom: 1px solid $light-gray ;
+  font-size: 12px ;
+  color: $my-blue ;
   padding-bottom: 20px ;
+  font-variant: small-caps ;
 }
 
 legend + form {
@@ -1124,3 +1122,9 @@ li {
   .ui-widget-content {
   }
 }
+
+.list-item { 
+  width: 100% ; 
+  color: white ;
+  font-size: 11px ;
+} 

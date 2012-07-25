@@ -125,11 +125,8 @@ jQuery ->
     if lastMinor.length isnt 0
       switch lastMinor.attr 'id'
         when 'edit-roster-link'
-          # Clear out the #right-panel which has sektion-information
-          for e in $('#right-panel').find '.purgeable'
-            $(e).empty()
-          # Then issue the AJAX request
           $.get "teachers/list.json?id=#{marker}"
+          $('#specialization-chart').accordion scroll.options
         when 'edit-studygroups-link'
           $.get "school/sektions.json?id=#{marker}"
           $.get "school/unassigned-students.json?id=#{marker}"
