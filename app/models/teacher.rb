@@ -49,7 +49,7 @@ class Teacher < ActiveRecord::Base
   validates :first_name, :last_name, :presence => true  
 
   before_save  :humanize_name
-  after_create :build_grade_table
+  after_create :build_grade_table, :generate_suggestion_form
   after_save   :reset_login_info
 
 =begin
