@@ -106,7 +106,7 @@ class Examiner < ActiveRecord::Base
     manifest = response[:receive_scans_response][:manifest]
 
     # Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#.jpg
-    unless manifest.nil?
+    unless manifest[:image].nil?
       manifest[:image].each_with_index do |entry, index|
         file = entry[:id]
         next if file == "SAVON_BUG_SKIP"
