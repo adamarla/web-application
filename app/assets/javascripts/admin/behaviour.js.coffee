@@ -48,7 +48,8 @@ jQuery ->
     Edit <form> actions
   ###
   adminForms = '#edit-school, #new-school, #new-teacher, #new-student, #student-list, 
-                #edit-syllabi-form, #new-studygroups, #edit-student-klass-mapping'
+                #edit-syllabi-form, #new-studygroups, #edit-student-klass-mapping, 
+                #teacher-specialization'
 
   $(adminForms).on 'submit', 'form', ->
     parent = $(this).parent().attr 'id'
@@ -86,6 +87,10 @@ jQuery ->
         return false if not teacher?
         action = "teacher/update_roster.json?id=#{teacher}"
         method = 'put'
+      when 'teacher-specialization'
+        teacher = $('#middle-panel').attr 'marker'
+        return false if not teacher?
+        action = "update_specialization.json?id=#{teacher}"
 
     coreUtil.forms.modifyAction $(this), action, method
     return true
@@ -126,7 +131,6 @@ jQuery ->
       switch lastMinor.attr 'id'
         when 'edit-roster-link'
           $.get "teachers/list.json?id=#{marker}"
-          $('#specialization-chart').accordion scroll.options
         when 'edit-studygroups-link'
           $.get "school/sektions.json?id=#{marker}"
           $.get "school/unassigned-students.json?id=#{marker}"
@@ -148,7 +152,7 @@ jQuery ->
 
     id = $(this).attr 'id'
     switch id
-      when 'edit-roster-link', 'new-studygroups-link', 'edit-studygroups-link'
+      when 'new-studygroups-link', 'edit-studygroups-link'
         marker = $('#side-panel').attr 'marker'
         if not marker?
           event.stopPropagation event
@@ -162,6 +166,7 @@ jQuery ->
           $(e).empty()
         # Then issue the AJAX request
         $.get "teachers/list.json?id=#{marker}"
+        $('#specialization-chart').accordion scroll.options
       when 'edit-studygroups-link'
         $.get "school/sektions.json?id=#{marker}"
         $.get "school/unassigned-students.json?id=#{marker}"
@@ -170,7 +175,7 @@ jQuery ->
 
   $('#teachers-list').on 'click', 'input[type="radio"]', ->
     marker = $(this).attr 'marker'
-    $.get "teachers/roster.json?id=#{marker}"
+    # $.get "teachers/roster.json?id=#{marker}"
 
   ###
     On load, auto-click the first main-link > a that has attribute default='true'

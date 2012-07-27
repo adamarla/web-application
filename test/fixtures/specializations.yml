@@ -7,6 +7,7 @@
 #  subject_id :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  klass      :integer
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

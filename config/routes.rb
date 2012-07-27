@@ -103,7 +103,7 @@ Webapp::Application.routes.draw do
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
   match 'teachers/roster' => 'teachers#roster', :via => :get 
-  match 'teacher/update_roster' => 'teachers#update_roster', :via => :put
+  # match 'teacher/update_roster' => 'teachers#update_roster', :via => :put
   match 'teacher/coverage' => 'teachers#coverage', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/courses' => 'teachers#courses', :via => :get
@@ -112,6 +112,7 @@ Webapp::Application.routes.draw do
   match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
   match 'teacher/like_q' => 'teachers#like_question', :via => :get
   match 'teacher/unlike_q' => 'teachers#unlike_question', :via => :get
+  match 'update_specialization' => 'teachers#update_specialization', :via => :post
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get

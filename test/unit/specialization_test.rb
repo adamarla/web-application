@@ -7,6 +7,7 @@
 #  subject_id :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  klass      :integer
 #
 
 require 'test_helper'
