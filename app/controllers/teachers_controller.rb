@@ -102,6 +102,7 @@ class TeachersController < ApplicationController
     end 
   end 
 
+=begin
   def roster 
     @teacher = Teacher.find params[:id] 
     head :bad_request if @teacher.nil? 
@@ -126,6 +127,7 @@ class TeachersController < ApplicationController
     teacher.sektions = retain 
     render :json => { :status => 'Done' }, :status => :ok
   end 
+=end
 
   def update_specialization
     teacher = Teacher.find params[:id]

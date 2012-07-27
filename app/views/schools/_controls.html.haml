@@ -6,12 +6,6 @@
     = minor_link :for => 'edit-roster', :as => 'faculty',
                  :with => { :panels => { :middle => '#teachers-list', :right => '#teacher-specialization' } },
                  :select_sth => true
-    = minor_link :for => 'new-studygroups', :as => 'New Sections',
-                 :with => { :panels => { :middle => '#new-studygroups' } },
-                 :select_sth => true
-    = minor_link :for => 'edit-studygroups', :as => 'Edit Sections', 
-                 :with => {:panels => {:middle => '#studygroups-radiolist', :right => '#student-list'} },
-                 :select_sth => true
 
   = form_tag schools_list_path, :method => :get, :remote => true, :class => 'right' do |f| 
     = drop_down_menu_for :states

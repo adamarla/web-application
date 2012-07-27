@@ -53,7 +53,7 @@ Webapp::Application.routes.draw do
   resource :school, :only => [:show, :create, :update]
   match 'add_students' => 'schools#add_students', :via => :post
   match 'schools/list' => 'schools#list', :via => :get 
-  match 'school/unassigned-students' => 'schools#unassigned_students', :via => :get
+  # match 'school/unassigned-students' => 'schools#unassigned_students', :via => :get
   match 'school/sektions' => 'schools#sektions', :via => :get
 
   # Verticals 
@@ -102,7 +102,7 @@ Webapp::Application.routes.draw do
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
-  match 'teachers/roster' => 'teachers#roster', :via => :get 
+  # match 'teachers/roster' => 'teachers#roster', :via => :get 
   # match 'teacher/update_roster' => 'teachers#update_roster', :via => :put
   match 'teacher/coverage' => 'teachers#coverage', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get

@@ -48,7 +48,7 @@ jQuery ->
     Edit <form> actions
   ###
   adminForms = '#edit-school, #new-school, #new-teacher, #new-student, #student-list, 
-                #edit-syllabi-form, #new-studygroups, #edit-student-klass-mapping, 
+                #edit-syllabi-form, #edit-student-klass-mapping, 
                 #teacher-specialization'
 
   $(adminForms).on 'submit', 'form', ->
@@ -79,9 +79,6 @@ jQuery ->
         return false if not course?
         action = "syllabus.json?id=#{course}"
         method = 'put'
-      when 'new-studygroups'
-        return false if not school?
-        action = "sektion.json?id=#{school}"
       when 'edit-student-klass-mapping'
         teacher = $('#middle-panel').attr 'marker'
         return false if not teacher?
@@ -131,46 +128,19 @@ jQuery ->
       switch lastMinor.attr 'id'
         when 'edit-roster-link'
           $.get "teachers/list.json?id=#{marker}"
-        when 'edit-studygroups-link'
-          $.get "school/sektions.json?id=#{marker}"
-          $.get "school/unassigned-students.json?id=#{marker}"
         when 'add-n-edit-school-link'
           $.get "school.json?id=#{marker}"
     return true
 
   ###########################################################################
-  # Conversely, if a minor-link is clicked before a selection is made, then 
-  # complain if sth. needs to have been selected first. Put all such logic here
-  # 
-  # Catch the event however at #minor-links itself so that you can block it 
-  # if needed before it percolates up to #control-panel ( where the core behaviour
-  # is bound )
+  # Handle all minor-link > a clicks here 
   ###########################################################################
 
   $('#minor-links').on 'click', 'a', (event) ->
-    return true unless $(this).attr 'select_sth'
-
     id = $(this).attr 'id'
     switch id
-      when 'new-studygroups-link', 'edit-studygroups-link'
-        marker = $('#side-panel').attr 'marker'
-        if not marker?
-          event.stopPropagation event
-          alert 'Select a school first'
-
-    # if ok to go, then go
-    switch id
       when 'edit-roster-link'
-        # Clear out the #right-panel which has sektion-information
-        for e in $('#right-panel').find '.purgeable'
-          $(e).empty()
-        # Then issue the AJAX request
-        $.get "teachers/list.json?id=#{marker}"
         $('#specialization-chart').accordion scroll.options
-      when 'edit-studygroups-link'
-        $.get "school/sektions.json?id=#{marker}"
-        $.get "school/unassigned-students.json?id=#{marker}"
-
     return true
 
   $('#teachers-list').on 'click', 'input[type="radio"]', ->
