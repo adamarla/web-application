@@ -8,6 +8,8 @@
 #  name       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  teacher_id :integer
+#  exclusive  :boolean         default(FALSE)
 #
 
 class Sektion < ActiveRecord::Base
@@ -20,9 +22,6 @@ class Sektion < ActiveRecord::Base
 
   has_many :student_rosters
   has_many :students, :through => :student_rosters
-
-  has_many :faculty_rosters
-  has_many :teachers, :through => :faculty_rosters
 
   def self.of_klass(k)
     where(:klass => k)
@@ -37,7 +36,7 @@ class Sektion < ActiveRecord::Base
   end 
 
   def taught_by? (teacher) 
-    !( FacultyRoster.where(:sektion_id => self.id, :teacher_id => teacher.id).empty? )
+    self.teacher_id == teacher.id || (self.school_id == teacher.school_id && teacher.klasses.include?(self.klass)) 
   end 
 
   def update_student_list ( student_list ) 

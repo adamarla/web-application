@@ -34,9 +34,6 @@ class Teacher < ActiveRecord::Base
   has_one :account, :as => :loggable, :dependent => :destroy
   has_one :trial_account, :dependent => :destroy
 
-  has_many :faculty_rosters, :dependent => :destroy
-  has_many :sektions, :through => :faculty_rosters
-
   has_many :grades, :dependent => :destroy
   has_many :yardsticks, :through => :grades
 
@@ -63,6 +60,14 @@ class Teacher < ActiveRecord::Base
 
   #after_validation :setup_account, :if => :first_time_save?
   #before_destroy :destroyable? 
+
+  def klasses
+    Specialization.where(:teacher_id => self.id).map(&:klass).uniq
+  end 
+
+  def sektions
+    Sektion.in_school(self.school_id).of_klass(self.klasses).where("exclusive = ? OR teacher_id = ?", false, self.id)
+  end
 
   def build_quiz_with (name, question_ids, course)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
