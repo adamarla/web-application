@@ -132,6 +132,9 @@ jQuery ->
           scroll.loadJson json.topics, 'topic', $(here), null, scroll.having.select
         else
           scroll.loadJson json.topics, 'topic', $(here), null, scroll.having.radio
+    else if url.match(/teacher\/specializations/)
+      here = $('#teacher-specialization')
+      scroll.overlayJson json.subjects, 'subject', here, '.list-item'
     else
       matched = false
 

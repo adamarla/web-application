@@ -145,7 +145,7 @@ jQuery ->
 
   $('#teachers-list').on 'click', 'input[type="radio"]', ->
     marker = $(this).attr 'marker'
-    # $.get "teachers/roster.json?id=#{marker}"
+    $.get "teacher/specializations.json?id=#{marker}"
 
   ###
     On load, auto-click the first main-link > a that has attribute default='true'

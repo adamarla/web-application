@@ -128,6 +128,10 @@ class TeachersController < ApplicationController
     render :json => { :status => 'Done' }, :status => :ok
   end 
 =end
+  def specializations
+    @subjects = Subject.all
+    @teacher = Teacher.find params[:id]
+  end 
 
   def update_specialization
     teacher = Teacher.find params[:id]

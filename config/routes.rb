@@ -112,6 +112,7 @@ Webapp::Application.routes.draw do
   match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
   match 'teacher/like_q' => 'teachers#like_question', :via => :get
   match 'teacher/unlike_q' => 'teachers#unlike_question', :via => :get
+  match 'teacher/specializations' => 'teachers#specializations', :via => :get
   match 'update_specialization' => 'teachers#update_specialization', :via => :post
 
   # Testpaper
