@@ -70,26 +70,52 @@ jQuery ->
         e = ['checkbox', 'radio', 'link', 'select', 'button', 'label'] # must stay in sync with scroll.having
 
         for element, k in e
-          #continue if element is 'link'
           show[element] = not show[element] if (render & (1 << k))
 
         item = swissKnife.forge m, key, show
         swissKnife.editAnchor(item, n) if show['link']
-        ###
-        switch render
-          when scroll.having.check then item = swissKnife.forge m, key, {checkbox:true}
-          when scroll.having.radio then item = swissKnife.forge m, key, {radio:true}
-          when scroll.having.select then item = swissKnife.forge m, key, {select:true}
-          when scroll.having.check_btn then item = swissKnife.forge m, key, {checkbox:true, button:true}
-          when scroll.having.radio_btn then item = swissKnife.forge m, key, {radio:true, button:true}
-          when scroll.having.link then item = $("<a href='#' marker=#{n.id} parent=#{n.parent} p_id=#{parentId}>#{n.name}</a>")
-        ###
+
         if ticker?
           v = n[ticker]
           t = item.children('.micro-ticker').eq(0)
           t.text v if t?
 
         item.appendTo content
+      return true
+
+    overlayJson: (json, key, here, onto) ->
+      # Unlike loadJson, this method does NOT change the HTML. It only loads the 
+      # passed JSON onto whatever is already present. Moreover, this method is limited
+      # to only checking/unchecking radio buttons and check boxes
+
+      # The passed JSON is of the form: [.. {key: {parent: .., id:[ .. ]} ... ]
+      # Its understood that 'parent' is the marker on the scroll-heading and id's are 
+      # the markers on whatever is specified with 'onto'
+
+      return if not onto?
+      here = if typeof here is 'string' then $(here) else here
+
+      # Step 1: Uncheck all checkboxes and/or radio buttons within 'here'
+      for m in here.find "input[type='checkbox'],input[type='radio']"
+        $(m).prop 'checked', false
+
+      # Step 2: Check the checkboxes/radio-buttons as specified in the passed JSON
+      for m in json
+        item = m[key]
+        parent_id = item.parent
+        ids = item.id # an array
+
+        header = here.find(".scroll-heading[marker=#{parent_id}]").eq(0)
+        continue if header.length is 0
+
+        content = header.next() # should be a .scroll-content
+        for j in ids
+          target = content.find("#{onto}[marker=#{j}]").eq(0)
+          continue if target.length is 0
+
+          for k in target.children("input[type='checkbox'], input[type='radio']")
+            $(k).prop 'checked', true
+
       return true
       
   }
