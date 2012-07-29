@@ -31,13 +31,13 @@ jQuery ->
         continue if not key? or not id? or not pId?
         $(a).attr 'href', "#{gutenberg.server}/atm/#{key}/#{id}/downloads/assignment-#{pId}-#{id}.pdf"
 
-    else if url.match(/teachers\/roster/)
+    else if url.match(/teacher\/sektions/)
       child = $('#side-panel').children().eq(0).attr 'id'
       if child is 'deep-dive'
         here = $('#deep-dive-section')
       else
         here = $('#sektion-list')
-      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}
+      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}, true, 'ticker'
     else if url.match(/sektions\/students/)
       here = $('#student-list')
       coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}

@@ -31,8 +31,8 @@ class Sektion < ActiveRecord::Base
     where(:school_id => s)
   end
 
-  def name 
-    return "#{self.klass.to_s}-#{self.name} (#{self.students.count})"
+  def label 
+    return "#{self.klass} - #{self.name}"
   end 
 
   def taught_by? (teacher) 

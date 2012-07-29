@@ -128,6 +128,7 @@ class TeachersController < ApplicationController
     render :json => { :status => 'Done' }, :status => :ok
   end 
 =end
+
   def specializations
     @subjects = Subject.all
     @teacher = Teacher.find params[:id]
@@ -149,6 +150,11 @@ class TeachersController < ApplicationController
     teacher.specialization_ids = new_object_ids 
     render :json => { :status => "Done" }, :status => :ok
   end 
+  
+  def sektions
+    teacher = Teacher.find params[:id]
+    @sektions = teacher.nil? ? [] : teacher.sektions
+  end
 
   def build_quiz 
     teacher = Teacher.find params[:id]

@@ -56,7 +56,8 @@ class SektionsController < ApplicationController
   end 
 
   def students 
-    @students = Student.where(:sektion_id => params[:id]).order(:first_name)
+    sektion = Sektion.find params[:id]
+    @students = sektion.students.order(:first_name)
     @who_wants_to_know = current_account.nil? ? :guest : current_account.role
   end 
 

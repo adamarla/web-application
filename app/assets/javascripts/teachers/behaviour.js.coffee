@@ -7,7 +7,7 @@ jQuery ->
     switch id
       when 'quizzes-link'
         $.get 'quizzes/list.json'
-        $.get "teachers/roster.json?id=#{teacher}"
+        $.get "teacher/sektions.json?id=#{teacher}"
       when 'report-cards-link'
         $.get "teacher/testpapers.json?id=#{teacher}"
     return true
@@ -198,6 +198,6 @@ jQuery ->
 
   $('#deep-dive-link').click ->
     teacher = $('#control-panel').attr 'marker'
-    $.get "teachers/roster.json?id=#{teacher}"
+    $.get "teacher/sektions.json?id=#{teacher}"
     return true
 
