@@ -66,7 +66,7 @@ class Teacher < ActiveRecord::Base
   end 
 
   def sektions
-    Sektion.in_school(self.school_id).of_klass(self.klasses).where("exclusive = ? OR teacher_id = ?", false, self.id)
+    Sektion.in_school(self.school_id).of_klass(self.klasses).where("exclusive = ? OR teacher_id = ?", false, self.id).order(:klass)
   end
 
   def build_quiz_with (name, question_ids, course)
