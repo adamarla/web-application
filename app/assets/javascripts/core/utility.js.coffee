@@ -136,7 +136,7 @@ window.coreUtil = {
       via swissKnife.forge - that the returned JSON has atleast the following 
       2 keys : name & id
     ###
-    displayJson : (json, where, key, visible = {radio:true}, enable = true) ->
+    displayJson : (json, where, key, visible = {radio:true}, enable = true, ticker = null) ->
       # JSON data is always purgeable. And so, it is always inserted within
       # the first .purgeable of $(where)
       where = if typeof where is 'string' then $(where) else where
@@ -148,6 +148,11 @@ window.coreUtil = {
 
       for record, index in json
         clone = swissKnife.forge record, key, visible, enable
+        if ticker?
+          v = record[key][ticker]
+          t = clone.children('.micro-ticker').eq(0)
+          t.text v if t?
+
         clone.appendTo(target).hide().fadeIn('slow')
       return true
 
