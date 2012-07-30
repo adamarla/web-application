@@ -5,24 +5,27 @@ class TeachersController < ApplicationController
   def create 
     school = School.find params[:id] 
     head :bad_request if school.nil? 
-    
-    subjects = params[:teacher].delete(:subjects) || []
-    @teacher = Teacher.new params[:teacher]
-    @teacher.school = school 
 
-    # Prepare data for teacher's account
-    username = create_username_for @teacher, :teacher 
-    email = params[:teacher].delete(:email) || "#{username}@drona.com"
-    password = school.zip_code
+    names = params[:names]
+    success = true 
 
-    unless username.nil? 
-      account = @teacher.build_account :email => email, :username => username, 
-                  :password => password, :password_confirmation => password
-      @teacher.set_subjects subjects 
-      @teacher.save ? respond_with(@teacher) : head(:bad_request)
-    else
-      head :bad_request
-    end 
+    names.each do |slot, name|
+      next if name.blank?
+      @teacher = school.teachers.build :name => name
+      username = create_username_for @teacher, :teacher
+      email = "#{username}@drona.com"
+      password = school.zip_code
+
+      unless username.nil?
+        account = @teacher.build_account :email => email, :username => username, 
+                      :password => password, :password_confirmation => password 
+        success &= @teacher.save 
+      else
+        success = false
+      end
+    end # of each 
+
+    success ? render(:json => { :status => "done" }, :status => :ok) : head(:bad_request)
   end # of create
  
   def show 

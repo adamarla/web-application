@@ -3,9 +3,9 @@
   %legend= "New Teacher"
   = semantic_form_for :teacher, :remote => true, :url => teacher_path do |f|
     .submit-buttons
-      = submit_tag 'add new teacher'
+      = submit_tag 'add teachers'
 
     = f.inputs :name => :mandatory do 
-      = f.input :name, :input_html => { :name => "teacher[name]" }
-      = f.input :subjects, :label => 'teaches?', :as => :select, 
-                :collection => Subject.all, :include_blank => false, :multiple => true
+      - [*1..5].each do |i|
+        = f.input :name, :input_html => {:name => "names[#{i}]", :id => "teacher_#{i}"}, 
+                         :label => "teacher ##{i}"
