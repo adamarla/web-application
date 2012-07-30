@@ -157,7 +157,7 @@ class TeachersController < ApplicationController
   def students 
     teacher = Teacher.find params[:id]
     all = (params[:exclusive] == "yes") ? false : true 
-    @students = teacher.nil? ? [] : teacher.students(all)
+    @students = teacher.nil? ? [] : teacher.students(all).order(:first_name)
   end 
 
   def build_quiz 
