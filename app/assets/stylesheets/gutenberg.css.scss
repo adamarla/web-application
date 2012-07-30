@@ -339,18 +339,21 @@ legend + form {
 
 fieldset.inputs {
   textarea, input[type="text"], input[type="password"], input[type="email"] {
+    max-width: 72% ;
+    min-width: 60% ;
+    width: auto ; // to override width in formtastic.css
     font: {
       family: "Trebuchet MS" ;
       size: 13px ;
     } 
 
     border: {
-      radius: 0px ;
+      radius: 3px ;
       style: solid ;
       width: 1px ;
       color: lighten($gray, 30%) ;
     } 
-    -moz-border-radius: 0px ;
+    -moz-border-radius: 3px ;
     background-color: lighten($gray, 80%) ;
     color: $gray ;
 
@@ -456,10 +459,6 @@ span.unhappyMessage {
 #new-examiners form li {
   width: 90% ;
   float: left ;
-
-  > input {
-    float: right ;
-  }
 }
 
 .swiss-knife[marker="highlight"] {

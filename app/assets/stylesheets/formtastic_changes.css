@@ -13,6 +13,10 @@ form.formtastic fieldset.inputs p.inline-hints {
 form.formtastic fieldset.inputs label.label { 
   font-size : 13px ;
   text-transform : lowercase ;
+  width: auto ;
+  max-width: 25% ;
+  min-width: 8% ;
+  margin-right: 15px ;
 } 
 
 fieldset.inputs select {
@@ -27,4 +31,5 @@ fieldset.buttons {
   padding : 0px ; 
   float : left ;
   text-transform : lowercase ;
-} 
+}
+
