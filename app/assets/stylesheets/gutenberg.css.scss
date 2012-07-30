@@ -385,10 +385,19 @@ span.unhappyMessage {
 .micro-ticker {
   color: #ffa500 ; 
   font: {
-    size: 9pt ;
+    size: 8pt ;
     weight: normal ; 
   }
-  margin-left: 3% ;
+  margin: {
+    left: 3% ;
+    right: 3% ;
+  } 
+}
+
+#report-cards-summary {
+  .micro-ticker {
+    font-size: 9pt ;
+  }
 }
 
 .led {
@@ -985,6 +994,12 @@ li {
     width: 100% ;
     text-align:center ;
   } 
+}
+
+#enrolled-students { 
+  > .scroll-content { 
+    min-height: 500px ;
+  }
 }
 
 #try_us-link {
