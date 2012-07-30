@@ -171,14 +171,12 @@ class Teacher < ActiveRecord::Base
   end
   
   def generate_suggestion_form
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_suggestion_form']}" 
-    response = SavonClient.request :wsdl, :generate_suggestion_form do  
-      soap.body = {
-         :teacher => {:id => self.id, :name => "#{self.first_name}-#{self.last_name}"},
-         :school => {:id => self.school.id, :name => self.school.name }
-      }
-    end # of response 
-    # not a top priority operation so never mind if there is an error
+    # At any given time, there is at most one copy of suggestion.tex in front-desk/.
+    # Hence, if > 1 requests for generating suggestion form are sent (after_create), then 
+    # each subsequent request will overwrite the suggestion.tex from the previous request.
+    # And therefore, to keep things clean, we have to process each request individually
+    # by placing it in the queue
+    Delayed::Job.enqueue BuildSuggestionForm.new(self), :priority => 0, :run_at => Time.zone.now 
   end
 
   private 
