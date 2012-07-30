@@ -65,9 +65,19 @@ class Teacher < ActiveRecord::Base
     Specialization.where(:teacher_id => self.id).map(&:klass).uniq
   end 
 
-  def sektions
-    Sektion.in_school(self.school_id).of_klass(self.klasses).where("exclusive = ? OR teacher_id = ?", false, self.id).order(:klass)
+  def sektions( all_applicable = true )
+    # By default, this method returns all sektions that a teacher CAN teach - even if she 
+    # doesn't teach some of them. To get only the sektions a teacher teaches, pass false to this method
+    s = Sektion.in_school(self.school_id).of_klass(self.klasses)
+    s = all_applicable ? s.where(:exclusive => false) : s.where(:teacher_id => self.id)
+    return s.order(:klass)
   end
+
+  def students( all_applicable = true )
+    sektions = self.sektions all_applicable 
+    student_ids = StudentRoster.where(:sektion_id => sektions.map(&:id)).map(&:student_id).uniq
+    return Student.where(:id => student_ids)
+  end 
 
   def build_quiz_with (name, question_ids, course)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
