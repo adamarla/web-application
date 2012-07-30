@@ -8,6 +8,6 @@
     = f.inputs do 
       = f.input :klass, :label => 'grade', :as => :select, :collection => [*9..12],
                           :input_html => { :name => "klass" }
-      - [*1..5].each do |i|
+      - [*1..10].each do |i|
         = f.input :name, :input_html => {:name => "names[#{i}]", :id => "student_#{i}"}, 
-                         :label => "student ##{i}"
+                         :label => "##{i}"

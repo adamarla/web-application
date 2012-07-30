@@ -8,4 +8,4 @@
     = f.inputs :name => :mandatory do 
       - [*1..5].each do |i|
         = f.input :name, :input_html => {:name => "names[#{i}]", :id => "teacher_#{i}"}, 
-                         :label => "teacher ##{i}"
+                         :label => "##{i}"
