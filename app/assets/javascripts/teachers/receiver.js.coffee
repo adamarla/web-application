@@ -33,11 +33,16 @@ jQuery ->
 
     else if url.match(/teacher\/sektions/)
       child = $('#side-panel').children().eq(0).attr 'id'
-      if child is 'deep-dive'
-        here = $('#deep-dive-section')
-      else
-        here = $('#sektion-list')
-      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}, true, 'ticker'
+      switch child
+        when 'deep-dive' then here = $('#deep-dive-section')
+        when 'quizzes-summary' then here = $('#sektion-list')
+        when 'sektions-summary' then here = $('#all-my-sektions')
+        else here = null
+      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}, true, 'ticker' unless here is null
+    else if url.match(/teacher\/students/)
+      here = $('#enrolled-students')
+      scroll.loadJson json.students, 'student', here, 'login'
+      here.accordion scroll.options
     else if url.match(/sektions\/students/)
       here = $('#student-list')
       coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'

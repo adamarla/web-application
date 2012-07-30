@@ -10,6 +10,9 @@ jQuery ->
         $.get "teacher/sektions.json?id=#{teacher}"
       when 'report-cards-link'
         $.get "teacher/testpapers.json?id=#{teacher}"
+      when 'sektions-link'
+        $.get "teacher/sektions.json?id=#{teacher}"
+        $.get "teacher/students.json?id=#{teacher}&exclusive=no"
     return true
 
   # Assigning a Quiz to students selected in #student-list
