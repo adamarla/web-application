@@ -154,6 +154,12 @@ class TeachersController < ApplicationController
     @sektions = teacher.nil? ? [] : teacher.sektions
   end
 
+  def students 
+    teacher = Teacher.find params[:id]
+    all = (params[:exclusive] == "yes") ? false : true 
+    @students = teacher.nil? ? [] : teacher.students(all)
+  end 
+
   def build_quiz 
     teacher = Teacher.find params[:id]
     course = Course.find params[:course_id]
