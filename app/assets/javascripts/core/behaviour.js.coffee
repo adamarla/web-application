@@ -258,25 +258,15 @@ jQuery ->
     return true
 
   ###
-    All fields in forms that have the class attribute "clear-after-submit"
-    should be cleared on successful AJAX submission. Three things to remember/take
-    care of :
-      1. The attribute is not set on the form but on a containing/parent <div>
-      2. Match the action attribute with the url for successful AJAX call.
+    Clear forms on successful submission
+      1. Match the action attribute with the url for successful AJAX call.
          If they are not the same, then this was not the form submitted and
          hence not the form you want to clear
-      3. If the form is for new record creation, then you will have to issue
-         a respond_with @new_object call in the 'create' action. For reasons I don't
-         fully understand, respond_with @object is caught by ajaxSuccess but
-         not head :ok - even if 'data-remote' is set on the form
   ###
 
-  $('.clear-after-submit').ajaxSuccess (e,xhr,settings) ->
-    form = $(this).find 'form:first'
-    return if form.length is 0
-
-    action = form.attr 'action'
-    coreUtil.forms.clear form if action is settings.url
+  $('form').ajaxSuccess (e,xhr,settings) ->
+    action = $(this).attr 'action'
+    coreUtil.forms.clear $(this) if action is settings.url
 
   ###
     If a <form> has or requires multiple submit buttons, then house each 
