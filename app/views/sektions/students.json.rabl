@@ -1,3 +1,4 @@
 
 collection @students => :students
-  extends 'students/show'
+  attributes :id, :name
+  node(:login) { |m| m.account.username }

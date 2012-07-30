@@ -40,7 +40,7 @@ jQuery ->
       coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}, true, 'ticker'
     else if url.match(/sektions\/students/)
       here = $('#student-list')
-      coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
+      coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'
     else if url.match(/teacher\/courses/)
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
