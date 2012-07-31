@@ -1,4 +1,6 @@
 /*
+*= require formtastic 
+*= require formtastic_changes 
 *= require gutenberg 
 *= require new-interface
 *= require yardsticks
@@ -6,6 +8,4 @@
 *= require jquery-custom-theme/styling 
 *= require_directory ../../../vendor/assets/stylesheets/popeye 
 *= require ../../../vendor/assets/stylesheets/media-viewer/style 
-*= require formtastic 
-*= require formtastic_changes 
 */ 
