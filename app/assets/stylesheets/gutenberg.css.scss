@@ -337,38 +337,32 @@ legend + form {
 
 ///////////////  formtastic form changes ///////////////////////////
 
-fieldset.inputs {
-  textarea, input[type="text"], input[type="password"], input[type="email"] {
-    max-width: 72% ;
-    min-width: 60% ;
-    width: auto ; // to override width in formtastic.css
-    font: {
-      family: "Trebuchet MS" ;
-      size: 13px ;
-    } 
+textarea, input[type="text"], input[type="password"], input[type="email"], input[role="textbox"] {
+  max-width: 72% ;
+  min-width: 60% ;
+  width: auto ; // to override width in formtastic.css
+  font: {
+    family: "Trebuchet MS" ;
+    size: 13px ;
+  } 
 
-    border: {
-      radius: 3px ;
-      style: solid ;
-      width: 1px ;
-      color: lighten($gray, 30%) ;
-    } 
-    -moz-border-radius: 3px ;
-    background-color: lighten($gray, 80%) ;
-    color: $gray ;
+  border: {
+    radius: 3px ;
+    style: solid ;
+    width: 1px ;
+    color: lighten($gray, 30%) ;
+  } 
+  -moz-border-radius: 3px ;
+  background-color: lighten($gray, 80%) ;
+  color: $gray ;
 
-    font-style : sans-serif;
-    padding: {
-      left: 6px ;
-      bottom: 5px ;
-      top: 5px ;
-    }
-  }
-} 
+  font-style : sans-serif;
+  padding: 6px 9px ;
+}
 
 #accounts-summary, #new-school, #edit-school {
-  fieldset.inputs {
-    label {
+fieldset.inputs {
+  label {
       width: 25% ;
     }
   }
@@ -724,7 +718,6 @@ span.unhappyMessage {
 #try-us, #new-course { 
   form {
     input[type="submit"] {
-      float: right ;
       min-width: 50% ;
     }
     
@@ -741,6 +734,9 @@ span.unhappyMessage {
 
 #new-course { 
   form { 
+    input[type="submit"] {
+      float: right ;
+    }
     > div {
       min-height: 40px ;
       margin-bottom:10px ;
@@ -770,6 +766,7 @@ span.unhappyMessage {
     decoration: none ;
   }
   height: 40px ;
+  float: left ;
 }
 
 #about-us {
@@ -1044,22 +1041,14 @@ li {
 }
 
 #trial-user-signup {
-  > div {
-    width: 97% ; 
-    
-    > li {
-      margin: 0px ;
-      padding: 0.2em 0em ;
-
-      input, select {
-        padding: 6px 9px;
-        font-size: 13px ;
-        width: 100% ;
-        border-radius: 0px ;
-      }
-    }
+  li { 
+    margin-bottom: 0px ;
+  } 
+  input[type="submit"] {
+    float: left ; 
+    margin-top: 15px ;
   }
-}
+} 
 
 #try-us-icon {
   margin-top: -20px ;
