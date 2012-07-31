@@ -48,6 +48,11 @@ class Student < ActiveRecord::Base
     where(:school_id => id)
   end
 
+  def self.name_begins_with( allowed = [] )
+    return if allowed.empty? 
+    select{ |m| allowed.include? m.first_name[0].downcase }
+  end
+
   def username?
     self.account.username
   end 
