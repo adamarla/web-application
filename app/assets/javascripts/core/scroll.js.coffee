@@ -85,21 +85,28 @@ jQuery ->
         scroll.columnize $(m)
       return true
 
-    overlayJson: (json, key, here, onto) ->
-      # Unlike loadJson, this method does NOT change the HTML. It only loads the 
-      # passed JSON onto whatever is already present. Moreover, this method is limited
-      # to only checking/unchecking radio buttons and check boxes
+    overlayJson: (json, key, here, onto, hideRest = false) ->
+      ###
+        Unlike loadJson, this method does NOT change the HTML. It only loads the 
+        passed JSON onto whatever is already present. Moreover, this method is limited
+        to only 
+          1. checking/unchecking radio buttons and check boxes OR 
+          2. Hiding elements whose marker is not in json.id ( when hideRest = true )
 
-      # The passed JSON is of the form: [.. {key: {parent: .., id:[ .. ]} ... ]
-      # Its understood that 'parent' is the marker on the scroll-heading and id's are 
-      # the markers on whatever is specified with 'onto'
+        The passed JSON is of the form: [.. {key: {parent: .., id:[ .. ]} ... ]
+        Its understood that 'parent' is the marker on the scroll-heading and id's are 
+        the markers on whatever is specified with 'onto'
+      ###
 
       return if not onto?
       here = if typeof here is 'string' then $(here) else here
 
-      # Step 1: Uncheck all checkboxes and/or radio buttons within 'here'
-      for m in here.find "input[type='checkbox'],input[type='radio']"
-        $(m).prop 'checked', false
+      # Step 1: Reset everything to a virginal state  
+      $(m).prop('checked', false) for m in here.find "input[type='checkbox'],input[type='radio']" unless hideRest
+
+      for m in here.find "#{onto}"
+        $(m).removeClass 'hidden'
+        $(m).removeAttr 'keep'
 
       # Step 2: Check the checkboxes/radio-buttons as specified in the passed JSON
       for m in json
@@ -121,8 +128,16 @@ jQuery ->
           target = content.find("#{onto}[marker=#{j}]").eq(0)
           continue if target.length is 0
 
-          for k in target.children("input[type='checkbox'], input[type='radio']")
-            $(k).prop 'checked', true
+          if hideRest
+            target.attr 'keep', 'yes'
+          else
+            for k in target.children("input[type='checkbox'], input[type='radio']")
+              $(k).prop 'checked', true
+        
+      # Step 3: If hideRest = true, then hide any 'onto' that does NOT have the keep attribute
+      if hideRest
+        for m in here.find("#{onto}").not('[keep]')
+          $(m).addClass 'hidden'
 
       return true
 
