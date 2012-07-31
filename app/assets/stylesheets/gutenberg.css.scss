@@ -790,6 +790,22 @@ span.unhappyMessage {
   }
 }
 
+.column {
+  float: left ; 
+  margin: { 
+    top: 3% ;
+    left: 3% ;
+  } 
+
+  &.one_2 {
+    width: 42% ;
+  }
+
+  &.one_3 {
+    width: 30% ;
+  } 
+} 
+
 .half-column { 
   width: 45% ;
   margin-right: 5% ;
