@@ -50,7 +50,7 @@ class Student < ActiveRecord::Base
 
   def self.name_begins_with( allowed = [] )
     return if allowed.empty? 
-    select{ |m| allowed.include? m.first_name[0].downcase }
+    select{ |m| allowed.include? m.first_name[0] }
   end
 
   def username?
