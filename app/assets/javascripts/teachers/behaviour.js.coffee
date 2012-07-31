@@ -95,7 +95,7 @@ jQuery ->
       when 'courses-taught'
         $.get "course/verticals.json?id=#{marker}"
       when 'sektion-list'
-        $.get "sektions/students.json?id=#{marker}"
+        $.get "sektion/students.json?id=#{marker}"
       when 'testpaper'
         wide = $('#wide-panel')
         first = wide.children().eq(0).attr 'id'
@@ -202,5 +202,10 @@ jQuery ->
   $('#deep-dive-link').click ->
     teacher = $('#control-panel').attr 'marker'
     $.get "teacher/sektions.json?id=#{teacher}"
+    return true
+
+  $('#all-my-sektions').on 'click', 'input[type="radio"]', ->
+    id = $(this).attr 'marker'
+    $.get "sektion/students.json?id=#{id}"
     return true
 

@@ -40,7 +40,7 @@ $(function() {
   $('#view-students-in-section-link').click( function() { 
 		sektion = $('#middle-panel').attr('marker') ;
     if (sektion != null) { 
-      $.get('sektions/students.json?id=' + sektion) ;
+      $.get('sektion/students.json?id=' + sektion) ;
     } 
   }) ;
 

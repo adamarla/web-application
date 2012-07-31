@@ -93,7 +93,7 @@ Webapp::Application.routes.draw do
   resource :sektion, :only => [:create, :update]
   match 'sektions/list' => 'sektions#list', :via => :get
   match 'sektions/update_student_list' => 'sektions#update_student_list', :via => :put
-  match 'sektions/students' => 'sektions#students', :via => :get
+  match 'sektion/students' => 'sektions#students', :via => :get
   match 'sektion/proficiency' => 'sektions#proficiency', :via => :get
 
   # Syllabus
