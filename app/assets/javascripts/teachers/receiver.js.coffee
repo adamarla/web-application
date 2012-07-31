@@ -43,9 +43,14 @@ jQuery ->
       here = $('#enrolled-students')
       scroll.loadJson json.students, 'student', here, 'login'
       here.accordion scroll.options
-    else if url.match(/sektions\/students/)
-      here = $('#student-list')
-      coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'
+    else if url.match(/sektion\/students/)
+      child = $('#side-panel').children().eq(0).attr 'id'
+      switch child
+        when 'sektions-summary'
+          scroll.overlayJson json.students, 'student', $('#enrolled-students'), '.swiss-knife'
+        else
+          here = $('#student-list')
+          coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'
     else if url.match(/teacher\/courses/)
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
