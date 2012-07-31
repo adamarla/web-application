@@ -1169,3 +1169,13 @@ li {
   margin-top: 5px ;
   float: right ;
 } 
+
+.name-filter { 
+  height: 30px ;
+
+  > a {
+    margin: {
+      left: 4% ;
+    }
+  }
+} 
