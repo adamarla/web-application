@@ -1,6 +1,7 @@
 
 #new-sektion
-  = render :partial => 'toolbox/name_filter', :locals => { :url => 'teacher/students_with_names.json' }
+  = render :partial => 'toolbox/name_filter', 
+           :locals => { :url => "teacher/students_with_names.json?id=#{current_account.loggable_id}" }
   = semantic_form_for :sektion, :remote => true, :url => sektion_path, :method => :put do |f|
     = f.inputs do
       = f.input :name, :wrapper_html => {:class => :left}
