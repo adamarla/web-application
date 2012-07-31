@@ -160,6 +160,13 @@ class TeachersController < ApplicationController
     @students = teacher.nil? ? [] : teacher.students(all).order(:first_name)
   end 
 
+  def students_with_names
+    teacher = Teacher.find params[:id]
+    all = (params[:exclusive] == "yes") ? false : true 
+    starting_with = [*"#{params[:start]}".."#{params[:end]}"]
+    @students = teacher.nil? ? [] : teacher.students(all, starting_with)
+  end
+
   def build_quiz 
     teacher = Teacher.find params[:id]
     course = Course.find params[:course_id]

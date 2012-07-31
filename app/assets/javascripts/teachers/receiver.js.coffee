@@ -39,6 +39,9 @@ jQuery ->
         when 'sektions-summary' then here = $('#all-my-sektions')
         else here = null
       coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}, true, 'ticker' unless here is null
+    else if url.match(/teacher\/students_with_names/)
+      here = $('#enrolled-students')
+      scroll.overlayJson json.students, 'student', here, '.swiss-knife'
     else if url.match(/teacher\/students/)
       here = $('#enrolled-students')
       scroll.loadJson json.students, 'student', here, 'login'

@@ -115,6 +115,7 @@ Webapp::Application.routes.draw do
   match 'teacher/specializations' => 'teachers#specializations', :via => :get
   match 'update_specialization' => 'teachers#update_specialization', :via => :post
   match 'teacher/students' => 'teachers#students', :via => :get
+  match 'teacher/students_with_names' => 'teachers#students_with_names', :via => :get
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get
