@@ -73,10 +73,11 @@ class Teacher < ActiveRecord::Base
     return s.order(:klass)
   end
 
-  def students( all = true )
+  def students( all = true, filter = [] )
     sektions = self.sektions all 
     student_ids = StudentRoster.where(:sektion_id => sektions.map(&:id)).map(&:student_id).uniq
-    return Student.where(:id => student_ids)
+    students = Student.where(:id => student_ids)
+    return filter.empty? ? students : students.name_begins_with(filter)
   end 
 
   def build_quiz_with (name, question_ids, course)
