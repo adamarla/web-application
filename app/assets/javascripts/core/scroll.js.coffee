@@ -108,6 +108,11 @@ jQuery ->
         header = here.find(".scroll-heading[marker=#{parent_id}]").eq(0)
         continue if header.length is 0
 
+        # This method expects an array of IDs. So, if its a single ID, then create 
+        # a 1-element array from it before proceeding 
+        if not (ids instanceof Array)
+          ids = ["#{ids}"]
+
         content = header.next() # should be a .scroll-content
         for j in ids
           target = content.find("#{onto}[marker=#{j}]").eq(0)
