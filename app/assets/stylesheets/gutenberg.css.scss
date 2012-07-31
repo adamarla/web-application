@@ -366,6 +366,14 @@ fieldset.inputs {
   }
 } 
 
+#accounts-summary, #new-school, #edit-school {
+  fieldset.inputs {
+    label {
+      width: 25% ;
+    }
+  }
+}
+
 span.unhappyMessage {
   color: #ffa500 ;
   font: {
