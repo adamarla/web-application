@@ -3,6 +3,5 @@
   = main_link :for => 'quizzes', :default => true
   = main_link :for => 'yardsticks', :as => 'scoring scheme' 
   = main_link :for => 'report-cards', :as => 'report cards', :with => { :panels => {:wide => "#flot-chart" } }
-  = main_link :for => :sektions, :as => 'me & my sections', :with => { :panels => { :middle => "#new-sektion",
-  :right => "#accounts-summary" } }
+  = main_link :for => :sektions, :as => 'my sections', :with => { :panels => { :wide => "#new-sektion" } }
   = main_link :for => :logout, :href => "/logout", :dynamic => false

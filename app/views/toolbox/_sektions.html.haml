@@ -1,12 +1,13 @@
 
 #new-sektion
   = semantic_form_for :sektion, :remote => true, :url => sektion_path, :method => :put do |f|
-    .submit-buttons
-      = submit_tag 'create and/or update'
+    = f.inputs do
+      = f.input :name, :wrapper_html => {:class => :left}
+      = f.submit :class => :right
     #enrolled-students.as-accordion
       - [*9..12].each do |grd|
         .scroll-heading{ :marker => "#{grd}" }= "Grade #{grd}"
-        .scroll-content.purgeable
+        .scroll-content.purgeable{ :columns => 2 }
 
 #sektions-summary
   #all-my-sektions
