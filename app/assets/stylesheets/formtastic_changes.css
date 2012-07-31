@@ -34,3 +34,6 @@ fieldset.buttons {
   text-transform : lowercase ;
 }
 
+.formtastic .stringish input {
+  width: auto;
+}
