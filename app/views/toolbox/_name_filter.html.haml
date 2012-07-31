@@ -1,5 +1,5 @@
 
 .name-filter.full-width{ :url => url }
-  - [*'A'..'Z'].each_slice(4).each do |m|
+  - [*'A'..'Z'].each_slice(2).each do |m|
     = link_to "#{m.first}-#{m.last}", "#{url}&start=#{m.first}&end=#{m.last}", :remote => true
   
