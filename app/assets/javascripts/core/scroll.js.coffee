@@ -79,8 +79,10 @@ jQuery ->
           v = n[ticker]
           t = item.children('.micro-ticker').eq(0)
           t.text v if t?
-
         item.appendTo content
+
+      for m in here.children '.scroll-content'
+        scroll.columnize $(m)
       return true
 
     overlayJson: (json, key, here, onto) ->
@@ -108,12 +110,13 @@ jQuery ->
         header = here.find(".scroll-heading[marker=#{parent_id}]").eq(0)
         continue if header.length is 0
 
+        content = header.next()
+
         # This method expects an array of IDs. So, if its a single ID, then create 
         # a 1-element array from it before proceeding 
         if not (ids instanceof Array)
           ids = ["#{ids}"]
 
-        content = header.next() # should be a .scroll-content
         for j in ids
           target = content.find("#{onto}[marker=#{j}]").eq(0)
           continue if target.length is 0
@@ -122,6 +125,35 @@ jQuery ->
             $(k).prop 'checked', true
 
       return true
+
+    columnize: (content) ->
+      ###
+        Let 'loadJson' be the only method that calls this one
+        Rearranges already placed data in scroll-content into N columns - where N 
+        is gotten from the 'columns' attribute on scroll-content
+      ###
+      content = if typeof content is 'string' then $(content) else content
+      return if not content.hasClass 'scroll-content'
+
+      nColumns = content.attr 'columns'
+      nColumns = if not nColumns? then 1 else parseInt(nColumns)
+      return true if nColumns < 2
+
+      for j in [1..nColumns]
+        $("<div class='one_#{nColumns} column'></div>").appendTo content
+
+      items = content.children().not('.column')
+      columns = content.children '.column'
+      j = 0 # starting column index
+
+      for m in items
+        j = if j is nColumns then 0 else j
+        c = columns.eq(j)
+        $(m).detach().appendTo c
+        j += 1
+
+      return true
+
       
   }
 
