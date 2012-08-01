@@ -2,32 +2,25 @@ class SektionsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
+
   def create 
-    school = School.find params[:id] 
-    head :bad_request if school.nil? 
+    teacher = Teacher.find params[:id]
+    name = params[:sektion][:name]
+    student_ids = params[:checked].keys.map(&:to_i)
 
-    # {:klasses => {:from => '9', :to => '11'}, :sections => {:from => 'A', :to => 'F'}}
-    kfrom = params[:klasses][:from].to_i
-    kto = params[:klasses][:to].to_i
+    # The klass/grade of a sektion is the klass of the majority of students 
+    # in that sektion OR the higher klass - in case of equal # of students 
+    klasses = Student.where(:id => student_ids).map(&:klass)
+    n_occurrences = [*9..12].map{ |m| klasses.count m }
+    klass = [*9..12].at(n_occurrences.index n_occurrences.max)
 
-    if kfrom > kto 
-      x = kfrom 
-      kfrom = kto 
-      kto = x
-    end 
-    klasses = [*kfrom..kto]
-
-    sfrom = params[:sections][:from]
-    sto = params[:sections][:to]
-
-    if sfrom > sto 
-      x = sfrom 
-      sfrom = sto 
-      sto = x
-    end 
-    sections = [*sfrom..sto]
-
-    head ( school.create_sektions(klasses, sections) ? :ok : :bad_request ) 
+    sektion = teacher.sektions.build :name => name, :school_id => teacher.school_id, :klass => klass
+    if sektion.save
+      sektion.student_ids = student_ids
+      render :json => { :status => "Done" }, :status => :ok
+    else
+      head :bad_request 
+    end
   end 
 
   def list 
