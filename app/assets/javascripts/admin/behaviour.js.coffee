@@ -47,9 +47,8 @@ jQuery ->
   ###
     Edit <form> actions
   ###
-  adminForms = '#edit-school, #new-school, #new-teacher, #new-student, #student-list, 
-                #edit-syllabi-form, #edit-student-klass-mapping, 
-                #teacher-specialization'
+  adminForms = '#edit-school, #new-school, #new-teacher, #new-student,
+                #edit-syllabi-form, #teacher-specialization'
 
   $(adminForms).on 'submit', 'form', ->
     parent = $(this).parent().attr 'id'
@@ -69,20 +68,10 @@ jQuery ->
       when 'new-teacher'
         return false if not school?
         action = "teacher.json?id=#{school}"
-      when 'student-list'
-        sektion = $('#middle-panel').attr 'marker'
-        return false if not sektion?
-        action = "sektions/update_student_list.json?id=#{sektion}"
-        method = 'put'
       when 'edit-syllabi-form'
         course = $('#side-panel').attr 'marker'
         return false if not course?
         action = "syllabus.json?id=#{course}"
-        method = 'put'
-      when 'edit-student-klass-mapping'
-        teacher = $('#middle-panel').attr 'marker'
-        return false if not teacher?
-        action = "teacher/update_roster.json?id=#{teacher}"
         method = 'put'
       when 'teacher-specialization'
         teacher = $('#middle-panel').attr 'marker'
