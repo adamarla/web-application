@@ -209,3 +209,11 @@ jQuery ->
     $.get "sektion/students.json?id=#{id}"
     return true
 
+  $('#update-sektion > form:first').submit ->
+    sektion_id = $('#side-panel').attr 'marker'
+    return false if not sektion_id?
+
+    coreUtil.forms.modifyAction $(this), "sektion.json?id=#{sektion_id}", 'put'
+    return true
+
+
