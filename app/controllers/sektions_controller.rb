@@ -4,25 +4,6 @@ class SektionsController < ApplicationController
 
 
   def create 
-=begin
-    teacher = Teacher.find params[:id]
-    name = params[:sektion][:name]
-    student_ids = params[:checked].keys.map(&:to_i)
-
-    # The klass/grade of a sektion is the klass of the majority of students 
-    # in that sektion OR the higher klass - in case of equal # of students 
-    klasses = Student.where(:id => student_ids).map(&:klass)
-    n_occurrences = [*9..12].map{ |m| klasses.count m }
-    klass = [*9..12].at(n_occurrences.index n_occurrences.max)
-
-    sektion = teacher.sektions.build :name => name, :school_id => teacher.school_id, :klass => klass
-    if sektion.save
-      sektion.student_ids = student_ids
-      render :json => { :status => "Done" }, :status => :ok
-    else
-      head :bad_request 
-    end
-=end
     teacher = Teacher.find params[:id]
     name = params[:name]
     exclusive = params[:exclusive].blank? ? false : true
@@ -31,6 +12,22 @@ class SektionsController < ApplicationController
     @sektion = Sektion.new :name => name, :school_id => teacher.school_id,
                            :klass => for_now, :teacher_id => teacher.id, :exclusive => exclusive
     head :bad_request unless @sektion.save
+  end 
+
+  def update 
+    sektion = Sektion.find params[:id]
+    student_ids = params[:checked].keys.map(&:to_i)
+
+    # The klass/grade of a sektion is the klass of the majority of students 
+    # in that sektion OR the higher klass - in case of equal # of students 
+
+    klasses = Student.where(:id => student_ids).map(&:klass)
+    n_occurrences = [*9..12].map{ |m| klasses.count m }
+    klass = [*9..12].at(n_occurrences.index n_occurrences.max)
+
+    sektion.update_attribute :klass, klass 
+    sektion.student_ids = student_ids
+    render :json => { :status => "updated" }, :status => :ok
   end 
 
   def list 
