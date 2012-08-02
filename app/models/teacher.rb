@@ -29,11 +29,12 @@ include REXML
 include ApplicationUtil
 
 class Teacher < ActiveRecord::Base
-  has_many :quizzes, :dependent => :destroy 
   belongs_to :school 
+
   has_one :account, :as => :loggable, :dependent => :destroy
   has_one :trial_account, :dependent => :destroy
 
+  has_many :quizzes, :dependent => :destroy 
   has_many :grades, :dependent => :destroy
   has_many :yardsticks, :through => :grades
 
