@@ -151,11 +151,23 @@ class Teacher < ActiveRecord::Base
   end
 
   def courses
-    sektions = FacultyRoster.where(:teacher_id => self.id).map(&:sektion_id)
-    klasses = Sektion.where(:id => sektions).map(&:klass).uniq
-    subjects = Specialization.where(:teacher_id => self.id).map(&:subject_id)
-    board = self.school.board_id
-    return Course.where :board_id => board, :klass => klasses, :subject_id => subjects
+    specializations  = Specialization.where :teacher_id => self.id
+    board = self.school.board_id 
+    
+=begin
+    What if teacher teaches 9th class maths and 10th class physics? 
+    Should we then return:
+      1. 9th class maths & 10th class physics only OR 
+      2. 9th & 10th class maths & physics 
+
+    For now, we will go with (1). But who knows, (2) might be better
+=end
+    course_ids = []
+    [*9..12].each do |klass|
+      subjects = specializations.where(:klass => klass).map(&:subject_id)
+      course_ids += Course.where(:board_id => board, :klass => klass, :subject_id => subjects).map(&:id)
+    end
+    return Course.where(:id => course_ids)
   end
 
   def testpapers
