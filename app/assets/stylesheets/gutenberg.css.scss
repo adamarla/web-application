@@ -30,7 +30,7 @@ body {
   }
   width : 1020px ;
   background-color: $gray ; 
-  color: $gray ;
+  color: white ; 
 } 
 
 input::-webkit-input-placeholder {
@@ -339,7 +339,6 @@ legend + form {
 
 textarea, input[type="text"], input[type="password"], input[type="email"], input[role="textbox"] {
   max-width: 72% ;
-  min-width: 60% ;
   width: auto ; // to override width in formtastic.css
   font: {
     family: "Trebuchet MS" ;
@@ -1167,4 +1166,20 @@ li {
       left: 4% ;
     }
   }
+} 
+
+#sektions-summary { 
+  > form { 
+    min-height: 70px ;
+
+    > #misc-sektion-attributes { 
+      font-size: 11px ;
+      min-height: 30px ;
+
+      > input[type="checkbox"] { margin-left: 10% ; } 
+      > label { margin-left: 2% ; }
+      margin-bottom: 10px ;
+    } 
+  } 
+
 } 

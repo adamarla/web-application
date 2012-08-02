@@ -4,6 +4,7 @@ class SektionsController < ApplicationController
 
 
   def create 
+=begin
     teacher = Teacher.find params[:id]
     name = params[:sektion][:name]
     student_ids = params[:checked].keys.map(&:to_i)
@@ -21,6 +22,15 @@ class SektionsController < ApplicationController
     else
       head :bad_request 
     end
+=end
+    teacher = Teacher.find params[:id]
+    name = params[:name]
+    exclusive = params[:exclusive].blank? ? false : true
+
+    for_now = teacher.klasses.first
+    @sektion = Sektion.new :name => name, :school_id => teacher.school_id,
+                           :klass => for_now, :teacher_id => teacher.id, :exclusive => exclusive
+    head :bad_request unless @sektion.save
   end 
 
   def list 
