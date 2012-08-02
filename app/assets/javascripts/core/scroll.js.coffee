@@ -72,17 +72,13 @@ jQuery ->
         for element, k in e
           show[element] = not show[element] if (render & (1 << k))
 
-        item = swissKnife.forge m, key, show
+        item = swissKnife.forge m, key, show, ticker
         swissKnife.editAnchor(item, n) if show['link']
-
-        if ticker?
-          v = n[ticker]
-          t = item.children('.micro-ticker').eq(0)
-          t.text v if t?
         item.appendTo content
 
       for m in here.children '.scroll-content'
         scroll.columnize $(m)
+
       return true
 
     overlayJson: (json, key, here, onto, hideRest = false) ->

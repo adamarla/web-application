@@ -147,13 +147,9 @@ window.coreUtil = {
       target.empty() # Purge before showing new data
 
       for record, index in json
-        clone = swissKnife.forge record, key, visible, enable
-        if ticker?
-          v = record[key][ticker]
-          t = clone.children('.micro-ticker').eq(0)
-          t.text v if t?
-
+        clone = swissKnife.forge record, key, visible, ticker, enable
         clone.appendTo(target).hide().fadeIn('slow')
+
       return true
 
     # Find the selected major or minor link in the #control-panel

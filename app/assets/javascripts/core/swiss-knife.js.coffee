@@ -10,7 +10,7 @@ window.swissKnife = {
     the following 2 keys : name & id. The other keys handled here are 'checked'
     and 'selected'
   ###
-  forge : (record, key, visible = {radio:true}, enable = true) ->
+  forge : (record, key, visible = {radio:true}, ticker = null, enable = true) ->
     clone = $('#toolbox').children('.blueprint.swiss-knife').first().clone()
     swissKnife.customize clone, visible, enable
 
@@ -19,9 +19,6 @@ window.swissKnife = {
     clone.attr 'marker', id
 
     for child in clone.children()
-      #if $(child).hasClass 'hidden'
-      #  continue unless $(child).hasClass 'trojan'
-
       marker = $(child).attr 'marker'
       name = $(child).attr 'name'
 
@@ -36,6 +33,11 @@ window.swissKnife = {
           $(child).prop 'checked', (if data.checked isnt null then data.checked else false)
         when 'select'
           $(child).val data.select
+
+      if ticker? and $(child).hasClass 'micro-ticker'
+        v = data[ticker]
+        $(child).text v
+
     return clone
 
   ###  
