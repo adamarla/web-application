@@ -70,8 +70,9 @@ class Teacher < ActiveRecord::Base
     # By default, this method returns all sektions that a teacher CAN teach - even if she 
     # doesn't teach some of them. To get only the sektions a teacher teaches, pass false to this method
     s = Sektion.in_school(self.school_id).of_klass(self.klasses)
-    s = all ? s.where(:exclusive => false) : s.where(:teacher_id => self.id)
-    return s.order(:klass)
+    s = s - Sektion.where(:exclusive => true).where('teacher_id <> ?', self.id)
+    s = s.where(:teacher_id => self.id) unless all
+    return s.sort{ |m, n| m.klass <=> n.klass }
   end
 
   def students( all = true, filter = [] )
