@@ -15,8 +15,7 @@
 class Sektion < ActiveRecord::Base
   validates :klass, :presence => true 
   validates :name, :presence => true 
-
-  validates :name, :uniqueness => { :scope => [:klass, :school_id] } 
+  validates :name, :uniqueness => { :scope => [:school_id] } 
 
   belongs_to :school
 
@@ -32,7 +31,7 @@ class Sektion < ActiveRecord::Base
   end
 
   def label 
-    return "#{self.klass} - #{self.name}"
+    return self.student_ids.empty? ? "#{self.name}" : "#{self.klass} - #{self.name}"
   end 
 
   def taught_by? (teacher) 
