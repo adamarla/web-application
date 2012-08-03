@@ -29,8 +29,8 @@ class Suggestion < ActiveRecord::Base
   end
 
   def self.just_in
-    #select{ |m| m.question_ids.count == 0 }
-    where(:completed => false)
+    select{ |m| m.question_ids.count == 0 }
+    #where(:completed => false)
   end
 
   def check_for_completeness
