@@ -103,8 +103,12 @@ class Question < ActiveRecord::Base
     select{ |m| m.marks? > 0 }.sort{ |m,n| m.marks? <=> n.marks? }
   end
 
-  def name?
-    self.multi_part? ? "#{self.uid} (multi-part)" : "#{self.uid} ( #{self.marks?} points )" 
+  def ticker?
+    unless self.topic_id.nil?
+      return "#{self.topic.name} (#{self.marks?} points)"
+    else
+      return self.suggestion_id.nil? ? "" : "#{self.suggestion.signature}"
+    end
   end
 
   def mcq? 

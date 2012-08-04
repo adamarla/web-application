@@ -37,7 +37,7 @@ jQuery ->
       swissKnife.setButtonCaption '#courses-summary', 'edit'
     else if url.match(/questions\/list/)
       # flipchart initialized in core/behaviour 
-      coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question'
+      coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question', {radio:true}, true, 'ticker'
     else if url.match(/examiner\/pending_quizzes/)
       coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz', {radio:true, button:true}
       swissKnife.setButtonCaption '#pending-quizzes', 'answer-key'
