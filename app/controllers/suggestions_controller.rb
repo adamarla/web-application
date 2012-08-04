@@ -1,4 +1,6 @@
 class SuggestionsController < ApplicationController
+  before_filter :authenticate_account!
+  respond_to :json
 
   def block_db_slots
     m = params[:num_slots]
