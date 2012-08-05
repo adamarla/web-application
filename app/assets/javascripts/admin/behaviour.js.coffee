@@ -43,9 +43,7 @@ jQuery ->
       when 'suggestions-link'
         flipchart.enableAll $('#pending-suggestions')
         id = $('#control-panel').attr 'marker'
-        $.get "examiner/suggestions/just_in/#{id}" # without slots 
-        $.get "examiner/suggestions/wip/#{id}" # w/ slots
-        $.get "examiner/suggestions/completed/#{id}" # w/ completed TeX
+        $.get "examiner/suggestions/#{id}"
     return true
 
   ###

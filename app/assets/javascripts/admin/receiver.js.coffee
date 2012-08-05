@@ -52,14 +52,20 @@ jQuery ->
       adminUtil.buildPendingScanList json.scans
       canvas.loadNth 0
     else if url.match(/examiner\/suggestions/)
-      if url.match(/just_in/)
-        here = $('#days-since-receipt')
-        scroll.loadJson json.suggestions, 'suggestion', here, 'receipt', scroll.having.select
-        swissKnife.rebuildSelect $(s), 'num_slots', [0..9] for s in here.find '.swiss-knife'
-        here.accordion scroll.options
-      else
-        here = if url.match(/wip/) then $('#typeset-wip') else $('#typeset-completed')
-        coreUtil.interface.displayJson json.suggestions, here, 'suggestion', {radio:false}, true, 'receipt'
+      tab_1 = $('#days-since-receipt')
+      tab_2 = $('#typeset-wip')
+      tab_3 = $('#typeset-completed')
+
+      # Suggestions for whom no slot has been blocked
+      scroll.loadJson json.just_in, 'suggestion', tab_1, 'receipt', scroll.having.select
+      swissKnife.rebuildSelect $(s), 'num_slots', [0..9] for s in tab_1.find '.swiss-knife'
+      tab_1.accordion scroll.options
+
+      # Those that are a work-in-progress
+      coreUtil.interface.displayJson json.wips, tab_2, 'suggestion', {radio:false}, true, 'receipt'
+      # Those whose TeX has been written 
+      coreUtil.interface.displayJson json.completed, tab_3, 'suggestion', {radio:false}, true, 'receipt'
+      # Common preview
       preview.loadJson json, 'locker', true
     else if url.match(/question\?/) # rewind flipchart on successful question tagging
       child = $(this).children().eq(0)

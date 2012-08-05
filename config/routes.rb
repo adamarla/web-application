@@ -42,7 +42,7 @@ Webapp::Application.routes.draw do
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
   match 'examiner/update_workset' => 'examiners#update_workset', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
-  match 'examiner/suggestions/:type/:id' => 'examiners#suggestions', :via => :get
+  match 'examiner/suggestions/:id' => 'examiners#suggestions', :via => :get
 
   # Grade
   resource :grade, :only => [:update]

@@ -50,14 +50,12 @@ class ExaminersController < ApplicationController
   def suggestions
     examiner = params[:id].blank? ? current_account.loggable : Examiner.find(params[:id])
     unless examiner.nil?
-      @items = examiner.suggestions 
-      case params[:type]
-        when "just_in" then @items = @items.just_in
-        when "wip" then @items = @items.wip
-        when "completed" then @items = @items.completed
-      end
+      @all = examiner.suggestions 
+      @wips = @all.wip
+      @just_in = @all.just_in
+      @completed = @all.completed
     else
-      @items = []
+      @all = @wips = @just_in = @completed = []
     end
   end # of method
 
