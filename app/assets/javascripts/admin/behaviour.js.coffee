@@ -291,7 +291,7 @@ jQuery ->
   ###
   ###
 
-  $('#days-since-receipt').on 'click', '.swiss-knife', (event) ->
+  $('#days-since-receipt, #typeset-wip, #typeset-completed').on 'click', '.swiss-knife', (event) ->
     event.stopPropagation()
     uid = $(this).children('.label').eq(0).text()
     stop = preview.isAt uid
