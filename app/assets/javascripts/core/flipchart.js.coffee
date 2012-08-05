@@ -29,7 +29,7 @@ window.flipchart = {
         last = $(this).tabs 'length'
         next = ui.index + 1
         return if next is last
-        $(this).tabs 'option', 'disabled', [next...last]
+        $(this).tabs 'option', 'disabled', [next...last] unless $(this).hasClass 'all-active'
 
       select: (event, ui) ->
         current = ui.index
@@ -47,7 +47,7 @@ window.flipchart = {
 
         #alert "#{current} --> #{show}"
 
-        $(this).tabs 'option', 'disabled', disable
+        $(this).tabs 'option', 'disabled', disable unless $(this).hasClass 'all-active'
         tabs = $(this).children('ul').eq(0).children('li')
 
         for j in [0..last]
