@@ -1,9 +1,13 @@
 
-#pending-suggestions.flipchart
+#pending-suggestions.flipchart.all-active
   %ul
     %li
-      %a{ :href => '#typeset-pending' }= "Pendency"
-  #typeset-pending
+      %a{ :href => '#typeset-noslots' }= "Newly In"
+    %li
+      %a{ :href => '#typeset-wip' }= "In Progress"
+    %li
+      %a{ :href => '#typeset-completed' }= "Completed"
+  #typeset-noslots
     = semantic_form_for :suggestions, :url => suggestion_block_db_slots_path, :remote => true do |f|
       .submit-buttons.full-width
         = submit_tag 'block db slots', :class => 'right'
@@ -16,4 +20,7 @@
         .scroll-content
         .scroll-heading{ :marker => 0 }= "This week"
         .scroll-content
+
+  #typeset-wip
+  #typeset-completed
         

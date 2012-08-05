@@ -69,15 +69,11 @@ class Examiner < ActiveRecord::Base
   def pending_workload
     return GradedResponse.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
+
+  def suggestions
+    Suggestion.assigned_to self.id
+  end
   
-  def suggestions_wip
-    @wip = Suggestion.assigned_to(self.id).wip
-  end
-
-  def suggestions_just_in
-    @pending = Suggestion.assigned_to(self.id).just_in
-  end
-
   def self.distribute_work
 =begin
   Distribution algorithm

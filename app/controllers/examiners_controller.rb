@@ -47,14 +47,18 @@ class ExaminersController < ApplicationController
     render :json => failures, :status => :ok
   end
 
-  def suggestions_just_in
-    examiner = Examiner.where(:id => current_account.loggable_id).first
-    @pending = examiner.suggestions_just_in 
-  end
-
-  def suggestions_wip
-    examiner = Examiner.where(:id => current_account.loggable_id).first
-    @wip = examiner.suggestions_wip 
-  end 
+  def suggestions
+    examiner = params[:id].blank? ? current_account.loggable : Examiner.find(params[:id])
+    unless examiner.nil?
+      @items = examiner.suggestions 
+      case params[:type]
+        when "just_in" then @items = @items.just_in
+        when "wip" then @items = @items.wip
+        when "completed" then @items = @items.completed
+      end
+    else
+      @items = []
+    end
+  end # of method
 
 end

@@ -41,7 +41,11 @@ jQuery ->
         $.get 'examiner/pending_quizzes'
         canvas.initialize '#grading-canvas'
       when 'suggestions-link'
-        $.get 'examiner/suggestions_just_in' # those with no slots
+        flipchart.enableAll $('#pending-suggestions')
+        id = $('#control-panel').attr 'marker'
+        $.get "examiner/suggestions/just_in/#{id}" # without slots 
+        $.get "examiner/suggestions/wip/#{id}" # w/ slots
+        $.get "examiner/suggestions/completed/#{id}" # w/ completed TeX
     return true
 
   ###
