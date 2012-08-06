@@ -5,7 +5,10 @@ class AccountsController < ApplicationController
   def update
     account = Account.find params[:id]
     head :bad_request if account.nil?
-    head (account.update_attribute(:email, params[:account][:email]) ? :ok : :bad_request)
+    done = account.update_attribute :email, params[:account][:email]
+
+    done ? render(:json => {:status => "new e-mail set"}, :status => :ok) : 
+           render(:json => {:status => "update failed"}, :status => :bad_request)
   end
 
   def update_password
@@ -14,7 +17,8 @@ class AccountsController < ApplicationController
     failed = current_account.update_attributes(:password => account[:password], 
                                                :password_confirmation => account[:password_confirmation]) ? false : true
     sign_in current_account, :bypass => true unless failed
-    head (failed) ? :bad_request : :ok
+    failed ? render(:json => {:status => "update failed"}, :status => :bad_request) :
+             render(:json => {:status => "new password set"}, :status => :ok) 
   end
 
 end
