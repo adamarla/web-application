@@ -76,13 +76,9 @@ class Teacher < ActiveRecord::Base
   end
 
   def students( all = true, filter = [] )
-    sektions = self.sektions all 
-    unless sektions.empty?
-      student_ids = StudentRoster.where(:sektion_id => sektions.map(&:id)).map(&:student_id).uniq
-      students = Student.where(:id => student_ids)
-    else
-      students = Student.where(:school_id => self.school_id, :klass => self.klasses)
-    end
+    # This method returns all the students a teacher can teach - even if she does 
+    # actually teach them 
+    students = Student.where(:school_id => self.school_id, :klass => self.klasses)
     return filter.empty? ? students : students.name_begins_with(filter)
   end 
 
