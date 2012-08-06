@@ -77,8 +77,12 @@ class Teacher < ActiveRecord::Base
 
   def students( all = true, filter = [] )
     sektions = self.sektions all 
-    student_ids = StudentRoster.where(:sektion_id => sektions.map(&:id)).map(&:student_id).uniq
-    students = Student.where(:id => student_ids)
+    unless sektions.empty?
+      student_ids = StudentRoster.where(:sektion_id => sektions.map(&:id)).map(&:student_id).uniq
+      students = Student.where(:id => student_ids)
+    else
+      students = Student.where(:school_id => self.school_id, :klass => self.klasses)
+    end
     return filter.empty? ? students : students.name_begins_with(filter)
   end 
 
