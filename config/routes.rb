@@ -71,7 +71,7 @@ Webapp::Application.routes.draw do
   match 'topics/list' => 'topics#list', :via => :get
 
   # Question
-  resource :question, :only => [:create, :update], :controller => :question
+  resource :question, :only => [:update], :controller => :question
   match 'questions/list' => 'question#list', :via => :get
   match 'question/preview' => 'question#preview', :via => :get
 

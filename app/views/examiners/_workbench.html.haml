@@ -14,7 +14,7 @@
   #topic-selection
     #tag-question-topics.as-accordion
   #misc-traits
-    = semantic_form_for :misc, :remote => true, :url => '/question', :method => :put do |f|
+    = semantic_form_for :misc, :remote => true, :url => question_path  do |f|
       = f.inputs do
         = f.input :difficulty, :as => :select, :include_blank => false,
                   :collection => {'junior school (<9)' => 1, 'middle (9-10)' => 2, 'senior (11-12)' => 3},
