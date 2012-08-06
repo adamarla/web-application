@@ -222,9 +222,9 @@ window.coreUtil = {
       ###
       form = if typeof form is 'string' then $(form) else form
       for knife in form.find '.swiss-knife'
+        continue if $(knife).hasClass 'hidden'
         check = $(knife).children 'input[type="checkbox"]:first'
-        continue if check.hasClass 'hidden'
-        check.prop 'checked', state
+        check.prop 'checked', state unless check.hasClass 'hidden'
       return true
 
     numChecked : (form) ->
