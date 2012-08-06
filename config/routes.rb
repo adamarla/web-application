@@ -17,7 +17,7 @@ Webapp::Application.routes.draw do
 
   # Account 
   resource :account, :only => [:update]
-  match 'update_password' => 'accounts#update_password', :via => :put
+  match 'update_password' => 'accounts#update_password', :via => [:put, :post]
 
   # Admin 
   resource :admin, :controller => :admin 
@@ -33,7 +33,7 @@ Webapp::Application.routes.draw do
   match 'course/profile' => 'courses#profile', :via => :get
   match 'course/coverage' => 'courses#coverage', :via => :get
   match 'course/verticals' => 'courses#verticals', :via => :get
-  match 'course/questions' => 'courses#questions', :via => :put
+  match 'course/questions' => 'courses#questions', :via => [:put, :post]
   match 'course/topics_in' => 'courses#topics_in', :via => :get
 
   # Examiner 
@@ -46,7 +46,7 @@ Webapp::Application.routes.draw do
 
   # Grade
   resource :grade, :only => [:update]
-  match 'assignGrades' => 'grades#assign', :via => :put
+  match 'assignGrades' => 'grades#assign', :via => [:put, :post]
 
   # School 
   resource :school, :only => [:show, :create, :update]
@@ -79,7 +79,7 @@ Webapp::Application.routes.draw do
   resource :quiz, :only => [:show]
   match 'quizzes/list' => 'quizzes#list', :via => :get
   match 'quiz/preview' => 'quizzes#preview', :via => :get
-  match 'quiz/assign' => 'quizzes#assign_to', :via => :put
+  match 'quiz/assign' => 'quizzes#assign_to', :via => [:put, :post]
   match 'quiz/pending_pages' => 'quizzes#pending_pages', :via => :get
   match 'quiz/pending_scans' => 'quizzes#pending_scans', :via => :get
   match 'quiz/testpapers' => 'quizzes#testpapers', :via => :get
@@ -100,12 +100,12 @@ Webapp::Application.routes.draw do
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
-  # match 'teacher/update_roster' => 'teachers#update_roster', :via => :put
+  # match 'teacher/update_roster' => 'teachers#update_roster', :via => [:put, :post]
   match 'teacher/sektions' => 'teachers#sektions', :via => :get
   match 'teacher/coverage' => 'teachers#coverage', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/courses' => 'teachers#courses', :via => :get
-  match 'teacher/build_quiz' => 'teachers#build_quiz', :via => :put
+  match 'teacher/build_quiz' => 'teachers#build_quiz', :via => [:put, :post]
   match 'teacher/testpapers' => 'teachers#testpapers', :via => :get
   match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
   match 'teacher/like_q' => 'teachers#like_question', :via => :get
