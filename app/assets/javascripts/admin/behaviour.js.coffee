@@ -156,7 +156,8 @@ jQuery ->
     return false if tab.length is 0 # block submission
     topic = tab.prev('li').attr 'marker'
     question = tab.prev('li').prev('li').attr 'marker'
-    $(this).attr 'action', "/question?id=#{question}&topic=#{topic}"
+    coreUtil.forms.modifyAction $(this), "/question.json?id=#{question}&topic=#{topic}", "put"
+    # $(this).attr 'action', "/question?id=#{question}&topic=#{topic}"
     return true
 
   ###
