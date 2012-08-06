@@ -265,8 +265,13 @@ jQuery ->
   ###
 
   $('form').ajaxSuccess (e,xhr,settings) ->
+    dontClear = ['topic-selection-list']
     action = $(this).attr 'action'
-    coreUtil.forms.clear $(this) if action is settings.url
+
+    if action is settings.url
+      parent = $(this).parent().attr 'id'
+      return if not parent? or parent in dontClear else coreUtil.forms.clear $(this)
+    return true
 
   ###
     If a <form> has or requires multiple submit buttons, then house each 
