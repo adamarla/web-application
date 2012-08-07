@@ -120,23 +120,14 @@ class Teacher < ActiveRecord::Base
     self.account.username
   end 
 
-  def name( who_wants_to_know = :guest )
-    case who_wants_to_know 
-      when :teacher, :admin, :school
-        return "#{self.first_name} #{self.last_name} (#{self.username?})"
-      else 
-        return "#{self.first_name} #{self.last_name}"
-    end
+  def name
+    return "#{self.first_name} #{self.last_name}"
   end 
 
   def name=(name)
     split = name.split
     self.first_name = split.first
     self.last_name = split.last
-  end
-
-  def print_name
-    return "#{self.first_name} #{self.last_name}"
   end
 
   def roster 

@@ -61,11 +61,6 @@ class Student < ActiveRecord::Base
     return "#{self.first_name} #{self.last_name}"
   end 
 
-  def print_name
-    sektion = Sektion.where(:id => self.sektion_id).select('name,klass').first
-    return "#{self.first_name} #{self.last_name} (#{sektion.klass} - #{sektion.name})"
-  end
-
   def name=(name)
     split = name.split
     self.first_name = split.first

@@ -206,7 +206,7 @@ class Quiz < ActiveRecord::Base
     response = SavonClient.request :wsdl, :build_quiz do  
       soap.body = { 
          :quiz => { :id => self.id },
-         :teacher => { :id => teacher.id, :name => teacher.print_name },
+         :teacher => { :id => teacher.id, :name => teacher.name },
          :school => { :id => teacher.school.id, :name => teacher.school.name },
          :page => self.layout?
       }
