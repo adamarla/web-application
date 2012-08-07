@@ -47,7 +47,7 @@ jQuery ->
         continue if sk.length is 0
 
         a = sk.children('a').eq(0)
-        a.text 'list pdf'
+        a.text 'download list'
         a.attr 'href', "#{gutenberg.server}/front-desk/schools/#{r.lookin}/#{r.lookfor}.pdf"
     else if url.match(/sektion\.json/)
       if json.sektion? # same URL for create & update actions, but different JSON responses 
