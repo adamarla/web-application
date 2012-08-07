@@ -57,13 +57,8 @@ class Student < ActiveRecord::Base
     self.account.username
   end 
   
-  def name (who_wants_to_know = :guest) 
-    case who_wants_to_know 
-      when :teacher, :admin, :school
-        return "#{self.first_name} #{self.last_name} (#{self.username?})"
-      else 
-        return "#{self.first_name} #{self.last_name}"
-    end
+  def name
+    return "#{self.first_name} #{self.last_name}"
   end 
 
   def print_name
