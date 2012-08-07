@@ -100,33 +100,6 @@ class TeachersController < ApplicationController
     end 
   end 
 
-=begin
-  def roster 
-    @teacher = Teacher.find params[:id] 
-    head :bad_request if @teacher.nil? 
-
-    @sektions = Sektion.where(:school_id => @teacher.school_id).order(:klass).order(:name)
-    respond_with @sektions, @teacher
-  end 
-
-  def update_roster
-    teacher = Teacher.find params[:id] 
-    head :bad_request if teacher.nil? 
-
-    roster = params[:checked] # a hash with (key, value) = (id, boolean)
-    retain = [] 
-
-    roster.each { |id, teaches| 
-      sektion = Sektion.find id 
-      unless sektion.nil? 
-        retain << sektion if teaches 
-      end 
-    }
-    teacher.sektions = retain 
-    render :json => { :status => 'Done' }, :status => :ok
-  end 
-=end
-
   def specializations
     @subjects = Subject.all
     @teacher = Teacher.find params[:id]
