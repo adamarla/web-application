@@ -57,7 +57,7 @@ class Sektion < ActiveRecord::Base
   def pdf
     # Apostrophe is a bit of a "wild" character. Can't have file names with it. Take care of it too
     pdf_file = "#{self.name.split(' ').join('_').split("'").join}"
-    return "#{self.id}-#{self.klass}-#{pdf_file}"
+    return "#{self.klass}-#{pdf_file}"
   end
 
 =begin

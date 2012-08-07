@@ -4,4 +4,4 @@ collection @sektions => :sektions
   attribute :label => :name
   node(:ticker) { |m| "#{m.students.count} student(s)" }
   node(:lookin) { |m| m.school_id }
-  node(:lookfor) { |m| m.pdf }
+  node(:lookfor) { |m| "#{m.id}-#{m.pdf}" }
