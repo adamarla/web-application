@@ -150,8 +150,8 @@ class TeachersController < ApplicationController
   end 
   
   def sektions
-    teacher = Teacher.find params[:id]
-    @sektions = teacher.nil? ? [] : teacher.sektions
+    @teacher = Teacher.find params[:id]
+    @sektions = @teacher.nil? ? [] : @teacher.sektions
   end
 
   def students 

@@ -52,6 +52,12 @@ class Sektion < ActiveRecord::Base
     } 
   end 
 
+  def pdf
+    # Apostrophe is a bit of a "wild" character. Can't have file names with it. Take care of it too
+    pdf_file = "#{self.name.split(' ').join('_').split("'").join}.pdf"
+    return "#{self.klass}-#{pdf_file}"
+  end
+
 =begin
   This next method is for one-time-call only and then too only from within a migration file
   It has been written as part of the transition scheme for supporting many-to-many mapping 
