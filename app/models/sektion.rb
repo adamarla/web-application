@@ -22,6 +22,8 @@ class Sektion < ActiveRecord::Base
   has_many :student_rosters
   has_many :students, :through => :student_rosters
 
+  after_update :rebuild_student_roster_pdf
+
   def self.of_klass(k)
     where(:klass => k)
   end
@@ -84,5 +86,24 @@ class Sektion < ActiveRecord::Base
       s.update_attribute :sektion_id, sektion
     end
   end #down
+
+  private
+    
+    def rebuild_student_roster_pdf
+      students = self.students.map{ |m| { :id => m.username?, :name => m.name } }
+      students.push({ :id => "", :name => ""}) if students.count.odd?
+
+      SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_student_roster']}" 
+
+      response = SavonClient.request :wsdl, :generate_student_roster do  
+        soap.body = {
+          :school => { :id => self.school_id, :name => self.school.name },
+          :group => { :id => self.id, :name => self.label },
+          :default_passwd => self.school.zip_code,
+          :members => students 
+        }
+       end # of response 
+       return response.to_hash[:generate_student_roster]
+    end
 
 end
