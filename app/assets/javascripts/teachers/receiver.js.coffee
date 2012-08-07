@@ -48,7 +48,7 @@ jQuery ->
 
         a = sk.children('a').eq(0)
         a.text 'list pdf'
-        a.attr 'href', "#{gutenberg.server}/front-desk/teachers/#{r.lookin}/petty-cash/#{r.lookfor}"
+        a.attr 'href', "#{gutenberg.server}/front-desk/schools/#{r.lookin}/#{r.lookfor}.pdf"
     else if url.match(/sektion\.json/)
       if json.sektion? # same URL for create & update actions, but different JSON responses 
         item = swissKnife.forge json, 'sektion', {radio:true}, 'ticker'

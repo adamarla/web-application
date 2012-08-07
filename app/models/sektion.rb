@@ -56,8 +56,8 @@ class Sektion < ActiveRecord::Base
 
   def pdf
     # Apostrophe is a bit of a "wild" character. Can't have file names with it. Take care of it too
-    pdf_file = "#{self.name.split(' ').join('_').split("'").join}.pdf"
-    return "#{self.klass}-#{pdf_file}"
+    pdf_file = "#{self.name.split(' ').join('_').split("'").join}"
+    return "#{self.id}-#{self.klass}-#{pdf_file}"
   end
 
 =begin
@@ -98,8 +98,7 @@ class Sektion < ActiveRecord::Base
       response = SavonClient.request :wsdl, :generate_student_roster do  
         soap.body = {
           :school => { :id => self.school_id, :name => self.school.name },
-          :group => { :id => self.id, :name => self.label },
-          :teacher => { :id => "7", :name => "alexandra-nonsense" },
+          :group => { :id => self.id, :name => self.pdf },
           :default_passwd => self.school.zip_code,
           :members => students 
         }

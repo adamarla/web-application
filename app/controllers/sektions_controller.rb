@@ -25,8 +25,16 @@ class SektionsController < ApplicationController
     n_occurrences = [*9..12].map{ |m| klasses.count m }
     klass = [*9..12].at(n_occurrences.index n_occurrences.max)
 
-    sektion.update_attribute :klass, klass 
+=begin
+    Do NOT change the relative order of the next 2 lines !!
+    The first line updates the StudentRoster table - not Sektion
+    The second line updates the Sektion object 
+
+    Request for re-generation of roster PDF is tied to (2). So, (2) must
+    happen AFTER (1)
+=end
     sektion.student_ids = student_ids
+    sektion.update_attribute :klass, klass 
     render :json => { :status => "updated" }, :status => :ok
   end 
 
