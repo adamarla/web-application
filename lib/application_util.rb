@@ -10,14 +10,17 @@ module ApplicationUtil
     end
     return nil if !workable
 
+    last_bits = role == :school ? [] : (me.last_name.nil? ? [] : me.last_name.split)
+
     case role 
       when :teacher, :admin 
-        prefix = "#{me.first_name[0]}#{me.last_name}".downcase
+        prefix = last_bits.empty? ? "#{me.first_name}" : "#{me.first_name[0]}#{last_bits.last}"
       when :student, :examiner
-        prefix = "#{me.first_name}#{me.last_name[0]}".downcase
+        prefix = last_bits.empty? ? "#{me.first_name}" : "#{me.first_name}#{last_bits.last[0]}"
       when :school
-        prefix = "principal.#{me.tag}".downcase
+        prefix = "principal.#{me.tag}"
     end 
+    prefix = prefix.downcase
     return prefix
   end
 

@@ -99,6 +99,7 @@ class Sektion < ActiveRecord::Base
         soap.body = {
           :school => { :id => self.school_id, :name => self.school.name },
           :group => { :id => self.id, :name => self.label },
+          :teacher => { :id => "7", :name => "alexandra-nonsense" },
           :default_passwd => self.school.zip_code,
           :members => students 
         }

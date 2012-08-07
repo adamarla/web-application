@@ -44,9 +44,8 @@ class Teacher < ActiveRecord::Base
   has_many :favourites, :dependent => :destroy
   has_many :suggestions
 
-  validates :first_name, :last_name, :presence => true  
+  validates :first_name, :presence => true  
 
-  before_save  :humanize_name
   after_create :build_grade_table, :generate_suggestion_form
   after_save   :reset_login_info
 
@@ -126,9 +125,15 @@ class Teacher < ActiveRecord::Base
 
   def name=(name)
     split = name.split
-    self.first_name = split.first
-    self.last_name = split.last
+    last = split.count - 1
+    self.first_name = split.first.humanize
+
+    if last > 0
+      middle = split[1...last].map{ |m| m.humanize[0] }.join('.')
+      self.last_name = middle.empty? ? "#{split.last.humanize}" : "#{middle} #{split.last.humanize}"
+    end
   end
+
 
   def roster 
     # Yes, yes.. We could have gotten the same thing by simply calling self.sektions
@@ -215,10 +220,4 @@ class Teacher < ActiveRecord::Base
       self.new_record? || !self.account
     end 
 
-    def humanize_name
-      self.first_name = self.first_name.humanize
-      self.last_name = self.last_name.humanize
-    end 
-
-
-end
+end # of class 

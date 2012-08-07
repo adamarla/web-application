@@ -15,24 +15,24 @@
 class Examiner < ActiveRecord::Base
   has_one :account, :as => :loggable
   has_many :graded_responses
-  before_save :humanize_name
 
   # [:all] ~> [:admin]
   # [:num_contested] ~> [:student]
   #attr_accessible :num_contested
 
   def name 
-    return "#{self.last_name}, #{self.first_name}"
+    return self.last_name.nil? ? self.first_name : "#{self.first_name} #{self.last_name}"
   end 
-
-  def abbreviated_name
-    return "#{self.first_name} #{self.last_name[0]}."
-  end
 
   def name=(name)
     split = name.split
-    self.first_name = split.first
-    self.last_name = split.last
+    last = split.count - 1
+    self.first_name = split.first.humanize
+
+    if last > 0
+      middle = split[1...last].map{ |m| m.humanize[0] }.join('.')
+      self.last_name = middle.empty? ? "#{split.last.humanize}" : "#{middle} #{split.last.humanize}"
+    end
   end
 
   def pending_quizzes
@@ -135,11 +135,6 @@ class Examiner < ActiveRecord::Base
   end
 
   private
-    
-    def humanize_name
-      self.first_name = self.first_name.humanize
-      self.last_name = self.last_name.humanize
-    end 
 
     def self.distribute_standalone
       unassigned = GradedResponse.unassigned.with_scan.standalone

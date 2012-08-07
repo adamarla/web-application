@@ -30,8 +30,8 @@ class Student < ActiveRecord::Base
   has_many :answer_sheets
   has_many :testpapers, :through => :answer_sheets
 
-  validates :first_name, :last_name, :presence => true
-  before_save :humanize_name
+  validates :first_name, :presence => true
+
   after_save  :reset_login_info
 
   # When should a student be destroyed? My guess, some fixed time after 
@@ -63,8 +63,13 @@ class Student < ActiveRecord::Base
 
   def name=(name)
     split = name.split
-    self.first_name = split.first
-    self.last_name = split.last
+    last = split.count - 1
+    self.first_name = split.first.humanize
+
+    if last > 0
+      middle = split[1...last].map{ |m| m.humanize[0] }.join('.')
+      self.last_name = middle.empty? ? "#{split.last.humanize}" : "#{middle} #{split.last.humanize}"
+    end
   end
 
   def teachers
@@ -103,11 +108,6 @@ class Student < ActiveRecord::Base
   private 
     def destroyable? 
       return false 
-    end 
-
-    def humanize_name
-      self.first_name = self.first_name.humanize
-      self.last_name = self.last_name.humanize
     end 
 
     def reset_login_info
