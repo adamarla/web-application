@@ -38,7 +38,17 @@ jQuery ->
         when 'quizzes-summary' then here = $('#sektion-list')
         when 'sektions-summary' then here = $('#all-my-sektions')
         else here = null
-      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true}, true, 'ticker' unless here is null
+      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true, link:true}, true, 'ticker' unless here is null
+
+      # Edit the <a> in the swiss-knives to point to downloadble list of student names
+      for m in json.sektions
+        r = m.sektion
+        sk = here.find ".swiss-knife[marker=#{r.id}]"
+        continue if sk.length is 0
+
+        a = sk.children('a').eq(0)
+        a.text 'list pdf'
+        a.attr 'href', "#{gutenberg.server}/front-desk/teachers/#{r.lookin}/petty-cash/#{r.lookfor}"
     else if url.match(/sektion\.json/)
       if json.sektion? # same URL for create & update actions, but different JSON responses 
         item = swissKnife.forge json, 'sektion', {radio:true}, 'ticker'
