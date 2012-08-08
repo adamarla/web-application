@@ -77,10 +77,8 @@ class Student < ActiveRecord::Base
   end 
 
   def quiz_ids
-    # Return the list if Quiz IDs this student has taken
-    responses = GradedResponse.where(:student_id => self.id)
-    selection_ids = responses.select(:q_selection_id).map(&:q_selection_id)
-    quiz_ids = QSelection.where(:id => selection_ids).select(:quiz_id).map(&:quiz_id).uniq
+    t_ids = AnswerSheet.where(:student_id => self.id).map(&:testpaper_id)
+    quiz_ids = Testpaper.where(:id => t_ids).map(&:quiz_id).uniq
     return quiz_ids
   end
 
