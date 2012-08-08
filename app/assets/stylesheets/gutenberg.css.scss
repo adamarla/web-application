@@ -205,6 +205,16 @@ p > a, div > a {
   } 
 } 
 
+#testpaper { 
+  > .swiss-knife { 
+    min-height: 30px ;
+
+    > .micro-ticker { 
+      min-width: 90% ;
+    } 
+  } 
+} 
+
 #pending-quizzes {
   a { 
     color: $my-blue ;
@@ -399,7 +409,6 @@ span.unhappyMessage {
     left: 3% ;
     right: 3% ;
   } 
-  max-width: 40% ;
 }
 
 .led {
