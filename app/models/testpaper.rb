@@ -59,4 +59,16 @@ class Testpaper < ActiveRecord::Base
     self.students.order(:first_name)
   end
 
+  def self.name_if_students?(student_ids)
+    sektion_ids = StudentRoster.where(:student_id => student_ids).map(&:sektion_id).uniq
+    sektions = Sektion.where(:id => sektion_ids).order(:klass).order(:name)
+    klasses = sektions.map(&:klass).uniq
+
+    name = ""
+    klasses.each do |k|
+      name.concat "#{k}-(#{sektions.where(:klass => k).map(&:name).join(",")}) "  
+    end
+    return name # example: 11-(A,B,Weak students) 12-(A)
+  end
+
 end # of class
