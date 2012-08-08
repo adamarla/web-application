@@ -82,6 +82,11 @@ class Student < ActiveRecord::Base
     return quiz_ids
   end
 
+  def marks_scored_in(testpaper_id)
+    a = AnswerSheet.where(:student_id => self.id, :testpaper_id => testpaper_id).first 
+    return a.nil? ? 0 : a.marks?
+  end
+
   def responses(testpaper_id)
     a = GradedResponse.of_student(self.id).in_testpaper(testpaper_id).with_scan
     return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
