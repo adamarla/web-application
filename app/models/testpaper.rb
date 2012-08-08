@@ -68,7 +68,7 @@ class Testpaper < ActiveRecord::Base
     klasses.each do |k|
       name.concat "#{k}-(#{sektions.where(:klass => k).map(&:name).join(",")}) "  
     end
-    return name # example: 11-(A,B,Weak students) 12-(A)
+    return name.strip # example: 11-(A,B,Weak students) 12-(A)
   end
 
 end # of class
