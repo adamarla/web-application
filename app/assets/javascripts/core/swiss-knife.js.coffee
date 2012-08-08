@@ -36,7 +36,7 @@ window.swissKnife = {
 
       if ticker? and $(child).hasClass 'micro-ticker'
         v = data[ticker]
-        $(child).text v
+        $(child).text v if v?
 
     return clone
 
