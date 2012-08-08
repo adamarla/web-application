@@ -188,7 +188,7 @@ p > a, div > a {
 }
 
 .swiss-knife { 
-  min-height: 22px ;
+  min-height: 40px ;
   border-bottom: 1px solid $my-blue ; 
   padding: {
     top: 2px ;
@@ -399,12 +399,7 @@ span.unhappyMessage {
     left: 3% ;
     right: 3% ;
   } 
-}
-
-#report-cards-summary {
-  .micro-ticker {
-    font-size: 9pt ;
-  }
+  max-width: 40% ;
 }
 
 .led {
