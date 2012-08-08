@@ -20,7 +20,7 @@ jQuery ->
       here.accordion scroll.options
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
-      scroll.loadJson json.testpapers, 'testpaper', here, null, scroll.having.link | scroll.having.nolabel
+      scroll.loadJson json.testpapers, 'testpaper', here, 'ticker', scroll.having.link | scroll.having.nolabel
 
       # Change the href on the <a> to point to PDFs in atm/
       for a in here.find 'a'
