@@ -58,7 +58,7 @@ class Student < ActiveRecord::Base
   end 
   
   def name
-    return "#{self.first_name} #{self.last_name}"
+    return self.last_name.nil? ? self.first_name : "#{self.first_name} #{self.last_name}"
   end 
 
   def name=(name)
