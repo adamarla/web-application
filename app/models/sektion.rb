@@ -89,7 +89,6 @@ class Sektion < ActiveRecord::Base
     end
   end #down
 
-  private
     
     def rebuild_student_roster_pdf
       students = self.students.map{ |m| { :id => m.username?, :name => m.name } }
@@ -108,4 +107,5 @@ class Sektion < ActiveRecord::Base
        return response.to_hash[:generate_student_roster]
     end
 
+  private
 end
