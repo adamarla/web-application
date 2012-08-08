@@ -2,11 +2,12 @@
 #
 # Table name: testpapers
 #
-#  id         :integer         not null, primary key
-#  quiz_id    :integer
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer         not null, primary key
+#  quiz_id     :integer
+#  name        :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  publishable :boolean         default(FALSE)
 #
 
 class Testpaper < ActiveRecord::Base
