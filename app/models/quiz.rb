@@ -69,7 +69,8 @@ class Quiz < ActiveRecord::Base
     #    Test #4: Apr 20, 2012
 
     ntests = Testpaper.where(:quiz_id => self.id).count
-    assigned_name = "Worksheet ##{ntests + 1}: #{Date.today.strftime("%b %d, %Y")}"
+    assigned_name = Testpaper.name_if_students? students.map(&:id)
+    # assigned_name = "Worksheet ##{ntests + 1}: #{Date.today.strftime("%b %d, %Y")}"
     testpaper = self.testpapers.new :name => assigned_name # (1)
     questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
