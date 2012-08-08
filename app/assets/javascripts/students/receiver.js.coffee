@@ -9,6 +9,11 @@ jQuery ->
     if url.match(/student\/testpapers/)
       here = $('#published-worksheets')
       coreUtil.interface.displayJson json.testpapers, here, 'testpaper'
+    else if url.match(/student\/responses/)
+      here = $('#my-grades')
+      coreUtil.interface.displayJson json.preview.questions, here, 'question', {}
+      reportCard.overview json.preview.questions, here, 'question'
+      preview.loadJson json, 'locker'
     else
       matched = false
 
