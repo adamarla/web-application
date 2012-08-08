@@ -51,8 +51,14 @@ class Testpaper < ActiveRecord::Base
       score = ((marks/thus_far)*100).round(2)
       individual_scores.push score
     end
-    total = individual_scores.inject(:+)
-    return (total / individual_scores.count).round(2)
+
+    unless individual_scores.empty?
+      total = individual_scores.inject(:+)
+      mean = (total / individual_scores.count).round(2)
+    else
+      mean = 0
+    end
+    return mean
   end
 
   def takers
