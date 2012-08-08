@@ -1191,5 +1191,12 @@ li {
       margin-bottom: 10px ;
     } 
   } 
+} 
 
+#published-worksheets { 
+  .swiss-knife {
+    > .micro-ticker { 
+      color: $my-blue ;
+    } 
+  } 
 } 
