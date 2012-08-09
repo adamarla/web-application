@@ -1196,7 +1196,14 @@ li {
 #published-worksheets { 
   .swiss-knife {
     > .micro-ticker { 
-      color: $my-blue ;
+      padding: 4px 5px ;
+      border-radius: 4px ;
+      background-color: $orange ;
+      font: { 
+        size: 11px ;
+        weight: bold ;
+      }
+      color: white ;
     } 
   } 
 } 
