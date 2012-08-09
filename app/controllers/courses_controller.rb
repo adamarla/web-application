@@ -82,13 +82,22 @@ class CoursesController < ApplicationController
 
     tid = current_account.loggable_id # has to be a teacher. If not, then sth is wrong !
     skip_used = params[:skip_previously_used] == "true" ? true : false
-    only_liked = params[:liked] == "true" ? true : false
+    favs_only = params[:liked] == "true" ? true : false
+    suggested = params[:suggested] == "true" ? true : false
     topic_ids = params[:checked].keys.map(&:to_i)
-    liked = Favourite.where(:teacher_id => tid).map(&:question_id)
 
-    candidates = course.questions_on topic_ids, (skip_used ? tid : nil)
-    qids = candidates.map(&:id)
-    @questions = Question.where(:id => (only_liked ? liked & qids : qids))
+    show = course.questions_on(topic_ids, (skip_used ? tid : nil)).map(&:id)
+
+    # Filteration order 
+    #   1. previously used 
+    #   2. favs 
+    #   3. suggested - only if favs_only = false
+
+    show = Favourite.where(:teacher_id => tid).map(&:question_id) & show if favs_only
+    if suggested 
+      show = Suggestion.where(:teacher_id => tid).map(&:question_ids).flatten & show unless favs_only
+    end
+    @questions = Question.where(:id => show) 
 
 =begin
     Paying customers can see any question relevant to their syllabus. 
