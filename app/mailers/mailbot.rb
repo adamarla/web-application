@@ -1,6 +1,6 @@
 class Mailbot < ActionMailer::Base
   #default from: "from@example.com"
-  default :from => "support@gradians.com" 
+  default :from => "help@gradians.com" 
   layout 'mailbot'
 
 =begin
