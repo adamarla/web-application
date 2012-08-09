@@ -17,7 +17,7 @@ class AnswerSheet < ActiveRecord::Base
 
   def complete?
     # Complete if scans are available for every graded response
-    quiz_id = Testpaper.where(:id => self.testpaper_id).first.quiz.id
+    quiz_id = Testpaper.where(:id => self.testpaper_id).first.quiz_id
     missing = GradedResponse.of_student(student_id).in_quiz(quiz_id).without_scan.count
     return (missing > 0 ? false : true)
   end
@@ -25,7 +25,7 @@ class AnswerSheet < ActiveRecord::Base
   def graded? 
     return true if self.graded
 
-    quiz_id = self.testpaper.quiz.id
+    quiz_id = self.testpaper.quiz_id
     fully_graded = GradedResponse.ungraded.in_quiz(quiz_id).of_student(self.student_id).count > 0 ? false : true
     self.update_attribute(:graded, fully_graded) if fully_graded 
     return fully_graded
@@ -34,7 +34,7 @@ class AnswerSheet < ActiveRecord::Base
   def marks?
     return self.marks unless self.marks.nil?
 
-    quiz_id = self.testpaper.quiz.id
+    quiz_id = self.testpaper.quiz_id
     marks = GradedResponse.graded.in_quiz(quiz_id).of_student(self.student_id).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     self.update_attribute(:marks, marks) if self.graded?
     return marks.nil? ? 0 : marks
@@ -45,7 +45,7 @@ class AnswerSheet < ActiveRecord::Base
     # and more of the student's testpaper is graded 
     return self.testpaper.quiz.total? if self.graded?
 
-    quiz_id = self.testpaper.quiz.id
+    quiz_id = self.testpaper.quiz_id
     graded = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).graded
     thus_far = graded.map(&:q_selection).map(&:question).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     return thus_far.nil? ? 0 : thus_far # will always be an integer!

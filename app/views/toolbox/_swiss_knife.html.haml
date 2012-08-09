@@ -24,10 +24,10 @@
                :marker => "#{marker}", :name => "checked[#{marker}]" }  
   .label.left= "#{label}"
   %a.link.left{:href => '#', :marker => '#', :parent => '#', :p_id => '#'}
-  %div.micro-ticker.right
   %input.button.right{ :type => :button, :disabled => true }
   %select.right.difficulty.select{ :name => "difficulty[#{marker}]", :disabled => true, :type => :select}
     %option{ :value => 0 }= ""
     %option{ :value => 1 }= "introductory"
     %option{ :value => 2 }= "intermediate"
     %option{ :value => 3 }= "advanced"
+  %div.micro-ticker.right

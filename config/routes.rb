@@ -87,6 +87,7 @@ Webapp::Application.routes.draw do
   # Student 
   resource :student, :only => [:create, :update, :show]
   match 'student/responses' => 'students#responses', :via => :get
+  match 'student/testpapers' => 'students#testpapers', :via => :get
 
   # Sektion 
   resource :sektion, :only => [:create, :update]

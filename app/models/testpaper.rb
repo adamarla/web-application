@@ -2,11 +2,12 @@
 #
 # Table name: testpapers
 #
-#  id         :integer         not null, primary key
-#  quiz_id    :integer
-#  name       :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer         not null, primary key
+#  quiz_id     :integer
+#  name        :string(255)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  publishable :boolean         default(FALSE)
 #
 
 class Testpaper < ActiveRecord::Base
@@ -51,12 +52,30 @@ class Testpaper < ActiveRecord::Base
       score = ((marks/thus_far)*100).round(2)
       individual_scores.push score
     end
-    total = individual_scores.inject(:+)
-    return (total / individual_scores.count).round(2)
+
+    unless individual_scores.empty?
+      total = individual_scores.inject(:+)
+      mean = (total / individual_scores.count).round(2)
+    else
+      mean = 0
+    end
+    return mean
   end
 
   def takers
     self.students.order(:first_name)
+  end
+
+  def self.name_if_students?(student_ids)
+    sektion_ids = StudentRoster.where(:student_id => student_ids).map(&:sektion_id).uniq
+    sektions = Sektion.where(:id => sektion_ids).order(:klass).order(:name)
+    klasses = sektions.map(&:klass).uniq
+
+    name = ""
+    klasses.each do |k|
+      name.concat " #{k} - #{sektions.where(:klass => k).map(&:name).join(", ")} "  
+    end
+    return name.strip # example: 11-(A,B,Weak students) 12-(A)
   end
 
 end # of class

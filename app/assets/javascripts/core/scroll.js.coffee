@@ -49,7 +49,7 @@ jQuery ->
         {name: ..., id: ..., parent: ...} where json itself is an array
     ###
 
-    loadJson: (json, key, here, ticker = null, render = scroll.having.check) ->
+    loadJson: (json, key, here, ticker = 'ticker', render = scroll.having.check) ->
       return if not key?
       here = if typeof here is 'string' then $(here) else here
 

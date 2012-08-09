@@ -201,7 +201,17 @@ p > a, div > a {
     float: left ;
     margin-left: 2% ; 
     font-size: 11px ;
-    text-transform: lowercase ;
+    font-variant: small-caps ;
+  } 
+} 
+
+#testpaper { 
+  > .swiss-knife { 
+    min-height: 40px ;
+
+    > .micro-ticker { 
+      min-width: 90% ;
+    } 
   } 
 } 
 
@@ -401,12 +411,6 @@ span.unhappyMessage {
   } 
 }
 
-#report-cards-summary {
-  .micro-ticker {
-    font-size: 9pt ;
-  }
-}
-
 .led {
   color: #ffa500 ;
   font: {
@@ -429,6 +433,8 @@ span.unhappyMessage {
     top: 2px ;
     bottom: 2px ;
   }
+  margin-top: 2px ;
+  font-weight: bold ;
 }
 
 
@@ -1187,5 +1193,21 @@ li {
       margin-bottom: 10px ;
     } 
   } 
+} 
 
+#published-worksheets { 
+  .swiss-knife {
+    > .micro-ticker { 
+      padding: 4px 5px ;
+      border-radius: 4px ;
+      background-color: $orange ;
+      font: { 
+        size: 11px ;
+        weight: bold ;
+      }
+      color: white ;
+      margin-top: -4px ;
+      text-align: center ;
+    } 
+  } 
 } 

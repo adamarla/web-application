@@ -58,7 +58,7 @@ class Student < ActiveRecord::Base
   end 
   
   def name
-    return "#{self.first_name} #{self.last_name}"
+    return self.last_name.nil? ? self.first_name : "#{self.first_name} #{self.last_name}"
   end 
 
   def name=(name)
@@ -77,11 +77,14 @@ class Student < ActiveRecord::Base
   end 
 
   def quiz_ids
-    # Return the list if Quiz IDs this student has taken
-    responses = GradedResponse.where(:student_id => self.id)
-    selection_ids = responses.select(:q_selection_id).map(&:q_selection_id)
-    quiz_ids = QSelection.where(:id => selection_ids).select(:quiz_id).map(&:quiz_id).uniq
+    t_ids = AnswerSheet.where(:student_id => self.id).map(&:testpaper_id)
+    quiz_ids = Testpaper.where(:id => t_ids).map(&:quiz_id).uniq
     return quiz_ids
+  end
+
+  def marks_scored_in(testpaper_id)
+    a = AnswerSheet.where(:student_id => self.id, :testpaper_id => testpaper_id).first 
+    return a.nil? ? 0 : a.marks?
   end
 
   def responses(testpaper_id)

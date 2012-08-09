@@ -23,6 +23,11 @@ class StudentsController < ApplicationController
     @student.save ? respond_with(@student) : head(:bad_request)  
   end 
 
+  def testpapers
+    @student = Student.find params[:id]
+    @publishable = Testpaper.where(:id => @student.testpaper_ids).where(:publishable => true)
+  end
+
   def responses
     student = Student.find params[:id]
     testpaper = Testpaper.find params[:testpaper]
