@@ -224,11 +224,6 @@ p > a, div > a {
   font-variant: small-caps ;
 }
 
-.flipchart .submit-buttons {
-  min-height : 30px ;
-  margin-bottom : 20px ;
-}
-
 .submit-buttons { 
   min-height: 40px ;
   margin-bottom: 10px ;
@@ -269,6 +264,12 @@ p > a, div > a {
     margin-top: 4px ;
     text-transform: lowercase ;
   }
+}
+
+#topic-selection-list { 
+  .submit-buttons { 
+    min-height: 60px ;
+  } 
 }
 
 #side-panel {
