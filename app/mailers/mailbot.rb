@@ -1,6 +1,6 @@
 class Mailbot < ActionMailer::Base
   #default from: "from@example.com"
-  default :from => "support@gradians.com" 
+  default :from => "help@gradians.com" 
   layout 'mailbot'
 
 =begin
@@ -33,7 +33,7 @@ class Mailbot < ActionMailer::Base
   def suggestion_typeset( suggestion )
     t = Teacher.where(:id => suggestion.teacher_id).first 
     @name = t.first_name 
-    @date = suggestion.created_on 
+    @date = suggestion.created_at.to_date
     mail :to => t.account.email, :subject => "Your questions have been typeset"
   end
 
