@@ -57,6 +57,7 @@ jQuery ->
       tab_3 = $('#typeset-completed')
 
       # Suggestions for whom no slot has been blocked
+      $(m).empty() for m in tab_1.children '.scroll-content'
       scroll.loadJson json.just_in, 'suggestion', tab_1, 'receipt', scroll.having.select
       swissKnife.rebuildSelect $(s), 'num_slots', [0..9] for s in tab_1.find '.swiss-knife'
       tab_1.accordion scroll.options
