@@ -98,8 +98,7 @@ jQuery ->
     url = settings.url
 
     if url.match(/teachers\/list/)
-      coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher', {radio:true,button:true}
-      swissKnife.setButtonCaption '#teachers-list', 'edit'
+      coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher'
     else if url.match(/school\/sektions/)
       coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
     else if url.match(/yardstick.json/)
@@ -159,20 +158,6 @@ jQuery ->
   ###
     Miscellaneous event captures 
   ###
-
-  $('#teachers-list').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/teacher\/load/)
-    return if matched is null
-
-    json = $.parseJSON xhr.responseText
-    switch matched.pop()
-      when 'teacher/load'
-        form = $('#edit-teacher > form:first')
-        coreUtil.forms.loadJson form, json.teacher
-        coreUtil.forms.modifyAction form, "/teacher.json?id=#{json.teacher.id}", 'put'
-        $('#edit-teacher').dialog('open')
-    return true
-
 
   $('#courses-summary').ajaxSuccess (e,xhr,settings) ->
     matched = settings.url.match(/course\/profile/)
