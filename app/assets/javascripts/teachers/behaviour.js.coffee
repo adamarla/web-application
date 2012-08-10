@@ -177,7 +177,7 @@ jQuery ->
     flipchart.next '#build-quiz'
     return true
 
-  $('#question-options').on 'click', '.swiss-knife', (event) ->
+  $('#question-options, #typeset-for-me').on 'click', '.swiss-knife', (event) ->
     event.stopPropagation()
     for m in $(this).siblings()
       $(m).removeClass 'selected'
