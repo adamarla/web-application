@@ -140,6 +140,15 @@ class TeachersController < ApplicationController
     @students = teacher.nil? ? [] : teacher.students(all, starting_with)
   end
 
+  def suggested_questions
+    teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
+    unless teacher.nil? 
+      @questions = teacher.suggested_questions :completed
+    else
+      @questions = []
+    end
+  end
+
   def build_quiz 
     teacher = Teacher.find params[:id]
     course = Course.find params[:course_id]

@@ -73,10 +73,14 @@ jQuery ->
     return if not link?
 
     matched = true
+    teacher = $('#control-panel').attr 'marker'
     switch link
       when 'new-quiz-link'
-        teacher = $('#control-panel').attr 'marker'
         $.get "teacher/courses.json?id=#{teacher}"
+      when 'deep-dive-link'
+        $.get "teacher/sektions.json?id=#{teacher}"
+      when 'my-suggestions-link'
+        $.get "teacher/suggested_questions?id=#{teacher}"
       else
         matched = false
 
@@ -197,11 +201,6 @@ jQuery ->
         $.get "teacher/unlike_q.json?id=#{id}"
         trigger.attr 'liked', false
         trigger.attr 'title', 'add to favourites list'
-    return true
-
-  $('#deep-dive-link').click ->
-    teacher = $('#control-panel').attr 'marker'
-    $.get "teacher/sektions.json?id=#{teacher}"
     return true
 
   $('#all-my-sektions').on 'click', 'input[type="radio"]', ->

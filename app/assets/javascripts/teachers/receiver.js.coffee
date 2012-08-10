@@ -150,6 +150,9 @@ jQuery ->
               ] }
       }
       graph.draw [], true, options
+    else if url.match(/teacher\/suggested_questions/)
+      here = $('#typeset-for-me')
+      coreUtil.interface.displayJson json.typesets, here, 'typeset'
     else
       matched = false
 
