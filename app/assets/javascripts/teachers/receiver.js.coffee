@@ -153,7 +153,7 @@ jQuery ->
     else if url.match(/teacher\/suggested_questions/)
       here = $('#typeset-for-me')
       coreUtil.interface.displayJson json.typesets, here, 'typeset', {radio:false}
-      preview.loadJson json, 'locker'
+      preview.loadJson json, 'vault'
     else
       matched = false
 
