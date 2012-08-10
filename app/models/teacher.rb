@@ -81,6 +81,21 @@ class Teacher < ActiveRecord::Base
     return filter.empty? ? students : students.name_begins_with(filter)
   end 
 
+  def suggested_questions( type = :completed ) # other possible values: :all, :wip, :just_in
+    s_objs = Suggestion.where(:teacher_id => self.id)
+    case type
+      when :completed
+        s_objs = s_objs.completed
+      when :wip then 
+        s_objs = s_objs.wip
+      when :just_in then 
+        s_objs = s_objs.just_in
+    end # of case 
+
+    q_ids = s_objs.map(&:question_ids).flatten.uniq
+    return Question.where(:id => q_ids)
+  end
+
   def build_quiz_with (name, question_ids, course)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
                      :num_questions => question_ids.count, 
