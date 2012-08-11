@@ -14,6 +14,7 @@
 #  testpaper_id   :integer
 #  scan           :string(255)
 #  subpart_id     :integer
+#  page           :integer
 #
 
 require 'test_helper'
