@@ -86,12 +86,6 @@ jQuery ->
   ###########################################################################
   # AJAX requests triggered by other actions 
   ###########################################################################
-  $('#teachers-list').on 'click', 'input[type="button"]', ->
-    # if the clicked button is within teachers-list, then it must be 
-    # the 'edit' button for the selected teacher 
-    marker = $(this).closest('.swiss-knife').attr('marker')
-    $.get "teacher/load.json?id=#{marker}"
-    return true
 
   $('#courses-summary').on 'click', 'input[type="button"]', ->
     # The 'edit' button within #courses-summary. Clicked when editing course information

@@ -38,7 +38,7 @@ jQuery ->
         when 'quizzes-summary' then here = $('#sektion-list')
         when 'sektions-summary' then here = $('#all-my-sektions')
         else here = null
-      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true, link:true}, true, 'ticker' unless here is null
+      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true, link:true} unless here is null
 
       # Edit the <a> in the swiss-knives to point to downloadble list of student names
       for m in json.sektions
@@ -150,6 +150,10 @@ jQuery ->
               ] }
       }
       graph.draw [], true, options
+    else if url.match(/teacher\/suggested_questions/)
+      here = $('#typeset-for-me')
+      coreUtil.interface.displayJson json.typesets, here, 'typeset', {radio:false}
+      preview.loadJson json, 'vault'
     else
       matched = false
 

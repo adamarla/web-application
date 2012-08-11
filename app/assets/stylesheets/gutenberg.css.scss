@@ -205,16 +205,6 @@ p > a, div > a {
   } 
 } 
 
-#testpaper { 
-  > .swiss-knife { 
-    min-height: 40px ;
-
-    > .micro-ticker { 
-      min-width: 90% ;
-    } 
-  } 
-} 
-
 #pending-quizzes {
   a { 
     color: $my-blue ;
@@ -232,11 +222,6 @@ p > a, div > a {
 .swiss-knife > .label {
   margin-left : 5px ;
   font-variant: small-caps ;
-}
-
-.flipchart .submit-buttons {
-  min-height : 30px ;
-  margin-bottom : 20px ;
 }
 
 .submit-buttons { 
@@ -279,6 +264,12 @@ p > a, div > a {
     margin-top: 4px ;
     text-transform: lowercase ;
   }
+}
+
+#topic-selection-list { 
+  .submit-buttons { 
+    min-height: 60px ;
+  } 
 }
 
 #side-panel {
@@ -408,8 +399,47 @@ span.unhappyMessage {
   margin: {
     left: 3% ;
     right: 3% ;
+    top: 1% ;
   } 
+  text-align: center ;
+  border-radius: 4px ;
 }
+
+.micro-ticker.box {
+  width: 20% ;
+  color: white ;
+  padding: {
+    top: 2px ;
+    bottom: 2px ;
+  }
+  font-weight: bold ;
+}
+
+#published-worksheets { 
+  .swiss-knife {
+    > .micro-ticker { 
+      padding: 4px 5px ;
+      background-color: $orange ;
+      font: { 
+        size: 11px ;
+        weight: bold ;
+      }
+      color: white ;
+      margin-top: -4px ;
+    } 
+  } 
+} 
+
+#testpaper { 
+  > .swiss-knife { 
+    min-height: 40px ;
+
+    > .micro-ticker { 
+      min-width: 90% ;
+      text-align: left ;
+    } 
+  } 
+} 
 
 .led {
   color: #ffa500 ;
@@ -420,21 +450,6 @@ span.unhappyMessage {
 
 .micro-ticker.complete {
   color: $my-blue ;
-}
-
-.micro-ticker.box {
-  width: 20% ;
-  color: white ;
-  border: {
-    radius: 4px ;
-  }
-  text-align: center ;
-  padding: {
-    top: 2px ;
-    bottom: 2px ;
-  }
-  margin-top: 2px ;
-  font-weight: bold ;
 }
 
 
@@ -1013,7 +1028,6 @@ li {
   > .swiss-knife {
     color: $my-blue ;
     font-size: 12px ;
-    padding: 5px 0px 5px 0px ;
   }
 
   > .swiss-knife.selected {
@@ -1195,19 +1209,3 @@ li {
   } 
 } 
 
-#published-worksheets { 
-  .swiss-knife {
-    > .micro-ticker { 
-      padding: 4px 5px ;
-      border-radius: 4px ;
-      background-color: $orange ;
-      font: { 
-        size: 11px ;
-        weight: bold ;
-      }
-      color: white ;
-      margin-top: -4px ;
-      text-align: center ;
-    } 
-  } 
-} 

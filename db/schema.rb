@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120808174441) do
+ActiveRecord::Schema.define(:version => 20120811090041) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -163,6 +163,8 @@ ActiveRecord::Schema.define(:version => 20120808174441) do
     t.integer  "answer_key_span"
     t.integer  "calculation_aid", :default => 0
     t.boolean  "restricted",      :default => true
+    t.boolean  "audited",         :default => false
+    t.integer  "audited_by"
   end
 
   create_table "quizzes", :force => true do |t|

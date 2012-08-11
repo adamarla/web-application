@@ -23,18 +23,23 @@ class Subpart < ActiveRecord::Base
     # the method would return true if the subpart is on either of the pages
     # in the given quiz
 
-    s = QSelection.where(:question_id => self.question_id, :quiz_id => quiz)
-    return false if s.empty? 
-
-    start_pg = s.select(:start_page).first.start_page
-    pg = start_pg + self.relative_page
-
-    if n.class == Array
-      return n.include? pg
-    else 
-      return pg == n
-    end
+    page = self.on_page_in? quiz 
+    return false if page < 0
+    return (n.class == Array) ? n.include?(page) : (page == n)
   end # of method
+
+  def on_page_in?(quiz_id)
+=begin
+    Returns the *absolute* page # on which this subpart is in the passed quiz
+    Remember, we cannot store which page a question is on as a property of the
+    question/subpart because where it is depends on who included it
+=end
+    m = QSelection.where(:question_id => self.question_id, :quiz_id => quiz_id)
+    return -1 if m.empty? 
+
+    page = m.first.start_page + self.relative_page
+    return page
+  end 
 
   def self.in_quiz(quiz)
     where(:question_id => QSelection.where(:quiz_id => quiz).map(&:question_id))

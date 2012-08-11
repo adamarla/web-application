@@ -4,7 +4,9 @@
 
 #quiz-controls.top-panel-controls
   %ul.no-bullets
-    = minor_link :for => 'new-quiz', :label => 'make new quiz',
+    = minor_link :for => 'new-quiz', :as => 'new quiz', :label => 'make new quiz',
                  :with => { :panels => {:side => '#build-quiz'} }
-    = minor_link :for => 'suggestion', :as => 'suggest questions', 
+    = minor_link :for => 'suggestion', :as => 'suggest question(s)', 
                  :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
+    = minor_link :for => 'my-suggestions', :as => 'my questions',
+                 :with => { :panels => { :side => "#typeset-for-me" } }

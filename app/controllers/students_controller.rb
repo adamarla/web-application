@@ -33,12 +33,15 @@ class StudentsController < ApplicationController
     testpaper = Testpaper.find params[:testpaper]
     head :bad_request if (student.nil? || testpaper.nil?)
 
+    quiz_id = testpaper.quiz_id 
+
     answers = student.responses testpaper
     @info = answers.map{ |m| { :question => { 
       :id => m.q_selection.index,
       :name => m.name?,
       :marks => "#{m.marks} / #{m.subpart.marks}",
-      :color => m.colour?
+      :color => m.colour?, 
+      :pg => "#{m.subpart.on_page_in? quiz_id}"
     } } }
 
     @scans = answers.map(&:scan).uniq.sort
