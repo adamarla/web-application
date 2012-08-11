@@ -16,6 +16,8 @@
 #  answer_key_span :integer
 #  calculation_aid :integer         default(0)
 #  restricted      :boolean         default(TRUE)
+#  audited         :boolean         default(FALSE)
+#  audited_by      :integer
 #
 
 #     __:has_many___      __:has_many___   ____:has_many__
