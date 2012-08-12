@@ -56,6 +56,13 @@ ActiveRecord::Schema.define(:version => 20120812153618) do
     t.string "alpha_2_code"
   end
 
+  create_table "course_packs", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "testpaper_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "courses", :force => true do |t|
     t.string   "name"
     t.integer  "board_id"

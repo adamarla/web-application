@@ -40,7 +40,7 @@ class GradesController < ApplicationController
     clicks.each do |pt|
       next if pt.blank? 
       pt = pt.split(',').map(&:to_i)
-      coordinates.push({:x => pt[0], :y => pt[1]})
+      coordinates.push({:x => pt[0]-X_CORRECTION, :y => pt[1]})
     end
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['annotate_scan']}" 
@@ -58,5 +58,7 @@ class GradesController < ApplicationController
     end 
 
   end 
+  
+  X_CORRECTION = 16
 
 end
