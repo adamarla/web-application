@@ -196,8 +196,20 @@ class Teacher < ActiveRecord::Base
   end
 
   def testpapers
-    quiz_ids = Quiz.where(:teacher_id => self.id).order(:klass).map(&:id)
-    @testpapers = Testpaper.where(:quiz_id => quiz_ids).order('created_at DESC')
+=begin
+    A teacher can access:
+      1. any testpapers for her quizzes (obviously)
+      2. any public/non-exclusive testpapers from her colleagues
+          a. these testpapers would have been made public by the colleague herself.
+             And so, its ok to show them
+=end
+    of_colleagues = Quiz.where(:teacher_id => self.colleagues.map(&:id))
+    others = Testpaper.where(:exclusive => false, :quiz_id => of_colleagues.map(&:id)).map(&:id)
+
+    my_own = Testpaper.where(:quiz_id => Quiz.where(:teacher_id => self.id)).map(&:id)
+    total = (others + my_own).uniq
+
+    @testpapers = Testpaper.where(:id => total).order('created_at DESC')
   end
 
   def build_grade_table
