@@ -51,6 +51,8 @@ jQuery ->
     else if url.match(/quiz\/pending_scans/)
       adminUtil.buildPendingScanList json.scans
       canvas.loadNth 0
+    else if url.match(/assignGrades/)
+      canvas.jump()
     else if url.match(/examiner\/suggestions/)
       tab_1 = $('#days-since-receipt')
       tab_2 = $('#typeset-wip')

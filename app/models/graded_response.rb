@@ -14,6 +14,7 @@
 #  testpaper_id   :integer
 #  scan           :string(255)
 #  subpart_id     :integer
+#  page           :integer
 #
 
 # Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#
@@ -120,6 +121,8 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def page?
+    return self.page unless self.page.nil? 
+
     if self.scan
       quiz, testpaper, student, page = self.scan.split('-').map(&:to_i)
     else
@@ -127,6 +130,7 @@ class GradedResponse < ActiveRecord::Base
       offset = Subpart.where(:id => self.subpart_id).select(:relative_page).first.relative_page
       page = start_pg + offset
     end
+    self.update_attribute :page, page unless page < 1
     return page
   end
 

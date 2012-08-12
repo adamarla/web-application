@@ -129,7 +129,7 @@ class Examiner < ActiveRecord::Base
           suggestion.save
         end # of unless      
       end # of do ..
-      self.distribute_work 
+      self.distribute_work #####   THE BIG KAHUNA   #######
     end # of unless
     return failures
   end
@@ -138,35 +138,39 @@ class Examiner < ActiveRecord::Base
 
     def self.distribute_standalone
       unassigned = GradedResponse.unassigned.with_scan.standalone
-      limit = 15
+      testpaper_ids = unassigned.map(&:testpaper_id).uniq
+      allottees = Examiner.where(:is_admin => true)  ## for now 
+      limit = 20
 
-      scans = unassigned.sort{ |m,n| m.scan <=> n.scan }.map(&:scan).uniq
-      scans.each do |s|
-        quiz, testpaper, student, page = s.split('-').map(&:to_i)
-        todo = unassigned & GradedResponse.unassigned.where(:testpaper_id => testpaper).on_page(page)
-        next if todo.empty?
+      testpaper_ids.each do |tid|
+        in_testpaper = unassigned.select{ |m| m.testpaper_id == tid }
+        pages = in_testpaper.map(&:page?).uniq
 
-        student_ids = todo.map(&:student_id).uniq
-        nstudents = student_ids.count # students whose scans for page N in testpaper M have come in
-        examiners = Examiner.order(:last_workset_on)
-        nexaminers = examiners.count
-        reqd = (nstudents/limit) + 1
-        reqd = (reqd > nexaminers) ? nexaminers : reqd
-        workload = (nstudents / reqd) + 1
-        grader_ids = examiners.map(&:id).slice(0, reqd) # use these graders
+        pages.each do |pg|
+          on_page = in_testpaper.select{ |m| m.page == pg }
+          student_ids = on_page.map(&:student_id).uniq
+          nstudents = student_ids.count 
 
-        start = 0 
-        grader_ids.each do |g|
-          pick = student_ids.slice(start, workload)
-          start += workload
-          todo.select{ |m| pick.include? m.student_id }.each do |t|
-            t.update_attribute :examiner_id, g
-          end
-        end #grader_ids 
+          examiners = allottees.order{ |m,n| m.last_workset_on.nil? || m.last_workset_on <=> n.last_workset_on }
+          reqd = (nstudents / limit ) + 1
+          reqd = (reqd > examiners.count) ? examiners.count : reqd
+          workload = (nstudents / reqd) + 1
 
-        unassigned = GradedResponse.unassigned.with_scan.standalone
-        break if unassigned.empty?
-      end #scans 
+          j = 0 
+          student_ids.each_slice(workload).each do |id_slice|
+            e = examiners[j]
+
+            id_slice.each do |sid| # responses of a given student, on given page, in given testpaper
+              responses = on_page.select{ |m| m.student_id == sid }
+              responses.each do |r|
+                r.update_attribute :examiner_id, e.id
+              end 
+            end
+            e.update_attribute :last_workset_on, Time.now
+            j = j + 1  # next examiner
+          end # of students
+        end # of pages
+      end # of testpapers
     end # of method 
 
     def self.distribute_multipart
@@ -190,15 +194,17 @@ class Examiner < ActiveRecord::Base
 
         question_ids.each do |q|
           # Remember: one graded response per student for each subpart 
-          with_scan = responses & GradedResponse.unassigned.with_scan.to_question(q)
+          # with_scan = responses & GradedResponse.unassigned.with_scan.to_question(q)
+          with_scan = responses.to_question(q)
           question = Question.find q
           nparts = question.num_parts?
           next if with_scan.count != nparts
 
-          grader = Examiner.order(:last_workset_on).first
+          grader = Examiner.where(:is_admin => true).order(:last_workset_on).first # for now
           with_scan.each do |p|
             p.update_attribute :examiner_id, grader.id
           end
+          grader.update_attribute :last_workset_on, Time.now
         end # questions loop 
       end # student loop
 
