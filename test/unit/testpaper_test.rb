@@ -8,6 +8,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
+#  exclusive   :boolean         default(TRUE)
 #
 
 require 'test_helper'
