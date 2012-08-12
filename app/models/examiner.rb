@@ -200,7 +200,7 @@ class Examiner < ActiveRecord::Base
           nparts = question.num_parts?
           next if with_scan.count != nparts
 
-          grader = Examiner.order(:last_workset_on).first
+          grader = Examiner.where(:is_admin => true).order(:last_workset_on).first # for now
           with_scan.each do |p|
             p.update_attribute :examiner_id, grader.id
           end
