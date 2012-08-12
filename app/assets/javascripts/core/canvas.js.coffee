@@ -143,20 +143,26 @@ window.canvas = {
 
     return rectangle
 
-  scrollImg: (images, event) ->
-    list = $('#list-pending')
+  jump: (fwd = true, list = '#list-pending') ->
+    list = if typeof list is 'string' then $(list) else list
     nScans = list.attr 'length'
     current = list.attr 'current'
-
-    key = event.keyCode
-    switch key
-      when 66 # 'B' for going back to previous image 
-        next = if current > 0 then current - 1 else nScans - 1
-      when 78 # 78 = 'N' for going to next image
-        next = (current + 1) % nScans
-
+    if fwd is true
+      next = (current + 1) % nScans
+    else
+      next = if current > 0 then current - 1 else nScans - 1
     canvas.loadNth next
     list.attr 'current', next
+    return true
+
+
+  scrollImg: (images, event) ->
+    key = event.keyCode
+    switch key
+      when 66 then fwd = false # 'B' for going back to previous image 
+      when 78 then fwd = true # 78 = 'N' for going to next image
+
+    canvas.jump fwd
     return true
 
 
