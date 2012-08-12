@@ -149,6 +149,20 @@ class Teacher < ActiveRecord::Base
     end
   end
 
+  def colleagues(strict = true)
+=begin
+    A colleague is defined as someone who is: 
+      1. a teacher in the same school 
+      2. teaches some or all of the same subjects 
+      3. ( if strict = true ) and at the same grade levels 
+=end
+    ids = Teacher.where(:school_id => self.school_id).map(&:id) - [self.id]
+
+    candidates = Specialization.where(:teacher_id => ids, :subject_id => self.subject_ids)
+    candidates = strict ? candidates.where(:klass => self.klasses) : candidates
+
+    return Teacher.where(:id => candidates.map(&:teacher_id).uniq)
+  end
 
   def roster 
     # Yes, yes.. We could have gotten the same thing by simply calling self.sektions
