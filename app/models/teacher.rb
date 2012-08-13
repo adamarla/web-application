@@ -149,6 +149,20 @@ class Teacher < ActiveRecord::Base
     end
   end
 
+  def colleagues(strict = true)
+=begin
+    A colleague is defined as someone who is: 
+      1. a teacher in the same school 
+      2. teaches some or all of the same subjects 
+      3. ( if strict = true ) and at the same grade levels 
+=end
+    ids = Teacher.where(:school_id => self.school_id).map(&:id) - [self.id]
+
+    candidates = Specialization.where(:teacher_id => ids, :subject_id => self.subject_ids)
+    candidates = strict ? candidates.where(:klass => self.klasses) : candidates
+
+    return Teacher.where(:id => candidates.map(&:teacher_id).uniq)
+  end
 
   def roster 
     # Yes, yes.. We could have gotten the same thing by simply calling self.sektions
@@ -182,8 +196,20 @@ class Teacher < ActiveRecord::Base
   end
 
   def testpapers
-    quiz_ids = Quiz.where(:teacher_id => self.id).order(:klass).map(&:id)
-    @testpapers = Testpaper.where(:quiz_id => quiz_ids).order('created_at DESC')
+=begin
+    A teacher can access:
+      1. any testpapers for her quizzes (obviously)
+      2. any public/non-exclusive testpapers from her colleagues
+          a. these testpapers would have been made public by the colleague herself.
+             And so, its ok to show them
+=end
+    of_colleagues = Quiz.where(:teacher_id => self.colleagues.map(&:id))
+    others = Testpaper.where(:exclusive => false, :quiz_id => of_colleagues.map(&:id)).map(&:id)
+
+    my_own = Testpaper.where(:quiz_id => Quiz.where(:teacher_id => self.id)).map(&:id)
+    total = (others + my_own).uniq
+
+    @testpapers = Testpaper.where(:id => total).order('created_at DESC')
   end
 
   def build_grade_table
