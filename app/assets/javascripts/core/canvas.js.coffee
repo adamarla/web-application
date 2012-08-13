@@ -151,6 +151,8 @@ window.canvas = {
       next = (current + 1) % nScans
     else
       next = if current > 0 then current - 1 else nScans - 1
+
+    alert "Back to first .." if next is 0
     canvas.loadNth next
     list.attr 'current', next
     return true
