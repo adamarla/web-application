@@ -145,8 +145,8 @@ window.canvas = {
 
   jump: (fwd = true, list = '#list-pending') ->
     list = if typeof list is 'string' then $(list) else list
-    nScans = list.attr 'length'
-    current = list.attr 'current'
+    nScans = parseInt(list.attr 'length')
+    current = parseInt(list.attr 'current')
     if fwd is true
       next = (current + 1) % nScans
     else
@@ -154,7 +154,7 @@ window.canvas = {
 
     alert "Back to first .." if next is 0
     canvas.loadNth next
-    list.attr 'current', next
+    list.attr 'current', "#{next}"
     return true
 
 
