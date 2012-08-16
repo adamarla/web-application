@@ -43,20 +43,10 @@ class GradesController < ApplicationController
       coordinates.push({:x => pt[0]-X_CORRECTION, :y => pt[1]})
     end
 
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['annotate_scan']}" 
-    response = SavonClient.request :wsdl, :annotate_scan do
-      soap.body = {
-        :scanId => scan, 
-        :coordinates => coordinates
-      }
-    end 
-    error = response[:annotate_scan_response][:error]
-    if error.nil?
-      render( :json => { :status => "Done"}, :status => :ok )
-    else
-      render( :json => { :status => "Annotation Failed!"}, :status => :bad_request )
-    end 
+    # Higher priority number => less importance 
+    Delayed::Job.enqueue AnnotateScan.new(scan, coordinates), :priority => 10, :run_at => Time.zone.now unless coordinates.empty?
 
+    render( :json => { :status => "Done"}, :status => :ok )
   end 
   
   X_CORRECTION = 16

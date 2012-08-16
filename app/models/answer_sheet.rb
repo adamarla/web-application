@@ -37,7 +37,7 @@ class AnswerSheet < ActiveRecord::Base
     quiz_id = self.testpaper.quiz_id
     marks = GradedResponse.graded.in_quiz(quiz_id).of_student(self.student_id).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     self.update_attribute(:marks, marks) if self.graded?
-    return marks.nil? ? 0 : marks
+    return marks.nil? ? 0 : marks.round(2)
   end
 
   def graded_thus_far?

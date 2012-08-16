@@ -238,7 +238,7 @@ class Teacher < ActiveRecord::Base
     # each subsequent request will overwrite the suggestion.tex from the previous request.
     # And therefore, to keep things clean, we have to process each request individually
     # by placing it in the queue
-    Delayed::Job.enqueue BuildSuggestionForm.new(self), :priority => 0, :run_at => Time.zone.now 
+    Delayed::Job.enqueue BuildSuggestionForm.new(self), :priority => 5, :run_at => Time.zone.now 
   end
 
   private 
