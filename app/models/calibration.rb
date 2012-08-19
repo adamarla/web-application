@@ -8,6 +8,7 @@
 #  calculation_id :integer
 #  mcq_id         :integer
 #  allotment      :integer
+#  example        :string(255)
 #
 
 class Calibration < ActiveRecord::Base
