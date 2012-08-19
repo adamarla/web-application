@@ -8,6 +8,7 @@
 #  insight     :boolean         default(FALSE)
 #  formulation :boolean         default(FALSE)
 #  calculation :boolean         default(FALSE)
+#  weight      :integer         default(1)
 #
 
 require 'test_helper'

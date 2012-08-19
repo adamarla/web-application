@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120819025412) do
+ActiveRecord::Schema.define(:version => 20120819032843) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -318,6 +318,7 @@ ActiveRecord::Schema.define(:version => 20120819025412) do
     t.boolean "insight",     :default => false
     t.boolean "formulation", :default => false
     t.boolean "calculation", :default => false
+    t.integer "weight",      :default => 1
   end
 
 end
