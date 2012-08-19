@@ -48,7 +48,7 @@ class Yardstick < ActiveRecord::Base
     where(:mcq => true)
   end
 
-  def self.having_weight(n)
+  def self.weight(n)
     where(:weight => (n.nil? ? 1 : n))
   end
 
