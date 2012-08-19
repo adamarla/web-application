@@ -19,6 +19,8 @@
 #    
 
 class Calibration < ActiveRecord::Base
+  validates :example, :presence => true
+  validates :allotment, :numericality => { :only_integer => true, :less_than => 101, :greater_than => -1 }
   after_create :add_for_every_teacher
 
   private
