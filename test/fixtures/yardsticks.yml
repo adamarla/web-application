@@ -2,15 +2,12 @@
 #
 # Table name: yardsticks
 #
-#  id                :integer         not null, primary key
-#  example           :string(255)
-#  default_allotment :integer
-#  created_at        :datetime
-#  updated_at        :datetime
-#  mcq               :boolean         default(FALSE)
-#  annotation        :string(255)
-#  meaning           :string(255)
-#  colour            :integer
+#  id          :integer         not null, primary key
+#  mcq         :boolean         default(FALSE)
+#  meaning     :string(255)
+#  insight     :boolean         default(FALSE)
+#  formulation :boolean         default(FALSE)
+#  calculation :boolean         default(FALSE)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

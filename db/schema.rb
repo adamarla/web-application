@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120813020236) do
+ActiveRecord::Schema.define(:version => 20120819023842) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -49,6 +49,14 @@ ActiveRecord::Schema.define(:version => 20120813020236) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "calibrations", :force => true do |t|
+    t.integer "insight_id"
+    t.integer "formulation_id"
+    t.integer "calculation_id"
+    t.integer "mcq_id"
+    t.integer "allotment"
   end
 
   create_table "countries", :force => true do |t|
@@ -304,14 +312,11 @@ ActiveRecord::Schema.define(:version => 20120813020236) do
   end
 
   create_table "yardsticks", :force => true do |t|
-    t.string   "example"
-    t.integer  "default_allotment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "mcq",               :default => false
-    t.string   "annotation"
-    t.string   "meaning"
-    t.integer  "colour"
+    t.boolean "mcq",         :default => false
+    t.string  "meaning"
+    t.boolean "insight",     :default => false
+    t.boolean "formulation", :default => false
+    t.boolean "calculation", :default => false
   end
 
 end
