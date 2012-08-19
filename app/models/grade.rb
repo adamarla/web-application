@@ -17,12 +17,13 @@
 #    |__:has_many_____|   |___:has_many____| 
 #    
 
-#     ___:has_many____     __:belongs_to___  
-#    |                |   |                | 
-# Teacher ---------> Grade ---------> Yardstick
-#    |                |   |                | 
-#    |__:belongs_to___|   |___:has_many____| 
+#     ___:has_many____     __:belongs_to___    ____:has_many____
+#    |                |   |                |  |                 |
+# Teacher ---------> Grade ---------> Calibration ---------> Yardsticks
+#    |                |   |                |  |                 |
+#    |__:belongs_to___|   |___:has_many____|  |____:has_many____|
 #    
+
 class Grade < ActiveRecord::Base
   belongs_to :teacher 
   belongs_to :yardstick
