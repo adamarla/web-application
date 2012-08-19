@@ -41,7 +41,7 @@ class NewYardstickDefinitions < ActiveRecord::Migration
 
     desc = ["Yes - all required insights captured"]
     desc.each do |m|
-      y = Yardstick.new :meaning => m, :insight => true, :weight => 4
+      y = Yardstick.new :meaning => m, :insight => true, :weight => 3
       y.save
     end 
 
@@ -53,13 +53,13 @@ class NewYardstickDefinitions < ActiveRecord::Migration
 
     desc = ["Yes - a systematic approach and justifications for correct reasoning are present"]
     desc.each do |m|
-      y = Yardstick.new :meaning => m, :formulation => true, :weight => 4
+      y = Yardstick.new :meaning => m, :formulation => true, :weight => 3
       y.save
     end 
 
     desc = ["Yes - all calculations performed correctly"]
     desc.each do |m|
-      y = Yardstick.new :meaning => m, :calculation => true, :weight => 4
+      y = Yardstick.new :meaning => m, :calculation => true, :weight => 3
       y.save
     end 
   end
