@@ -36,6 +36,7 @@ class Teacher < ActiveRecord::Base
 
   has_many :quizzes, :dependent => :destroy 
   has_many :grades, :dependent => :destroy
+
   has_many :yardsticks, :through => :grades
 
   has_many :specializations, :dependent => :destroy
@@ -212,13 +213,6 @@ class Teacher < ActiveRecord::Base
     @testpapers = Testpaper.where(:id => total).order('created_at DESC')
   end
 
-  def build_grade_table
-    Yardstick.select('id, default_allotment').each do |y|
-      grade = self.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
-      break if !grade.save
-    end
-  end 
-
   def like_question(question_id)
     m = Favourite.where(:teacher_id => self.id, :question_id => question_id)
     return unless m.empty? # no double-addition
@@ -231,15 +225,8 @@ class Teacher < ActiveRecord::Base
     m = m.first
     self.favourites.delete m # will also destroy because of the :dependent => :destroy
   end
-  
-  def generate_suggestion_form
-    # At any given time, there is at most one copy of suggestion.tex in front-desk/.
-    # Hence, if > 1 requests for generating suggestion form are sent (after_create), then 
-    # each subsequent request will overwrite the suggestion.tex from the previous request.
-    # And therefore, to keep things clean, we have to process each request individually
-    # by placing it in the queue
-    Delayed::Job.enqueue BuildSuggestionForm.new(self), :priority => 5, :run_at => Time.zone.now 
-  end
+
+#####  PRIVATE ######################
 
   private 
     
@@ -259,6 +246,28 @@ class Teacher < ActiveRecord::Base
 
     def first_time_save? 
       self.new_record? || !self.account
+    end 
+
+    def generate_suggestion_form
+      # At any given time, there is at most one copy of suggestion.tex in front-desk/.
+      # Hence, if > 1 requests for generating suggestion form are sent (after_create), then 
+      # each subsequent request will overwrite the suggestion.tex from the previous request.
+      # And therefore, to keep things clean, we have to process each request individually
+      # by placing it in the queue
+      Delayed::Job.enqueue BuildSuggestionForm.new(self), :priority => 5, :run_at => Time.zone.now 
+    end
+
+    def build_grade_table
+      Calibration.select('id, allotment').each do |m|
+        grade = self.grades.new :allotment => m.allotment, :calibration_id => m.id
+        break if !grade.save
+      end 
+=begin
+      Yardstick.select('id, default_allotment').each do |y|
+        grade = self.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
+        break if !grade.save
+      end
+=end
     end 
 
 end # of class 
