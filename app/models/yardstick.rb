@@ -27,7 +27,7 @@
 
 class Yardstick < ActiveRecord::Base
   validates :meaning, :presence => true
-  validates :weight, :numericality => { :only_integer => true, :greater_than => 0, :less_than => 4 }
+  validates :weight, :numericality => { :only_integer => true, :greater_than => -1, :less_than => 3 }
 
   # [:all] ~> [:admin]
   #attr_accessible
@@ -49,15 +49,15 @@ class Yardstick < ActiveRecord::Base
   end
 
   def self.weight(n)
-    where(:weight => (n.nil? ? 1 : n))
+    where(:weight => (n.nil? ? 0 : n))
   end
 
   def self.atmost(n)
-    where("weight <= ?", (n.nil? ? 1 : n))
+    where("weight <= ?", (n.nil? ? 0 : n))
   end
 
   def self.atleast(n)
-    where("weight >= ?", (n.nil? ? 1 : n))
+    where("weight >= ?", (n.nil? ? 0 : n))
   end
 
 end
