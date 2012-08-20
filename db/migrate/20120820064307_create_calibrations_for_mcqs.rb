@@ -1,7 +1,8 @@
 class CreateCalibrationsForMcqs < ActiveRecord::Migration
   def up
     Yardstick.mcqs.each do |m|
-      c = Calibration.new :mcq_id => m.id, :allotment => 50
+      v = Calibration.fair_value_for m
+      c = Calibration.new :mcq_id => m.id, :allotment => v
       c.save
     end 
   end
