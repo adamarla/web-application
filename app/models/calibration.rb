@@ -160,6 +160,10 @@ class Calibration < ActiveRecord::Base
     end
   end # of method
 
+  def non_null_indices 
+    return self.mcq_id.nil? ? [self.insight_id, self.formulation_id, self.calculation_id] : [self.mcq_id]
+  end
+
   def decompile
     if self.mcq_id.nil?
       Yardstick.where(:id => [self.insight_id, self.formulation_id, self.calculation_id]).map(&:meaning)
