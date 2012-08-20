@@ -23,22 +23,6 @@ class Calibration < ActiveRecord::Base
   before_save :check_viability
   after_create :add_for_every_teacher
 
-  def self.with_atmost(params = {})
-    i = Yardstick.insights.atmost(params[:insight]).map(&:id)
-    f = Yardstick.formulations.atmost(params[:formulation]).map(&:id)
-    c = Yardstick.calculations.atmost(params[:calculation]).map(&:id)
-
-    where(:insight_id => i, :formulation_id => f, :calculation_id => c)
-  end
-
-  def self.with_atleast(params = {})
-    i = Yardstick.insights.atleast(params[:insight]).map(&:id)
-    f = Yardstick.formulations.atleast(params[:formulation]).map(&:id)
-    c = Yardstick.calculations.atleast(params[:calculation]).map(&:id)
-
-    where(:insight_id => i, :formulation_id => f, :calculation_id => c)
-  end
-
   def self.mcqs
     where("mcq_id IS NOT ?", nil)
   end
@@ -49,16 +33,54 @@ class Calibration < ActiveRecord::Base
     c.save
   end
 
+  def self.fair_value_for(bottomline, formulation = nil, calculation = nil)
+    # Arguments are Yardstick objects 
+    fair_value = 0 
+
+    if bottomline.mcq
+       case bottomline.weight
+         when 0,1 then fair_value = 0
+         when 2 then fair_value = 60
+         when 3 then fair_value = 100
+       end 
+    else
+      case bottomline.weight 
+        when 0 then fair_value = 0 
+        when 1 then fair_value = 10
+        when 2 then fair_value = 35
+        when 3 then fair_value = 50
+      end 
+
+      case formulation.weight
+        when 1 then fair_value += 10 
+        when 2 then fair_value += 20
+        when 3 then fair_value += 40
+      end 
+
+      case calculation.weight
+        when 2 then fair_value += 10
+      end 
+    end
+    return fair_value 
+  end
+
+  def self.define_using(bottomline, formulation = nil, calculation = nil)
+    # Arguments are yardstick objects
+    v = Calibration.fair_value_for bottomline, formulation, calculation
+    c = Calibration.new :insight_id => bottomline.id, :formulation_id => formulation.id,
+                        :calculation_id => calculation.id, :allotment => v
+    c.save
+  end 
+
   def self.build_viable_calibrations
-    insights = Yardstick.insights.map(&:id)
-    formulations = Yardstick.formulations.map(&:id)
-    calculations = Yardstick.calculations.map(&:id)
-    a = 50
+    insights = Yardstick.insights
+    formulations = Yardstick.formulations
+    calculations = Yardstick.calculations
 
     insights.each do |i|
       formulations.each do |f| 
         calculations.each do |c| 
-          cb = Calibration.define_using_ids i,f,c,a  
+          cb = Calibration.define_using i,f,c
         end 
       end 
     end # insights
@@ -78,7 +100,7 @@ class Calibration < ActiveRecord::Base
     We use a 4-point scale for insights & formulations:
       0 => blank / missing / irrelevant 
       1 => plain wrong 
-      2 => partially correct 
+      2 => partially correct & partially complete
       3 => fully correct
 
     We use a 3-point scale for calculations
