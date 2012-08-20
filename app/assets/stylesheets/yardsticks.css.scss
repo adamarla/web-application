@@ -13,11 +13,11 @@ $light-gray: lighten($gray, 30%) ;
 // Vertical jQuery tabs via CSS 
 // Reference: http://keith-wood.name/uiTabs.html#tabs-nobg
 
-.vertical-tabs {
+.vertical-tabs, #calibrations {
   position: relative ;
   padding-left: 6.5em ;
 
-  ul.ui-tabs-nav {
+  ul, ul.ui-tabs-nav {
     border: transparent ;
     position: absolute ;
     left: 0.25em ;
@@ -57,6 +57,7 @@ $light-gray: lighten($gray, 30%) ;
       float: left ;
       width: 20% ;
       text-align: center ;
+      text-decoration: none ;
     }
 
   }

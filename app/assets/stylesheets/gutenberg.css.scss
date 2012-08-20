@@ -1209,3 +1209,42 @@ li {
   } 
 } 
 
+#calibrations-summary {
+  > #calibrations { 
+    > ul { 
+      > li { 
+        &[colour="lightblue"] { background-color: lighten($blue, 50%) ; }
+        &[colour="blue"] { background-color: lighten($blue,35%) ; }
+        &[colour="pink"] { background-color: lighten($pink,15%) ; }
+        &[colour="orange"] { background-color: $orange ; }
+        &[colour="green"] { background-color: $green ; }
+      } 
+    } 
+  } 
+
+  > #calibrations-edit-understand { 
+    width: 75% ;
+    margin-left: 5% ;
+    font-size: 11px ;
+    text-align: justify ;
+  } 
+}
+
+.calibrations { 
+  p.instructions { 
+    font-size: 11px ; 
+    color: $my-blue ; 
+    border-bottom: 2px solid white ;
+    border-top: 2px solid white ;
+    padding: 7px 0px 7px 0px ;
+  }
+
+  .root-cause {
+    margin-bottom: 7px ;
+    color: $my-gray ;
+    text-transform: lowercase ;
+  } 
+
+  tt { color: white ; font-size: 10px ; } 
+} 
+
