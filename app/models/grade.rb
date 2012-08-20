@@ -2,12 +2,13 @@
 #
 # Table name: grades
 #
-#  id           :integer         not null, primary key
-#  allotment    :integer
-#  yardstick_id :integer
-#  teacher_id   :integer
-#  created_at   :datetime
-#  updated_at   :datetime
+#  id             :integer         not null, primary key
+#  allotment      :integer
+#  yardstick_id   :integer
+#  teacher_id     :integer
+#  created_at     :datetime
+#  updated_at     :datetime
+#  calibration_id :integer
 #
 
 #     __:belongs_to___     __:belongs_to___  
@@ -26,7 +27,7 @@
 
 class Grade < ActiveRecord::Base
   belongs_to :teacher 
-  belongs_to :yardstick
+  belongs_to :calibration
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible
