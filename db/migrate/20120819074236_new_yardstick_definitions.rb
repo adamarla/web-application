@@ -29,7 +29,8 @@ class NewYardstickDefinitions < ActiveRecord::Migration
            ], 
       1 => [
             "(No) The follow up work is irrelevant because the insights are either missing or off by a lot",
-            "(Yes, and no) In of itself, the follow up work might be correct. But it only furthers a faulty line of reasoning"
+            "(Yes, and no) In of itself, the follow up work might be correct. But it only furthers a faulty line of reasoning",
+            "(No) The follow-up work is more incomplete than complete"
            ],
       2 => [
             "(Yes, and no) The follow up work has some errors and/or is only partially complete" 
