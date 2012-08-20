@@ -1,67 +1,71 @@
 class NewYardstickDefinitions < ActiveRecord::Migration
   def up
-    desc = ["No - the response is either blank or too sparse to capture any insights",
-            "No - and what is written has no mathematical basis. Suggests a gap in understanding of fundamental concepts",
-            "No - the student overlooked some fundamental mathematical fact(s). He/she might find an answer, but it is guaranteed to be wrong", 
-            "No - and the student will not be able to get to the right answer based on what is written"
+    insights = {
+      0 => [
+            "(No) The response is either blank or too sparse to capture any insights",
+            "(No) And what is written is not mathematically sound"
+           ], 
+      1 => [
+            "(No) And the approach taken will not lead to the correct answer"
+           ],
+      2 => [
+            "(Yes, and no) Some key insight(s) required to get to the correct answer missing" 
+           ], 
+      3 => [
+            "(Yes) All required insights captured"
            ]
+    }
 
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :insight => true, :weight => 1
-      y.save
-    end 
+    insights.each do |k,v|
+      v.each do |reason|
+        c = Yardstick.new :insight => true, :weight => k, :meaning => reason
+        c.save
+      end
+    end
 
-    desc = ["No - the follow up work is either absent or too sparse",
-            "No - and that should be expected. The solution was already along the wrong lines because of missing insights",
-            "No - the follow up work either has inaccuracies or is incomplete - perhaps because of gaps in knowledge"
+    formulations = { 
+      0 => [
+            "(No) Irrelevant in this case"
+           ], 
+      1 => [
+            "(No) The follow up work is irrelevant because the insights are either missing or off by a lot",
+            "(Yes, and no) In of itself, the follow up work might be correct. But it only furthers a faulty line of reasoning"
+           ],
+      2 => [
+            "(Yes, and no) The follow up work has some errors and/or is only partially complete" 
+           ],
+      3 => [
+            "(Yes) A systematic approach and justifications for correct reasoning are evident",
+            "(Yes) But there are sudden, non-obvious jumps in logic. A little more elaboration of intermediate steps would have been nice"
            ]
-    
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :formulation => true, :weight => 1
-      y.save
-    end 
+    } 
 
-    desc = ["Not applicable", "No - a few mistakes made"]
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :calculation => true, :weight => 1
-      y.save
-    end 
+    formulations.each do |k,v|
+      v.each do |reason|
+        c = Yardstick.new :formulation => true, :weight => k, :meaning => reason
+        c.save
+      end
+    end
 
-    desc = ["Yes - but not all of them. The solution requires more than one insight and the student didn't recognize one or more of them"]
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :insight => true, :weight => 2
-      y.save
-    end 
+    calculations = { 
+      0 => [
+            "Doesn't matter / irrelevant in this case"
+           ],
+      1 => [
+            "Some errors here and there"
+           ],
+      2 => [
+            "No errors"
+           ]
+    }
 
-    desc = ["Yes, and no. In itself, the follow up work is correct. But it only furthers a faulty line of reasoning"]
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :formulation => true, :weight => 2
-      y.save
-    end 
+    calculations.each do |k,v|
+      v.each do |reason|
+        c = Yardstick.new :calculation => true, :weight => k, :meaning => reason
+        c.save
+      end
+    end
 
-    desc = ["Yes - all required insights captured"]
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :insight => true, :weight => 3
-      y.save
-    end 
-
-    desc = ["Yes - but there are sudden, non-obvious jumps in logic. A little more elaboration of intermediate steps would lay to rest any doubts about the student's understanding"] 
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :formulation => true, :weight => 3
-      y.save
-    end 
-
-    desc = ["Yes - a systematic approach and justifications for correct reasoning are present"]
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :formulation => true, :weight => 3
-      y.save
-    end 
-
-    desc = ["Yes - all calculations performed correctly"]
-    desc.each do |m|
-      y = Yardstick.new :meaning => m, :calculation => true, :weight => 3
-      y.save
-    end 
   end
 
   def down
