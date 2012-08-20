@@ -4,14 +4,17 @@
     Based on what is written, can one say that the student <tt>identified 
     the key insights</tt> needed to solve the problem ?
   - Yardstick.insights.order(:weight).each do |y|
-    .root-cause{ :marker => "#{y.id}" }= "#{y.meaning}"
+    .root-cause{ :marker => "#{y.id}" }
+      <b>#{y.bottomline}.</b> #{y.meaning}
   %p.instructions
     Based on what is written, can one say that the student built upon 
     the insights to <tt>formulate</tt> a mathematically sound solution ?
   - Yardstick.formulations.order(:weight).each do |y|
-    .root-cause{ :marker => "#{y.id}" }= "#{y.meaning}"
+    .root-cause{ :marker => "#{y.id}" }
+      <b>#{y.bottomline}.</b> #{y.meaning}
   %p.instructions
     Based on what is written, can one say that the student performed 
     all relevant <tt>calculations</tt> correctly ?
   - Yardstick.calculations.order(:weight).each do |y|
-    .root-cause{ :marker => "#{y.id}" }= "#{y.meaning}"
+    .root-cause{ :marker => "#{y.id}" }
+      <b>#{y.bottomline}.</b> #{y.meaning}
