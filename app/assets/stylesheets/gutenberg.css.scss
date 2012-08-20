@@ -1240,9 +1240,10 @@ li {
   }
 
   .root-cause {
-    margin-bottom: 7px ;
-    color: $my-gray ;
-    text-transform: lowercase ;
+    margin-bottom: 10px ;
+    color: lighten($gray, 60%) ; 
+
+    > b { color: $my-blue ; }
   } 
 
   tt { color: white ; font-size: 10px ; } 
