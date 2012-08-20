@@ -31,4 +31,8 @@ class Grade < ActiveRecord::Base
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible
+  def colour?
+    self.calibration_id.nil? ? nil : self.calibration.colour?
+  end 
+
 end
