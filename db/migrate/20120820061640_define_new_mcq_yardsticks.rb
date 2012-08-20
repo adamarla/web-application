@@ -2,7 +2,7 @@ class DefineNewMcqYardsticks < ActiveRecord::Migration
   def up
     mcq_yardsticks = { 
       0 => [
-            "No attempt"
+            "(No) The question has not been attempted"
            ],
       1 => [
             "(Incorrect) None of the right options picked"

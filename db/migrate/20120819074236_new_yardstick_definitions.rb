@@ -9,7 +9,7 @@ class NewYardstickDefinitions < ActiveRecord::Migration
             "(No) And the approach taken will not lead to the correct answer"
            ],
       2 => [
-            "(Yes, and no) Some key insight(s) required to get to the correct answer missing" 
+            "(Yes, and no) Some key insights required to get to the correct answer missing" 
            ], 
       3 => [
             "(Yes) All required insights captured"
@@ -50,13 +50,13 @@ class NewYardstickDefinitions < ActiveRecord::Migration
 
     calculations = { 
       0 => [
-            "Doesn't matter / irrelevant in this case"
+            "(Not important) There are other issues with the response that need to be addressed first"
            ],
       1 => [
-            "Some errors here and there"
+            "(No) Some errors here and there"
            ],
       2 => [
-            "No errors"
+            "(Yes) All calculations performed correctly"
            ]
     }
 
