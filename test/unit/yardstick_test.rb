@@ -9,6 +9,7 @@
 #  formulation :boolean         default(FALSE)
 #  calculation :boolean         default(FALSE)
 #  weight      :integer         default(1)
+#  bottomline  :string(255)
 #
 
 require 'test_helper'

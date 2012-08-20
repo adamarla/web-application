@@ -9,6 +9,7 @@
 #  formulation :boolean         default(FALSE)
 #  calculation :boolean         default(FALSE)
 #  weight      :integer         default(1)
+#  bottomline  :string(255)
 #
 
 #     __:belongs_to___     __:belongs_to___  

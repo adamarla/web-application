@@ -9,6 +9,7 @@
 #  formulation :boolean         default(FALSE)
 #  calculation :boolean         default(FALSE)
 #  weight      :integer         default(1)
+#  bottomline  :string(255)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
