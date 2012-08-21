@@ -97,6 +97,10 @@ class TeachersController < ApplicationController
     head :ok
   end 
 
+  def load_grades
+    @grades = Grade.where(:teacher_id => params[:id])
+  end
+
   def list 
     if current_account
       @who_wants_to_know = current_account.role

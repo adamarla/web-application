@@ -154,6 +154,26 @@ jQuery ->
       here = $('#typeset-for-me')
       coreUtil.interface.displayJson json.typesets, here, 'typeset', {radio:false}
       preview.loadJson json, 'vault'
+    else if url.match(/grade\/details/)
+      here = $('#understand-calibrations > .calibrations')
+      items = here.find '.root-cause'
+      $(m).removeClass 'selected' for m in items
+
+      coreUtil.interface.loadGradeDetails json
+      for index in json.highlight
+        k = items.filter("[marker=#{index}]").eq(0)
+        k.addClass 'selected' if k?
+    else if url.match(/load\/grades/)
+      here = $('#calibrations')
+      existing = here.find "input[type='number']"
+
+      # JSON = { grades: [{ grade : {calibration_id:xyz, marks:abc } }, .... ] }
+      for m in json.grades
+        r = m.grade
+        continue unless r.calibration_id?
+        target = existing.filter("[marker=#{r.calibration_id}]").eq(0)
+        continue unless target?
+        target.val r.marks
     else
       matched = false
 
