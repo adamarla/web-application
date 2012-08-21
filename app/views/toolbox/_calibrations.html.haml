@@ -1,20 +1,28 @@
 
 .calibrations
-  %p.instructions
-    Based on what is written, can one say that the student <tt>identified 
-    the key insights</tt> needed to solve the problem ?
-  - Yardstick.insights.order(:weight).each do |y|
-    .root-cause{ :marker => "#{y.id}" }
-      <b>#{y.bottomline}.</b> #{y.meaning}
-  %p.instructions
-    Based on what is written, can one say that the student built upon 
-    the insights to <tt>formulate</tt> a mathematically sound solution ?
-  - Yardstick.formulations.order(:weight).each do |y|
-    .root-cause{ :marker => "#{y.id}" }
-      <b>#{y.bottomline}.</b> #{y.meaning}
-  %p.instructions
-    Based on what is written, can one say that the student performed 
-    all relevant <tt>calculations</tt> correctly ?
-  - Yardstick.calculations.order(:weight).each do |y|
-    .root-cause{ :marker => "#{y.id}" }
-      <b>#{y.bottomline}.</b> #{y.meaning}
+  .summary
+    - ["Insight", "Formulation", "Calculation"].each do |m|
+      = render :partial => 'toolbox/equalizer', :locals => { :label => m }
+  .details
+    #preamble
+      Based on what is written, can one say that the student ...
+
+    %ul
+      %li.question
+        identified the key insights needed to solve the problem ?
+        - Yardstick.insights.order(:weight).each do |y|
+          .root-cause{ :marker => "#{y.id}" }
+            .bottomline= "#{y.bottomline}"
+            .meaning= "#{y.meaning}"
+      %li.question
+        built on the insights to formulate a mathematically sound solution ?
+        - Yardstick.formulations.order(:weight).each do |y|
+          .root-cause{ :marker => "#{y.id}" }
+            .bottomline= "#{y.bottomline}"
+            .meaning= "#{y.meaning}"
+      %li.question
+        performed all required calculations correctly ?
+        - Yardstick.calculations.order(:weight).each do |y|
+          .root-cause{ :marker => "#{y.id}" }
+            .bottomline= "#{y.bottomline}"
+            .meaning= "#{y.meaning}"

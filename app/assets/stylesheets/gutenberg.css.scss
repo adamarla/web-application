@@ -3,6 +3,7 @@ $gray:#191919 ;
 $light-gray: lighten($gray, 30%) ;
 
 $pink:#e3105a ;
+$lightpink: lighten($pink, 15%) ;
 $blue:#00007f ;
 $orange:#ffa500 ;
 $green:#168816 ;
@@ -464,34 +465,44 @@ span.unhappyMessage {
   margin-right: 20px ;
 }
 
+/*
 .grd-slider {
   margin-top: 20px ;
   width: 50% ;
-
 }
+*/
 
-.grd-slider.ui-slider-horizontal, .ys-slider.ui-slider-horizontal {
-  height: 0.5px ;
-  border: {
-    style: solid ;
-    width: 1px ;
-    color: white ;
-  }
-  margin-bottom: 20px ;
-
-  > a.ui-slider-handle {
-    height: 10px ;
-    width: 7px ;
+#edit-calibrations {
+  > #calibration-adjustment {
+    height: 0.5px ;
     border: {
       style: solid ;
       width: 1px ;
-      color: $orange ;
-      radius: 4px ;
+      color: white ;
     }
-    background-color: $orange ;
+    margin-bottom: 20px ;
+
+    > a.ui-slider-handle {
+      height: 10px ;
+      width: 7px ;
+      border: {
+        style: solid ;
+        width: 1px ;
+        color: $orange ;
+        radius: 4px ;
+      }
+      background-color: $orange ;
+    } 
+    background-color: white ;
   } 
-  background-color: white ;
-} 
+
+  > #calibration-ticker { 
+    height: 50px ;
+    margin-bottom: 5px ;
+
+    > .title { font-size: 14px ; }
+  } 
+}
 
 #new-examiners form li {
   width: 90% ;
@@ -1211,22 +1222,54 @@ li {
 
 #calibrations-summary {
   > #calibrations { 
-    > ul { 
-      > li { 
+    ul { 
+      margin-top: -5px ;
+
+      li { 
         &[colour="lightblue"] { background-color: lighten($blue, 50%) ; }
         &[colour="blue"] { background-color: lighten($blue,35%) ; }
-        &[colour="pink"] { background-color: lighten($pink,15%) ; }
+        &[colour="pink"] { background-color: $lightpink ; } 
         &[colour="orange"] { background-color: $orange ; }
         &[colour="green"] { background-color: $green ; }
+        &.selected { 
+          background-color: transparent ;
+          border: 1px solid $orange ;
+        } 
+
+        > .marks-out-of { 
+          width: 40% ;
+          margin-left: 3% ;
+          padding: { 
+            left: 2% ;
+            right: 2% ;
+          } 
+          border-left: 1px dotted white ;
+
+          > input {
+            background: transparent ;
+            color: white ; 
+            border: none ;
+            width: 100% ;
+            text-align: center ;
+          }
+
+          > .denominator { 
+            font-size: 11px ;
+            text-align: center ;
+            border-top: 2px solid white ;
+            padding-top: 1px ;
+            margin-top: 2px ;
+          } 
+        }
       } 
     } 
   } 
 
   > #calibrations-edit-understand { 
-    width: 75% ;
-    margin-left: 5% ;
+    width: 70% ;
+    margin-left: 2% ;
     font-size: 11px ;
-    text-align: justify ;
+    // text-align: justify ;
   } 
 }
 
@@ -1234,18 +1277,100 @@ li {
   p.instructions { 
     font-size: 11px ; 
     color: $my-blue ; 
-    border-bottom: 2px solid white ;
-    border-top: 2px solid white ;
+    // border-bottom: 2px solid white ;
+    border-top: 4px solid white ;
     padding: 7px 0px 7px 0px ;
   }
 
-  .root-cause {
-    margin-bottom: 10px ;
-    color: lighten($gray, 60%) ; 
-
-    > b { color: $my-blue ; }
+  > .summary { 
+    margin-bottom: 20px ;
+    padding: 10px 5px 5px 10px ; 
+    border: 2px solid gray ;
+    border-radius: 8px ;
   } 
 
-  tt { color: white ; font-size: 10px ; } 
+  > .details { 
+    > #preamble {
+      font-size: 12px ;
+      color: $my-blue ; 
+      margin-bottom: 20px ;
+      text-transform: lowercase ;
+    } 
+
+    .question {
+      font: {
+        size: 12px ;
+      } 
+      margin: {
+        bottom: 7px ;
+        left: -25px ;
+      }
+      padding: 4px 5px 4px 5px ;
+      border-radius: 5px ;
+      color: $my-blue ; 
+      // background-color: darken(gray, 15%) ; 
+    }
+  } 
+
+  .root-cause {
+    margin: {
+      top:4px ;
+      bottom: 6px ;
+    } 
+    color: lighten($gray, 60%) ; 
+    display: none ;
+
+    &.selected { 
+      display: block ;
+    }
+
+    > .bottomline { 
+      font: {
+        size: 12px ;
+      } 
+      color: $orange ;
+      text-transform: lowercase ;
+    }
+
+    > .meaning { 
+      font-size: 11px ;
+      color: white ;
+    } 
+  } 
+
+  tt { font-size: 10px ; }
+
+} 
+
+.equalizer { 
+  height: 20px ; 
+
+  > .label { 
+    width: 60% ;
+    margin-left: 5% ;
+    font: { 
+      size: 12px ;
+    } 
+    text-transform: lowercase ;
+    color: white ; 
+  } 
+
+  > .level { 
+    height: 10px ; 
+    width: 10px ;
+    margin: { 
+      right: 5% ;
+    }
+    border: {
+      radius: 10px ;
+      width: 2px ;
+      color: lighten($gray, 50%) ;
+      style: solid ;
+    } 
+    &.pinkoutline { border-color: $lightpink ;} 
+    &.pink { background-color: $lightpink ; border-color: $lightpink ; } 
+    &.orange{ background-color: $orange ; border-color: $orange ; }
+    &.green{ background-color: $green ; border-color: $green ; }
+  } 
 } 
 
