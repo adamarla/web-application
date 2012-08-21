@@ -3,7 +3,7 @@
 
 #calibrations-summary
   #calibrations.left
-    = form_tag "#{grades_update_path}?id=#{current_account.loggable_id}", :remote => true do |f|
+    = form_tag "#{update_grades_path}?id=#{current_account.loggable_id}", :remote => true do |f|
       %ul
         - calibrations.each_with_index do |m,j|
           %li{ :colour => "#{m.colour?.to_s}" }
