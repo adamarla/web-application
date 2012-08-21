@@ -175,6 +175,62 @@ window.coreUtil = {
         resizable: false,
         dialogClass: "alert"
       }
+    
+    loadGradeDetails: (json, here = '#understand-calibrations .summary:first') ->
+      ###
+        This method assumes a JSON of the form: 
+        { ..... weights: [insight,formulation,calculation] OR [mcq] ] ..... }
+
+        HTML: $(here) > .equalizer > .level.left
+      ###
+      here = if typeof here is 'string' then $(here) else here
+      equalizers = here.children '.equalizer'
+      mcqMode = if json.weights.length is 3 then false else true
+
+      colours = ['pinkoutline', 'pink', 'orange', 'green']
+
+      for m,j in json.weights
+        m = parseInt(m)
+        e = if mcqMode then equalizers.eq(3) else equalizers.eq(j)
+        levels = e.children '.level'
+        target = null
+
+        # Remove any previously set classes: lightpink, pink,orange OR green from .level
+        $(n).removeClass "pinkoutline pink orange green" for n in levels
+        
+        # Calculations are ranked on a [0,2] scale - not [0,3] like the others
+        onCalc = if j is 2 then true else false
+
+        switch m
+          when 0
+            target = 0
+          when 1
+            target = if onCalc then 1 else 0
+          when 2
+            target = if onCalc then 2 else 1
+          when 3
+            target = 2
+
+        target = levels.eq(target)
+
+        colour = -1
+        switch m
+          when 0
+            colour = 0
+          when 1
+            colour = if onCalc then 2 else 1
+          when 2
+            colour = if onCalc then 3 else 2
+          when 3
+            colour = m
+
+        # Apply the colour class
+        target.addClass colours[colour] unless colour is -1
+      return true
+
+
+
+      
 
   } # end of namespace 'interface'
 
