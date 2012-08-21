@@ -265,7 +265,7 @@ jQuery ->
   ###
 
   $('form').ajaxSuccess (e,xhr,settings) ->
-    dontClear = ['topic-selection-list']
+    dontClear = ['topic-selection-list', 'calibrations']
     action = $(this).attr 'action'
 
     if action is settings.url
