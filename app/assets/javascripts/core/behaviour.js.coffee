@@ -372,29 +372,6 @@ jQuery ->
     flipchart.initialize $(chart)
 
   ###
-    Initialize vertical tabs 
-  ###
-
-  for verticalTabs in $('.vertical-tabs')
-    $(verticalTabs).tabs({
-      show: (event, ui) ->
-        dom = $('#yardsticks-summary .ui-tabs-selected')
-        anchor = dom.children('a:first')
-        allotment = parseInt(anchor.attr('allotment'))
-        panelId = anchor.attr 'href'
-        panel = $('#yardsticks-summary').find panelId
-        slider = panel.children('.edit-allotment').eq(0).children('.ys-slider').eq(0)
-        slider.slider { value: "#{allotment}" }
-    })
-
-  $('#yardsticks-summary a').click ->
-    current = $(this).closest('.vertical-tabs').tabs 'option', 'selected'
-    last = preview.currIndex()
-    
-    preview.jump last, current
-    return true
-
-  ###
     In Admin & Teacher consoles, allotments for various yardsticks can be 
     changed using a slider. These sliders - when slid - update a ticker
     Define this functionality here
@@ -406,38 +383,7 @@ jQuery ->
     anchor = $('#yardsticks-summary').find("ul > li > a[href=##{panel}]").eq(0)
     return anchor
 
-  $('.ys-slider').slider {
-    value: 0,
-    min:0,
-    max:100,
-    slide: (event, ui) ->
-      dom = $(ui.handle).parent() # slider element
-      ticker = dom.siblings '.ys-ticker:first'
-      formInput = dom.siblings('form:first').find 'li > input:first'
-      tab = containingTab dom
 
-      if tab? && tab.length isnt 0
-        tab.attr 'allotment', ui.value
-      ticker.text "#{ui.value}%" if ticker?
-      formInput.val ui.value if formInput?
-  }
-
-  $('.grd-slider').slider {
-    value: -1,
-    min: -1,
-    max: 7,
-    step: 1,
-    slide: (event, ui) ->
-      dom = $(ui.handle).parent()
-      #alert $(ui.handle).attr 'class'
-      ticker = dom.siblings '.grd-ticker:first'
-      formInput = dom.siblings('li:first').find 'input:first'
-
-      #alert formInput.attr 'id' if formInput.length
-
-      ticker.text "#{ui.value}" if ticker?
-      formInput.val ui.value if formInput?
-  }
 
   $('#toolbox').find('.grade-btns-non-mcq:first').buttonset()
   $('#toolbox').find('.grade-btns-mcq:first').buttonset()
