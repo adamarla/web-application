@@ -132,10 +132,10 @@ class Calibration < ActiveRecord::Base
       f = Yardstick.where(:id => self.formulation_id).map(&:weight).first
       c = Yardstick.where(:id => self.calculation_id).map(&:weight).first
 
-      return { :insight => i, :formulation => f, :calculation => c }
+      return [i,f,c]
     else
       m = Yardstick.where(:id => self.mcq_id).map(&:weight).first
-      return { :mcq => m }
+      return [m]
     end
   end
 
@@ -143,8 +143,8 @@ class Calibration < ActiveRecord::Base
     weights = self.weights?
     colour = :undefined 
 
-    if weights[:mcq].nil? 
-      cumulative = weights[:insight] + weights[:formulation]
+    if self.mcq_id.nil? 
+      cumulative = weights[0] + weights[1] # insight + formulation
       if cumulative < 3
         colour = :pink
       elsif cumulative < 6 
@@ -153,7 +153,7 @@ class Calibration < ActiveRecord::Base
         colour = :green
       end
     else
-      case weights[:mcq]
+      case weights[0] # just mcq
         when 0,1 then colour = :lightblue 
         else colour = :blue
       end
