@@ -3,10 +3,14 @@
 
 #calibrations-summary
   #calibrations.left
-    %ul
-      - calibrations.each_with_index do |m,j|
-        %li{ :colour => "#{m.colour?.to_s}" }
-          %a{ :href => '#', :marker => "#{m.id}" }= "#{m.mcq_id.nil? ? "G#{j+1}" : "M#{j-11}" }"
+    = form_tag "#{grades_update_path}?id=#{current_account.loggable_id}", :remote => true do |f|
+      %ul
+        - calibrations.each_with_index do |m,j|
+          %li{ :colour => "#{m.colour?.to_s}" }
+            %a.left{ :href => '#', :marker => "#{m.id}" }= "#{m.mcq_id.nil? ? "G#{j+1}" : "M#{j-11}" }"
+            .marks-out-of.right
+              = number_field_tag :allotment, nil, :in => 0..4, :name => "allotment[#{m.id}]", :id => "allotment_#{m.id}" 
+              .denominator= "4"
   #calibrations-edit-understand.right
     #edit-calibrations
     #understand-calibrations
