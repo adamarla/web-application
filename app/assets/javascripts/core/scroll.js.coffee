@@ -97,7 +97,7 @@ jQuery ->
       return if not onto?
       here = if typeof here is 'string' then $(here) else here
 
-      preFn here if preFn?
+      preFn here, onto if preFn?
 
       for m in here.find "#{onto}"
         $(m).removeClass 'hidden'
@@ -122,7 +122,7 @@ jQuery ->
         for j in ids
           target = content.find("#{onto}[marker=#{j}]").eq(0)
           continue if target.length is 0
-          duringFn target if duringFn?
+          duringFn target, onto if duringFn?
         
       postFn here, onto if postFn?
       return true
