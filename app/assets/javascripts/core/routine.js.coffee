@@ -4,8 +4,16 @@
   'within' is a jQuery object - not a string
 ###
 
+window.enableRadio = (within) ->
+  $(m).prop 'disabled', false for m in within.find "input[type='radio']"
+  return true
+
 window.disableRadio = (within) ->
   $(m).prop 'disabled', true for m in within.find "input[type='radio']"
+  return true
+
+window.enableChecks = (within) ->
+  $(m).prop 'disabled', false for m in within.find "input[type='checkbox']"
   return true
 
 window.disableChecks = (within) ->
@@ -34,4 +42,29 @@ window.doNothing = (within = null) ->
 
 window.retain = (obj) ->
   obj.attr 'keep', 'yes' if obj?
+  return true
+
+window.block = (obj, selector = null) ->
+  return false unless obj?
+
+  if selector?
+    $(m).addClass 'disabled' for m in obj.find(selector)
+  else
+    obj.addClass 'disabled'
+
+  obj.addClass 'disabled'
+  disableRadio obj
+  disableChecks obj
+  return true
+
+window.unblock = (obj) ->
+  return false unless obj?
+
+  if selector?
+    $(m).removeClass 'disabled' for m in obj.find(selector)
+  else
+    obj.removeClass 'disabled'
+
+  enableRadio obj
+  enableChecks obj
   return true
