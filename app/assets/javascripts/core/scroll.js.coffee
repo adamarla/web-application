@@ -81,7 +81,7 @@ jQuery ->
 
       return true
 
-    overlayJson: (json, key, here, onto, hideRest = false) ->
+    overlayJson: (json, key, here, onto, preFn = doNothing, duringFn = doNothing, postFn = doNothing) ->
       ###
         Unlike loadJson, this method does NOT change the HTML. It only loads the 
         passed JSON onto whatever is already present. Moreover, this method is limited
@@ -97,8 +97,7 @@ jQuery ->
       return if not onto?
       here = if typeof here is 'string' then $(here) else here
 
-      # Step 1: Reset everything to a virginal state  
-      $(m).prop('checked', false) for m in here.find "input[type='checkbox'],input[type='radio']" unless hideRest
+      preFn here if preFn?
 
       for m in here.find "#{onto}"
         $(m).removeClass 'hidden'
@@ -123,18 +122,9 @@ jQuery ->
         for j in ids
           target = content.find("#{onto}[marker=#{j}]").eq(0)
           continue if target.length is 0
-
-          if hideRest
-            target.attr 'keep', 'yes'
-          else
-            for k in target.children("input[type='checkbox'], input[type='radio']")
-              $(k).prop 'checked', true
+          duringFn target if duringFn?
         
-      # Step 3: If hideRest = true, then hide any 'onto' that does NOT have the keep attribute
-      if hideRest
-        for m in here.find("#{onto}").not('[keep]')
-          $(m).addClass 'hidden'
-
+      postFn here, onto if postFn?
       return true
 
     columnize: (content) ->
