@@ -56,7 +56,7 @@ jQuery ->
       else matched = false # so that event can propogate and update button text cna revert  
     else if url.match(/teacher\/students_with_names/)
       here = $('#enrolled-students')
-      scroll.overlayJson json.students, 'student', here, '.swiss-knife', doNothing, retain, cloak
+      scroll.overlayJson json.students, 'student', here, '.swiss-knife', "hide"
     else if url.match(/teacher\/students/)
       here = $('#enrolled-students')
       scroll.loadJson json.students, 'student', here, 'login'
@@ -66,7 +66,7 @@ jQuery ->
       switch child
         when 'sektions-summary'
           here = $('#enrolled-students')
-          scroll.overlayJson json.students, 'student', here, '.swiss-knife', unclickChecks, clickChecks
+          scroll.overlayJson json.students, 'student', here, '.swiss-knife'
         else
           here = $('#student-list')
           coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'

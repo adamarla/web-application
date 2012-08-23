@@ -188,7 +188,7 @@ p > a, div > a {
   background-color: lighten($gray,30%) ;
 }
 
-.swiss-knife { 
+.swiss-knife, .measure > .level { 
   min-height: 22px ;
   border-bottom: 1px solid $my-blue ; 
   padding: {
@@ -206,6 +206,15 @@ p > a, div > a {
   } 
 } 
 
+.measure > .level { 
+  min-height: 40px ;
+  padding-top: 4px ;
+  &.disabled { 
+    color: lighten(gray, 15%) ; 
+    b { color: gray ; }
+  }
+} 
+
 #pending-quizzes {
   a { 
     color: $my-blue ;
@@ -220,10 +229,19 @@ p > a, div > a {
   float: left ;
 }
 
-.swiss-knife > .label {
-  margin-left : 5px ;
-  font-variant: small-caps ;
+.swiss-knife, .measure { 
+  .label {
+    margin-left : 5px ;
+  }
+  b { color: $orange ; }
 }
+
+.swiss-knife > .label { font-variant: small-caps ; } 
+.measure .label {
+  width: 90% ;
+  font-size: 11px ;
+}
+
 
 .submit-buttons { 
   min-height: 40px ;
@@ -1374,3 +1392,8 @@ li {
   } 
 } 
 
+#grade-abacus { 
+  .scroll-content { 
+    min-height: 350px ;
+  } 
+} 

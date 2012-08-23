@@ -81,7 +81,7 @@ jQuery ->
 
       return true
 
-    overlayJson: (json, key, here, onto, preFn = doNothing, duringFn = doNothing, postFn = doNothing) ->
+    overlayJson: (json, key, here, onto, rest = "nothing") ->
       ###
         Unlike loadJson, this method does NOT change the HTML. It only loads the 
         passed JSON onto whatever is already present. Moreover, this method is limited
@@ -92,16 +92,25 @@ jQuery ->
         The passed JSON is of the form: [.. {key: {parent: .., id:[ .. ]} ... ]
         Its understood that 'parent' is the marker on the scroll-heading and id's are 
         the markers on whatever is specified with 'onto'
+
+        'rest' = [ "nothing" | "disable" | "hide" ]
       ###
 
       return if not onto?
       here = if typeof here is 'string' then $(here) else here
+      dive = if here.hasClass 'scroll-content' then false else true
 
-      preFn here, onto if preFn?
+      disableRest = hideRest = false
+      switch rest
+        when "disable" then disableRest = true
+        when "hide" then hideRest = true
 
       for m in here.find "#{onto}"
-        $(m).removeClass 'hidden'
+        $(m).removeClass 'hidden disabled'
         $(m).removeAttr 'keep'
+        for k in $(m).find "input[type='radio'],input[type='checkbox']"
+          $(k).prop 'disabled', false
+          $(k).prop 'checked', false
 
       # Step 2: Check the checkboxes/radio-buttons as specified in the passed JSON
       for m in json
@@ -109,10 +118,12 @@ jQuery ->
         parent_id = item.parent
         ids = item.id # an array
 
-        header = here.find(".scroll-heading[marker=#{parent_id}]").eq(0)
-        continue if header.length is 0
-
-        content = header.next()
+        if dive
+          header = here.find(".scroll-heading[marker=#{parent_id}]").eq(0)
+          continue if header.length is 0
+          content = header.next()
+        else
+          content = here
 
         # This method expects an array of IDs. So, if its a single ID, then create 
         # a 1-element array from it before proceeding 
@@ -122,9 +133,15 @@ jQuery ->
         for j in ids
           target = content.find("#{onto}[marker=#{j}]").eq(0)
           continue if target.length is 0
-          duringFn target, onto if duringFn?
-        
-      postFn here, onto if postFn?
+          target.attr 'keep', 'yes'
+
+      if hideRest
+        $(m).addClass 'hidden' for m in here.find "#{onto}:not([keep])"
+      else if disableRest
+        for m in here.find "#{onto}:not([keep])"
+          $(m).addClass 'disabled'
+          $(k).prop 'disabled', true for k in $(m).find "input[type='radio'],input[type='checkbox']"
+
       return true
 
     columnize: (content) ->
