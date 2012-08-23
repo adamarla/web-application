@@ -37,6 +37,10 @@ window.cloak = (within, selector = ".swiss-knife") ->
   $(m).addClass 'hidden' for m in within.find "#{selector}:not([keep])"
   return true
 
+window.uncloak = (within, selector = ".swiss-knife") ->
+  $(m).removeClass 'hidden' for m in within.find "#{selector}"
+  return true
+
 window.doNothing = (within = null) ->
   return true
 
@@ -52,12 +56,11 @@ window.block = (obj, selector = null) ->
   else
     obj.addClass 'disabled'
 
-  obj.addClass 'disabled'
   disableRadio obj
   disableChecks obj
   return true
 
-window.unblock = (obj) ->
+window.unblock = (obj, selector = null) ->
   return false unless obj?
 
   if selector?
