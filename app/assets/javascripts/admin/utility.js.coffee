@@ -27,25 +27,6 @@ window.adminUtil = {
         select.val topic.select
     return true
 
-  mnmToggle : (type, id, customization = null) ->
-    ### 
-      type = 'selected' OR 'deselected', id = of the vertical
-      If 'type' = selected, then we are moving a 'selected' element 
-      to the 'deselected' list. Otherwise, the other way round
-    ###
-
-    other = if type is 'selected' then 'deselected' else 'selected'
-
-    source = $("#topic-#{type}-list").children("div[marker=#{id}]").detach()
-    target = $("#topic-#{other}-list")
-    source.appendTo target
-
-    if type is 'selected'
-      swissKnife.customizeWithin source, {}, false
-    else
-      source.addClass 'hidden'
-      swissKnife.customizeWithin source, customization, true
-
   buildPendingScanList: (json) ->
     here = $('#list-pending')
     here.empty() # purge any old lists
