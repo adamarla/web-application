@@ -184,10 +184,6 @@ window.coreUtil = {
         target.addClass colours[colour] unless colour is -1
       return true
 
-
-
-      
-
   } # end of namespace 'interface'
 
   # Namespace for functions pertaining to forms 
