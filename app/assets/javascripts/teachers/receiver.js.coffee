@@ -66,7 +66,7 @@ jQuery ->
       switch child
         when 'sektions-summary'
           here = $('#enrolled-students')
-          scroll.overlayJson json.students, 'student', here, '.swiss-knife'
+          scroll.overlayJson json.students, 'student', here, '.swiss-knife', "nop", "check"
         else
           here = $('#student-list')
           coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'

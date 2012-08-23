@@ -81,7 +81,7 @@ jQuery ->
 
       return true
 
-    overlayJson: (json, key, here, onto, rest = "nothing") ->
+    overlayJson: (json, key, here, onto, onDrop = "nop", onRetain = "nop") ->
       ###
         Unlike loadJson, this method does NOT change the HTML. It only loads the 
         passed JSON onto whatever is already present. Moreover, this method is limited
@@ -93,7 +93,8 @@ jQuery ->
         Its understood that 'parent' is the marker on the scroll-heading and id's are 
         the markers on whatever is specified with 'onto'
 
-        'rest' = [ "nothing" | "disable" | "hide" ]
+        'onDrop' = [ "nop" | "disable" | "hide" ]
+        'onRetain' = [ "check" | "nop" | "highlight" ]
       ###
 
       return if not onto?
@@ -101,16 +102,22 @@ jQuery ->
       dive = if here.hasClass 'scroll-content' then false else true
 
       disableRest = hideRest = false
-      switch rest
+      switch onDrop
         when "disable" then disableRest = true
         when "hide" then hideRest = true
+
+      check = false
+      switch onRetain
+        when "check" then check = true
 
       for m in here.find "#{onto}"
         $(m).removeClass 'hidden disabled'
         $(m).removeAttr 'keep'
-        for k in $(m).find "input[type='radio'],input[type='checkbox']"
-          $(k).prop 'disabled', false
-          $(k).prop 'checked', false
+
+        if not hideRest
+          for k in $(m).find "input[type='radio'],input[type='checkbox']"
+            $(k).prop 'disabled', false
+            $(k).prop 'checked', false
 
       # Step 2: Check the checkboxes/radio-buttons as specified in the passed JSON
       for m in json
@@ -133,7 +140,10 @@ jQuery ->
         for j in ids
           target = content.find("#{onto}[marker=#{j}]").eq(0)
           continue if target.length is 0
+
           target.attr 'keep', 'yes'
+          if check
+            $(m).prop 'checked', true for m in target.find "input[type='radio'],input[type='checkbox']"
 
       if hideRest
         $(m).addClass 'hidden' for m in here.find "#{onto}:not([keep])"
