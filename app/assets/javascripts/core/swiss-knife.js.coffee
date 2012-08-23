@@ -9,6 +9,9 @@ window.swissKnife = {
     The function below assumes that the passed JSON structure has at least
     the following 2 keys : name & id. The other keys handled here are 'checked'
     and 'selected'
+
+    record = { key : { id: abc, name: stu, ticker: ... } }
+    JSON = [ record_1, record_2 .... ]
   ###
   forge : (record, key, visible = {radio:true}, ticker = null, enable = true) ->
     clone = $('#toolbox').children('.blueprint.swiss-knife').first().clone()
