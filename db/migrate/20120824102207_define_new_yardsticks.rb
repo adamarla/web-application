@@ -1,4 +1,4 @@
-class NewYardstickDefinitions < ActiveRecord::Migration
+class DefineNewYardsticks < ActiveRecord::Migration
   def up
     insights = {
       0 => [
@@ -67,6 +67,33 @@ class NewYardstickDefinitions < ActiveRecord::Migration
       end
     end
 
+=begin
+    MCQ Yardsticks 
+=end
+
+    mcq_yardsticks = { 
+      0 => [
+            "(No) The question has not been attempted"
+           ],
+      1 => [
+            "(Incorrect) None of the right options picked"
+           ],
+      2 => [
+            "(Partially correct) Some of the other correct options not picked however",
+            "(Partially correct) Some of the selected options are wrong" 
+           ],
+      3 => [
+            "(Correct) All of the right - and none of the wrong - options picked"
+           ]
+    } 
+
+    mcq_yardsticks.each do |k,v|
+      v.each do |reason|
+        y = Yardstick.new :mcq => true, :weight => k, :meaning => reason
+        y.save
+      end
+    end 
+
   end
 
   def down
@@ -75,3 +102,4 @@ class NewYardstickDefinitions < ActiveRecord::Migration
     end
   end
 end
+

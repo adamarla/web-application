@@ -9,6 +9,9 @@ class RebuildYardsticks < ActiveRecord::Migration
     add_column :yardsticks, :insight, :boolean, :default => false
     add_column :yardsticks, :formulation, :boolean, :default => false
     add_column :yardsticks, :calculation, :boolean, :default => false
+    add_column :yardsticks, :weight, :integer, :default => 1
+    add_column :yardsticks, :bottomline, :string
+
   end
 
   def down
@@ -24,6 +27,9 @@ class RebuildYardsticks < ActiveRecord::Migration
     remove_column :yardsticks, :insight
     remove_column :yardsticks, :formulation
     remove_column :yardsticks, :calculation
+    remove_column :yardsticks, :weight
+
+    remove_column :yardsticks, :bottomline
   end
 
 end
