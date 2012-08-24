@@ -94,7 +94,8 @@ class TeachersController < ApplicationController
       next if grade.empty? 
       grade.first.update_attribute :allotment, assigned
     end 
-    head :ok
+
+    render :json => { :status => :ok }, :status => :ok
   end 
 
   def load_grades
