@@ -92,27 +92,18 @@ class GradedResponse < ActiveRecord::Base
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
 
-  def assign_grade(grade)
-    testpaper = self.testpaper
-    quiz = testpaper.quiz
-    #quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
-    subpart = self.subpart
-
-    return :bad_request if (quiz.nil? || subpart.nil?)
-
-    teacher = Teacher.where(:id => quiz.teacher_id).first # quiz by which teacher?
-    grade = Grade.where(:teacher_id => teacher.id, :yardstick_id => grade).first
-
-    allotment = grade.nil? ? nil : grade.allotment
-    marks = subpart.marks
-    assigned = (marks * (allotment/100.0)).round(1)
+  def calibrate_to(calibration_id)
+    assigner = self.teacher?
+    grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
+    marks = (self.subpart.marks * (grade.allotment/100.0)).round(2)
 
     # Notify the teacher as soon as the last response has been graded
-    if self.update_attributes(:grade_id => grade.id, :marks => assigned)
-      remaining = GradedResponse.in_testpaper(testpaper.id).with_scan.ungraded.count
+    if self.update_attributes(:grade_id => grade.id, :marks => marks)
+      remaining = GradedResponse.in_testpaper(self.testpaper_id).with_scan.ungraded.count
       if remaining == 0
-        testpaper.update_attribute :publishable, true
-        Mailbot.grading_done(testpaper).deliver
+        t = Testpaper.where(:id => self.testpaper_id).first
+        t.update_attribute :publishable, true
+        Mailbot.grading_done(t).deliver
       end
       return :ok
     else
@@ -171,6 +162,11 @@ class GradedResponse < ActiveRecord::Base
       c = [*'A'..'K'][subpart_index]
       return "Q.#{id}#{c}"
     end
+  end
+
+  def teacher?
+    # Returns the teacher to whose quiz this graded response is
+    return Teacher.where(:id => self.testpaper.quiz.teacher_id).first
   end
 
 

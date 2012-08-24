@@ -98,18 +98,6 @@ class Quiz < ActiveRecord::Base
     Teacher.find self.teacher_id
   end 
 
-=begin
-  def set_name
-    subject = Subject.where(:id => self.subject_id).select(:name).first.name
-
-    topics = Topic.where(:id => self.micros).map(&:name).join(', ')
-    topics = topics.split[0...2].join(' ') # take the first 2 words only ...
-    topics += ' ...'
-
-    self.name = "#{self.klass}-#{subject}: #{topics}" 
-  end 
-=end
-  
   def num_pages
     return QSelection.where(:quiz_id => self.id).order(:index).last.end_page
   end
@@ -240,18 +228,11 @@ class Quiz < ActiveRecord::Base
   end
 
   def pending_scans(examiner, page)
-    pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
-    scans = pending.map(&:scan).uniq.sort
+    @pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
+    @scans = @pending.map(&:scan).uniq.sort
+    @students = Student.where( :id => @pending.map(&:student_id).uniq )
 
-    @ret = {:scans => []}
-    scans.each do |s|
-      pick = pending.select{ |m| m.scan == s }.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
-      indices = pick.map(&:id)
-      type = pick.map{ |m| m.subpart.mcq }
-      labels = pick.map(&:name?)
-      (@ret[:scans]).push({:scan => s, :indices => indices, :mcq => type, :labels => labels}) unless indices.empty?
-    end
-    return @ret
+    return @students, @pending, @scans
   end
 
 end # of class

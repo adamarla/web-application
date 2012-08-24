@@ -19,6 +19,23 @@ window.canvas = {
     return true
     
 
+  load : (scan) ->
+    # 'scan' is a jQuery object provided by abacus as abacus.last.scan
+
+    # Clear 'clicks' array for the new canvas image 
+    canvas.clear() if canvas.clicks?
+    ctx = canvas.ctx
+    image = new Image()
+    src = scan.attr 'name'
+
+    image.onload = () ->
+      ctx.drawImage(image,15,0)
+      ctx.strokeStyle="#fd9105"
+      ctx.lineJoin="round"
+
+    image.src = "#{gutenberg.server}/locker/#{src}"
+    return true
+
   # n: 0-indexed
   loadNth: (n, list = '#pending-scans') ->
     list = $(list).find('.purgeable:first')
@@ -143,6 +160,20 @@ window.canvas = {
 
     return rectangle
 
+  decompile: () ->
+    ###
+      Returns the list of points clicked on the canvas in the form: 
+        |a,b|c,d|e,f|g,h     ----> '|' is a separator
+      It is understood that (a,b) and (c,d) are corners of one rectangle
+      - as are (e,f) and (g,h). in the rails code, one always picks 
+      pairs of points 
+    ###
+    ret = ""
+    for pt in canvas.clicks
+      ret += "|#{pt[0]},#{pt[1]}" # pt[0] = x, pt[1] = y
+    return ret
+
+###
   jump: (fwd = true, list = '#list-pending') ->
     list = if typeof list is 'string' then $(list) else list
     nScans = parseInt(list.attr 'length')
@@ -169,18 +200,6 @@ window.canvas = {
 
 
   scrollSidePnlList: (event) ->
-
-  decompile: () ->
-    ###
-      Returns the list of points clicked on the canvas in the form: 
-        |a,b|c,d|e,f|g,h     ----> '|' is a separator
-      It is understood that (a,b) and (c,d) are corners of one rectangle
-      - as are (e,f) and (g,h). in the rails code, one always picks 
-      pairs of points 
-    ###
-    ret = ""
-    for pt in canvas.clicks
-      ret += "|#{pt[0]},#{pt[1]}" # pt[0] = x, pt[1] = y
-    return ret
+###
 
 }

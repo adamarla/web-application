@@ -6,19 +6,11 @@
     %li
       %a{ :href => '#pending-pages' }= "2. Pages"
     %li
-      %a{ :href => '#pending-scans' }= "3. Scans"
+      %a{ :href => '#pending-scans' }= "3. Grade It!"
 
   #pending-quizzes
   #pending-pages
   #pending-scans
-    #list-pending.purgeable.hidden
-    .submit-buttons
-      %input#undo-btn{ :type => :button, :value => "Undo Last" }
-    #grading-panel
-      = semantic_form_for :grade, :remote => true, :method => :put, :url => 'assignGrades' do |f|
-        #grade-controls.purgeable
-        = f.input :annotation, :wrapper_html => { :class => :hidden },
-          :input_html => { :name => :clicks }
-        .submit-buttons
-          = submit_tag "Assign"
+    #list-pending.hidden
+    = render :partial => 'examiners/abacus'
 

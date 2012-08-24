@@ -239,7 +239,7 @@ p > a, div > a {
 .swiss-knife > .label { font-variant: small-caps ; } 
 .measure .label {
   width: 90% ;
-  font-size: 11px ;
+  font-size: 10px ;
 }
 
 
@@ -1396,4 +1396,18 @@ li {
   .scroll-content { 
     min-height: 350px ;
   } 
+
+  > #current-items { 
+    min-height: 30px ;
+    color: $my-blue ;
+    font-size: 15px ;
+    width: 70% ;
+    margin: {
+      left: 13% ;
+      right: 13% ;
+    } 
+    > #current-question { color: $orange ; }
+  } 
 } 
+
+
