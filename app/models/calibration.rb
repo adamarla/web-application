@@ -7,7 +7,7 @@
 #  formulation_id :integer
 #  calculation_id :integer
 #  mcq_id         :integer
-#  allotment      :integer
+#  allotment      :float
 #
 
 #     ___:has_many____     __:belongs_to___    ____:has_many____

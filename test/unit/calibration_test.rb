@@ -7,7 +7,7 @@
 #  formulation_id :integer
 #  calculation_id :integer
 #  mcq_id         :integer
-#  allotment      :integer
+#  allotment      :float
 #
 
 require 'test_helper'

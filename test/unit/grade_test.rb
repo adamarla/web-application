@@ -3,7 +3,7 @@
 # Table name: grades
 #
 #  id             :integer         not null, primary key
-#  allotment      :integer
+#  allotment      :float
 #  yardstick_id   :integer
 #  teacher_id     :integer
 #  created_at     :datetime

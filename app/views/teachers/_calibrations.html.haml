@@ -9,7 +9,7 @@
           %li{ :colour => "#{m.colour?.to_s}" }
             %a.left{ :href => '#', :marker => "#{m.id}" }= "#{m.mcq_id.nil? ? "G#{j+1}" : "M#{j-11}" }"
             .marks-out-of.right
-              = number_field_tag :allotment, nil, :in => 0..4, :name => "allotment[#{m.id}]", 
+              = text_field_tag :allotment, nil, :name => "allotment[#{m.id}]", :size => 4, :maxlength => 4,
                 :id => "allotment_#{m.id}", :marker => "#{m.id}"
               .denominator= "4"
   #calibrations-edit-understand.right

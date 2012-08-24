@@ -1268,8 +1268,9 @@ li {
             background: transparent ;
             color: white ; 
             border: none ;
-            width: 100% ;
+            max-width: 100% ;
             text-align: center ;
+            padding: 0px ;
           }
 
           > .denominator { 
