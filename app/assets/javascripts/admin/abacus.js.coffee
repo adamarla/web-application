@@ -22,6 +22,9 @@ window.abacus = {
     response : null
   }
 
+  decompile : (n) ->
+    alert "[#{n}] #{abacus.last.student.attr 'name'} --> #{abacus.last.scan.attr 'name'} --> #{abacus.last.response.attr 'marker'}"
+
   initialize : (here = '#abacus') ->
     abacus.obj = if typeof here is 'string' then $(here) else here
     abacus.obj.accordion scroll.options
@@ -63,23 +66,21 @@ window.abacus = {
     yardstick : () ->
       # Open the next scroll-content OR submit if last scroll-content
       currId = abacus.obj.accordion 'option', 'active'
-
-      if currId < 2
-        abacus.obj.accordion 'activate', currId + 1
-      else
-        # Back to the first yardstick. Remember to switch to next graded response
+      abacus.obj.accordion('activate', currId + 1) if currId < 2
       return true
 
     student : () ->
-      return abacus.last.student.next()
+      return abacus.last.student.next().eq(0)
 
     scan : () ->
       return abacus.next.student().children('.scan').eq(0)
 
     response : () ->
-      current = abacus.last.response
-      next = current.next() # next question on the same page of the same student
-      if next?
+      c = abacus.last.response
+      next = c.next() # next question on the same page of the same student
+      if next.length isnt 0
+        # abacus.decompile(1.9)
+        abacus.last.response = next
         canvas.clear() # remove any annotations for a previous question on the same scan
         return next
 
@@ -91,15 +92,14 @@ window.abacus = {
        Remember to delete this response, its parent scan and then the parent student
        An empty #list-pending => grading done
       ###
-      student = current.parent().parent()
-
+      
+      student = c.parent().parent()
       abacus.last.student = abacus.next.student()
 
       if abacus.last.student?
         abacus.last.scan = abacus.last.student.children('.scan').eq(0)
         abacus.last.response = if abacus.last.scan? then abacus.last.scan.children('.gr').eq(0) else null
         canvas.load abacus.last.scan
-        abacus.update.ticker()
       else # grading done
         alert "Grading done ..."
 
@@ -133,6 +133,13 @@ jQuery ->
     Behaviour
   ###
 
+  $('#grade-abacus > form').submit ->
+    # alert 'inside submit'
+    abacus.next.response() # Move to the next response
+    abacus.update.ticker()
+    abacus.obj.accordion 'activate', 0
+    return true
+
   $('#abacus .scroll-content').on 'click', 'input[type="radio"]', (event) ->
     event.stopPropagation()
 
@@ -159,22 +166,20 @@ jQuery ->
 
   $('#abacus').ajaxSuccess (e,xhr,settings) ->
     url = settings.url
-    return true if not url.match(/yardstick\/logical_next/)
 
+    return true unless url.match(/yardstick\/logical_next/)
     e.stopPropagation()
-    json = $.parseJSON xhr.responseText
 
+    json = $.parseJSON xhr.responseText
     abacus.next.yardstick()
     currId = abacus.obj.accordion 'option', 'active'
-
     key = null
+
     switch currId
       when 1 then key = 'formulation'
       when 2 then key = 'calculation'
 
     current = abacus.current()
-
     scroll.overlayJson json[key], 'candidates', current, '.level', "disable" if key?
     abacus.autoClick current # wouldn't do anything if current has > 1 clickable options
-
     return true
