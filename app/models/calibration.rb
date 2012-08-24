@@ -23,6 +23,8 @@ class Calibration < ActiveRecord::Base
   before_save :check_viability
   after_create :add_for_every_teacher
 
+  has_many :grades, :dependent => :destroy
+
   def self.mcqs
     where("mcq_id IS NOT ?", nil)
   end
@@ -175,6 +177,9 @@ class Calibration < ActiveRecord::Base
   private
     
     def add_for_every_teacher
+      Teacher.all.map(&:id).each do |m|
+        self.grades.create :teacher_id => m, :allotment => self.allotment
+      end
     end 
 
     def check_viability

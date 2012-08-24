@@ -259,15 +259,8 @@ class Teacher < ActiveRecord::Base
 
     def build_grade_table
       Calibration.select('id, allotment').each do |m|
-        grade = self.grades.new :allotment => m.allotment, :calibration_id => m.id
-        break if !grade.save
+        self.grades.create :allotment => m.allotment, :calibration_id => m.id
       end 
-=begin
-      Yardstick.select('id, default_allotment').each do |y|
-        grade = self.grades.new :allotment => y.default_allotment, :yardstick_id => y.id
-        break if !grade.save
-      end
-=end
     end 
 
 end # of class 
