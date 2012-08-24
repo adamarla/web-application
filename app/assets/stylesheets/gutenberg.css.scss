@@ -9,6 +9,7 @@ $orange:#ffa500 ;
 $green:#168816 ;
 $my-blue: #6ca7ab ;
 $my-gray: #4c4c4c ;
+$panel-colour: lighten(black, 17%) ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -1397,16 +1398,38 @@ li {
     min-height: 350px ;
   } 
 
+  .scroll-heading { 
+    text-transform: lowercase ;
+    font-weight: bold ;
+  } 
+
   > #current-items { 
     min-height: 30px ;
-    color: $my-blue ;
-    font-size: 15px ;
-    width: 70% ;
-    margin: {
-      left: 13% ;
-      right: 13% ;
+    padding: 3% ; 
+    background-color: $panel-colour ; 
+    border: none ; 
+    border-radius: 5px ;
+    margin-bottom: 15px ;
+
+    > div { 
+      margin-top: -2px ;
     } 
-    > #current-question { color: $orange ; }
+    .submit-buttons { 
+      height: 25px ; 
+      margin: {
+        top:2px ;
+        bottom: 0px ;
+      } 
+    }
+    #current-question { 
+      color: $orange ;
+      font-size: 18px ;
+      font-weight: bold ;
+    }
+    #current-student { 
+      font-size: 11px ;
+      color: white ;
+    } 
   } 
 } 
 
