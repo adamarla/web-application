@@ -4,7 +4,6 @@
 #
 #  id             :integer         not null, primary key
 #  allotment      :float
-#  yardstick_id   :integer
 #  teacher_id     :integer
 #  created_at     :datetime
 #  updated_at     :datetime
@@ -28,7 +27,6 @@
 class Grade < ActiveRecord::Base
   belongs_to :teacher 
   belongs_to :calibration
-  belongs_to :yardstick 
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible
