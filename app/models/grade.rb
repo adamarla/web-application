@@ -28,6 +28,7 @@
 class Grade < ActiveRecord::Base
   belongs_to :teacher 
   belongs_to :calibration
+  belongs_to :yardstick 
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible
