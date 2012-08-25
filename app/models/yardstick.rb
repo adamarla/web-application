@@ -30,6 +30,8 @@ class Yardstick < ActiveRecord::Base
   validates :meaning, :presence => true
   validates :weight, :numericality => { :only_integer => true, :greater_than => -1, :less_than => 4 }
 
+  has_many :grades, :dependent => :destroy
+
   # [:all] ~> [:admin]
   #attr_accessible
 
