@@ -29,6 +29,18 @@ class Calibration < ActiveRecord::Base
     where("mcq_id IS NOT ?", nil)
   end
 
+  def self.insight(n)
+    where(:insight_id => Yardstick.insights.weight(n).map(&:id))
+  end
+
+  def self.formulation(n)
+    where(:formulation_id => Yardstick.formulations.weight(n).map(&:id))
+  end
+
+  def self.calculation(n)
+    where(:calculation_id => Yardstick.calculations.weight(n).map(&:id))
+  end
+
   def self.define_using_ids(insight, formulation, calculation, allotment)
     c = Calibration.new :insight_id => insight, :formulation_id => formulation, 
                         :calculation_id => calculation, :allotment => allotment
