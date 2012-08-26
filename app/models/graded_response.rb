@@ -111,6 +111,13 @@ class GradedResponse < ActiveRecord::Base
     end
   end
 
+  def index?
+    # The index of the question / subpart to which this is the graded response
+    # Hence, if sth. like 2.4 is returned, then it means that this graded response 
+    # is for the 4th subpart of the second question in the quiz
+    return ( self.q_selection.index + ( self.subpart.index/10.0)).round(1)
+  end
+
   def page?
     return self.page unless self.page.nil? 
 
