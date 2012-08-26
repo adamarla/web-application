@@ -229,6 +229,8 @@ class Quiz < ActiveRecord::Base
 
   def pending_scans(examiner, page)
     @pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
+    @pending = @pending.sort{ |m,n| m.index? <=> n.index? }
+
     @scans = @pending.map(&:scan).uniq.sort
     @students = Student.where( :id => @pending.map(&:student_id).uniq )
 
