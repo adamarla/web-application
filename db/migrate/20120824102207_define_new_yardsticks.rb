@@ -76,14 +76,14 @@ class DefineNewYardsticks < ActiveRecord::Migration
             "(No) The question has not been attempted"
            ],
       1 => [
-            "(Incorrect) None of the right options picked"
+            "(No) None of the right options picked"
            ],
       2 => [
-            "(Partially correct) Some of the other correct options not picked however",
-            "(Partially correct) Some of the selected options are wrong" 
+            "(Yes, and no) Some of the other correct options not picked however",
+            "(Yes, and no) Some of the selected options are wrong" 
            ],
       3 => [
-            "(Correct) All of the right - and none of the wrong - options picked"
+            "(Yes) All of the right - and none of the wrong - options picked"
            ]
     } 
 
