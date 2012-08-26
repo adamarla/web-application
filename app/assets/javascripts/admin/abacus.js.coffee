@@ -82,6 +82,10 @@ window.abacus = {
         # abacus.decompile(1.9)
         abacus.last.response = next
         canvas.clear() # remove any annotations for a previous question on the same scan
+        if next.attr('mcq') is 'false'
+          abacus.obj.removeAttr('mcq')
+        else
+          abacus.obj.attr('mcq','true')
         return next
 
       ###

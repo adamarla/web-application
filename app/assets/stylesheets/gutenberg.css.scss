@@ -1394,6 +1394,18 @@ li {
       color: white ;
     } 
   } 
+
+  #abacus {
+    .level {
+      &[mcq='true'] { display: none ; }
+    }
+    &[mcq] {
+      .level {
+        &[mcq='false'], &:not([mcq]) { display: none ; }
+        &[mcq='true'] { display: block ; }
+      } 
+    } 
+  } 
 } 
 
 

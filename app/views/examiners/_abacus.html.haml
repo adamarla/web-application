@@ -10,8 +10,8 @@
     #abacus.as-accordion
       .scroll-heading{ :marker => 0 }= "are the key insights evident?"
       #insight.scroll-content.measure
-        - Yardstick.insights.order(:weight).each do |m|
-          .level{ :marker => "#{m.id}" }
+        - Yardstick.where('insight = ? OR mcq = ?', true, true).order(:weight).each do |m|
+          .level{ :marker => "#{m.id}", :mcq => "#{m.mcq ? 'true' : 'false'}" }
             %input.left{ :type => :radio, :name => "yardstick[#{m.id}]", :value => true }
             .label.left
               <b>#{m.bottomline}&nbsp&nbsp&nbsp</b>#{m.meaning}
