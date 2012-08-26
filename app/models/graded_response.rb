@@ -149,22 +149,12 @@ class GradedResponse < ActiveRecord::Base
     # index of the parent question in the quiz and the index of the corresponding sub-part 
     # relative to the parent question 
 
-    s = self.q_selection
-    question = s.question
-    quiz_id = s.quiz_id 
-    subpart_id = self.subpart_id 
+    selection = self.q_selection
+    num_parts = selection.question.num_parts?
+    return "Q.#{selection.index}" if num_parts == 0
 
-    # Index of the question within the quiz 
-    id = QSelection.where(:quiz_id => quiz_id, :question_id => question.id).map(&:index).first
-
-    nparts = question.num_parts?
-    if nparts == 0
-      return "Q.#{id}"
-    else
-      subpart_index = Subpart.where(:id => subpart_id).map(&:index).first
-      c = [*'A'..'K'][subpart_index]
-      return "Q.#{id}#{c}"
-    end
+    c = [*'A'..'Z'][self.subpart.index]
+    return "Q.#{selection.index}-#{c}"
   end
 
   def teacher?
