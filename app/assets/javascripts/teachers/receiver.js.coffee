@@ -166,7 +166,7 @@ jQuery ->
         k.addClass 'selected' if k?
     else if url.match(/load\/grades/)
       here = $('#calibrations')
-      existing = here.find "input[type='number']"
+      existing = here.find "input[type='text']"
 
       # JSON = { grades: [{ grade : {calibration_id:xyz, marks:abc } }, .... ] }
       for m in json.grades
