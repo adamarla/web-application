@@ -53,8 +53,6 @@ jQuery ->
       admin.build.list json.scans, '#list-pending', [], '.student'
       admin.build.list json.responses, '#list-pending', ['mcq', 'label'], '.scan'
       abacus.initialize()
-    else if url.match(/assignGrades/)
-      canvas.jump()
     else if url.match(/examiner\/suggestions/)
       tab_1 = $('#days-since-receipt')
       tab_2 = $('#typeset-wip')
