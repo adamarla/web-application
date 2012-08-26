@@ -1236,6 +1236,7 @@ li {
 .calibrations { 
   font-size: 11px ;
   text-transform: lowercase ;
+
   p.instructions { 
     font-size: 11px ; 
     color: $gradians-blue ; 
@@ -1267,7 +1268,13 @@ li {
       border-radius: 5px ;
       color: white ; 
       background-color: $panel-colour ;
+      &[mcq] { display: none ; }
     }
+  } 
+
+  &[mcq]{
+    .question:not([mcq]) { display: none ; }
+    .question[mcq] { display: block ; }
   } 
 
   .root-cause {

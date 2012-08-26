@@ -147,6 +147,8 @@ window.coreUtil = {
       # Remove any previously set classes: lightpink, pink,orange OR green from .level
       $(m).children('.level').eq(0).removeClass("pinkoutline pink orange green") for m in equalizers
 
+      if mcqMode then here.parent().attr('mcq','yes') else here.parent().removeAttr('mcq')
+
       for m,j in json.weights
         m = parseInt(m)
         e = equalizers.eq(j)
