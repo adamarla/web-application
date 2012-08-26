@@ -126,11 +126,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def colour? 
-    return nil if self.grade_id.nil?
-    y = self.grade.yardstick 
-    all = Yardstick.order(:default_allotment)
-    family = y.mcq ? all.select{ |x| x.mcq }.map(&:id) : all.select{ |x| !x.mcq }.map(&:id)
-    return (y.mcq ? "mcq-#{family.index(y.id) + 1}" : "non-mcq-#{family.index(y.id) + 1}")
+    return (self.grade_id.nil? ? :transparent : self.grade.colour?) 
   end
 
   def siblings?
