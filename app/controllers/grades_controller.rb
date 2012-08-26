@@ -29,18 +29,22 @@ class GradesController < ApplicationController
 
     # 3. Send coordinates of any clicks on the scan so that it can be annotated 
     clicks = params[:clicks]
-    clicks = clicks.split '|'
     coordinates = [] 
 
-    clicks.each do |pt|
-      next if pt.blank? 
-      pt = pt.split(',').map(&:to_i)
-      coordinates.push({:x => pt[0]-X_CORRECTION, :y => pt[1]})
+    tokens = clicks.split('_').select{ |m| !m.empty? }
+    # Caveat: If there were 5 clicks, then we would have 10 elements in the token
+    # But we need to ignore the last two - 9 and 10 - because together they form just a 
+    # point-click - whereas what we need are pairs of clicks to draw rectangles with 
+
+    tokens.each_slice(2).each_slice(2).select{ |m| m.first != m.last }.each do |pairs| # array of arrays
+      pairs.each do |pt|
+        coordinates.push({ :x => pt.first.to_i - X_CORRECTION, :y => pt.last.to_i })
+      end
     end
 
     # Higher priority number => less importance 
-    Delayed::Job.enqueue AnnotateScan.new(scan, coordinates), :priority => 10, :run_at => Time.zone.now unless coordinates.empty?
-    #render( :json => { :status => "Done"}, :status => :ok )
+    Delayed::Job.enqueue AnnotateScan.new(response.scan, coordinates), 
+      :priority => 10, :run_at => Time.zone.now unless coordinates.empty?
   end 
   
   X_CORRECTION = 16
