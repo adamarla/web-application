@@ -1,14 +1,16 @@
 
 $gray:#191919 ;
-$light-gray: lighten($gray, 30%) ;
+$lightgray: lighten($gray, 30%) ;
 
 $pink:#e3105a ;
 $lightpink: lighten($pink, 15%) ;
+
 $blue:#00007f ;
+$lightblue: lighten($blue, 5%) ;
+$gradians-blue: #6ca7ab ;
+
 $orange:#ffa500 ;
 $green:#168816 ;
-$my-blue: #6ca7ab ;
-$my-gray: #4c4c4c ;
 $panel-colour: lighten(black, 17%) ;
 
 /*
@@ -36,7 +38,7 @@ body {
 } 
 
 input::-webkit-input-placeholder {
-  color: $my-blue ;
+  color: $gradians-blue ;
   font : {
     family: Ubuntu, "Trebuchet MS", "Lucida Grande", sans-serif; 
     size: 13px ;
@@ -57,7 +59,7 @@ input::-webkit-input-placeholder {
 
 p > a, div > a { 
   text-decoration: none ;
-  color: $my-blue ;
+  color: $gradians-blue ;
 } 
 
 #viewport {
@@ -74,7 +76,7 @@ p > a, div > a {
 #public-links {
   height: 30px ;
   width: 95% ;
-  border-bottom: 3px solid $my-blue ; 
+  border-bottom: 3px solid $gradians-blue ; 
 } 
 
 #company-logo {
@@ -89,7 +91,7 @@ p > a, div > a {
   
   > #motto {
     font-size: 14px ; 
-    color: $my-blue ;
+    color: $gradians-blue ;
     float: none ;
   }
 }
@@ -104,7 +106,7 @@ p > a, div > a {
 #footer {
   width: 80% ;
   text-align: center ;
-  border-top: 1px solid $light-gray ;
+  border-top: 1px solid $lightgray ;
   float: left ;
 
   margin: {
@@ -122,7 +124,7 @@ p > a, div > a {
       size: 13px ;
       weight: normal ; 
     }
-    color: $light-gray ;
+    color: $lightgray ;
   
     #copyright-validity {
   	  float: left ;
@@ -144,7 +146,7 @@ p > a, div > a {
   font: {
     size: 12px ;
   }
-  color: $my-blue ;
+  color: $gradians-blue ;
   text-transform: lowercase ;
 }
 
@@ -159,12 +161,12 @@ p > a, div > a {
     size: 12px ;
     weight: normal; 
   }
-  color: $light-gray ;
+  color: $lightgray ;
   margin-bottom: 20px ;
 }
 
 .part-form {
-  border-top: 2px solid $light-gray ;
+  border-top: 2px solid $lightgray ;
   padding-top: 20px ;
 }
 
@@ -191,7 +193,7 @@ p > a, div > a {
 
 .swiss-knife, .measure > .level { 
   min-height: 22px ;
-  border-bottom: 1px solid $my-blue ; 
+  border-bottom: 1px solid $gradians-blue ; 
   padding: {
     top: 2px ;
     bottom: 1px ;
@@ -218,7 +220,7 @@ p > a, div > a {
 
 #pending-quizzes {
   a { 
-    color: $my-blue ;
+    color: $gradians-blue ;
     font-size: 11px ;
     float: right ;
   } 
@@ -260,7 +262,7 @@ p > a, div > a {
       weight: bold ;
     }
     color: white ; 
-    background-color: $my-blue ;
+    background-color: $gradians-blue ;
     -moz-border-radius: 4px ;
     padding: 6px ;
     text-align : center ;
@@ -307,13 +309,13 @@ p > a, div > a {
         margin-right: 3% ;
 
         &.ui-state-disabled {
-          border-top: 3px solid $light-gray ;
-          a { color: $light-gray ; }
+          border-top: 3px solid $lightgray ;
+          a { color: $lightgray ; }
         }
         &.ui-state-active {
         }
         &.ui-tabs-selected { 
-          a { color: $my-blue ; border: none ; cursor: pointer ; }
+          a { color: $gradians-blue ; border: none ; cursor: pointer ; }
         }
       }
     }
@@ -351,7 +353,7 @@ legend {
     top: -5px ;
   }
   font-size: 12px ;
-  color: $my-blue ;
+  color: $gradians-blue ;
   padding-bottom: 20px ;
   font-variant: small-caps ;
 }
@@ -423,16 +425,33 @@ span.unhappyMessage {
   } 
   text-align: center ;
   border-radius: 4px ;
-}
-
-.micro-ticker.box {
-  width: 20% ;
-  color: white ;
-  padding: {
-    top: 2px ;
-    bottom: 2px ;
+  
+  &.box {
+    width: 20% ;
+    color: white ;
+    padding: {
+      top: 2px ;
+      bottom: 2px ;
+    } 
+  } 
+  &.complete { 
+    color: $gradians-blue ;
+  } 
+  &[color="pink"]{
+    background-color: $pink ;
   }
-  font-weight: bold ;
+  &[color="blue"]{
+    background-color: $blue ;
+  }
+  &[color="lightblue"]{
+    background-color: $lightblue ;
+  }
+  &[color="orange"]{
+    background-color: $orange ;
+  }
+  &[color="green"]{
+    background-color: $green ;
+  }
 }
 
 #published-worksheets { 
@@ -467,11 +486,6 @@ span.unhappyMessage {
     size: 12pt ;
   }
 }
-
-.micro-ticker.complete {
-  color: $my-blue ;
-}
-
 
 .grd-control {
   height: 45px ;
@@ -542,7 +556,7 @@ span.unhappyMessage {
     size: 13px ;
   }
   margin-bottom: 10px ;
-  border-bottom: 2px solid $light-gray ;
+  border-bottom: 2px solid $lightgray ;
   color: white ;
 }
 
@@ -565,81 +579,7 @@ span.unhappyMessage {
     color: white ; 
     border: 1px solid #ffa500 ;
   }
-
-  > label[color="non-mcq-1"]:not([class~="clicked"]) {
-    background-color: lighten($pink, 30%) ;
-  }
-  > label[color="non-mcq-2"]:not([class~="clicked"]) {
-    background-color: lighten($pink, 20%) ;
-  }
-  > label[color="non-mcq-3"]:not([class~="clicked"]) {
-    background-color: lighten($pink, 10%) ;
-  }
-  > label[color="non-mcq-4"]:not([class~="clicked"]) {
-    background-color: lighten($orange, 10%) ;
-  }
-  > label[color="non-mcq-5"]:not([class~="clicked"]) {
-    background-color: lighten($orange, 0%) ;
-  }
-  > label[color="non-mcq-6"]:not([class~="clicked"]) {
-    background-color: lighten($green, 13%) ;
-  }
-  > label[color="non-mcq-7"]:not([class~="clicked"]) {
-    background-color: saturate($green, 50%) ;
-  }
-
-  > label[color="mcq-1"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 50%) ;
-  }
-  > label[color="mcq-2"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 40%) ;
-  }
-  > label[color="mcq-3"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 30%) ;
-  }
-  > label[color="mcq-4"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 20%) ;
-  }
-  > label[color="mcq-5"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 10%) ;
-  }
-
 }
-
-  div.micro-ticker[color="non-mcq-1"]{
-    background-color: lighten($pink, 30%) ;
-  }
-  div.micro-ticker[color="non-mcq-2"]{
-    background-color: lighten($pink, 20%) ;
-  }
-  div.micro-ticker[color="non-mcq-3"]{
-    background-color: lighten($pink, 10%) ;
-  }
-  div.micro-ticker[color="non-mcq-4"]{
-    background-color: lighten($orange, 10%) ;
-  }
-  div.micro-ticker[color="non-mcq-5"]{
-    background-color: lighten($orange, 0%) ;
-  }
-  div.micro-ticker[color="non-mcq-6"]{
-    background-color: lighten($green, 13%) ;
-  }
-  div.micro-ticker[color="non-mcq-7"]{
-    background-color: saturate($green, 50%) ;
-  }
-
-  div.micro-ticker[color="mcq-1"]{
-    background-color: lighten($blue, 50%) ;
-  }
-  div.micro-ticker[color="mcq-2"]{
-    background-color: lighten($blue, 40%) ;
-  }
-  div.micro-ticker[color="mcq-3"]{
-    background-color: lighten($blue, 30%) ;
-  }
-  div.micro-ticker[color="mcq-4"]{
-    background-color: lighten($blue, 20%) ;
-  }
 
 #build-quiz-receipt, #assign-quiz-receipt {
   width: 90% ;
@@ -653,7 +593,7 @@ span.unhappyMessage {
       font: {
         size: 25px ;
       }
-      color: $my-blue ;
+      color: $gradians-blue ;
       margin-bottom: 5px ;
     }
     
@@ -705,7 +645,7 @@ span.unhappyMessage {
   > .filter { 
     width: 100% ;
     > label {
-      color:$my-blue;
+      color:$gradians-blue;
       font: {
         size: 12px ;
       }
@@ -757,7 +697,7 @@ span.unhappyMessage {
           size: 17px ;
           weight: normal ;
         }
-        color: $my-blue ; 
+        color: $gradians-blue ; 
       } 
 
     }
@@ -832,12 +772,12 @@ span.unhappyMessage {
   > #question {
     width: 100% ;
     font-size: 14px ;
-    color: $my-blue ;
+    color: $gradians-blue ;
     > p {
       font-size: 14px ;
       color: darken(white, 15%) ;
       > a {
-	    color: $my-blue ;
+	    color: $gradians-blue ;
 	  }
 	}
   }
@@ -940,7 +880,7 @@ span.unhappyMessage {
 
 #scanbot-getting-it {
   a {
-    background-color: $my-blue ;
+    background-color: $gradians-blue ;
     width: 85% ; 
     height: 45px ;
     color: white ;
@@ -981,7 +921,7 @@ span.unhappyMessage {
   > a { 
     text-decoration: none ;
     font-size: 13px ;
-    color: $my-blue ;
+    color: $gradians-blue ;
     text-transform: lowercase ;
   } 
 }
@@ -1003,7 +943,7 @@ span.unhappyMessage {
       float: right ;
       padding: 4px 3px 4px 3px ;
       border-radius: 8px ;
-      background-color: $my-blue ;
+      background-color: $gradians-blue ;
       margin-bottom: 16px ;
       text-align: center ;
     }
@@ -1028,13 +968,13 @@ span.unhappyMessage {
 
 li {
   > label {
-    color: $my-blue ;
+    color: $gradians-blue ;
   }
 }
 
 .as-accordion {
   .scroll-heading {
-    border-bottom: 1px solid $my-blue ; 
+    border-bottom: 1px solid $gradians-blue ; 
     padding: {
       top: 5px ;
       bottom: 5px ; 
@@ -1056,7 +996,7 @@ li {
   background: transparent ;
 
   > .swiss-knife {
-    color: $my-blue ;
+    color: $gradians-blue ;
     font-size: 12px ;
   }
 
@@ -1065,7 +1005,7 @@ li {
   }
 
   > a { 
-    color: $my-blue ;
+    color: $gradians-blue ;
     float: left ;
     width: 100% ;
     text-align:center ;
@@ -1079,14 +1019,14 @@ li {
 }
 
 #try_us-link {
-  color: $my-blue ;
+  color: $gradians-blue ;
 }
 
 #past-quizzes-list a.btn {
   width: 40% ;
   font-size: 12px ;
   color: white ; 
-  background-color: $my-blue ;
+  background-color: $gradians-blue ;
   border-radius: 10px ;
   margin: {
     left: 23px ;
@@ -1138,7 +1078,7 @@ li {
   > .two-third-column {
     margin-left: -100px ;
     h2 { 
-      color: $my-blue ;
+      color: $gradians-blue ;
     }
 
     p {
@@ -1170,7 +1110,7 @@ li {
 #suggestion {
 
   #instruction {
-    color: $light-gray ;
+    color: $lightgray ;
   }
 
 } 
@@ -1182,7 +1122,7 @@ li {
       border:none ;
       cursor: pointer ;
       width: 40px ;
-      color: $my-blue ;
+      color: $gradians-blue ;
       text-align: center ;
     }
     input[liked="true"] {
@@ -1196,7 +1136,7 @@ li {
     radius: 18px ;
   }
   background: {
-    color: $light-gray ;
+    color: $lightgray ;
   }
   > .ui-widget-header {
     font-size: 14px ;
@@ -1296,7 +1236,7 @@ li {
 .calibrations { 
   p.instructions { 
     font-size: 11px ; 
-    color: $my-blue ; 
+    color: $gradians-blue ; 
     // border-bottom: 2px solid white ;
     border-top: 4px solid white ;
     padding: 7px 0px 7px 0px ;
@@ -1312,7 +1252,7 @@ li {
   > .details { 
     > #preamble {
       font-size: 12px ;
-      color: $my-blue ; 
+      color: $gradians-blue ; 
       margin-bottom: 20px ;
     } 
 
