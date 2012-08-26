@@ -142,32 +142,22 @@ window.coreUtil = {
       here = if typeof here is 'string' then $(here) else here
       equalizers = here.children '.equalizer'
       mcqMode = if json.weights.length is 3 then false else true
-
       colours = ['pinkoutline', 'pink', 'orange', 'green']
+
+      # Remove any previously set classes: lightpink, pink,orange OR green from .level
+      $(m).children('.level').eq(0).removeClass("pinkoutline pink orange green") for m in equalizers
 
       for m,j in json.weights
         m = parseInt(m)
-        e = if mcqMode then equalizers.eq(3) else equalizers.eq(j)
-        levels = e.children '.level'
-        target = null
+        e = equalizers.eq(j)
+        target = e.children('.level').eq(0)
 
-        # Remove any previously set classes: lightpink, pink,orange OR green from .level
-        $(n).removeClass "pinkoutline pink orange green" for n in levels
-        
+        if j is 0
+          label = e.children('.label').eq(0)
+          if mcqMode then label.text("bottomline") else label.text("insight")
+
         # Calculations are ranked on a [0,2] scale - not [0,3] like the others
         onCalc = if j is 2 then true else false
-
-        switch m
-          when 0
-            target = 0
-          when 1
-            target = if onCalc then 1 else 0
-          when 2
-            target = if onCalc then 2 else 1
-          when 3
-            target = 2
-
-        target = levels.eq(target)
 
         colour = -1
         switch m

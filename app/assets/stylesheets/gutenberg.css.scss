@@ -1234,32 +1234,31 @@ li {
 }
 
 .calibrations { 
+  font-size: 11px ;
+  text-transform: lowercase ;
   p.instructions { 
     font-size: 11px ; 
     color: $gradians-blue ; 
-    // border-bottom: 2px solid white ;
     border-top: 4px solid white ;
     padding: 7px 0px 7px 0px ;
   }
 
   > .summary { 
     margin-bottom: 20px ;
-    padding: 10px 5px 5px 10px ; 
+    padding-top: 5px ;
     border: 2px solid gray ;
     border-radius: 8px ;
+    min-height: 40px ;
   } 
 
   > .details { 
     > #preamble {
-      font-size: 12px ;
       color: $gradians-blue ; 
       margin-bottom: 20px ;
+      font-weight: bold ;
     } 
 
     .question {
-      font: {
-        size: 11px ;
-      } 
       margin: {
         bottom: 7px ;
         top: 20px ;
@@ -1284,15 +1283,11 @@ li {
     }
 
     > .bottomline { 
-      font: {
-        size: 12px ;
-      } 
       color: $orange ;
-      text-transform: lowercase ;
+      font-weight: bold ;
     }
 
     > .meaning { 
-      font-size: 11px ;
       color: white ;
     } 
   } 
@@ -1302,29 +1297,33 @@ li {
 } 
 
 .equalizer { 
-  height: 20px ; 
+  height: 25px ;
+  max-width: 30% ;
+  min-width: 22% ;
+  margin-right: 3% ;
 
   > .label { 
-    width: 60% ;
-    margin-left: 5% ;
-    font: { 
-      size: 12px ;
+    font-size: 11px ;
+    text: {
+      align: center ;
+      transform: lowercase ;
     } 
-    text-transform: lowercase ;
-    color: white ; 
-  } 
+    color: white ;
+  }
 
   > .level { 
     height: 10px ; 
     width: 10px ;
-    margin: { 
-      right: 5% ;
-    }
     border: {
       radius: 10px ;
       width: 2px ;
       color: lighten($gray, 50%) ;
       style: solid ;
+    } 
+    margin:{
+      top:10% ;
+      left:40% ;
+      right:40% ;
     } 
     &.pinkoutline { border-color: $lightpink ;} 
     &.pink { background-color: $lightpink ; border-color: $lightpink ; } 
@@ -1332,6 +1331,23 @@ li {
     &.green{ background-color: $green ; border-color: $green ; }
   } 
 } 
+
+/*
+.equalizer { 
+  height: 20px ; 
+
+  .label { 
+    max-width: 30% ;
+    margin-left: 3% ;
+    font: { 
+      size: 12px ;
+    } 
+    text-transform: lowercase ;
+    color: white ; 
+  } 
+
+} 
+*/
 
 #grade-abacus { 
   .scroll-content { 
