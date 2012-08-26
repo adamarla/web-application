@@ -36,6 +36,7 @@ window.abacus = {
     abacus.last.response = abacus.last.scan.children('.gr').eq(0)
     abacus.update.ticker()
 
+    canvas.load abacus.last.scan
     return true
 
   url : (radio) ->
