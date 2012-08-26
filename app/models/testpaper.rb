@@ -79,4 +79,37 @@ class Testpaper < ActiveRecord::Base
     return name.strip # example: 11-(A,B,Weak students) 12-(A)
   end
 
+  def rebuild_testpaper_report_pdf
+    answer_sheets = AnswerSheet.where(:testpaper_id => self.id).map{ |m|
+      unless m.marks.nil?
+        marks = "#{m.marks}/#{self.quiz.total}"
+      else
+        marks = "n/a"
+      end
+      { :id => m.student_id, :name => m.student.name, 
+        :value => "#{marks}"}
+    }
+    answer_sheets.push({ :id => "", :name => "", :value => ""}) if answer_sheets.count.odd?
+
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_quiz_report']}"
+    school = self.quiz.teacher.school
+    response = SavonClient.request :wsdl, :generate_quiz_report do
+      soap.body = {
+        :school => { :id => school.id, :name => school.name },
+        :group => { :id => self.id, :name => self.pdf },
+        :members => answer_sheets 
+      }
+    end # of response 
+    return response.to_hash[:generate_quiz_report]
+  end
+
+  def pdf
+    # UNIX has problem w/ some non-word characters in filenames
+    # TeX has a problem w/ most of the rest ( unless escaped ). No one has a problem
+    # with the hyphen. So, we do everything to only have it in the PDF file name
+    ts_name = "#{self.name.split(/[\s\W]+/).join('-')}"
+    qz_name = "#{self.quiz.name.split(/[\s\W]+/).join('-')}"
+    return "#{qz_name}-#{ts_name}"
+  end
+
 end # of class
