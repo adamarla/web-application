@@ -27,8 +27,6 @@ jQuery ->
 
     if images.hasClass 'ppy-placeholder'
       preview.scrollImg(images, event) unless preview.blockKeyPress
-    else if images.attr('id') is 'grading-canvas'
-      canvas.scrollImg(images, event) unless canvas.blockKeyPress
     return true
 
   # If on the trial signup page, then render the country <select> as an
