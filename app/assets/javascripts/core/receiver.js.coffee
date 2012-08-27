@@ -18,7 +18,7 @@ jQuery ->
     else
       matched = false
 
-    e.stopPropagation() if matched
+    e.stopPropagation() if matched is true
     return true
   
   ########################################################
