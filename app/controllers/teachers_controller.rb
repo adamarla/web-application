@@ -208,7 +208,6 @@ class TeachersController < ApplicationController
   end
 
   def grade_details
-    @teacher = current_account.loggable 
     @c = Calibration.where(:id => params[:id]).first
   end
 
