@@ -27,6 +27,9 @@ Webapp::Application.routes.draw do
   # match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
   match 'boards/summary' => "boards#summary", :via => :get
 
+  # Common 
+  match 'grade/breakup/for' => 'grades#explain', :via => :get
+
   # Course
   resource :course, :only => [:show, :create, :update]
   match 'courses/list' => 'courses#list', :via => :get

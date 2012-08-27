@@ -397,4 +397,16 @@ jQuery ->
   .blur () ->
     preview.blockKeyPress = false
 
+  ###
+    If either a student or a teacher clicks on a graded question, then 
+    load its calibration breakup 
+  ###
+
+  $('#report-cards-summary, #my-grades').on 'click', '.swiss-knife', (event) ->
+    event.stopPropagation()
+    id = $(this).attr 'marker'
+    $(m).removeClass 'selected' for m in $(this).siblings()
+    $(this).addClass 'selected'
+    $.get "grade/breakup/for?id=#{id}"
+    return true
 
