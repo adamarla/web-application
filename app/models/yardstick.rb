@@ -2,41 +2,65 @@
 #
 # Table name: yardsticks
 #
-#  id                :integer         not null, primary key
-#  example           :string(255)
-#  default_allotment :integer
-#  created_at        :datetime
-#  updated_at        :datetime
-#  mcq               :boolean         default(FALSE)
-#  annotation        :string(255)
-#  meaning           :string(255)
-#  colour            :integer
+#  id          :integer         not null, primary key
+#  mcq         :boolean         default(FALSE)
+#  meaning     :string(255)
+#  insight     :boolean         default(FALSE)
+#  formulation :boolean         default(FALSE)
+#  calculation :boolean         default(FALSE)
+#  weight      :integer         default(1)
+#  bottomline  :string(255)
 #
 
 #     __:belongs_to___     __:belongs_to___  
 #    |                |   |                | 
-# Question ---------> Grade ---------> Yardstick
+# Question ---------> Grade ---------> Calibration
 #    |                |   |                | 
 #    |__:has_many_____|   |___:has_many____| 
 #    
 
-#     ___:has_many____     __:belongs_to___  
-#    |                |   |                | 
-# Teacher ---------> Grade ---------> Yardstick
-#    |                |   |                | 
-#    |__:belongs_to___|   |___:has_many____| 
+#     ___:has_many____     __:belongs_to___    ____:has_many____
+#    |                |   |                |  |                 |
+# Teacher ---------> Grade ---------> Calibration ---------> Yardsticks
+#    |                |   |                |  |                 |
+#    |__:belongs_to___|   |___:has_many____|  |____:has_many____|
 #    
 
 class Yardstick < ActiveRecord::Base
-  has_many :grades
-  has_many :teachers, :through => :grades 
-
   validates :meaning, :presence => true
-  validates :example, :presence => true
-  validates :default_allotment, :presence => true, 
-            :numericality => {:only_integer => true, 
-                              :less_than_or_equal_to => 100}
+  validates :weight, :numericality => { :only_integer => true, :greater_than => -1, :less_than => 4 }
+
+  has_many :grades, :dependent => :destroy
+
   # [:all] ~> [:admin]
   #attr_accessible
+
+  def self.insights
+    where(:insight => true)
+  end
+
+  def self.formulations
+    where(:formulation => true)
+  end
+
+  def self.calculations
+    where(:calculation => true)
+  end
+
+  def self.mcqs
+    where(:mcq => true)
+  end
+
+  def self.weight(n)
+    where(:weight => (n.nil? ? 0 : n))
+  end
+
+  def self.atmost(n)
+    where("weight <= ?", (n.nil? ? 0 : n))
+  end
+
+  def self.atleast(n)
+    where("weight >= ?", (n.nil? ? 0 : n))
+  end
 
 end

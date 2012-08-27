@@ -46,7 +46,7 @@ Webapp::Application.routes.draw do
 
   # Grade
   resource :grade, :only => [:update]
-  match 'assignGrades' => 'grades#assign', :via => [:put, :post]
+  match 'assign/grade' => 'grades#assign', :via => [:put, :post]
 
   # School 
   resource :school, :only => [:show, :create, :update]
@@ -117,6 +117,10 @@ Webapp::Application.routes.draw do
   match 'teacher/students_with_names' => 'teachers#students_with_names', :via => :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', :via => :get
 
+  match 'grade/details' => 'teachers#grade_details', :via => :get
+  match 'update/grades' => 'teachers#update_grades', :via => [:put, :post]
+  match 'load/grades' => 'teachers#load_grades', :via => :get
+
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get
 
@@ -132,6 +136,7 @@ Webapp::Application.routes.draw do
   # Yardstick
   resource :yardstick, :only => [:show, :create, :update]
   match 'yardsticks/preview' => 'yardsticks#preview', :via => :get
+  match 'yardstick/logical_next' => 'yardsticks#logical_next', :via => :get
 
   # Suggestion 
   match 'suggestion/block_db_slots' => 'suggestions#block_db_slots', :via => :post

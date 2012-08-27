@@ -3,26 +3,6 @@ putBack = (node) ->
   node = node.detach()
   node.appendTo '#toolbox'
 
-###
-buildHierarchy = (selector) ->
-  needed = selector.split ' >'
-  start = $(needed[0])
-  length = start.length
-
-  if length is 0 then return null
-  else
-    #alert "#{length} -> #{start.attr 'id'}"
-    for j in [0 ... length]
-      current = $(needed[j])
-      next = $(needed[j+1])
-
-      if not (current.length is 0 or next.length is 0)
-        #alert "#{current.attr 'id'} --> #{next.attr 'id'}"
-        next = next.detach()
-        next.appendTo current
-  return start
-###
-
 idInVerticalJson = (id, json) ->
   return json if typeof json is 'boolean'
   selected = false
@@ -69,33 +49,6 @@ backInToolbox = (id) ->
   putBack node
   return true
 
-###
-  Display inline-error messages 
-###
-
-###
-  The list of vertical and topics is known at the time of HTML rendering - 
-  and is therefore statically rendered within the 2 master-lists : 
-  vertical-masterlist and topic-masterlist 
-
-  However, depending on the context, some verticals - and as a result, some 
-  topics - are "applicable" while others are not. And the ones that are 
-  "applicable" we want in one list while those that aren't we want in another. 
-  This next set of functions manages that required sorting 
-
-  Once again, note that what is "applicable" and what is not depends really on 
-  the what the question is. The answer comes in the form of a JSON response 
-  with AT LEAST the following structure : 
-
-     { verticals : [ {vertical : {id, [in]}}, { vertical : {id, [in] }}, ... ] }
-
-  The keys HAVE TO BE as shown. And conversely, if you want to use the functions
-  below, you will have to structure the JSON response as shown. The [in] key is an optional
-  boolean. But its always interpreted as follows : 
-    1. vertical - and resulting topics - are "applicable" if in=true
-       and "not applicable" if in=anyting else
-###
-
 window.coreUtil = {
   removeJQueryClasses: (obj) ->
     obj = if typeof obj is 'string' then $(obj) else obj
@@ -135,6 +88,9 @@ window.coreUtil = {
       Parse and then display the returned JSON. The function below assumes - 
       via swissKnife.forge - that the returned JSON has atleast the following 
       2 keys : name & id
+
+      record = { key : { id: abc, name: stu, ticker: ... } }
+      JSON = [ record_1, record_2 .... ]
     ###
     displayJson : (json, where, key, visible = {radio:true}, enable = true, ticker = 'ticker') ->
       # JSON data is always purgeable. And so, it is always inserted within
@@ -175,6 +131,50 @@ window.coreUtil = {
         resizable: false,
         dialogClass: "alert"
       }
+    
+    loadGradeDetails: (json, here = '#understand-calibrations .summary:first') ->
+      ###
+        This method assumes a JSON of the form: 
+        { ..... weights: [insight,formulation,calculation] OR [mcq] ] ..... }
+
+        HTML: $(here) > .equalizer > .level.left
+      ###
+      here = if typeof here is 'string' then $(here) else here
+      equalizers = here.children '.equalizer'
+      mcqMode = if json.weights.length is 3 then false else true
+      colours = ['pinkoutline', 'pink', 'orange', 'green']
+
+      # Remove any previously set classes: lightpink, pink,orange OR green from .level
+      $(m).children('.level').eq(0).removeClass("pinkoutline pink orange green") for m in equalizers
+
+      if mcqMode then here.parent().attr('mcq','yes') else here.parent().removeAttr('mcq')
+
+      for m,j in json.weights
+        m = parseInt(m)
+        e = equalizers.eq(j)
+        target = e.children('.level').eq(0)
+
+        if j is 0
+          label = e.children('.label').eq(0)
+          if mcqMode then label.text("bottomline") else label.text("insight")
+
+        # Calculations are ranked on a [0,2] scale - not [0,3] like the others
+        onCalc = if j is 2 then true else false
+
+        colour = -1
+        switch m
+          when 0
+            colour = 0
+          when 1
+            colour = if onCalc then 2 else 1
+          when 2
+            colour = if onCalc then 3 else 2
+          when 3
+            colour = m
+
+        # Apply the colour class
+        target.addClass colours[colour] unless colour is -1
+      return true
 
   } # end of namespace 'interface'
 

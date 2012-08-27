@@ -13,40 +13,38 @@ class GradesController < ApplicationController
   end
 
   def assign
-    # 1. Check that there is some scan associated with passed responses. If not, 
-    # then there is no point proceeding 
+=begin
+     Check that there is some scan associated with passed responses. If not, 
+     then there is no point proceeding 
 
-    response_ids = params[:grade].keys.map(&:to_i).select{ |e| e > 0 }
-    scan = GradedResponse.where(:id => response_ids).map(&:scan).uniq.first
-    render(:json => { :status => "No Scan!" }, :status => :bad_request) if scan.nil?
+     params.keys = {:i => insight, :f => formulation, :c => calculation, :g => graded_response_id }
+=end
+    @calibration = Calibration.where :insight_id => params[:i], 
+                                    :formulation_id => params[:f], 
+                                    :calculation_id => params[:c]
+    head :bad_request if @calibration.empty? 
 
-    # 2. Scan present => continue with grade capture
-    given = params[:grade].map{ |k,v| { k.to_i => v.blank? || v.to_i < 0 ? nil : v.to_i } }
+    response = GradedResponse.where(:id => params[:g]).first
+    response.calibrate_to @calibration.first.id
 
-    given.each do |g|
-      id = g.keys.first # graded_response_id 
-      grade = g[id].nil? ? nil : g[id]
-      next if grade.nil? 
-
-      response = GradedResponse.find id 
-      response.assign_grade grade # will assign grade and calculate marks as per teacher's marking scheme
-    end
-    
     # 3. Send coordinates of any clicks on the scan so that it can be annotated 
     clicks = params[:clicks]
-    clicks = clicks.split '|'
     coordinates = [] 
 
-    clicks.each do |pt|
-      next if pt.blank? 
-      pt = pt.split(',').map(&:to_i)
-      coordinates.push({:x => pt[0]-X_CORRECTION, :y => pt[1]})
+    tokens = clicks.split('_').select{ |m| !m.empty? }
+    # Caveat: If there were 5 clicks, then we would have 10 elements in the token
+    # But we need to ignore the last two - 9 and 10 - because together they form just a 
+    # point-click - whereas what we need are pairs of clicks to draw rectangles with 
+
+    tokens.each_slice(2).each_slice(2).select{ |m| m.first != m.last }.each do |pairs| # array of arrays
+      pairs.each do |pt|
+        coordinates.push({ :x => pt.first.to_i - X_CORRECTION, :y => pt.last.to_i })
+      end
     end
 
     # Higher priority number => less importance 
-    Delayed::Job.enqueue AnnotateScan.new(scan, coordinates), :priority => 10, :run_at => Time.zone.now unless coordinates.empty?
-
-    render( :json => { :status => "Done"}, :status => :ok )
+    Delayed::Job.enqueue AnnotateScan.new(response.scan, coordinates), 
+      :priority => 10, :run_at => Time.zone.now unless coordinates.empty?
   end 
   
   X_CORRECTION = 16

@@ -215,4 +215,26 @@ jQuery ->
     coreUtil.forms.modifyAction $(this), "sektion.json?id=#{sektion_id}", 'put'
     return true
 
+  $('#calibrations-link').click ->
+    id = $('#control-panel').attr 'marker'
+    $.get "load/grades.json?id=#{id}"
+    $('#calibrations a').eq(0).click() # click on the first calibration to get things started
+    return true
 
+  $('#calibrations').on 'click', 'li', (event) ->
+    event.stopPropagation()
+    a = $(this).children('a').eq(0)
+    $.get "grade/details?id=#{a.attr 'marker'}"
+    $(this).addClass 'selected'
+    $(m).removeClass 'selected' for m in $(this).siblings('li')
+    return true
+
+  ###
+    Submit <form> everytime an <input> within $('#calibrations-summary form') loses focus.
+    Loss of focus => teacher done inputting her allotment for that grade
+  ###
+
+  $('#calibrations-summary form input').blur ->
+    form = $(this).closest 'form'
+    form.submit()
+    return true

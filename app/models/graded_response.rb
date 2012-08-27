@@ -92,32 +92,30 @@ class GradedResponse < ActiveRecord::Base
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
 
-  def assign_grade(grade)
-    testpaper = self.testpaper
-    quiz = testpaper.quiz
-    #quiz = Quiz.where(:id => self.q_selection.quiz_id).first # response for which quiz?
-    subpart = self.subpart
-
-    return :bad_request if (quiz.nil? || subpart.nil?)
-
-    teacher = Teacher.where(:id => quiz.teacher_id).first # quiz by which teacher?
-    grade = Grade.where(:teacher_id => teacher.id, :yardstick_id => grade).first
-
-    allotment = grade.nil? ? nil : grade.allotment
-    marks = subpart.marks
-    assigned = (marks * (allotment/100.0)).round(1)
+  def calibrate_to(calibration_id)
+    assigner = self.teacher?
+    grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
+    marks = (self.subpart.marks * (grade.allotment/100.0)).round(2)
 
     # Notify the teacher as soon as the last response has been graded
-    if self.update_attributes(:grade_id => grade.id, :marks => assigned)
-      remaining = GradedResponse.in_testpaper(testpaper.id).with_scan.ungraded.count
+    if self.update_attributes(:grade_id => grade.id, :marks => marks)
+      remaining = GradedResponse.in_testpaper(self.testpaper_id).with_scan.ungraded.count
       if remaining == 0
-        testpaper.update_attribute :publishable, true
-        Mailbot.grading_done(testpaper).deliver
+        t = Testpaper.where(:id => self.testpaper_id).first
+        t.update_attribute :publishable, true
+        Mailbot.grading_done(t).deliver
       end
       return :ok
     else
       return :bad_request
     end
+  end
+
+  def index?
+    # The index of the question / subpart to which this is the graded response
+    # Hence, if sth. like 2.4 is returned, then it means that this graded response 
+    # is for the 4th subpart of the second question in the quiz
+    return ( self.q_selection.index + ( self.subpart.index/10.0)).round(1)
   end
 
   def page?
@@ -135,11 +133,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def colour? 
-    return nil if self.grade_id.nil?
-    y = self.grade.yardstick 
-    all = Yardstick.order(:default_allotment)
-    family = y.mcq ? all.select{ |x| x.mcq }.map(&:id) : all.select{ |x| !x.mcq }.map(&:id)
-    return (y.mcq ? "mcq-#{family.index(y.id) + 1}" : "non-mcq-#{family.index(y.id) + 1}")
+    return (self.grade_id.nil? ? :transparent : self.grade.colour?) 
   end
 
   def siblings?
@@ -155,22 +149,17 @@ class GradedResponse < ActiveRecord::Base
     # index of the parent question in the quiz and the index of the corresponding sub-part 
     # relative to the parent question 
 
-    s = self.q_selection
-    question = s.question
-    quiz_id = s.quiz_id 
-    subpart_id = self.subpart_id 
+    selection = self.q_selection
+    num_parts = selection.question.num_parts?
+    return "Q.#{selection.index}" if num_parts == 0
 
-    # Index of the question within the quiz 
-    id = QSelection.where(:quiz_id => quiz_id, :question_id => question.id).map(&:index).first
+    c = [*'A'..'Z'][self.subpart.index]
+    return "Q.#{selection.index}-#{c}"
+  end
 
-    nparts = question.num_parts?
-    if nparts == 0
-      return "Question ##{id}"
-    else
-      subpart_index = Subpart.where(:id => subpart_id).map(&:index).first
-      c = [*'A'..'K'][subpart_index]
-      return "Question ##{id}#{c}"
-    end
+  def teacher?
+    # Returns the teacher to whose quiz this graded response is
+    return Teacher.where(:id => self.testpaper.quiz.teacher_id).first
   end
 
 

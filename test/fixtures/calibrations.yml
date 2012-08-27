@@ -1,0 +1,27 @@
+# == Schema Information
+#
+# Table name: calibrations
+#
+#  id             :integer         not null, primary key
+#  insight_id     :integer
+#  formulation_id :integer
+#  calculation_id :integer
+#  mcq_id         :integer
+#  allotment      :float
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  insight_id: 1
+  formulation_id: 1
+  calculation_id: 1
+  mcq_id: 1
+  allotment: 1
+
+two:
+  insight_id: 1
+  formulation_id: 1
+  calculation_id: 1
+  mcq_id: 1
+  allotment: 1

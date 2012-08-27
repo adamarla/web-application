@@ -1,0 +1,33 @@
+
+#grade-abacus
+  #current-items
+    .submit-buttons.right
+      %input{ :type => :button, :id => 'undo-btn', :value => 'undo last'} 
+    %div.left
+      #current-question
+      #current-student
+  = semantic_form_for :grade, :url => assign_grade_path, :remote => true do |f|
+    #abacus.as-accordion
+      .scroll-heading{ :marker => 0 }= "are the key insights evident?"
+      #insight.scroll-content.measure
+        - Yardstick.where('insight = ? OR mcq = ?', true, true).order(:weight).each do |m|
+          .level{ :marker => "#{m.id}", :mcq => "#{m.mcq ? 'true' : 'false'}" }
+            %input.left{ :type => :radio, :name => "yardstick[#{m.id}]", :value => true }
+            .label.left
+              <b>#{m.bottomline}&nbsp&nbsp&nbsp</b>#{m.meaning}
+
+      .scroll-heading{ :marker => 1 }= "is the follow-up work complete & accurate?"
+      #formulation.scroll-content.measure
+        - Yardstick.formulations.order(:weight).each do |m|
+          .level{ :marker => "#{m.id}" }
+            %input.left{ :type => :radio, :name => "yardstick[#{m.id}]", :value => true }
+            .label.left
+              <b>#{m.bottomline}&nbsp&nbsp&nbsp</b>#{m.meaning}
+
+      .scroll-heading{ :marker => 2}= "have calculations been done correctly?"
+      #calculation.scroll-content.measure
+        - Yardstick.calculations.order(:weight).each do |m|
+          .level{ :marker => "#{m.id}" }
+            %input.left{ :type => :radio, :name => "yardstick[#{m.id}]", :value => true }
+            .label.left
+              <b>#{m.bottomline}&nbsp&nbsp&nbsp</b>#{m.meaning}

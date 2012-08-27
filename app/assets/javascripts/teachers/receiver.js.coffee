@@ -56,7 +56,7 @@ jQuery ->
       else matched = false # so that event can propogate and update button text cna revert  
     else if url.match(/teacher\/students_with_names/)
       here = $('#enrolled-students')
-      scroll.overlayJson json.students, 'student', here, '.swiss-knife', true
+      scroll.overlayJson json.students, 'student', here, '.swiss-knife', "hide"
     else if url.match(/teacher\/students/)
       here = $('#enrolled-students')
       scroll.loadJson json.students, 'student', here, 'login'
@@ -65,7 +65,8 @@ jQuery ->
       child = $('#side-panel').children().eq(0).attr 'id'
       switch child
         when 'sektions-summary'
-          scroll.overlayJson json.students, 'student', $('#enrolled-students'), '.swiss-knife'
+          here = $('#enrolled-students')
+          scroll.overlayJson json.students, 'student', here, '.swiss-knife', "nop", "check"
         else
           here = $('#student-list')
           coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'
@@ -154,6 +155,26 @@ jQuery ->
       here = $('#typeset-for-me')
       coreUtil.interface.displayJson json.typesets, here, 'typeset', {radio:false}
       preview.loadJson json, 'vault'
+    else if url.match(/grade\/details/)
+      here = $('#understand-calibrations > .calibrations')
+      items = here.find '.root-cause'
+      $(m).removeClass 'selected' for m in items
+
+      coreUtil.interface.loadGradeDetails json
+      for index in json.highlight
+        k = items.filter("[marker=#{index}]").eq(0)
+        k.addClass 'selected' if k?
+    else if url.match(/load\/grades/)
+      here = $('#calibrations')
+      existing = here.find "input[type='text']"
+
+      # JSON = { grades: [{ grade : {calibration_id:xyz, marks:abc } }, .... ] }
+      for m in json.grades
+        r = m.grade
+        continue unless r.calibration_id?
+        target = existing.filter("[marker=#{r.calibration_id}]").eq(0)
+        continue unless target?
+        target.val r.marks
     else
       matched = false
 

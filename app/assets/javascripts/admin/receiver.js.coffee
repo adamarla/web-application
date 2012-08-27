@@ -49,10 +49,12 @@ jQuery ->
     else if url.match(/quiz\/pending_pages/)
       coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
     else if url.match(/quiz\/pending_scans/)
-      adminUtil.buildPendingScanList json.scans
-      canvas.loadNth 0
-    else if url.match(/assignGrades/)
-      canvas.jump()
+      here = $('#list-pending')
+      here.empty()
+      admin.build.list json.students, here, []
+      admin.build.list json.scans, here, [], '.student'
+      admin.build.list json.responses, here, ['mcq', 'label'], '.scan'
+      abacus.initialize()
     else if url.match(/examiner\/suggestions/)
       tab_1 = $('#days-since-receipt')
       tab_2 = $('#typeset-wip')

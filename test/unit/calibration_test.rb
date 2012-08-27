@@ -1,18 +1,18 @@
 # == Schema Information
 #
-# Table name: grades
+# Table name: calibrations
 #
 #  id             :integer         not null, primary key
+#  insight_id     :integer
+#  formulation_id :integer
+#  calculation_id :integer
+#  mcq_id         :integer
 #  allotment      :float
-#  teacher_id     :integer
-#  created_at     :datetime
-#  updated_at     :datetime
-#  calibration_id :integer
 #
 
 require 'test_helper'
 
-class GradeTest < ActiveSupport::TestCase
+class CalibrationTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

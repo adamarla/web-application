@@ -1,67 +1,53 @@
 
-window.adminUtil = {
+window.admin = {
 
-  buildSyllabiEditForm : (json) ->
-    # 1. Move #topic-selected-list to within #edit-syllabi-form
-    target = $('#edit-syllabi-form > form:first')
-    selected = $('#topic-selected-list').detach()
-    selected.appendTo target
-    
-    # 2. Customize swiss-knives to have only the <select> visible & enabled
-    swissKnife.customizeWithin selected, {select:true}, true
+  build : {
+    ###
+    list : {
+      pendingScans: (json) ->
+        here = $('#list-pending')
+        here.empty() # purge any old lists
+        for item in json
+          e = $("<div scan=#{item.scan}/>")
+          for id, index in item.indices
+            questionLabel = item.labels[index]
 
-    # 3. Load the difficulty levels for topics using the passed JSON
-    #    JSON is of the form : [{vertical : { .., topics : { ... } }}, { vertical : { .., topics : { ... } }}]
-
-    for a in json
-      vertical = a.vertical
-      continue if not vertical.in is true # don't waste time w/ these
-
-      topics = vertical.topics
-      start = selected.children "div[marker=#{vertical.id}]:first"
-      start.addClass 'hidden'
-
-      for b in topics
-        topic = b.topic
-        select = start.children("div[marker=#{topic.id}]:first").children("select:first")
-        select.val topic.select
-    return true
-
-  mnmToggle : (type, id, customization = null) ->
-    ### 
-      type = 'selected' OR 'deselected', id = of the vertical
-      If 'type' = selected, then we are moving a 'selected' element 
-      to the 'deselected' list. Otherwise, the other way round
+            if item.mcq[index] is true
+              $("<div response_id=#{id} mcq='true' qLabel='#{questionLabel}'/>").appendTo(e)
+            else
+              $("<div response_id=#{id} qLabel='#{questionLabel}'/>").appendTo(e)
+          e.appendTo here
+        nImages = here.children('div[scan]').length
+        here.attr 'length', nImages
+        here.attr 'current', 0
+        return true
+    }
     ###
 
-    other = if type is 'selected' then 'deselected' else 'selected'
+    list : (json, within, keys = [], parent = null) ->
+      return false if not keys instanceof Array
 
-    source = $("#topic-#{type}-list").children("div[marker=#{id}]").detach()
-    target = $("#topic-#{other}-list")
-    source.appendTo target
+      # 1. Two keys - marker & class have to be present
+      # 2. Another 2 keys - name & parent are highly likely to be present
+      # 3. Any other key is case-specific
+      # We therefore append (1) and (2) anyways so that the developer only need specify (3)
 
-    if type is 'selected'
-      swissKnife.customizeWithin source, {}, false
-    else
-      source.addClass 'hidden'
-      swissKnife.customizeWithin source, customization, true
+      keys = keys.concat ['marker', 'class', 'name', 'parent']
 
-  buildPendingScanList: (json) ->
-    here = $('#list-pending')
-    here.empty() # purge any old lists
-    for item in json
-      e = $("<div scan=#{item.scan}/>")
-      for id, index in item.indices
-        questionLabel = item.labels[index]
+      within = if typeof within is 'string' then $(within) else within
+      for r in json
+        if r instanceof Array then r = r[0]
+        e = "<div" # start a self-closing div, that is <div ... />
+        for k in keys
+          e = "#{e} #{k}=#{r[k]}" if r[k]?
+        e = "#{e}/>" # close the div
 
-        if item.mcq[index] is true
-          $("<div response_id=#{id} mcq='true' qLabel='#{questionLabel}'/>").appendTo(e)
+        if r.parent? and parent?
+          target = within.find(parent).filter("[marker=#{r.parent}]").eq(0)
+          $(e).appendTo target if target?
         else
-          $("<div response_id=#{id} qLabel='#{questionLabel}'/>").appendTo(e)
-      e.appendTo here
-    nImages = here.children('div[scan]').length
-    here.attr 'length', nImages
-    here.attr 'current', 0
-    return true
+          $(e).appendTo within
+      return true
+  } # end of build 
 
 }

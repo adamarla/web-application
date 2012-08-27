@@ -1,13 +1,17 @@
 
 $gray:#191919 ;
-$light-gray: lighten($gray, 30%) ;
+$lightgray: lighten($gray, 30%) ;
 
 $pink:#e3105a ;
+$lightpink: lighten($pink, 15%) ;
+
 $blue:#00007f ;
+$lightblue: lighten($blue, 5%) ;
+$gradians-blue: #6ca7ab ;
+
 $orange:#ffa500 ;
 $green:#168816 ;
-$my-blue: #6ca7ab ;
-$my-gray: #4c4c4c ;
+$panel-colour: lighten(black, 17%) ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -34,7 +38,7 @@ body {
 } 
 
 input::-webkit-input-placeholder {
-  color: $my-blue ;
+  color: $gradians-blue ;
   font : {
     family: Ubuntu, "Trebuchet MS", "Lucida Grande", sans-serif; 
     size: 13px ;
@@ -55,7 +59,7 @@ input::-webkit-input-placeholder {
 
 p > a, div > a { 
   text-decoration: none ;
-  color: $my-blue ;
+  color: $gradians-blue ;
 } 
 
 #viewport {
@@ -72,7 +76,7 @@ p > a, div > a {
 #public-links {
   height: 30px ;
   width: 95% ;
-  border-bottom: 3px solid $my-blue ; 
+  border-bottom: 3px solid $gradians-blue ; 
 } 
 
 #company-logo {
@@ -87,7 +91,7 @@ p > a, div > a {
   
   > #motto {
     font-size: 14px ; 
-    color: $my-blue ;
+    color: $gradians-blue ;
     float: none ;
   }
 }
@@ -102,7 +106,7 @@ p > a, div > a {
 #footer {
   width: 80% ;
   text-align: center ;
-  border-top: 1px solid $light-gray ;
+  border-top: 1px solid $lightgray ;
   float: left ;
 
   margin: {
@@ -120,7 +124,7 @@ p > a, div > a {
       size: 13px ;
       weight: normal ; 
     }
-    color: $light-gray ;
+    color: $lightgray ;
   
     #copyright-validity {
   	  float: left ;
@@ -142,7 +146,7 @@ p > a, div > a {
   font: {
     size: 12px ;
   }
-  color: $my-blue ;
+  color: $gradians-blue ;
   text-transform: lowercase ;
 }
 
@@ -157,12 +161,12 @@ p > a, div > a {
     size: 12px ;
     weight: normal; 
   }
-  color: $light-gray ;
+  color: $lightgray ;
   margin-bottom: 20px ;
 }
 
 .part-form {
-  border-top: 2px solid $light-gray ;
+  border-top: 2px solid $lightgray ;
   padding-top: 20px ;
 }
 
@@ -187,9 +191,9 @@ p > a, div > a {
   background-color: lighten($gray,30%) ;
 }
 
-.swiss-knife { 
+.swiss-knife, .measure > .level { 
   min-height: 22px ;
-  border-bottom: 1px solid $my-blue ; 
+  border-bottom: 1px solid $gradians-blue ; 
   padding: {
     top: 2px ;
     bottom: 1px ;
@@ -205,9 +209,18 @@ p > a, div > a {
   } 
 } 
 
+.measure > .level { 
+  min-height: 40px ;
+  padding-top: 4px ;
+  &.disabled { 
+    color: lighten(gray, 15%) ; 
+    b { color: gray ; }
+  }
+} 
+
 #pending-quizzes {
   a { 
-    color: $my-blue ;
+    color: $gradians-blue ;
     font-size: 11px ;
     float: right ;
   } 
@@ -219,10 +232,19 @@ p > a, div > a {
   float: left ;
 }
 
-.swiss-knife > .label {
-  margin-left : 5px ;
-  font-variant: small-caps ;
+.swiss-knife, .measure { 
+  .label {
+    margin-left : 5px ;
+  }
+  b { color: $orange ; }
 }
+
+.swiss-knife > .label { font-variant: small-caps ; } 
+.measure .label {
+  width: 90% ;
+  font-size: 10px ;
+}
+
 
 .submit-buttons { 
   min-height: 40px ;
@@ -240,7 +262,7 @@ p > a, div > a {
       weight: bold ;
     }
     color: white ; 
-    background-color: $my-blue ;
+    background-color: $gradians-blue ;
     -moz-border-radius: 4px ;
     padding: 6px ;
     text-align : center ;
@@ -287,13 +309,13 @@ p > a, div > a {
         margin-right: 3% ;
 
         &.ui-state-disabled {
-          border-top: 3px solid $light-gray ;
-          a { color: $light-gray ; }
+          border-top: 3px solid $lightgray ;
+          a { color: $lightgray ; }
         }
         &.ui-state-active {
         }
         &.ui-tabs-selected { 
-          a { color: $my-blue ; border: none ; cursor: pointer ; }
+          a { color: $gradians-blue ; border: none ; cursor: pointer ; }
         }
       }
     }
@@ -331,7 +353,7 @@ legend {
     top: -5px ;
   }
   font-size: 12px ;
-  color: $my-blue ;
+  color: $gradians-blue ;
   padding-bottom: 20px ;
   font-variant: small-caps ;
 }
@@ -403,16 +425,33 @@ span.unhappyMessage {
   } 
   text-align: center ;
   border-radius: 4px ;
-}
-
-.micro-ticker.box {
-  width: 20% ;
-  color: white ;
-  padding: {
-    top: 2px ;
-    bottom: 2px ;
+  
+  &.box {
+    width: 20% ;
+    color: white ;
+    padding: {
+      top: 2px ;
+      bottom: 2px ;
+    } 
+  } 
+  &.complete { 
+    color: $gradians-blue ;
+  } 
+  &[color="pink"]{
+    background-color: $pink ;
   }
-  font-weight: bold ;
+  &[color="blue"]{
+    background-color: $blue ;
+  }
+  &[color="lightblue"]{
+    background-color: $lightblue ;
+  }
+  &[color="orange"]{
+    background-color: $orange ;
+  }
+  &[color="green"]{
+    background-color: $green ;
+  }
 }
 
 #published-worksheets { 
@@ -448,11 +487,6 @@ span.unhappyMessage {
   }
 }
 
-.micro-ticker.complete {
-  color: $my-blue ;
-}
-
-
 .grd-control {
   height: 45px ;
 }
@@ -464,34 +498,44 @@ span.unhappyMessage {
   margin-right: 20px ;
 }
 
+/*
 .grd-slider {
   margin-top: 20px ;
   width: 50% ;
-
 }
+*/
 
-.grd-slider.ui-slider-horizontal, .ys-slider.ui-slider-horizontal {
-  height: 0.5px ;
-  border: {
-    style: solid ;
-    width: 1px ;
-    color: white ;
-  }
-  margin-bottom: 20px ;
-
-  > a.ui-slider-handle {
-    height: 10px ;
-    width: 7px ;
+#edit-calibrations {
+  > #calibration-adjustment {
+    height: 0.5px ;
     border: {
       style: solid ;
       width: 1px ;
-      color: $orange ;
-      radius: 4px ;
+      color: white ;
     }
-    background-color: $orange ;
+    margin-bottom: 20px ;
+
+    > a.ui-slider-handle {
+      height: 10px ;
+      width: 7px ;
+      border: {
+        style: solid ;
+        width: 1px ;
+        color: $orange ;
+        radius: 4px ;
+      }
+      background-color: $orange ;
+    } 
+    background-color: white ;
   } 
-  background-color: white ;
-} 
+
+  > #calibration-ticker { 
+    height: 50px ;
+    margin-bottom: 5px ;
+
+    > .title { font-size: 14px ; }
+  } 
+}
 
 #new-examiners form li {
   width: 90% ;
@@ -512,7 +556,7 @@ span.unhappyMessage {
     size: 13px ;
   }
   margin-bottom: 10px ;
-  border-bottom: 2px solid $light-gray ;
+  border-bottom: 2px solid $lightgray ;
   color: white ;
 }
 
@@ -535,81 +579,7 @@ span.unhappyMessage {
     color: white ; 
     border: 1px solid #ffa500 ;
   }
-
-  > label[color="non-mcq-1"]:not([class~="clicked"]) {
-    background-color: lighten($pink, 30%) ;
-  }
-  > label[color="non-mcq-2"]:not([class~="clicked"]) {
-    background-color: lighten($pink, 20%) ;
-  }
-  > label[color="non-mcq-3"]:not([class~="clicked"]) {
-    background-color: lighten($pink, 10%) ;
-  }
-  > label[color="non-mcq-4"]:not([class~="clicked"]) {
-    background-color: lighten($orange, 10%) ;
-  }
-  > label[color="non-mcq-5"]:not([class~="clicked"]) {
-    background-color: lighten($orange, 0%) ;
-  }
-  > label[color="non-mcq-6"]:not([class~="clicked"]) {
-    background-color: lighten($green, 13%) ;
-  }
-  > label[color="non-mcq-7"]:not([class~="clicked"]) {
-    background-color: saturate($green, 50%) ;
-  }
-
-  > label[color="mcq-1"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 50%) ;
-  }
-  > label[color="mcq-2"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 40%) ;
-  }
-  > label[color="mcq-3"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 30%) ;
-  }
-  > label[color="mcq-4"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 20%) ;
-  }
-  > label[color="mcq-5"]:not([class~="clicked"]) {
-    background-color: lighten($blue, 10%) ;
-  }
-
 }
-
-  div.micro-ticker[color="non-mcq-1"]{
-    background-color: lighten($pink, 30%) ;
-  }
-  div.micro-ticker[color="non-mcq-2"]{
-    background-color: lighten($pink, 20%) ;
-  }
-  div.micro-ticker[color="non-mcq-3"]{
-    background-color: lighten($pink, 10%) ;
-  }
-  div.micro-ticker[color="non-mcq-4"]{
-    background-color: lighten($orange, 10%) ;
-  }
-  div.micro-ticker[color="non-mcq-5"]{
-    background-color: lighten($orange, 0%) ;
-  }
-  div.micro-ticker[color="non-mcq-6"]{
-    background-color: lighten($green, 13%) ;
-  }
-  div.micro-ticker[color="non-mcq-7"]{
-    background-color: saturate($green, 50%) ;
-  }
-
-  div.micro-ticker[color="mcq-1"]{
-    background-color: lighten($blue, 50%) ;
-  }
-  div.micro-ticker[color="mcq-2"]{
-    background-color: lighten($blue, 40%) ;
-  }
-  div.micro-ticker[color="mcq-3"]{
-    background-color: lighten($blue, 30%) ;
-  }
-  div.micro-ticker[color="mcq-4"]{
-    background-color: lighten($blue, 20%) ;
-  }
 
 #build-quiz-receipt, #assign-quiz-receipt {
   width: 90% ;
@@ -623,7 +593,7 @@ span.unhappyMessage {
       font: {
         size: 25px ;
       }
-      color: $my-blue ;
+      color: $gradians-blue ;
       margin-bottom: 5px ;
     }
     
@@ -675,7 +645,7 @@ span.unhappyMessage {
   > .filter { 
     width: 100% ;
     > label {
-      color:$my-blue;
+      color:$gradians-blue;
       font: {
         size: 12px ;
       }
@@ -727,7 +697,7 @@ span.unhappyMessage {
           size: 17px ;
           weight: normal ;
         }
-        color: $my-blue ; 
+        color: $gradians-blue ; 
       } 
 
     }
@@ -802,12 +772,12 @@ span.unhappyMessage {
   > #question {
     width: 100% ;
     font-size: 14px ;
-    color: $my-blue ;
+    color: $gradians-blue ;
     > p {
       font-size: 14px ;
       color: darken(white, 15%) ;
       > a {
-	    color: $my-blue ;
+	    color: $gradians-blue ;
 	  }
 	}
   }
@@ -910,7 +880,7 @@ span.unhappyMessage {
 
 #scanbot-getting-it {
   a {
-    background-color: $my-blue ;
+    background-color: $gradians-blue ;
     width: 85% ; 
     height: 45px ;
     color: white ;
@@ -951,7 +921,7 @@ span.unhappyMessage {
   > a { 
     text-decoration: none ;
     font-size: 13px ;
-    color: $my-blue ;
+    color: $gradians-blue ;
     text-transform: lowercase ;
   } 
 }
@@ -973,7 +943,7 @@ span.unhappyMessage {
       float: right ;
       padding: 4px 3px 4px 3px ;
       border-radius: 8px ;
-      background-color: $my-blue ;
+      background-color: $gradians-blue ;
       margin-bottom: 16px ;
       text-align: center ;
     }
@@ -998,13 +968,13 @@ span.unhappyMessage {
 
 li {
   > label {
-    color: $my-blue ;
+    color: $gradians-blue ;
   }
 }
 
 .as-accordion {
   .scroll-heading {
-    border-bottom: 1px solid $my-blue ; 
+    border-bottom: 1px solid $gradians-blue ; 
     padding: {
       top: 5px ;
       bottom: 5px ; 
@@ -1026,7 +996,7 @@ li {
   background: transparent ;
 
   > .swiss-knife {
-    color: $my-blue ;
+    color: $gradians-blue ;
     font-size: 12px ;
   }
 
@@ -1035,7 +1005,7 @@ li {
   }
 
   > a { 
-    color: $my-blue ;
+    color: $gradians-blue ;
     float: left ;
     width: 100% ;
     text-align:center ;
@@ -1049,14 +1019,14 @@ li {
 }
 
 #try_us-link {
-  color: $my-blue ;
+  color: $gradians-blue ;
 }
 
 #past-quizzes-list a.btn {
   width: 40% ;
   font-size: 12px ;
   color: white ; 
-  background-color: $my-blue ;
+  background-color: $gradians-blue ;
   border-radius: 10px ;
   margin: {
     left: 23px ;
@@ -1108,7 +1078,7 @@ li {
   > .two-third-column {
     margin-left: -100px ;
     h2 { 
-      color: $my-blue ;
+      color: $gradians-blue ;
     }
 
     p {
@@ -1140,7 +1110,7 @@ li {
 #suggestion {
 
   #instruction {
-    color: $light-gray ;
+    color: $lightgray ;
   }
 
 } 
@@ -1152,7 +1122,7 @@ li {
       border:none ;
       cursor: pointer ;
       width: 40px ;
-      color: $my-blue ;
+      color: $gradians-blue ;
       text-align: center ;
     }
     input[liked="true"] {
@@ -1166,7 +1136,7 @@ li {
     radius: 18px ;
   }
   background: {
-    color: $light-gray ;
+    color: $lightgray ;
   }
   > .ui-widget-header {
     font-size: 14px ;
@@ -1208,4 +1178,234 @@ li {
     } 
   } 
 } 
+
+#calibrations-summary {
+  > #calibrations { 
+    ul { 
+      margin-top: -5px ;
+
+      li { 
+        &[colour="lightblue"] { background-color: lighten($blue, 50%) ; }
+        &[colour="blue"] { background-color: lighten($blue,35%) ; }
+        &[colour="pink"] { background-color: $lightpink ; } 
+        &[colour="orange"] { background-color: $orange ; }
+        &[colour="green"] { background-color: $green ; }
+        &.selected { 
+          background-color: transparent ;
+          border: 1px solid $orange ;
+        } 
+
+        > .marks-out-of { 
+          width: 40% ;
+          margin-left: 3% ;
+          padding: { 
+            left: 2% ;
+            right: 2% ;
+          } 
+          border-left: 1px dotted white ;
+
+          > input {
+            background: transparent ;
+            color: white ; 
+            border: none ;
+            max-width: 100% ;
+            text-align: center ;
+            padding: 0px ;
+          }
+
+          > .denominator { 
+            font-size: 11px ;
+            text-align: center ;
+            border-top: 2px solid white ;
+            padding-top: 1px ;
+            margin-top: 2px ;
+          } 
+        }
+      } 
+    } 
+  } 
+
+  > #calibrations-edit-understand { 
+    width: 70% ;
+    margin-left: 2% ;
+    font-size: 11px ;
+    // text-align: justify ;
+  } 
+}
+
+.calibrations { 
+  font-size: 11px ;
+  text-transform: lowercase ;
+
+  p.instructions { 
+    font-size: 11px ; 
+    color: $gradians-blue ; 
+    border-top: 4px solid white ;
+    padding: 7px 0px 7px 0px ;
+  }
+
+  > .summary { 
+    margin-bottom: 20px ;
+    padding-top: 5px ;
+    border: 2px solid gray ;
+    border-radius: 8px ;
+    min-height: 40px ;
+  } 
+
+  > .details { 
+    > #preamble {
+      color: $gradians-blue ; 
+      margin-bottom: 20px ;
+      font-weight: bold ;
+    } 
+
+    .question {
+      margin: {
+        bottom: 7px ;
+        top: 20px ;
+      }
+      padding: 4px 5px 4px 5px ;
+      border-radius: 5px ;
+      color: white ; 
+      background-color: $panel-colour ;
+      &[mcq] { display: none ; }
+    }
+  } 
+
+  &[mcq]{
+    .question:not([mcq]) { display: none ; }
+    .question[mcq] { display: block ; }
+  } 
+
+  .root-cause {
+    margin: {
+      top:4px ;
+      bottom: 6px ;
+    } 
+    color: lighten($gray, 60%) ; 
+    display: none ;
+
+    &.selected { 
+      display: block ;
+    }
+
+    > .bottomline { 
+      color: $orange ;
+      font-weight: bold ;
+    }
+
+    > .meaning { 
+      color: white ;
+    } 
+  } 
+
+  tt { font-size: 10px ; }
+
+} 
+
+.equalizer { 
+  height: 25px ;
+  max-width: 30% ;
+  min-width: 22% ;
+  margin-right: 3% ;
+
+  > .label { 
+    font-size: 11px ;
+    text: {
+      align: center ;
+      transform: lowercase ;
+    } 
+    color: white ;
+  }
+
+  > .level { 
+    height: 10px ; 
+    width: 10px ;
+    border: {
+      radius: 10px ;
+      width: 2px ;
+      color: lighten($gray, 50%) ;
+      style: solid ;
+    } 
+    margin:{
+      top:10% ;
+      left:40% ;
+      right:40% ;
+    } 
+    &.pinkoutline { border-color: $lightpink ;} 
+    &.pink { background-color: $lightpink ; border-color: $lightpink ; } 
+    &.orange{ background-color: $orange ; border-color: $orange ; }
+    &.green{ background-color: $green ; border-color: $green ; }
+  } 
+} 
+
+/*
+.equalizer { 
+  height: 20px ; 
+
+  .label { 
+    max-width: 30% ;
+    margin-left: 3% ;
+    font: { 
+      size: 12px ;
+    } 
+    text-transform: lowercase ;
+    color: white ; 
+  } 
+
+} 
+*/
+
+#grade-abacus { 
+  .scroll-content { 
+    min-height: 350px ;
+  } 
+
+  .scroll-heading { 
+    text-transform: lowercase ;
+    font-weight: bold ;
+  } 
+
+  > #current-items { 
+    min-height: 30px ;
+    padding: 3% ; 
+    background-color: $panel-colour ; 
+    border: none ; 
+    border-radius: 5px ;
+    margin-bottom: 15px ;
+
+    > div { 
+      margin-top: -2px ;
+    } 
+    .submit-buttons { 
+      height: 25px ; 
+      margin: {
+        top:2px ;
+        bottom: 0px ;
+      } 
+    }
+    #current-question { 
+      color: $orange ;
+      font-size: 18px ;
+      font-weight: bold ;
+    }
+    #current-student { 
+      font-size: 11px ;
+      color: white ;
+    } 
+  } 
+
+  #abacus {
+    .level {
+      &[mcq='true'] { display: none ; }
+    }
+    &[mcq] {
+      .level {
+        &[mcq='false'], &:not([mcq]) { display: none ; }
+        &[mcq='true'] { display: block ; }
+      } 
+    } 
+  } 
+} 
+
 
