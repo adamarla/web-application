@@ -10,7 +10,7 @@
 #  name          :string(255)
 #  klass         :integer
 #  subject_id    :integer
-#  atm_key       :integer
+#  atm_key       :string(255)
 #  total         :integer
 #
 
