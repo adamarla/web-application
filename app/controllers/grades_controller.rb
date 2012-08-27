@@ -12,6 +12,12 @@ class GradesController < ApplicationController
     end
   end
 
+  def explain
+    response = GradedResponse.where(:id => params[:id]).first 
+    head :bad_request if (response.nil? || response.grade_id.nil?)
+    @c = response.grade.calibration
+  end
+
   def assign
 =begin
      Check that there is some scan associated with passed responses. If not, 

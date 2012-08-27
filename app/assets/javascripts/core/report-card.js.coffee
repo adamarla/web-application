@@ -22,7 +22,7 @@ window.reportCard = {
       color = e.color
 
       # Find the swiss-knife whose marker is = id
-      sk = here.children(".swiss-knife[marker=#{id}]").eq(0)
+      sk = here.find(".swiss-knife[marker=#{id}]").eq(0)
       continue if sk.length is 0
 
       ticker = sk.children('div.micro-ticker').eq(0)

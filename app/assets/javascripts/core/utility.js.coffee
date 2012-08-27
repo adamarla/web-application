@@ -132,49 +132,65 @@ window.coreUtil = {
         dialogClass: "alert"
       }
     
-    loadGradeDetails: (json, here = '#understand-calibrations .summary:first') ->
-      ###
-        This method assumes a JSON of the form: 
-        { ..... weights: [insight,formulation,calculation] OR [mcq] ] ..... }
+    grades : {
+      initializePanel : (here) ->
+        $(m).removeClass 'selected' for m in here.find '.root-cause'
+        return true
 
-        HTML: $(here) > .equalizer > .level.left
-      ###
-      here = if typeof here is 'string' then $(here) else here
-      equalizers = here.children '.equalizer'
-      mcqMode = if json.weights.length is 3 then false else true
-      colours = ['pinkoutline', 'pink', 'orange', 'green']
+      loadDetails : (json, here) ->
+        causes = here.find '.root-cause'
+        for index in json.highlight
+          k = causes.filter("[marker=#{index}]").eq(0)
+          k.addClass 'selected' if k?
+        return true
 
-      # Remove any previously set classes: lightpink, pink,orange OR green from .level
-      $(m).children('.level').eq(0).removeClass("pinkoutline pink orange green") for m in equalizers
+      summarize : (json, here = '#understand-calibrations') ->
+        ###
+          This method assumes a JSON of the form: 
+          { ..... weights: [insight,formulation,calculation] OR [mcq] ] ..... }
 
-      if mcqMode then here.parent().attr('mcq','yes') else here.parent().removeAttr('mcq')
+          HTML: $(here) > .equalizer > .level.left
+        ###
+        here = if typeof here is 'string' then $(here) else here
+        root = if here.hasClass('calibrations') then here else here.children('.calibrations').eq(0)
+        summary = root.children('.summary').eq(0)
 
-      for m,j in json.weights
-        m = parseInt(m)
-        e = equalizers.eq(j)
-        target = e.children('.level').eq(0)
+        equalizers = summary.children '.equalizer'
+        mcqMode = if json.weights.length is 3 then false else true
+        colours = ['pinkoutline', 'pink', 'orange', 'green']
 
-        if j is 0
-          label = e.children('.label').eq(0)
-          if mcqMode then label.text("bottomline") else label.text("insight")
+        # Remove any previously set classes: lightpink, pink,orange OR green from .level
+        $(m).children('.level').eq(0).removeClass("pinkoutline pink orange green") for m in equalizers
 
-        # Calculations are ranked on a [0,2] scale - not [0,3] like the others
-        onCalc = if j is 2 then true else false
+        if mcqMode then root.attr('mcq','yes') else root.removeAttr('mcq')
 
-        colour = -1
-        switch m
-          when 0
-            colour = 0
-          when 1
-            colour = if onCalc then 2 else 1
-          when 2
-            colour = if onCalc then 3 else 2
-          when 3
-            colour = m
+        for m,j in json.weights
+          m = parseInt(m)
+          e = equalizers.eq(j)
+          target = e.children('.level').eq(0)
 
-        # Apply the colour class
-        target.addClass colours[colour] unless colour is -1
-      return true
+          if j is 0
+            label = e.children('.label').eq(0)
+            if mcqMode then label.text("bottomline") else label.text("insight")
+
+          # Calculations are ranked on a [0,2] scale - not [0,3] like the others
+          onCalc = if j is 2 then true else false
+
+          colour = -1
+          switch m
+            when 0
+              colour = 0
+            when 1
+              colour = if onCalc then 2 else 1
+            when 2
+              colour = if onCalc then 3 else 2
+            when 3
+              colour = m
+
+          # Apply the colour class
+          target.addClass colours[colour] unless colour is -1
+        return true
+    } # end if grades namespace
 
   } # end of namespace 'interface'
 

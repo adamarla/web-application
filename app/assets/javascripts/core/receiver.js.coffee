@@ -1,5 +1,25 @@
 
 jQuery ->
+
+  ########################################################
+  #  SIDE PANEL
+  ########################################################
+
+  $('#side-panel').ajaxSuccess (e,xhr,settings) ->
+    url = settings.url
+    matched = true
+    json = $.parseJSON xhr.responseText
+
+    if url.match(/grade\/breakup\/for/) or url.match(/grade\/details/)
+      here = $('#side-panel').children().eq(0).find('.calibrations').eq(0)
+      coreUtil.interface.grades.initializePanel here
+      coreUtil.interface.grades.summarize json, here
+      coreUtil.interface.grades.loadDetails json, here
+    else
+      matched = false
+
+    e.stopPropagation() if matched is true
+    return true
   
   ########################################################
   #  WIDE PANEL

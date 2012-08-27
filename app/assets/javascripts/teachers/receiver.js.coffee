@@ -133,7 +133,7 @@ jQuery ->
 
     else if url.match(/student\/responses/)
       coreUtil.interface.displayJson json.preview.questions, "#preview", 'question', {}
-      reportCard.overview json.preview.questions, "#preview", 'question'
+      reportCard.overview json.preview.questions, "#overview", 'question'
       preview.loadJson json, 'locker'
     else if url.match(/teacher\/topics_this_section/)
       here = $('#deep-dive-topic')
@@ -155,15 +155,6 @@ jQuery ->
       here = $('#typeset-for-me')
       coreUtil.interface.displayJson json.typesets, here, 'typeset', {radio:false}
       preview.loadJson json, 'vault'
-    else if url.match(/grade\/details/)
-      here = $('#understand-calibrations > .calibrations')
-      items = here.find '.root-cause'
-      $(m).removeClass 'selected' for m in items
-
-      coreUtil.interface.loadGradeDetails json
-      for index in json.highlight
-        k = items.filter("[marker=#{index}]").eq(0)
-        k.addClass 'selected' if k?
     else if url.match(/load\/grades/)
       here = $('#calibrations')
       existing = here.find "input[type='text']"
