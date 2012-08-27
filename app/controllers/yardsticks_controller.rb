@@ -40,13 +40,13 @@ class YardsticksController < ApplicationController
   end
 
   def logical_next
-    head :bad_request if params[:id].blank? 
+    head :bad_request if params[:i].blank? 
 
-    @logical = Calibration.where(:insight_id => params[:id])
+    @logical = Calibration.where(:insight_id => params[:i])
 
-    unless params[:fid].blank?
-      @logical = @logical.where(:formulation_id => params[:fid])
-      @logical = @logical.where(:calculation_id => params[:cid]) unless params[:cid].blank?
+    unless params[:f].blank?
+      @logical = @logical.where(:formulation_id => params[:f])
+      @logical = @logical.where(:calculation_id => params[:c]) unless params[:c].blank?
     end
   end
 

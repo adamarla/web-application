@@ -39,18 +39,35 @@ window.abacus = {
     canvas.load abacus.last.scan
     return true
 
+  reset : (n) ->
+    return false if n > 2
+    panel = abacus.obj.find('.scroll-content').eq(n)
+
+    for m in panel.find 'input[type="radio"]'
+      $(m).prop 'checked', false
+      $(m).prop 'disabled', false
+    return true
+
+  panelIndex : (radio) ->
+    # Returns the index of the .scroll-content containing the passed 
+    # radio button relative to the other .scroll-contents 
+    panel = radio.closest '.scroll-content'
+    index = abacus.obj.children('.scroll-content').index(panel)
+    return index
+
   url : (radio) ->
     # Build <form> href argument by looking at current & prior selections
-    currId = abacus.obj.accordion 'option','active'
+    #currId = abacus.obj.accordion 'option','active'
+    currId = abacus.panelIndex radio
     url = null
     id = radio.parent().attr 'marker'
 
     switch currId
       when 0
-        url = id
+        url = "?i=#{id}"
       when 1
         url = abacus.obj.children('.scroll-content').eq(0).attr 'choice'
-        url = "#{url}?f=#{id}"
+        url = "?i=#{url}&f=#{id}"
       when 2
         prior = abacus.obj.children('.scroll-content')
         url = "?i=#{prior.eq(0).attr 'choice'}" # ?i=67
@@ -59,16 +76,9 @@ window.abacus = {
 
         # Dont forget to embed the graded-response id too
         url = "#{url}&g=#{abacus.last.response.attr 'marker'}" # ?i=67&f=74&c=89&g=1275
-
     return url
 
   next : {
-
-    yardstick : () ->
-      # Open the next scroll-content OR submit if last scroll-content
-      currId = abacus.obj.accordion 'option', 'active'
-      abacus.obj.accordion('activate', currId + 1) if currId < 2
-      return true
 
     student : () ->
       return abacus.last.student.next().eq(0)
@@ -80,7 +90,6 @@ window.abacus = {
       c = abacus.last.response
       next = c.next() # next question on the same page of the same student
       if next.length isnt 0
-        # abacus.decompile(1.9)
         abacus.last.response = next
         canvas.clear() # remove any annotations for a previous question on the same scan
         if next.attr('mcq') is 'false'
@@ -128,7 +137,8 @@ window.abacus = {
     clickable = current.find("input[type='radio']").not("[disabled]")
     if clickable.length == 1
       radio = clickable.eq(0)
-      radio.click()
+      radio.trigger 'click'
+      #radio.click()
     return true
 }
 
@@ -138,31 +148,27 @@ jQuery ->
     Behaviour
   ###
 
-  $('#grade-abacus > form').submit ->
-    # alert 'inside submit'
-    abacus.next.response() # Move to the next response
-    abacus.update.ticker()
-    abacus.obj.accordion 'activate', 0
-    return true
-
   $('#abacus .scroll-content').on 'click', 'input[type="radio"]', (event) ->
     event.stopPropagation()
-
-    siblings = $(this).parent().siblings('.level').children('input[type="radio"]')
-    $(m).prop('checked', false) for m in siblings
+    curr = abacus.panelIndex $(this)
+    next = (curr + 1) % 3
 
     abacus.current().attr 'choice', $(this).parent().attr('marker')
     # GET request for next set of yardsticks to show OR form submission 
     url = abacus.url $(this)
 
-    currId = abacus.obj.accordion 'option', 'active'
-    switch currId
-      when 0,1 then $.get "yardstick/logical_next/#{url}"
-      when 2
-        form = $(this).closest 'form'
-        form.attr 'action', "/assign/grade#{url}&clicks=#{canvas.decompile()}"
-        form.submit()
+    abacus.reset next
+    abacus.obj.accordion 'activate', next
 
+    if curr < 2
+      $.get "yardstick/logical_next#{url}"
+    else
+      form = abacus.obj.closest('form')
+      form.attr 'action', "/assign/grade#{url}&clicks=#{canvas.decompile()}"
+      form.trigger 'submit'
+      abacus.next.response() # Move to the next response
+      abacus.update.ticker()
+      abacus.obj.accordion 'activate', 0
     return true
 
   ###
@@ -176,15 +182,14 @@ jQuery ->
     e.stopPropagation()
 
     json = $.parseJSON xhr.responseText
-    abacus.next.yardstick()
     currId = abacus.obj.accordion 'option', 'active'
+    panel = abacus.obj.children('.scroll-content').eq(currId)
     key = null
 
     switch currId
       when 1 then key = 'formulation'
       when 2 then key = 'calculation'
 
-    current = abacus.current()
-    scroll.overlayJson json[key], 'candidates', current, '.level', "disable" if key?
-    abacus.autoClick current # wouldn't do anything if current has > 1 clickable options
+    scroll.overlayJson json[key], 'candidates', panel, '.level', "disable" if key?
+    abacus.autoClick panel # wouldn't do anything if panel has > 1 clickable options
     return true
