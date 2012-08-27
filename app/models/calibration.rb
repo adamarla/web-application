@@ -41,10 +41,15 @@ class Calibration < ActiveRecord::Base
     where(:calculation_id => Yardstick.calculations.weight(n).map(&:id))
   end
 
-  def self.define_using_ids(insight, formulation, calculation, allotment)
-    c = Calibration.new :insight_id => insight, :formulation_id => formulation, 
-                        :calculation_id => calculation, :allotment => allotment
-    c.save
+  def self.define_using_ids(insight, formulation, calculation)
+    i = Yardstick.find insight
+    f = Yardstick.find formulation
+    c = Yardstick.find calculation
+    a = Calibration.fair_value_for i,f,c
+
+    calibration = Calibration.new :insight_id => insight, :formulation_id => formulation, 
+                        :calculation_id => calculation, :allotment => a
+    calibration.save
   end
 
   def self.fair_value_for(bottomline, formulation = nil, calculation = nil)
@@ -130,7 +135,7 @@ class Calibration < ActiveRecord::Base
       # Calculation irrelevant if no/partial insight
       return false if calculation.weight != 0
       # No formulation <=> no insight & partial formulation <=> partial insight
-      return false if formulation.weight != insight.weight
+      return false if formulation.weight > insight.weight
     else
       # full insight => some fomulation => calculation is NOT irrelevant
       return false if calculation.weight == 0
