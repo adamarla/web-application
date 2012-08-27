@@ -22,6 +22,7 @@ class Calibration < ActiveRecord::Base
   validates :allotment, :numericality => { :only_integer => true, :less_than => 101, :greater_than => -1 }
 
   before_save :check_viability
+  before_destroy :destroyable?
   after_create :add_for_every_teacher
 
   has_many :grades, :dependent => :destroy
@@ -220,5 +221,9 @@ class Calibration < ActiveRecord::Base
                           :calculation_id => calculation.id, :allotment => v
       c.save
     end 
+
+    def destroyable?
+      return false
+    end
 
 end # of class
