@@ -8,6 +8,7 @@
 #  calculation_id :integer
 #  mcq_id         :integer
 #  allotment      :float
+#  enabled        :boolean         default(TRUE)
 #
 
 #     ___:has_many____     __:belongs_to___    ____:has_many____
@@ -39,6 +40,10 @@ class Calibration < ActiveRecord::Base
 
   def self.calculation(n)
     where(:calculation_id => Yardstick.calculations.weight(n).map(&:id))
+  end
+
+  def self.enabled
+    where(:enabled => true)
   end
 
   def self.define_using_ids(insight, formulation, calculation)

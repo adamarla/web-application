@@ -8,6 +8,7 @@
 #  calculation_id :integer
 #  mcq_id         :integer
 #  allotment      :float
+#  enabled        :boolean         default(TRUE)
 #
 
 require 'test_helper'

@@ -1,5 +1,5 @@
 
-- calibrations = Calibration.order('mcq_id DESC').order(:allotment)
+- calibrations = Calibration.enabled.order('mcq_id DESC').order(:allotment)
 
 #calibrations-summary
   #calibrations.left
