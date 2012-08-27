@@ -132,7 +132,7 @@ window.coreUtil = {
         dialogClass: "alert"
       }
     
-    loadGradeDetails: (json, here = '#understand-calibrations .summary:first') ->
+    loadGradeDetails: (json, here = '#understand-calibrations') ->
       ###
         This method assumes a JSON of the form: 
         { ..... weights: [insight,formulation,calculation] OR [mcq] ] ..... }
@@ -140,14 +140,17 @@ window.coreUtil = {
         HTML: $(here) > .equalizer > .level.left
       ###
       here = if typeof here is 'string' then $(here) else here
-      equalizers = here.children '.equalizer'
+      root = if here.hasClass('calibrations') then here else here.children('.calibrations').eq(0)
+      summary = root.children('.summary').eq(0)
+
+      equalizers = summary.children '.equalizer'
       mcqMode = if json.weights.length is 3 then false else true
       colours = ['pinkoutline', 'pink', 'orange', 'green']
 
       # Remove any previously set classes: lightpink, pink,orange OR green from .level
       $(m).children('.level').eq(0).removeClass("pinkoutline pink orange green") for m in equalizers
 
-      if mcqMode then here.parent().attr('mcq','yes') else here.parent().removeAttr('mcq')
+      if mcqMode then root.attr('mcq','yes') else root.removeAttr('mcq')
 
       for m,j in json.weights
         m = parseInt(m)
