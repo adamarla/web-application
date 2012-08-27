@@ -57,44 +57,14 @@ class Calibration < ActiveRecord::Base
     calibration.save
   end
 
-  def self.fair_value_for(bottomline, formulation = nil, calculation = nil)
-    # Arguments are Yardstick objects 
-    fair_value = 0 
+  def self.fair_value(bottomline, formulation = nil, calculation = nil)
+    io = Yardstick.find bottomline
+    fo = formulation.nil? ? nil : Yardstick.find(formulation)
+    co = calculation.nil? ? nil : Yardstick.find(calculation)
 
-    if bottomline.mcq
-       case bottomline.weight
-         when 0,1 then fair_value = 0
-         when 2 then fair_value = 60
-         when 3 then fair_value = 100
-       end 
-    else
-      case bottomline.weight 
-        when 0 then fair_value = 0 
-        when 1 then fair_value = 10
-        when 2 then fair_value = 35
-        when 3 then fair_value = 50
-      end 
-
-      case formulation.weight
-        when 1 then fair_value += 10 
-        when 2 then fair_value += 20
-        when 3 then fair_value += 40
-      end 
-
-      case calculation.weight
-        when 2 then fair_value += 10
-      end 
-    end
-    return fair_value 
+    return Calibration.fair_value_for io, fo, co
   end
 
-  def self.define_using(bottomline, formulation = nil, calculation = nil)
-    # Arguments are yardstick objects
-    v = Calibration.fair_value_for bottomline, formulation, calculation
-    c = Calibration.new :insight_id => bottomline.id, :formulation_id => formulation.id,
-                        :calculation_id => calculation.id, :allotment => v
-    c.save
-  end 
 
   def self.build_viable_calibrations
     insights = Yardstick.insights
@@ -104,7 +74,7 @@ class Calibration < ActiveRecord::Base
     insights.each do |i|
       formulations.each do |f| 
         calculations.each do |c| 
-          cb = Calibration.define_using i,f,c
+          cb = Calibration.define_using_objs i,f,c
         end 
       end 
     end # insights
@@ -196,6 +166,10 @@ class Calibration < ActiveRecord::Base
     end
   end
 
+=begin
+  *************************** PRIVATE *************************************
+=end
+
   private
     
     def add_for_every_teacher
@@ -208,4 +182,43 @@ class Calibration < ActiveRecord::Base
       self.viable?
     end
 
-end
+    def self.fair_value_for(bottomline, formulation = nil, calculation = nil)
+      # Arguments are Yardstick objects 
+      fair_value = 0 
+
+      if bottomline.mcq
+         case bottomline.weight
+           when 0,1 then fair_value = 0
+           when 2 then fair_value = 60
+           when 3 then fair_value = 100
+         end 
+      else
+        case bottomline.weight 
+          when 0 then fair_value = 0 
+          when 1 then fair_value = 10
+          when 2 then fair_value = 35
+          when 3 then fair_value = 50
+        end 
+
+        case formulation.weight
+          when 1 then fair_value += 10 
+          when 2 then fair_value += 20
+          when 3 then fair_value += 40
+        end 
+
+        case calculation.weight
+          when 2 then fair_value += 10
+        end 
+      end
+      return fair_value 
+    end
+
+    def self.define_using_objs(bottomline, formulation = nil, calculation = nil)
+      # Arguments are yardstick objects
+      v = Calibration.fair_value_for bottomline, formulation, calculation
+      c = Calibration.new :insight_id => bottomline.id, :formulation_id => formulation.id,
+                          :calculation_id => calculation.id, :allotment => v
+      c.save
+    end 
+
+end # of class
