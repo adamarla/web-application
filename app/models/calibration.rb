@@ -114,7 +114,7 @@ class Calibration < ActiveRecord::Base
       return false if formulation.weight > insight.weight
     else
       # full insight => some fomulation => calculation is NOT irrelevant
-      return false if calculation.weight == 0
+      # return false if calculation.weight == 0
       # full insight => some formulation atleast
       return false if formulation.weight < 2
     end 
