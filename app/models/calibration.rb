@@ -223,6 +223,8 @@ class Calibration < ActiveRecord::Base
     end 
 
     def destroyable?
+      # De-activate the calibration - but don't actually destroy it
+      self.update_attribute :enabled, false
       return false
     end
 
