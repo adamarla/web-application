@@ -47,6 +47,13 @@ class Calibration < ActiveRecord::Base
     where(:enabled => true)
   end
 
+  def self.unused
+    used = GradedResponse.graded.map(&:grade_id).uniq
+    used = Grade.where(:id => used).map(&:calibration_id).uniq
+    rest = Calibration.select(:id).map(&:id) - used
+    where(:id => rest)
+  end
+
   def self.define_using_ids(insight, formulation, calculation)
     i = Yardstick.find insight
     f = Yardstick.find formulation
