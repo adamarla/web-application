@@ -155,6 +155,8 @@ jQuery ->
     curr = abacus.panelIndex $(this)
     next = (curr + 1) % 3
 
+    $(m).prop 'checked', false for m in $(this).parent().siblings('.level').children('input[type="radio"]')
+
     abacus.current().attr 'choice', $(this).parent().attr('marker')
     # GET request for next set of yardsticks to show OR form submission 
     url = abacus.url $(this)
