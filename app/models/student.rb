@@ -93,19 +93,25 @@ class Student < ActiveRecord::Base
   end
 
   def proficiency?(topic_id)
-    # Return values:
-    #    0: no data or not enough data
-    #    1: pink => conceptual problems
-    #    2: orange => basic understanding but needs more work 
-    #    3: green => doing fine/well
+=begin
+    Proficiency can be absolute or relative. Absolute proficiency takes into 
+    account the toughness of the questions students tackled on a topic. If a teacher
+    consistently picked easy questions, then even if the student got them all right,
+    one really can't say the student is proficient
+
+    Relative proficiency - on the other hand - normalizes marks student has earned
+    over just the maximum marks a student could have earned over those questions - as 
+    opposed to over the toughest questions he/she could have tackled
+
+    This method returns the absolute proficiency
+=end
     g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
     return 0 if g.count == 0
-    weighted = g.map{ |m| m.q_selection.question.marks? * m.grade.yardstick.colour }.inject(:+).to_f
-    total = g.map{ |m| m.q_selection.question.marks? }.inject(:+)
-    average = (weighted/total).round(2)
-    #ceiling = average.ceil
-    #average = (ceiling - average) > 0.15 ? average.floor : ceiling
-    return average
+
+    marks = g.map(&:marks).inject(:+).to_f
+    max = 6 * g.count # 6 marks are for the toughest questions 
+    score = (marks/max).round(2)
+    return score
   end
 
   private 
