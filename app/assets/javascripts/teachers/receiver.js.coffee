@@ -141,13 +141,13 @@ jQuery ->
     else if url.match(/sektion\/proficiency/)
       graph.initialize()
       graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'x'
-      options = $.extend {}, graph.options, { xaxis: { position: "top", min:1,
-      max:3,
-      ticks : [[1, "Revisit Topic >"],
-               [1.5, "Brush-up on basics >"],
-               [2, "Needs practice >"],
-               [2.5, "Doing well >"],
-               [3, "Teacher?"]
+      options = $.extend {}, graph.options, { xaxis: { position: "top", min:0,
+      max:1,
+      ticks : [[0, "Revisit Topic >"],
+               [0.25, "Brush-up on basics >"],
+               [0.5, "Needs practice >"],
+               [0.75, "Doing well >"],
+               [1, "Teacher?"]
               ] }
       }
       graph.draw [], true, options

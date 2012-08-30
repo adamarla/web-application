@@ -8,6 +8,7 @@
 #  calculation_id :integer
 #  mcq_id         :integer
 #  allotment      :float
+#  enabled        :boolean         default(TRUE)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

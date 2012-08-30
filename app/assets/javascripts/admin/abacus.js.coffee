@@ -81,7 +81,9 @@ window.abacus = {
   next : {
 
     student : () ->
-      return abacus.last.student.next().eq(0)
+      nextStudent = abacus.last.student.next()
+      if nextStudent.length isnt 0 then return nextStudent.eq(0) else null
+      #return abacus.last.student.next().eq(0)
 
     scan : () ->
       return abacus.next.student().children('.scan').eq(0)
@@ -152,6 +154,8 @@ jQuery ->
     event.stopPropagation()
     curr = abacus.panelIndex $(this)
     next = (curr + 1) % 3
+
+    $(m).prop 'checked', false for m in $(this).parent().siblings('.level').children('input[type="radio"]')
 
     abacus.current().attr 'choice', $(this).parent().attr('marker')
     # GET request for next set of yardsticks to show OR form submission 

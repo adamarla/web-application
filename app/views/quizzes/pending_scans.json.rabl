@@ -1,6 +1,6 @@
 
 node(:students) {
-  @students.map{ |m| { :marker => m.id, :name => m.first_name, :class => :student } }
+  @students.map{ |m| { :marker => m.id, :name => "#{m.first_name}-#{m.last_name[0]}", :class => :student } }
 } 
 
 # @pending is an Ruby array - not ActiveRecord::Relation

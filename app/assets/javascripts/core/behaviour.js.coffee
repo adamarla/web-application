@@ -402,7 +402,7 @@ jQuery ->
     load its calibration breakup 
   ###
 
-  $('#report-cards-summary, #my-grades').on 'click', '.swiss-knife', (event) ->
+  $('#report-cards-summary > #preview, #my-grades').on 'click', '.swiss-knife', (event) ->
     event.stopPropagation()
     id = $(this).attr 'marker'
     $(m).removeClass 'selected' for m in $(this).siblings()

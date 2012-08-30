@@ -103,7 +103,7 @@ class GradedResponse < ActiveRecord::Base
       if remaining == 0
         t = Testpaper.where(:id => self.testpaper_id).first
         t.update_attribute :publishable, true
-        Mailbot.grading_done(t).deliver
+        # Mailbot.grading_done(t).deliver
       end
       return :ok
     else

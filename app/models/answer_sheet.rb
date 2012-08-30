@@ -16,17 +16,16 @@ class AnswerSheet < ActiveRecord::Base
   belongs_to :testpaper 
 
   def complete?
-    # Complete if scans are available for every graded response
-    quiz_id = Testpaper.where(:id => self.testpaper_id).first.quiz_id
-    missing = GradedResponse.of_student(student_id).in_quiz(quiz_id).without_scan.count
-    return (missing > 0 ? false : true)
+    # Complete if scans are available for every graded response of this student
+    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    return (responses.without_scan.count > 0 ? false : true)
   end
 
   def graded? 
     return true if self.graded
 
-    quiz_id = self.testpaper.quiz_id
-    fully_graded = GradedResponse.ungraded.in_quiz(quiz_id).of_student(self.student_id).count > 0 ? false : true
+    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    fully_graded = responses.ungraded.count > 0 ? false : true
     self.update_attribute(:graded, fully_graded) if fully_graded 
     return fully_graded
   end 
@@ -34,9 +33,9 @@ class AnswerSheet < ActiveRecord::Base
   def marks?
     return self.marks unless self.marks.nil?
 
-    quiz_id = self.testpaper.quiz_id
-    marks = GradedResponse.graded.in_quiz(quiz_id).of_student(self.student_id).map(&:marks).select{ |m| !m.nil? }.inject(:+)
-    self.update_attribute(:marks, marks) if self.graded?
+    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    marks = responses.graded.map(&:marks).select{ |m| !m.nil? }.inject(:+)
+    self.update_attribute(:marks, marks) if responses.ungraded.count == 0
     return marks.nil? ? 0 : marks.round(2)
   end
 
@@ -45,9 +44,8 @@ class AnswerSheet < ActiveRecord::Base
     # and more of the student's testpaper is graded 
     return self.testpaper.quiz.total? if self.graded?
 
-    quiz_id = self.testpaper.quiz_id
-    graded = GradedResponse.in_quiz(quiz_id).of_student(self.student_id).graded
-    thus_far = graded.map(&:q_selection).map(&:question).map(&:marks).select{ |m| !m.nil? }.inject(:+)
+    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    thus_far = responses.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 

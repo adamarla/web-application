@@ -42,7 +42,7 @@ class YardsticksController < ApplicationController
   def logical_next
     head :bad_request if params[:i].blank? 
 
-    @logical = Calibration.where(:insight_id => params[:i])
+    @logical = Calibration.enabled.where(:insight_id => params[:i])
 
     unless params[:f].blank?
       @logical = @logical.where(:formulation_id => params[:f])
