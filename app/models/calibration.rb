@@ -111,14 +111,14 @@ class Calibration < ActiveRecord::Base
       2 => no errors
 =end
 
-    return false if formulation.weight > insight.weight
+    # return false if formulation.weight > insight.weight
     return false if calculation.weight > formulation.weight
 
     if insight.weight < 3
       # Calculation irrelevant if no/partial insight
       return false if calculation.weight != 0
       # No formulation <=> no insight & partial formulation <=> partial insight
-      return false if formulation.weight > insight.weight
+      # return false if formulation.weight > insight.weight
     else
       # full insight => some fomulation => calculation is NOT irrelevant
       # return false if calculation.weight == 0
