@@ -47,8 +47,12 @@ class GradedResponse < ActiveRecord::Base
     where(:student_id => id)
   end
 
-  def self.to_question(id)
+  def self.to_db_question(id)
     where(:q_selection_id => QSelection.where(:question_id => id).map(&:id))
+  end
+
+  def self.to_question(index)
+    where(:q_selection_id => QSelection.where(:index => index).map(&:id))
   end
 
   def self.assigned_to(id)
@@ -141,7 +145,7 @@ class GradedResponse < ActiveRecord::Base
     student = self.student_id
     quiz = qselection.quiz_id 
     question = qselection.question_id 
-    return GradedResponse.of_student(student).in_quiz(quiz).to_question(question) - [self]
+    return GradedResponse.of_student(student).in_quiz(quiz).to_db_question(question) - [self]
   end
 
   def name?
