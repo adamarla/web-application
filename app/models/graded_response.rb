@@ -100,6 +100,15 @@ class GradedResponse < ActiveRecord::Base
     where(:grade_id => Grade.where(:calibration_id => id).map(&:id))
   end
 
+  def reset
+    # For times when a graded response has to be re-graded. Set the grade_id 
+    # for the response to nil - as also the marks & graded? field of the 
+    # corresponding answer sheet 
+    self.update_attribute :grade_id, nil
+    a = AnswerSheet.where(:testpaper_id => self.testpaper_id, :student_id => self.student_id).first
+    a.update_attributes :marks => nil, :graded => false unless a.nil?
+  end 
+
   def calibrate_to(calibration_id)
     assigner = self.teacher?
     grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
