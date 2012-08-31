@@ -96,6 +96,10 @@ class GradedResponse < ActiveRecord::Base
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
 
+  def self.calibrated_to(id)
+    where(:grade_id => Grade.where(:calibration_id => id).map(&:id))
+  end
+
   def calibrate_to(calibration_id)
     assigner = self.teacher?
     grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
