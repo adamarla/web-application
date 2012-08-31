@@ -123,6 +123,7 @@ Webapp::Application.routes.draw do
   match 'grade/details' => 'teachers#grade_details', :via => :get
   match 'update/grades' => 'teachers#update_grades', :via => [:put, :post]
   match 'load/grades' => 'teachers#load_grades', :via => :get
+  match 'preview/calibrations' => 'teachers#calibration_preview', :via => :get
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get

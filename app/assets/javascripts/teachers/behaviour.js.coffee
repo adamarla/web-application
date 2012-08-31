@@ -219,6 +219,7 @@ jQuery ->
     id = $('#control-panel').attr 'marker'
     $.get "load/grades.json?id=#{id}"
     $('#calibrations a').eq(0).click() # click on the first calibration to get things started
+    $.get "preview/calibrations"
     return true
 
   $('#calibrations').on 'click', 'li', (event) ->

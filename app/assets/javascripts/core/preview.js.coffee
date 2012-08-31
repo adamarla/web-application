@@ -49,7 +49,7 @@ jQuery ->
         when 'mint' then base = "#{server}/mint"
         when 'vault' then base = "#{server}/vault"
         when 'atm' then base = "#{server}/atm"
-        when 'frontdesk-yardsticks' then base = "#{server}/front-desk/previews/yardsticks"
+        when 'calibrations' then base = "#{server}/front-desk/calibrations"
         when 'locker' then base = "#{server}/locker"
         else base = null
 
@@ -108,14 +108,14 @@ jQuery ->
               thumb = "#{base}/#{root}/page-#{page}.jpeg"
               full = "#{base}/#{root}/page-#{page}.jpeg"
               alt = "#{root}"
-            when 'frontdesk-yardsticks'
+            when 'calibrations'
               type = json.preview.mcq[j]
               if type isnt isMcq
                 counter = 1
                 isMcq = type
 
-              thumb = "#{base}/#{page}/thumbnail.jpeg"
-              full = "#{base}/#{page}/preview.jpeg"
+              thumb = "#{base}/#{page}.jpg"
+              full = "#{base}/#{page}.jpg"
               alt = if isMcq then "M#{counter++}" else "G#{counter++}"
             when 'locker'
               thumb = "#{base}/#{page}"
