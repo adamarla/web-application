@@ -181,16 +181,6 @@ jQuery ->
     return true
  
   ###
-    When the 'edit' link for a yardstick is clicked
-  ###
-  $('#yardsticks-summary a.edit').click (event) ->
-    id = $(this).attr 'marker'
-    coreUtil.forms.modifyAction '#edit-yardstick', "yardstick.json?id=#{id}", 'put'
-    $.get "yardstick.json?id=#{id}"
-    event.stopPropagation()
-    return true
-
-  ###
     Send request to web-service to shift any new scans from staging -> locker
     and then assign these scans to examiners. Any examiner can inititate this
     action for everyone else

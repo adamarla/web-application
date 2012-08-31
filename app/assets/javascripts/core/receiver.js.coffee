@@ -27,8 +27,7 @@ jQuery ->
 
   $('#wide-panel').ajaxSuccess (e, xhr, settings) ->
     matched = settings.url.match(/quiz\/preview/) or
-              settings.url.match(/question\/preview/) or
-              settings.url.match(/yardsticks\/preview/)
+              settings.url.match(/question\/preview/)
     return if matched is null
 
     e.stopImmediatePropagation()
@@ -50,8 +49,6 @@ jQuery ->
           diff.val json.preview.difficulty unless not diff?
       when 'quiz/preview'
         preview.loadJson json, 'atm'
-      when 'yardsticks/preview'
-        preview.loadJson json, 'frontdesk-yardsticks'
     return true
   
   $('#embedded-video').ajaxSuccess (e,xhr,settings) ->
