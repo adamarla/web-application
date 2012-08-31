@@ -75,16 +75,6 @@ jQuery ->
   scanbotDownload.button()
 
   ###
-    Load 'example' jpegs of student responses on #yardsticks-link click. 
-    If someone has clicked on the link, then it means that he/she wants to 
-    edit/review their marking scheme. In which case, showing example 
-    responses makes all the sense
-  ###
-  $('#yardsticks-link').click (event) ->
-    $.get 'yardsticks/preview'
-    return true
-
-  ###
     Load the first video when #videos-link is clicked. Let users have something to play
   ###
   $('#videos-link').click (event) ->

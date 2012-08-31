@@ -219,6 +219,7 @@ jQuery ->
     id = $('#control-panel').attr 'marker'
     $.get "load/grades.json?id=#{id}"
     $('#calibrations a').eq(0).click() # click on the first calibration to get things started
+    $.get "preview/calibrations"
     return true
 
   $('#calibrations').on 'click', 'li', (event) ->
@@ -227,6 +228,12 @@ jQuery ->
     $.get "grade/details?id=#{a.attr 'marker'}"
     $(this).addClass 'selected'
     $(m).removeClass 'selected' for m in $(this).siblings('li')
+    
+    # As a last step, load the just clicked calibration's preview
+    tag = $(this).children('a').eq(0).text()
+    from = preview.currIndex()
+    to = preview.isAt tag
+    preview.jump from, to unless to is -1
     return true
 
   ###
