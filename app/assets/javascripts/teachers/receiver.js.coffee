@@ -166,6 +166,9 @@ jQuery ->
         target = existing.filter("[marker=#{r.calibration_id}]").eq(0)
         continue unless target?
         target.val r.marks
+    else if url.match(/preview\/calibrations/)
+      preview.loadJson json, 'calibrations'
+
     else
       matched = false
 

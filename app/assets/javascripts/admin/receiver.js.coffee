@@ -105,10 +105,6 @@ jQuery ->
       coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher'
     else if url.match(/school\/sektions/)
       coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
-    else if url.match(/yardstick.json/)
-      coreUtil.dom.unsetCheckboxesIn '#edit-yardstick'
-      coreUtil.forms.loadJson '#edit-yardstick > form:first', json.yardstick
-      $('#edit-yardstick').dialog 'open'
     else if url.match(/verticals\/list/)
       for here,j in ['#tag-question-topics', '#edit-course-topics', '#define-course-topics']
         scroll.initialize json.verticals, 'vertical', $(here)

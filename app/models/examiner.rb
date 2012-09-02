@@ -194,8 +194,7 @@ class Examiner < ActiveRecord::Base
 
         question_ids.each do |q|
           # Remember: one graded response per student for each subpart 
-          # with_scan = responses & GradedResponse.unassigned.with_scan.to_question(q)
-          with_scan = responses.to_question(q)
+          with_scan = responses.to_db_question(q)
           question = Question.find q
           nparts = question.num_parts?
           next if with_scan.count != nparts

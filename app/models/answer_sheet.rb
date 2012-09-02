@@ -15,6 +15,14 @@ class AnswerSheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :testpaper 
 
+  def self.of_student(id)
+    where(:student_id => id)
+  end
+
+  def self.for_testpaper(id)
+    where(:testpaper_id => id)
+  end
+
   def complete?
     # Complete if scans are available for every graded response of this student
     responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)

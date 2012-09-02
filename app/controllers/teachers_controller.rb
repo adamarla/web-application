@@ -211,4 +211,8 @@ class TeachersController < ApplicationController
     @c = Calibration.where(:id => params[:id]).first
   end
 
+  def calibration_preview
+    @calibrations = Calibration.enabled.order('mcq_id DESC').order(:allotment)
+  end
+
 end # of class
