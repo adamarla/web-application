@@ -26,14 +26,16 @@ window.canvas = {
     canvas.clear() if canvas.clicks?
     ctx = canvas.ctx
     image = new Image()
-    src = scan.attr 'name'
+    src  = scan.attr 'name'
+    tokens = src.split '-'
+    folder = "#{tokens[0]}-#{tokens[1]}"
 
     image.onload = () ->
       ctx.drawImage(image,15,0)
       ctx.strokeStyle="#fd9105"
       ctx.lineJoin="round"
 
-    image.src = "#{gutenberg.server}/locker/#{src}"
+    image.src = "#{gutenberg.server}/locker/#{folder}/#{src}"
     return true
 
   # n: 0-indexed
@@ -47,11 +49,14 @@ window.canvas = {
     image = new Image()
     scanDiv = list.children('div[scan]').eq(n)
     src = scanDiv.attr 'scan'
+    tokens = (scan.attr 'name').split '-'
+    folder = "#{tokens[0]}-#{tokens[1]}"
+
     image.onload = () ->
       ctx.drawImage(image,15,0)
       ctx.strokeStyle="#fd9105"
       ctx.lineJoin="round"
-    image.src = "#{gutenberg.server}/locker/#{src}"
+    image.src = "#{gutenberg.server}/locker/#{folder}/#{src}"
 
     ###
       If the grading-panel is in the side panel, then: 
