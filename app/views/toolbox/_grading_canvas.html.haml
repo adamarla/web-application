@@ -1,3 +1,5 @@
 
--# Can't style the <canvas> using CSS. Hence, setting the width & height here itself
-%canvas#grading-canvas{ :width => 600, :height => 800 }
+#grading-console
+  = render :partial => 'toolbox/colour_picker'
+  -# Can't style the <canvas> using CSS. Hence, setting the width & height here itself
+  %canvas#grading-canvas{ :width => 600, :height => 800 }

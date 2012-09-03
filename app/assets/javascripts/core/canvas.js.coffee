@@ -7,10 +7,21 @@ window.canvas = {
   xoff: 0,
   yoff: 0,
   last:0, # insert before updating index 
+  colour : {
+    red : "#ff0000",
+    orange : "#ffa500",
+    green : "#168816",
+    white : "#ffffff",
+    pink : "#e3105a",
+    last : null
+  }
 
   initialize: (id) ->
     canvas.object = if typeof id is 'string' then $(id) else id
     canvas.ctx = canvas.object[0].getContext('2d')
+    canvas.ctx.lineCap = "round"
+    canvas.ctx.lineJoin = "round"
+    canvas.ctx.lineWidth = 4
     offset = canvas.object.offset()
     canvas.xoff = offset.left
     canvas.yoff = offset.top
@@ -30,11 +41,99 @@ window.canvas = {
 
     image.onload = () ->
       ctx.drawImage(image,15,0)
-      ctx.strokeStyle="#fd9105"
-      ctx.lineJoin="round"
 
     image.src = "#{gutenberg.server}/locker/#{src}"
     return true
+
+  underline : (draw = true) ->
+    last = canvas.last
+    from = canvas.clicks[last-2]
+    to = canvas.clicks[last-1]
+    ctx = canvas.ctx
+
+    ctx.strokeStyle = if draw is true then canvas.colour.last else canvas.colour.white
+    ctx.beginPath()
+    ctx.moveTo from[0], from[1]
+    ctx.lineTo to[0], to[1]
+    ctx.stroke()
+    return true
+
+  record: (event) ->
+    x = event.pageX - canvas.xoff
+    y = event.pageY- canvas.yoff
+
+    return if x < 0 || y < 0 # click not inside canvas
+    # alert "(#{event.pageX}, #{canvas.xoff}) --> #{x} ---> #{y}"
+
+    last = canvas.last
+    canvas.clicks[last] = [x,y]
+    canvas.last += 1
+
+    if (last % 2) is 1
+      canvas.underline()
+    return true
+    
+  clear: () ->
+    # The better way to clear a JS array is to set its length to 0
+    canvas.clicks.length = 0 if canvas.clicks?
+    canvas.last = 0
+
+  undo: () ->
+    if canvas.last % 2 is 1
+      canvas.clicks.pop()
+      canvas.last -= 1
+    else
+      canvas.underline false
+      canvas.last -= 2
+      ###
+      last = canvas.last
+      rect = canvas.calcRectangle canvas.clicks[last-1], canvas.clicks[last-2]
+      canvas.last -= 2
+
+      # We choose in 'invert' of the colour we drew the original line in
+      # It is the colour that when overlaid would produce white
+      canvas.ctx.strokeStyle = "#026efa"
+      canvas.ctx.globalCompositeOperation = "lighter"
+      canvas.ctx.strokeRect rect.x, rect.y, rect.width, rect.height
+
+      # Now, revert back to original stroke style
+      canvas.ctx.strokeStyle = "#fd9105"
+      canvas.ctx.globalCompositeOperation = "source-over"
+      ###
+    return true
+  
+  decompile: () ->
+    ###
+      Returns the list of points clicked on the canvas in the form: 
+        a_b_c_d_e_f_g_h     ----> '_' is a separator
+      It is understood that (a,b) and (c,d) are corners of one rectangle
+      - as are (e,f) and (g,h). in the rails code, one always picks 
+      pairs of points 
+    ###
+    ret = ""
+    for pt in canvas.clicks
+      ret += "_#{pt[0]}_#{pt[1]}" # pt[0] = x, pt[1] = y
+    return ret
+
+###
+  calcRectangle: (first, second) -> # points are of the form [x,y]
+    rectangle = { x:null, y:null, width:null, height:null }
+
+    if first[0] > second[0] # comparing x-coordinates
+      rectangle.x = second[0]
+      rectangle.width = first[0]-second[0]
+    else
+      rectangle.x = first[0]
+      rectangle.width = second[0] - first[0]
+
+    if first[1] > second[1] # comparing y-coordinates
+      rectangle.y = second[1]
+      rectangle.height = first[1]-second[1]
+    else
+      rectangle.y = first[1]
+      rectangle.height = second[1] - first[1]
+
+    return rectangle
 
   # n: 0-indexed
   loadNth: (n, list = '#pending-scans') ->
@@ -54,12 +153,6 @@ window.canvas = {
       ctx.lineJoin="round"
     image.src = "#{gutenberg.server}/locker/#{src}"
 
-    ###
-      If the grading-panel is in the side panel, then: 
-        1. display the appropriate # of grd-sliders (max 4)
-        2. change the 'name' attribute of the (hidden) input[type="number"]
-           field that is tied to the slider
-    ###
     if $('#side-panel').find('#grading-panel').length isnt 0
       responses = scanDiv.children('div[response_id]')
       nResponses = responses.length # should be <= 4
@@ -81,14 +174,6 @@ window.canvas = {
         c.appendTo gradeControls
         #c.children('input[type="number"]:first').attr 'name', "grade[#{response_id}]"
 
-        ###
-          Two things need to be done now:
-            1. Bind the radio-buttons to <label> so that buttonset() can work properly
-            2. For each graded response on the scanned page, set the *same*
-               'name' attribute on each of the grade radio-buttons. The value
-               submitted has already been defined in the toolbox
-        ###
-
         for radio,index in c.children 'input[type="radio"]'
           $(radio).attr 'name', "grade[#{response_id}]"
           label = $(radio).next 'label'
@@ -97,84 +182,6 @@ window.canvas = {
           label.attr 'for', "#{v}"
     return true
 
-  record: (event) ->
-    x = event.pageX - canvas.xoff
-    y = event.pageY- canvas.yoff
-
-    return if x < 0 || y < 0 # click not inside canvas
-    # alert "(#{event.pageX}, #{canvas.xoff}) --> #{x} ---> #{y}"
-
-    last = canvas.last
-    canvas.clicks[last] = [x,y]
-    canvas.last += 1
-
-    if (last % 2) is 1
-      first = canvas.clicks[last-1] #first click
-      second = canvas.clicks[last] # second click
-
-      rect = canvas.calcRectangle first, second
-      ctx = canvas.object[0].getContext('2d')
-      ctx.strokeRect rect.x, rect.y, rect.width, rect.height
-    return true
-    
-  clear: () ->
-    # The better way to clear a JS array is to set its length to 0
-    canvas.clicks.length = 0 if canvas.clicks?
-    canvas.last = 0
-
-  undo: () ->
-    if canvas.last % 2 is 1
-      canvas.clicks.pop()
-      canvas.last -= 1
-    else
-      last = canvas.last
-      rect = canvas.calcRectangle canvas.clicks[last-1], canvas.clicks[last-2]
-      canvas.last -= 2
-
-      # We choose in 'invert' of the colour we drew the original line in
-      # It is the colour that when overlaid would produce white
-      canvas.ctx.strokeStyle = "#026efa"
-      canvas.ctx.globalCompositeOperation = "lighter"
-      canvas.ctx.strokeRect rect.x, rect.y, rect.width, rect.height
-
-      # Now, revert back to original stroke style
-      canvas.ctx.strokeStyle = "#fd9105"
-      canvas.ctx.globalCompositeOperation = "source-over"
-    return true
-  
-  calcRectangle: (first, second) -> # points are of the form [x,y]
-    rectangle = { x:null, y:null, width:null, height:null }
-
-    if first[0] > second[0] # comparing x-coordinates
-      rectangle.x = second[0]
-      rectangle.width = first[0]-second[0]
-    else
-      rectangle.x = first[0]
-      rectangle.width = second[0] - first[0]
-
-    if first[1] > second[1] # comparing y-coordinates
-      rectangle.y = second[1]
-      rectangle.height = first[1]-second[1]
-    else
-      rectangle.y = first[1]
-      rectangle.height = second[1] - first[1]
-
-    return rectangle
-
-  decompile: () ->
-    ###
-      Returns the list of points clicked on the canvas in the form: 
-        a_b_c_d_e_f_g_h     ----> '_' is a separator
-      It is understood that (a,b) and (c,d) are corners of one rectangle
-      - as are (e,f) and (g,h). in the rails code, one always picks 
-      pairs of points 
-    ###
-    ret = ""
-    for pt in canvas.clicks
-      ret += "_#{pt[0]}_#{pt[1]}" # pt[0] = x, pt[1] = y
-    return ret
-
-###
   jump: (fwd = true, list = '#list-pending') ->
     list = if typeof list is 'string' then $(list) else list
     nScans = parseInt(list.attr 'length')

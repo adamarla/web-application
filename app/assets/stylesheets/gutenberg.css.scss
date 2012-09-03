@@ -9,6 +9,7 @@ $blue:#00007f ;
 $lightblue: lighten($blue, 5%) ;
 $gradians-blue: #6ca7ab ;
 
+$red: #ff0000 ;
 $orange:#ffa500 ;
 $green:#168816 ;
 $panel-colour: lighten(black, 17%) ;
@@ -1422,4 +1423,37 @@ li {
   } 
 } 
 
+.notitle .ui-dialog-titlebar { 
+  display: none ;
+} 
+
+#colour-picker { 
+  background-color: $panel-colour ;
+  border-radius: 10px ;
+  width: 90px ;
+  padding: 5px ; 
+  border: 2px solid $lightgray ;
+  min-height: 17px ;
+  position: fixed ;
+  margin-left: 20%  ;
+
+  > div {
+    padding: 2px ;
+    margin-left: 8px ; 
+    min-height: 15px ; 
+    width: 15px ;
+    border-radius: 4px ;
+    > div[colour] { 
+      width: 11px ;
+      height: 11px ;
+      border-radius: 10px ;
+      margin: 2px ;
+      &[colour="pink"] { background-color: $pink ; } 
+      &[colour="orange"] { background-color: $orange ; }
+      &[colour="green"] { background-color: $green ; }
+      cursor: pointer ;
+    } 
+    &:hover, &.selected { border: 1px solid white ; } 
+  }
+} 
 

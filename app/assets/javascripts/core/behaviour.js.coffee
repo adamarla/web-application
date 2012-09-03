@@ -400,3 +400,14 @@ jQuery ->
     $.get "grade/breakup/for?id=#{id}"
     return true
 
+  ###
+    Store the just picked colour for annotation in canvas.ctx object
+  ###
+  $('#colour-picker > div').click (event) ->
+    event.stopPropagation()
+    colour = $(this).children('[colour]').eq(0).attr 'colour'
+    canvas.colour.last = canvas.colour[colour]
+    $(m).removeClass 'selected' for m in $(this).siblings()
+    $(this).addClass 'selected'
+    return true
+
