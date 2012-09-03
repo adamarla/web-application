@@ -4,6 +4,12 @@ window.canvas = {
   object: null,
   ctx: null,
   clicks: null,
+
+  checks : null,
+  crosses : null,
+  exclamations : null,
+  mode : null,
+
   xoff: 0,
   yoff: 0,
   last:0, # insert before updating index 
@@ -21,11 +27,15 @@ window.canvas = {
     canvas.ctx = canvas.object[0].getContext('2d')
     canvas.ctx.lineCap = "round"
     canvas.ctx.lineJoin = "round"
-    canvas.ctx.lineWidth = 4
+    canvas.ctx.lineWidth = 3
     offset = canvas.object.offset()
     canvas.xoff = offset.left
     canvas.yoff = offset.top
+
     canvas.clicks = new Array()
+    canvas.checks = new Array()
+    canvas.crosses = new Array()
+    canvas.exclamations = new Array()
 
     return true
     
@@ -58,24 +68,56 @@ window.canvas = {
     ctx.stroke()
     return true
 
+  drawMark : (mode, draw = true) ->
+    return false unless mode?
+    ctx = canvas.ctx
+
+    ctx.strokeStyle = if draw is true then canvas.colour.last else canvas.colour.white
+    switch mode
+      when 'checks' then pts = canvas.checks.slice -8
+      when 'crosses' then pts = canvas.crosses.slice -8
+      when 'exclamations' then pts = canvas.exclamations.slice -8
+
+    for j in [0..1]
+      start = 4*j
+      ctx.beginPath()
+      ctx.moveTo pts[start], pts[start + 1]
+      ctx.lineTo pts[start + 2], pts[start + 3]
+      ctx.stroke()
+    return true
+
+
   record: (event) ->
+    return false unless canvas.mode?
     x = event.pageX - canvas.xoff
     y = event.pageY- canvas.yoff
 
     return if x < 0 || y < 0 # click not inside canvas
     # alert "(#{event.pageX}, #{canvas.xoff}) --> #{x} ---> #{y}"
 
+    switch canvas.mode
+      when 'checks'
+        canvas.checks.push x-3,y-4,x,y,x,y,x+5,y-12 # pythagoras triplets
+      # when 'crosses'
+      # when 'exclamations'
+    canvas.drawMark 'checks'
+    return true
+
+    ###
     last = canvas.last
     canvas.clicks[last] = [x,y]
     canvas.last += 1
 
     if (last % 2) is 1
       canvas.underline()
-    return true
+    ###
     
   clear: () ->
     # The better way to clear a JS array is to set its length to 0
     canvas.clicks.length = 0 if canvas.clicks?
+    canvas.checks.length = 0 if canvas.checks?
+    canvas.crosses.length = 0 if canvas.crosses?
+    canvas.exclamations.length = 0 if canvas.exclamations?
     canvas.last = 0
 
   undo: () ->

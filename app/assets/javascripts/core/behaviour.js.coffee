@@ -407,6 +407,7 @@ jQuery ->
     event.stopPropagation()
     colour = $(this).children('[colour]').eq(0).attr 'colour'
     canvas.colour.last = canvas.colour[colour]
+    canvas.mode = 'checks'
     $(m).removeClass 'selected' for m in $(this).siblings()
     $(this).addClass 'selected'
     return true
