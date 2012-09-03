@@ -60,7 +60,7 @@ class Suggestion < ActiveRecord::Base
   end
 
   def image
-    return "0-#{self.signature}-#{self.teacher_id}-1"
+    return "0-#{self.teacher_id}/#{self.signature}"
   end
 
 end # of class
