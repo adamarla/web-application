@@ -104,10 +104,10 @@ class Examiner < ActiveRecord::Base
     # Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#.jpg
     unless manifest[:image].nil?
       manifest[:image].each_with_index do |entry, index|
-        file = entry[:id]
-        next if file == "SAVON_BUG_SKIP"
-        image = file.split('.').first # get rid of the jpg extension 
-        quiz, testpaper, student, page = image.split('-').map(&:to_i)
+        id = entry[:id]
+        next if id == "SAVON_BUG_SKIP"
+        file = entry[:value]
+        quiz, testpaper, student, page = id.split('-').map(&:to_i)
 
         unless quiz == 0 # => standard response scan  
           # There can be > 1 question on a page and hence > 1 GradedResponses that
@@ -115,7 +115,7 @@ class Examiner < ActiveRecord::Base
           db_records = GradedResponse.in_quiz(quiz).of_student(student).on_page(page)
           unless db_records.empty?
             db_records.each do |x|
-              x.update_attribute :scan, image
+              x.update_attribute :scan, file
             end
           else
             name = Student.find(student).name

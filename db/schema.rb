@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120831220106) do
+ActiveRecord::Schema.define(:version => 20120902132056) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(:version => 20120831220106) do
     t.string   "name"
     t.integer  "klass"
     t.integer  "subject_id"
-    t.integer  "atm_key"
+    t.string   "atm_key"
     t.integer  "total"
   end
 

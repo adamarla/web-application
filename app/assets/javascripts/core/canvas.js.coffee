@@ -26,7 +26,7 @@ window.canvas = {
     canvas.clear() if canvas.clicks?
     ctx = canvas.ctx
     image = new Image()
-    src = scan.attr 'name'
+    src  = scan.attr 'name'
 
     image.onload = () ->
       ctx.drawImage(image,15,0)
@@ -47,6 +47,7 @@ window.canvas = {
     image = new Image()
     scanDiv = list.children('div[scan]').eq(n)
     src = scanDiv.attr 'scan'
+
     image.onload = () ->
       ctx.drawImage(image,15,0)
       ctx.strokeStyle="#fd9105"

@@ -10,7 +10,7 @@
 #  name          :string(255)
 #  klass         :integer
 #  subject_id    :integer
-#  atm_key       :integer
+#  atm_key       :string(255)
 #  total         :integer
 #
 
@@ -209,7 +209,7 @@ class Quiz < ActiveRecord::Base
 
   def self.extract_atm_key(manifest_root)
     # manifest_root = http://< ... >:8080/atm/<atm-key>
-    return manifest_root.split('/').last.to_i
+    return manifest_root.split('/').last
   end
 
   # Returns the list of micro-topics touched upon in this Quiz - as an array of indices
