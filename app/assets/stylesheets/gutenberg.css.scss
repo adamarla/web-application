@@ -1448,9 +1448,9 @@ li {
       height: 11px ;
       border-radius: 10px ;
       margin: 2px ;
-      &[colour="pink"] { background-color: $pink ; } 
-      &[colour="orange"] { background-color: $orange ; }
-      &[colour="green"] { background-color: $green ; }
+      &[colour="crosses"] { background-color: #ea5115 ; } 
+      &[colour="exclamations"] { background-color: #f6bd13 ; } 
+      &[colour="checks"] { background-color: #4b9630 ; } 
       cursor: pointer ;
     } 
     &:hover, &.selected { border: 1px solid white ; } 
