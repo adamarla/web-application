@@ -15,6 +15,6 @@ node :completed do
 end
 
 node :preview do
-  { :id => @all.map(&:id), :scans => @all.map{ |m| [m.image]} }
+  { :id => @all.map{ |m| "0-#{m.teacher_id}" }, :scans => @all.map{ |m| [m.signature]} }
 end
 
