@@ -233,7 +233,6 @@ class Quiz < ActiveRecord::Base
 
     @scans = @pending.map(&:scan).uniq.sort
     @students = Student.where( :id => @pending.map(&:student_id).uniq )
-
     return @students, @pending, @scans
   end
 

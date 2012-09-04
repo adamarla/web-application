@@ -33,7 +33,9 @@ class QuizzesController < ApplicationController
   end
 
   def pending_scans
-    quiz = Quiz.find params[:id]
+    @quiz_id = params[:id] # need to pass onto RABL
+    quiz = Quiz.find @quiz_id 
+
     examiner = Examiner.find params[:examiner_id]
     page = params[:page].nil? ? -1 : params[:page].to_i
     head :bad_request if (quiz.nil? || examiner.nil? || page < 0) 

@@ -50,7 +50,7 @@ jQuery ->
     else if url.match(/quiz\/pending_scans/)
       here = $('#list-pending')
       here.empty()
-      admin.build.list json.students, here, []
+      admin.build.list json.students, here, ['within']
       admin.build.list json.scans, here, [], '.student'
       admin.build.list json.responses, here, ['mcq', 'label'], '.scan'
       abacus.initialize()
