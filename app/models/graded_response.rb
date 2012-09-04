@@ -100,6 +100,31 @@ class GradedResponse < ActiveRecord::Base
     where(:grade_id => Grade.where(:calibration_id => id).map(&:id))
   end
 
+  def self.annotations( clicks )
+    # This method creates the array of hashes web-service expects from 
+    # what canvas.decompile() returns - via params[:clicks]
+    # 'clicks' is of the form _R_ .... _T_ .... _G_ ...., where R=red, T=turmeric, G=green
+    tokens = clicks.split('R').last.split('T')
+    tokens = tokens.concat tokens.pop.split('G')
+    ret = []
+    x_correction = 15 # see canvas.drawImage() call in canvas.js
+
+    tokens.each_with_index do |t,j|
+      c = t.split('_').select{ |m| !m.blank? }.map(&:to_i) # number of elements in 'c' guaranteed to be = 8N
+      index = 0 
+      c.each_slice(2) do |pt|
+        if (index % 2 == 1) 
+          ret.push({ :x => pt.first - x_correction, :y => pt.last, :code => j }) 
+        else 
+          ret.push({ :x => pt.first - x_correction, :y => pt.last })
+        end # of 'if'
+        index += 1
+      end # each_slice
+    end # tokens.each
+
+    return ret
+  end # of method
+
   def reset
     # For times when a graded response has to be re-graded. Set the grade_id 
     # for the response to nil - as also the marks & graded? field of the 

@@ -115,11 +115,11 @@ window.canvas = {
       pairs of points 
     ###
     ret = ""
-    for type in ['checks', 'crosses', 'exclamations']
+    for type in ['crosses', 'exclamations', 'checks']
       switch type
-        when 'checks' then ret += "_G" # ...34_G
-        when 'crosses' then ret += "_R" # ...34_G
-        when 'exclamations' then ret += "_T" # ...34_G
+        when 'crosses' then ret += "_R" # _R_ ...
+        when 'exclamations' then ret += "_T" # _R_ ... _T_....
+        when 'checks' then ret += "_G" # _R_.... _T_ .... _G_.....
       for p in canvas[type]
         ret += "_#{p}"
     return ret
