@@ -120,7 +120,7 @@ jQuery ->
             when 'locker'
               thumb = "#{base}/#{root}/#{page}"
               full = "#{base}/#{root}/#{page}"
-              alt = if obviousAlt then "#{page}" else "pg-#{j+1}"
+              alt = if obviousAlt then "#{root}/#{page}" else "pg-#{j+1}"
             else break
 
           img = $("<li hop=#{hop} alt=#{alt} m=#{j}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")

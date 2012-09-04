@@ -70,7 +70,7 @@ jQuery ->
       # Those whose TeX has been written 
       coreUtil.interface.displayJson json.completed, tab_3, 'suggestion', {radio:false}, true, 'receipt'
       # Common preview
-      preview.loadJson json, 'locker'
+      preview.loadJson json, 'locker', true
     else if url.match(/question\?/) # rewind flipchart on successful question tagging
       child = $(this).children().eq(0)
       return if child.attr('id') isnt 'workbenches-summary'
