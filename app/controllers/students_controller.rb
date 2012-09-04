@@ -45,7 +45,8 @@ class StudentsController < ApplicationController
     } } }
 
     @scans = answers.map(&:scan).uniq.sort
-    respond_with @info, @scans
+    @within = "#{quiz_id}-#{testpaper.id}"
+    respond_with @info, @scans, @within
   end
 
 end

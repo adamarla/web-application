@@ -1,6 +1,6 @@
 
 object false => :preview 
-  node(:id) { |m| 420 }
+  node(:id) { |m| @within }
   code :scans do
     @scans
   end

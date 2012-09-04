@@ -45,10 +45,16 @@ window.canvas = {
     image = new Image()
     src  = scan.attr 'name'
 
+    # Scans for a testpaper are stored together within a folder in locker/ 
+    # And the locker is named "quizId-testpaperId" - which, fortunately for us, 
+    # are also the first two elements of the QR code
+    tokens = src.split '-'
+    folder = "#{tokens[0]}-#{tokens[1]}"
+
     image.onload = () ->
       ctx.drawImage(image,15,0)
 
-    image.src = "#{gutenberg.server}/locker/#{src}"
+    image.src = "#{gutenberg.server}/locker/#{folder}/#{src}"
     return true
 
   drawMark : (draw = true) ->

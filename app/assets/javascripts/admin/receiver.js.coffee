@@ -45,7 +45,6 @@ jQuery ->
         id = $(m).attr 'marker'
         downloadBtn = $(m).children('input[type="button"]').eq(0)
         downloadBtn.replaceWith "<a href=#{gutenberg.server}/mint/#{id}/answer-key/downloads/answer-key.pdf>answer-key</a>"
-      canvas.loadNth 0
     else if url.match(/quiz\/pending_pages/)
       coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
     else if url.match(/quiz\/pending_scans/)
@@ -71,7 +70,7 @@ jQuery ->
       # Those whose TeX has been written 
       coreUtil.interface.displayJson json.completed, tab_3, 'suggestion', {radio:false}, true, 'receipt'
       # Common preview
-      preview.loadJson json, 'locker', true
+      preview.loadJson json, 'vault'
     else if url.match(/question\?/) # rewind flipchart on successful question tagging
       child = $(this).children().eq(0)
       return if child.attr('id') isnt 'workbenches-summary'

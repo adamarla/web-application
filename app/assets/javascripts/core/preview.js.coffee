@@ -118,8 +118,8 @@ jQuery ->
               full = "#{base}/#{page}.jpg"
               alt = if isMcq then "M#{counter++}" else "G#{counter++}"
             when 'locker'
-              thumb = "#{base}/#{page}"
-              full = "#{base}/#{page}"
+              thumb = "#{base}/#{root}/#{page}"
+              full = "#{base}/#{root}/#{page}"
               alt = if obviousAlt then "#{page}" else "pg-#{j+1}"
             else break
 
