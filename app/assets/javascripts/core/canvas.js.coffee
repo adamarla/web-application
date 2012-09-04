@@ -56,7 +56,6 @@ window.canvas = {
     ctx = canvas.ctx
 
     ctx.strokeStyle = if draw is true then canvas.colour.last else canvas.colour.white
-    ctx.lineWidth = if canvas.mode is 'exclamations' then 2 else 3
 
     switch canvas.mode
       when 'checks'
@@ -68,12 +67,11 @@ window.canvas = {
 
     for j in [0..1]
       start = 4*j
-      if canvas.mode isnt 'exclamations'
-        ctx.beginPath()
-        ctx.moveTo pts[start], pts[start + 1]
-        ctx.lineTo pts[start + 2], pts[start + 3]
-      else
-        ctx.rect pts[start], pts[start+1], pts[start+2], pts[start+3]
+      ctx.beginPath()
+      ctx.moveTo pts[start], pts[start + 1]
+      ctx.lineTo pts[start + 2], pts[start + 3]
+      # else
+      #  ctx.rect pts[start], pts[start+1], pts[start+2], pts[start+3]
       ctx.stroke()
     return true
 
@@ -92,7 +90,7 @@ window.canvas = {
       when 'crosses'
         canvas.crosses.push x-5,y-5,x+5,y+5,x-5,y+5,x+5,y-5
       when 'exclamations'
-        canvas.exclamations.push x-3,y-13,2,13, x-3,y+5,2,2 # we draw 2 rectangles
+        canvas.exclamations.push x-3,y-13,x-3,y, x-3,y+5,x-3,y+7
 
     canvas.drawMark()
     return true
