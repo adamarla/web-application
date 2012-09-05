@@ -81,26 +81,6 @@ class TeachersController < ApplicationController
     head status 
   end 
 
-  def update_grades
-    teacher = Teacher.find params[:id]
-    allotments = params[:allotment].select{ |k,v| !v.empty? }.map{ |k,v| {k.to_i => v.to_f} }
-
-    allotments.each do |a|
-      cid = a.keys.first
-      assigned = ((a.values.first/4)*100).round(2) # percentage to 2-decimal places
-      next if assigned < 0 || assigned > 100
-
-      grade = Grade.where(:teacher_id => params[:id], :calibration_id => cid)
-      next if grade.empty? 
-      grade.first.update_attribute :allotment, assigned
-    end 
-
-    render :json => { :status => :ok }, :status => :ok
-  end 
-
-  def load_grades
-    @grades = Grade.where(:teacher_id => params[:id])
-  end
 
   def list 
     if current_account
@@ -205,14 +185,6 @@ class TeachersController < ApplicationController
     else
       head :bad_request
     end
-  end
-
-  def grade_details
-    @c = Calibration.where(:id => params[:id]).first
-  end
-
-  def calibration_preview
-    @calibrations = Calibration.enabled.order('mcq_id DESC').order(:allotment)
   end
 
 end # of class

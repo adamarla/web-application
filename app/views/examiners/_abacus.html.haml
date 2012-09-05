@@ -6,7 +6,7 @@
     %div.left
       #current-question
       #current-student
-  = semantic_form_for :grade, :url => assign_grade_path, :remote => true do |f|
+  = semantic_form_for :grade, :url => calibrate_path, :remote => true do |f|
     #abacus.as-accordion
       .scroll-heading{ :marker => 0 }= "are the key insights evident?"
       #insight.scroll-content.measure

@@ -1,22 +1,6 @@
-class GradesController < ApplicationController
+class CalibrationsController < ApplicationController
   respond_to :json
   before_filter :authenticate_account!
-
-  def update
-    grade = Grade.where(:yardstick_id => params[:id], :teacher_id => params[:teacher_id]).first
-    head :bad_request if grade.nil?
-    if grade.update_attribute :allotment, params[:grade][:allotment]
-      render :json => { :status => "Updated!" }, :status => :ok
-    else
-      render :json => { :status => "Oops" }, :status => :bad_request
-    end
-  end
-
-  def explain
-    response = GradedResponse.where(:id => params[:id]).first 
-    head :bad_request if (response.nil? || response.grade_id.nil?)
-    @c = response.grade.calibration
-  end
 
   def assign
 =begin
@@ -39,5 +23,11 @@ class GradesController < ApplicationController
     Delayed::Job.enqueue AnnotateScan.new(scan, coordinates), 
       :priority => 10, :run_at => Time.zone.now unless coordinates.empty?
   end 
+
+  def explain
+    response = GradedResponse.where(:id => params[:id]).first 
+    head :bad_request if (response.nil? || response.calibration_id.nil?)
+    @c = response.calibration
+  end
   
 end

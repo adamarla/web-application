@@ -4,7 +4,7 @@
 #
 #  id             :integer         not null, primary key
 #  student_id     :integer
-#  grade_id       :integer
+#  calibration_id :integer
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
@@ -22,7 +22,7 @@
 class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
-  belongs_to :grade
+  belongs_to :calibration
   belongs_to :q_selection
   belongs_to :testpaper
   belongs_to :subpart
@@ -64,11 +64,11 @@ class GradedResponse < ActiveRecord::Base
   end
   
   def self.graded
-    where('grade_id IS NOT NULL')
+    where('calibration_id IS NOT NULL')
   end 
 
   def self.ungraded
-    where(:grade_id => nil)
+    where(:calibration_id => nil)
   end
 
   def self.with_scan
@@ -97,7 +97,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def self.calibrated_to(id)
-    where(:grade_id => Grade.where(:calibration_id => id).map(&:id))
+    where(:calibration_id => id)
   end
 
   def self.annotations( clicks )
@@ -129,18 +129,19 @@ class GradedResponse < ActiveRecord::Base
     # For times when a graded response has to be re-graded. Set the grade_id 
     # for the response to nil - as also the marks & graded? field of the 
     # corresponding answer sheet 
-    self.update_attribute :grade_id, nil
+    self.update_attribute :calibration_id, nil
     a = AnswerSheet.where(:testpaper_id => self.testpaper_id, :student_id => self.student_id).first
     a.update_attributes :marks => nil, :graded => false unless a.nil?
   end 
 
   def calibrate_to(calibration_id)
-    assigner = self.teacher?
-    grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
-    marks = (self.subpart.marks * (grade.allotment/100.0)).round(2)
+    # assigner = self.teacher?
+    # grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
+    c = Calibration.where(:id => calibration_id).first
+    marks = (self.subpart.marks * (c.allotment/100.0)).round(2)
 
     # Notify the teacher as soon as the last response has been graded
-    if self.update_attributes(:grade_id => grade.id, :marks => marks)
+    if self.update_attributes(:calibration_id => c.id, :marks => marks)
       remaining = GradedResponse.in_testpaper(self.testpaper_id).with_scan.ungraded.count
       if remaining == 0
         t = Testpaper.where(:id => self.testpaper_id).first
@@ -175,7 +176,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def colour? 
-    return (self.grade_id.nil? ? :transparent : self.grade.colour?) 
+    return (self.calibration_id.nil? ? :transparent : self.calibration.colour?)
   end
 
   def siblings?

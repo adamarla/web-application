@@ -35,9 +35,9 @@ class Teacher < ActiveRecord::Base
   has_one :trial_account, :dependent => :destroy
 
   has_many :quizzes, :dependent => :destroy 
-  has_many :grades, :dependent => :destroy
 
-  has_many :yardsticks, :through => :grades
+#  has_many :grades, :dependent => :destroy
+#  has_many :yardsticks, :through => :grades
 
   has_many :specializations, :dependent => :destroy
   has_many :subjects, :through => :specializations
@@ -47,7 +47,7 @@ class Teacher < ActiveRecord::Base
 
   validates :first_name, :presence => true  
 
-  after_create :build_grade_table, :generate_suggestion_form
+  after_create :generate_suggestion_form
   after_save   :reset_login_info
 
 =begin
@@ -256,11 +256,5 @@ class Teacher < ActiveRecord::Base
       # by placing it in the queue
       Delayed::Job.enqueue BuildSuggestionForm.new(self), :priority => 5, :run_at => Time.zone.now 
     end
-
-    def build_grade_table
-      Calibration.select('id, allotment').each do |m|
-        self.grades.create :allotment => m.allotment, :calibration_id => m.id
-      end 
-    end 
 
 end # of class 

@@ -4,7 +4,7 @@
 #
 #  id             :integer         not null, primary key
 #  student_id     :integer
-#  grade_id       :integer
+#  calibration_id :integer
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer

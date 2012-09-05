@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120904152158) do
+ActiveRecord::Schema.define(:version => 20120905071229) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20120904152158) do
 
   create_table "graded_responses", :force => true do |t|
     t.integer  "student_id"
-    t.integer  "grade_id"
+    t.integer  "calibration_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"

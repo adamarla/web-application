@@ -168,7 +168,7 @@ jQuery ->
       $.get "yardstick/logical_next#{url}"
     else
       form = abacus.obj.closest('form')
-      form.attr 'action', "/assign/grade#{url}&clicks=#{canvas.decompile()}"
+      form.attr 'action', "/calibrate#{url}&clicks=#{canvas.decompile()}"
       form.trigger 'submit'
       abacus.next.response() # Move to the next response
       abacus.update.ticker()

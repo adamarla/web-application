@@ -28,7 +28,7 @@ Webapp::Application.routes.draw do
   match 'boards/summary' => "boards#summary", :via => :get
 
   # Common 
-  match 'grade/breakup/for' => 'grades#explain', :via => :get
+  match 'comments/for' => 'calibrations#explain', :via => :get
 
   # Course
   resource :course, :only => [:show, :create, :update]
@@ -47,9 +47,8 @@ Webapp::Application.routes.draw do
   match 'examiners/list' => 'examiners#list', :via => :get
   match 'examiner/suggestions/:id' => 'examiners#suggestions', :via => :get
 
-  # Grade
-  resource :grade, :only => [:update]
-  match 'assign/grade' => 'grades#assign', :via => [:put, :post]
+  # Calibrations
+  match 'calibrate' => 'calibrations#assign', :via => [:put, :post]
 
   # School 
   resource :school, :only => [:show, :create, :update]
@@ -119,11 +118,6 @@ Webapp::Application.routes.draw do
   match 'teacher/students' => 'teachers#students', :via => :get
   match 'teacher/students_with_names' => 'teachers#students_with_names', :via => :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', :via => :get
-
-  match 'grade/details' => 'teachers#grade_details', :via => :get
-  match 'update/grades' => 'teachers#update_grades', :via => [:put, :post]
-  match 'load/grades' => 'teachers#load_grades', :via => :get
-  match 'preview/calibrations' => 'teachers#calibration_preview', :via => :get
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get

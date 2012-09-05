@@ -397,7 +397,7 @@ jQuery ->
     id = $(this).attr 'marker'
     $(m).removeClass 'selected' for m in $(this).siblings()
     $(this).addClass 'selected'
-    $.get "grade/breakup/for?id=#{id}"
+    $.get "comments/for?id=#{id}"
     return true
 
   ###

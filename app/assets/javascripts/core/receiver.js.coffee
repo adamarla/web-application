@@ -10,7 +10,7 @@ jQuery ->
     matched = true
     json = $.parseJSON xhr.responseText
 
-    if url.match(/grade\/breakup\/for/) or url.match(/grade\/details/)
+    if url.match(/comments\/for/)
       here = $('#side-panel').children().eq(0).find('.calibrations').eq(0)
       coreUtil.interface.grades.initializePanel here
       coreUtil.interface.grades.summarize json, here
