@@ -90,6 +90,7 @@ window.canvas = {
 
     return if x < 0 || y < 0 # click not inside canvas
     # alert "(#{event.pageX}, #{canvas.xoff}) --> #{x} ---> #{y}"
+    alert "#{x} --> #{y} --> #{canvas.mode}"
 
     switch canvas.mode
       when 'checks'
@@ -125,8 +126,8 @@ window.canvas = {
     for type in ['crosses', 'checks', 'exclamations']
       switch type
         when 'crosses' then ret += "_R" # _R_ ...
-        when 'checks' then ret += "_T" # _R_ ... _G_....
-        when 'exclamations' then ret += "_G" # _R_.... _G_ .... _T_.....
+        when 'checks' then ret += "_G" # _R_ ... _G_....
+        when 'exclamations' then ret += "_T" # _R_.... _G_ .... _T_.....
       for p in canvas[type]
         ret += "_#{p}"
     return ret
