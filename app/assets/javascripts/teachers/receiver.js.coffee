@@ -81,6 +81,7 @@ jQuery ->
       here = $('#topic-selection-list > form:first > .form-fields')
       scroll.loadJson json.topics, 'topic', here
     else if url.match(/course\/questions/)
+      variables.testpaper.reset()
       flipchart.next '#build-quiz'
       here = $('#question-options > form:first > .form-fields')
       scroll.initialize json.topics, 'topic', here
@@ -88,14 +89,15 @@ jQuery ->
       scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check | scroll.having.button
       preview.loadJson json, 'vault'
 
-      # Set the # of likeys on each question 
+      # Set the # of likeys and span on each question 
       for q in json.questions
         m = q.question
-        nLiked = m.liked
-        continue if nLiked is 0
         id = m.id
         k = here.find ".swiss-knife[marker=#{id}]:first"
         continue if not k?
+        k.attr 'span', m.span
+        nLiked = m.liked
+        continue if nLiked is 0
         b = k.children 'input[type="button"]'
         b.val "#{nLiked}"
 

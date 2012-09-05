@@ -9,7 +9,8 @@ node :questions do
   @questions.map{ |m| { :question => {:name => m.uid, :id => m.id, 
                         :parent => m.topic_id, 
                         :marks => "#{m.marks?} pts", 
-                        :liked => Favourite.where(:question_id => m.id).count } } }
+                        :liked => Favourite.where(:question_id => m.id).count,
+                        :span => m.span? } } }
 end
 
 node :favourites do 

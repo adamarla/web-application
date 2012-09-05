@@ -413,6 +413,24 @@ span.unhappyMessage {
   }
 }
 
+.medium-ticker { 
+  color: $orange ;
+  font: { 
+    size: 15pt ;
+  } 
+} 
+
+.superscript { 
+  height: 13px ;
+  float: right ;
+  color: $gradians-blue ;
+  margin: {
+    left: 2% ;
+    right: 3% ;
+  }
+  font-size: 85% ;
+}
+
 .micro-ticker {
   color: #ffa500 ; 
   font: {
@@ -1130,6 +1148,14 @@ li {
       background: url('liked.png') no-repeat scroll 0% 0% transparent ;
     }
   }
+
+  > #testpaper-span { 
+    color: $orange ;
+    height: 30px ;
+    margin-bottom: 10px ;
+    font-size: 15px ;
+    padding: 4px ;
+  } 
 }
 
 .ui-dialog.alert {
