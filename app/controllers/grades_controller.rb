@@ -35,7 +35,11 @@ class GradesController < ApplicationController
 
     coordinates = GradedResponse.annotations params[:clicks] 
     # Higher priority number => less importance 
-    Delayed::Job.enqueue AnnotateScan.new(response.scan, coordinates), 
+    testpaper_id = response.testpaper_id
+    quiz_id = Testpaper.find_by_id(testpaper_id).quiz.id
+    scan_id = response.scan
+    scanFile = "#{quiz_id}-#{testpaper_id}/#{scan_id}"
+    Delayed::Job.enqueue AnnotateScan.new(scanFile, coordinates), 
       :priority => 10, :run_at => Time.zone.now unless coordinates.empty?
   end 
   
