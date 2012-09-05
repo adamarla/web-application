@@ -103,9 +103,9 @@ class GradedResponse < ActiveRecord::Base
   def self.annotations( clicks )
     # This method creates the array of hashes web-service expects from 
     # what canvas.decompile() returns - via params[:clicks]
-    # 'clicks' is of the form _R_ .... _T_ .... _G_ ...., where R=red, T=turmeric, G=green
-    tokens = clicks.split('R').last.split('T')
-    tokens = tokens.concat tokens.pop.split('G')
+    # 'clicks' is of the form _R_ .... _G_ .... _T_ ...., where R=red, T=turmeric, G=green
+    tokens = clicks.split('R').last.split('G')
+    tokens = tokens.concat tokens.pop.split('T')
     ret = []
     x_correction = 15 # see canvas.drawImage() call in canvas.js
 
