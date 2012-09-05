@@ -89,8 +89,7 @@ window.canvas = {
     y = event.pageY- canvas.yoff
 
     return if x < 0 || y < 0 # click not inside canvas
-    # alert "(#{event.pageX}, #{canvas.xoff}) --> #{x} ---> #{y}"
-    alert "#{x} --> #{y} --> #{canvas.mode}"
+    # alert "#{x} --> #{y} --> #{canvas.mode}"
 
     switch canvas.mode
       when 'checks'
