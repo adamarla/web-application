@@ -1,5 +1,18 @@
 
 jQuery ->
+  window.variables = {
+    testpaper : {
+      span : 0, # the exact running total 
+      spread : 0, # span aprroximated to nearest greatest integer
+      blank : 0, # either 0 or 1, depending on whether spread is odd or even
+      reset : () ->
+        variables.testpaper.span = variables.testpaper.spread = variables.testpaper.blank = 0
+        tickers = $('#testpaper-span').children()
+        tickers.eq(1).text "0"
+        tickers.eq(2).text "0"
+        return true
+    }
+  }
 
   $('#main-links a').click ->
     teacher = $('#control-panel').attr 'marker'
@@ -201,6 +214,18 @@ jQuery ->
         $.get "teacher/unlike_q.json?id=#{id}"
         trigger.attr 'liked', false
         trigger.attr 'title', 'add to favourites list'
+    else if trigger.is 'input[type="checkbox"]'
+      span = $(this).attr 'span'
+      if trigger.prop 'checked'
+        variables.testpaper.span += parseFloat(span)
+      else
+        variables.testpaper.span -= parseFloat(span)
+      variables.testpaper.spread = Math.ceil( variables.testpaper.span )
+      variables.testpaper.blank = if variables.testpaper.spread % 2 is 0 then 0 else 1
+      tickers = $('#testpaper-span').children()
+      tickers.eq(2).text "#{variables.testpaper.spread}"
+      tickers.eq(1).text "+ #{variables.testpaper.blank} blank"
+
     return true
 
   $('#all-my-sektions').on 'click', 'input[type="radio"]', ->
