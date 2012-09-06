@@ -63,6 +63,7 @@ class Testpaper < ActiveRecord::Base
     return mean
   end
 
+=begin
   def retotal
     # This is for those times when a teacher changes her grade allotments and wants
     # a past testpaper to reflect the new allotments. This is not something we encourage. 
@@ -78,6 +79,7 @@ class Testpaper < ActiveRecord::Base
       m.update_attribute :marks, marks
     end
   end
+=end
 
   def takers
     self.students.order(:first_name)
@@ -97,13 +99,7 @@ class Testpaper < ActiveRecord::Base
 
   def rebuild_testpaper_report_pdf
     answer_sheets = AnswerSheet.where(:testpaper_id => self.id).map{ |m|
-      unless m.marks.nil?
-        marks = "#{m.marks}/#{self.quiz.total}"
-      else
-        marks = "n/a"
-      end
-      { :id => m.student_id, :name => m.student.name, 
-        :value => "#{marks}"}
+      { :id => m.student_id, :name => m.student.name, :value => "#{m.marks?}/#{self.quiz.total?}" }
     }
     answer_sheets.push({ :id => "", :name => "", :value => ""}) if answer_sheets.count.odd?
 

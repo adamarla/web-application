@@ -108,7 +108,7 @@ class Student < ActiveRecord::Base
     g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
     return 0 if g.count == 0
 
-    marks = g.map(&:marks).inject(:+).to_f
+    marks = g.map(&:marks?).inject(:+).to_f
     max = 6 * g.count # 6 marks are for the toughest questions 
     score = (marks/max).round(2)
     return score

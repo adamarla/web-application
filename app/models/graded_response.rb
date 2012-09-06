@@ -15,6 +15,7 @@
 #  scan           :string(255)
 #  subpart_id     :integer
 #  page           :integer
+#  marks_teacher  :integer
 #
 
 # Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#
@@ -124,6 +125,10 @@ class GradedResponse < ActiveRecord::Base
 
     return ret
   end # of method
+
+  def marks?
+    return (self.marks_teacher.nil? ? self.marks : self.marks_teacher)
+  end
 
   def reset
     # For times when a graded response has to be re-graded. Set the grade_id 
