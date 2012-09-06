@@ -12,6 +12,7 @@
 #  subject_id    :integer
 #  atm_key       :string(255)
 #  total         :integer
+#  span          :integer
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

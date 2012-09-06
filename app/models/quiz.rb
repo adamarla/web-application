@@ -12,6 +12,7 @@
 #  subject_id    :integer
 #  atm_key       :string(255)
 #  total         :integer
+#  span          :integer
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -99,7 +100,11 @@ class Quiz < ActiveRecord::Base
   end 
 
   def span?
-    return QSelection.where(:quiz_id => self.id).order(:index).last.end_page
+    return self.span unless self.span.nil?
+
+    last = QSelection.where(:quiz_id => self.id).order(:index).last.end_page
+    self.update_attribute :span, last
+    return last
   end
 
   def lay_it_out

@@ -113,13 +113,16 @@ class Teacher < ActiveRecord::Base
 
     unless status == :bad_request
       response = @quiz.compile_tex
-      status = response[:manifest].blank? ? :bad_request : :ok
+      manifest = response[:manifest]
+      status = manifest.blank? ? :bad_request : :ok
+
       if status == :bad_request 
         @quiz.destroy
       else
         # The atm-key is the randomized access point to this quiz in mint/
-        atm_key = Quiz.extract_atm_key response[:manifest][:root]
-        @quiz.update_attribute :atm_key, atm_key
+        atm_key = Quiz.extract_atm_key manifest[:root] 
+        span = manifest[:image].class == Array ? manifest[:image].count : 1
+        @quiz.update_attributes :atm_key => atm_key, :span => span
         response = {:atm_key => atm_key, :name => @quiz.name }
 
         # Increment n_picked for each of the questions picked for this quiz
