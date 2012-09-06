@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906164753) do
+ActiveRecord::Schema.define(:version => 20120906182854) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20120906164753) do
     t.string   "scan"
     t.integer  "subpart_id"
     t.integer  "page"
+    t.integer  "marks_teacher"
   end
 
   create_table "grades", :force => true do |t|

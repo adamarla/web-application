@@ -15,6 +15,7 @@
 #  scan           :string(255)
 #  subpart_id     :integer
 #  page           :integer
+#  marks_teacher  :integer
 #
 
 require 'test_helper'
