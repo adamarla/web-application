@@ -27,3 +27,11 @@ jQuery ->
         $.get "student/responses.json?id=#{marker}&testpaper=#{testpaper}"
 
     return true
+
+  # When a 'constest grade' button is pressed 
+  $('#my-grades').on 'click', 'input[type="button"]', (event) ->
+    event.stopPropagation()
+    $(this).addClass 'clicked'
+    $(this).val 'done'
+    $.get "contest?id=#{$(this).parent().attr 'marker'}"
+    return true

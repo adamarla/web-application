@@ -21,7 +21,8 @@ jQuery ->
         a.attr 'href', "#{gutenberg.server}/atm/#{r.atm}/answer-key/downloads/answer-key.pdf"
     else if url.match(/student\/responses/)
       here = $('#my-grades')
-      coreUtil.interface.displayJson json.preview.questions, here, 'question', {}
+      coreUtil.interface.displayJson json.preview.questions, here, 'question', {button:true}
+      swissKnife.setButtonCaption here, 'contest'
       reportCard.overview json.preview.questions, here, 'question'
       preview.loadJson json, 'locker'
     else

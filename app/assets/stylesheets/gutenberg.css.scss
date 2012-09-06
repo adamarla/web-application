@@ -208,6 +208,21 @@ p > a, div > a {
     font-size: 11px ;
     font-variant: small-caps ;
   } 
+
+  > input[type="button"] { 
+    color: white ; 
+    padding: 2px ;
+    border-radius: 3px ;
+    border: 1px solid $orange ;
+    background: transparent ;
+    min-width: 60px ;
+
+    &.clicked { 
+      border: none ;
+      background-color: $orange ;
+      font-weight: bold ;
+    } 
+  } 
 } 
 
 .measure > .level { 

@@ -23,6 +23,14 @@ class StudentsController < ApplicationController
     @student.save ? respond_with(@student) : head(:bad_request)  
   end 
 
+  def contest
+    s_id = current_account.loggable_id
+    response = GradedResponse.where(:id => params[:id], :student_id => s_id)
+    head :bad_request if response.empty?
+    response.first.update_attribute :contested, true
+    render :json => { :status => :ok }, :status => :ok
+  end
+
   def testpapers
     @student = Student.find params[:id]
     @publishable = Testpaper.where(:id => @student.testpaper_ids).where(:publishable => true)

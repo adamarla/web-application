@@ -39,6 +39,9 @@ Webapp::Application.routes.draw do
   match 'course/questions' => 'courses#questions', :via => [:put, :post]
   match 'course/topics_in' => 'courses#topics_in', :via => :get
 
+  # Calibrations
+  match 'calibrate' => 'calibrations#assign', :via => [:put, :post]
+
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'examiner/pending_quizzes' => 'examiners#pending_quizzes', :via => :get
@@ -47,8 +50,6 @@ Webapp::Application.routes.draw do
   match 'examiners/list' => 'examiners#list', :via => :get
   match 'examiner/suggestions/:id' => 'examiners#suggestions', :via => :get
 
-  # Calibrations
-  match 'calibrate' => 'calibrations#assign', :via => [:put, :post]
 
   # School 
   resource :school, :only => [:show, :create, :update]
@@ -90,6 +91,7 @@ Webapp::Application.routes.draw do
   resource :student, :only => [:create, :update, :show]
   match 'student/responses' => 'students#responses', :via => :get
   match 'student/testpapers' => 'students#testpapers', :via => :get
+  match 'contest' => 'students#contest', :via => :get
 
   # Sektion 
   resource :sektion, :only => [:create, :update]
