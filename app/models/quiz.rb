@@ -98,7 +98,7 @@ class Quiz < ActiveRecord::Base
     Teacher.find self.teacher_id
   end 
 
-  def num_pages
+  def span?
     return QSelection.where(:quiz_id => self.id).order(:index).last.end_page
   end
 

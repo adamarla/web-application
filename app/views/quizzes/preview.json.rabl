@@ -9,4 +9,4 @@
 
 object @quiz => :preview  
   attribute :atm_key => :id
-  node(:scans) { |m| [*1..@quiz.num_pages] }
+  node(:scans) { |m| [*1..@quiz.span?] }
