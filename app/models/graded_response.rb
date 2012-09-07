@@ -102,6 +102,21 @@ class GradedResponse < ActiveRecord::Base
     where(:calibration_id => id)
   end
 
+  def self.disputed
+    # Open disputes
+    graded.where(:disputed => true, :closed => false)
+  end
+
+  def self.disputable
+    # If a graded response has not been disputed X days after it got graded, then it 
+    # should be deemed to have been accepted and should no longer be disputable
+    graded.where(:disputed => false, :closed => false)
+  end
+
+  def self.closed
+    where(:closed => true)
+  end
+
   def self.annotations( clicks )
     # This method creates the array of hashes web-service expects from 
     # what canvas.decompile() returns - via params[:clicks]
