@@ -8,7 +8,6 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
-#  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
 #  marks          :float
 #  testpaper_id   :integer
@@ -16,6 +15,8 @@
 #  subpart_id     :integer
 #  page           :integer
 #  marks_teacher  :integer
+#  disputed       :boolean         default(FALSE)
+#  closed         :boolean         default(FALSE)
 #
 
 require 'test_helper'
