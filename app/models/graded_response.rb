@@ -8,7 +8,7 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
-#  contested      :boolean         default(FALSE)
+#  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
 #  marks          :float
 #  testpaper_id   :integer

@@ -3,7 +3,7 @@
 # Table name: examiners
 #
 #  id              :integer         not null, primary key
-#  num_contested   :integer         default(0)
+#  disputed        :integer         default(0)
 #  created_at      :datetime
 #  updated_at      :datetime
 #  is_admin        :boolean         default(FALSE)
@@ -17,8 +17,8 @@ class Examiner < ActiveRecord::Base
   has_many :graded_responses
 
   # [:all] ~> [:admin]
-  # [:num_contested] ~> [:student]
-  #attr_accessible :num_contested
+  # [:disputed] ~> [:student]
+  #attr_accessible :disputed
 
   def name 
     return self.last_name.nil? ? self.first_name : "#{self.first_name} #{self.last_name}"

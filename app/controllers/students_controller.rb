@@ -23,11 +23,11 @@ class StudentsController < ApplicationController
     @student.save ? respond_with(@student) : head(:bad_request)  
   end 
 
-  def contest
+  def dispute
     s_id = current_account.loggable_id
     response = GradedResponse.where(:id => params[:id], :student_id => s_id)
     head :bad_request if response.empty?
-    response.first.update_attribute :contested, true
+    response.first.update_attribute :disputed, true
     render :json => { :status => :ok }, :status => :ok
   end
 

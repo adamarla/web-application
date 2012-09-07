@@ -33,5 +33,5 @@ jQuery ->
     event.stopPropagation()
     $(this).addClass 'clicked'
     $(this).val 'done'
-    $.get "contest?id=#{$(this).parent().attr 'marker'}"
+    $.get "dispute?id=#{$(this).parent().attr 'marker'}"
     return true

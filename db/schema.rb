@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120906182854) do
+ActiveRecord::Schema.define(:version => 20120907192402) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(:version => 20120906182854) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "examiners", :force => true do |t|
-    t.integer  "num_contested",   :default => 0
+    t.integer  "disputed",        :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_admin",        :default => false
@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(:version => 20120906182854) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.boolean  "contested",      :default => false
+    t.boolean  "disputed",       :default => false
     t.integer  "q_selection_id"
     t.float    "marks"
     t.integer  "testpaper_id"

@@ -3,7 +3,7 @@
 # Table name: examiners
 #
 #  id              :integer         not null, primary key
-#  num_contested   :integer         default(0)
+#  disputed        :integer         default(0)
 #  created_at      :datetime
 #  updated_at      :datetime
 #  is_admin        :boolean         default(FALSE)
