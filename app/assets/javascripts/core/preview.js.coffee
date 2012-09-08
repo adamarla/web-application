@@ -39,7 +39,7 @@ jQuery ->
         json should be consistent across all situations. And so, this is
         what it would be : 
           json.preview = { :id => 45, :scans => < single file-name > } OR
-          json.preview = { :id => [56,67], :scans => [ [<images for '56'>], [<images for '67'>] }
+          json.preview = { :id => [56,67], :scans => [ [<images for '56'>], [<images for '67'>] ..] }
         where 'id' is whatever the preview is for and 'scans' are the list 
         of object-identifiers that need to be picked up. All interpretation 
         is context specific
