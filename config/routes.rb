@@ -120,6 +120,7 @@ Webapp::Application.routes.draw do
   match 'teacher/students' => 'teachers#students', :via => :get
   match 'teacher/students_with_names' => 'teachers#students_with_names', :via => :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', :via => :get
+  match 'disputed' => 'teachers#disputed', :via => :get
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get

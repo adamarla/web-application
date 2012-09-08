@@ -20,7 +20,7 @@ jQuery ->
       here.accordion scroll.options
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
-      scroll.loadJson json.testpapers, 'testpaper', here, 'ticker', scroll.having.link | scroll.having.nolabel
+      scroll.loadJson json.testpapers, 'testpaper', here, scroll.having.link | scroll.having.nolabel
 
       # Change the href on the <a> to point to PDFs in atm/
       for a in here.find 'a'
@@ -59,7 +59,7 @@ jQuery ->
       scroll.overlayJson json.students, 'student', here, '.swiss-knife', "hide"
     else if url.match(/teacher\/students/)
       here = $('#enrolled-students')
-      scroll.loadJson json.students, 'student', here, 'login'
+      scroll.loadJson json.students, 'student', here
       here.accordion scroll.options
     else if url.match(/sektion\/students/)
       child = $('#side-panel').children().eq(0).attr 'id'
@@ -69,7 +69,7 @@ jQuery ->
           scroll.overlayJson json.students, 'student', here, '.swiss-knife', "nop", "check"
         else
           here = $('#student-list')
-          coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true, 'login'
+          coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true
     else if url.match(/teacher\/courses/)
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
@@ -86,7 +86,7 @@ jQuery ->
       here = $('#question-options > form:first > .form-fields')
       scroll.initialize json.topics, 'topic', here
       here.accordion scroll.options
-      scroll.loadJson json.questions, 'question', here, 'marks', scroll.having.check | scroll.having.button
+      scroll.loadJson json.questions, 'question', here, scroll.having.check | scroll.having.button
       preview.loadJson json, 'vault'
 
       # Set the # of likeys and span on each question 
@@ -170,7 +170,9 @@ jQuery ->
         target.val r.marks
     else if url.match(/preview\/calibrations/)
       preview.loadJson json, 'calibrations'
-
+    else if url.match(/disputed/)
+      here = $('#disputed')
+      coreUtil.interface.displayJson json.disputed, here, 'disputed', {radio:false, numeric:true}
     else
       matched = false
 

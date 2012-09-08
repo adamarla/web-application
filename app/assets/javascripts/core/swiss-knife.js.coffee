@@ -13,7 +13,7 @@ window.swissKnife = {
     record = { key : { id: abc, name: stu, ticker: ... } }
     JSON = [ record_1, record_2 .... ]
   ###
-  forge : (record, key, visible = {radio:true}, ticker = null, enable = true) ->
+  forge : (record, key, visible = {radio:true}, enable = true) ->
     clone = $('#toolbox').children('.blueprint.swiss-knife').first().clone()
     swissKnife.customize clone, visible, enable
 
@@ -37,9 +37,10 @@ window.swissKnife = {
         when 'select'
           $(child).val data.select
 
-      if ticker? and $(child).hasClass 'micro-ticker'
-        v = data[ticker]
-        $(child).text v if v?
+      if $(child).hasClass 'micro-ticker'
+        $(child).text data.ticker if data.ticker?
+      else if $(child).hasClass 'numeric'
+        $(child).val data.numeric if data.numeric?
 
     return clone
 
@@ -67,19 +68,15 @@ window.swissKnife = {
 
     element.removeClass 'blueprint'
 
-    for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link']
-      # retain = (key is 'label') or (visible[key]? and visible[key] is true)
+    for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link', 'numeric']
       if key isnt 'label'
         retain = (visible[key]? and visible[key] is true)
       else
         retain = (not visible[key]? or visible[key] is true)
 
       thing = element.find ".#{key}:first"
-      #if not(visible[key]?) or (visible[key] is false)
       if retain is false
         thing.remove()
-        # thing.addClass 'hidden'
-        # thing.prop 'disabled', true # hidden elements get no choice
       else
         thing.removeClass 'hidden'
         thing.prop 'disabled', not enable

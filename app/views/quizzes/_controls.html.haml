@@ -10,3 +10,4 @@
                  :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
     = minor_link :for => 'my-suggestions', :as => 'my questions',
                  :with => { :panels => { :side => "#typeset-for-me" } }
+    = minor_link :for => :disputes, :as => 'disputes', :with => { :panels => { :side => '#disputed' } }

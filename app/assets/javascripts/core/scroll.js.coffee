@@ -49,7 +49,7 @@ jQuery ->
         {name: ..., id: ..., parent: ...} where json itself is an array
     ###
 
-    loadJson: (json, key, here, ticker = 'ticker', render = scroll.having.check) ->
+    loadJson: (json, key, here, render = scroll.having.check) ->
       return if not key?
       here = if typeof here is 'string' then $(here) else here
 
@@ -72,7 +72,7 @@ jQuery ->
         for element, k in e
           show[element] = not show[element] if (render & (1 << k))
 
-        item = swissKnife.forge m, key, show, ticker
+        item = swissKnife.forge m, key, show
         swissKnife.editAnchor(item, n) if show['link']
         item.appendTo content
 

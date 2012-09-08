@@ -187,4 +187,11 @@ class TeachersController < ApplicationController
     end
   end
 
+  def disputed 
+    teacher = Teacher.find params[:id]
+    head :bad_request if teacher.nil?
+
+    @disputed = GradedResponse.in_quiz(teacher.quiz_ids).disputed
+  end
+
 end # of class

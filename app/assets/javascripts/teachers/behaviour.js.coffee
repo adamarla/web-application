@@ -94,6 +94,8 @@ jQuery ->
         $.get "teacher/sektions.json?id=#{teacher}"
       when 'my-suggestions-link'
         $.get "teacher/suggested_questions?id=#{teacher}"
+      when 'disputes-link'
+        $.get "disputed?id=#{teacher}"
       else
         matched = false
 

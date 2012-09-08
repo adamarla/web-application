@@ -92,7 +92,7 @@ window.coreUtil = {
       record = { key : { id: abc, name: stu, ticker: ... } }
       JSON = [ record_1, record_2 .... ]
     ###
-    displayJson : (json, where, key, visible = {radio:true}, enable = true, ticker = 'ticker') ->
+    displayJson : (json, where, key, visible = {radio:true}, enable = true) ->
       # JSON data is always purgeable. And so, it is always inserted within
       # the first .purgeable of $(where)
       where = if typeof where is 'string' then $(where) else where
@@ -103,7 +103,7 @@ window.coreUtil = {
       target.empty() # Purge before showing new data
 
       for record, index in json
-        clone = swissKnife.forge record, key, visible, ticker, enable
+        clone = swissKnife.forge record, key, visible, enable
         clone.appendTo(target).hide().fadeIn('slow')
 
       return true

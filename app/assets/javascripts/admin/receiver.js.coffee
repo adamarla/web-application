@@ -37,7 +37,7 @@ jQuery ->
       swissKnife.setButtonCaption '#courses-summary', 'edit'
     else if url.match(/questions\/list/)
       # flipchart initialized in core/behaviour 
-      coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question', {radio:true}, true, 'ticker'
+      coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question', {radio:true}, true
     else if url.match(/examiner\/pending_quizzes/)
       coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz', {radio:true, button:true}
       swissKnife.setButtonCaption '#pending-quizzes', 'answer-key'
@@ -66,9 +66,9 @@ jQuery ->
       tab_1.accordion scroll.options
 
       # Those that are a work-in-progress
-      coreUtil.interface.displayJson json.wips, tab_2, 'suggestion', {radio:false}, true, 'receipt'
+      coreUtil.interface.displayJson json.wips, tab_2, 'suggestion', {radio:false}, true
       # Those whose TeX has been written 
-      coreUtil.interface.displayJson json.completed, tab_3, 'suggestion', {radio:false}, true, 'receipt'
+      coreUtil.interface.displayJson json.completed, tab_3, 'suggestion', {radio:false}, true
       # Common preview
       preview.loadJson json, 'locker', true
     else if url.match(/question\?/) # rewind flipchart on successful question tagging
