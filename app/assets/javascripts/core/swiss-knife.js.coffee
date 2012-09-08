@@ -41,6 +41,8 @@ window.swissKnife = {
         $(child).text data.ticker if data.ticker?
       else if $(child).hasClass 'numeric'
         $(child).val data.numeric if data.numeric?
+      else if $(child).hasClass 'superscript'
+        $(child).text data.superscript if data.superscript?
 
     return clone
 

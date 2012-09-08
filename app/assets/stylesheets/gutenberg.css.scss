@@ -229,8 +229,23 @@ p > a, div > a {
     background: transparent ;
     border: none ;
     font-size: 12px ;
-    color: $gradians-blue ;
+    color: white ; 
+    text-align: right ;
+    max-width: 25px ;
+    padding: { 
+      top: 4px ;
+      bottom: 4px ;
+      left: 0px ;
+      right: 0px ;
+    } 
   }
+  
+  > .superscript { 
+    color: $gradians-blue ;
+    font-size: 9px ;
+    margin-top: 3px ;
+    font-weight: bold ;
+  } 
 } 
 
 .measure > .level { 

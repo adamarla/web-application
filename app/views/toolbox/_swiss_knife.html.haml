@@ -24,7 +24,8 @@
                :marker => "#{marker}", :name => "checked[#{marker}]" }  
   .label.left= "#{label}"
   %a.link.left{:href => '#', :marker => '#', :parent => '#', :p_id => '#'}
-  %input.numeric.right{ :type => :text, :size => 4, :maxlength => 4 }
+  %div.superscript.right
+  %input.numeric.right{ :type => :text, :maxlength => 4 }
   %input.button.right{ :type => :button, :disabled => true }
   %select.right.difficulty.select{ :name => "difficulty[#{marker}]", :disabled => true, :type => :select}
     %option{ :value => 0 }= ""
