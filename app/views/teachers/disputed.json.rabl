@@ -3,10 +3,11 @@
 
 node(:disputed) { 
   @disputed.map{ |m| {:disputed => {
+    :id => m.id, 
     :name => m.name?, 
     :ticker => m.student.name, 
     :numeric => m.marks?, 
-    :superscript => "/ #{m.subpart.marks}" }   } }
+    :constant => "#{m.marks} / #{m.subpart.marks}" }   } }
 } 
 
 node(:preview) { 
