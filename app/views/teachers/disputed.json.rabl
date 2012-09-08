@@ -6,7 +6,6 @@ node(:disputed) {
     :id => m.id, 
     :name => m.name?, 
     :ticker => m.student.name, 
-    :numeric => m.marks?, 
     :constant => "#{m.marks} / #{m.subpart.marks}" }   } }
 } 
 

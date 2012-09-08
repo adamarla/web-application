@@ -40,7 +40,7 @@ window.swissKnife = {
       if $(child).hasClass 'micro-ticker'
         $(child).text data.ticker if data.ticker?
       else if $(child).hasClass 'numeric'
-        # $(child).val data.numeric if data.numeric?
+        $(child).val data.numeric if data.numeric?
         $(child).attr 'name', "#{key}[#{id}]"
       else if $(child).hasClass 'superscript'
         $(child).text data.superscript if data.superscript?
