@@ -14,7 +14,7 @@
 #  scan           :string(255)
 #  subpart_id     :integer
 #  page           :integer
-#  marks_teacher  :integer
+#  marks_teacher  :float
 #  disputed       :boolean         default(FALSE)
 #  closed         :boolean         default(FALSE)
 #
