@@ -171,8 +171,8 @@ jQuery ->
     else if url.match(/preview\/calibrations/)
       preview.loadJson json, 'calibrations'
     else if url.match(/disputed/)
-      here = $('#disputed')
-      coreUtil.interface.displayJson json.disputed, here, 'disputed', {radio:false, numeric:true}
+      here = $('#disputes')
+      coreUtil.interface.displayJson json.disputed, here, 'disputed', {radio:false, numeric:true, constant:true}
       preview.loadJson json, 'locker'
     else
       matched = false

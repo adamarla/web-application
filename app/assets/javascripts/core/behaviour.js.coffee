@@ -180,9 +180,6 @@ jQuery ->
     For any link in the #control-panel, refresh the view with any applicable
     #side, #middle, #right or #wide panels. Also, set the selected=true attribute
     on the link just clicked whilst removing it from all other siblings. 
-    Note however that : 
-      1. A minor link cannot remove the #side-panel as it has been put in place by
-         a #main-link
   ###
 
   $('#control-panel').on 'click', '#main-links a, #minor-links a', ->

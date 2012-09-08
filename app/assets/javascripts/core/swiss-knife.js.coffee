@@ -40,9 +40,12 @@ window.swissKnife = {
       if $(child).hasClass 'micro-ticker'
         $(child).text data.ticker if data.ticker?
       else if $(child).hasClass 'numeric'
-        $(child).val data.numeric if data.numeric?
+        # $(child).val data.numeric if data.numeric?
+        $(child).attr 'name', "#{key}[#{id}]"
       else if $(child).hasClass 'superscript'
         $(child).text data.superscript if data.superscript?
+      else if $(child).hasClass 'constant'
+        $(child).text data.constant if data.constant?
 
     return clone
 
@@ -70,7 +73,7 @@ window.swissKnife = {
 
     element.removeClass 'blueprint'
 
-    for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link', 'numeric']
+    for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link', 'numeric', 'constant']
       if key isnt 'label'
         retain = (visible[key]? and visible[key] is true)
       else

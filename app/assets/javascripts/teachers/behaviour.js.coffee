@@ -272,3 +272,14 @@ jQuery ->
     form = $(this).closest 'form'
     form.submit()
     return true
+
+  ###
+    DISPUTE RESOLUTION
+  ###
+  $('#disputes').on 'click', '.swiss-knife', (event) ->
+    event.stopPropagation()
+    disputed = $('#disputes').children('.swiss-knife')
+    n = disputed.index $(this)
+    curr = preview.currIndex()
+    preview.jump curr, n
+    return true

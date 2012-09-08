@@ -194,4 +194,14 @@ class TeachersController < ApplicationController
     @disputed = GradedResponse.in_quiz(teacher.quiz_ids).disputed
   end
 
+  def overwrite_marks
+    params[:disputed].each do |id, marks|
+      g = GradedResponse.where(:id => id).first
+      marks = marks.empty? ? nil : marks.to_f.round(2)
+      next if marks.nil? || marks < 0 || marks > g.subpart.marks
+      g.update_attributes :marks_teacher => marks, :closed => true
+    end
+    render :json => { :status => :done }, :status => :ok
+  end
+
 end # of class
