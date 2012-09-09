@@ -1,11 +1,8 @@
 
 #grade-abacus
   #current-items
-    .submit-buttons.right
-      %input{ :type => :button, :id => 'undo-btn', :value => 'undo last'} 
-    %div.left
-      #current-question
-      #current-student
+    #current-question.left
+    #current-student.right
   = semantic_form_for :grade, :url => calibrate_path, :remote => true do |f|
     #abacus.as-accordion
       .scroll-heading{ :marker => 0 }= "are the key insights evident?"

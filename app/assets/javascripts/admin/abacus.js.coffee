@@ -128,6 +128,7 @@ window.abacus = {
     ticker : () ->
       $('#current-student').text abacus.last.student.attr 'name'
       $('#current-question').text abacus.last.response.attr 'label'
+      $('#currently-annotating').text abacus.last.response.attr 'label'
       return true
   }
 

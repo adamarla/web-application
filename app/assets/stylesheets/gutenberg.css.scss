@@ -1470,7 +1470,7 @@ li {
   } 
 
   > #current-items { 
-    min-height: 30px ;
+    min-height: 20px ;
     padding: 3% ; 
     background-color: $panel-colour ; 
     border: none ; 
@@ -1478,7 +1478,7 @@ li {
     margin-bottom: 15px ;
 
     > div { 
-      margin-top: -2px ;
+      padding: 2px ;
     } 
     .submit-buttons { 
       height: 25px ; 
@@ -1491,10 +1491,15 @@ li {
       color: $orange ;
       font-size: 18px ;
       font-weight: bold ;
+      margin-top: -3px ;
     }
     #current-student { 
-      font-size: 11px ;
+      font: {
+        size: 14px ;
+        weight: bold ;
+      }
       color: white ;
+
     } 
   } 
 
@@ -1518,7 +1523,6 @@ li {
 #colour-picker { 
   background-color: $panel-colour ;
   border-radius: 10px ;
-  width: 90px ;
   padding: 5px ; 
   border: 2px solid $lightgray ;
   min-height: 17px ;
@@ -1529,7 +1533,6 @@ li {
     padding: 2px ;
     margin-left: 8px ; 
     min-height: 15px ; 
-    width: 15px ;
     border-radius: 4px ;
     > div[colour] { 
       width: 11px ;
@@ -1543,5 +1546,14 @@ li {
     } 
     &:hover, &.selected { border: 1px solid white ; } 
   }
+  
+  #currently-annotating { 
+    font: { 
+      size: 13px ;
+      weight: bold ;
+    }
+    color: $orange ;
+    margin-right: 10px ;
+  } 
 } 
 

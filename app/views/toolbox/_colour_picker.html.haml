@@ -1,19 +1,12 @@
 
--##colour-picker
--#  %div.left
--#    %div{ :colour => :pink }
--#    %div{ :role => :description}= "plain wrong!"
--#  %div.left
--#    %div{ :colour => :orange }
--#    %div{ :role => :description}= "somewhat right"
--#  %div.left
--#    %div{ :colour => :green }
--#    %div{ :role => :description}= "looks good!"
-
 #colour-picker
-  %div.left
+  .left
+    #currently-annotating
+  .left{ :coloured => :yes }
     %div{ :colour => :crosses }
-  %div.left
+  .left{ :coloured => :yes }
     %div{ :colour => :exclamations }
-  %div.left
+  .left{ :coloured => :yes }
     %div{ :colour => :checks }
+  .right
+    %input{ :type => :button, :id => 'undo-btn', :value => 'undo last'} 

@@ -400,7 +400,7 @@ jQuery ->
   ###
     Store the just picked colour for annotation in canvas.ctx object
   ###
-  $('#colour-picker > div').click (event) ->
+  $('#colour-picker > div[coloured]').click (event) ->
     event.stopPropagation()
     colour = $(this).children('[colour]').eq(0).attr 'colour'
     canvas.colour.last = canvas.colour[colour]
