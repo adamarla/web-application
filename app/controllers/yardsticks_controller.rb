@@ -39,15 +39,4 @@ class YardsticksController < ApplicationController
     @yardsticks = Yardstick.order('mcq DESC').order(:default_allotment)
   end
 
-  def logical_next
-    head :bad_request if params[:i].blank? 
-
-    @logical = Calibration.enabled.where(:insight_id => params[:i])
-
-    unless params[:f].blank?
-      @logical = @logical.where(:formulation_id => params[:f])
-      @logical = @logical.where(:calculation_id => params[:c]) unless params[:c].blank?
-    end
-  end
-
 end

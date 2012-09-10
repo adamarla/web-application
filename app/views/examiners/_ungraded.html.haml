@@ -12,5 +12,11 @@
   #pending-pages
   #pending-scans
     #list-pending.hidden
+    #flash-memory.hidden
+      - Calibration.enabled.each do |m|
+        %div{ :marker => "#{m.id}", :i => "#{m.insight_id}", 
+        :f => "#{m.formulation_id}", 
+        :c => "#{m.calculation_id}",
+        :m => "#{m.mcq_id}" }
     = render :partial => 'examiners/abacus'
 

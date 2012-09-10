@@ -20,6 +20,44 @@ window.abacus = {
     student : null,
     scan : null,
     response : null
+  },
+
+  memory : {
+    i : null, # insight
+    f : null, # formulation
+    c : null, # calculation
+    m : null, # mcq
+
+    reset : () ->
+      abacus.memory.i = null
+      abacus.memory.f = null
+      abacus.memory.c = null
+      abacus.memory.m = null
+      return true
+  },
+
+  panel : {
+    current : 0,
+    next : null,
+    containing : (radio) ->
+      # Returns the index of the .scroll-content containing the passed 
+      # radio button relative to the other .scroll-contents 
+      panel = radio.closest '.scroll-content'
+      index = abacus.obj.children('.scroll-content').index(panel)
+      return index
+
+    autoClickable : (n) ->
+      return false if n is 0
+      panel = abacus.obj.children('.scroll-content').eq(n)
+      clickable = panel.find("input[type='radio']").not("[disabled]")
+      return clickable.length is 1
+      
+    autoClick : (n) ->
+      panel = abacus.obj.children('.scroll-content').eq(n)
+      clickable = panel.find("input[type='radio']").not("[disabled]")
+      radio = clickable.eq(0)
+      radio.trigger 'click'
+      return true
   }
 
   decompile : (n) ->
@@ -28,6 +66,7 @@ window.abacus = {
   initialize : (here = '#abacus') ->
     abacus.obj = if typeof here is 'string' then $(here) else here
     abacus.obj.accordion scroll.options
+    abacus.obj.accordion 'option', 'collapsible', false
     abacus.obj.accordion 'activate', 0
 
     pending = $('#list-pending')
@@ -39,47 +78,41 @@ window.abacus = {
     canvas.load abacus.last.scan
     return true
 
+  load : (n) ->
+    mem = $('#flash-memory')
+    panel = abacus.obj.children('.scroll-content').eq(n)
+
+    switch n
+      when 0
+        abacus.memory.reset()
+      when 1
+        candidates = mem.children("div[i=#{abacus.memory.i}]")
+        key = 'f'
+      when 2
+        candidates = mem.children("div[i=#{abacus.memory.i}][f=#{abacus.memory.f}]")
+        key = 'c'
+
+    return true if n is 0 # nothing more needs to be done if on insights
+
+    for m in candidates
+      target = $(m).attr key
+      for k in panel.children(".level[marker=#{target}]")
+        $(k).removeClass 'disabled'
+        $(b).prop 'disabled', false for b in $(k).children("input[type='radio']")
+    return true
+
   reset : (n) ->
     return false if n > 2
     panel = abacus.obj.find('.scroll-content').eq(n)
 
     for m in panel.find 'input[type="radio"]'
       $(m).prop 'checked', false
-      $(m).prop 'disabled', false
+      $(m).prop 'disabled', (n isnt 0) # radios in insight panel are always enabled
+
+    $(k).addClass 'disabled' for k in panel.children('.level') unless n is 0
     return true
 
-  panelIndex : (radio) ->
-    # Returns the index of the .scroll-content containing the passed 
-    # radio button relative to the other .scroll-contents 
-    panel = radio.closest '.scroll-content'
-    index = abacus.obj.children('.scroll-content').index(panel)
-    return index
-
-  url : (radio) ->
-    # Build <form> href argument by looking at current & prior selections
-    #currId = abacus.obj.accordion 'option','active'
-    currId = abacus.panelIndex radio
-    url = null
-    id = radio.parent().attr 'marker'
-
-    switch currId
-      when 0
-        url = "?i=#{id}"
-      when 1
-        url = abacus.obj.children('.scroll-content').eq(0).attr 'choice'
-        url = "?i=#{url}&f=#{id}"
-      when 2
-        prior = abacus.obj.children('.scroll-content')
-        url = "?i=#{prior.eq(0).attr 'choice'}" # ?i=67
-        url = "#{url}&f=#{prior.eq(1).attr 'choice'}" # ?i=67&f=74
-        url = "#{url}&c=#{id}" # ?i=67&f=74&c=89
-
-        # Dont forget to embed the graded-response id too
-        url = "#{url}&g=#{abacus.last.response.attr 'marker'}" # ?i=67&f=74&c=89&g=1275
-    return url
-
   next : {
-
     student : () ->
       nextStudent = abacus.last.student.next()
       if nextStudent.length isnt 0 then return nextStudent.eq(0) else null
@@ -121,8 +154,7 @@ window.abacus = {
 
       student.remove()
       return abacus.last.response
-
-  }
+  } # namespace 'next'
 
   update : {
     ticker : () ->
@@ -132,18 +164,7 @@ window.abacus = {
       return true
   }
 
-  current: () ->
-    currId = abacus.obj.accordion 'option', 'active'
-    return abacus.obj.children('.scroll-content').eq(currId)
-
-  autoClick : (current) ->
-    clickable = current.find("input[type='radio']").not("[disabled]")
-    if clickable.length == 1
-      radio = clickable.eq(0)
-      radio.trigger 'click'
-      #radio.click()
-    return true
-}
+} # namespace abacus 
 
 jQuery ->
   
@@ -153,48 +174,31 @@ jQuery ->
 
   $('#abacus .scroll-content').on 'click', 'input[type="radio"]', (event) ->
     event.stopPropagation()
-    curr = abacus.panelIndex $(this)
-    next = (curr + 1) % 3
+    abacus.panel.current = abacus.panel.containing $(this)
+    abacus.panel.next = (abacus.panel.current + 1) % 3
 
     $(m).prop 'checked', false for m in $(this).parent().siblings('.level').children('input[type="radio"]')
+    parent = $(this).parent()
 
-    abacus.current().attr 'choice', $(this).parent().attr('marker')
-    # GET request for next set of yardsticks to show OR form submission 
-    url = abacus.url $(this)
+    switch abacus.panel.current
+      when 0
+        abacus.memory.i = parent.attr 'marker'
+      when 1
+        abacus.memory.f = parent.attr 'marker'
+      when 2
+        abacus.memory.c = parent.attr 'marker'
+        url = "i=#{abacus.memory.i}&f=#{abacus.memory.f}&c=#{abacus.memory.c}&g=#{abacus.last.response.attr 'marker'}"
+        form = abacus.obj.closest('form')
+        form.attr 'action', "/calibrate?#{url}&clicks=#{canvas.decompile()}"
+        form.trigger 'submit'
+        abacus.next.response() # Move to the next response
+        abacus.update.ticker()
 
-    abacus.reset next
-    abacus.obj.accordion 'activate', next
-
-    if curr < 2
-      $.get "yardstick/logical_next#{url}"
+    abacus.reset abacus.panel.next
+    abacus.load abacus.panel.next
+    if abacus.panel.autoClickable abacus.panel.next
+      abacus.panel.autoClick abacus.panel.next
     else
-      form = abacus.obj.closest('form')
-      form.attr 'action', "/calibrate#{url}&clicks=#{canvas.decompile()}"
-      form.trigger 'submit'
-      abacus.next.response() # Move to the next response
-      abacus.update.ticker()
-      abacus.obj.accordion 'activate', 0
+      abacus.obj.accordion 'activate', abacus.panel.next
     return true
 
-  ###
-    Receiver
-  ###
-
-  $('#abacus').ajaxSuccess (e,xhr,settings) ->
-    url = settings.url
-
-    return true unless url.match(/yardstick\/logical_next/)
-    e.stopPropagation()
-
-    json = $.parseJSON xhr.responseText
-    currId = abacus.obj.accordion 'option', 'active'
-    panel = abacus.obj.children('.scroll-content').eq(currId)
-    key = null
-
-    switch currId
-      when 1 then key = 'formulation'
-      when 2 then key = 'calculation'
-
-    scroll.overlayJson json[key], 'candidates', panel, '.level', "disable" if key?
-    abacus.autoClick panel # wouldn't do anything if panel has > 1 clickable options
-    return true
