@@ -23,7 +23,7 @@ class Calibration < ActiveRecord::Base
 
   before_save :check_viability
   before_destroy :destroyable?
-  after_create :add_for_every_teacher
+  # after_create :add_for_every_teacher
 
   has_many :grades, :dependent => :destroy
 
