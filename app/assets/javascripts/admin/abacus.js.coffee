@@ -67,6 +67,7 @@ window.abacus = {
     abacus.obj = if typeof here is 'string' then $(here) else here
     abacus.obj.accordion scroll.options
     abacus.obj.accordion 'option', 'collapsible', false
+    abacus.obj.accordion 'option', 'active', 0
     abacus.obj.accordion 'activate', 0
 
     pending = $('#list-pending')
