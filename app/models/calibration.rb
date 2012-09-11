@@ -88,6 +88,23 @@ class Calibration < ActiveRecord::Base
     end # insights
   end
 
+  def recalibrate
+    # Calculates & updates the new allotment for given calibration if its 
+    # constituent yardsticks are changed in any way
+    mcq = !self.mcq_id.nil?
+
+    unless mcq
+      i = Yardstick.find self.insight_id
+      f = Yardstick.find self.formulation_id
+      c = Yardstick.find self.calculation_id
+      a = Calibration.fair_value_for i,f,c 
+    else
+      b = Yardstick.find self.mcq_id
+      a = Calibration.fair_value_for b
+    end
+    self.update_attribute :allotment, a
+  end 
+
   def viable?
 =begin
     insight = Yardstick.find self.insight_id 
