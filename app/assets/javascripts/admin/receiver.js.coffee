@@ -61,7 +61,7 @@ jQuery ->
 
       # Suggestions for whom no slot has been blocked
       $(m).empty() for m in tab_1.children '.scroll-content'
-      scroll.loadJson json.just_in, 'suggestion', tab_1, 'receipt', scroll.having.select
+      scroll.loadJson json.just_in, 'suggestion', tab_1, scroll.having.select
       swissKnife.rebuildSelect $(s), 'num_slots', [0..9] for s in tab_1.find '.swiss-knife'
       tab_1.accordion scroll.options
 
@@ -83,7 +83,7 @@ jQuery ->
 
       for m in here.children('.scroll-content')
         $(m).empty()
-      scroll.loadJson json.topics, 'topic', here, null, scroll.having.select
+      scroll.loadJson json.topics, 'topic', here, scroll.having.select
     else
       matched = false
 
@@ -138,9 +138,9 @@ jQuery ->
     else if url.match(/vertical\/topics/)
       for here,j in ['#tag-question-topics', '#define-course-topics']
         if j isnt 0
-          scroll.loadJson json.topics, 'topic', $(here), null, scroll.having.select
+          scroll.loadJson json.topics, 'topic', $(here), scroll.having.select
         else
-          scroll.loadJson json.topics, 'topic', $(here), null, scroll.having.radio
+          scroll.loadJson json.topics, 'topic', $(here), scroll.having.radio
     else if url.match(/teacher\/specializations/)
       here = $('#teacher-specialization')
       scroll.overlayJson json.subjects, 'subject', here, '.list-item'
