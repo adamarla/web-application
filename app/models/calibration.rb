@@ -89,13 +89,11 @@ class Calibration < ActiveRecord::Base
   end
 
   def viable?
-    return true unless self.mcq_id.nil? 
-
+=begin
     insight = Yardstick.find self.insight_id 
     formulation = Yardstick.find self.formulation_id 
     calculation = Yardstick.find self.calculation_id 
     
-=begin
     Broadly speaking, a formulation cannot be better than insight
     and calculation cannot be better than formulation
 
@@ -109,7 +107,6 @@ class Calibration < ActiveRecord::Base
       0 => doesn't matter / irrelevant in present case 
       1 => some errors 
       2 => no errors
-=end
 
     # return false if formulation.weight > insight.weight
     return false if calculation.weight > formulation.weight
@@ -126,6 +123,8 @@ class Calibration < ActiveRecord::Base
       return false if formulation.weight < 2
     end 
     return true
+=end
+    return true 
   end
 
   def weights?
