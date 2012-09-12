@@ -8,14 +8,14 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
+#  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
-#  marks          :float
+#  system_marks   :float
 #  testpaper_id   :integer
 #  scan           :string(255)
 #  subpart_id     :integer
 #  page           :integer
 #  marks_teacher  :float
-#  disputed       :boolean         default(FALSE)
 #  closed         :boolean         default(FALSE)
 #
 
@@ -143,7 +143,7 @@ class GradedResponse < ActiveRecord::Base
   end # of method
 
   def marks?
-    return (self.marks_teacher.nil? ? self.marks : self.marks_teacher)
+    return (self.marks_teacher.nil? ? self.system_marks : self.marks_teacher)
   end
 
   def reset
@@ -162,7 +162,7 @@ class GradedResponse < ActiveRecord::Base
     marks = (self.subpart.marks * (c.allotment/100.0)).round(2)
 
     # Notify the teacher as soon as the last response has been graded
-    if self.update_attributes(:calibration_id => c.id, :marks => marks)
+    if self.update_attributes(:calibration_id => c.id, :system_marks => marks)
       remaining = GradedResponse.in_testpaper(self.testpaper_id).with_scan.ungraded.count
       if remaining == 0
         t = Testpaper.where(:id => self.testpaper_id).first

@@ -6,7 +6,7 @@ node(:disputed) {
     :id => m.id, 
     :name => m.name?, 
     :ticker => m.student.name, 
-    :constant => "#{m.marks} / #{m.subpart.marks}" }   } }
+    :constant => "#{m.system_marks} / #{m.subpart.marks}" }   } }
 } 
 
 node(:preview) { 

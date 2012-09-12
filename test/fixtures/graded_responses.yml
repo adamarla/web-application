@@ -8,14 +8,14 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
+#  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
-#  marks          :float
+#  system_marks   :float
 #  testpaper_id   :integer
 #  scan           :string(255)
 #  subpart_id     :integer
 #  page           :integer
 #  marks_teacher  :float
-#  disputed       :boolean         default(FALSE)
 #  closed         :boolean         default(FALSE)
 #
 
