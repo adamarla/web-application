@@ -63,24 +63,6 @@ class Testpaper < ActiveRecord::Base
     return mean
   end
 
-=begin
-  def retotal
-    # This is for those times when a teacher changes her grade allotments and wants
-    # a past testpaper to reflect the new allotments. This is not something we encourage. 
-    # But better to have the option than not. At any rate, the grade is not changed
-
-    self.answer_sheets.each do |m|
-      m.update_attribute :marks, nil # will be re-calculated on next call to marks?
-    end
-
-    self.graded_responses.graded.each do |m|
-      grade = m.grade
-      marks = (m.subpart.marks * (grade.allotment/100.0)).round(2)
-      m.update_attribute :marks, marks
-    end
-  end
-=end
-
   def takers
     self.students.order(:first_name)
   end
