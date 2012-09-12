@@ -96,7 +96,6 @@ class Course < ActiveRecord::Base
       unused = @questions.map(&:id).uniq - used
       @questions = Question.where(:id => unused)
     end
-    #return @questions.order(:topic_id).order(:marks)
     return @questions.sort{ |m,n| m.topic_id <=> n.topic_id }.sort{ |m,n| m.marks? <=> n.marks? }
   end
 
