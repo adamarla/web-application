@@ -25,6 +25,8 @@ jQuery ->
       swissKnife.setButtonCaption here, 'dispute'
       reportCard.overview json.preview.questions, here, 'question'
       preview.loadJson json, 'locker'
+      first = $('#overview').children('.swiss-knife').eq(0)
+      first.trigger 'click' unless first.length is 0
     else
       matched = false
 

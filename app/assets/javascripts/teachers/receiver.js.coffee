@@ -137,6 +137,8 @@ jQuery ->
       coreUtil.interface.displayJson json.preview.questions, "#preview", 'question', {}
       reportCard.overview json.preview.questions, "#overview", 'question'
       preview.loadJson json, 'locker'
+      first = $('#overview').children('.swiss-knife').eq(0)
+      first.trigger 'click' unless first.length is 0
     else if url.match(/teacher\/topics_this_section/)
       here = $('#deep-dive-topic')
       coreUtil.interface.displayJson json.topics, here, 'topic'
