@@ -174,7 +174,9 @@ jQuery ->
       preview.loadJson json, 'calibrations'
     else if url.match(/disputed/)
       here = $('#disputes')
-      coreUtil.interface.displayJson json.disputed, here, 'disputed', {radio:false, numeric:true, constant:true}
+      scroll.initialize json.quizzes, 'quiz', here
+      scroll.loadJson json.disputed, 'disputed', here, scroll.having.numeric | scroll.having.constant
+      # coreUtil.interface.displayJson json.disputed, here, 'disputed', {radio:false, numeric:true, constant:true}
       preview.loadJson json, 'locker'
     else
       matched = false

@@ -192,6 +192,8 @@ class TeachersController < ApplicationController
     head :bad_request if teacher.nil?
 
     @disputed = GradedResponse.in_quiz(teacher.quiz_ids).disputed
+    quiz_ids = QSelection.where(:id => @disputed.map(&:q_selection_id)).map(&:quiz_id).uniq
+    @quizzes = Quiz.where(:id => quiz_ids)
   end
 
   def overwrite_marks

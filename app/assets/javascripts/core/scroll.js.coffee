@@ -15,7 +15,7 @@ jQuery ->
       here = if typeof here is 'string' then $(here) else here
       ###
         Method assumes that json[key] is of the form {name:XYZ, id:MNO}.
-        'json' itself is an array hashes with primary key = key 
+        'json' itself is an array of hashes with primary key = key 
       ###
 
       here.empty()
@@ -36,7 +36,9 @@ jQuery ->
       link : 4,
       select : 8,
       button : 16,
-      nolabel : 32
+      nolabel : 32,
+      numeric : 64,
+      constant : 128
     }
     
 
@@ -66,8 +68,9 @@ jQuery ->
         content = header.next() # the immediately following element has to be the content
         continue if content.length is 0
 
-        show = { radio:false, checkbox:false, select:false, button:false, link:false, label:true }
-        e = ['checkbox', 'radio', 'link', 'select', 'button', 'label'] # must stay in sync with scroll.having
+        show = { radio:false, checkbox:false, select:false, button:false, link:false, label:true, numeric:false, constant:false }
+        e = ['checkbox', 'radio', 'link', 'select', 'button', 'label', 'numeric', 'constant']
+        # must stay in sync with scroll.having
 
         for element, k in e
           show[element] = not show[element] if (render & (1 << k))
