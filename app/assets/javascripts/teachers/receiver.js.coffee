@@ -178,7 +178,7 @@ jQuery ->
       scroll.loadJson json.disputed, 'disputed', here, scroll.having.numeric | scroll.having.constant
       here.accordion scroll.options
       # coreUtil.interface.displayJson json.disputed, here, 'disputed', {radio:false, numeric:true, constant:true}
-      preview.loadJson json, 'locker'
+      preview.loadJson json, 'locker', true
     else
       matched = false
 

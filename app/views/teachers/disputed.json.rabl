@@ -4,7 +4,7 @@
 node(:disputed) { 
   @disputed.map{ |m| {:disputed => {
     :parent => m.q_selection.quiz_id,
-    :id => m.id, 
+    :id => "#{m.testpaper.quiz_id}-#{m.testpaper_id}/#{m.scan}", 
     :name => m.name?, 
     :ticker => m.student.name, 
     :constant => "#{m.system_marks} / #{m.subpart.marks}" }   } }

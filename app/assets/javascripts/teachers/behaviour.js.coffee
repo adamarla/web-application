@@ -279,7 +279,8 @@ jQuery ->
   $('#disputes').on 'click', '.swiss-knife', (event) ->
     event.stopPropagation()
     disputed = $('#disputes').find('.swiss-knife')
-    n = disputed.index $(this)
+    # n = disputed.index $(this)
+    n = preview.isAt $(this).attr 'marker'
     curr = preview.currIndex()
     preview.jump curr, n
     $(m).removeClass 'selected' for m in $(this).siblings()
