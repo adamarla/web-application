@@ -278,8 +278,10 @@ jQuery ->
   ###
   $('#disputes').on 'click', '.swiss-knife', (event) ->
     event.stopPropagation()
-    disputed = $('#disputes').children('.swiss-knife')
+    disputed = $('#disputes').find('.swiss-knife')
     n = disputed.index $(this)
     curr = preview.currIndex()
     preview.jump curr, n
+    $(m).removeClass 'selected' for m in $(this).siblings()
+    $(this).addClass 'selected'
     return true
