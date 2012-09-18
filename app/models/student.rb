@@ -92,6 +92,24 @@ class Student < ActiveRecord::Base
     return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
   end
 
+  def expectations_met_in(topic_id)
+    # Returns the weighted average percentage earned by a student on
+    # a given topic on the questions his/her teacher set
+    # Returns: a number in [0,1]
+    g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
+    sids = g.map(&:subpart_id).uniq
+
+    earned = 0 
+    [*1..6].each do |marks|
+      having = g.select{ |m| m.subpart.marks == marks }
+      next if having.count == 0
+      avg = (having.map(&:system_marks).inject(:+) / having.count.to_f).round(2) # avg score on 'k' mark questions
+      earned += avg
+    end 
+    max = Subpart.where(:id => sids).map(&:marks).uniq.inject(:+)
+    weighted = max.nil? ? 0 : (earned/max).round(2)
+  end 
+
   def proficiency?(topic_id)
 =begin
     Proficiency can be absolute or relative. Absolute proficiency takes into 
