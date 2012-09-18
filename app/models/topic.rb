@@ -31,7 +31,7 @@ class Topic < ActiveRecord::Base
     return entry.nil? ? 0 : entry.difficulty
   end 
 
-  def question_bank_health_for(type = :senior)
+  def benchmark(type = :senior)
     # Returns the weighted average marks for questions on given topic
     # for a given grade level - junior(1), middle(2) or senior(3)
 

@@ -82,6 +82,22 @@ class Teacher < ActiveRecord::Base
     return filter.empty? ? students : students.name_begins_with(filter)
   end 
 
+  def benchmark(topic, level = :senior)
+    target_difficulty = level == :senior ? 3 : (level == :junior ? 1 : 2)
+
+    qids = QSelection.where(:quiz_id => self.quiz_ids).map(&:question_id) 
+    questions = Question.where(:id => qids).on_topic(topic).difficulty(target_difficulty)
+    return 0 if questions.count == 0 
+
+    subparts = Subpart.where(:question_id => questions.map(&:id))
+    score = 0 
+    [*1..6].each do |marks|
+      score += (marks * subparts.where(:marks => marks).count)
+    end
+    weighted = (score / subparts.count.to_f).round(2)
+    return weighted
+  end
+
   def suggested_questions( type = :completed ) # other possible values: :all, :wip, :just_in
     s_objs = Suggestion.where(:teacher_id => self.id)
     case type
