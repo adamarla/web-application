@@ -31,6 +31,23 @@ class Topic < ActiveRecord::Base
     return entry.nil? ? 0 : entry.difficulty
   end 
 
+  def question_bank_health_for(type = :senior)
+    # Returns the weighted average marks for questions on given topic
+    # for a given grade level - junior(1), middle(2) or senior(3)
+
+    target_difficulty = type == :senior ? 3 : (type == :junior ? 1 : 2)
+    qids = Question.on_topic(self.id).difficulty(target_difficulty).map(&:id)
+    subparts = Subpart.where(:question_id => qids)
+    return 0 if subparts.count == 0
+
+    score = 0
+    [*1..6].each do |marks|
+      score += (marks * subparts.where(:marks => marks).count)
+    end
+    weighted = (score / subparts.count.to_f).round(2)
+    return weighted
+  end
+
   def print_name
     n_questions = Question.on_topic(self.id).count
     return "#{self.name} (#{n_questions})"
