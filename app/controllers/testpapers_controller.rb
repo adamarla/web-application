@@ -8,6 +8,7 @@ class TestpapersController < ApplicationController
     head :bad_request if @testpaper.nil?
     @mean = @testpaper.mean?
     @students = @testpaper.students.order(:first_name)
+    @answer_sheet = AnswerSheet.where(:testpaper_id => @testpaper.id)
   end
 
 end
