@@ -129,11 +129,6 @@ jQuery ->
       coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
       reportCard.overview json.students, here, 'student'
 
-      ###
-      graph.initialize()
-      graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'graded_thus_far'
-      graph.draw [json.mean], false
-      ###
       $('#flot-chart').addClass 'hide-y'
       chart.initialize()
 
@@ -202,10 +197,10 @@ jQuery ->
 
       chart.draw {
         xaxis : { min: 0, max: 6, position: "top"},
-        #yaxis: { ticks: json.students.length },
         yaxis: { ticks: [] },
         legend: { show: true, position:"ne", backgroundColor: "transparent" }
       }
+      chart.series.label 0, json.students, 'student'
     else if url.match(/teacher\/suggested_questions/)
       here = $('#typeset-for-me')
       coreUtil.interface.displayJson json.typesets, here, 'typeset', {radio:false}
