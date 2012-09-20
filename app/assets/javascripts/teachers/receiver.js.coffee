@@ -174,25 +174,25 @@ jQuery ->
       chart.series.define json.students, 'student', 'relative', 'y' # n = 0
       chart.series.define json.students, 'student', 'benchmark', 'y' # n = 1
       chart.series.define json.students, 'student', 'db', 'y' # n = 2
-      chart.series.link 0,1
-      chart.series.link 0,2
+      #chart.series.link 0,1 # 3
+      chart.series.link 0,2 # 4
       
       chart.series.customize 0, {
-        color: "#6ca7ab",
+        color: "#ffffff",
         points : { show:true, radius: 5},
         label: "Student Proficiency"
       }
       chart.series.customize 1, {
-        color: "#ff00ff",
+        color: "#4b9630",
         points: { show: true, radius: 3 },
         label: "Your Benchmark"
       }
       chart.series.customize 2, {
         color: "#ffa500",
         points: { show: true, radius: 3 },
-        label: "Avg. Proficiency"
+        label: "Expected Proficiency (Avg)"
       }
-      chart.series.customize 3, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
+      # chart.series.customize 3, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
       chart.series.customize 4, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
 
       chart.draw {
