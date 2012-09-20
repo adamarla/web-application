@@ -40,7 +40,7 @@ class Testpaper < ActiveRecord::Base
   end #of method
 
   def mean?
-    # Returns the average % for the class/group that took this testpaper
+    # Returns the average for the class/group that took this testpaper
     # Only graded responses and only those students that have
     # some or all of their answer-sheet graded are considered. Hence, know 
     # that this number will change with time before settling to a final value
@@ -50,8 +50,7 @@ class Testpaper < ActiveRecord::Base
       thus_far = a.graded_thus_far?
       next if thus_far == 0
       marks = a.marks? 
-      score = ((marks/thus_far)*100).round(2)
-      individual_scores.push score
+      individual_scores.push marks
     end
 
     unless individual_scores.empty?
