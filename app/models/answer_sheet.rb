@@ -43,7 +43,7 @@ class AnswerSheet < ActiveRecord::Base
 
     responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
     marks = responses.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
-    self.update_attribute(:marks, marks) if responses.ungraded.count == 0
+    self.update_attributes(:marks => marks, :graded => true) if responses.ungraded.count == 0
     return marks.nil? ? 0 : marks.round(2)
   end
 
