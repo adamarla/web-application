@@ -174,8 +174,9 @@ jQuery ->
       chart.series.define json.students, 'student', 'relative', 'y' # n = 0
       chart.series.define json.students, 'student', 'benchmark', 'y' # n = 1
       chart.series.define json.students, 'student', 'db', 'y' # n = 2
-      #chart.series.link 0,1 # 3
-      chart.series.link 0,2 # 4
+
+      middle = if json.students[0].student.db < json.students[0].student.benchmark then 2 else 1
+      chart.series.link 0, middle # n = 3
       
       chart.series.customize 0, {
         color: "#ffffff",
@@ -192,8 +193,7 @@ jQuery ->
         points: { show: true, radius: 3 },
         label: "Expected Proficiency (Avg)"
       }
-      # chart.series.customize 3, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
-      chart.series.customize 4, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
+      chart.series.customize 3, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
 
       chart.draw {
         xaxis : { min: 0, max: 6, position: "top"},
