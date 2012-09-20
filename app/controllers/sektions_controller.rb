@@ -73,8 +73,16 @@ class SektionsController < ApplicationController
     sektion = Sektion.find params[:id]
     @topic = Topic.find params[:topic]
     head :bad_request if (sektion.nil? || @topic.nil?)
-    @students = sektion.students
-    respond_with @students, @topic
+
+    teacher = current_account.loggable
+    level = sektion.klass > 10 ? :senior : (sektion.klass > 8 ? :middle : :junior)
+
+    @benchmark_teacher = teacher.benchmark @topic.id, level
+    @benchmark_db = @topic.benchmark level
+
+    @students = sektion.students.order(:first_name)
+    expectations = @students.map{ |m| m.expectations_met_in @topic.id }
+    @relative = expectations.map{ |m| (m * @benchmark_teacher).round(2) } 
   end
 
 end

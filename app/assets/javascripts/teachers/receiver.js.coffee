@@ -129,9 +129,39 @@ jQuery ->
       coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
       reportCard.overview json.students, here, 'student'
 
+      ###
       graph.initialize()
       graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'graded_thus_far'
       graph.draw [json.mean], false
+      ###
+      $('#flot-chart').addClass 'hide-y'
+      chart.initialize()
+
+      chart.series.define json.students, 'student', 'marks', 'y'
+      chart.series.define json.students, 'student', 'mean', 'y'
+      chart.series.link 0,1
+
+      chart.series.customize 0, {
+        color: "#6ca7ab",
+        points : { show:true, radius: 5 }
+      }
+      chart.series.customize 1, {
+        color: "#ffa500",
+        points : { show:true, radius: 3 },
+        lines : { show: true },
+        label : "Avg = #{json.students[0].student.mean}"
+      }
+      chart.series.customize 2, {
+        color: "#ffa500",
+        points: {show: false},
+        lines: {show: true, lineWidth: 1}
+      }
+      chart.draw {
+        xaxis : { min: 0, max: json.max, position: "top"},
+        yaxis: { ticks: json.students.length },
+        legend: { show: true, position:"ne", backgroundColor: "transparent" }
+      }
+      chart.series.label 0, json.students, 'student'
 
     else if url.match(/student\/responses/)
       coreUtil.interface.displayJson json.preview.questions, "#preview", 'question', {}
@@ -143,18 +173,39 @@ jQuery ->
       here = $('#deep-dive-topic')
       coreUtil.interface.displayJson json.topics, here, 'topic'
     else if url.match(/sektion\/proficiency/)
-      graph.initialize()
-      graph.loadJson json.students, 'student', 'name', graph.filter.notZero, 'x'
-      options = $.extend {}, graph.options, { xaxis: { position: "top", min:0,
-      max:1,
-      ticks : [[0, "Revisit Topic >"],
-               [0.25, "Brush-up on basics >"],
-               [0.5, "Needs practice >"],
-               [0.75, "Doing well >"],
-               [1, "Teacher?"]
-              ] }
+      $('#flot-chart').addClass 'hide-y'
+      chart.initialize()
+
+      chart.series.define json.students, 'student', 'relative', 'y' # n = 0
+      chart.series.define json.students, 'student', 'benchmark', 'y' # n = 1
+      chart.series.define json.students, 'student', 'db', 'y' # n = 2
+      chart.series.link 0,1
+      chart.series.link 0,2
+      
+      chart.series.customize 0, {
+        color: "#6ca7ab",
+        points : { show:true, radius: 5},
+        label: "Student Proficiency"
       }
-      graph.draw [], true, options
+      chart.series.customize 1, {
+        color: "#ff00ff",
+        points: { show: true, radius: 3 },
+        label: "Your Benchmark"
+      }
+      chart.series.customize 2, {
+        color: "#ffa500",
+        points: { show: true, radius: 3 },
+        label: "Avg. Proficiency"
+      }
+      chart.series.customize 3, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
+      chart.series.customize 4, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
+
+      chart.draw {
+        xaxis : { min: 0, max: 6, position: "top"},
+        #yaxis: { ticks: json.students.length },
+        yaxis: { ticks: [] },
+        legend: { show: true, position:"ne", backgroundColor: "transparent" }
+      }
     else if url.match(/teacher\/suggested_questions/)
       here = $('#typeset-for-me')
       coreUtil.interface.displayJson json.typesets, here, 'typeset', {radio:false}

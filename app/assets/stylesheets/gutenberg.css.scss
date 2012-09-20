@@ -102,6 +102,14 @@ p > a, div > a {
   height: 800px ;
   margin-left: 40px ;
   margin-top: 40px ;
+  color: $gradians-blue ;
+
+  &.hide-x{ .xAxis { > .tickLabel { color: $gray ;} } }
+  &.hide-y{ .yAxis { > .tickLabel { color: $gray ;} } }
+
+  > .legend { 
+    td { color: $gradians-blue ; padding-left: 3px ; font-size: 10px ; text-transform: lowercase ; } 
+  } 
 }
 
 #footer {
@@ -140,13 +148,6 @@ p > a, div > a {
     weight: normal ;
   }
   position: absolute ;
-  color: $orange ;
-}
-
-.tickLabel {
-  font: {
-    size: 12px ;
-  }
   color: $gradians-blue ;
   text-transform: lowercase ;
 }

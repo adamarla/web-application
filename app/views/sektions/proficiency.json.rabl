@@ -1,11 +1,8 @@
 
-collection @students => :students 
-  attributes :name 
-  index = 1
-  code :x do |m|
-    m.proficiency?(@topic.id)
-  end
+collection @students => :students
+  attribute :name 
+  node(:y){ |m| @students.index(m) + 1 }
+  node(:relative){ |m| @relative[@students.index(m)] }
+  node(:benchmark){ |m| @benchmark_teacher }
+  node(:db){ |m| @benchmark_db }
 
-  code :y do |m|
-    index += 1
-  end
