@@ -9,6 +9,7 @@ class TestpapersController < ApplicationController
     @mean = @testpaper.mean?
     @students = @testpaper.students.order(:first_name)
     @answer_sheet = AnswerSheet.where(:testpaper_id => @testpaper.id)
+    @max = @testpaper.quiz.total?
   end
 
 end

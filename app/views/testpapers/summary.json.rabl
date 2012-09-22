@@ -6,6 +6,4 @@ collection @students => :students
   node(:marks) { |m| m.marks_scored_in @testpaper.id }
   node(:graded) { |m| @answer_sheet.of_student(m.id).first.graded? } 
   node(:graded_thus_far) { |m| @answer_sheet.of_student(m.id).first.graded_thus_far? }
-
-node(:max) { @testpaper.quiz.total }
-
+  node(:max) { |m| @max }

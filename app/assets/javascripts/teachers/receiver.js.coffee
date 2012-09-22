@@ -158,7 +158,7 @@ jQuery ->
         lines: {show: true, lineWidth: 1}
       }
       chart.draw {
-        xaxis : { min: 0, max: json.max, position: "top"},
+        xaxis : { min: 0, max: json.students[0].student.max, position: "top"},
         yaxis: { ticks: json.students.length },
         legend: { show: true, position:"ne", backgroundColor: "transparent" }
       }
