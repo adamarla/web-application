@@ -84,7 +84,9 @@ class Student < ActiveRecord::Base
 
   def marks_scored_in(testpaper_id)
     a = AnswerSheet.where(:student_id => self.id, :testpaper_id => testpaper_id).first 
-    return a.nil? ? 0 : a.marks?
+    marks = a.nil? ? 0 : a.marks?
+    return marks unless marks == 0
+    return (self.absent_for_test?(testpaper_id) ? -1 : marks) 
   end
 
   def responses(testpaper_id)
@@ -109,6 +111,21 @@ class Student < ActiveRecord::Base
     max = Subpart.where(:id => sids).map(&:marks).uniq.inject(:+)
     weighted = max.nil? ? 0 : (earned/max).round(2)
   end 
+
+  def absent_for_quiz?(quiz_id)
+    tids = AnswerSheet.where(:student_id => self.id).map(&:testpaper_id)
+    qids = Testpaper.where(:id => tids).map(&:quiz_id)
+    took_test = qids.include? quiz_id 
+    return true if !took_test
+
+    g = GradedResponse.of_student(self.id).in_quiz(quiz_id).with_scan
+    return g.count == 0
+  end
+
+  def absent_for_test?(testpaper_id)
+    g = GradedResponse.of_student(self.id).in_testpaper(testpaper_id).with_scan
+    return g.count == 0
+  end
 
   def proficiency?(topic_id)
 =begin
