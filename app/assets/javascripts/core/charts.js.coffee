@@ -1,4 +1,14 @@
 
+window.color = {
+  gray : "#191919",
+  blue : "#6ca7ab",
+  orange : "#ffa500",
+  white : "#ffffff",
+  green : "#41b141",
+  purple : "#ca5bf0",
+  yellow : "#e0e921"
+}
+
 window.chart = {
   plot : null,
   seriesList : null,
