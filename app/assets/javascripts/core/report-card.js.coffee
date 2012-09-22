@@ -27,7 +27,7 @@ window.reportCard = {
 
       ticker = sk.children('div.micro-ticker').eq(0)
       if e.marks? && e.graded_thus_far?
-        ticker.text "#{e.marks}/#{e.graded_thus_far}"
+        if e.marks isnt -1 then ticker.text "#{e.marks}/#{e.graded_thus_far}" else ticker.text "no scans"
         if graded is false then ticker.addClass('pending') else ticker.addClass('complete')
       else if marks?
         ticker.text "#{marks}"

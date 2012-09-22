@@ -132,9 +132,10 @@ jQuery ->
       $('#flot-chart').addClass 'hide-y'
       chart.initialize()
 
-      chart.series.define json.students, 'student', 'marks', 'y'
-      chart.series.define json.students, 'student', 'mean', 'y'
-      chart.series.link 0,1
+      chart.series.define json.students, 'student', 'marks', 'y' # 0
+      chart.series.define json.students, 'student', 'mean', 'y' # 1
+      chart.series.define json.students, 'student', 'marks', 'y', chart.filter.geqZero # 2, overwrites some of #0
+      chart.series.link 0,1 # 3
 
       chart.series.customize 0, {
         color: color.blue,
@@ -147,6 +148,11 @@ jQuery ->
         label : "Avg = #{json.students[0].student.mean}"
       }
       chart.series.customize 2, {
+        color: color.red,
+        points: { show: true, radius: 5, fill: 0 },
+        label : "No Scans"
+      }
+      chart.series.customize 3, {
         color: color.blue,
         points: {show: false},
         lines: {show: true, lineWidth: 1}
