@@ -6,7 +6,8 @@ window.color = {
   white : "#ffffff",
   green : "#41b141",
   purple : "#ca5bf0",
-  yellow : "#e0e921"
+  yellow : "#e0e921",
+  red : "#ea5115"
 }
 
 window.chart = {
@@ -27,7 +28,7 @@ window.chart = {
     return true
 
   series : {
-    define : (json, key, dependentVar = null, independentVar = 'x') ->
+    define : (json, key, dependentVar = null, independentVar = 'x', filter = null) ->
       ###
         json = [ { key : { ... } }, { key : { ... } } ... ] - an array of hashes
         Every other argument is a key within json.key 
@@ -47,7 +48,16 @@ window.chart = {
         else
           x = data[independentVar]
           y = data[dependentVar]
-        newSeries.data.push [x,y] if (x? and y?)
+        if (x? and y?)
+          if filter?
+            continue if filter(data[dependentVar])
+            if filter is chart.filter.geqZero # or filter is chart.filter.gtZero
+              if alongY then newSeries.data.push [0,y] else newSeries.data.push [x,0]
+            else
+              newSeries.data.push [x,y]
+            # alert "#{data.name} --> #{data[dependentVar]} --> #{filter(data[dependentVar])}"
+          else
+            newSeries.data.push [x,y]
 
       chart.seriesList.push newSeries if newSeries.data.length isnt 0
       return true
@@ -93,6 +103,26 @@ window.chart = {
           left: node.left + 5
         }).appendTo(plc)
       return true
+  }
+
+  filter : {
+    eqZero : (val) ->
+      return val == 0
+
+    neqZero : (val) ->
+      return val != 0
+
+    gtZero : (val) ->
+      return val > 0
+
+    ltZero : (val) ->
+      return val < 0
+
+    geqZero : (val) ->
+      return val >= 0
+
+    leqZero : (val) ->
+      return val <= 0
   }
 
 }
