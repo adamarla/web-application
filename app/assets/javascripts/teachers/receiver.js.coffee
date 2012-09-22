@@ -137,17 +137,17 @@ jQuery ->
       chart.series.link 0,1
 
       chart.series.customize 0, {
-        color: "#6ca7ab",
-        points : { show:true, radius: 5 }
+        color: color.blue,
+        points : { show:true, radius: 5, fill: 0}
       }
       chart.series.customize 1, {
-        color: "#ffa500",
-        points : { show:true, radius: 3 },
-        lines : { show: true },
+        color: color.orange,
+        points : { show:true, radius: 2, fillColor: color.orange },
+        lines : { show: false },
         label : "Avg = #{json.students[0].student.mean}"
       }
       chart.series.customize 2, {
-        color: "#ffa500",
+        color: color.blue,
         points: {show: false},
         lines: {show: true, lineWidth: 1}
       }
@@ -179,21 +179,21 @@ jQuery ->
       chart.series.link 0, middle # n = 3
       
       chart.series.customize 0, {
-        color: "#ffffff",
-        points : { show:true, radius: 5},
+        color: color.blue,
+        points : { show:true, radius: 5, fill: 0},
         label: "Student Proficiency"
       }
       chart.series.customize 1, {
-        color: "#4b9630",
-        points: { show: true, radius: 3 },
+        color: color.green,
+        points: { show: true, radius: 2, fill: true, fillColor: color.green },
         label: "Your Benchmark"
       }
       chart.series.customize 2, {
-        color: "#ffa500",
-        points: { show: true, radius: 3 },
+        color: color.orange,
+        points: { show: true, radius: 2, fill: true, fillColor: color.orange },
         label: "Expected Proficiency (Avg)"
       }
-      chart.series.customize 3, { color: "#6ca7ab", lines: { show: true, lineWidth: 1 } }
+      chart.series.customize 3, { color: color.blue, lines: { show: true, lineWidth: 1 } }
 
       chart.draw {
         xaxis : { min: 0, max: 6, position: "top"},
