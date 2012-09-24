@@ -8,6 +8,8 @@ class TeachersController < ApplicationController
 
     names = params[:names]
     success = true 
+    who = current_account.loggable
+    trial = who.nil? ? true : (who.is_admin ? false : true) # if admin creating, then non-trial 
 
     names.each do |slot, name|
       next if name.blank?
@@ -18,7 +20,7 @@ class TeachersController < ApplicationController
 
       unless username.nil?
         account = @teacher.build_account :email => email, :username => username, 
-                      :password => password, :password_confirmation => password 
+                      :password => password, :password_confirmation => password , :trial => trial
         success &= @teacher.save 
       else
         success = false
