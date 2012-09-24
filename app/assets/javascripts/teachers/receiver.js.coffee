@@ -18,6 +18,7 @@ jQuery ->
       here = $('#past-quizzes-list')
       scroll.initialize json.quizzes, 'quiz', here
       here.accordion scroll.options
+      here.children('.scroll-heading').eq(0).trigger 'click' # auto-open the latest quiz
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
       scroll.loadJson json.testpapers, 'testpaper', here, scroll.having.link | scroll.having.nolabel
@@ -124,6 +125,8 @@ jQuery ->
     else if url.match(/teacher\/testpapers/)
       here = $('#testpaper')
       coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true}
+      first = here.children('.swiss-knife').eq(0)
+      first.children("input[type='radio']").eq(0).trigger 'click' if first? # auto-load report-card for latest test
     else if url.match(/testpaper\/summary/)
       here = $('#student')
       coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
