@@ -18,7 +18,8 @@ jQuery ->
       here = $('#past-quizzes-list')
       scroll.initialize json.quizzes, 'quiz', here
       here.accordion scroll.options
-      here.children('.scroll-heading').eq(0).trigger 'click' # auto-open the latest quiz
+      first = here.children('.scroll-heading').eq(0)
+      first.trigger 'click' if first? # auto-open the latest quiz
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
       scroll.loadJson json.testpapers, 'testpaper', here, scroll.having.link | scroll.having.nolabel
