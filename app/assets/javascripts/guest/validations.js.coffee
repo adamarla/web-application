@@ -7,16 +7,6 @@ jQuery ->
         message: 'mandatory'
       }
 
-      '#trial_email': {
-        required: true,
-        message: 'mandatory'
-      }
-
-      '#trial_email_confirm': {
-        required: true,
-        message: 'mandatory'
-      }
-
       '#trial_school': {
         required: true,
         message: 'mandatory'
@@ -33,13 +23,13 @@ jQuery ->
       }
 
       '#trial_email': {
-        required: 'sometimes',
+        required: true,
         test: happy.validate.email,
         message: 'invalid e-mail'
       }
 
       '#trial_email_confirm': {
-        required: 'sometimes',
+        required: true,
         test: happy.validate.sameToSame,
         arg: '#trial_email',
         message: 'must match e-mail above'
