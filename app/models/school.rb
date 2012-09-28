@@ -13,6 +13,7 @@
 #  updated_at     :datetime
 #  tag            :string(255)
 #  board_id       :integer
+#  xls            :string(255)
 #
 
 class School < ActiveRecord::Base
@@ -25,6 +26,8 @@ class School < ActiveRecord::Base
   validates :tag, :presence => true
   validates :zip_code, :presence => true
   validates :board_id, :presence => true
+
+  mount_uploader :xls, ExcelUploader # Railscast #253
 
   scope :state_matches, lambda { |criterion| (criterion.nil? || criterion[:state].blank?) ? 
                               where('state IS NOT NULL') : where(:state => criterion[:state]) } 
@@ -67,6 +70,25 @@ class School < ActiveRecord::Base
     end
 
     a.update_attribute :active, state
+  end
+
+  def enroll(name, email = nil, klass = nil, sektion = nil)
+    return false if name.blank?
+    student = self.students.build :name => name
+    username = create_username_for student, :student
+    return false if username.blank?
+
+    email = "#{username}@drona.com" if email.blank?
+    unless sektion.nil?
+      student.klass = sektion.klass
+      student.sektions << sektion # Add student to just created sektion
+    else
+      student.klass = klass
+    end
+    password = self.zip_code
+    account = student.build_account :username => username, :email => email, 
+                                    :password => password, :password_confirmation => password
+    return student.save
   end
 
   private 

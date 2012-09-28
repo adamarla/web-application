@@ -13,6 +13,7 @@
 #  updated_at     :datetime
 #  tag            :string(255)
 #  board_id       :integer
+#  xls            :string(255)
 #
 
 require 'test_helper'

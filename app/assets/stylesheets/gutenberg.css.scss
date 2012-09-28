@@ -142,6 +142,12 @@ p > a, div > a {
   }
 }
 
+.popup { 
+  font-size: 10px ; 
+  color: $orange ;
+  text-transform: lowercase ;
+} 
+
 .data-point-label {
   font: {
     size: 10px ;

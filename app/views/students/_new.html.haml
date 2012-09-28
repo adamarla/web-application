@@ -1,7 +1,8 @@
 
 #new-student.clear-after-submit
   %legend= "New Student"
-  = semantic_form_for :student, :remote => true, :url => '#' do |f| 
+  %a{ :class => "popup right", :href => '#', :id => "upload-xls-link"}= "Upload Spreadsheet with names"
+  = semantic_form_for :student, :remote => true, :url => '#', :html => { :id => :manual_specification } do |f| 
     .submit-buttons
       = submit_tag 'add students'
 
@@ -11,3 +12,4 @@
       - [*1..10].each do |i|
         = f.input :name, :input_html => {:name => "names[#{i}]", :id => "student_#{i}"}, 
                          :label => "##{i}"
+

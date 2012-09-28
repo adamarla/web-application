@@ -31,6 +31,8 @@ gem 'therubyracer'
 
 gem 'rabl'
 gem 'savon'
+gem 'carrierwave' # for uploading 
+gem 'spreadsheet'
 
 gem 'delayed_job_active_record'
 

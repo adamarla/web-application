@@ -82,4 +82,17 @@ class SchoolsController < ApplicationController
     @sektions = Sektion.where(:school_id => params[:id]).order(:klass).order(:name)
   end 
 
+  def upload_student_list
+    @school = School.find params[:id]
+
+    sektion = @school.sektions.build :klass => params[:excel][:klass].to_i, :name => params[:excel][:sektion]
+    if sektion.save
+      @school.xls = params[:excel][:xls]
+      @school.save
+      render :json => { :status => :uploaded }, :status => :ok
+    else
+      render :json => { :status => :failed }, :status => :bad_request
+    end
+  end
+
 end

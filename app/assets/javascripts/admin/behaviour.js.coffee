@@ -66,7 +66,9 @@ jQuery ->
         action = "school.json"
       when 'new-student'
         return false if not school?
-        action = "add_students.json?id=#{school}"
+        form = $(this).attr 'id'
+        baseUrl = if form is 'manual_specification' then "add_students" else "upload_student_list"
+        action = "#{baseUrl}.json?id=#{school}"
       when 'new-teacher'
         return false if not school?
         action = "teacher.json?id=#{school}"
@@ -282,4 +284,16 @@ jQuery ->
     stop = preview.isAt uid
     current = preview.currIndex()
     preview.jump current, stop
+    return true
+
+  $('#upload-xls-link').click ->
+    $('#upload-xls').dialog 'open'
+    return true
+
+  $('#upload-xls > form').submit ->
+    school = $('#side-panel').attr 'marker'
+    return false if not school?
+    action = "upload_student_list.json?id=#{school}"
+    $(this).attr 'action', action
+    $(this).parent().dialog 'close'
     return true

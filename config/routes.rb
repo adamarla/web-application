@@ -55,8 +55,8 @@ Webapp::Application.routes.draw do
   resource :school, :only => [:show, :create, :update]
   match 'add_students' => 'schools#add_students', :via => :post
   match 'schools/list' => 'schools#list', :via => :get 
-  # match 'school/unassigned-students' => 'schools#unassigned_students', :via => :get
   match 'school/sektions' => 'schools#sektions', :via => :get
+  match 'upload_student_list' => 'schools#upload_student_list', :via => :post
 
   # Verticals 
   resource :vertical, :only => [:create]
