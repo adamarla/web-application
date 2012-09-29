@@ -96,7 +96,7 @@ class Sektion < ActiveRecord::Base
 
       SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_student_roster']}" 
 
-      response = SavonClient.request :wsdl, :generate_student_roster do  
+      response = SavonClient.request :wsdl, :generateStudentRoster do  
         soap.body = {
           :school => { :id => self.school_id, :name => self.school.name },
           :group => { :id => self.id, :name => self.pdf },
