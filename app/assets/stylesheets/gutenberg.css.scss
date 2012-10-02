@@ -12,7 +12,7 @@ $gradians-blue: #6ca7ab ;
 $red: #ff0000 ;
 $orange:#ffa500 ;
 $green:#168816 ;
-$panel-colour: lighten(black, 17%) ;
+$panel-colour: lighten(black, 20%) ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -267,7 +267,7 @@ p > a, div > a {
 
 #disputes { 
   > .swiss-knife { 
-    > .micro-ticker { 
+    > .ticker { 
       margin-right: 0px ;
       color: $orange ;
     } 
@@ -542,9 +542,21 @@ span.unhappyMessage {
   }
 }
 
+#overview {
+  .swiss-knife {
+    > .ticker {
+      font-size: 11px ;
+      background-color: $panel-colour ;
+      color: white ;
+      padding: 2px 6px ;
+      width: 12% ;
+    } 
+  }
+}
+
 #published-worksheets { 
   .swiss-knife {
-    > .micro-ticker { 
+    > .ticker { 
       padding: 4px 5px ;
       background-color: $orange ;
       font: { 
@@ -561,7 +573,7 @@ span.unhappyMessage {
   > .swiss-knife { 
     min-height: 40px ;
 
-    > .micro-ticker { 
+    > .ticker { 
       min-width: 90% ;
       text-align: left ;
     } 

@@ -25,15 +25,8 @@ window.reportCard = {
       sk = here.find(".swiss-knife[marker=#{id}]").eq(0)
       continue if sk.length is 0
 
-      ticker = sk.children('div.micro-ticker').eq(0)
-      if e.marks? && e.graded_thus_far?
-        if e.marks isnt -1 then ticker.text "#{e.marks}/#{e.graded_thus_far}" else ticker.text "no scans"
+      ticker = sk.children('.ticker').eq(0)
+      if graded?
         if graded is false then ticker.addClass('pending') else ticker.addClass('complete')
-      else if marks?
-        ticker.text "#{marks}"
-        ticker.addClass 'box'
-
-      if color?
-        ticker.attr 'color', color
     return true
 }

@@ -47,8 +47,7 @@ class StudentsController < ApplicationController
     @info = answers.map{ |m| { :question => { 
       :id => m.id,
       :name => m.name?,
-      :marks => "#{m.marks?} / #{m.subpart.marks}",
-      :color => m.colour?, 
+      :ticker => "#{m.marks?} / #{m.subpart.marks}",
       :pg => "#{m.subpart.on_page_in? quiz_id}"
     } } }
 
