@@ -37,7 +37,7 @@ window.swissKnife = {
         when 'select'
           $(child).val data.select
 
-      if $(child).hasClass 'micro-ticker'
+      if $(child).hasClass 'ticker'
         $(child).text data.ticker if data.ticker?
       else if $(child).hasClass 'numeric'
         $(child).val data.numeric if data.numeric?
@@ -71,9 +71,10 @@ window.swissKnife = {
     element = if typeof element is 'string' then $(element) else element
     return false if not element.hasClass 'swiss-knife'
 
+    $.extend visible, { ticker:true } # always look for the ticker 
     element.removeClass 'blueprint'
 
-    for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link', 'numeric', 'constant']
+    for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link', 'numeric', 'constant', 'superscript', 'ticker']
       if key isnt 'label'
         retain = (visible[key]? and visible[key] is true)
       else
