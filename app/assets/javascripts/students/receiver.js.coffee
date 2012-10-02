@@ -8,7 +8,7 @@ jQuery ->
 
     if url.match(/student\/testpapers/)
       here = $('#published-worksheets')
-      coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true, link:true}
+      coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true, link:true, ticker:false}
       
       # Point the <a> to the answer-key
       for m in json.testpapers

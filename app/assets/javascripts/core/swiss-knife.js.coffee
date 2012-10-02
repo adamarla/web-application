@@ -71,7 +71,7 @@ window.swissKnife = {
     element = if typeof element is 'string' then $(element) else element
     return false if not element.hasClass 'swiss-knife'
 
-    $.extend visible, { ticker:true } # always look for the ticker 
+    $.extend visible, { ticker:true } unless visible['ticker']? # retain ticker unless explicitly removed 
     element.removeClass 'blueprint'
 
     for key in ['label', 'radio', 'checkbox', 'select', 'button', 'link', 'numeric', 'constant', 'superscript', 'ticker']

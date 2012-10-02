@@ -554,21 +554,6 @@ span.unhappyMessage {
   }
 }
 
-#published-worksheets { 
-  .swiss-knife {
-    > .ticker { 
-      padding: 4px 5px ;
-      background-color: $orange ;
-      font: { 
-        size: 11px ;
-        weight: bold ;
-      }
-      color: white ;
-      margin-top: -4px ;
-    } 
-  } 
-} 
-
 #testpaper { 
   > .swiss-knife { 
     min-height: 40px ;
