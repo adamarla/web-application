@@ -22,6 +22,7 @@ jQuery ->
     else if url.match(/student\/responses/)
       here = $('#my-grades')
       coreUtil.interface.displayJson json.preview.questions, here, 'question', {button:true}
+      swissKnife.setTickerToggles here, 'show score'
       swissKnife.setButtonCaption here, 'dispute'
       reportCard.overview json.preview.questions, here, 'question'
       preview.loadJson json, 'locker'

@@ -136,6 +136,15 @@ window.swissKnife = {
       $(button).val caption
     return true
 
+  setTickerToggles: (within, caption) ->
+    return if not caption?
+    within = if typeof within is 'string' then $(within) else within
+    for ticker in within.find '.swiss-knife > .ticker'
+      text = $(ticker).text()
+      $(ticker).attr 'toggle', text
+      $(ticker).text caption
+    return true
+
   setJsonAsAttribute: (json, within, key, which, setOn = { button: true} ) ->
     here = if typeof within is 'string' then $(within) else within
 

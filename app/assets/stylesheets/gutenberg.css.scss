@@ -549,7 +549,7 @@ span.unhappyMessage {
       background-color: $panel-colour ;
       color: white ;
       padding: 2px 6px ;
-      width: 12% ;
+      min-width: 12% ;
     } 
   }
 }

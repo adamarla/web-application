@@ -385,6 +385,34 @@ jQuery ->
     preview.blockKeyPress = false
 
   ###
+    Hide student marks and reveal them for just 1 second if ticker is clicked.
+    The code below looks the way it does because setTimeout in IE does not accept
+    arguments
+
+    Ref: http://www.lejnieks.com/2008/passing-arguments-to-javascripts-settimeout-method-using-closures/
+  ###
+
+  ticker = null
+  toggleOnClick = () ->
+    text = ticker.text()
+    switchTo = ticker.attr 'toggle'
+    ticker.text switchTo
+    ticker.attr 'toggle', text
+    return true
+
+  $('#overview').on 'click', '.swiss-knife > .ticker', (event) ->
+    toggable = if $(this).attr('toggle')? then true else false
+    if toggable
+      ticker = $(this)
+    else
+      ticker = null
+      return false
+
+    toggleOnClick()
+    window.setTimeout toggleOnClick, 1000
+    return true
+
+  ###
     If either a student or a teacher clicks on a graded question, then 
     load its calibration breakup 
   ###
