@@ -57,4 +57,11 @@ class AnswerSheet < ActiveRecord::Base
     return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 
+  def graded_thus_far_as_str
+    # Returns a string of the form "marks / graded_thus_far" - where marks are whats been earned till now
+    absent = GradedResponse.of_student(self.student_id).in_testpaper(self.testpaper_id).with_scan.count == 0
+    marks = absent ? -1 : self.marks?
+    return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
+  end
+
 end
