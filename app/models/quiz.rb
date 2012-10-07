@@ -193,7 +193,7 @@ class Quiz < ActiveRecord::Base
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 
 
-    response = SavonClient.request :wsdl, :build_quiz do  
+    response = SavonClient.request :wsdl, :buildQuiz do  
       soap.body = { 
          :quiz => { :id => self.id },
          :teacher => { :id => teacher.id, :name => teacher.name },

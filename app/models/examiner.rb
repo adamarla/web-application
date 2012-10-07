@@ -46,7 +46,7 @@ class Examiner < ActiveRecord::Base
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['create_question']}" 
     
     [*1..n].each do |index|
-      response = SavonClient.request :wsdl, :create_question do
+      response = SavonClient.request :wsdl, :createQuestion do
         soap.body = "#{self.id}"
       end
       manifest = response[:create_question_response][:manifest]

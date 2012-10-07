@@ -29,7 +29,7 @@ class Testpaper < ActiveRecord::Base
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
 
-    response = SavonClient.request :wsdl, :assign_quiz do  
+    response = SavonClient.request :wsdl, :assignQuiz do  
       soap.body = { 
         :quiz => { :id => self.quiz_id, :name => self.quiz.teacher.school.name },
         :instance => { :id => self.id, :name => self.name },
@@ -86,7 +86,7 @@ class Testpaper < ActiveRecord::Base
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_quiz_report']}"
     school = self.quiz.teacher.school
-    response = SavonClient.request :wsdl, :generate_quiz_report do
+    response = SavonClient.request :wsdl, :generateQuizReport do
       soap.body = {
         :school => { :id => school.id, :name => school.name },
         :group => { :id => self.id, :name => self.pdf },
