@@ -1,3 +1,4 @@
 
 collection @courses => :courses
-  attributes :name, :id
+  attribute :id
+  node(:name) { |m| "#{m.board.name} - #{m.name}" }
