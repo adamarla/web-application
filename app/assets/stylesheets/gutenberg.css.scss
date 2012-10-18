@@ -1529,9 +1529,9 @@ li {
   border-radius: 10px ;
   padding: 5px ; 
   border: 2px solid $lightgray ;
-  min-height: 17px ;
+  // min-height: 17px ;
   position: fixed ;
-  margin-left: 20%  ;
+  margin-left: 50%  ;
 
   > div {
     padding: 2px ;
@@ -1549,6 +1549,17 @@ li {
       cursor: pointer ;
     } 
     &:hover, &.selected { border: 1px solid white ; } 
+    &[section] {
+      font-size: 11px ;
+      color: $gradians-blue ; 
+      text-transform: lowercase ;
+    }
+    > .right { 
+      font-size: 10px ; 
+      text-transform: lowercase ;
+      min-width: 70% ;
+      text-align: left ;
+    } 
   }
   
   #currently-annotating { 

@@ -1,12 +1,19 @@
 
 #colour-picker
-  .left
+  %div
     #currently-annotating
-  .left{ :coloured => :yes }
-    %div{ :colour => :crosses }
-  .left{ :coloured => :yes }
-    %div{ :colour => :exclamations }
-  .left{ :coloured => :yes }
-    %div{ :colour => :checks }
-  .right
+  %div{ :section => "true" }= "Annotations"
+  %div{ :coloured => :yes }
+    %div.left{ :colour => :crosses }
+    .right= "Wrong!"
+  %div{ :coloured => :yes }
+    %div.left{ :colour => :exclamations }
+    .right= "Huh?"
+  %div{ :coloured => :yes }
+    %div.left{ :colour => :checks }
+    .right= "Nice!"
+  %div
     %input{ :type => :button, :id => 'undo-btn', :value => 'undo last'} 
+
+  %div{ :section => "true" }= "Shortcuts"
+    
