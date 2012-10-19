@@ -1532,12 +1532,14 @@ li {
   // min-height: 17px ;
   position: fixed ;
   margin-left: 50%  ;
+  width: 100px ;
 
   > div {
     padding: 2px ;
     margin-left: 8px ; 
     min-height: 15px ; 
     border-radius: 4px ;
+    cursor: pointer ;
     > div[colour] { 
       width: 11px ;
       height: 11px ;
@@ -1545,10 +1547,9 @@ li {
       margin: 2px ;
       &[colour="crosses"] { background-color: #ea5115 ; } 
       &[colour="exclamations"] { background-color: #f6bd13 ; } 
-      &[colour="checks"] { background-color: #4b9630 ; } 
-      cursor: pointer ;
+      &[colour="checks"] { background-color: #4b9630 ; }
+      //&:hover, &.selected { border: 1px solid white ; } 
     } 
-    &:hover, &.selected { border: 1px solid white ; } 
     &[section] {
       font-size: 11px ;
       color: $gradians-blue ; 
@@ -1560,6 +1561,16 @@ li {
       min-width: 70% ;
       text-align: left ;
     } 
+    
+    > input[type="button"] {
+      cursor: pointer ;
+      float: none ;
+      width: 90% ;
+      font-size: 11px ;
+      margin-top: 12px ;
+      text-transform: lowercase ;
+      &:hover { background-color: $gradians-blue ; color: white ; }
+    }
   }
   
   #currently-annotating { 
@@ -1569,6 +1580,10 @@ li {
     }
     color: $orange ;
     margin-right: 10px ;
+  } 
+
+  #one-click-submit { 
+    // max-width: 50% ;
   } 
 } 
 

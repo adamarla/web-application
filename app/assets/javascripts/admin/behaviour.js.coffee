@@ -297,3 +297,25 @@ jQuery ->
     $(this).attr 'action', action
     $(this).parent().dialog 'close'
     return true
+
+  $('#one-click-submit').on 'click', 'input[type="button"]', (event) ->
+    event.stopPropagation()
+
+    response_id = abacus.last.response.attr 'marker'
+    return false unless response_id?
+
+    url = "i=#{$(this).attr('i')}&f=#{$(this).attr('f')}&c=#{$(this).attr('c')}&g=#{response_id}"
+    form = abacus.obj.closest('form')
+    return false unless form?
+
+    form.attr 'action', "/calibrate?#{url}&clicks=#{canvas.decompile()}"
+    form.trigger 'submit'
+    # Move to next ungraded response
+    abacus.next.response() # Move to the next response
+    abacus.update.ticker()
+    # Re-set first panel of the accordion
+    abacus.reset 0
+    abacus.load 0
+    abacus.obj.accordion 'activate', 0
+    return true
+    
