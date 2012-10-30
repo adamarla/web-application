@@ -75,7 +75,7 @@ jQuery ->
   if navigator.platform.indexOf("Win") == -1 
     scanbotDownload.attr 'href', "#{gutenberg.server}/scanLoader/scanLoader.jnlp"
   else
-    scanbotDownload.attr 'href', "#{gutenberg.server}/winbot/app.publish/setup.exe"
+    scanbotDownload.attr 'href', "#{gutenberg.server}/winbot/app.publish/winbot.application"
 
   ###
   scanbotDownload.button()
