@@ -89,6 +89,7 @@ class SchoolsController < ApplicationController
     if sektion.save
       @school.xls = params[:excel][:xls]
       @school.save
+      sektion.save # trigger student_roster_pdf generation
       render :json => { :status => :uploaded }, :status => :ok
     else
       render :json => { :status => :failed }, :status => :bad_request
