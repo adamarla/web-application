@@ -72,7 +72,7 @@ class Teacher < ActiveRecord::Base
     s = Sektion.in_school(self.school_id).of_klass(self.klasses)
     s = s - Sektion.where(:exclusive => true).where('teacher_id <> ?', self.id)
     s = s.where(:teacher_id => self.id) unless all
-    return s.sort{ |m, n| m.klass <=> n.klass }
+    return s.sort{ |m, n| m.klass <=> n.klass }.sort{ |m,n| m.name <=> n.name }
   end
 
   def students( all = true, filter = [] )
