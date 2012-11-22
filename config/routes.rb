@@ -49,6 +49,7 @@ Webapp::Application.routes.draw do
   match 'examiner/update_workset' => 'examiners#update_workset', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
   match 'examiner/suggestions/:id' => 'examiners#suggestions', :via => :get
+  match 'rotate_scan' => 'examiners#rotate_scan', :via => :get
 
 
   # School 

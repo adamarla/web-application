@@ -318,4 +318,24 @@ jQuery ->
     abacus.load 0
     abacus.obj.accordion 'activate', 0
     return true
+
+  $('#flip-img').click ->
+    curr_student = abacus.last.student
+    curr_scan = abacus.last.scan
+    scan_in_locker = "#{curr_student.attr('within')}/#{curr_scan.attr('name')}"
+
+    #alert "#{curr_student.attr('name')} --> #{scan_in_locker}"
+    next_scan = abacus.last.scan = abacus.next.scan() # not response !!
+    curr_student.remove()
+
+    if next_scan?
+      abacus.last.student = next_scan.parent()
+      abacus.last.response = next_scan.children('.gr').eq(0)
+      abacus.update.ticker()
+    else
+      alert "Grading done"
+    
+    $.get "rotate_scan.json?id=#{scan_in_locker}"
+    return true
+    
     
