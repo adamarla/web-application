@@ -115,12 +115,13 @@ window.abacus = {
 
   next : {
     student : () ->
-      nextStudent = abacus.last.student.next()
-      if nextStudent.length isnt 0 then return nextStudent.eq(0) else null
-      #return abacus.last.student.next().eq(0)
+      next_student = abacus.last.student.next()
+      if next_student.length isnt 0 then return next_student.eq(0) else return null
 
     scan : () ->
-      return abacus.next.student().children('.scan').eq(0)
+      next_student = abacus.next.student()
+      if next_student? then return next_student.children('.scan').eq(0) else return null
+      # return abacus.next.student().children('.scan').eq(0)
 
     response : () ->
       c = abacus.last.response
