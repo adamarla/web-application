@@ -2,7 +2,7 @@
 node(:students) {
   @students.map{ |m| { 
       :marker => m.id, 
-      :name => "#{m.abbreviated_name}"
+      :name => "#{m.abbreviated_name}",
       :class => :student, 
       :within => "#{@quiz_id}-#{@pending.select{ |k| k.student_id == m.id }.first.testpaper_id}"
    } }
