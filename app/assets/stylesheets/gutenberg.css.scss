@@ -1582,8 +1582,14 @@ li {
       margin-top: 12px ;
       text-transform: lowercase ;
       &:hover { background-color: $gradians-blue ; color: white ; }
+      &.selected { background-color: transparent ; border: 1px solid $orange ;}
     }
   }
+
+  #add-comment { 
+    padding:2px ;
+    border-radius: 2px ;
+  } 
   
   #currently-annotating { 
     font: { 

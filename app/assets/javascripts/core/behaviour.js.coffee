@@ -439,7 +439,9 @@ jQuery ->
     colour = $(this).children('[colour]').eq(0).attr 'colour'
     canvas.colour.last = canvas.colour[colour]
     canvas.mode = colour
+
     $(m).removeClass 'selected' for m in $(this).siblings()
+    $('#colour-picker #add-comment').removeClass 'selected'
     $(this).addClass 'selected'
     return true
 
@@ -448,6 +450,7 @@ jQuery ->
     canvas.mode = "comments"
     $(m).removeClass 'selected' for m in $(this).parent().siblings('[coloured]')
     $('#comment-box > input:first').focus()
+    $(this).addClass 'selected'
     return true
 
   $('#comment-box > input:first').focus (event) ->
