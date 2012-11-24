@@ -8,6 +8,7 @@ window.canvas = {
   crosses : null,
   exclamations : null,
   mode : null,
+  comments : null,
 
   xoff: 0,
   yoff: 0,
@@ -16,15 +17,21 @@ window.canvas = {
     crosses : "#ea5115",
     exclamations : "#f6bd13",
     checks : "#4b9630",
-    white : "#ffffff"
+    white : "#ffffff",
+    blue : "#1b13f1"
   }
 
   initialize: (id) ->
     canvas.object = if typeof id is 'string' then $(id) else id
+
+    # Canvas context settings
     canvas.ctx = canvas.object[0].getContext('2d')
     canvas.ctx.lineCap = "round"
     canvas.ctx.lineJoin = "round"
     canvas.ctx.lineWidth = 3
+    canvas.ctx.fillStyle = canvas.colour.blue
+    canvas.ctx.font = "12px Ubuntu"
+
     offset = canvas.object.offset()
     canvas.xoff = offset.left
     canvas.yoff = offset.top
@@ -32,6 +39,7 @@ window.canvas = {
     canvas.checks = new Array()
     canvas.crosses = new Array()
     canvas.exclamations = new Array()
+    canvas.comments = new Array()
 
     return true
     
@@ -60,6 +68,8 @@ window.canvas = {
 
   drawMark : (draw = true) ->
     return false unless canvas.mode?
+    return false if canvas.mode is "comments"
+
     ctx = canvas.ctx
 
     ctx.strokeStyle = if draw is true then canvas.colour.last else canvas.colour.white
@@ -98,6 +108,15 @@ window.canvas = {
         canvas.crosses.push x-5,y-5,x+5,y+5,x-5,y+5,x+5,y-5
       when 'exclamations'
         canvas.exclamations.push x-3,y-13,x-3,y, x-3,y+5,x-3,y+7
+      when 'comments'
+        if not $('#comment-box').hasClass 'hidden' # record only if comment-box is visible
+          commentBox = $('#comment-box').children().eq(0) # input[type="text"]
+          comment = $(commentBox).val()
+
+          if comment.length isnt 0
+            canvas.comments.push x,y, comment
+            canvas.ctx.fillText comment, x, y
+          commentBox.focus()
 
     canvas.drawMark()
     return true
@@ -107,6 +126,7 @@ window.canvas = {
     canvas.checks.length = 0 if canvas.checks?
     canvas.crosses.length = 0 if canvas.crosses?
     canvas.exclamations.length = 0 if canvas.exclamations?
+    canvas.comments.length = 0 if canvas.comments?
     canvas.last = 0
 
   undo: () ->
@@ -122,13 +142,15 @@ window.canvas = {
       pairs of points 
     ###
     ret = ""
-    for type in ['crosses', 'checks', 'exclamations']
+    for type in ['crosses', 'checks', 'exclamations', 'comments']
       switch type
         when 'crosses' then ret += "_R" # _R_ ...
         when 'checks' then ret += "_G" # _R_ ... _G_....
         when 'exclamations' then ret += "_T" # _R_.... _G_ .... _T_.....
+        when 'comments' then ret += "_C"
       for p in canvas[type]
         ret += "_#{p}"
+    alert ret
     return ret
 
 }

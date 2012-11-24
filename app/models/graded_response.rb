@@ -120,13 +120,19 @@ class GradedResponse < ActiveRecord::Base
   def self.annotations( clicks )
     # This method creates the array of hashes web-service expects from 
     # what canvas.decompile() returns - via params[:clicks]
-    # 'clicks' is of the form _R_ .... _G_ .... _T_ ...., where R=red, T=turmeric, G=green
-    tokens = clicks.split('R').last.split('G')
-    tokens = tokens.concat tokens.pop.split('T')
-    ret = []
+    # 'clicks' is of the form _R_ .... _G_ .... _T_ ...._C_, where R=red, T=turmeric, G=green
+
+    ret = [] # passed to web-service request 
     x_correction = 15 # see canvas.drawImage() call in canvas.js
 
-    tokens.each_with_index do |t,j|
+    ### LHS elements are scalar elements 
+    crosses = clicks.split('_R_').last.split('_G_').first
+    ticks = clicks.split('_G_').last.split('_T_').first 
+    exclamations = clicks.split('_T_').last.split('_C_').first
+    comments = clicks.split('_C_').last
+
+    ### First, process the annotation marks 
+    [crosses, ticks, exclamations].each_with_index do |t, j|
       c = t.split('_').select{ |m| !m.blank? }.map(&:to_i) # number of elements in 'c' guaranteed to be = 8N
       index = 0 
       c.each_slice(2) do |pt|
@@ -137,7 +143,14 @@ class GradedResponse < ActiveRecord::Base
         end # of 'if'
         index += 1
       end # each_slice
-    end # tokens.each
+    end
+
+    ### Then process the comments 
+    cmnts = comments.split('_')
+    cmnts.each_slice(3) do |cm|
+      # cm = [x,y, comment]
+      ret.push( { :x => cm[0].to_i - x_correction, :y => cm[1].to_i, :text => cm[2], :code => 3 } )
+    end
 
     return ret
   end # of method

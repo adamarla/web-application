@@ -443,3 +443,16 @@ jQuery ->
     $(this).addClass 'selected'
     return true
 
+  $('#colour-picker #add-comment').click (event) ->
+    event.stopPropagation()
+    canvas.mode = "comments"
+    $(m).removeClass 'selected' for m in $(this).parent().siblings('[coloured]')
+    $('#comment-box > input:first').focus()
+    return true
+
+  $('#comment-box > input:first').focus (event) ->
+    event.stopPropagation()
+    $(this).val null
+    return true
+
+
