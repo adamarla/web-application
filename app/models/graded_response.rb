@@ -149,7 +149,7 @@ class GradedResponse < ActiveRecord::Base
     cmnts = comments.split('_')
     cmnts.each_slice(3) do |cm|
       # cm = [x,y, comment]
-      ret.push( { :x => cm[0].to_i - x_correction, :y => cm[1].to_i, :text => cm[2], :code => 3 } )
+      ret.push( { :x => cm[0].to_i - x_correction, :y => cm[1].to_i, :code => 3, :text => cm[2] } )
     end
 
     return ret
