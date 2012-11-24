@@ -162,7 +162,7 @@ window.canvas = {
       if (j < 2) # => 0 or 1
         ret += "_#{canvas.comments[index]}"
       else
-        ret += "_'#{canvas.comments[index]}'" # => += _"comment string"
+        ret += "_#{canvas.comments[index]}" # => += _"comment string"
     #alert ret
     return ret
 
