@@ -126,9 +126,9 @@ class GradedResponse < ActiveRecord::Base
     x_correction = 15 # see canvas.drawImage() call in canvas.js
 
     ### LHS elements are scalar elements 
-    crosses = clicks.split('_R_').last.split('_G_').first
-    ticks = clicks.split('_G_').last.split('_T_').first 
-    exclamations = clicks.split('_T_').last.split('_C_').first
+    crosses = clicks.split('_R_').last.split('G_').first
+    ticks = clicks.split('_G_').last.split('T_').first 
+    exclamations = clicks.split('_T_').last.split('C_').first
     comments = clicks.split('_C_').last
 
     ### First, process the annotation marks 

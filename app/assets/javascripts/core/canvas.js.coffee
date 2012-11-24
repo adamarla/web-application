@@ -142,15 +142,28 @@ window.canvas = {
       pairs of points 
     ###
     ret = ""
-    for type in ['crosses', 'checks', 'exclamations', 'comments']
+    for type in ['crosses', 'checks', 'exclamations']
       switch type
         when 'crosses' then ret += "_R" # _R_ ...
         when 'checks' then ret += "_G" # _R_ ... _G_....
         when 'exclamations' then ret += "_T" # _R_.... _G_ .... _T_.....
-        when 'comments' then ret += "_C"
       for p in canvas[type]
         ret += "_#{p}"
-    # alert ret
+    ###
+      Comments are complicated because they can have any character in them. 
+      They need to be therefore wrapped properly
+    ###
+    
+    l = canvas.comments.length
+    ret += "_C"
+
+    for cmnts,index  in canvas.comments
+      j = (index % 3)
+      if (j < 2) # => 0 or 1
+        ret += "_#{canvas.comments[index]}"
+      else
+        ret += "_'#{canvas.comments[index]}'" # => += _"comment string"
+    #alert ret
     return ret
 
 }
