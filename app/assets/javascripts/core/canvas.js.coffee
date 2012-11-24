@@ -150,7 +150,7 @@ window.canvas = {
         when 'comments' then ret += "_C"
       for p in canvas[type]
         ret += "_#{p}"
-    alert ret
+    # alert ret
     return ret
 
 }
