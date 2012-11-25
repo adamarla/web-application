@@ -332,6 +332,7 @@ jQuery ->
       abacus.last.student = next_scan.parent()
       abacus.last.response = next_scan.children('.gr').eq(0)
       abacus.update.ticker()
+      canvas.load abacus.last.scan
     else
       alert "Grading done"
     
