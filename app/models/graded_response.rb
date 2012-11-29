@@ -129,7 +129,8 @@ class GradedResponse < ActiveRecord::Base
     crosses = clicks.split('_R_').last.split('G_').first
     ticks = clicks.split('_G_').last.split('T_').first 
     exclamations = clicks.split('_T_').last.split('C_').first
-    comments = clicks.split('_C_').last
+    comments = clicks.split('_C_')
+    comments = (comments.count != 2) ? nil : comments.last
 
     ### First, process the annotation marks 
     [crosses, ticks, exclamations].each_with_index do |t, j|
@@ -146,10 +147,12 @@ class GradedResponse < ActiveRecord::Base
     end
 
     ### Then process the comments 
-    cmnts = comments.split('_')
-    cmnts.each_slice(3) do |cm|
-      # cm = [x,y, comment]
-      ret.push( { :x => cm[0].to_i - x_correction, :y => cm[1].to_i, :code => 3, :text => cm[2] } )
+    unless comments.nil? 
+      cmnts = comments.split('_')
+      cmnts.each_slice(3) do |cm|
+        # cm = [x,y, comment]
+        ret.push( { :x => cm[0].to_i - x_correction, :y => cm[1].to_i, :code => 3, :text => cm[2] } )
+      end
     end
 
     return ret
