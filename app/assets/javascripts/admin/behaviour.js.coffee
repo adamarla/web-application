@@ -321,7 +321,7 @@ jQuery ->
     abacus.obj.accordion 'activate', 0
     return true
 
-  $('#flip-img').click (event) ->
+  $('#flip-img, #restore-img').click (event) ->
     event.stopPropagation()
     curr_student = abacus.current.student
     curr_scan = abacus.current.scan
@@ -332,7 +332,12 @@ jQuery ->
     curr_student.remove()
 
     alert "Grading done .." if not next_scan?
-    $.get "rotate_scan.json?id=#{scan_in_locker}"
+    btn = $(this).attr 'id'
+    switch btn
+      when 'flip-img'
+        $.get "rotate_scan.json?id=#{scan_in_locker}"
+      when 'restore-img'
+        $.get "restore_scan?id=#{scan_in_locker}"
     return true
 
   $('#btn-prev-scan').click (event) ->

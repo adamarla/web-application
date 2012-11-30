@@ -53,6 +53,12 @@ class ExaminersController < ApplicationController
     render :json => { :status => "Sent for rotating"}, :status => :ok
   end
 
+  def restore_pristine_scan
+    scan_in_locker = params[:id]
+    Delayed::Job.enqueue RestorePristineScan.new(scan_in_locker), :priority => 5, :run_at => Time.zone.now
+    render :json => { :status => "Restoring"}, :status => :ok
+  end
+
   def suggestions
     examiner = params[:id].blank? ? current_account.loggable : Examiner.find(params[:id])
     unless examiner.nil?
