@@ -129,9 +129,8 @@ window.abacus = {
           abacus.current.response = null
 
     scan : (fwd) -> # if fwd = true, then look for next else look for previous 
-      result = abacus.find.student(fwd)
-      if result? then return result.children('.scan').eq(0) else return null
-      # return abacus.next.student().children('.scan').eq(0)
+      abacus.find.student(fwd)
+      return abacus.current.scan
 
     response : (fwd) -> # if fwd = true, then look for next else look for previous
       c = abacus.current.response
