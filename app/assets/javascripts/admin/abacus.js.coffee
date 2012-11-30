@@ -123,6 +123,8 @@ window.abacus = {
         abacus.current.scan = abacus.current.student.children('.scan').eq(0)
         if abacus.current.scan?
           abacus.current.response = abacus.current.scan.children(".gr").eq(0)
+          abacus.update.ticker()
+          canvas.load abacus.current.scan
         else
           abacus.current.response = null
 
@@ -137,6 +139,7 @@ window.abacus = {
       result = if fwd then c.next() else c.prev()
       if result.length isnt 0
         abacus.current.response = result
+        abacus.update.ticker()
         canvas.clear() # remove any annotations for a previous question on the same scan
         if result.attr('mcq') is 'false'
           abacus.obj.removeAttr('mcq')
@@ -155,6 +158,8 @@ window.abacus = {
       
       if not abacus.current.student?
         if fwd then alert "Grading done .." else alert "Back to first .."
+      else
+        abacus.update.ticker()
 
       # student.remove()
       return abacus.current.response

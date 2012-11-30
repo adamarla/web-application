@@ -331,36 +331,24 @@ jQuery ->
     next_scan = abacus.current.scan = abacus.next.scan() # not response !!
     curr_student.remove()
 
-    if next_scan?
-      abacus.current.student = next_scan.parent()
-      abacus.current.response = next_scan.children('.gr').eq(0)
-      abacus.update.ticker()
-      canvas.load abacus.current.scan
-    else
-      alert "Grading done"
-    
+    alert "Grading done .." if not next_scan?
     $.get "rotate_scan.json?id=#{scan_in_locker}"
     return true
 
   $('#btn-prev-scan').click (event) ->
     event.stopPropagation()
     abacus.prev.scan()
-    abacus.update.ticker()
-    canvas.load abacus.current.scan
     return true
 
   $('#btn-next-scan').click (event) ->
     event.stopPropagation()
     abacus.next.scan()
-    abacus.update.ticker()
-    canvas.load abacus.current.scan
     return true
 
   $('#btn-next-ques').click (event) ->
     event.stopPropagation()
     curr = abacus.current.scan
     abacus.next.response()
-    abacus.update.ticker()
     now = abacus.current.scan
     if (now isnt curr)
       canvas.load abacus.current.scan
@@ -371,7 +359,6 @@ jQuery ->
     event.stopPropagation()
     curr = abacus.current.scan
     abacus.prev.response()
-    abacus.update.ticker()
     now = abacus.current.scan
     if (now isnt curr)
       canvas.load abacus.current.scan
