@@ -45,7 +45,7 @@ window.canvas = {
     
 
   load : (scan) ->
-    # 'scan' is a jQuery object provided by abacus as abacus.last.scan
+    # 'scan' is a jQuery object provided by abacus as abacus.current.scan
 
     # Clear any previously added check marks etc 
     canvas.clear()
