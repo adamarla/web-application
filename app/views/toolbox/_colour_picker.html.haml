@@ -2,6 +2,16 @@
 #colour-picker
   %div
     #currently-annotating
+
+  %div{ :section => "true" }= "Scans"
+  .buttonset
+    %input.left{ :type => :button, :id => 'btn-prev-scan', :value => '<'} 
+    %input.right{ :type => :button, :id => 'btn-next-scan', :value => '>'} 
+  %div{ :section => "true" }= "Questions"
+  .buttonset
+    %input.left{ :type => :button, :id => 'btn-prev-ques', :value => '<' }
+    %input.right{ :type => :button, :id => 'btn-next-ques', :value => '>'} 
+    
   %div{ :section => "true" }= "Annotations"
   %div{ :coloured => :yes }
     %div.left{ :colour => :crosses }

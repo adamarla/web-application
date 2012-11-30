@@ -1496,6 +1496,7 @@ li {
       font-size: 18px ;
       font-weight: bold ;
       margin-top: -3px ;
+      &.graded { color: $gradians-blue ; }
     }
     #current-student { 
       font: {
@@ -1563,27 +1564,40 @@ li {
       //&:hover, &.selected { border: 1px solid white ; } 
     } 
     &[section] {
-      font-size: 11px ;
+      font-size: 12px ;
       color: $gradians-blue ; 
-      text-transform: lowercase ;
+      font-variant: small-caps ; 
+      padding-bottom: 1px ;
+      margin-top: 4px ;
+      border-bottom: 1px solid $gradians-blue ;
+      border-radius: 0px ;
     }
     > .right { 
       font-size: 10px ; 
       text-transform: lowercase ;
-      min-width: 70% ;
+      // min-width: 70% ;
       text-align: left ;
     } 
     
     > input[type="button"] {
       cursor: pointer ;
-      float: none ;
+      // float: none ;
       width: 90% ;
       font-size: 11px ;
-      margin-top: 12px ;
+      margin: {
+        top: 2px ;
+        bottom: 6px ;
+      }
       text-transform: lowercase ;
       &:hover { background-color: $gradians-blue ; color: white ; }
       &.selected { background-color: transparent ; border: 1px solid $orange ;}
     }
+
+    &.buttonset { 
+      > input[type="button"] {
+        width: 35% ;
+      } 
+    } 
   }
 
   #add-comment { 
@@ -1598,6 +1612,7 @@ li {
     }
     color: $orange ;
     margin-right: 10px ;
+    &.graded { color: $gradians-blue ; }
   } 
 
   #one-click-submit { 

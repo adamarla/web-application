@@ -16,7 +16,7 @@
 
 window.abacus = {
   obj : null,
-  last : {
+  current : {
     student : null,
     scan : null,
     response : null
@@ -61,7 +61,7 @@ window.abacus = {
   }
 
   decompile : (n) ->
-    alert "[#{n}] #{abacus.last.student.attr 'name'} --> #{abacus.last.scan.attr 'name'} --> #{abacus.last.response.attr 'marker'}"
+    alert "[#{n}] #{abacus.current.student.attr 'name'} --> #{abacus.current.scan.attr 'name'} --> #{abacus.current.response.attr 'marker'}"
 
   initialize : (here = '#abacus') ->
     abacus.obj = if typeof here is 'string' then $(here) else here
@@ -71,12 +71,12 @@ window.abacus = {
     abacus.obj.accordion 'activate', 0
 
     pending = $('#list-pending')
-    abacus.last.student =  pending.children('.student').eq(0)
-    abacus.last.scan = abacus.last.student.children('.scan').eq(0)
-    abacus.last.response = abacus.last.scan.children('.gr').eq(0)
+    abacus.current.student =  pending.children('.student').eq(0)
+    abacus.current.scan = abacus.current.student.children('.scan').eq(0)
+    abacus.current.response = abacus.current.scan.children('.gr').eq(0)
     abacus.update.ticker()
 
-    canvas.load abacus.last.scan
+    canvas.load abacus.current.scan
     return true
 
   load : (n) ->
@@ -113,58 +113,98 @@ window.abacus = {
     $(k).addClass 'disabled' for k in panel.children('.level') unless n is 0
     return true
 
-  next : {
-    student : () ->
-      next_student = abacus.last.student.next()
-      if next_student.length isnt 0 then return next_student.eq(0) else return null
+   find : {
+    student : (fwd) -> # if fwd = true, then look for next, else look for previous
+      current = abacus.current.student
+      result = if fwd then current.next() else current.prev()
 
-    scan : () ->
-      next_student = abacus.next.student()
-      if next_student? then return next_student.children('.scan').eq(0) else return null
+      if result.length isnt 0
+        abacus.current.student = result.eq(0)
+        abacus.current.scan = abacus.current.student.children('.scan').eq(0)
+        if abacus.current.scan?
+          abacus.current.response = abacus.current.scan.children(".gr").eq(0)
+        else
+          abacus.current.response = null
+
+    scan : (fwd) -> # if fwd = true, then look for next else look for previous 
+      result = abacus.find.student(fwd)
+      if result? then return result.children('.scan').eq(0) else return null
       # return abacus.next.student().children('.scan').eq(0)
 
-    response : () ->
-      c = abacus.last.response
-      next = c.next() # next question on the same page of the same student
-      if next.length isnt 0
-        abacus.last.response = next
+    response : (fwd) -> # if fwd = true, then look for next else look for previous
+      c = abacus.current.response
+
+      result = if fwd then c.next() else c.prev()
+      if result.length isnt 0
+        abacus.current.response = result
         canvas.clear() # remove any annotations for a previous question on the same scan
-        if next.attr('mcq') is 'false'
+        if result.attr('mcq') is 'false'
           abacus.obj.removeAttr('mcq')
         else
           abacus.obj.attr('mcq','true')
-        return next
+        return result
 
       ###
-        No next question? Well, then move onto the first question in the next scan
-       - which would necessarily be for the next student because within #list-pending
+        No next (prev) question? Well, then move onto the first question in the next(prev)scan
+       - which would necessarily be for the next(prev) student because within #list-pending
        are scans for the *same* page for all students
-
-       Remember to delete this response, its parent scan and then the parent student
-       An empty #list-pending => grading done
       ###
       
       student = c.parent().parent()
-      abacus.last.student = abacus.next.student()
+      abacus.find.student(fwd)
+      
+      if not abacus.current.student?
+        if fwd then alert "Grading done .." else alert "Back to first .."
 
-      if abacus.last.student?
-        abacus.last.scan = abacus.last.student.children('.scan').eq(0)
-        abacus.last.response = if abacus.last.scan? then abacus.last.scan.children('.gr').eq(0) else null
-        canvas.load abacus.last.scan
-      else # grading done
-        alert "Grading done ..."
+      # student.remove()
+      return abacus.current.response
+  } # namespace 'find'
 
-      student.remove()
-      return abacus.last.response
+  next : {
+    student : () ->
+      return abacus.find.student(true)
+
+    scan : () ->
+      return abacus.find.scan(true)
+
+    response : () ->
+      return abacus.find.response(true)
   } # namespace 'next'
+
+  prev : {
+    student : () ->
+      return abacus.find.student(false)
+
+    scan : () ->
+      return abacus.find.scan(false)
+
+    response : () ->
+      return abacus.find.response(false)
+  } # namespace 'prev'
 
   update : {
     ticker : () ->
-      $('#current-student').text abacus.last.student.attr 'name'
-      $('#current-question').text abacus.last.response.attr 'label'
-      $('#currently-annotating').text abacus.last.response.attr 'label'
+      $('#current-student').text abacus.current.student.attr 'name'
+
+      alreadyGraded = abacus.current.response.hasClass 'graded'
+      $('#current-question').text abacus.current.response.attr 'label'
+      $('#currently-annotating').text abacus.current.response.attr 'label'
+
+      if alreadyGraded
+        $('#current-question').addClass 'graded'
+        $('#currently-annotating').addClass 'graded'
+      else
+        $('#current-question').removeClass 'graded'
+        $('#currently-annotating').removeClass 'graded'
       return true
   }
+
+  tagAsGraded : () ->
+    question = abacus.current.response
+    question.addClass 'graded'
+    allDone = if question.siblings().length isnt 0 then false else true
+    question.parent().parent().addClass 'graded' if allDone
+    return allDone
 
 } # namespace abacus 
 
@@ -189,10 +229,11 @@ jQuery ->
         abacus.memory.f = parent.attr 'marker'
       when 2
         abacus.memory.c = parent.attr 'marker'
-        url = "i=#{abacus.memory.i}&f=#{abacus.memory.f}&c=#{abacus.memory.c}&g=#{abacus.last.response.attr 'marker'}"
+        url = "i=#{abacus.memory.i}&f=#{abacus.memory.f}&c=#{abacus.memory.c}&g=#{abacus.current.response.attr 'marker'}"
         form = abacus.obj.closest('form')
         form.attr 'action', "/calibrate?#{url}&clicks=#{canvas.decompile()}"
         form.trigger 'submit'
+        abacus.tagAsGraded()
         abacus.next.response() # Move to the next response
         abacus.update.ticker()
 

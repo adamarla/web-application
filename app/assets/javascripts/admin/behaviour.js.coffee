@@ -195,7 +195,8 @@ jQuery ->
   ###
     Clicking the undo button when grading
   ###
-  $('#undo-btn').click ->
+  $('#undo-btn').click (event) ->
+    event.stopPropagation()
     canvas.undo()
 
   ###
@@ -301,7 +302,7 @@ jQuery ->
   $('#one-click-submit').on 'click', 'input[type="button"]', (event) ->
     event.stopPropagation()
 
-    response_id = abacus.last.response.attr 'marker'
+    response_id = abacus.current.response.attr 'marker'
     return false unless response_id?
 
     url = "i=#{$(this).attr('i')}&f=#{$(this).attr('f')}&c=#{$(this).attr('c')}&g=#{response_id}"
@@ -310,6 +311,7 @@ jQuery ->
 
     form.attr 'action', "/calibrate?#{url}&clicks=#{canvas.decompile()}"
     form.trigger 'submit'
+    abacus.tagAsGraded()
     # Move to next ungraded response
     abacus.next.response() # Move to the next response
     abacus.update.ticker()
@@ -319,24 +321,60 @@ jQuery ->
     abacus.obj.accordion 'activate', 0
     return true
 
-  $('#flip-img').click ->
-    curr_student = abacus.last.student
-    curr_scan = abacus.last.scan
+  $('#flip-img').click (event) ->
+    event.stopPropagation()
+    curr_student = abacus.current.student
+    curr_scan = abacus.current.scan
     scan_in_locker = "#{curr_student.attr('within')}/#{curr_scan.attr('name')}"
 
     #alert "#{curr_student.attr('name')} --> #{scan_in_locker}"
-    next_scan = abacus.last.scan = abacus.next.scan() # not response !!
+    next_scan = abacus.current.scan = abacus.next.scan() # not response !!
     curr_student.remove()
 
     if next_scan?
-      abacus.last.student = next_scan.parent()
-      abacus.last.response = next_scan.children('.gr').eq(0)
+      abacus.current.student = next_scan.parent()
+      abacus.current.response = next_scan.children('.gr').eq(0)
       abacus.update.ticker()
-      canvas.load abacus.last.scan
+      canvas.load abacus.current.scan
     else
       alert "Grading done"
     
     $.get "rotate_scan.json?id=#{scan_in_locker}"
+    return true
+
+  $('#btn-prev-scan').click (event) ->
+    event.stopPropagation()
+    abacus.prev.scan()
+    abacus.update.ticker()
+    canvas.load abacus.current.scan
+    return true
+
+  $('#btn-next-scan').click (event) ->
+    event.stopPropagation()
+    abacus.next.scan()
+    abacus.update.ticker()
+    canvas.load abacus.current.scan
+    return true
+
+  $('#btn-next-ques').click (event) ->
+    event.stopPropagation()
+    curr = abacus.current.scan
+    abacus.next.response()
+    abacus.update.ticker()
+    now = abacus.current.scan
+    if (now isnt curr)
+      canvas.load abacus.current.scan
+    return true
+    
+
+  $('#btn-prev-ques').click (event) ->
+    event.stopPropagation()
+    curr = abacus.current.scan
+    abacus.prev.response()
+    abacus.update.ticker()
+    now = abacus.current.scan
+    if (now isnt curr)
+      canvas.load abacus.current.scan
     return true
     
     
