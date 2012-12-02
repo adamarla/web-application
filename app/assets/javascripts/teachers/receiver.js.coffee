@@ -126,8 +126,8 @@ jQuery ->
     else if url.match(/teacher\/testpapers/)
       here = $('#testpaper')
       coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true}
-      first = here.children('.swiss-knife').eq(0)
-      first.children("input[type='radio']").eq(0).trigger 'click' if first? # auto-load report-card for latest test
+      # first = here.children('.swiss-knife').eq(0)
+      # first.children("input[type='radio']").eq(0).trigger 'click' if first? # auto-load report-card for latest test
     else if url.match(/testpaper\/summary/)
       here = $('#student')
       coreUtil.interface.displayJson json.students, here, 'student', {radio:true}
