@@ -183,7 +183,11 @@ class GradedResponse < ActiveRecord::Base
       if remaining == 0
         t = Testpaper.where(:id => self.testpaper_id).first
         t.update_attribute :publishable, true
-        Mailbot.grading_done(t).deliver
+
+        # Time to inform the teacher. You can do this only if teacher has provided 
+        # an e-mail address. The default we assign will not work
+        tchr = t.quiz.teacher 
+        Mailbot.grading_done(t).deliver if tchr.account.email_is_real?
       end
       return :ok
     else
