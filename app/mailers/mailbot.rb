@@ -23,7 +23,7 @@ class Mailbot < ActionMailer::Base
   end
 
   def grading_done(testpaper)
-    @testpaper = testpaper 
+    @testpaper = testpaper # need a object variable to pass to view
     @quiz = @testpaper.quiz
     @mean = @testpaper.mean?
     @max = @quiz.total?
