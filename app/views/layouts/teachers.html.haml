@@ -31,7 +31,58 @@
     = csrf_meta_tag
 
   %body 
-    - default_marker = "#{current_account.nil? ? :tbd : current_account.loggable_id}"
+    -# Customized markers 
+    - teacher = current_account.loggable
+    - server = "#{Gutenberg['server']}"
+
+    .container 
+      #control-panel.row-fluid{ :marker => "#{teacher.id}" } 
+        .span12
+          .navbar
+            .navbar-inner
+              %a.brand.span4{ :href => "#"}= "Gradians.com"
+              %ul.nav.span8.pull-right
+                -# dropdown -> Quiz -> [ new, edit, save ]
+                %li.dropdown
+                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
+                    Quizzes & Questions
+                    %b.caret
+                  %ul.dropdown-menu.dropdown-inverse.pull-right
+                    %li.nav-header= "quiz"
+                    %li
+                      = minor_link :for => 'new-quiz', :as => 'new quiz'
+                    %li.divider
+                    %li.nav-header= "Suggest Questions"
+                    %li
+                      = minor_link :for => 'suggestion', :as => 'Using the suggestion form', 
+                      :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
+                    %li
+                      %a{ :href => "#"}= "Uploading a Word document"
+                    %li
+                %li.dropdown
+                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
+                    Report Cards
+                    %b.caret
+                -# Central place for editing user login details 
+                %li.pull-right
+                  .btn-group
+                    %a.btn.dropdown-toggle#account-ops{ :href => '#', 'data-toggle' => :dropdown }
+                      Hello, #{teacher.first_name} !
+                      %span.caret
+                    %ul.dropdown-menu
+                      %li
+                        %a#logout-link{ :href => logout_path}= "Logout"
+                      %li
+                        %a#edit-login-info{ :href => '#edit-passwd', 'data-toggle' => :modal }= "Change Password"
+                      %li
+                        %a#edit-login-info{ :href => '#edit-email', 'data-toggle' => :modal }= "Provide Email"
+      .row-fluid
+        #side-panel.span4
+        #wide-panel.span8
+
+    = yield :toolbox
+    = render :partial => 'accounts/update'
+  -#
     #visible-active-area
       #control-panel.panel.horizontal{ :marker => default_marker } 
         #main-links 
@@ -43,4 +94,3 @@
       #right-panel.panel.slim.left
       #wide-panel.panel.wide.left
 
-    = yield :toolbox
