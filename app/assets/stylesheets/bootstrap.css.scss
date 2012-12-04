@@ -8,6 +8,8 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
+$panel-colour: lighten(black, 17%) ;
+
 .clearfix {
   *zoom: 1;
   &:before {
@@ -155,7 +157,8 @@ body {
   font-size: 12px;
   line-height: 14px;
   color: #333333;
-  background-color: #ffffff;
+  // background-color: #ffffff;
+  background-color: darken($panel-colour, 12%) ;
 }
 
 a {

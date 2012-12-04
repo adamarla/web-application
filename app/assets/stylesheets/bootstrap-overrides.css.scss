@@ -3,3 +3,76 @@
   This file is included *before* bootstrap.css.scss
   Hence, in case of a conflict, the directives defined here take precedence 
 */ 
+
+$gray: #191919 ;
+$lightgray: lighten($gray, 30%) ;
+$gradians-blue: #6ca7ab ;
+$orange:#ffa500 ;
+$panel-colour: lighten(black, 17%) ;
+
+.navbar-inverse {
+  li > a {
+    color: white ;
+  }
+} 
+
+.navbar-inner { 
+  border-radius: 0px ;
+  background-color: $gradians-blue ;
+}
+
+.dropdown-menu { 
+  > li {
+    > a { 
+      font-size: 11px ;
+    } 
+    > .description { 
+      color: red ;
+      font-size: 10px;
+      padding: 0px 20px ;
+      text-transform: lowercase ;
+    } 
+  } 
+} 
+
+.instruction { 
+  font: { 
+    size: 11px ; 
+    weight: 400 ; 
+  } 
+  color: #6ca7ab ; 
+  text: {
+    transform: lowercase ;
+  } 
+  margin: 0px 10px ;
+  line-height: 12px ;
+} 
+
+
+#signin-form { 
+  margin-top: 10px ;
+} 
+
+.orange { 
+  color: $orange ;
+} 
+
+.blue { 
+  color: $gradians-blue ;
+  font-weight: 350 ;
+} 
+
+.fine { 
+  font-weight: 300 ;
+} 
+
+.modal { 
+  &.narrow { 
+    width: 350px ;
+  } 
+} 
+
+#logout-link { color: $orange ; }
+#account-ops {
+  background: $panel-colour ;
+} 
