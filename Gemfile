@@ -33,6 +33,8 @@ gem 'rabl'
 gem 'savon'
 gem 'carrierwave' # for uploading 
 gem 'spreadsheet'
+gem 'simple_form'
+gem 'country_select'
 
 gem 'delayed_job_active_record'
 
