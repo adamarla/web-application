@@ -1,11 +1,6 @@
 /*
-*= require formtastic 
-*= require formtastic_changes 
-*= require gutenberg 
-*= require new-interface
-*= require yardsticks
-*= require tweaks 
-*= require jquery-custom-theme/styling 
+*= require bootstrap-overrides.css.scss
+*= require bootstrap.css.scss
 *= require_directory ../../../vendor/assets/stylesheets/popeye 
 *= require ../../../vendor/assets/stylesheets/media-viewer/style 
 */ 
