@@ -14,6 +14,10 @@ jQuery ->
     }
   }
 
+  teacher = $('#control-panel').attr 'marker'
+  $.get 'quizzes/list.json'
+
+  ###
   $('#main-links a').click ->
     teacher = $('#control-panel').attr 'marker'
     id = $(this).attr 'id'
@@ -27,6 +31,7 @@ jQuery ->
         $.get "teacher/sektions.json?id=#{teacher}"
         $.get "teacher/students.json?id=#{teacher}&exclusive=no"
     return true
+  ###
 
   # Assigning a Quiz to students selected in #student-list
   $('#student-list > form:first').submit ->

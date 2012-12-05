@@ -1,0 +1,8 @@
+
+%ul#tasks-on-account.dropdown-menu
+  %li
+    %a#logout-link{ :href => logout_path}= "Logout"
+  %li
+    %a#edit-login-info{ :href => '#edit-passwd', 'data-toggle' => :modal }= "Change Password"
+  %li
+    %a#edit-login-info{ :href => '#edit-email', 'data-toggle' => :modal }= "Provide Email"

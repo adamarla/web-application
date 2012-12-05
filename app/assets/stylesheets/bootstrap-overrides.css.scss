@@ -9,6 +9,7 @@ $lightgray: lighten($gray, 30%) ;
 $gradians-blue: #6ca7ab ;
 $orange:#ffa500 ;
 $panel-colour: lighten(black, 17%) ;
+$deep-blue: #0081c2 ;
 
 .navbar-inverse {
   li > a {
@@ -74,7 +75,20 @@ $panel-colour: lighten(black, 17%) ;
 
 #logout-link { color: $orange ; }
 #account-ops {
-  background: $panel-colour ;
+  background: $deep-blue ;
   float: right ;
   margin-top: 5px ;
+  height: 10px ;
+  padding: 9px 13px 12px 13px ;
+} 
+
+.g-panel { 
+  h3 {
+    font-weight: 300 ; 
+    color: $gradians-blue ;
+  }
+} 
+
+#cp-account-link { 
+  float: right ;
 } 

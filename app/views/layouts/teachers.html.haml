@@ -1,5 +1,9 @@
 
-- content_for :toolbox do 
+-# Customized markers 
+- tchr = current_account.loggable
+- srvr = "#{Gutenberg['server']}"
+
+-content_for :toolbox do
   #toolbox.hidden 
     = render :partial => 'quizzes/controls'
 
@@ -20,6 +24,9 @@
     = render :partial => 'toolbox/inline_error'
     = render :partial => 'toolbox/swiss_knife'
 
+    = render :partial => 'tasks/user_account'
+    = render :partial => 'tasks/teacher_quiz', :locals => { :teacher => tchr, :server => srvr }
+
     #flot-chart
 
 !!!5
@@ -31,12 +38,9 @@
     = csrf_meta_tag
 
   %body 
-    -# Customized markers 
-    - teacher = current_account.loggable
-    - server = "#{Gutenberg['server']}"
 
     .container-fluid 
-      #control-panel.row-fluid{ :marker => "#{teacher.id}" } 
+      #control-panel.g-panel.row-fluid{ :marker => "#{tchr.id}" } 
         .span12
           .navbar.navbar-inverse
             .navbar-inner
@@ -44,53 +48,27 @@
               %ul.nav.span8.pull-right
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
-                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
+                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown,
+                  :task_list => '#teacher-quiz' }
                     Quizzes & Questions
-                    %b.caret
-                  %ul.dropdown-menu.dropdown-inverse.pull-right
-                    %li.nav-header= "quiz"
-                    %li
-                      = minor_link :for => 'new-quiz', :as => 'new quiz'
-                    %li.divider
-                    %li.nav-header= "Suggest Questions"
-                    %li
-                      = minor_link :for => 'suggestion', :as => 'Using the suggestion form', 
-                      :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
-                    %li
-                      %a{ :href => "#"}= "Uploading a Word document"
-                    %li
+                    %span.caret
                 %li.dropdown
                   %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
                     Report Cards
                     %b.caret
                 -# Central place for editing user login details 
-                %li.pull-right
-                  .btn-group
-                    %a.btn.dropdown-toggle#account-ops{ :href => '#', 'data-toggle' => :dropdown }
-                      Hello, #{teacher.first_name} !
-                      %span.caret
-                    %ul.dropdown-menu
-                      %li
-                        %a#logout-link{ :href => logout_path}= "Logout"
-                      %li
-                        %a#edit-login-info{ :href => '#edit-passwd', 'data-toggle' => :modal }= "Change Password"
-                      %li
-                        %a#edit-login-info{ :href => '#edit-email', 'data-toggle' => :modal }= "Provide Email"
-      .row-fluid
-        #side-panel.span4
-        #wide-panel.span8
+                %li#cp-account-link.dropdown.pull-right
+                  %a.dropdown-toggle#account-ops{ :href => '#', 'data-toggle' => :dropdown, 
+                  :task_list => '#tasks-on-account' }
+                    Hello, #{tchr.first_name}
+                    %span.caret
+      #desktop.row-fluid
+        #lp.g-panel.span4
+          #lp-quiz-lst
+          #lp-sektion-lst
+          #lp-student-lst
+        #wp.g-panel.span8
+          #wp-preview
 
     = yield :toolbox
     -#= render :partial => 'accounts/update'
-  -#
-    #visible-active-area
-      #control-panel.panel.horizontal{ :marker => default_marker } 
-        #main-links 
-          = render :partial => 'teachers/control-panel'
-        -# Links required in the currently loaded context
-        #minor-links
-      #side-panel.panel.left.slim
-      #middle-panel.panel.slim.left
-      #right-panel.panel.slim.left
-      #wide-panel.panel.wide.left
-

@@ -1,0 +1,14 @@
+
+-# teacher and server come from layout file
+
+%ul#teacher-quiz.dropdown-menu.dropdown-inverse.pull-right
+  %li.nav-header= "quiz"
+  %li
+    = minor_link :for => 'new-quiz', :as => 'new quiz'
+  %li.divider
+  %li.nav-header= "Suggest Questions"
+  %li
+    = minor_link :for => 'suggestion', :as => 'Using the suggestion form',
+    :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
+  %li
+    %a{ :href => "#"}= "Uploading a Word document"
