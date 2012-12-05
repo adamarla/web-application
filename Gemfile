@@ -9,7 +9,7 @@ gem 'pg' # use PostgreSQL
 gem 'haml-rails' # use haml as he default view generator
 
 gem 'haml'
-gem 'devise'
+gem 'devise', "2.0.1"
 
 group :development do
   gem 'annotate', '2.4.0' 
