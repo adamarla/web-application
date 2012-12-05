@@ -75,4 +75,6 @@ $panel-colour: lighten(black, 17%) ;
 #logout-link { color: $orange ; }
 #account-ops {
   background: $panel-colour ;
+  float: right ;
+  margin-top: 5px ;
 } 

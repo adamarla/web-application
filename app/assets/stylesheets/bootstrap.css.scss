@@ -9,6 +9,8 @@
  */
 
 $panel-colour: lighten(black, 17%) ;
+$gradians-blue : #6ca7ab ;
+$orange : #fda500 ;
 
 .clearfix {
   *zoom: 1;
@@ -2028,8 +2030,8 @@ legend + .control-group {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  color: #333333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+  color: white ;
+  // text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background-color: #f5f5f5;
   background-image: -moz-linear-gradient(top, white, #e6e6e6);
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#e6e6e6));
@@ -2065,7 +2067,7 @@ legend + .control-group {
     *margin-left: 0;
   }
   &:hover {
-    color: #333333;
+    color: $gradians-blue ; 
     text-decoration: none;
     background-color: #e6e6e6;
     *background-color: #d9d9d9;
@@ -3247,10 +3249,10 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
   display: block;
   padding: 3px 15px;
   font-size: 11px;
-  font-weight: bold;
+  font-weight: 300 ;
   line-height: 14px;
-  color: #999999;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  color: $gradians-blue ;
+  // text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
 }
 
@@ -3666,13 +3668,13 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 }
 
 .navbar .brand {
-  float: left;
+  float: left ;
   display: block;
   padding: 13px 20px 13px;
   margin-left: -20px;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 200;
-  color: #777777;
+  color: $orange ;
   text-shadow: 0 1px 0 #ffffff;
   &:hover {
     text-decoration: none;
@@ -4030,12 +4032,10 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     border-color: #252525;
   }
   .brand, .nav > li > a {
-    color: #999999;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   }
-  .brand:hover {
-    color: #ffffff;
-  }
+  .nav > li > a { color: white ; }
+  .brand { color: $orange ; }
   .nav {
     > li > a {
       &:hover {
@@ -5132,7 +5132,7 @@ a.thumbnail:hover {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  background-color: #ffffff;
+  background-color: $panel-colour ;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   *border-right-width: 2px;

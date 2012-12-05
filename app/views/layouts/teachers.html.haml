@@ -35,10 +35,10 @@
     - teacher = current_account.loggable
     - server = "#{Gutenberg['server']}"
 
-    .container 
+    .container-fluid 
       #control-panel.row-fluid{ :marker => "#{teacher.id}" } 
         .span12
-          .navbar
+          .navbar.navbar-inverse
             .navbar-inner
               %a.brand.span4{ :href => "#"}= "Gradians.com"
               %ul.nav.span8.pull-right
@@ -81,7 +81,7 @@
         #wide-panel.span8
 
     = yield :toolbox
-    = render :partial => 'accounts/update'
+    -#= render :partial => 'accounts/update'
   -#
     #visible-active-area
       #control-panel.panel.horizontal{ :marker => default_marker } 
