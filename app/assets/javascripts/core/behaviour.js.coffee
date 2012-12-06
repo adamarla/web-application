@@ -70,7 +70,7 @@ jQuery ->
       tasks = $('#toolbox').children tasks
       if tasks.length isnt 0
         m = tasks.clone()
-        m.appendTo $(this).parent()
+        m.insertAfter $(this)
         m.addClass 'show'
     return true
 
