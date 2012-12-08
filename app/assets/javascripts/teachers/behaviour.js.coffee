@@ -14,8 +14,8 @@ jQuery ->
     }
   }
 
-  teacher = $('#control-panel').attr 'marker'
-  $.get 'quizzes/list.json'
+  #teacher = $('#control-panel').attr 'marker'
+  #$.get 'quizzes/list.json'
 
   ###
   $('#main-links a').click ->

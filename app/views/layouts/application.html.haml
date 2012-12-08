@@ -9,7 +9,7 @@
     = csrf_meta_tag
   %body 
     .container-fluid 
-      .row-fluid
+      #control-panel.g-panel.row-fluid
         .span12
           .navbar.navbar-inverse
             .navbar-inner
@@ -20,17 +20,10 @@
                 %li
                   %a{ :href => "#"}= "About Us"
                 %li.dropdown
-                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
+                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown, :menu => '#user-downloads', :fixed => :true }
                     Scanbot
                     %b.caret
-                  %ul.dropdown-menu
-                    %li.nav-header= "Download for .."
-                    %li
-                      %a{ :href => "#"}= "Microsoft Windows"
-                    %li
-                      %a{ :href => "#" }= "Linux"
-                    %li
-                      %a{ :href => "#" }= "Apple Macintosh"
+                  = render :partial => 'tasks/user_download'
                 %li
                   #signin-form.pull-right
                     %form.form-inline.pull-right{ :action => session_path(:account), :method => :post }

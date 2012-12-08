@@ -35,6 +35,7 @@ gem 'carrierwave' # for uploading
 gem 'spreadsheet'
 gem 'simple_form'
 gem 'country_select'
+gem 'kaminari' # for pagination
 
 gem 'delayed_job_active_record'
 

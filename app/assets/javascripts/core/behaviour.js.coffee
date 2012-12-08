@@ -43,33 +43,40 @@ jQuery ->
     $(m).addClass 'hide'
 
   $('.dropdown-menu').on 'click', 'li > a', (event) ->
-    event.stopPropagation()
-    for j in ['lp','mp','rp','wp']
-      continue unless $(this).hasAttr j
+    for j in ['lp','mp','rp','wp'] # lp = left-panel, mp = middle-panel, rp = right-panel, wp = wide-panel
       show = $(this).attr j
+      continue unless show?
       for m in show.siblings()
         $(m).addClass 'hide'
       show.removeClass 'hide'
     return true
 
   $('.dropdown-toggle').click (event) ->
-    event.stopPropagation()
-    tasks = $(this).attr 'task_list'
-    return false unless tasks?
+    menu = $(this).attr 'menu' # => is an ID attribute 
+    return false unless menu?
 
     parent = $(this).parent()
-    already = if parent.children(tasks).length is 0 then false else true
+    menuObj = parent.children(menu).eq(0)
+    already = if menuObj.length > 0 then true else false
+    
+    # Links the control-panel have non-contextual - or fixed - menus. 
+    # They need not be removed on every click because they aren't shared across links
+    fixed = $(this).attr('fixed') is 'true'
+
+    # if there are any other 'sibling/cousin' menus open - then remove / hide them 
+    for uncle in parent.siblings()
+      lnk = $(uncle).children('.dropdown-toggle').eq(0)
+      siblingObj = $(uncle).children('.dropdown-menu').eq(0)
+      if siblingObj.length > 0
+        if lnk.attr('fixed') is 'true' then siblingObj.removeClass('show') else siblingObj.remove()
+
     if already
-      parent.children(tasks).eq(0).remove()
+      if fixed then menuObj.addClass('show') else menuObj.remove()
     else
-      # if there are any other 'sibling/cousin' menus open - then remove them 
-      for uncle in parent.siblings()
-        menu = $(uncle).children('.dropdown-menu').eq(0)
-        menu.remove() if menu?
       # all task-lists are rendered within toolbox
-      tasks = $('#toolbox').children tasks
-      if tasks.length isnt 0
-        m = tasks.clone()
+      menuObj = $('#toolbox').children menu
+      if menuObj.length isnt 0
+        m = menuObj.clone()
         m.insertAfter $(this)
         m.addClass 'show'
     return true
@@ -77,8 +84,17 @@ jQuery ->
   $('.g-panel').focusout (event) -> # close all open menus when a panel loses focus
     event.stopPropagation()
     for m in $(this).find '.dropdown-menu'
-      $(m).remove()
+      lnk = $(m).siblings('.dropdown-toggle').eq(0)
+      if lnk.attr('fixed') is 'true' then $(m).removeClass('show') else $(m).remove()
     return true
+
+  # Auto-click the one link in #control-panel that is identified as the default link
+
+  for m in $('#control-panel ul.dropdown-menu > li > a')
+    if $(m).attr('default') is 'true'
+      $(m).click()
+
+
 
 
 

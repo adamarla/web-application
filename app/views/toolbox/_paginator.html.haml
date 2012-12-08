@@ -1,0 +1,8 @@
+
+-# url is a variable that comes from the calling view
+
+.pagination
+  %ul
+    - for pg in [*1..8]
+      %li
+        = link_to pg, "#{url}?page=#{pg}", :remote => true, :method => :put

@@ -24,9 +24,6 @@
     = render :partial => 'toolbox/inline_error'
     = render :partial => 'toolbox/swiss_knife'
 
-    = render :partial => 'tasks/user_account'
-    = render :partial => 'tasks/teacher_quiz', :locals => { :teacher => tchr, :server => srvr }
-
     #flot-chart
 
 !!!5
@@ -49,9 +46,10 @@
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
                   %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown,
-                  :task_list => '#teacher-quiz' }
+                  :menu => '#teacher-quiz', :fixed => :true }
                     Quizzes & Questions
                     %span.caret
+                  = render :partial => 'tasks/teacher_quiz', :locals => { :teacher => tchr, :server => srvr }
                 %li.dropdown
                   %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
                     Report Cards
@@ -59,9 +57,10 @@
                 -# Central place for editing user login details 
                 %li#cp-account-link.dropdown.pull-right
                   %a.dropdown-toggle#account-ops{ :href => '#', 'data-toggle' => :dropdown, 
-                  :task_list => '#tasks-on-account' }
+                  :menu => '#tasks-on-account', :fixed => :true }
                     Hello, #{tchr.first_name}
                     %span.caret
+                  = render :partial => 'tasks/user_account'
       #desktop.row-fluid
         #lp.g-panel.span4
           #lp-quiz-lst

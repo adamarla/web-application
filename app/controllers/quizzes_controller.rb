@@ -1,4 +1,5 @@
 class QuizzesController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!
   respond_to :json
 
@@ -15,7 +16,13 @@ class QuizzesController < ApplicationController
 
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
-    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL').order(:klass).order('created_at DESC')
+    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL')
+    @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:id].to_i)
+
+    n = @quizzes.count 
+    @per_pg, @last_pg = pagination_layout_details n
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @quizzes = @quizzes.order('created_at DESC').page(pg).per(@per_pg)
   end
 
   def preview
