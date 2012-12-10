@@ -23,7 +23,7 @@
                   %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown, :menu => '#user-downloads', :fixed => :true }
                     Scanbot
                     %b.caret
-                  = render :partial => 'tasks/user_download'
+                  = render :partial => 'tasks/user/download'
                 %li
                   #signin-form.pull-right
                     %form.form-inline.pull-right{ :action => session_path(:account), :method => :post }

@@ -49,7 +49,7 @@
                   :menu => '#teacher-quiz', :fixed => :true }
                     Quizzes & Questions
                     %span.caret
-                  = render :partial => 'tasks/teacher_quiz', :locals => { :teacher => tchr, :server => srvr }
+                  = render :partial => 'tasks/teacher/quiz_main', :locals => { :teacher => tchr, :server => srvr }
                 %li.dropdown
                   %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
                     Report Cards
@@ -60,7 +60,7 @@
                   :menu => '#tasks-on-account', :fixed => :true }
                     Hello, #{tchr.first_name}
                     %span.caret
-                  = render :partial => 'tasks/user_account'
+                  = render :partial => 'tasks/user/account'
       #desktop.row-fluid
         #lp.g-panel.span4
           #lp-quiz-lst
