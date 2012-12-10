@@ -110,6 +110,16 @@ jQuery ->
     if $(m).attr('default') is 'true'
       $(m).click()
 
+  $('.pagination a').click (event) ->
+    event.stopPropagation()
+    li = $(this).parent()
+    return false if li.hasClass 'disabled'
+    for m in li.siblings 'li'
+      $(m).removeClass 'active'
+    li.addClass 'active'
+    $.get $(this).attr 'href'
+    return false # already issued AJAX GET request. No need for further processing
+
 
 
 
