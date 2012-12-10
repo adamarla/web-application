@@ -5,7 +5,8 @@ node(:quizzes) {
   @quizzes.map{ |n|
     {
       :quiz => {
-        :name => n.name
+        :name => n.name,
+        :id => n.id
       }
     }
   }
