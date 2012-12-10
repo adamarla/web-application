@@ -17,6 +17,19 @@ window.gutenberg = {
   the role-specific .js file
 ###
 
+window.menu = {
+  close : (m) ->
+    return false if not m.hasClass 'dropdown-menu'
+    lnk = m.prev() # .dropdown-toggle <- .dropdown-menu
+    if lnk.attr('fixed') is 'true'
+      m.removeClass 'show'
+    else
+      m.remove()
+    return true
+
+}
+
+
 jQuery ->
   ###
     This next call is unassuming but rather important. We initialize 
@@ -35,12 +48,19 @@ jQuery ->
 
   $.ajax pingargs
 
+  $('html').click (event) ->
+    ui = event.target
+    for m in $('.g-panel')
+      for p in $(m).find '.dropdown-menu'
+        menu.close $(p)
+    return true
+
   ###############################################
   # Onto core bindings 
   ###############################################
 
-  for m in $('#desktop').children()
-    $(m).addClass 'hide'
+  #for m in $('#desktop').children()
+  #  $(m).addClass 'hide'
 
   $('.dropdown-menu').on 'click', 'li > a', (event) ->
     for j in ['lp','mp','rp','wp'] # lp = left-panel, mp = middle-panel, rp = right-panel, wp = wide-panel
@@ -54,6 +74,7 @@ jQuery ->
   $('.dropdown-toggle').click (event) ->
     menu = $(this).attr 'menu' # => is an ID attribute 
     return false unless menu?
+    event.stopPropagation()
 
     parent = $(this).parent()
     menuObj = parent.children(menu).eq(0)
@@ -74,18 +95,13 @@ jQuery ->
       if fixed then menuObj.addClass('show') else menuObj.remove()
     else
       # all task-lists are rendered within toolbox
-      menuObj = $('#toolbox').children menu
+      menuObj = $('#toolbox').children(menu).eq(0)
       if menuObj.length isnt 0
-        m = menuObj.clone()
+        newId = "#{menuObj.attr('id')}-curr" # There shouldn't be 2 elements with the same ID
+        m = $(menuObj).clone()
+        m.attr 'id', newId
         m.insertAfter $(this)
         m.addClass 'show'
-    return true
-
-  $('.g-panel').focusout (event) -> # close all open menus when a panel loses focus
-    event.stopPropagation()
-    for m in $(this).find '.dropdown-menu'
-      lnk = $(m).siblings('.dropdown-toggle').eq(0)
-      if lnk.attr('fixed') is 'true' then $(m).removeClass('show') else $(m).remove()
     return true
 
   # Auto-click the one link in #control-panel that is identified as the default link
