@@ -20,6 +20,7 @@ jQuery ->
       for m in json.quizzes
         quiz = m.quiz
         line.write here, quiz
+      pagination.enable $('#pgs-quiz-lst'), json.last_pg
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
       scroll.loadJson json.testpapers, 'testpaper', here, scroll.having.link | scroll.having.nolabel
