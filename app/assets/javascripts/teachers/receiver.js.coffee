@@ -20,7 +20,7 @@ jQuery ->
       here.addClass 'show'
       for m in json.quizzes
         quiz = m.quiz
-        line.write here, quiz, '#per-quiz'
+        line.write here, quiz
       pagination.enable $('#pgs-quiz-lst'), json.last_pg
       here.children('.one-line, .two-line').eq(0).click()
     else if url.match(/quiz\/testpapers/)
