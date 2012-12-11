@@ -275,7 +275,7 @@ jQuery ->
 ## Bootstrap 
 ############################################################################
 
-  $('#lp-quiz-lst .tab-pane').on 'click', '.one-line, .two-line', (event) ->
+  $('#lp-lst-quizzes').on 'click', '.one-line, .two-line', (event) ->
     event.stopPropagation()
     marker = $(this).attr 'marker'
     $.get "quiz/preview.json?id=#{marker}"

@@ -132,7 +132,7 @@ jQuery ->
     $.get $(this).attr 'href'
     return false # already issued AJAX GET request. No need for further processing
 
-  $('.tab-pane, .pill-pane').on 'click', '.one-line, .two-line', (event) ->
+  $('.content').on 'click', '.one-line, .two-line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
        .one-line or .two-line hasnt been selected first 
@@ -156,9 +156,4 @@ jQuery ->
       for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
         menu.close $(m)
     return true
-
-
-
-
-
 

@@ -1,21 +1,11 @@
 
-%ul.nav.nav-pills.offset1#quiz-lst
-  %li.dropdown
-    %a.dropdown-toggle{ :href => "#grd-nine", :filter => "klass=9", :menu => '#quiz-filter' }
-      K - 9 
-      %b.caret
-  %li
-    %a{ :href => "#grd-ten", :filter => "klass=10" }= "K - 10"
-  %li
-    %a{ :href => "#grd-eleven", :filter => "klass=11" }= "K - 11"
-  %li
-    %a{ :href => "#grd-twelve", :filter => "klass=12" }= "K - 12"
-.tab-content.offset1
-  =render :partial => 'toolbox/paginator', :locals => { :id => "pgs-quiz-lst", :url => "quizzes/list" }
-  #grd-nine.tab-pane
-  #grd-ten.tab-pane
-  #grd-eleven.tab-pane
-  #grd-twelve.tab-pane
+.row-fluid.offset1
+  .row-fluid
+    .span8
+      =render :partial => 'toolbox/paginator', :locals => { :id => "pgs-quiz-lst", :url => "quizzes/list" }
+    .span4
+  .row-fluid.content#lp-lst-quizzes
+
 
 
   
