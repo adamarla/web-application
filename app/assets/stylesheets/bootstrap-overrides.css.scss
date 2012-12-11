@@ -139,9 +139,13 @@ $lightblue: lighten($deep-blue, 23%) ;
     font-weight: 500 ;
   } 
   &.selected {
-    color: $orange ; 
     font-weight: 400 ;
-    font-size: 14px ;
+    > .dropdown { > a { color: $orange ; } }
+  } 
+
+  > .dropdown { 
+    font-size: 10px ;
+    > a { color: white ; } 
   } 
 } 
 

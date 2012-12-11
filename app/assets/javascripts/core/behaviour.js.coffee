@@ -27,6 +27,46 @@ window.menu = {
       m.remove()
     return true
 
+  show : (m) ->
+    return false unless m.hasClass('dropdown-toggle')
+    menu = m.attr 'menu' # => is an ID attribute 
+    return false unless menu?
+    # alert menu
+
+    parent = m.parent()
+    menuObj = parent.children(menu).eq(0)
+    already = if menuObj.length > 0 then true else false
+    
+    # Links the control-panel have non-contextual - or fixed - menus. 
+    # They need not be removed on every click because they aren't shared across links
+    fixed = m.attr('fixed') is 'true'
+
+    # if there are any other 'sibling/cousin' menus open - then remove / hide them 
+    up = m.attr 'up'
+    up = if up? then parseInt(up) else 1
+    for z in [0 ... up-1]  # we have already gone one-level up
+      parent = parent.parent()
+
+    for uncle in parent.siblings()
+      lnk = $(uncle).find('.dropdown-toggle').eq(0)
+      siblingObj = $(uncle).find('.dropdown-menu').eq(0)
+      if siblingObj.length > 0
+        if lnk.attr('fixed') is 'true' then siblingObj.removeClass('show') else siblingObj.remove()
+
+    if already
+      if fixed then menuObj.addClass('show') else menuObj.remove()
+    else
+      # all task-lists are rendered within toolbox
+      menuObj = $('#toolbox').children(menu).eq(0)
+      if menuObj.length isnt 0
+        newId = "#{menuObj.attr('id')}-curr" # There shouldn't be 2 elements with the same ID
+        newObj = $(menuObj).clone()
+        newObj.attr 'id', newId
+        newObj.insertAfter m
+        newObj.addClass 'show'
+    return true
+    
+
 }
 
 
@@ -39,7 +79,7 @@ jQuery ->
     if response.deployment is 'production'
       gutenberg.server = gutenberg.serverOptions.remote
     else
-      gutenberg.server = gutenberg.serverOptions.local
+      gutenberg.server = gutenberg.serverOptions.remote
     
   pingargs =
   	url: '/ping'
@@ -72,36 +112,8 @@ jQuery ->
     return true
 
   $('.dropdown-toggle').click (event) ->
-    menu = $(this).attr 'menu' # => is an ID attribute 
-    return false unless menu?
     event.stopPropagation()
-
-    parent = $(this).parent()
-    menuObj = parent.children(menu).eq(0)
-    already = if menuObj.length > 0 then true else false
-    
-    # Links the control-panel have non-contextual - or fixed - menus. 
-    # They need not be removed on every click because they aren't shared across links
-    fixed = $(this).attr('fixed') is 'true'
-
-    # if there are any other 'sibling/cousin' menus open - then remove / hide them 
-    for uncle in parent.siblings()
-      lnk = $(uncle).children('.dropdown-toggle').eq(0)
-      siblingObj = $(uncle).children('.dropdown-menu').eq(0)
-      if siblingObj.length > 0
-        if lnk.attr('fixed') is 'true' then siblingObj.removeClass('show') else siblingObj.remove()
-
-    if already
-      if fixed then menuObj.addClass('show') else menuObj.remove()
-    else
-      # all task-lists are rendered within toolbox
-      menuObj = $('#toolbox').children(menu).eq(0)
-      if menuObj.length isnt 0
-        newId = "#{menuObj.attr('id')}-curr" # There shouldn't be 2 elements with the same ID
-        m = $(menuObj).clone()
-        m.attr 'id', newId
-        m.insertAfter $(this)
-        m.addClass 'show'
+    menu.show $(this)
     return true
 
   # Auto-click the one link in #control-panel that is identified as the default link
@@ -119,6 +131,15 @@ jQuery ->
     li.addClass 'active'
     $.get $(this).attr 'href'
     return false # already issued AJAX GET request. No need for further processing
+
+  $('.tab-pane, .pill-pane').on 'click', '.one-line, .two-line', (event) ->
+    what = $(event.target)
+    showMenu = what.hasClass('dropdown') or what.hasClass('dropdown-toggle') or what.hasClass('span4')
+    # alert what.attr 'class'
+    if showMenu
+      event.stopImmediatePropagation()
+      menu.show what.find('.dropdown-toggle').eq(0)
+    return true
 
 
 

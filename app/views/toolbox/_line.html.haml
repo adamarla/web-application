@@ -1,22 +1,26 @@
 
+-# The :up attribute on .dropdown-toggle is the number of levels UP 
+-# one needs to go from it to get to the * root * of the repeating 
+-# structure within which would be another (different) .dropdown-toggle
+-# This information is used to close one menu when another 'sibling' menu
+-# is clicked on
+
 -# One-Line 
 
 .row-fluid.one-line
-  .span8
+  .dropdown.span2
+    %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown, :up => 2 }
+      menu
+      %span.caret
+  .span9
     .row-fluid.text.offset1
-  .span4
-    .dropdown
-      %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown }
-        More ...
-        %span.caret
       
 -# Two-Lines 
 .row-fluid.two-line
-  .span8
+  .dropdown.span2
+    %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown, :up => 2 }
+      More ...
+      %span.caret
+  .span10
     .row-fluid.text.offset1
     .row-fluid.subtext.offset1
-  .span4
-    .dropdown
-      %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown }
-        More ...
-        %span.caret
