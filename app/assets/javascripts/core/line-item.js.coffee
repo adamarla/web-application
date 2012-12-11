@@ -22,7 +22,7 @@ window.line = {
     if menu?
       ddown.attr 'menu', menu
     else
-      j = ddown.closest('.span4')
+      j = ddown.closest('.dropdown')
       j.remove()
 
     # Append the cloned and edited obj
