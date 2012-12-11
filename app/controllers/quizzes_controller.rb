@@ -26,7 +26,7 @@ class QuizzesController < ApplicationController
   end
 
   def preview
-    @quiz = Quiz.where(:atm_key => params[:id]).first
+    @quiz = Quiz.where(:id => params[:id]).first
     head :bad_request if @quiz.nil?
   end
 

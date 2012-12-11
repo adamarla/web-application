@@ -14,8 +14,8 @@ jQuery ->
     }
   }
 
-  #teacher = $('#control-panel').attr 'marker'
-  #$.get 'quizzes/list.json'
+  teacher = $('#control-panel').attr 'marker'
+  $.get 'quizzes/list.json'
 
   ###
   $('#main-links a').click ->
@@ -247,27 +247,6 @@ jQuery ->
     coreUtil.forms.modifyAction $(this), "sektion.json?id=#{sektion_id}", 'put'
     return true
 
-  $('#calibrations-link').click ->
-    id = $('#control-panel').attr 'marker'
-    $.get "load/grades.json?id=#{id}"
-    $('#calibrations a').eq(0).click() # click on the first calibration to get things started
-    $.get "preview/calibrations"
-    return true
-
-  $('#calibrations').on 'click', 'li', (event) ->
-    event.stopPropagation()
-    a = $(this).children('a').eq(0)
-    $.get "grade/details?id=#{a.attr 'marker'}"
-    $(this).addClass 'selected'
-    $(m).removeClass 'selected' for m in $(this).siblings('li')
-    
-    # As a last step, load the just clicked calibration's preview
-    tag = $(this).children('a').eq(0).text()
-    from = preview.currIndex()
-    to = preview.isAt tag
-    preview.jump from, to unless to is -1
-    return true
-
   ###
     Submit <form> everytime an <input> within $('#calibrations-summary form') loses focus.
     Loss of focus => teacher done inputting her allotment for that grade
@@ -289,5 +268,19 @@ jQuery ->
     curr = preview.currIndex()
     preview.jump curr, n
     $(m).removeClass 'selected' for m in $(this).siblings()
+    $(this).addClass 'selected'
+    return true
+
+############################################################################
+## Bootstrap 
+############################################################################
+
+  $('#lp-quiz-lst .tab-pane').on 'click', '.one-line, .two-line', (event) ->
+    event.stopPropagation()
+    marker = $(this).attr 'marker'
+    $.get "quiz/preview.json?id=#{marker}"
+
+    for m in $(this).siblings('.one-line, .two-line')
+      $(m).removeClass 'selected'
     $(this).addClass 'selected'
     return true

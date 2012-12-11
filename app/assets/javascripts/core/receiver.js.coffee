@@ -25,7 +25,7 @@ jQuery ->
   #  WIDE PANEL
   ########################################################
 
-  $('#wide-panel').ajaxSuccess (e, xhr, settings) ->
+  $('#wp').ajaxSuccess (e, xhr, settings) ->
     matched = settings.url.match(/quiz\/preview/) or
               settings.url.match(/question\/preview/)
     return if matched is null

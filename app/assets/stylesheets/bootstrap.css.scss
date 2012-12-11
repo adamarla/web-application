@@ -9,8 +9,10 @@
  */
 
 $panel-colour: lighten(black, 17%) ;
+$deep-blue: #0081c2 ;
 $gradians-blue : #6ca7ab ;
 $orange : #fda500 ;
+$background: darken($panel-colour, 12%) ;
 
 .clearfix {
   *zoom: 1;
@@ -160,7 +162,7 @@ body {
   line-height: 14px;
   color: #333333;
   // background-color: #ffffff;
-  background-color: darken($panel-colour, 12%) ;
+  background-color: $background ; 
 }
 
 a {
@@ -4190,21 +4192,25 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
             padding: 4px 12px;
             line-height: 14px;
             text-decoration: none;
-            background-color: #ffffff;
+            // background-color: #ffffff;
+            background-color: $deep-blue ;
             border: 1px solid #dddddd;
             border-left-width: 0;
+            color: white ;
           }
           a:hover {
-            background-color: #f5f5f5;
+            background-color: $orange ;
+            color: $background ;
           }
         }
       }
       .active > {
         a, span {
-          background-color: #f5f5f5;
+          background-color: $orange ;
         }
         a, span {
-          color: #999999;
+          // color: #999999;
+          color: $background ;
           cursor: default;
         }
       }

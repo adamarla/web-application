@@ -15,23 +15,11 @@ jQuery ->
     $(this).find('.inline-error').remove()
 
     if url.match(/quizzes\/list/)
-      ###
-      here = $('#lp-quizzes')
-      if here.children().length is 0
-        table = $("<caption>Past Quizzes</caption><table class='table table-condensed table-striped'><tbody>")
-        for m,j in json.quizzes
-          quiz = m.quiz
-          $("<tr><td>#{quiz.name}</td></tr>").appendTo table
-        table.appendTo here
-        $("</tbody></table>").appendTo here
-      here.removeClass 'hide'
-
-      here = $('#past-quizzes-list')
-      scroll.initialize json.quizzes, 'quiz', here
-      here.accordion scroll.options
-      first = here.children('.scroll-heading').eq(0)
-      first.trigger 'click' if first? # auto-open the latest quiz
-      ###
+      here = $('#grd-nine')
+      here.addClass 'show'
+      for m in json.quizzes
+        quiz = m.quiz
+        line.write here, quiz
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
       scroll.loadJson json.testpapers, 'testpaper', here, scroll.having.link | scroll.having.nolabel

@@ -4,30 +4,26 @@ jQuery ->
   window.preview = {
     blockKeyPress: false,
 
-    initialize : (here = '#wide-panel') ->
-      here = if typeof here is 'string' then $(here) else here
+    initialize : () ->
+      wp = $('#wp')
+      preview = wp.children('#preview').eq(0)
 
-      # First, remove any previous #document-preview
-      previous = $('#document-preview')
-      if previous.length isnt 0
-        p = previous.parent()
-        if p.hasClass 'ppy-placeholder'
-          p.remove()
-        else
-          previous.remove()
+      preview.remove() if preview.length isnt 0
+      obj = $('#toolbox > #wp-preview').clone()
+      obj.attr 'id', 'preview' # Working copy should have a different ID
 
-      # Now, place a new element within which the image-list will be 
-      # appended 
-      clone = $('#blueprint-document-preview').clone()
-      clone.attr 'id', 'document-preview'
-      clone.appendTo here
-      here.removeClass 'hidden'
+      for a in obj.children('a')
+        $(a).attr 'href', '#preview'
+      obj.appendTo wp
       return true
 
     execute : () ->
-      p = $('#document-preview')
-      return if p.parent().hasClass '.ppy-placeholder'
-      p.popeye({ navigation : 'hover', caption : 'permanent', zindex:1000, opacity:0.8})
+      obj = $('#wp > #preview')
+      inner = obj.find('.carousel-inner').eq(0)
+      first = inner.children('.item').eq(0)
+      first.addClass 'active'
+      obj.carousel { interval:false }
+      return true
 
     loadJson : (json, source, obviousAlt = false) ->
       ###
@@ -49,7 +45,6 @@ jQuery ->
         when 'mint' then base = "#{server}/mint"
         when 'vault' then base = "#{server}/vault"
         when 'atm' then base = "#{server}/atm"
-        when 'calibrations' then base = "#{server}/front-desk/calibrations"
         when 'locker' then base = "#{server}/locker"
         else base = null
 
@@ -57,7 +52,8 @@ jQuery ->
 
       preview.initialize()
 
-      target = $('#document-preview').find 'ul:first'
+      # target = $('#document-preview').find 'ul:first'
+      target = $('#wp > #preview').find('.carousel-inner').eq(0)
       roots = json.preview.id
 
       return false if roots.length is 0
@@ -102,61 +98,63 @@ jQuery ->
           switch source
             when 'atm'
               full = "#{base}/#{root}/answer-key/preview/page-#{page}.jpeg"
-              thumb = "#{base}/#{root}/answer-key/preview/page-#{page}.jpeg"
               alt = "##{page}"
             when 'vault'
-              thumb = "#{base}/#{root}/page-#{page}.jpeg"
               full = "#{base}/#{root}/page-#{page}.jpeg"
               alt = "#{root}"
-            when 'calibrations'
-              type = json.preview.mcq[j]
-              if type isnt isMcq
-                counter = 1
-                isMcq = type
-
-              thumb = "#{base}/#{page}.jpg"
-              full = "#{base}/#{page}.jpg"
-              alt = if isMcq then "M#{counter++}" else "G#{counter++}"
             when 'locker'
-              thumb = "#{base}/#{root}/#{page}"
               full = "#{base}/#{root}/#{page}"
-              alt = if obviousAlt then "#{root}/#{page}" else "pg-#{j+1}"
+              alt = "pg-#{j+1}"
             else break
 
-          img = $("<li hop=#{hop} alt=#{alt} m=#{j}><a href=#{full}><img src=#{thumb} alt=#{alt}></a></li>")
-          img.appendTo target
+          img = "<div class=item hop=#{hop} m=#{j}><img alt=#{alt} src=#{full}></div>"
+          $(img).appendTo target
 
       # Now, call the preview
       preview.execute()
       return true
 
     # Returns the index of the currently displayed image, starting with 0
-    currIndex : (display = '#document-preview') ->
+    currIndex : () ->
+      p = $('#wp > #preview')
+      return -1 if p.length is 0
+
+      images = p.children('.carousel-inner').eq(0).children('.item')
+      index = images.index '.active'
+      return index
+      
+      ###
       display = if typeof display is 'string' then $(display) else display
       return null if display.hasClass 'hidden'
       counter = display.find '.ppy-counter:first'
       counter = if counter.length isnt 0 then parseInt(counter.text()) - 1 else 0
       return counter
+      ###
 
     # Given a question UID, returns its position in the image-list (0-indexed)
     # Returns -1 if not found 
 
-    isAt : (uid, display = '#document-preview') ->
+    isAt : (uid) ->
       return -1 if not uid?
-      display = if typeof display is 'string' then $(display) else display
-      return -1 if display.hasClass 'hidden'
+      p = $('#wp > #preview')
 
-      images = display.children('.ppy-imglist').eq(0).children('li')
+      images = p.find '.carousel-inner > .item'
       posn = -1
 
-      for image, j in images
-        title = $(image).find('img:first').attr('alt')
-        if title is uid
-          posn = images.index image
+      for m,j in images
+        img = $(m).children('img').eq(0)
+        if img.attr('alt') is uid
+          posn = j
           break
       return posn
 
-    jump : (from, to, display = '#document-preview') ->
+    jump : (from, to) ->
+      return if not to?
+      p = $('#wp > #preview')
+
+      p.carousel to
+      return true
+      ###
       return if not from? or not to?
       return if to is -1
       return if from is to
@@ -184,6 +182,7 @@ jQuery ->
       for j in [1..steps]
         btn.click()
       return true
+      ###
 
     ###
       Hop backwards/forwards one image. And when displaying the list of questions 
@@ -191,7 +190,15 @@ jQuery ->
       questions can span multiple pages/images
     ###
 
-    hop: (fwd = true, display = '#document-preview') ->
+    hop: (fwd = true) ->
+      p = $('#wp > #preview')
+      active = p.find('.carousel-inner > .item.active').eq(0)
+      next = if fwd then active.next(".item[hop='true']") else active.prevAll(".item[hop='true']")
+      active.removeClass 'active'
+      next.addClass 'active'
+      return true
+
+      ###
       display = if typeof display is 'string' then $(display) else display
       images = display.find('.ppy-imglist').eq(0)
       li = images.children('li')
@@ -215,16 +222,16 @@ jQuery ->
         preview.sideScrollFwd(false) if hcurr is "true"
       pressBtn.click()
       return true
+      ###
 
 
+    ###
     hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
       return if (not imgId? or not newCaption?)
-      ###
-      'oliveOil' is defined in Popeye's code (vendor/assets/javascripts)
-      It is of the form [0,[...],1,[...],2,[...] .... ]. Each number represents
-      a preview (yes, there can be > 1) and the following array has the captions
-      for that preview
-      ###
+#      'oliveOil' is defined in Popeye's code (vendor/assets/javascripts)
+#      It is of the form [0,[...],1,[...],2,[...] .... ]. Each number represents
+#      a preview (yes, there can be > 1) and the following array has the captions
+#      for that preview
       captions = oliveOil[2*previewId + 1]
       return if imgId >= captions.length
 
@@ -276,6 +283,7 @@ jQuery ->
       for m,j in options
         if j == next then $(m).addClass('selected') else $(m).removeClass('selected')
       return true
+    ###
 
   }
 

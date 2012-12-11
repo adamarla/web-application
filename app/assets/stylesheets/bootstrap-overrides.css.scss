@@ -10,8 +10,10 @@ $gradians-blue: #6ca7ab ;
 $orange:#ffa500 ;
 $panel-colour: lighten(black, 17%) ;
 $deep-blue: #0081c2 ;
+$background: darken($panel-colour, 12%) ;
+$lightblue: lighten($deep-blue, 23%) ;
 
-.navbar-inverse {
+.navbar-inverse, .dropdown-menu {
   li > a {
     color: white ;
   }
@@ -80,6 +82,7 @@ $deep-blue: #0081c2 ;
   margin-top: 5px ;
   height: 10px ;
   padding: 9px 13px 12px 13px ;
+  border-radius: 4px ;
 } 
 
 .g-panel { 
@@ -87,8 +90,59 @@ $deep-blue: #0081c2 ;
     font-weight: 300 ; 
     color: $gradians-blue ;
   }
+
+  .tab-pane, .pill-pane { 
+    display: block ;
+  } 
 } 
 
 #cp-account-link { 
   float: right ;
+} 
+
+.nav { 
+  &.nav-pills, &.nav-tabs { 
+    // border-bottom: 2px solid $lightgray ;
+
+    > li { 
+      > a { 
+        color: white ;
+        &:hover { background-color: $deep-blue ; }
+      } 
+    }
+  } 
+} 
+
+.tab-content { 
+  min-height: 200px ;
+}  
+
+.one-line, .two-line {
+  padding: {
+    top: 5px ;
+  } 
+  font-size: 12px ; 
+  cursor: pointer ; 
+  border-bottom: 1px solid $lightgray ;
+  text-transform: lowercase ;
+  &:nth-child(odd) {
+    color: white ; 
+  } 
+  &:nth-child(even) {
+    color: $gradians-blue ;
+    font-weight: 400 ;
+  } 
+  &:hover {
+    color: $orange ;
+    font-weight: 500 ;
+  } 
+  &.selected {
+    color: $orange ; 
+    font-weight: 400 ;
+    font-size: 14px ;
+  } 
+} 
+
+#wp-preview { 
+  min-height: 300px ;
 } 
