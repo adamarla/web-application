@@ -16,6 +16,7 @@ jQuery ->
 
     if url.match(/quizzes\/list/)
       here = $('#grd-nine')
+      here.empty()
       here.addClass 'show'
       for m in json.quizzes
         quiz = m.quiz
