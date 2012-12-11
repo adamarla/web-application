@@ -13,7 +13,6 @@ window.pagination = {
   enable : (pgs, m) ->
     return false if not pgs.hasClass 'pagination'
     m = if typeof m is 'string' then parseInt(m) else m
-    alert m
     ul = pgs.children('ul').eq(0)
     li = ul.children 'li'
     nli = li.length
