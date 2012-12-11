@@ -15,7 +15,9 @@ module GeneralQueries
     Return values (in order): # of entries per page, # reqd pages (max 8)
 =end
     default_per_pg = 25
-    per_pg = (n_entries / default_per_pg.to_f).ceil > 8 ? (n_entries / 8.to_f).ceil : default_per_pg 
+    max_pages = 6 
+
+    per_pg = (n_entries / default_per_pg.to_f).ceil > max_pages ? (n_entries / max_pages.to_f).ceil : default_per_pg 
     n_pgs = (n_entries / per_pg.to_f).ceil
     return per_pg, n_pgs
   end
