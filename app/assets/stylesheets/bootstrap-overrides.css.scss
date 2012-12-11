@@ -102,11 +102,13 @@ $lightblue: lighten($deep-blue, 23%) ;
 
 .nav { 
   &.nav-pills, &.nav-tabs { 
-    // border-bottom: 2px solid $lightgray ;
-
     > li { 
       > a { 
         color: white ;
+        font: {
+          size: 16px ; 
+          weight: 200 ;
+        } 
         &:hover { background-color: $deep-blue ; }
       } 
     }
@@ -143,6 +145,13 @@ $lightblue: lighten($deep-blue, 23%) ;
   } 
 } 
 
-#wp-preview { 
+#wp > #preview { 
   min-height: 300px ;
+  > .carousel-inner { 
+    text-align: center ;
+  } 
+
+  .item > img { 
+    display: inline-block ;
+  } 
 } 
