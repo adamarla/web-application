@@ -3,6 +3,6 @@
 
 .pagination{ :id => id }
   %ul
-    - for pg in [*1..8]
+    - for pg in [*1..6]
       %li
         = link_to pg, "#{url}?page=#{pg}"
