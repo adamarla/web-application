@@ -280,7 +280,4 @@ jQuery ->
     marker = $(this).attr 'marker'
     $.get "quiz/preview.json?id=#{marker}"
 
-    for m in $(this).siblings('.one-line, .two-line')
-      $(m).removeClass 'selected'
-    $(this).addClass 'selected'
     return true

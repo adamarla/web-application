@@ -133,12 +133,28 @@ jQuery ->
     return false # already issued AJAX GET request. No need for further processing
 
   $('.tab-pane, .pill-pane').on 'click', '.one-line, .two-line', (event) ->
-    what = $(event.target)
-    showMenu = what.hasClass('dropdown') or what.hasClass('dropdown-toggle') or what.hasClass('span4')
-    # alert what.attr 'class'
-    if showMenu
+    ###
+       Yes, this method does not allow a contextual menu to open if the 
+       .one-line or .two-line hasnt been selected first 
+    ###
+    clickedObj = $(event.target)
+    m = null
+
+    if clickedObj.hasClass('dropdown')
+      m = clickedObj
+    else if clickedObj.hasClass 'dropdown-toggle'
+      m = clickedObj.parent()
+
+    if m?
       event.stopImmediatePropagation()
-      menu.show what.find('.dropdown-toggle').eq(0)
+      if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle').eq(0) else return false
+    else
+      for k in $(this).siblings('.one-line, .two-line')
+        $(k).removeClass 'selected'
+      $(this).addClass 'selected'
+      # Close any previously open menus - perhaps belonging to a sibling 
+      for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
+        menu.close $(m)
     return true
 
 

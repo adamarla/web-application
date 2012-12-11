@@ -135,17 +135,18 @@ $lightblue: lighten($deep-blue, 23%) ;
     font-weight: 400 ;
   } 
   &:hover {
-    color: $orange ;
     font-weight: 500 ;
   } 
   &.selected {
-    font-weight: 400 ;
-    > .dropdown { > a { color: $orange ; } }
+    > .dropdown { > a { color: white ; } }
+    border-bottom: 4px solid $orange ;
   } 
 
   > .dropdown { 
     font-size: 10px ;
-    > a { color: white ; } 
+    > a { 
+      color: $lightgray ;
+    }
   } 
 } 
 
