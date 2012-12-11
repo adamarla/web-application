@@ -6,6 +6,5 @@
 //= require jquery_ujs 
 //= require jquery-ui 
 //= require bootstrap 
-//= require_directory ../../../vendor/assets/javascripts/popeye 
 //= require_directory ./core
 //= require_directory ../../../vendor/assets/javascripts/happy 
