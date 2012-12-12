@@ -1,5 +1,15 @@
 module ApplicationHelper
 
+  def simple_link( options = {} )
+    href = options[:href] || "#"
+    text = options[:as]
+    update_on = options[:update_on]
+    remote = options[:remote]
+
+    return false if text.blank?
+    link_to text, href, :remote => remote, 'data-update-on' => update_on
+  end 
+
   def html_attrs(lang = 'en-US')
     {:xmlns => "http://www.w3.org/1999/xhtml", 'xml:lang' => lang, :lang => lang}
   end 
