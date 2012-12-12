@@ -5,9 +5,10 @@ module ApplicationHelper
     text = options[:as]
     update_on = options[:update_on]
     remote = options[:remote]
+    base = options[:base_url]
 
     return false if text.blank?
-    link_to text, href, :remote => remote, 'data-update-on' => update_on
+    link_to text, href, :remote => remote, 'data-update-on' => update_on, 'data-base-url' => base
   end 
 
   def html_attrs(lang = 'en-US')

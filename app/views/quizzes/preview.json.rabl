@@ -7,6 +7,9 @@
 # of the returned json is one that we intend to use for all previews 
 # - even in cases where the list of scans is not a contiguous set of numbers
 
-object @quiz => :preview  
-  attribute :atm_key => :id
-  node(:scans) { |m| [*1..@quiz.span?] }
+object false
+  node(:preview) {
+    { :id => @quiz.atm_key, :scans => [*1..@quiz.span?] } 
+  } 
+  node(:a) { @quiz.atm_key }
+

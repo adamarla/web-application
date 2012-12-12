@@ -160,3 +160,13 @@ $lightblue: lighten($deep-blue, 23%) ;
     display: inline-block ;
   } 
 } 
+
+.contextual-menu { 
+  &.btn {
+    background: { 
+      color: $deep-blue ;
+      image: none ;
+    } 
+
+  }
+} 

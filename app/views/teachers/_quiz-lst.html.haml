@@ -1,9 +1,47 @@
 
 .row-fluid.offset1
   .row-fluid
+    .span4
+      .btn-group.dropdown
+        %a.btn.contextual-menu.dropdown-toggle{ :href => '#', 
+        'data-toggle' => :dropdown, 
+        :menu => '#quiz-action-menu', 
+        :fixed => :true }
+          Main 
+          %b.caret
+        %ul.dropdown-menu.dropdown-inverse#quiz-action-menu{ :role => :menu,
+        'data-autoupdate-on' => 'quiz/preview quizzes/list'}
+          %li.nav-header= "Show"
+          %li.dropdown-submenu
+            %a{ :href => '#', 'data-toggle' => :dropdown }= "By Recency"
+            %ul.dropdown-menu
+              %li
+                %a{ :href => '#' }= "Oldest first"
+              %li
+                %a{ :href => '#' }= "Newest first"
+          %li.dropdown-submenu
+            %a{ :href => '#', 'data-toggle' => :dropdown }= "By Grade / Class"
+            %ul.dropdown-menu
+              %li
+                %a{ :href => '#' }= "Grade 9"
+              %li
+                %a{ :href => '#' }= "Grade 10"
+              %li
+                %a{ :href => '#' }= "Grade 11"
+              %li
+                %a{ :href => '#' }= "Grade 12"
+          %li.nav-header= "Worksheets"
+          %li
+            %a{ :href => '#' }= "New"
+          %li
+            %a{ :href => '#' }= "Till Now"
+          %li
+            = simple_link :base_url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", 
+            :update_on => "quiz/preview", :as => "Download Solution"
+            
+
     .span8
       =render :partial => 'toolbox/paginator', :locals => { :id => "pgs-quiz-lst", :url => "quizzes/list" }
-    .span4
   .row-fluid.content#lp-lst-quizzes
 
 

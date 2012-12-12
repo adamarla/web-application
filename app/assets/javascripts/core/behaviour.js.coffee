@@ -157,3 +157,39 @@ jQuery ->
         menu.close $(m)
     return true
 
+
+  ###
+    Each .dropdown-menu is responsible for updating links within it when an AJAX response
+    is received
+    The AJAX responses a menu responds to are declared in the HTML as a 'data-autoupdate-on' 
+    attribute on the .dropdown-menu
+  ###
+
+  urlsMatch = (url, autoupdateOn) ->
+    tokens = autoupdateOn.split ' '
+    for tk in tokens
+      return true if url.match tk
+    return false
+
+  $('.dropdown-menu').ajaxSuccess (e, xhr, settings) ->
+    autoupdateOn = this.dataset.autoupdateOn
+    return true unless autoupdateOn?
+
+    json = $.parseJSON xhr.responseText
+    url = settings.url
+    proceed = urlsMatch url, autoupdateOn
+    return true unless proceed is true
+
+    for a in $(this).find 'a'
+      updateOn = a.dataset.updateOn
+      continue unless updateOn
+      continue unless urlsMatch(url, updateOn)
+
+      href = a.dataset.baseUrl
+      for key in ['a', 'b', 'c', 'd', 'e'] # You really shouldnt have > 5 placeholders in a URL
+        break unless json[key]?
+        while href.search(":#{key}") isnt -1
+          href = href.replace ":#{key}", json[key]
+      $(a).attr 'href', href # Set the new href
+    return true
+    
