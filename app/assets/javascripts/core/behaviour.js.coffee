@@ -92,7 +92,7 @@ jQuery ->
     ui = event.target
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
-        menu.close $(p)
+        menu.close $(p) unless $(p).parent().hasClass('dropdown-submenu')
     return true
 
   ###############################################
