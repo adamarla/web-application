@@ -185,7 +185,9 @@ jQuery ->
       continue unless u
       continue unless urlsMatch(url, u)
 
-      href = a.dataset.baseUrl
+      href = a.dataset.url
+      continue unless href? # => :data => { :url => non-empty }
+
       for key in ['a', 'b', 'c', 'd', 'e'] # You really shouldnt have > 5 placeholders in a URL
         break unless json[key]?
         while href.search(":#{key}") isnt -1

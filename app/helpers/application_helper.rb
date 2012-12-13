@@ -1,14 +1,21 @@
 module ApplicationHelper
 
   def simple_link( options = {} )
-    href = options[:href] || "#"
-    text = options[:as]
-    update_on = options[:update_on]
-    remote = options[:remote]
-    base = options[:base_url]
+    # Example: simple_link :for => "Download", :data => { :url => 'a/b', :ajax => true, :update_on => 'quizzes/list' }
+    text = options.delete :for 
+    href = options.delete(:href) || "#" 
+    id = options.delete :id
+    klass = options.delete :class 
+    data = {}
+
+    options.each do |k,v|
+      data[k] = v
+    end
+    data = {:id => id, :class => klass, :href => href, :data => data}
 
     return false if text.blank?
-    link_to text, href, :remote => remote, 'data-update-on' => update_on, 'data-base-url' => base
+    attributes = tag_options data, true
+    "<a #{attributes}>#{text}</a>".html_safe
   end 
 
   def html_attrs(lang = 'en-US')

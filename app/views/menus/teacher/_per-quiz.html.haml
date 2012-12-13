@@ -3,10 +3,11 @@
 'data-update-on' => 'quiz/preview quizzes/list'}
   %li.nav-header= "Worksheets"
   %li
-    %a{ :href => '#' }= "New"
+    = simple_link :for => "New"
   %li
     %a{ :href => '#' }= "Till Now"
   %li
-    = simple_link :base_url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", 
-    :update_on => "quiz/preview", :as => "Download Solution"
+    = simple_link :for => "Download Solution", 
+    :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", 
+    :update_on => "quiz/preview"
             
