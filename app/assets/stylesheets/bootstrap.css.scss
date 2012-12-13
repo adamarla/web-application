@@ -5138,7 +5138,8 @@ a.thumbnail:hover {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  background-color: $panel-colour ;
+  background-color: $panel-colour ; // fall-back colour for browsers that don't support rgba
+  background-color: rgba(43,43,43,0.9) ; 
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
   *border-right-width: 2px;
