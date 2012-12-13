@@ -6,7 +6,8 @@ node(:quizzes) {
     {
       :quiz => {
         :name => n.name,
-        :id => n.id
+        :id => n.id,
+        :tag => "#{n.span?} page(s)"
       }
     }
   }

@@ -165,25 +165,25 @@ jQuery ->
     attribute on the .dropdown-menu
   ###
 
-  urlsMatch = (url, autoupdateOn) ->
-    tokens = autoupdateOn.split ' '
+  urlsMatch = (url, updateOn) ->
+    tokens = updateOn.split ' '
     for tk in tokens
       return true if url.match tk
     return false
 
   $('.dropdown-menu').ajaxSuccess (e, xhr, settings) ->
-    autoupdateOn = this.dataset.autoupdateOn
-    return true unless autoupdateOn?
+    updateOn = this.dataset.updateOn
+    return true unless updateOn?
 
     json = $.parseJSON xhr.responseText
     url = settings.url
-    proceed = urlsMatch url, autoupdateOn
+    proceed = urlsMatch url, updateOn
     return true unless proceed is true
 
     for a in $(this).find 'a'
-      updateOn = a.dataset.updateOn
-      continue unless updateOn
-      continue unless urlsMatch(url, updateOn)
+      u = a.dataset.updateOn
+      continue unless u
+      continue unless urlsMatch(url, u)
 
       href = a.dataset.baseUrl
       for key in ['a', 'b', 'c', 'd', 'e'] # You really shouldnt have > 5 placeholders in a URL
