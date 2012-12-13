@@ -23,13 +23,20 @@ window.pagination = {
 
   
   url : {
-    add : (parameter, links) ->
+    set : (obj, baseUrl) ->
+      ul = $(obj).children().eq(0)
+      for m,j in ul.children('li')
+        a = $(m).children('a').eq(0)
+        a.attr 'href', "#{baseUrl}.json?page=#{j+1}"
+      return true
+
+    add : (parameter, obj) ->
       # parameter example = "klass=11". Will add a new &klass=* - 
       # or replace an existing klass=* - with the passed one
       p = parameter.split("=")[0]
-      pagination.url.subtract p, links
+      pagination.url.subtract p, obj
 
-      ul = $(links).children().eq(0)
+      ul = $(obj).children().eq(0)
       for m in ul.children('li')
         a = $(m).children('a').eq(0)
         href = a.attr 'href'
@@ -37,10 +44,10 @@ window.pagination = {
         a.attr 'href', href
       return true
 
-    subtract : (parameter, links) ->
+    subtract : (parameter, obj) ->
       # parameter example = "klass". Will remove '&klass=*' anywhere that it appears
-      # in a links > ul > li > a href 
-      ul = $(links).children().eq(0)
+      # in a obj > ul > li > a href 
+      ul = $(obj).children().eq(0)
       for m in ul.children('li')
         a = $(m).children('a').eq(0)
         href = a.attr 'href'

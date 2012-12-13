@@ -1,18 +1,5 @@
 
 .row-fluid.offset1
-  .row-fluid
-    .span4
-      .btn-group.dropdown
-        %a.btn.contextual-menu.dropdown-toggle{ :href => '#', 
-        'data-toggle' => :dropdown, 
-        :menu => '#quiz-action-menu', 
-        :fixed => :true }
-          Main 
-          %b.caret
-        = render :partial => 'menus/teacher/per-quiz'
-
-    .span8
-      =render :partial => 'toolbox/paginator', :locals => { :id => "pgs-quiz-lst", :url => "quizzes/list" }
   .row-fluid.content#lp-lst-quizzes
 
 
