@@ -132,10 +132,10 @@ jQuery ->
     $.get $(this).attr 'href'
     return false # already issued AJAX GET request. No need for further processing
 
-  $('.content').on 'click', '.one-line, .two-line', (event) ->
+  $('.content').on 'click', '.single-line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
-       .one-line or .two-line hasnt been selected first 
+       .single-line hasnt been selected first 
     ###
     clickedObj = $(event.target)
     m = null
@@ -149,7 +149,7 @@ jQuery ->
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle').eq(0) else return false
     else
-      for k in $(this).siblings('.one-line, .two-line')
+      for k in $(this).siblings('.single-line')
         $(k).removeClass 'selected'
       $(this).addClass 'selected'
       # Close any previously open menus - perhaps belonging to a sibling 

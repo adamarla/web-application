@@ -5,22 +5,14 @@
 -# This information is used to close one menu when another 'sibling' menu
 -# is clicked on
 
--# One-Line 
-
-.row-fluid.one-line
-  .dropdown.span2
-    %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown, :up => 2 }
-      menu
-      %span.caret
-  .span9
-    .row-fluid.text.offset1
-      
--# Two-Lines 
-.row-fluid.two-line
+-# A single line entry - with mandatory text and optional subtext 
+.row-fluid.single-line
   .dropdown.span2
     %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown, :up => 2 }
       More ...
       %span.caret
-  .span9
-    .row-fluid.text.offset1
-    .row-fluid.subtext.offset1
+  .row-fluid.span10
+    .span9.text
+      .row-fluid
+    .span2.subtext
+      .row-fluid

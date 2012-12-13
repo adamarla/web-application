@@ -22,7 +22,7 @@ jQuery ->
         quiz = m.quiz
         line.write here, quiz
       pagination.enable $('#pgs-quiz-lst'), json.last_pg
-      here.children('.one-line, .two-line').eq(0).click()
+      here.children('.single-line').eq(0).click()
     else if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
       scroll.loadJson json.testpapers, 'testpaper', here, scroll.having.link | scroll.having.nolabel

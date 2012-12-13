@@ -119,7 +119,7 @@ $lightblue: lighten($deep-blue, 23%) ;
   min-height: 200px ;
 }  
 
-.one-line, .two-line {
+.single-line {
   padding: {
     top: 5px ;
   } 
@@ -147,6 +147,11 @@ $lightblue: lighten($deep-blue, 23%) ;
     > a { 
       color: $lightgray ;
     }
+  } 
+
+  .subtext { 
+    font-size: 10px ;
+    color: $orange ;
   } 
 } 
 
