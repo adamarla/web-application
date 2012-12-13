@@ -24,7 +24,7 @@
     = render :partial => 'toolbox/inline_error'
     = render :partial => 'toolbox/swiss_knife'
 
-    = render :partial => 'tasks/teacher/quiz_filter'
+    = render :partial => 'menus/teacher/quiz_filter'
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
 
@@ -53,7 +53,7 @@
                   :menu => '#teacher-quiz', :fixed => :true }
                     Quizzes & Questions
                     %span.caret
-                  = render :partial => 'tasks/teacher/quiz_main', :locals => { :teacher => tchr, :server => srvr }
+                  = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => srvr }
                 %li.dropdown
                   %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
                     Report Cards
@@ -64,7 +64,7 @@
                   :menu => '#tasks-on-account', :fixed => :true }
                     Hello, #{tchr.first_name}
                     %span.caret
-                  = render :partial => 'tasks/user/account'
+                  = render :partial => 'menus/user/account'
       #desktop.row-fluid
         #lp.g-panel.span4
           #lp-quiz-lst

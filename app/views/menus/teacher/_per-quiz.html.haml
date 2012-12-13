@@ -1,0 +1,31 @@
+
+%ul.dropdown-menu.dropdown-inverse#quiz-action-menu{ :role => :menu,
+'data-update-on' => 'quiz/preview quizzes/list'}
+  %li.nav-header= "Show"
+  %li.dropdown-submenu
+    %a{ :href => '#', 'data-toggle' => :dropdown }= "By Recency"
+    %ul.dropdown-menu
+      %li
+        %a{ :href => '#' }= "Oldest first"
+      %li
+        %a{ :href => '#' }= "Newest first"
+  %li.dropdown-submenu
+    %a{ :href => '#', 'data-toggle' => :dropdown }= "By Grade / Class"
+    %ul.dropdown-menu
+      %li
+        %a{ :href => '#' }= "Grade 9"
+      %li
+        %a{ :href => '#' }= "Grade 10"
+      %li
+        %a{ :href => '#' }= "Grade 11"
+      %li
+        %a{ :href => '#' }= "Grade 12"
+  %li.nav-header= "Worksheets"
+  %li
+    %a{ :href => '#' }= "New"
+  %li
+    %a{ :href => '#' }= "Till Now"
+  %li
+    = simple_link :base_url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", 
+    :update_on => "quiz/preview", :as => "Download Solution"
+            
