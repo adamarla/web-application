@@ -18,8 +18,6 @@ jQuery ->
     pgn = $('#lp-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
 
-    pagination.disable pgn
-
     if url.match(/quizzes\/list/)
       target = $('#lp-quizzes')
       parentKey = 'quizzes'

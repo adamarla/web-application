@@ -213,4 +213,7 @@ jQuery ->
   $("a[data-toggle='tab']").on 'shown', (event) ->
     ajax = this.dataset.ajax
     $.get ajax if ajax?
+    # disable any paginator coz it will be re-enabled in response to the AJAX request
+    pgn = $(this).closest('.g-panel').find('.pagination').eq(0)
+    pagination.disable pgn if pgn.length isnt 0
     return true
