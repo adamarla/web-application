@@ -187,3 +187,9 @@ $lightblue: lighten($deep-blue, 23%) ;
   }
 } 
 
+.btn {
+  &.white-bg { 
+    color: $panel-colour ;
+    text-shadow: none ;
+  } 
+}

@@ -1,4 +1,15 @@
 
+.row-fluid.span12
+  .btn-group.pull-right
+    %button.btn.white-bg= "Select All"
+    %button.btn.dropdown-toggle.white-bg{ 'data-toggle' => :dropdown, :menu => "#bakras", :fixed => :true }
+      %span.caret
+    %ul.dropdown-menu#bakras
+      %li
+        = simple_link :for => "Unselect All"
+      %li
+        = simple_link :for => "Build Worksheet"
+
 %ul.nav.nav-tabs.span4
   - teacher.sektions.each do |m|
     %li
