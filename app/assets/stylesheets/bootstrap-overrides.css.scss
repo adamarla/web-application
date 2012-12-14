@@ -183,7 +183,10 @@ $lightblue: lighten($deep-blue, 23%) ;
   } 
 
   > .tab-content { 
-    .single-line { font-size: 11px ; }
+    .single-line { 
+      font-size: 11px ; 
+      height: 20px ;
+    }
   }
 } 
 
@@ -193,3 +196,7 @@ $lightblue: lighten($deep-blue, 23%) ;
     text-shadow: none ;
   } 
 }
+
+.transparent { 
+  background: transparent ;
+} 
