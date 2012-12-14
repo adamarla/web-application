@@ -1,5 +1,10 @@
 
-collection @students => :students
-  attributes :id, :name
-  node(:ticker) { |m| m.username? }
-  node(:parent) { |m| m.klass }
+object false
+
+node(:students) { 
+  @students.map{ |m| 
+    { :student => { :name => m.name, :id => m.id } }
+  }
+}
+
+node(:sektion) { @sektion.id } 

@@ -90,10 +90,6 @@ $lightblue: lighten($deep-blue, 23%) ;
     font-weight: 300 ; 
     color: $gradians-blue ;
   }
-
-  .tab-pane, .pill-pane { 
-    display: block ;
-  } 
 } 
 
 #cp-account-link { 
@@ -175,3 +171,19 @@ $lightblue: lighten($deep-blue, 23%) ;
 
   }
 } 
+
+.tabs-left, .tabs-right { 
+  .nav-tabs { 
+    > li {
+      > a {
+        font-size: 11px ;
+        text-align: right ; 
+      }
+    }
+  } 
+
+  > .tab-content { 
+    .single-line { font-size: 11px ; }
+  }
+} 
+

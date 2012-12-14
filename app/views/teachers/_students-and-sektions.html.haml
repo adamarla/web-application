@@ -1,0 +1,10 @@
+
+%ul.nav.nav-tabs.span4
+  - teacher.sektions.each do |m|
+    %li
+      = simple_link :for => "#{m.label}", :toggle => :tab, :marker => "#{m.id}",
+      :href => "#lp-sektion-#{m.id}", :ajax => "sektion/students.json?id=#{m.id}"
+
+.tab-content.span7
+  - teacher.sektions.each do |m|
+    .tab-pane{ :id => "lp-sektion-#{m.id}"}

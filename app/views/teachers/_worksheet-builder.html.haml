@@ -1,7 +1,8 @@
+-# Variable teacher comes from the layout file 
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Quizzes", :toggle => :tab, :href => "#lp-quizzes"
+    = simple_link :for => "Quizzes", :toggle => :tab, :href => "#lp-quizzes", :ajax => "quizzes/list.json"
   %li
     = simple_link :for => "Sections", :toggle => :tab, :href => "#lp-sektions"
   %li
@@ -10,10 +11,7 @@
 .tab-content
   #lp-quizzes.tab-pane
   #lp-sektions.tab-pane
+    .tabbable.tabs-left
+      = render :partial => 'teachers/students-and-sektions', :locals => { :teacher => teacher }
   #lp-wrksheet-build-summary.tab-pane
     
-
-
-
-  
-  

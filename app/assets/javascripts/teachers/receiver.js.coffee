@@ -69,14 +69,10 @@ jQuery ->
       scroll.loadJson json.students, 'student', here
       here.accordion scroll.options
     else if url.match(/sektion\/students/)
-      child = $('#side-panel').children().eq(0).attr 'id'
-      switch child
-        when 'sektions-summary'
-          here = $('#enrolled-students')
-          scroll.overlayJson json.students, 'student', here, '.swiss-knife', "nop", "check"
-        else
-          here = $('#student-list')
-          coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}, true
+      here = $("#lp-sektion-#{json.sektion}")
+      here.empty()
+      for s in json.students
+        line.write here, s.student
     else if url.match(/teacher\/courses/)
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
