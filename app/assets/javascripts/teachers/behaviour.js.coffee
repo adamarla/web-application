@@ -14,8 +14,8 @@ jQuery ->
     }
   }
 
-  teacher = $('#control-panel').attr 'marker'
-  $.get 'quizzes/list.json'
+  # teacher = $('#control-panel').attr 'marker'
+  # $.get 'quizzes/list.json'
 
   ###
   $('#main-links a').click ->
@@ -271,13 +271,3 @@ jQuery ->
     $(this).addClass 'selected'
     return true
 
-############################################################################
-## Bootstrap 
-############################################################################
-
-  $('#lp-quizzes').on 'click', '.single-line', (event) ->
-    event.stopPropagation()
-    marker = $(this).attr 'marker'
-    $.get "quiz/preview.json?id=#{marker}"
-
-    return true

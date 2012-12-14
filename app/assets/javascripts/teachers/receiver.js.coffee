@@ -14,6 +14,7 @@ jQuery ->
     # by now that you're going to be updating this panel
     $(this).find('.inline-error').remove()
 
+    ###
     if url.match(/quizzes\/list/)
       here = $('#lp-quizzes')
       here.empty()
@@ -25,7 +26,8 @@ jQuery ->
       pagination.enable pgn, json.last_pg
       pagination.url.set pgn, 'quizzes/list'
       here.children('.single-line').eq(0).click()
-    else if url.match(/quiz\/testpapers/)
+    ###
+    if url.match(/quiz\/testpapers/)
       here = $('#past-quizzes-list')
       scroll.loadJson json.testpapers, 'testpaper', here, scroll.having.link | scroll.having.nolabel
 
@@ -68,11 +70,13 @@ jQuery ->
       here = $('#enrolled-students')
       scroll.loadJson json.students, 'student', here
       here.accordion scroll.options
-    else if url.match(/sektion\/students/)
-      here = $("#lp-sektion-#{json.sektion}")
-      here.empty()
-      for s in json.students
-        line.write here, s.student
+      ###
+      else if url.match(/sektion\/students/)
+        here = $("#lp-sektion-#{json.sektion}")
+        here.empty()
+        for s in json.students
+          line.write here, s.student
+      ###
     else if url.match(/teacher\/courses/)
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
