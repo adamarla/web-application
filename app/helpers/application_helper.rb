@@ -6,12 +6,13 @@ module ApplicationHelper
     href = options.delete(:href) || "#" 
     id = options.delete :id
     klass = options.delete :class 
+    marker = options.delete :marker
     data = {}
 
     options.each do |k,v|
       data[k] = v
     end
-    data = {:id => id, :class => klass, :href => href, :data => data}
+    data = {:id => id, :class => klass, :href => href, :data => data, :marker => marker}
 
     return false if text.blank?
     attributes = tag_options data, true
