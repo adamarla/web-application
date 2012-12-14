@@ -111,6 +111,18 @@ jQuery ->
       show.removeClass 'hide'
     return true
 
+
+  $('.content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
+    tabs = this.dataset.tabs
+    if tabs?
+      within = $(this).closest '.tab-content'
+      nav = if within.length isnt 0 then within.prev() else null # should be a .nav-tabs. If not, then sth is wrong
+      if nav?
+        indices = tabs.split ','
+        activate = "li:eq(#{indices[0]}) > a"
+        nav.find(activate).eq(0).tab 'show'
+    return true
+
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
     menu.show $(this)
@@ -195,3 +207,10 @@ jQuery ->
       $(a).attr 'href', href # Set the new href
     return true
     
+  ###
+    Issue AJAX requests - if needed - when a tab is shown so that required data can be loaded
+  ###
+  $("a[data-toggle='tab']").on 'shown', (event) ->
+    ajax = this.dataset.ajax
+    $.get ajax if ajax?
+    return true
