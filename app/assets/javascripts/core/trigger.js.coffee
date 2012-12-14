@@ -24,6 +24,7 @@ window.menu = {
     if lnk.attr('fixed') is 'true'
       m.removeClass 'show'
     else
+      # alert "Removing #{m.attr 'id'}" if m.attr('id')?
       m.remove()
     return true
 
@@ -89,7 +90,6 @@ jQuery ->
   $.ajax pingargs
 
   $('html').click (event) ->
-    ui = event.target
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
         menu.close $(p) unless $(p).parent().hasClass('dropdown-submenu')
