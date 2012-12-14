@@ -15,7 +15,7 @@ jQuery ->
     $(this).find('.inline-error').remove()
 
     if url.match(/quizzes\/list/)
-      here = $('#lp-lst-quizzes')
+      here = $('#lp-quizzes')
       here.empty()
       here.addClass 'show'
       for m in json.quizzes

@@ -3344,14 +3344,14 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
       }
     }
     .active > a {
-      color: #555555;
-      background-color: #ffffff;
+      color: white ;
+      // background-color: #ffffff;
+      background-color: $deep-blue ;
       border: 1px solid #ddd;
       border-bottom-color: transparent;
       cursor: default;
       &:hover {
-        color: #555555;
-        background-color: #ffffff;
+        background-color: darken($deep-blue, 10%) ;
         border: 1px solid #ddd;
         border-bottom-color: transparent;
         cursor: default;

@@ -69,8 +69,9 @@
       #desktop.row-fluid
         #lp.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'lp-paginator', :url => '#' }
-          #lp-quiz-lst
-            = render :partial => 'teachers/quiz-lst'
+          #lp-worksheet-builder
+            -#= render :partial => 'teachers/quiz-lst'
+            = render :partial => 'teachers/worksheet-builder'
           #lp-sektion-lst
           #lp-student-lst
         #wp.g-panel.span8

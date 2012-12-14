@@ -132,7 +132,7 @@ jQuery ->
     $.get $(this).attr 'href'
     return false # already issued AJAX GET request. No need for further processing
 
-  $('.content').on 'click', '.single-line', (event) ->
+  $('.content, .tab-pane').on 'click', '.single-line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
        .single-line hasnt been selected first 
