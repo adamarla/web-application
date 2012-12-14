@@ -21,6 +21,11 @@ window.pagination = {
       if (j < m) then k.removeClass 'disabled' else k.addClass 'disabled'
     return true
 
+  disable : (pgs) ->
+    return false if not pgs.hasClass 'pagination'
+    for m in pgs.find('li')
+      $(m).addClass 'disabled'
+    return true
   
   url : {
     set : (obj, baseUrl) ->
