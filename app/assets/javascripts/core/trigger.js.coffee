@@ -222,11 +222,24 @@ jQuery ->
     
   ###
     Issue AJAX requests - if needed - when a tab is shown so that required data can be loaded
+    Also handles the case when:
+      1. a tab is shown within a tab
   ###
-  $("a[data-toggle='tab']").on 'shown', (event) ->
+  $(".nav-tabs, .tab-content").on 'shown', "a[data-toggle='tab']", (event) ->
     ajax = this.dataset.ajax
     $.get ajax if ajax?
     # disable any paginator coz it will be re-enabled in response to the AJAX request
     pgn = $(this).closest('.g-panel').find('.pagination').eq(0)
     pagination.disable pgn if pgn.length isnt 0
+
+    # Attach any partial from the toolbox into corresponding panel - as specified (optionally) 
+    # by the 'data-attach' attribute
+    attach = this.dataset.attach
+    if attach?
+      panel = $(this).closest('.nav-tabs').next().children('.tab-pane.active').eq(0)
+      if panel.length isnt 0
+        panel.empty()
+        obj = $("#toolbox > #{attach}").clone()
+        obj.appendTo panel
+
     return true
