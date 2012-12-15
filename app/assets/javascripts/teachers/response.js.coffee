@@ -35,13 +35,7 @@ jQuery ->
     ############################################################
 
     if target.length isnt 0
-      if target.is 'form'
-        csrf = target.children('div').eq(0) # retain the cross-site request forgery protection
-        csrf = csrf.detach()
-        target.empty()
-        csrf.appendTo target
-      else
-        target.empty()
+      action.emptyOut target
       for m in json[parentKey]
         line.write target, m[childKey], menu
 

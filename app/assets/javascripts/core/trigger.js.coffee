@@ -66,8 +66,19 @@ window.menu = {
         newObj.insertAfter m
         newObj.addClass 'show'
     return true
-    
+}
 
+window.action = {
+  emptyOut : (node) ->
+    node = if typeof node is 'string' then $(node) else node
+    if node.is 'form'
+      csrf = node.children('div').eq(0) # retain cross-site forgery protection
+      csrf = csrf.detach()
+      node.empty()
+      csrf.appendTo node
+    else
+      node.empty()
+    return true
 }
 
 
@@ -226,6 +237,9 @@ jQuery ->
       1. a tab is shown within a tab
   ###
   $(".nav-tabs, .tab-content").on 'shown', "a[data-toggle='tab']", (event) ->
+    prevTab = $(event.relatedTarget)
+    action.emptyOut prevTab.attr('href') unless prevTab.length is 0
+
     ajax = this.dataset.ajax
     $.get ajax if ajax?
     # disable any paginator coz it will be re-enabled in response to the AJAX request
