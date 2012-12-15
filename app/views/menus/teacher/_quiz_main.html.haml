@@ -4,11 +4,13 @@
 %ul#teacher-quiz.dropdown-menu.pull-right
   %li.nav-header= "quiz"
   %li
-    %a#lnk-new-quiz{ :href => '#'}= "New Quiz"
-    %a#lnk-existing-quiz{ :default => :true, :href => '#'}= "Existing Quizzes"
+    = simple_link :for => "New Quiz", :id => "lnk-new-quiz"
+    = simple_link :for => "Existing Quizzes", :id => "lnk-existing-quiz", :default_lnk => :true
   %li.divider
   %li.nav-header= "Suggest Questions"
   %li
-    %a#lnk-suggestion-form{ :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"}= "Suggestion Form"
+    = simple_link :for => "Suggestion Form", :id => 'lnk-suggestion-form',
+    :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
+
   %li
-    %a#lnk-upload-suggestion{ :href => "#"}= "Uploading a Word document"
+    = simple_link :for => "Uploading a Word Document", :id => 'lnk-upload-suggestion'

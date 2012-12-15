@@ -1,8 +1,8 @@
 
 %ul#tasks-on-account.dropdown-menu
   %li
-    %a#logout-link{ :default => :true, :href => logout_path}= "Logout"
+    = simple_link :for => "Logout", :id => 'lnk-logout', :href => logout_path
   %li
-    %a#edit-login-info{ :href => '#edit-passwd', 'data-toggle' => :modal }= "Change Password"
+    = simple_link :for => "Change Password", :toggle => :modal, :id => 'lnk-change-password'
   %li
-    %a#edit-login-info{ :href => '#edit-email', 'data-toggle' => :modal }= "Provide Email"
+    = simple_link :for => "Change Email", :toggle => :modal, :id => 'lnk-change-password'
