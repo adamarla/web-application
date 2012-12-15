@@ -174,10 +174,12 @@ jQuery ->
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle').eq(0) else return false
     else
-      multiSelectAllowed = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane
+      multiOk = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
+      activeTab = null
       event.stopPropagation()
 
-      unless multiSelectAllowed
+      unless multiOk
+        activeTab = $(this).closest('.tab-content').prev().children('li.active').eq(0)
         for k in $(this).siblings('.single-line')
           $(k).removeClass 'selected'
           $(k).find("input[type='checkbox']").eq(0).prop 'checked', false
@@ -186,9 +188,11 @@ jQuery ->
       if isClicked
         $(this).removeClass 'selected'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
+        activeTab.attr 'marker', null if activeTab? # => multiOk = false
       else
         $(this).addClass 'selected'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
+        activeTab.attr 'marker', $(this).attr('marker') if activeTab?
 
       # Close any previously open menus - perhaps belonging to a sibling 
       for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
