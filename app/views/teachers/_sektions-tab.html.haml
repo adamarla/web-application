@@ -10,6 +10,7 @@
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span7
     - teacher.sektions.each do |m|
-      = simple_form_for :checked, :url => quiz_assign_path, :html => { :id => "lp-sektion-#{m.id}", :class => 'multi-select'} do |f|
+      = simple_form_for :checked, :url => quiz_assign_path, :remote => true,
+      :html => { :id => "lp-sektion-#{m.id}", :class => 'multi-select'} do |f|
         .tab-pane.multi-select
 
