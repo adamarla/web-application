@@ -5,13 +5,10 @@
     = simple_link :for => "Quizzes", :toggle => :tab, :href => "#lp-quizzes", :ajax => "quizzes/list.json"
   %li
     = simple_link :for => "Sections", :toggle => :tab, :href => "#lp-sektions", :attach => "#sektions-tab"
-  %li
-    = simple_link :for => "Summary", :toggle => :tab, :href => "#lp-wrksheet-build-summary"
 
 .tab-content
   #lp-quizzes.tab-pane
   #lp-sektions.tab-pane
     = render :partial => 'menus/teacher/worksheet-build'
-  #lp-wrksheet-build-summary.tab-pane
 
     
