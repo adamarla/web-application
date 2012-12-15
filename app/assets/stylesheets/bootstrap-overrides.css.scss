@@ -139,7 +139,7 @@ $lightblue: lighten($deep-blue, 23%) ;
   } 
   &.selected {
     > .dropdown { > a { color: white ; } }
-    border-bottom: 4px solid $orange ;
+    border-bottom: 2px solid $orange ;
   } 
 
   > .dropdown { 
@@ -192,6 +192,17 @@ $lightblue: lighten($deep-blue, 23%) ;
       height: 20px ;
     }
   }
+} 
+
+button[data-toggle='button'] {
+  background: {
+    color: $deep-blue ;
+    image: none ;
+  } 
+  &.clicked {
+    background-color: $orange ;
+    color: $panel-colour ;
+  } 
 } 
 
 .btn {

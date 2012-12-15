@@ -3,12 +3,10 @@
 .navbar.navbar-inverse.dont-touch
   .navbar-inner
     .btn-group.pull-right
-      %button.btn.white-bg#select-all-for-quiz= "Select All"
+      %button.btn.btn-primary{ :type => :button, 'data-toggle' => :button, :id => 'select-all-for-quiz'}= "Select All"
       %button.btn.dropdown-toggle.white-bg{ 'data-toggle' => :dropdown, :menu => "#bakras", :fixed => :true }
         %span.caret
       %ul.dropdown-menu#bakras
-        %li
-          = simple_link :for => "Unselect All", :id => 'unselect-all-for-quiz'
         %li
           = simple_link :for => "Build Worksheet", :id => 'build-worksheet'
 

@@ -4,7 +4,7 @@ class QuizzesController < ApplicationController
   respond_to :json
 
   def assign_to
-    quiz = Quiz.where(:atm_key => params[:id]).first 
+    quiz = Quiz.where(:id => params[:id]).first 
     head :bad_request if quiz.nil?
     teacher = quiz.teacher 
 
