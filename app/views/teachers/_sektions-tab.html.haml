@@ -19,8 +19,9 @@
       = simple_link :for => "#{m.label}", :toggle => :tab, :marker => "#{m.id}",
       :href => "#lp-sektion-#{m.id}", :ajax => "sektion/students.json?id=#{m.id}"
 
--# List of students - by sektion - shown in a sektion-specific tab
+-# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
 .tab-content.span7
   - teacher.sektions.each do |m|
-    .tab-pane.multi-select{ :id => "lp-sektion-#{m.id}"}
+    = simple_form_for :checked, :url => quiz_assign_path, :html => { :id => "lp-sektion-#{m.id}" } do |f|
+      .tab-pane.multi-select{ :id => "lp-sektion-#{m.id}" }
 

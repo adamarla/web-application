@@ -113,6 +113,10 @@ $lightblue: lighten($deep-blue, 23%) ;
 
 .tab-content { 
   min-height: 200px ;
+  > form { 
+    display: none ;
+    &.active { display: block ; }
+  } 
 }  
 
 .single-line {
