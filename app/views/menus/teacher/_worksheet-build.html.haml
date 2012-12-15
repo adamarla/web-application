@@ -1,12 +1,4 @@
 
--# Dropdown split-button 
-.navbar.navbar-inverse.dont-touch
-  .navbar-inner
-    .btn-group.pull-right
-      %button.btn.btn-primary{ :type => :button, 'data-toggle' => :button, :id => 'select-all-for-quiz'}= "Select All"
-      %button.btn.dropdown-toggle.white-bg{ 'data-toggle' => :dropdown, :menu => "#bakras", :fixed => :true }
-        %span.caret
-      %ul.dropdown-menu#bakras
-        %li
-          = simple_link :for => "Build Worksheet", :id => 'build-worksheet'
-
+.btn-group.pull-right.dont-touch
+  %button.btn.btn-inverse#select-all-for-quiz= "Select All"
+  %button.btn.btn-inverse#build-worksheet= "Build Worksheet"
