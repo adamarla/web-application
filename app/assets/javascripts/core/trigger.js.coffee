@@ -126,13 +126,13 @@ jQuery ->
 
 
   $('.content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
-    tabs = this.dataset.tabs
-    if tabs?
+    nextTab = this.dataset.nextTab
+    if nextTab?
       within = $(this).closest '.tab-content'
       nav = if within.length isnt 0 then within.prev() else null # should be a .nav-tabs. If not, then sth is wrong
       if nav?
-        indices = tabs.split ','
-        activate = "li:eq(#{indices[0]}) > a"
+        #indices = nextTab.split ','
+        activate = "li:eq(#{nextTab}) > a"
         nav.find(activate).eq(0).tab 'show'
     return true
 
