@@ -14,6 +14,9 @@ window.line = {
     # Write contents of JSON 
     obj.find('.text').eq(0).children().eq(0).text json.name
     obj.attr 'marker', json.id
+    for a in obj.find("input[type='checkbox']")
+      $(a).attr 'name', "checked[#{json.id}]"
+      $(a).attr 'id', "checked_#{json.id}"
 
     subtext = obj.find('.subtext').eq(0)
     if json.tag?
