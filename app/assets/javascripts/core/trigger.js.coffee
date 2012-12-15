@@ -77,7 +77,9 @@ window.action = {
       node.empty()
       csrf.appendTo node
     else
-      node.empty()
+      for m in node.children()
+        continue if $(m).hasClass 'dont-touch'
+        $(m).remove()
     return true
 }
 
@@ -252,7 +254,7 @@ jQuery ->
     if attach?
       panel = $(this).closest('.nav-tabs').next().children('.tab-pane.active').eq(0)
       if panel.length isnt 0
-        panel.empty()
+        action.emptyOut panel
         obj = $("#toolbox > #{attach}").clone()
         obj.appendTo panel
 
