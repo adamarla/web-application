@@ -139,7 +139,7 @@ $lightblue: lighten($deep-blue, 23%) ;
   } 
   &.selected {
     > .dropdown { > a { color: white ; } }
-    border-bottom: 2px solid $orange ;
+    border-left: 2px solid $orange ;
   } 
 
   > .dropdown { 
