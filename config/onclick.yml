@@ -1,0 +1,11 @@
+
+lnk-existing-quiz :
+  lp : lp-worksheet-builder 
+  wp : preview
+  autoclick : tab-wsb-quizzes 
+
+lnk-wsb-sektions :
+  toggle : tab
+  autoclick : sektions-tab
+  attach : sektions-tab
+  wp : notouch

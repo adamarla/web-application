@@ -9,9 +9,20 @@ module ApplicationHelper
     marker = options.delete :marker
     data = {}
 
+    unless id.blank?
+      onclick = OnClick[id]
+      unless onclick.nil?
+        ['lp', 'mp', 'rp', 'wp', 'autoclick','ajax','attach', 'toggle'].each do |m|
+          k = options.delete(m) || onclick[m] # HAML gets preference over YAML
+          data[m] = k unless k.blank?
+        end
+      end
+    end
+
     options.each do |k,v|
       data[k] = v
     end
+
     data = {:id => id, :class => klass, :href => href, :data => data, :marker => marker}
 
     return false if text.blank?
