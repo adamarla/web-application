@@ -5,16 +5,15 @@ jQuery ->
     blockKeyPress: false,
 
     initialize : () ->
-      wp = $('#wp')
-      preview = wp.children('#preview').eq(0)
+      preview = $('#wp > #preview').eq(0)
 
-      preview.remove() if preview.length isnt 0
+      preview.empty() if preview.length isnt 0
       obj = $('#toolbox > #wp-preview').clone()
-      obj.attr 'id', 'preview' # Working copy should have a different ID
+      obj.attr 'id', 'preview-carousel' # Working copy should have a different ID
 
       for a in obj.children('a')
-        $(a).attr 'href', '#preview'
-      obj.appendTo wp
+        $(a).attr 'href', '#preview-carousel'
+      obj.appendTo preview
       return true
 
     execute : () ->
