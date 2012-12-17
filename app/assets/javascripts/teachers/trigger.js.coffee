@@ -5,7 +5,7 @@
 
 jQuery ->
   # Auto-click on the 'quizzes' tab. This will initiate the $.get request to get things started
-  $('#lp-worksheet-builder > ul:first a:first').tab 'show'
+  # $('#lp-worksheet-builder > ul:first a:first').tab 'show'
 
   $('#lp-quizzes').on 'click', '.single-line', (event) ->
     event.stopPropagation()
