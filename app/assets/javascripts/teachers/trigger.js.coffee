@@ -5,9 +5,9 @@
 
 jQuery ->
   # Auto-click on the 'quizzes' tab. This will initiate the $.get request to get things started
-  # $('#lp-worksheet-builder > ul:first a:first').tab 'show'
+  # $('#left-1 > ul:first a:first').tab 'show'
 
-  $('#lp-quizzes').on 'click', '.single-line', (event) ->
+  $('#left-quizzes').on 'click', '.single-line', (event) ->
     event.stopPropagation()
     marker = $(this).attr 'marker'
     $.get "quiz/preview.json?id=#{marker}"
@@ -23,10 +23,9 @@ jQuery ->
 
   $('#build-worksheet').click (event) ->
     event.stopPropagation()
-    activeTab = $('#lp-worksheet-builder').children('ul').eq(0).children('li').eq(0)
-    quiz = activeTab.attr 'marker'
-    form = $('#sektions-tab').children('.tab-content').eq(0).children('form.active').eq(0)
-    form.attr 'action', "quiz/assign.json?id=#{quiz}"
-    form.trigger 'submit'
+    form = $(this).parent().siblings('form.active').eq(0)
+    id = $('#tab-wsb-quizzes').parent().attr 'marker'
+    action = "quiz/assign?id=#{id}"
+    form.attr 'action', action
+    form.submit()
     return true
-  

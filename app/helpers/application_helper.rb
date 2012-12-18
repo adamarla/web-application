@@ -15,7 +15,7 @@ module ApplicationHelper
         ['left', 'middle', 'right', 'wide', 'autoclick','ajax','attach', 'toggle', 'default-lnk', 'panel-ajax'].each do |m|
           k = options.delete(m) || onclick[m] # HAML gets preference over YAML
           if k.is_a? Hash
-            ['show', 'ajax'].each do |n|
+            ['show', 'ajax', 'tab'].each do |n|
               data["#{m}-#{n}"] = k[n] unless k[n].blank?
             end
           else

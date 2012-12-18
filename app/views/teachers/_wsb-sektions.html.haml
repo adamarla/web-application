@@ -1,14 +1,14 @@
 
 -# Left-side tabs - one per section
 #sektions-tab.tabbable.tabs-left.notouch
-  %ul.nav.nav-tabs.span4
+  %ul.nav.nav-tabs.span3
     - teacher.sektions.each do |m|
       %li
         = simple_link :for => "#{m.label}", :toggle => :tab, :marker => "#{m.id}",
         :href => "#lp-sektion-#{m.id}", :ajax => "sektion/students.json?id=#{m.id}"
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
-  .tab-content.span7
+  .tab-content.span8
     .btn-group.notouch
       %button.btn.btn-inverse#select-all-for-quiz= "Select All"
       %button.btn.btn-inverse#build-worksheet= "Build Worksheet"

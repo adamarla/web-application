@@ -88,29 +88,22 @@ window.karo = {
         pagination.disable $(m)
         continue
       id = $(m).attr 'id'
-      if id is child
-        $(m).removeClass 'hide'
-        karo.tab.enable panel
-      else
-        $(m).addClass 'hide'
+      if id is child then $(m).removeClass('hide') else $(m).addClass('hide')
     return true
 
   tab : {
-    enable : (panel, n = 0) ->
-      panel = if typeof panel is 'string' then $(panel) else panel
-      first = null
-      for m in panel.children()
-        continue if $(m).hasClass 'hide'
-        continue if $(m).hasClass 'pagination'
-        first = $(m)
-        break
-
-      return true unless first?
-      ul = first.children('ul.nav-tabs').eq(0)
-      return true if ul.length is 0
-      li = ul.children('li').eq(n)
-      li.children('a').eq(0).tab 'show'
+    enable : (id) ->
+      m = $("##{id}")
+      m.parent().removeClass 'active' if m.parent().hasClass 'active'
+      m.tab 'show'
       return true
+
+    find : (node) -> # the closest active tab within which - presumably - the node is
+      node = if typeof node is 'string' then $(node) else node
+      pane = node.closest('.tab-content').eq(0)
+      return null if pane.length is 0
+      ul = pane.prev()
+      return ul.children('li.active').eq(0)
   }
 }
 
@@ -180,20 +173,14 @@ jQuery ->
     # (YAML) Issue any AJAX requests
     ajax = this.dataset.ajax
     $.get ajax if ajax?
-    return true
 
+    # If there be a tab that needs to be auto-clicked, then do that too
+    tab = this.dataset.autoclickTab
+    karo.tab.enable tab if tab?
+
+    return true
 
   ###
-  $('.dropdown-menu').on 'click', 'li > a', (event) ->
-    for j in ['lp','mp','rp','wp'] # lp = left-panel, mp = middle-panel, rp = right-panel, wp = wide-panel
-      show = $(this).attr j
-      continue unless show?
-      for m in show.siblings()
-        $(m).addClass 'hide'
-      show.removeClass 'hide'
-    return true
-
-
   $('.content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
     nextTab = this.dataset.nextTab
     if nextTab?
@@ -251,15 +238,20 @@ jQuery ->
         activeTab = $(this).closest('.tab-content').prev().children('li.active').eq(0)
         for k in $(this).siblings('.single-line')
           $(k).removeClass 'selected'
+          $(k).find('.badge').eq(0).removeClass 'badge-warning'
           $(k).find("input[type='checkbox']").eq(0).prop 'checked', false
 
       isClicked = $(this).hasClass 'selected'
+      badge = $(this).find('.badge').eq(0)
+
       if isClicked
         $(this).removeClass 'selected'
+        badge.removeClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
         activeTab.attr 'marker', null if activeTab? # => multiOk = false
       else
         $(this).addClass 'selected'
+        badge.addClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
         activeTab.attr 'marker', $(this).attr('marker') if activeTab?
 
@@ -325,30 +317,3 @@ jQuery ->
       $(a).attr 'href', href # Set the new href
     return true
     
-  ###
-    Issue AJAX requests - if needed - when a tab is shown so that required data can be loaded
-    Also handles the case when:
-      1. a tab is shown within a tab
-  # $(".g-panel").on 'shown', "a", (event) ->
-  $("a[data-toggle='tab']").on 'shown', (event) ->
-    prevTab = $(event.relatedTarget)
-    karo.empty prevTab.attr('href') unless prevTab.length is 0
-
-    ajax = this.dataset.ajax
-    $.get ajax if ajax?
-    # disable any paginator coz it will be re-enabled in response to the AJAX request
-    pgn = $(this).closest('.g-panel').find('.pagination').eq(0)
-    pagination.disable pgn if pgn.length isnt 0
-
-    # Attach any partial from the toolbox into corresponding panel - as specified (optionally) 
-    # by the 'data-attach' attribute
-    attach = this.dataset.attach
-    if attach?
-      panel = $(this).closest('.nav-tabs').next().children('.tab-pane.active').eq(0)
-      if panel.length isnt 0
-        karo.empty panel
-        obj = $("#toolbox > #{attach}").clone()
-        obj.appendTo panel
-
-    return true
-  ###

@@ -5,6 +5,8 @@ lnk-existing-quiz :
   wide : 
     show : wide-X 
   default-lnk : true
+  autoclick :
+    tab : tab-wsb-quizzes
 
 tab-wsb-quizzes :
   toggle : tab
