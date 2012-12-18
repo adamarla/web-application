@@ -12,9 +12,15 @@ module ApplicationHelper
     unless id.blank?
       onclick = OnClick[id]
       unless onclick.nil?
-        ['lp', 'mp', 'rp', 'wp', 'autoclick','ajax','attach', 'toggle'].each do |m|
+        ['left', 'middle', 'right', 'wide', 'autoclick','ajax','attach', 'toggle', 'default-lnk', 'panel-ajax'].each do |m|
           k = options.delete(m) || onclick[m] # HAML gets preference over YAML
-          data[m] = k unless k.blank?
+          if k.is_a? Hash
+            ['show', 'ajax'].each do |n|
+              data["#{m}-#{n}"] = k[n] unless k[n].blank?
+            end
+          else
+            data[m] = k unless k.blank?
+          end
         end
       end
     end
