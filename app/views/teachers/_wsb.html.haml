@@ -1,0 +1,14 @@
+-# Variable teacher comes from the layout file 
+
+%ul.nav.nav-tabs
+  %li
+    = simple_link :for => "Quizzes", :href => '#pane-wsb-quizzes', :id => 'tab-wsb-quizzes'
+  %li
+    = simple_link :for => "Sections", :href => '#pane-wsb-sektions', :id => 'tab-wsb-sektions'
+
+.tab-content
+  #pane-wsb-quizzes.tab-pane
+  #pane-wsb-sektions.tab-pane
+    = render :partial => 'teachers/wsb-sektions', :locals => { :teacher => teacher }
+
+    
