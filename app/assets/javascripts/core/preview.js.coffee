@@ -5,19 +5,19 @@ jQuery ->
     blockKeyPress: false,
 
     initialize : () ->
-      preview = $('#wp > #preview').eq(0)
+      preview = $('#wide > #wide-X').eq(0)
 
       preview.empty() if preview.length isnt 0
       obj = $('#toolbox > #wp-preview').clone()
-      obj.attr 'id', 'preview-carousel' # Working copy should have a different ID
+      obj.attr 'id', 'wide-X-carousel' # Working copy should have a different ID
 
       for a in obj.children('a')
-        $(a).attr 'href', '#preview-carousel'
+        $(a).attr 'href', '#wide-X-carousel'
       obj.appendTo preview
       return true
 
     execute : () ->
-      obj = $('#wp > #preview')
+      obj = $('#wide > #wide-X')
       inner = obj.find('.carousel-inner').eq(0)
       first = inner.children('.item').eq(0)
       first.addClass 'active'
@@ -52,7 +52,7 @@ jQuery ->
       preview.initialize()
 
       # target = $('#document-preview').find 'ul:first'
-      target = $('#wp > #preview').find('.carousel-inner').eq(0)
+      target = $('#wide > #wide-X').find('.carousel-inner').eq(0)
       roots = json.preview.id
 
       return false if roots.length is 0
@@ -115,7 +115,7 @@ jQuery ->
 
     # Returns the index of the currently displayed image, starting with 0
     currIndex : () ->
-      p = $('#wp > #preview')
+      p = $('#wide > #wide-X')
       return -1 if p.length is 0
 
       images = p.children('.carousel-inner').eq(0).children('.item')
@@ -135,7 +135,7 @@ jQuery ->
 
     isAt : (uid) ->
       return -1 if not uid?
-      p = $('#wp > #preview')
+      p = $('#wide > #wide-X')
 
       images = p.find '.carousel-inner > .item'
       posn = -1
@@ -149,7 +149,7 @@ jQuery ->
 
     jump : (from, to) ->
       return if not to?
-      p = $('#wp > #preview')
+      p = $('#wide > #wide-X')
 
       p.carousel to
       return true
@@ -190,7 +190,7 @@ jQuery ->
     ###
 
     hop: (fwd = true) ->
-      p = $('#wp > #preview')
+      p = $('#wide > #wide-X')
       active = p.find('.carousel-inner > .item.active').eq(0)
       next = if fwd then active.next(".item[hop='true']") else active.prevAll(".item[hop='true']")
       active.removeClass 'active'
