@@ -19,24 +19,28 @@ window.line = {
       $(a).attr 'id', "checked_#{json.id}"
 
     subtext = obj.find('.subtext').eq(0)
+    text = subtext.prev()
+
     if json.tag?
       subtext.children().eq(0).text json.tag
+      subtext.addClass 'span3'
+      text.addClass 'span8'
     else
-      text = subtext.prev()
-      text.removeClass 'span9'
-      text.addClass 'span11 offset1'
+      text.addClass 'span11'
       subtext.remove()
 
     # Set the menu(string) as an attribute on .dropdown > a - if provided
-    ddown = obj.find('.dropdown-toggle').eq(0)
+    toggle = obj.find('.dropdown-toggle').eq(0)
+    dropDown = toggle.parent()
+    textRow = dropDown.next()
+
     if menu?
-      ddown.attr 'menu', menu
+      toggle.attr 'menu', menu
+      dropDown.addClass 'span2'
+      textRow.addClass 'span10'
     else
-      j = ddown.closest('.dropdown')
-      row = j.next()
-      row.removeClass 'span10'
-      row.addClass 'span12'
-      j.remove()
+      dropDown.remove()
+      textRow.addClass 'span12'
 
     # Append the cloned and edited obj
     obj.appendTo here
