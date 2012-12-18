@@ -5,7 +5,7 @@
 
 jQuery ->
 
-  $('#lp').ajaxSuccess (e,xhr,settings) ->
+  $('#left').ajaxSuccess (e,xhr,settings) ->
     json = $.parseJSON xhr.responseText
     url = settings.url
     matched = true
@@ -15,11 +15,11 @@ jQuery ->
     childKey = null
     menu = null # ID of contextual menu to attach w/ each .single-line
     pgnUrl = null # base-url to be set on the paginator
-    pgn = $('#lp-paginator')
+    pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
 
     if url.match(/quizzes\/list/)
-      target = $('#lp-quizzes')
+      target = $('#pane-wsb-quizzes')
       parentKey = 'quizzes'
       childKey = 'quiz'
       menu = "#per-quiz"
@@ -34,8 +34,8 @@ jQuery ->
     ## Common actions in response to JSON
     ############################################################
 
-    if target.length isnt 0
-      action.emptyOut target
+    if target? and target.length isnt 0
+      karo.empty target
       for m in json[parentKey]
         line.write target, m[childKey], menu
 

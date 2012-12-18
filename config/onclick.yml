@@ -1,11 +1,16 @@
 
 lnk-existing-quiz :
-  lp : lp-worksheet-builder 
-  wp : preview
-  autoclick : tab-wsb-quizzes 
+  left : 
+    show : left-1
+  wide : 
+    show : wide-X 
+  default-lnk : true
 
-lnk-wsb-sektions :
+tab-wsb-quizzes :
   toggle : tab
-  autoclick : sektions-tab
-  attach : sektions-tab
-  wp : notouch
+  ajax : quizzes/list
+  panel-ajax : quiz/preview?id=:id
+
+tab-wsb-sektions :
+  toggle : tab
+    

@@ -28,7 +28,6 @@
     = render :partial => 'toolbox/preview'
     = render :partial => 'menus/teacher/quiz_filter'
     = render :partial => 'menus/teacher/per-quiz'
-    = render :partial => 'teachers/sektions-tab', :locals => { :teacher => tchr }
 
     #flot-chart
 
@@ -68,12 +67,17 @@
                     %span.caret
                   = render :partial => 'menus/user/account'
       #desktop.row-fluid
-        #lp.g-panel.span4
-          = render :partial => 'toolbox/paginator', :locals => { :id => 'lp-paginator', :url => '#' }
-          #lp-worksheet-builder
-            = render :partial => 'teachers/worksheet-builder', :locals => { :teacher => tchr }
-        #wp.g-panel.span8
-          #preview
+        #left.g-panel.span4
+          = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
+          #left-1
+            = render :partial => 'teachers/wsb', :locals => { :teacher => tchr }
+          #left-X
+        #middle.g-panel.span4
+          #middle-X
+        #right.g-panel.span4
+          #right-X
+        #wide.g-panel.span8
+          #wide-X
 
     = yield :toolbox
     -#= render :partial => 'accounts/update'

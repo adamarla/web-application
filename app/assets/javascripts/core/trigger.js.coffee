@@ -68,8 +68,8 @@ window.menu = {
     return true
 }
 
-window.action = {
-  emptyOut : (node) ->
+window.karo = {
+  empty : (node) ->
     node = if typeof node is 'string' then $(node) else node
     if node.is 'form'
       csrf = node.children('div').eq(0) # retain cross-site forgery protection
@@ -78,11 +78,41 @@ window.action = {
       csrf.appendTo node
     else
       for m in node.children()
-        continue if $(m).hasClass 'dont-touch'
+        continue if $(m).hasClass 'notouch'
         $(m).remove()
     return true
-}
 
+  unhide : (child, panel) -> # hide / unhide children in a panel
+    for m in panel.children()
+      if $(m).hasClass 'pagination'
+        pagination.disable $(m)
+        continue
+      id = $(m).attr 'id'
+      if id is child
+        $(m).removeClass 'hide'
+        karo.tab.enable panel
+      else
+        $(m).addClass 'hide'
+    return true
+
+  tab : {
+    enable : (panel, n = 0) ->
+      panel = if typeof panel is 'string' then $(panel) else panel
+      first = null
+      for m in panel.children()
+        continue if $(m).hasClass 'hide'
+        continue if $(m).hasClass 'pagination'
+        first = $(m)
+        break
+
+      return true unless first?
+      ul = first.children('ul.nav-tabs').eq(0)
+      return true if ul.length is 0
+      li = ul.children('li').eq(n)
+      li.children('a').eq(0).tab 'show'
+      return true
+  }
+}
 
 jQuery ->
   ###
@@ -112,9 +142,48 @@ jQuery ->
   # Onto core bindings 
   ###############################################
 
-  #for m in $('#desktop').children()
-  #  $(m).addClass 'hide'
+  $("a[data-toggle='tab']").on 'shown', (event) ->
+    event.stopPropagation()
 
+    # Empty the last-enabled tab's contents
+    prevTab = $(event.relatedTarget)
+    karo.empty prevTab.attr('href') unless prevTab.length is 0
+
+    # Disable paginator in parent panel 
+    panel = $(this).closest('.g-panel')[0]
+    pgn = $(panel).children('.pagination').eq(0)
+    pagination.disable pgn
+
+    # Issue AJAX request
+    ajax = this.dataset.ajax
+    $.get ajax if ajax?
+
+    # Set base-ajax url on containing panel
+    panelAjax = this.dataset.panelAjax
+    panel.dataset.ajax = if panelAjax? then panelAjax else null
+    return true
+
+  $('.g-panel').on 'click', "a", (event) ->
+    return true if this.dataset.toggle is 'tab'
+    event.stopPropagation()
+    # (YAML) Hide / unhide panels as needed
+    for j in ['left', 'right', 'middle', 'wide']
+      attr = "#{j}Show" # x-y in YAML => xY here
+      show = this.dataset[attr] # left-show, right-show etc 
+      panel = $("##{j}")
+      if not show?
+        panel.addClass 'hide'
+        continue
+      panel.removeClass 'hide'
+      karo.unhide(show, panel) unless show is 'notouch'
+
+    # (YAML) Issue any AJAX requests
+    ajax = this.dataset.ajax
+    $.get ajax if ajax?
+    return true
+
+
+  ###
   $('.dropdown-menu').on 'click', 'li > a', (event) ->
     for j in ['lp','mp','rp','wp'] # lp = left-panel, mp = middle-panel, rp = right-panel, wp = wide-panel
       show = $(this).attr j
@@ -135,6 +204,7 @@ jQuery ->
         activate = "li:eq(#{nextTab}) > a"
         nav.find(activate).eq(0).tab 'show'
     return true
+  ###
 
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
@@ -144,8 +214,7 @@ jQuery ->
   # Auto-click the one link in #control-panel that is identified as the default link
 
   for m in $('#control-panel ul.dropdown-menu > li > a')
-    if $(m).attr('default') is 'true'
-      $(m).click()
+    $(m).click() if m.dataset.defaultLnk is 'true'
 
   $('.pagination a').click (event) ->
     event.stopPropagation()
@@ -197,6 +266,25 @@ jQuery ->
       # Close any previously open menus - perhaps belonging to a sibling 
       for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
         menu.close $(m)
+
+      # Last step: Issue AJAX request - if defined and set on containing panel
+      panel = $(this).closest('.g-panel')[0]
+      ajax = panel.dataset.ajax
+      unless ajax is 'null'
+        ###
+          ajax is the base-url with :id and/or :prev placeholders
+          :id is * always * replaced with the current .single-line's marker
+          and :prev - if present - * always * with the previous tab's marker
+
+          Presence of :prev => tabbed content
+        ###
+        
+        url = ajax.replace ":id", $(this).attr('marker')
+        prev = if activeTab? activeTab.prev() else null
+        url = url.replace ":prev", prev.attr('marker') if prev?
+        $.get url
+
+    # End of method 
     return true
 
 
@@ -241,10 +329,10 @@ jQuery ->
     Issue AJAX requests - if needed - when a tab is shown so that required data can be loaded
     Also handles the case when:
       1. a tab is shown within a tab
-  ###
-  $(".nav-tabs, .tab-content").on 'shown', "a[data-toggle='tab']", (event) ->
+  # $(".g-panel").on 'shown', "a", (event) ->
+  $("a[data-toggle='tab']").on 'shown', (event) ->
     prevTab = $(event.relatedTarget)
-    action.emptyOut prevTab.attr('href') unless prevTab.length is 0
+    karo.empty prevTab.attr('href') unless prevTab.length is 0
 
     ajax = this.dataset.ajax
     $.get ajax if ajax?
@@ -258,8 +346,9 @@ jQuery ->
     if attach?
       panel = $(this).closest('.nav-tabs').next().children('.tab-pane.active').eq(0)
       if panel.length isnt 0
-        action.emptyOut panel
+        karo.empty panel
         obj = $("#toolbox > #{attach}").clone()
         obj.appendTo panel
 
     return true
+  ###
