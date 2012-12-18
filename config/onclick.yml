@@ -16,3 +16,6 @@ tab-wsb-quizzes :
 tab-wsb-sektions :
   toggle : tab
     
+lnk-wsb-new :
+  autoclick :
+    tab : tab-wsb-sektions

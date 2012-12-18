@@ -24,7 +24,6 @@ window.menu = {
     if lnk.attr('fixed') is 'true'
       m.removeClass 'show'
     else
-      # alert "Removing #{m.attr 'id'}" if m.attr('id')?
       m.remove()
     return true
 
@@ -182,18 +181,13 @@ jQuery ->
 
     return true
 
-  ###
-  $('.content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
-    nextTab = this.dataset.nextTab
-    if nextTab?
-      within = $(this).closest '.tab-content'
-      nav = if within.length isnt 0 then within.prev() else null # should be a .nav-tabs. If not, then sth is wrong
-      if nav?
-        #indices = nextTab.split ','
-        activate = "li:eq(#{nextTab}) > a"
-        nav.find(activate).eq(0).tab 'show'
+  $('.g-panel, .content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
+    event.stopPropagation()
+    tab = this.dataset.autoclickTab
+    p = $(this).closest('.dropdown-menu').eq(0)
+    menu.close p
+    karo.tab.enable tab if tab?
     return true
-  ###
 
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
