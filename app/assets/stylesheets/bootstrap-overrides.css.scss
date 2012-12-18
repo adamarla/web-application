@@ -139,7 +139,6 @@ $lightblue: lighten($deep-blue, 23%) ;
   } 
   &.selected {
     > .dropdown { > a { color: white ; } }
-    border-left: 2px solid $orange ;
   } 
 
   > .dropdown { 
@@ -152,6 +151,13 @@ $lightblue: lighten($deep-blue, 23%) ;
   .subtext { 
     font-size: 10px ;
     color: $orange ;
+  } 
+
+  .badge { 
+     padding: 0px ; 
+     width: 8px ;
+     height: 8px ;
+     border-radius: 4px ;
   } 
 } 
 
