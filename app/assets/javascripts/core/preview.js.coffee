@@ -17,11 +17,11 @@ jQuery ->
       return true
 
     execute : () ->
-      obj = $('#wide > #wide-X')
+      obj = $('#wide-X > #wide-X-carousel')
       inner = obj.find('.carousel-inner').eq(0)
       first = inner.children('.item').eq(0)
       first.addClass 'active'
-      obj.carousel { interval:false }
+      obj.carousel { interval:15000 }
       return true
 
     loadJson : (json, source, obviousAlt = false) ->

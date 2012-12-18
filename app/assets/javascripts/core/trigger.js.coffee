@@ -158,6 +158,8 @@ jQuery ->
 
   $('.g-panel').on 'click', "a", (event) ->
     return true if this.dataset.toggle is 'tab'
+    return true if $(this).hasClass 'carousel-control'
+
     event.stopPropagation()
     # (YAML) Hide / unhide panels as needed
     for j in ['left', 'right', 'middle', 'wide']
