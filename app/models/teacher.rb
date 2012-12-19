@@ -207,12 +207,18 @@ class Teacher < ActiveRecord::Base
 
     For now, we will go with (1). But who knows, (2) might be better
 =end
-    course_ids = []
-    [*9..12].each do |klass|
-      subjects = specializations.where(:klass => klass).map(&:subject_id)
-      course_ids += Course.where(:board_id => board, :klass => klass, :subject_id => subjects).map(&:id)
-    end
-    return Course.where(:id => course_ids)
+    cids = []
+    specializations.each do |s| 
+      cids.concat Course.where(:board_id => board, :klass => s.klass, :subject_id => s.subject_id).map(&:id)
+    end 
+    return Course.where(:id => cids)
+  end
+
+  def verticals
+    courses = self.courses
+    topics = courses.map(&:topic_ids).flatten.uniq
+    vids = Topic.where(:id => topics).map(&:vertical_id).uniq
+    return Vertical.where(:id => vids).order(:name)
   end
 
   def testpapers
