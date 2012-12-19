@@ -159,7 +159,7 @@ jQuery ->
     return true if this.dataset.toggle is 'tab'
     return true if $(this).hasClass 'carousel-control'
 
-    event.stopPropagation()
+    event.stopImmediatePropagation()
     # (YAML) Hide / unhide panels as needed
     for j in ['left', 'right', 'middle', 'wide']
       attr = "#{j}Show" # x-y in YAML => xY here
