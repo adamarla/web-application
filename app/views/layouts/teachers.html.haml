@@ -72,12 +72,18 @@
           #left-1
             = render :partial => 'teachers/wsb', :locals => { :teacher => tchr }
           #left-X
+          #left-2
+            = render :partial => 'teachers/qzb', :locals => { :teacher => tchr }
         #middle.g-panel.span4
+          = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
           #middle-X
         #right.g-panel.span4
+          = render :partial => 'toolbox/paginator', :locals => { :id => 'right-paginator', :url => '#' }
           #right-X
         #wide.g-panel.span8
           #wide-X
+          #wide-wait
+            = render :partial => 'toolbox/wait'
 
     = yield :toolbox
     -#= render :partial => 'accounts/update'
