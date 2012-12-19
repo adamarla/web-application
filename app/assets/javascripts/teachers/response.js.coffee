@@ -23,7 +23,7 @@ jQuery ->
       parentKey = 'quizzes'
       childKey = 'quiz'
       menu = "#per-quiz"
-      pgnUrl = "quizzes/list"
+      # pgnUrl = "quizzes/list"
       clickFirst = true
     else if url.match(/sektion\/students/)
       target = $("#lp-sektion-#{json.sektion}")
@@ -44,9 +44,9 @@ jQuery ->
         line.write target, m[childKey], menu
 
       # Enable / disable paginator as needed 
-      if pgnUrl? and json.last_pg?
+      if json.last_pg?
         pagination.enable pgn, json.last_pg
-        pagination.url.set pgn, pgnUrl
+        # pagination.url.set pgn, pgnUrl
 
       # Auto-click first line - if needed
       target.children('.single-line').eq(0).click() if clickFirst

@@ -148,7 +148,9 @@ jQuery ->
 
     # Issue AJAX request
     ajax = this.dataset.ajax
-    $.get ajax if ajax?
+    if ajax?
+      $.get ajax
+      pagination.url.set pgn, ajax
 
     # Set base-ajax url on containing panel
     panelAjax = this.dataset.panelAjax
