@@ -131,7 +131,7 @@ jQuery ->
     return true
 
   ###############################################
-  # Onto core bindings 
+  # When a tab is clicked and shown
   ###############################################
 
   $("a[data-toggle='tab']").on 'shown', (event) ->
@@ -146,9 +146,18 @@ jQuery ->
     pgn = $(panel).children('.pagination').eq(0)
     pagination.disable pgn
 
-    # Issue AJAX request
+    # Issue AJAX request * after * taking care of any :prev or :id in data-ajax
     ajax = this.dataset.ajax
     if ajax?
+      # Remember - :prev and :id point to an <a>. The marker, however, is set on the parent <li>
+      if ajax.indexOf ":prev" isnt -1
+        from = this.dataset.prev
+        ajax = ajax.replace ":prev", $("##{from}").parent().attr('marker')
+      if ajax.indexOf ":id" isnt -1
+        from = this.dataset.id
+        id = if from? then $("##{from}").attr('marker') else $(this).parent().attr('marker')
+        ajax = ajax.replace ":id", id
+
       $.get ajax
       pagination.url.set pgn, ajax
 
@@ -183,6 +192,10 @@ jQuery ->
 
     return true
 
+  ###############################################
+  # When an item in a dropdown menu is selected 
+  ###############################################
+
   $('.g-panel, .content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
     event.stopPropagation()
     tab = this.dataset.autoclickTab
@@ -190,6 +203,10 @@ jQuery ->
     menu.close p
     karo.tab.enable tab if tab?
     return true
+
+  ###############################################
+  # When the caret to open a contextual menu is clicked 
+  ###############################################
 
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
@@ -201,6 +218,10 @@ jQuery ->
   for m in $('#control-panel ul.dropdown-menu > li > a')
     $(m).click() if m.dataset.defaultLnk is 'true'
 
+  ###############################################
+  # When a pagination link is clicked 
+  ###############################################
+
   $('.pagination a').click (event) ->
     event.stopPropagation()
     li = $(this).parent()
@@ -210,6 +231,10 @@ jQuery ->
     li.addClass 'active'
     $.get $(this).attr 'href'
     return false # already issued AJAX GET request. No need for further processing
+
+  ###############################################
+  # When a single line is clicked  
+  ###############################################
 
   $('.content, .tab-pane').on 'click', '.single-line', (event) ->
     ###
@@ -227,18 +252,20 @@ jQuery ->
     if m? # => if clicked to see dropdown menu
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle').eq(0) else return false
-    else
+    else # elsewhere on the single-line => select / de-select
       multiOk = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
       activeTab = null
       event.stopPropagation()
-
+      
+      # 1. De-select siblings if * not * multi-select 
       unless multiOk
-        activeTab = $(this).closest('.tab-content').prev().children('li.active').eq(0)
+        activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
         for k in $(this).siblings('.single-line')
           $(k).removeClass 'selected'
           $(k).find('.badge').eq(0).removeClass 'badge-warning'
           $(k).find("input[type='checkbox']").eq(0).prop 'checked', false
 
+      # 2. Then select / deselect $(this)
       isClicked = $(this).hasClass 'selected'
       badge = $(this).find('.badge').eq(0)
 
@@ -246,18 +273,18 @@ jQuery ->
         $(this).removeClass 'selected'
         badge.removeClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
-        activeTab.attr 'marker', null if activeTab? # => multiOk = false
+        $(activeTab).attr 'marker', null if activeTab? # => multiOk = false
       else
         $(this).addClass 'selected'
         badge.addClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
-        activeTab.attr 'marker', $(this).attr('marker') if activeTab?
+        $(activeTab).attr 'marker', $(this).attr('marker') if activeTab?
 
-      # Close any previously open menus - perhaps belonging to a sibling 
+      # 3. Close any previously open menus - perhaps belonging to a sibling 
       for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
         menu.close $(m)
 
-      # Last step: Issue AJAX request - if defined and set on containing panel
+      # 4. Issue AJAX request - if defined and set on containing panel
       panel = $(this).closest('.g-panel')[0]
       ajax = panel.dataset.ajax
       unless ajax is 'null'
@@ -270,9 +297,16 @@ jQuery ->
         ###
         
         url = ajax.replace ":id", $(this).attr('marker')
-        prev = if activeTab? activeTab.prev() else null
+        prev = if activeTab? $(activeTab).prev() else null
         url = url.replace ":prev", prev.attr('marker') if prev?
         $.get url
+
+      # 5. Switch to next-tab - if so specified
+      if activeTab?
+        # activeTab is a <li> and what we are looking for is in the <a> within it
+        a = $(activeTab).children('a')[0]
+        next = a.dataset.autoclickTab
+        karo.tab.enable next if next?
 
     # End of method 
     return true
