@@ -65,7 +65,7 @@ class TeachersController < ApplicationController
   end
 
   def courses
-    teacher = Teacher.find params[:id]
+    teacher = current_account.loggable 
     head :bad_request if teacher.nil? 
     @courses = teacher.courses
   end
