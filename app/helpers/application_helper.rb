@@ -12,19 +12,26 @@ module ApplicationHelper
     unless id.blank?
       onclick = OnClick[id]
       unless onclick.nil?
-        ['left', 'middle', 'right', 'wide', 'autoclick','ajax','attach', 'toggle', 'default-lnk', 'panel-ajax'].each do |m|
-          k = options.delete(m) || onclick[m] # HAML gets preference over YAML
-          if k.is_a? Hash
-            ['show', 'ajax', 'tab'].each do |n|
-              data["#{m}-#{n}"] = k[n] unless k[n].blank?
-            end
-          else
-            data[m] = k unless k.blank?
-          end
-        end
-      end
-    end
+        first_level_keys = [
+        'left', 'middle', 'right', 'wide', 
+        'autoclick','ajax','attach', 'toggle', 'default-lnk', 
+        'panel', 'prev', 'id'
+        ]
 
+        first_level_keys.each do |m|
+          k = options.delete(m) || onclick[m] # HAML gets preference over YAML
+          unless k.blank?
+            if k.is_a? Hash
+              ['show', 'ajax', 'tab'].each { |n| data["#{m}-#{n}"] = k[n] unless k[n].blank? } 
+            else
+              data[m] = k
+            end
+          end # of unless 
+        end # of do .. 
+      end # of unless 
+    end # of unless 
+
+    # If not from YAML, then attributes coming exclusively from HAML. Don't ignore those 
     options.each do |k,v|
       data[k] = v
     end
