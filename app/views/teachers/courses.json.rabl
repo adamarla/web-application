@@ -1,4 +1,4 @@
 
 collection @courses => :courses
   attributes :name, :id
-  node(:ticker) { |m| "#{m.board.name}" }
+  node(:tag) { |m| "#{m.board.name}" }

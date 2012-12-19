@@ -29,6 +29,10 @@ jQuery ->
       target = $("#lp-sektion-#{json.sektion}")
       parentKey = "students"
       childKey = 'student'
+    else if url.match(/teacher\/courses/)
+      target = $('#pane-qzb-courses')
+      parentKey = 'courses'
+      childKey = 'course'
 
     ############################################################
     ## Common actions in response to JSON

@@ -19,3 +19,15 @@ tab-wsb-sektions :
 lnk-wsb-new :
   autoclick :
     tab : tab-wsb-sektions
+
+lnk-new-quiz :
+  autoclick : 
+    tab : tab-qzb-courses
+  left :
+    show : left-2
+  wide :
+    show : wide-wait
+
+tab-qzb-courses : 
+  toggle : tab
+  ajax : teacher/courses

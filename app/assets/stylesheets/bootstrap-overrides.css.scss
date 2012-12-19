@@ -221,3 +221,13 @@ button[data-toggle='button'] {
 .transparent { 
   background: transparent ;
 } 
+
+#wait {
+  height: 400px ;
+  text-align: center ;
+  > h1 {
+    margin-top: 40% ;
+    font-weight: 300 ;
+    font-size: 50px ;
+  } 
+}
