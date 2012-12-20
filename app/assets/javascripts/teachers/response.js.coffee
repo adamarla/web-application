@@ -33,15 +33,20 @@ jQuery ->
       target = $('#pane-qzb-courses')
       parentKey = 'courses'
       childKey = 'course'
+    else if url.match(/course\/topics_in/)
+      target = $("#vert-#{json.vertical}")
+      parentKey = 'topics'
+      childKey = 'topic'
 
     ############################################################
     ## Common actions in response to JSON
     ############################################################
 
     if target? and target.length isnt 0
-      karo.empty target
-      for m in json[parentKey]
-        line.write target, m[childKey], menu
+      purge = if target.hasClass('writeonce') then target.children().length is 0 else true
+      if purge
+        karo.empty target
+        line.write(target, m[childKey], menu) for m in json[parentKey]
 
       # Enable / disable paginator as needed 
       if json.last_pg?

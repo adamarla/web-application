@@ -68,7 +68,7 @@ window.menu = {
 }
 
 window.karo = {
-  empty : (node, force = false) ->
+  empty : (node) ->
     node = if typeof node is 'string' then $(node) else node
 
     if node.is 'form'
@@ -78,8 +78,10 @@ window.karo = {
       csrf.appendTo node
     else
       for m in node.children()
-        continue if $(m).hasClass 'notouch' and not force
-        $(m).remove()
+        if $(m).hasClass 'no-remove'
+          $(z).empty() for z in $(m).find('.purge')
+        else
+          $(m).remove()
     return true
 
   unhide : (child, panel) -> # hide / unhide children in a panel
@@ -138,9 +140,10 @@ jQuery ->
   $("a[data-toggle='tab']").on 'shown', (event) ->
     event.stopPropagation()
 
-    # Empty the last-enabled tab's contents
-    prevTab = $(event.relatedTarget)
-    karo.empty(prevTab.attr('href'),true) unless prevTab.length is 0
+    # Empty the last-enabled tab's contents - if needed
+    unless $(event.target).closest('.nav-tabs').eq(0).hasClass 'nopurge-on-show'
+      prevTab = $(event.relatedTarget)
+      karo.empty prevTab.attr('href') unless prevTab.length is 0
 
     # Disable paginator in parent panel 
     panel = $(this).closest('.g-panel')[0]
@@ -185,7 +188,7 @@ jQuery ->
         panel.addClass 'hide'
         continue
       panel.removeClass 'hide'
-      karo.unhide(show, panel) unless show is 'notouch'
+      karo.unhide(show, panel) unless show is 'no-remove'
 
     # (YAML) Issue any AJAX requests
     ajax = this.dataset.ajax

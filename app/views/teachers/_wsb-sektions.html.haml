@@ -1,6 +1,6 @@
 
 -# Left-side tabs - one per section
-#sektions-tab.tabbable.tabs-left.notouch
+#sektions-tab.tabbable.tabs-left.no-remove
   %ul.nav.nav-tabs.span3
     - teacher.sektions.each do |m|
       %li
@@ -9,7 +9,7 @@
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span8
-    .btn-group.notouch
+    .btn-group.no-remove
       %button.btn.btn-inverse#select-all-for-quiz= "Select All"
       %button.btn.btn-inverse#build-worksheet= "Build Worksheet"
     - teacher.sektions.each do |m|
