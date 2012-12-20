@@ -72,8 +72,8 @@ class CoursesController < ApplicationController
 
   def topics_in
     course = Course.find params[:id]
-    vertical = params[:vertical].to_i
-    @topics = course.topics_in vertical
+    @vertical_id = params[:vertical].to_i
+    @topics = course.topics_in @vertical_id
   end
 
   def questions
