@@ -68,8 +68,9 @@ window.menu = {
 }
 
 window.karo = {
-  empty : (node) ->
+  empty : (node, force = false) ->
     node = if typeof node is 'string' then $(node) else node
+
     if node.is 'form'
       csrf = node.children('div').eq(0) # retain cross-site forgery protection
       csrf = csrf.detach()
@@ -77,7 +78,7 @@ window.karo = {
       csrf.appendTo node
     else
       for m in node.children()
-        continue if $(m).hasClass 'notouch'
+        continue if $(m).hasClass 'notouch' and not force
         $(m).remove()
     return true
 
@@ -124,7 +125,7 @@ jQuery ->
 
   $.ajax pingargs
 
-  $('html').click (event) ->
+  $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
         menu.close $(p) unless $(p).parent().hasClass('dropdown-submenu')
@@ -139,7 +140,7 @@ jQuery ->
 
     # Empty the last-enabled tab's contents
     prevTab = $(event.relatedTarget)
-    karo.empty prevTab.attr('href') unless prevTab.length is 0
+    karo.empty(prevTab.attr('href'),true) unless prevTab.length is 0
 
     # Disable paginator in parent panel 
     panel = $(this).closest('.g-panel')[0]
@@ -166,7 +167,11 @@ jQuery ->
     panel.dataset.ajax = if panelAjax? then panelAjax else null
     return true
 
-  $('.g-panel').on 'click', "a", (event) ->
+  ###############################################
+  # When an item in a dropdown menu is selected 
+  ###############################################
+
+  $('.g-panel, .content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
     return true if this.dataset.toggle is 'tab'
     return true if $(this).hasClass 'carousel-control'
 
@@ -190,18 +195,10 @@ jQuery ->
     tab = this.dataset.autoclickTab
     karo.tab.enable tab if tab?
 
-    return true
+    # If <a> is within a dropdown-menu, then close the dropdown menu
+    d = $(this).closest('.dropdown-menu')
+    menu.close $(d) if $(d).length isnt 0
 
-  ###############################################
-  # When an item in a dropdown menu is selected 
-  ###############################################
-
-  $('.g-panel, .content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
-    event.stopPropagation()
-    tab = this.dataset.autoclickTab
-    p = $(this).closest('.dropdown-menu').eq(0)
-    menu.close p
-    karo.tab.enable tab if tab?
     return true
 
   ###############################################
