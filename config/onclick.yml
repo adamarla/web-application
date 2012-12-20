@@ -11,7 +11,8 @@ lnk-existing-quiz :
 tab-wsb-quizzes :
   toggle : tab
   ajax : quizzes/list
-  panel-ajax : quiz/preview?id=:id
+  panel :
+    ajax : quiz/preview?id=:id
 
 tab-wsb-sektions :
   toggle : tab
@@ -31,3 +32,11 @@ lnk-new-quiz :
 tab-qzb-courses : 
   toggle : tab
   ajax : teacher/courses
+  autoclick :
+    tab : tab-qzb-topics
+
+tab-qzb-verticals :
+  toggle : tab
+
+tab-qzb-topics : 
+  toggle : tab
