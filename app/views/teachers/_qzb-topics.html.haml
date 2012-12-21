@@ -1,19 +1,20 @@
 
 -# Left-side tabs - one per vertical
 
-.btn-group.no-remove
-  %button.btn.btn-inverse#select-all-for-quiz= "Select All"
-  %button.btn.btn-inverse#build-worksheet= "Build Worksheet"
+= simple_form_for :checked, :remote => true, 
+  :html => { :id => 'form-qzb-topics', 'data-action' => "#{course_questions_path}?id=:prev" } do |f|
 
-#vert-tab.tabbable.tabs-left.no-remove
-  %ul.nav.nav-tabs.span4.nopurge-on-show
-    - teacher.verticals.each do |m|
-      %li{ :marker => "#{m.id}" }
-        = simple_link :for => "#{m.name}", :toggle => :tab, 
-        :href => "#vert-#{m.id}", :ajax => "course/topics_in?id=:prev&vertical=:id",
-        :prev => 'tab-qzb-courses'
+  .row-fluid.navbar
+    = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"
+  #vert-tab.tabbable.tabs-left.no-remove
+    %ul.nav.nav-tabs.span4.nopurge-on-show
+      - teacher.verticals.each do |m|
+        %li{ :marker => "#{m.id}" }
+          = simple_link :for => "#{m.name}", :toggle => :tab, 
+          :href => "#vert-#{m.id}", :ajax => "course/topics_in?id=:prev&vertical=:id",
+          :prev => 'tab-qzb-courses'
 
-  -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
-  .tab-content.span7
-    - teacher.verticals.each do |m|
-      .tab-pane.multi-select.writeonce.purge{ :id => "vert-#{m.id}" }
+    -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
+    .tab-content.span7
+      - teacher.verticals.each do |m|
+        .tab-pane.multi-select.writeonce.purge{ :id => "vert-#{m.id}" }
