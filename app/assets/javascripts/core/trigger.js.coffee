@@ -311,6 +311,26 @@ jQuery ->
     # End of method 
     return true
 
+  ###############################################
+  # When a .tab-content > .tab-pane > form is clicked  
+  # Might not work for forms within .tab-content that 
+  # is itself within a .tab-content
+  ###############################################
+
+  $('.tab-content > .tab-pane > form').submit (event) ->
+    action = this.dataset.action
+    return true unless action?
+
+    # Process any :prev (previous tab) or :id (current tab) in data-action
+    for j in [":prev", ":id"]
+      at = action.indexOf j
+      if at isnt -1
+        curr = $(this).closest('.tab-content').prev().children('li.active').eq(0)
+        tab = if j is ":prev" then curr.prev() else curr
+        return false if tab.length is 0
+        action = action.replace j, tab.attr('marker')
+    $(this).attr 'action', action
+    return true
 
   ###
     Each .dropdown-menu is responsible for updating links within it when an AJAX response
