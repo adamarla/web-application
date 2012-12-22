@@ -271,12 +271,16 @@ jQuery ->
         $(this).removeClass 'selected'
         badge.removeClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
-        $(activeTab).attr 'marker', null if activeTab? # => multiOk = false
+        if activeTab?
+          unless $(activeTab).parent().hasClass 'lock'
+            $(activeTab).attr 'marker', null
       else
         $(this).addClass 'selected'
         badge.addClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
-        $(activeTab).attr 'marker', $(this).attr('marker') if activeTab?
+        if activeTab?
+          unless $(activeTab).parent().hasClass 'lock'
+            $(activeTab).attr 'marker', $(this).attr('marker')
 
       # 3. Close any previously open menus - perhaps belonging to a sibling 
       for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
