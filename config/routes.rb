@@ -124,6 +124,7 @@ Webapp::Application.routes.draw do
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', :via => :get
   match 'disputed' => 'teachers#disputed', :via => :get
   match 'overwrite/marks' => 'teachers#overwrite_marks', :via => [:put, :post]
+  match 'qzb/echo' => 'teachers#qzb_echo', :via => [:put, :post]
 
   # Testpaper
   match 'testpaper/summary' => 'testpapers#summary', :via => :get

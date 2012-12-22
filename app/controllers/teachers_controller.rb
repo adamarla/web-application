@@ -152,6 +152,11 @@ class TeachersController < ApplicationController
     end
   end
 
+  def qzb_echo
+    tids = params[:checked].keys.map(&:to_i)
+    @topics = Topic.where(:id => tids)
+  end
+
   def build_quiz 
     teacher = Teacher.find params[:id]
     course = Course.find params[:course_id]
