@@ -137,7 +137,7 @@ jQuery ->
   # When a tab is clicked and shown
   ###############################################
 
-  $("a[data-toggle='tab']").on 'shown', (event) ->
+  $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()
 
     # Empty the last-enabled tab's contents - if needed
@@ -154,14 +154,12 @@ jQuery ->
     ajax = this.dataset.ajax
     if ajax?
       # Remember - :prev and :id point to an <a>. The marker, however, is set on the parent <li>
-      if ajax.indexOf ":prev" isnt -1
-        from = this.dataset.prev
-        ajax = ajax.replace ":prev", $("##{from}").parent().attr('marker')
-      if ajax.indexOf ":id" isnt -1
-        from = this.dataset.id
-        id = if from? then $("##{from}").attr('marker') else $(this).parent().attr('marker')
-        ajax = ajax.replace ":id", id
-
+      for ph in ["prev", "id"]
+        if ajax.indexOf ":#{ph}" isnt -1 # => :prev / :id present 
+          from = if this.dataset[ph]? then $("##{this.dataset[ph]}") else $(this)
+          marker = from.attr 'marker'
+          marker = if marker? then marker else from.parent().attr('marker')
+          ajax = ajax.replace ":#{ph}", marker
       $.get ajax
       pagination.url.set pgn, ajax
 
