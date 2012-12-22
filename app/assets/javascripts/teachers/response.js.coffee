@@ -37,6 +37,25 @@ jQuery ->
       target = $("#vert-#{json.vertical}")
       parentKey = 'topics'
       childKey = 'topic'
+    else if url.match(/qzb\/echo/)
+      karo.tab.enable 'tab-qzb-questions'
+      leftTabs.create '#pane-qzb-questions', json, {
+        klass : {
+          ul : "span4 lock nopurge-on-show",
+          content : "span7",
+          div : "writeonce multi-select"
+        },
+        data : {
+          ajax : "course/questions?id=:prev&topic=:id"
+          prev : "tab-qzb-courses"
+        }
+      }
+      return true
+    else if url.match(/course\/questions/)
+      topic = json.topic
+      target = $("#dyn-tab-#{topic}")
+      parentKey = 'questions'
+      childKey = 'question'
 
     ############################################################
     ## Common actions in response to JSON
