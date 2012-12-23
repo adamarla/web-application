@@ -40,3 +40,8 @@ tab-qzb-verticals :
 
 tab-qzb-topics : 
   toggle : tab
+
+tab-qzb-questions :
+  toggle : tab
+  panel : 
+    ajax : question/preview?id=:id
