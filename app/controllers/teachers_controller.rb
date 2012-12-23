@@ -158,12 +158,12 @@ class TeachersController < ApplicationController
   end
 
   def build_quiz 
-    teacher = Teacher.find params[:id]
-    course = Course.find params[:course_id]
+    teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
+    course = Course.find params[:id]
     head :bad_request if (teacher.nil? || course.nil?)
 
+    name = params[:checked].delete :name
     question_ids = params[:checked].keys.map(&:to_i)
-    name = params[:quiz_name]
 
     Delayed::Job.enqueue BuildQuiz.new(name, teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
     at = Delayed::Job.where('failed_at IS NULL').count

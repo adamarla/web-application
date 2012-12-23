@@ -39,7 +39,7 @@ jQuery ->
       childKey = 'topic'
     else if url.match(/qzb\/echo/)
       karo.tab.enable 'tab-qzb-questions'
-      leftTabs.create '#pane-qzb-questions', json, {
+      leftTabs.create '#qzb-questions', json, {
         klass : {
           ul : "span4 lock nopurge-on-show",
           content : "span7",

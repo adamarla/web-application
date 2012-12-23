@@ -1,8 +1,8 @@
 
 -# Left-side tabs - one per vertical
 
-= simple_form_for :checked, :remote => true, 
-  :html => { :id => 'form-qzb-topics', :class => 'no-remove', 'data-action' => "#{course_questions_path}?id=:prev" } do |f|
+= simple_form_for :checked, :remote => true, :url => qzb_echo_path, 
+  :html => { :id => 'form-qzb-topics', :class => 'no-remove'} do |f|
 
   .row-fluid.navbar
     = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"

@@ -155,9 +155,15 @@ $lightblue: lighten($deep-blue, 23%) ;
 
   .badge { 
      padding: 0px ; 
-     width: 8px ;
-     height: 8px ;
+     width: 14px ;
+     height:14px ;
+     text-align: center ;
+     color: $gray ;
      border-radius: 4px ;
+     &:empty {
+       width: 8px ; 
+       height: 8px ;
+     } 
   } 
 } 
 

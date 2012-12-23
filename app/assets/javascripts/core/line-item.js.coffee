@@ -21,6 +21,7 @@ window.line = {
     subtext = obj.find('.subtext').eq(0)
     text = subtext.prev()
 
+    # If JSON has :tag 
     if json.tag?
       subtext.children().eq(0).text json.tag
       subtext.addClass 'span3'
@@ -28,6 +29,11 @@ window.line = {
     else
       text.addClass 'span11'
       subtext.remove()
+    
+    # If JSON has :badge 
+    if json.badge?
+      b = obj.find('.badge').eq(0)
+      b.text json.badge
 
     # Set the menu(string) as an attribute on .dropdown > a - if provided
     toggle = obj.find('.dropdown-toggle').eq(0)

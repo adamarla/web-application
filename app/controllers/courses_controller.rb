@@ -80,6 +80,10 @@ class CoursesController < ApplicationController
     course = Course.find params[:id]
     head :bad_request if course.nil? 
 
+    @topic = params[:topic].to_i
+    @questions = course.questions_on @topic
+
+=begin
     tid = current_account.loggable_id # has to be a teacher. If not, then sth is wrong !
     skip_used = params[:skip_previously_used] == "true" ? true : false
     favs_only = params[:liked] == "true" ? true : false
@@ -98,13 +102,14 @@ class CoursesController < ApplicationController
       show = Suggestion.where(:teacher_id => tid).map(&:question_ids).flatten & show unless favs_only
     end
     @questions = Question.where(:id => show) 
-
+=end
 =begin
     Paying customers can see any question relevant to their syllabus. 
     Non-paying customers - who might only be trialing - see a smaller set 
     of questions. The code below realizes this logic
 =end
 
+=begin
     unless current_account.nil?
       case current_account.loggable_type
         when "Examiner"
@@ -120,6 +125,7 @@ class CoursesController < ApplicationController
     @fav = current_account.nil? ? [] : Favourite.where(:teacher_id => current_account.loggable_id).map(&:question_id)
     @fav = @fav & @questions.map(&:id) 
     respond_with @questions, @topics, @fav
+=end
   end
 
 end

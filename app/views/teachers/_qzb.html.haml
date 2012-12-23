@@ -14,5 +14,14 @@
   #pane-qzb-topics.tab-pane
     = render :partial => 'teachers/qzb-topics', :locals => { :teacher => teacher }
   #pane-qzb-questions.tab-pane
+    = simple_form_for :checked, :remote => true, 
+      :html => { :id => 'form-qzb', :class => 'no-remove', 
+      'data-action' => "#{teacher_build_quiz_path}?id=:id", 'data-id' => 'tab-qzb-courses' } do |f|
+
+      .row-fluid.navbar.no-touch
+        .input-append.pull-right.span10
+          = f.input_field :name, :class => "span8"
+          %button.btn.btn-inverse{ :type => :submit }= "Build Quiz"
+      #qzb-questions.purge.no-remove
 
     

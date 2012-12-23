@@ -36,10 +36,14 @@ jQuery ->
       when 'quiz/candidate_questions'
         preview.loadJson json, 'vault'
       when 'question/preview'
+        $('#wide-wait').addClass 'hide'
+        $('#wide-X').removeClass 'hide'
         preview.loadJson json, 'vault'
         ###
           When tagging questions, load any prior info about the question's 
           difficulty and availability onto the <select>s in #misc-traits
+        ###
+
         ###
         misc = $('#side-panel').find '#misc-traits'
         if misc.length isnt 0
@@ -47,6 +51,7 @@ jQuery ->
           restricted.val json.preview.restricted unless not restricted?
           diff = misc.find '#misc_difficulty'
           diff.val json.preview.difficulty unless not diff?
+        ###
       when 'quiz/preview'
         preview.loadJson json, 'atm'
     return true
