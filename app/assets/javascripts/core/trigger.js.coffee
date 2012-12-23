@@ -164,8 +164,10 @@ jQuery ->
       pagination.url.set pgn, ajax
 
     # Set base-ajax url on containing panel
-    panelAjax = this.dataset.panelAjax
-    panel.dataset.ajax = if panelAjax? then panelAjax else null
+    ul = $(this).parent().parent() # => ul.nav-tabs
+    unless ul.hasClass 'lock'
+      panelAjax = this.dataset.panelAjax
+      panel.dataset.ajax = if panelAjax? then panelAjax else null
     return true
 
   ###############################################
