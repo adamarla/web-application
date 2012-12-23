@@ -109,7 +109,6 @@ Webapp::Application.routes.draw do
   match 'teachers/list' => 'teachers#list', :via => :get
   # match 'teacher/update_roster' => 'teachers#update_roster', :via => [:put, :post]
   match 'teacher/sektions' => 'teachers#sektions', :via => :get
-  match 'teacher/coverage' => 'teachers#coverage', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/courses' => 'teachers#courses', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => [:put, :post]

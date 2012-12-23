@@ -38,22 +38,6 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id]
   end
 
-  def coverage
-    # Returns the list of verticals covered by the teacher for the passed
-    # (class, subject, board) combo
-
-    teacher = (current_account.role == :teacher) ? current_account.loggable : nil
-    head :bad_request if teacher.nil?
-
-    subject = params[:criterion][:subject]
-    klass = params[:criterion][:klass]
-    board = teacher.school.board_id
-
-    course = Course.where(:board_id => board, :klass => klass, :subject_id => subject).first
-    @verticals = course.nil? ? nil : course.verticals
-    @verticals.nil? ? head(:bad_request) : respond_with(@verticals)
-  end
-
   def topics_this_section
     teacher = Teacher.find params[:id]
     sektion = Sektion.find params[:section_id]
