@@ -314,23 +314,27 @@ jQuery ->
     return true
 
   ###############################################
-  # When a .tab-content > .tab-pane > form is clicked  
-  # Might not work for forms within .tab-content that 
-  # is itself within a .tab-content
+  # Process any :prev or :id in the about-to-be-submitted 
+  # <form>'s action attribute
+  # If the <form> also has data-[prev | id] attributes, then 
+  # use them as guides. Else, look of :prev and :id relative 
+  # to the .tab-pane within which the form is 
   ###############################################
 
   $('.tab-content > .tab-pane > form').submit (event) ->
     action = this.dataset.action
     return true unless action?
 
-    # Process any :prev (previous tab) or :id (current tab) in data-action
-    for j in [":prev", ":id"]
-      at = action.indexOf j
-      if at isnt -1
-        curr = $(this).closest('.tab-content').prev().children('li.active').eq(0)
-        tab = if j is ":prev" then curr.prev() else curr
-        return false if tab.length is 0
-        action = action.replace j, tab.attr('marker')
+    activeTab = $(this).closest('.tab-content').prev().children('li.active').eq(0)
+
+    for j in ["prev", "id"]
+      at = action.indexOf ":#{j}"
+      if at isnt -1 # => is present 
+        obj = this.dataset[j]
+        obj = if obj? then $("##{obj}").parent() else null # $(obj) is an <a>. Marker is on the parent <li>
+        unless obj?
+          obj = if j is "prev" then activeTab.prev() else activeTab
+        action = action.replace ":#{j}", obj.attr('marker')
     $(this).attr 'action', action
     return true
 
