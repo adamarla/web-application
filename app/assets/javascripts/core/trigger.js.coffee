@@ -194,6 +194,9 @@ jQuery ->
     event.stopImmediatePropagation()
     # (YAML) Hide / unhide panels as needed
     for j in ['left', 'right', 'middle', 'wide']
+      if typeof this.dataset[j] is 'string'
+        continue if this.dataset[j] is 'as-is'
+
       attr = "#{j}Show" # x-y in YAML => xY here
       show = this.dataset[attr] # left-show, right-show etc 
       panel = $("##{j}")
