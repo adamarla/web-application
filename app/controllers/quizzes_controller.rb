@@ -51,10 +51,11 @@ class QuizzesController < ApplicationController
   end
 
   def testpapers
-    @quiz = Quiz.where(:atm_key => params[:id]).first
-    head :bad_request if @quiz.nil? 
-    @testpapers = Testpaper.where(:quiz_id => @quiz.id).order(:created_at)
-    respond_with @testpapers, @quiz
+    @testpapers = Testpaper.where(:quiz_id => params[:id])
+    n = @testpapers.count 
+    @per_pg, @last_pg = pagination_layout_details n
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @testpapers = @testpapers.order('created_at DESC').page(pg).per(@per_pg)
   end
 
 end
