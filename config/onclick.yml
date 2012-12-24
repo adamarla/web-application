@@ -24,10 +24,22 @@ lnk-wsb-new :
     tab : tab-wsb-sektions
 
 lnk-wsb-existing :
-  left : as-is
+  left : 
+    show : left-3
   wide : as-is
   update-on : quiz/preview
-  url : quiz/testpapers.json?id=:a
+  autoclick :
+    tab : tab-wsl
+
+tab-wsl :
+  toggle : tab 
+  url : quiz/testpapers.json?id=:prev
+  prev : tab-wsb-quizzes
+
+tab-wsl-quizzes :
+  toggle : tab
+  autoclick :
+    link : lnk-existing-quiz
 
 lnk-download-solution :
   left : as-is 

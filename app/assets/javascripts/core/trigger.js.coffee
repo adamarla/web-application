@@ -181,6 +181,9 @@ jQuery ->
     unless ul.hasClass 'lock'
       panelAjax = this.dataset.panelAjax
       panel.dataset.ajax = if panelAjax? then panelAjax else null
+
+    autoClick = this.dataset.autoclickLink
+    $("##{autoClick}").click() if autoClick?
     return true
 
   ###############################################
