@@ -369,10 +369,7 @@ jQuery ->
 
   $('.dropdown-menu').ajaxSuccess (e, xhr, settings) ->
     updateOn = this.dataset.updateOn
-    alert 'here'
     return true unless updateOn?
-
-    alert $(this).attr 'id'
 
     json = $.parseJSON xhr.responseText
     url = settings.url
