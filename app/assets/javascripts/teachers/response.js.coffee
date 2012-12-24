@@ -56,6 +56,10 @@ jQuery ->
       target = $("#dyn-tab-#{topic}")
       parentKey = 'questions'
       childKey = 'question'
+    else if url.match(/quiz\/testpapers/)
+      target = $("#pane-wsl")
+      parentKey = "testpapers"
+      childKey = "testpaper"
 
     ############################################################
     ## Common actions in response to JSON
