@@ -1,13 +1,11 @@
 
-%ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu,
-'data-update-on' => 'quiz/preview'}
+%ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
   %li.nav-header= "Worksheets"
   %li
-    = simple_link :for => "New", :id => 'lnk-wsb-new'
+    = simple_link :for => "Make New", :id => 'lnk-wsb-new'
   %li
-    %a{ :href => '#' }= "Till Now"
+    = simple_link :for => "See Existing", :id => 'lnk-wsb-existing', :url => "quiz/testpapers?id=:a"
   %li
-    = simple_link :for => "Download Solution", 
-    :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", 
-    :update_on => "quiz/preview"
+    = simple_link :for => "Download Solution", :id => 'lnk-download-solution', 
+    :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf"
             
