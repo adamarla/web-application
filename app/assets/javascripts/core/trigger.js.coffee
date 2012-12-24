@@ -164,7 +164,7 @@ jQuery ->
     pagination.disable pgn
 
     # Issue AJAX request * after * taking care of any :prev or :id in data-ajax
-    ajax = this.dataset.ajax
+    ajax = this.dataset.url
     if ajax?
       # Remember - :prev and :id point to an <a>. The marker, however, is set on the parent <li>
       for ph in ["prev", "id"]
@@ -206,10 +206,6 @@ jQuery ->
       panel.removeClass 'hide'
       karo.unhide(show, panel) unless show is 'no-remove'
 
-    # (YAML) Issue any AJAX requests
-    ajax = this.dataset.ajax
-    $.get ajax if ajax?
-
     # If there be a tab that needs to be auto-clicked, then do that too
     tab = this.dataset.autoclickTab
     karo.tab.enable tab if tab?
@@ -217,6 +213,10 @@ jQuery ->
     # If <a> is within a dropdown-menu, then close the dropdown menu
     d = $(this).closest('.dropdown-menu')
     menu.close $(d) if $(d).length isnt 0
+
+    # (YAML) Issue any AJAX requests
+    ajax = this.dataset.ajax
+    $.get ajax if (ajax? and ajax isnt 'disabled')
 
     return true
 
@@ -385,6 +385,9 @@ jQuery ->
         break unless json[key]?
         while href.search(":#{key}") isnt -1
           href = href.replace ":#{key}", json[key]
-      $(a).attr 'href', href # Set the new href
+      if a.dataset.ajax is 'disabled'
+        $(a).attr 'href', href # Set the new href
+      else
+        a.dataset.ajax = href
     return true
 

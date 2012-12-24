@@ -19,14 +19,28 @@ module ApplicationHelper
       onclick = OnClick[id]
       unless onclick.nil?
         first_level_keys = [
-        'left', 'middle', 'right', 'wide', 
-        'autoclick','ajax','attach', 'toggle', 'default-lnk', 
-        'panel', 'prev', 'id', 'menu', 'update-on', 'remote'
+          :left,
+          :middle, 
+          :right, 
+          :wide, 
+          :ajax,
+          :autoclick,
+          :attach,
+          :toggle, 
+          'default-lnk', 
+          :panel, 
+          :prev, 
+          :id, 
+          :menu, 
+          'update-on', 
+          :url
         ]
 
         first_level_keys.each do |m|
-          k = options.delete(m) || onclick[m] # HAML gets preference over YAML
+          k = options.delete(m) || onclick[m.to_s] # HAML gets preference over YAML
+          # puts " --> #{k} --> #{id}" if m == :ajax
           unless k.blank?
+            # puts " ******** [#{id}]: #{m} --> #{k}" 
             if k.is_a? Hash
               ['show', 'ajax', 'tab'].each { |n| data["#{m}-#{n}"] = k[n] unless k[n].blank? } 
             else

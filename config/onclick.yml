@@ -10,7 +10,7 @@ lnk-existing-quiz :
 
 tab-wsb-quizzes :
   toggle : tab
-  ajax : quizzes/list
+  url : quizzes/list
   panel :
     ajax : quiz/preview?id=:id
 
@@ -27,10 +27,12 @@ lnk-wsb-existing :
   left : as-is
   wide : as-is
   update-on : quiz/preview
+  url : quiz/testpapers.json?id=:a
 
 lnk-download-solution :
   left : as-is 
   wide : as-is 
+  ajax : disabled 
   update-on : quiz/preview
 
 lnk-new-quiz :
@@ -43,7 +45,7 @@ lnk-new-quiz :
 
 tab-qzb-courses : 
   toggle : tab
-  ajax : teacher/courses
+  url : teacher/courses
   autoclick :
     tab : tab-qzb-topics
 
