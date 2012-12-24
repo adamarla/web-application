@@ -26,6 +26,8 @@
     = render :partial => 'toolbox/preview'
     = render :partial => 'menus/teacher/quiz_filter'
     = render :partial => 'menus/teacher/per-quiz'
+    = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => srvr }
+    = render :partial => 'menus/user/account'
 
     #flot-chart
 
@@ -48,22 +50,14 @@
               %ul.nav.span8.pull-right
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
-                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown,
-                  :menu => '#teacher-quiz', :fixed => :true }
-                    Quizzes & Questions
-                    %span.caret
-                  = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => srvr }
+                  = simple_link :for => "Quizzes & Questions", :as => :dropdown, :id => 'm-teacher-quizzes'
                 %li.dropdown
                   %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown }
                     Report Cards
                     %b.caret
                 -# Central place for editing user login details 
                 %li#cp-account-link.dropdown.pull-right
-                  %a.dropdown-toggle#account-ops{ :href => '#', 'data-toggle' => :dropdown, 
-                  :menu => '#tasks-on-account', :fixed => :true }
-                    Hello, #{tchr.first_name}
-                    %span.caret
-                  = render :partial => 'menus/user/account'
+                  = simple_link :for => "Hello, #{tchr.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }

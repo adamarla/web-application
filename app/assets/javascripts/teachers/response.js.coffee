@@ -22,7 +22,7 @@ jQuery ->
       target = $('#pane-wsb-quizzes')
       parentKey = 'quizzes'
       childKey = 'quiz'
-      menu = "#per-quiz"
+      menu = "per-quiz"
       # pgnUrl = "quizzes/list"
       clickFirst = true
     else if url.match(/sektion\/students/)

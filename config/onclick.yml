@@ -18,6 +18,10 @@ tab-wsb-sektions :
   toggle : tab
     
 lnk-wsb-new :
+  left :
+    show : left-1
+  wide :
+    show : wide-X
   autoclick :
     tab : tab-wsb-sektions
 
@@ -45,3 +49,11 @@ tab-qzb-questions :
   toggle : tab
   panel : 
     ajax : question/preview?id=:id
+
+m-teacher-quizzes :
+  toggle : dropdown 
+  menu : teacher-quiz
+
+m-account :
+  toggle : dropdown
+  menu : tasks-on-account
