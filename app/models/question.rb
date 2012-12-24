@@ -158,6 +158,16 @@ class Question < ActiveRecord::Base
     return (self.multi_part? ? length.ceil : length)
   end
 
+  def span_as_str
+    span = self.span?
+    case span
+      when 0.25 then return "0.25 PG"
+      when 0.5 then return "0.5 PG"
+      when 0.75 then return "0.75 PG"
+      else return "#{span} PG"
+    end
+  end
+
   def answer_key_span?
     # Returns the # of pages over which the solution to this question spans. 
     # This is a number that cannot be guessed because it really depends on 
