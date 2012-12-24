@@ -358,10 +358,9 @@ jQuery ->
     return true
 
   ###
-    Each .dropdown-menu is responsible for updating links within it when an AJAX response
-    is received
-    The AJAX responses a menu responds to are declared in the HTML as a 'data-autoupdate-on' 
-    attribute on the .dropdown-menu
+    All menus are rendered within #toolbox. And the links within the menus 
+    are - if so specified - updated based on the JSON received from successful 
+    AJAX call
   ###
 
   urlsMatch = (url, updateOn) ->
@@ -370,27 +369,22 @@ jQuery ->
       return true if url.match tk
     return false
 
-  $('.dropdown-menu').ajaxSuccess (e, xhr, settings) ->
-    updateOn = this.dataset.updateOn
-    return true unless updateOn?
-
-    json = $.parseJSON xhr.responseText
+  $('#toolbox > ul.dropdown-menu').ajaxComplete (e,xhr, settings) ->
     url = settings.url
-    proceed = urlsMatch url, updateOn
-    return true unless proceed is true
 
     for a in $(this).find 'a'
-      u = a.dataset.updateOn
-      continue unless u
-      continue unless urlsMatch(url, u)
+      updateOn = a.dataset.updateOn
+
+      continue unless updateOn?
+      continue unless urlsMatch(url, updateOn)
 
       href = a.dataset.url
-      continue unless href? # => :data => { :url => non-empty }
-
+      continue unless href?
+      json = $.parseJSON xhr.responseText
       for key in ['a', 'b', 'c', 'd', 'e'] # You really shouldnt have > 5 placeholders in a URL
         break unless json[key]?
         while href.search(":#{key}") isnt -1
           href = href.replace ":#{key}", json[key]
       $(a).attr 'href', href # Set the new href
     return true
-    
+

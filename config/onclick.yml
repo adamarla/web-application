@@ -18,12 +18,20 @@ tab-wsb-sektions :
   toggle : tab
     
 lnk-wsb-new :
-  left :
-    show : left-1
-  wide :
-    show : wide-X
+  left : as-is
+  wide : as-is
   autoclick :
     tab : tab-wsb-sektions
+
+lnk-wsb-existing :
+  left : as-is
+  wide : as-is
+  update-on : quiz/preview
+
+lnk-download-solution :
+  left : as-is 
+  wide : as-is 
+  update-on : quiz/preview
 
 lnk-new-quiz :
   autoclick : 

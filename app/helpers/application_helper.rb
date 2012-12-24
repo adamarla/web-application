@@ -21,7 +21,7 @@ module ApplicationHelper
         first_level_keys = [
         'left', 'middle', 'right', 'wide', 
         'autoclick','ajax','attach', 'toggle', 'default-lnk', 
-        'panel', 'prev', 'id', 'menu'
+        'panel', 'prev', 'id', 'menu', 'update-on', 'remote'
         ]
 
         first_level_keys.each do |m|
