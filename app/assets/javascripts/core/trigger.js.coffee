@@ -20,14 +20,26 @@ window.gutenberg = {
 window.menu = {
   close : (m) ->
     return false if not m.hasClass 'dropdown-menu'
-    lnk = m.prev() # .dropdown-toggle <- .dropdown-menu
-    if lnk.attr('fixed') is 'true'
-      m.removeClass 'show'
-    else
-      m.remove()
+    parent = m.parent().attr 'id'
+    if parent?
+      return true if parent is 'toolbox'
+    m.remove()
     return true
 
   show : (m) ->
+    menu = m.dataset.menu
+    return false unless menu?
+
+    # all menus are rendered within #toolbox 
+    menuObj = $('#toolbox').find("##{menu}").eq(0)
+    if menuObj.length isnt 0
+      newId = "#{menuObj.attr('id')}-curr" # There shouldn't be 2 elements with the same ID
+      newObj = $(menuObj).clone()
+      newObj.attr 'id', newId
+      newObj.insertAfter $(m)
+      newObj.addClass 'show'
+    return true
+    ###
     return false unless m.hasClass('dropdown-toggle')
     menu = m.attr 'menu' # => is an ID attribute 
     return false unless menu?
@@ -65,6 +77,7 @@ window.menu = {
         newObj.insertAfter m
         newObj.addClass 'show'
     return true
+    ###
 }
 
 window.karo = {
@@ -174,7 +187,7 @@ jQuery ->
   # When an item in a dropdown menu is selected 
   ###############################################
 
-  $('.g-panel, .content, .tab-pane').on 'click', '.dropdown-menu > li > a', (event) ->
+  $('.g-panel, .content, .tab-pane, #toolbox').on 'click', '.dropdown-menu > li > a', (event) ->
     return true if this.dataset.toggle is 'tab'
     return true if $(this).hasClass 'carousel-control'
 
@@ -210,13 +223,14 @@ jQuery ->
 
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
-    menu.show $(this)
+    menu.show this
     return true
 
   # Auto-click the one link in #control-panel that is identified as the default link
 
-  for m in $('#control-panel ul.dropdown-menu > li > a')
-    $(m).click() if m.dataset.defaultLnk is 'true'
+  for m in $('#toolbox > .dropdown-menu')
+    for n in $(m).find('a')
+      $(n).click() if n.dataset.defaultLnk is 'true'
 
   ###############################################
   # When a pagination link is clicked 
@@ -251,7 +265,7 @@ jQuery ->
 
     if m? # => if clicked to see dropdown menu
       event.stopImmediatePropagation()
-      if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle').eq(0) else return false
+      if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle')[0] else return false
     else # elsewhere on the single-line => select / de-select
       multiOk = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
       activeTab = null
@@ -355,7 +369,10 @@ jQuery ->
 
   $('.dropdown-menu').ajaxSuccess (e, xhr, settings) ->
     updateOn = this.dataset.updateOn
+    alert 'here'
     return true unless updateOn?
+
+    alert $(this).attr 'id'
 
     json = $.parseJSON xhr.responseText
     url = settings.url

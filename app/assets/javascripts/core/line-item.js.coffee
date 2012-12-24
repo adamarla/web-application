@@ -36,12 +36,12 @@ window.line = {
       b.text json.badge
 
     # Set the menu(string) as an attribute on .dropdown > a - if provided
-    toggle = obj.find('.dropdown-toggle').eq(0)
-    dropDown = toggle.parent()
+    toggle = obj.find('.dropdown-toggle')[0]
+    dropDown = $(toggle).parent()
     textRow = dropDown.next()
 
     if menu?
-      toggle.attr 'menu', menu
+      toggle.dataset.menu = menu
       dropDown.addClass 'span2'
       textRow.addClass 'span10'
     else
