@@ -12,4 +12,8 @@ class TestpapersController < ApplicationController
     @max = @testpaper.quiz.total?
   end
 
+  def load 
+    @testpaper = Testpaper.find params[:id]
+  end
+
 end
