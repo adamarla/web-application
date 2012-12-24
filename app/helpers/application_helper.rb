@@ -3,9 +3,15 @@ module ApplicationHelper
   def simple_link( options = {} )
     # Example: simple_link :for => "Download", :data => { :url => 'a/b', :ajax => true, :update_on => 'quizzes/list' }
     text = options.delete :for 
+    return false if text.blank?
+
     href = options.delete(:href) || "#" 
     id = options.delete :id
+    dropdown = options.delete :as
+    dropdown = dropdown.blank? ? false : true
+
     klass = options.delete :class 
+    klass = dropdown ? (klass.blank? ? "dropdown-toggle" : klass + " dropdown-toggle") : klass
     marker = options.delete :marker
     data = {}
 
@@ -15,7 +21,7 @@ module ApplicationHelper
         first_level_keys = [
         'left', 'middle', 'right', 'wide', 
         'autoclick','ajax','attach', 'toggle', 'default-lnk', 
-        'panel', 'prev', 'id'
+        'panel', 'prev', 'id', 'menu'
         ]
 
         first_level_keys.each do |m|
@@ -38,9 +44,10 @@ module ApplicationHelper
 
     data = {:id => id, :class => klass, :href => href, :data => data, :marker => marker}
 
-    return false if text.blank?
     attributes = tag_options data, true
-    "<a #{attributes}>#{text}</a>".html_safe
+    html = dropdown ? "<a #{attributes}>#{text}<span class='caret'></span></a>" : "<a #{attributes}>#{text}</a>" 
+    return html.html_safe
+    # "<a #{attributes}>#{text}</a>".html_safe
   end 
 
   def html_attrs(lang = 'en-US')
