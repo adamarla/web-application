@@ -1,0 +1,8 @@
+
+%ul.dropdown-menu.dropdown-inverse#per-ws{ :role => :menu }
+  %li
+    = simple_link :for => "Download", :id => 'lnk-ws-download',
+    :url => "#{Gutenberg['server']}/atm/:a/:b/downloads/assignment-:c-:b.pdf"
+  %li.nav-header= "Statistics"
+  %li
+    = simple_link :for => "See Existing", :id => 'lnk-wsb-existing'

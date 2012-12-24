@@ -35,11 +35,19 @@ tab-wsl :
   toggle : tab 
   url : quiz/testpapers.json?id=:prev
   prev : tab-wsb-quizzes
+  panel :
+    ajax : testpaper/load?id=:id
 
 tab-wsl-quizzes :
   toggle : tab
   autoclick :
     link : lnk-existing-quiz
+
+lnk-ws-download :
+  left : as-is
+  wide : as-is
+  ajax : disabled
+  update-on : testpaper/load
 
 lnk-download-solution :
   left : as-is 

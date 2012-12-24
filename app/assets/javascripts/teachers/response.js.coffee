@@ -60,6 +60,7 @@ jQuery ->
       target = $("#pane-wsl")
       parentKey = "testpapers"
       childKey = "testpaper"
+      menu = 'per-ws'
 
     ############################################################
     ## Common actions in response to JSON
