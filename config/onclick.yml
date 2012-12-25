@@ -95,6 +95,28 @@ m-account :
   toggle : dropdown
   menu : tasks-on-account
 
+lnk-ws-performance :
+  left : 
+    show : left-3
+  wide :
+    show : as-is
+  autoclick :
+    tab : tab-wsl
+
+tab-ws-performance :
+  toggle : tab
+  panel : 
+    ajax : student/performance.json?id=:id&ws=:prev 
+  url : performance/ws.json?id=:prev 
+  prev : tab-wsl
+  autoclick :
+    link : trapdoor-show-chart
+
+trapdoor-show-chart :
+  left : as-is
+  wide : 
+    show : graph-paper
+
 ##############################################################################
 ## Students 
 ##############################################################################

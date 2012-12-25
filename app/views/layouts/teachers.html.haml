@@ -17,6 +17,8 @@
     = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => srvr }
     = render :partial => 'menus/user/account'
 
+    = render :partial => 'menus/teacher/trapdoors' 
+
   -# #modals by itself is not hidden. But the modal partials within it are by themselves 
   #modals
     = render :partial => 'modals/user/account'
@@ -69,5 +71,6 @@
           #wide-X
           #wide-wait
             = render :partial => 'toolbox/wait'
+          #graph-paper
 
     = yield :toolbox
