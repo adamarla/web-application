@@ -112,4 +112,4 @@ tab-st-quizzes :
   toggle : tab
   url : student/testpapers
   panel :
-    ajax : feedback.json?id=:id 
+    ajax : ws-preview.json?id=:id 

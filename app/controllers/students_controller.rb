@@ -37,6 +37,14 @@ class StudentsController < ApplicationController
   end
 
   def responses
+    s = current_account.loggable
+    tp = Testpaper.find params[:id]
+
+    r = s.responses params[:id]
+    @scans = r.map(&:scan).uniq.sort
+    @within = "#{tp.quiz_id}-#{tp.id}"
+
+=begin
     student = Student.find params[:id]
     testpaper = Testpaper.find params[:testpaper]
     head :bad_request if (student.nil? || testpaper.nil?)
@@ -54,6 +62,7 @@ class StudentsController < ApplicationController
     @scans = answers.map(&:scan).uniq.sort
     @within = "#{quiz_id}-#{testpaper.id}"
     respond_with @info, @scans, @within
+=end
   end
 
 end

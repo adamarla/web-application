@@ -1,10 +1,6 @@
 
-object false => :preview 
-  node(:id) { |m| @within }
-  code :scans do
-    @scans
-  end
+object false
 
-  code :questions do 
-    @info
-  end 
+  node(:preview) {
+    { :id => @within, :scans => @scans }
+  } 
