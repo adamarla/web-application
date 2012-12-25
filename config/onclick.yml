@@ -1,4 +1,7 @@
 
+lnk-change-password :
+  toggle : modal
+
 lnk-existing-quiz :
   left : 
     show : left-1
