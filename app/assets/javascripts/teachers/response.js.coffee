@@ -61,6 +61,7 @@ jQuery ->
       parentKey = "testpapers"
       childKey = "testpaper"
       menu = 'per-ws'
+      clickFirst = true
 
     ############################################################
     ## Common actions in response to JSON
