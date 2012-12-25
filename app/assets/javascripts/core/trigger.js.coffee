@@ -146,6 +146,11 @@ jQuery ->
         menu.close $(p) unless $(p).parent().hasClass('dropdown-submenu')
     return true
 
+  $('.g-panel').on 'click', "a[data-toggle='modal']", (event) ->
+    m = $(this).attr 'href'
+    $(m).modal()
+    return true
+
   ###############################################
   # When a tab is clicked and shown
   ###############################################
@@ -184,6 +189,21 @@ jQuery ->
 
     autoClick = this.dataset.autoclickLink
     $("##{autoClick}").click() if autoClick?
+
+    ###
+      Ensure that atmost 3 tabs are shown - including the just clicked one
+      Which means - show the current, previous (if present) and the next ( if present )
+    ###
+    li = $(this).parent()
+    for m in li.siblings('li')
+      $(m).addClass 'hide'
+
+    p = li.prev('li')
+    n = li.next('li')
+
+    $(p).removeClass 'hide' if p.length isnt 0
+    $(n).removeClass 'hide' if n.length isnt 0
+
     return true
 
   ###############################################
