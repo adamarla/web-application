@@ -32,7 +32,7 @@ class StudentsController < ApplicationController
   end
 
   def testpapers
-    @student = Student.find params[:id]
+    @student = current_account.loggable
     @publishable = Testpaper.where(:id => @student.testpaper_ids).where(:publishable => true)
   end
 
