@@ -7,7 +7,8 @@ node(:quizzes) {
       :quiz => {
         :name => n.name,
         :id => n.id,
-        :tag => "#{n.span?} page(s)"
+        :tag => "#{n.span?} page(s)",
+        :badge => n.total?
       }
     }
   }
