@@ -1,12 +1,14 @@
 
+-# Customized markers 
+- student = current_account.loggable
+- srvr = "#{Gutenberg['server']}"
+
 - content_for :toolbox do 
   #toolbox.hidden 
     = render :partial => 'students/worksheets'
-    = render :partial => 'toolbox/document_preview'
-    = render :partial => 'toolbox/edit_account'
-    = render :partial => 'toolbox/inline_error'
-    = render :partial => 'toolbox/swiss_knife'
-    #flot-chart
+    = render :partial => 'toolbox/line'
+    = render :partial => 'menus/user/account'
+    = render :partial => 'students/trigger'
 
 !!!5
 
@@ -17,16 +19,21 @@
     = csrf_meta_tag
 
   %body 
-    - default_marker = "#{current_account.nil? ? :tbd : current_account.loggable_id}"
-    #visible-active-area
-      #control-panel.panel.horizontal{ :marker => default_marker } 
-        #main-links 
-          = render :partial => 'students/control-panel'
-        -# Links required in the currently loaded context
-        #minor-links
-      #side-panel.panel.left.slim
-      #middle-panel.panel.slim.left
-      #right-panel.panel.slim.left
-      #wide-panel.panel.wide.left
+    .container-fluid 
+      #control-panel.g-panel.row-fluid{ :marker => "#{student.id}" } 
+        .span12
+          .navbar.navbar-inverse
+            .navbar-inner
+              %a.brand.span4{ :href => "#"}= "Gradians.com"
+              %ul.nav.span8.pull-right
+                %li#cp-account-link.dropdown.pull-right
+                  = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
+      #desktop.row-fluid
+        #left.g-panel.span4
+          = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
+          #left-1
+            = render :partial => 'students/ws'
+        #wide.g-panel.span8
+          #wide-X
 
     = yield :toolbox

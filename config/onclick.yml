@@ -1,4 +1,8 @@
 
+##############################################################################
+## Teachers 
+##############################################################################
+
 lnk-change-password :
   toggle : modal
 
@@ -90,3 +94,22 @@ m-teacher-quizzes :
 m-account :
   toggle : dropdown
   menu : tasks-on-account
+
+##############################################################################
+## Students 
+##############################################################################
+
+lnk-st-trigger : 
+  autoclick :
+    tab : tab-st-quizzes
+  left : 
+    show : left-1
+  wide :
+    show : wide-X
+  default-lnk : true
+
+tab-st-quizzes :
+  toggle : tab
+  url : student/testpapers
+  panel :
+    ajax : feedback.json?id=:id 

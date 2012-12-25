@@ -32,8 +32,8 @@ class StudentsController < ApplicationController
   end
 
   def testpapers
-    @student = current_account.loggable
-    @publishable = Testpaper.where(:id => @student.testpaper_ids).where(:publishable => true)
+    s = current_account.loggable
+    @publishable = Testpaper.where(:id => s.testpaper_ids).where(:publishable => true)
   end
 
   def responses
