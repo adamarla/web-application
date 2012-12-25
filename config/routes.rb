@@ -127,7 +127,7 @@ Webapp::Application.routes.draw do
   match 'qzb/echo' => 'teachers#qzb_echo', :via => [:put, :post]
 
   # Testpaper
-  match 'testpaper/summary' => 'testpapers#summary', :via => :get
+  match 'performance/ws' => 'testpapers#summary', :via => :get
   match 'testpaper/load' => 'testpapers#load', :via => :get
 
   # Trial Account 
