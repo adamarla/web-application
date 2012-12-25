@@ -24,7 +24,18 @@ jQuery ->
       clickFirst = true
     else if url.match(/ws-preview/)
       preview.loadJson json, 'locker'
-
+    else if url.match(/student\/feedback/)
+      leftTabs.create '#pane-st-feedback', json, {
+        klass : {
+          ul : "span3 lock nopurge-on-show",
+          content : "span8",
+          div : "writeonce multi-select"
+        },
+        data : {
+          ajax : "course/questions?id=:prev&topic=:id"
+          prev : "tab-qzb-courses"
+        }
+      }
 
     ############################################################
     ## Common actions in response to JSON

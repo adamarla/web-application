@@ -41,9 +41,9 @@ jQuery ->
       karo.tab.enable 'tab-qzb-questions'
       leftTabs.create '#qzb-questions', json, {
         klass : {
-          ul : "span4 lock nopurge-on-show",
-          content : "span7",
-          div : "writeonce multi-select"
+          ul : "span3 nopurge-on-show",
+          content : "span8",
+          div : "writeonce"
         },
         data : {
           ajax : "course/questions?id=:prev&topic=:id"

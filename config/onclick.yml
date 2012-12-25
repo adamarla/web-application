@@ -113,3 +113,8 @@ tab-st-quizzes :
   url : student/testpapers
   panel :
     ajax : ws-preview.json?id=:id 
+
+tab-st-feedback :
+  toggle : tab
+  url : student/feedback.json?id=:prev
+  prev : tab-st-quizzes

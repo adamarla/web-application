@@ -94,6 +94,7 @@ Webapp::Application.routes.draw do
   match 'ws-preview' => 'students#responses', :via => :get
   match 'student/testpapers' => 'students#testpapers', :via => :get
   match 'dispute' => 'students#dispute', :via => :get
+  match 'student/feedback' => 'students#feedback', :via => :get
 
   # Sektion 
   resource :sektion, :only => [:create, :update]

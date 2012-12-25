@@ -36,6 +36,11 @@ class StudentsController < ApplicationController
     @publishable = Testpaper.where(:id => s.testpaper_ids).where(:publishable => true)
   end
 
+  def feedback
+    s = current_account.loggable
+    @r = s.responses params[:id]
+  end
+
   def responses
     s = current_account.loggable
     tp = Testpaper.find params[:id]
