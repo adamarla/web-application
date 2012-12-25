@@ -34,6 +34,7 @@ class StudentsController < ApplicationController
   def testpapers
     s = current_account.loggable
     @publishable = Testpaper.where(:id => s.testpaper_ids).where(:publishable => true)
+    @publishable = @publishable.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse
   end
 
   def feedback

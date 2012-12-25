@@ -66,6 +66,11 @@ class Testpaper < ActiveRecord::Base
     self.students.order(:first_name)
   end
 
+  def closed_on?
+    # Returns the approximate date when grading for this testpaper / worksheet was finished
+    last = AnswerSheet.where(:testpaper_id => self.id).order(:updated_at).last.updated_at
+  end
+
   def self.name_if_students?(student_ids)
     sektion_ids = StudentRoster.where(:student_id => student_ids).map(&:sektion_id).uniq
     sektions = Sektion.where(:id => sektion_ids).order(:klass).order(:name)
