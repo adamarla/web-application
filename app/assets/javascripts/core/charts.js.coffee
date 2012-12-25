@@ -24,7 +24,7 @@ window.chart = {
     return true
 
   draw : (options = {}) ->
-    chart.plot = $.plot $('#flot-chart'), chart.seriesList, options
+    chart.plot = $.plot $('#graph-paper'), chart.seriesList, options
     return true
 
   series : {
