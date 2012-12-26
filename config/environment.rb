@@ -8,7 +8,7 @@ Webapp::Application.initialize!
 # Using YAML to set application-wide variables - Railscast #85
 Gutenberg = YAML.load_file("#{Dir.pwd}/config/gutenberg.yml")[Rails.env]
 OnClick = YAML.load_file("#{Dir.pwd}/config/onclick.yml")
-Rubric = YAML.load_file("#{Dir.pwd}/config/rubric.yml")['rubric']
+Rubric = YAML.load_file("#{Dir.pwd}/config/rubric.yml")['rubric']['maths']
 
 SavonClient = Savon::Client.new do
   wsdl.document = "#{Gutenberg['wsdl']}"
