@@ -193,16 +193,20 @@ jQuery ->
     ###
       Ensure that atmost 3 tabs are shown - including the just clicked one
       Which means - show the current, previous (if present) and the next ( if present )
+
+      However, do this only for horizontal tabs - not .tabs-left
     ###
-    li = $(this).parent()
-    for m in li.siblings('li')
-      $(m).addClass 'hide'
 
-    p = li.prev('li')
-    n = li.next('li')
+    unless $(this).closest('.tabs-left').length isnt 0
+      li = $(this).parent()
+      for m in li.siblings('li')
+        $(m).addClass 'hide'
 
-    $(p).removeClass 'hide' if p.length isnt 0
-    $(n).removeClass 'hide' if n.length isnt 0
+      p = li.prev('li')
+      n = li.next('li')
+
+      $(p).removeClass 'hide' if p.length isnt 0
+      $(n).removeClass 'hide' if n.length isnt 0
 
     return true
 
