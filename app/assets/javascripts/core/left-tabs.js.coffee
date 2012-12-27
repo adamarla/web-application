@@ -68,7 +68,7 @@ window.leftTabs = {
 
     # Collect the data-* attributes set on ul > li > a into one string. These are common to all <a>
     data = ""
-    for j in ['prev', 'url']
+    for j in ['prev', 'url', 'panel-url']
       data += " data-#{j}='#{options.data[j]}'" if options.data[j]?
 
     # Then, write the JSON

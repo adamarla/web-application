@@ -48,7 +48,8 @@ jQuery ->
         },
         data : {
           url : "course/questions?id=:prev&topic=:id"
-          prev : "tab-qzb-courses"
+          prev : "tab-qzb-courses",
+          'panel-url' : "question/preview?id=:id"
         }
       }
       return true
