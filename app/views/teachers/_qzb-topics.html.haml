@@ -11,10 +11,10 @@
       - teacher.verticals.each do |m|
         %li{ :marker => "#{m.id}" }
           = simple_link :for => "#{m.name}", :toggle => :tab, 
-          :href => "#vert-#{m.id}", :ajax => "course/topics_in?id=:prev&vertical=:id",
-          :prev => 'tab-qzb-courses'
+          :href => "#vert-#{m.id}", :url => "course/topics_in?id=:prev&vertical=:id",
+          :prev => 'tab-qzb-courses', :class => :writeonce
 
     -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
     .tab-content.span7
       - teacher.verticals.each do |m|
-        .tab-pane.multi-select.writeonce.purge{ :id => "vert-#{m.id}" }
+        .tab-pane.multi-select{ :id => "vert-#{m.id}" }
