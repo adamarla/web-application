@@ -19,7 +19,7 @@ tab-wsb-quizzes :
   toggle : tab
   url : quizzes/list
   panel :
-    ajax : quiz/preview?id=:id
+    url : quiz/preview?id=:id
 
 tab-wsb-sektions :
   toggle : tab
@@ -43,7 +43,7 @@ tab-wsl :
   url : quiz/testpapers.json?id=:prev
   prev : tab-wsb-quizzes
   panel :
-    ajax : testpaper/load?id=:id
+    url : testpaper/load?id=:id
 
 tab-wsl-quizzes :
   toggle : tab
@@ -53,13 +53,13 @@ tab-wsl-quizzes :
 lnk-ws-download :
   left : as-is
   wide : as-is
-  ajax : disabled
+  url : disabled
   update-on : testpaper/load
 
 lnk-download-solution :
   left : as-is 
   wide : as-is 
-  ajax : disabled 
+  url : disabled 
   update-on : quiz/preview
 
 lnk-new-quiz :
@@ -84,8 +84,6 @@ tab-qzb-topics :
 
 tab-qzb-questions :
   toggle : tab
-  panel : 
-    ajax : question/preview?id=:id
 
 m-teacher-quizzes :
   toggle : dropdown 
@@ -106,7 +104,7 @@ lnk-ws-performance :
 tab-ws-performance :
   toggle : tab
   panel : 
-    ajax : student/performance.json?id=:id&ws=:prev 
+    url : student/performance.json?id=:id&ws=:prev 
   url : performance/ws.json?id=:prev 
   prev : tab-wsl
   autoclick :
@@ -134,7 +132,7 @@ tab-st-quizzes :
   toggle : tab
   url : student/testpapers
   panel :
-    ajax : ws-preview.json?id=:id 
+    url : ws-preview.json?id=:id 
 
 tab-st-feedback :
   toggle : tab
