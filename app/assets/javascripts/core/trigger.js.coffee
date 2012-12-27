@@ -168,7 +168,7 @@ jQuery ->
     pgn = $(panel).children('.pagination').eq(0)
     pagination.disable pgn
 
-    # Issue AJAX request * after * taking care of any :prev or :id in data-ajax
+    # Issue AJAX request * after * taking care of any :prev or :id in data-url
     ajax = this.dataset.url
     if ajax?
       proceed = true
@@ -189,8 +189,8 @@ jQuery ->
     # Set base-ajax url on containing panel
     ul = $(this).parent().parent() # => ul.nav-tabs
     unless ul.hasClass 'lock'
-      panelAjax = this.dataset.panelAjax
-      panel.dataset.ajax = if panelAjax? then panelAjax else null
+      panelUrl = this.dataset.panelUrl
+      panel.dataset.url = if panelUrl? then panelUrl else null
 
     autoClick = this.dataset.autoclickLink
     $("##{autoClick}").click() if autoClick?
@@ -247,7 +247,7 @@ jQuery ->
     menu.close $(d) if $(d).length isnt 0
 
     # (YAML) Issue any AJAX requests
-    ajax = this.dataset.ajax
+    ajax = this.dataset.url
     $.get ajax if (ajax? and ajax isnt 'disabled')
 
     return true
@@ -339,7 +339,7 @@ jQuery ->
 
       # 4. Issue AJAX request - if defined and set on containing panel
       panel = $(this).closest('.g-panel')[0]
-      ajax = panel.dataset.ajax
+      ajax = panel.dataset.url
       unless ajax is 'null'
         ###
           ajax is the base-url with :id and/or :prev placeholders
@@ -417,9 +417,9 @@ jQuery ->
         break unless json[key]?
         while href.search(":#{key}") isnt -1
           href = href.replace ":#{key}", json[key]
-      if a.dataset.ajax is 'disabled'
+      if a.dataset.url is 'disabled'
         $(a).attr 'href', href # Set the new href
       else
-        a.dataset.ajax = href
+        a.dataset.url = href
     return true
 

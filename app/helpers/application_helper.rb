@@ -42,7 +42,7 @@ module ApplicationHelper
           unless k.blank?
             # puts " ******** [#{id}]: #{m} --> #{k}" 
             if k.is_a? Hash
-              ['show', 'ajax', 'tab', 'link'].each { |n| data["#{m}-#{n}"] = k[n] unless k[n].blank? } 
+              ['show', 'url', 'tab', 'link'].each { |n| data["#{m}-#{n}"] = k[n] unless k[n].blank? } 
             else
               data[m] = k
             end
