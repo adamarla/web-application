@@ -23,7 +23,7 @@
       } , 
       data : { => data-* attributes set on ul > li > a ( data-toggle="tab" is implicit )
         prev :
-        ajax :
+        url :
       } 
 
     }
@@ -46,7 +46,7 @@ emptyOptions = {
   },
   data : {
     prev : ""
-    ajax : ""
+    url : ""
   }
 }
 
@@ -68,14 +68,14 @@ window.leftTabs = {
 
     # Collect the data-* attributes set on ul > li > a into one string. These are common to all <a>
     data = ""
-    for j in ['prev', 'ajax']
+    for j in ['prev', 'url']
       data += " data-#{j}='#{options.data[j]}'" if options.data[j]?
 
     # Then, write the JSON
     for m in json.tabs
       li = $("<li marker=#{m.id}></li>")
       li.appendTo ul
-      a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab'>#{m.name}</a>")
+      a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
       a.appendTo li
       pane = $("<div class='tab-pane #{options.klass.div}' id='dyn-tab-#{m.id}'></div>")
       pane.appendTo content
