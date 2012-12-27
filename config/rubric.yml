@@ -1,7 +1,7 @@
 
 rubric :
   maths :
-    overall :
+    honest :
       0 :
         weight : 4
         text : It's blank!
@@ -15,7 +15,7 @@ rubric :
         weight : 4
         text : Yes / no doubt
 
-    cogency :
+    cogent :
       0 : 
         weight : 0
         text : Irrelevant
@@ -35,7 +35,7 @@ rubric :
         weight : 4
         text : Yes
 
-    completeness : 
+    complete : 
       0 : 
         weight : 0
         text : Irrelevant
@@ -61,7 +61,7 @@ rubric :
         text : Calculation Mistake(s)
       1 :
         penalty : true
-        text : Mis-/Over-interpreted the question
+        text : Misinterpreted question
       2 :
         penalty : true
         text : Unexplained jumps in logic
@@ -73,7 +73,7 @@ rubric :
         text : Made invalid assumptions
       5 :
         penalty : true
-        text : Solution not mathematically sound
+        text : Some of it is not maths 
       6 :
         penalty : true
         text :

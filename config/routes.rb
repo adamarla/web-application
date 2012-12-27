@@ -51,6 +51,7 @@ Webapp::Application.routes.draw do
   match 'examiner/suggestions/:id' => 'examiners#suggestions', :via => :get
   match 'rotate_scan' => 'examiners#rotate_scan', :via => :get
   match 'restore_scan' => 'examiners#restore_pristine_scan', :via => :get
+  match 'feedback' => 'examiners#feedback', :via => :get
 
 
   # School 
