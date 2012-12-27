@@ -62,6 +62,15 @@ jQuery ->
       childKey = "testpaper"
       menu = 'per-ws'
       clickFirst = true
+    else if url.match(/performance\/ws/)
+      target = $("#pane-ws-performance")
+      parentKey = "students"
+      childKey = "student"
+    else if url.match(/feedback/)
+      type = url.substr(url.lastIndexOf("=") + 1)
+      target = $("#pane-#{type}")
+      parentKey = "a"
+      childKey = "b"
 
     ############################################################
     ## Common actions in response to JSON

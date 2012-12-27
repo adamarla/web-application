@@ -1,4 +1,5 @@
 class ExaminersController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!, :except => [:update_workset]
   respond_to :json
 
@@ -70,5 +71,20 @@ class ExaminersController < ApplicationController
       @all = @wips = @just_in = @completed = []
     end
   end # of method
+
+=begin
+  Actions pertaining to feedback
+=end
+  def feedback 
+    type = params[:type]
+    scale = Rubric[type] 
+    start = rubric_first_of_x_at type 
+    @delineated = []
+    scale.each { |k,v| @delineated.push({ :b => { :name => v['text'], :id => "#{start + k}" } }) unless v['text'].blank? }
+    
+    # delineated is something that we pass to RABL and it renders it as-is 
+    # But we ensure it has the form expected by line-item.js
+  end 
+
 
 end
