@@ -171,15 +171,20 @@ jQuery ->
     # Issue AJAX request * after * taking care of any :prev or :id in data-ajax
     ajax = this.dataset.url
     if ajax?
-      # Remember - :prev and :id point to an <a>. The marker, however, is set on the parent <li>
-      for ph in ["prev", "id"]
-        if ajax.indexOf ":#{ph}" isnt -1 # => :prev / :id present 
-          from = if this.dataset[ph]? then $("##{this.dataset[ph]}") else $(this)
-          marker = from.attr 'marker'
-          marker = if marker? then marker else from.parent().attr('marker')
-          ajax = ajax.replace ":#{ph}", marker
-      $.get ajax
-      pagination.url.set pgn, ajax
+      proceed = true
+      if $(this).hasClass 'writeonce'
+        proceed = $($(this).attr('href')).children().length is 0
+
+      if proceed
+        # Remember - :prev and :id point to an <a>. The marker, however, is set on the parent <li>
+        for ph in ["prev", "id"]
+          if ajax.indexOf ":#{ph}" isnt -1 # => :prev / :id present 
+            from = if this.dataset[ph]? then $("##{this.dataset[ph]}") else $(this)
+            marker = from.attr 'marker'
+            marker = if marker? then marker else from.parent().attr('marker')
+            ajax = ajax.replace ":#{ph}", marker
+        $.get ajax
+        pagination.url.set pgn, ajax
 
     # Set base-ajax url on containing panel
     ul = $(this).parent().parent() # => ul.nav-tabs
