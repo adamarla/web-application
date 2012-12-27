@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121201183713) do
+ActiveRecord::Schema.define(:version => 20121227135011) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -183,6 +183,15 @@ ActiveRecord::Schema.define(:version => 20121201183713) do
     t.string   "atm_key"
     t.integer  "total"
     t.integer  "span"
+  end
+
+  create_table "requirements", :force => true do |t|
+    t.string  "text"
+    t.boolean "honest",   :default => false
+    t.boolean "cogent",   :default => false
+    t.boolean "complete", :default => false
+    t.boolean "other",    :default => false
+    t.integer "weight",   :default => -1
   end
 
   create_table "schools", :force => true do |t|
