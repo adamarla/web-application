@@ -43,7 +43,7 @@ window.line = {
     b = obj.find('.long-badge').eq(0)
     if json.long?
       b.text json.long
-      spanLeft -= 3
+      spanLeft -= 4
       b.parent().prev().remove() # .span1
       spanLeft += 1
     else
