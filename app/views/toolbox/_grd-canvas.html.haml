@@ -1,6 +1,5 @@
 
-#grading-console
-  = render :partial => 'toolbox/colour_picker'
-  = render :partial => 'toolbox/comment'
-  -# Can't style the <canvas> using CSS. Hence, setting the width & height here itself
-  %canvas#grading-canvas{ :width => 600, :height => 800 }
+= render :partial => 'toolbox/grd-toolbar'
+= render :partial => 'toolbox/comment'
+-# Can't style the <canvas> using CSS. Hence, setting the width & height here itself
+%canvas#grading-canvas{ :width => 600, :height => 800 }

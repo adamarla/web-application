@@ -1,27 +1,32 @@
 
-= simple_form_for :checked, :remote => true, :url => qzb_echo_path, 
-  :html => { :id => 'form-feedback', :class => 'no-remove'} do |f|
+#grading-panel
+  #pending-scans.hide
 
-  .row-fluid.navbar
-    = f.button :submit, :class => 'btn-inverse pull-right', :value => "Submit"
-  .tabbable.tabs-left.no-remove
-    %ul.nav.nav-tabs.span4.nopurge-on-show
-      %li
-        = simple_link :for => "Honest effort - even if incomplete?", 
-        :id => "tab-honest", :href => "#pane-honest", :class => :writeonce
-      %li
-        = simple_link :for => "Cogent & Correct - even if incomplete?", 
-        :id => "tab-cogent", :href => "#pane-cogent", :class => :writeonce
-      %li
-        = simple_link :for => "Complete?", :id => "tab-complete",
-        :href => "#pane-complete", :class => :writeonce
-      %li
-        = simple_link :for => "Anything else?", :id => "tab-other",
-        :href => "#pane-other", :class => :writeonce
+  #current-response.row-fluid
+    .span2.pull-right= "Q6"
+    .span6.pull-right= "Abhinav"
 
-    -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
-    .tab-content.span7
-      #pane-honest.tab-pane
-      #pane-cogent.tab-pane
-      #pane-complete.tab-pane
-      #pane-other.tab-pane.multi-select
+  = simple_form_for :checked, :remote => true, 
+    :html => { :id => 'form-feedback', :class => 'no-remove'} do |f|
+
+    .tabbable.tabs-left.no-remove
+      %ul.nav.nav-tabs.span4.nopurge-on-show
+        %li
+          = simple_link :for => "Honest effort - even if incomplete?", 
+          :id => "tab-honest", :href => "#pane-honest", :class => :writeonce
+        %li
+          = simple_link :for => "Cogent & Correct - even if incomplete?", 
+          :id => "tab-cogent", :href => "#pane-cogent", :class => :writeonce
+        %li
+          = simple_link :for => "Complete?", :id => "tab-complete",
+          :href => "#pane-complete", :class => :writeonce
+        %li
+          = simple_link :for => "Anything else?", :id => "tab-other",
+          :href => "#pane-other", :class => :writeonce
+
+      -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
+      .tab-content.span7
+        #pane-honest.tab-pane
+        #pane-cogent.tab-pane
+        #pane-complete.tab-pane
+        #pane-other.tab-pane.multi-select

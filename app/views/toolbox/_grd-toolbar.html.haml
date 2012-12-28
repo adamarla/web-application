@@ -1,40 +1,21 @@
 
-#colour-picker
-  %div
-    #currently-annotating
+#grd-toolbar
+  .btn-toolbar
+    .btn-group
+      %button.btn.btn-inverse#btn-back
+        %i{ :class => 'icon-white icon-chevron-left' }
+      %button.btn.btn-inverse#btn-next
+        %i{ :class => 'icon-white icon-chevron-right' }
+    .btn-group{ 'data-toggle' => 'buttons-radio' }
+      %button.btn.btn-inverse#btn-ok
+        %i{ :class => 'icon-white icon-ok ' }
+      %button.btn.btn-inverse#btn-cross
+        %i{ :class => 'icon-white icon-remove' }
+      %button.btn.btn-inverse#btn-what
+        %i{ :class => 'icon-white icon-exclamation-sign' }
+      %button.btn.btn-inverse#btn-write
+        %i{ :class => 'icon-white icon-text-width' } 
+    .btn-group
+      %button.btn.btn-inverse#btn-undo
+        %i{ :class => 'icon-white icon-repeat' } 
 
-  %div{ :section => "true" }= "Scans"
-  .buttonset
-    %input.left{ :type => :button, :id => 'btn-prev-scan', :value => '<'} 
-    %input.right{ :type => :button, :id => 'btn-next-scan', :value => '>'} 
-  %div{ :section => "true" }= "Questions"
-  .buttonset
-    %input.left{ :type => :button, :id => 'btn-prev-ques', :value => '<' }
-    %input.right{ :type => :button, :id => 'btn-next-ques', :value => '>'} 
-    
-  %div{ :section => "true" }= "Annotations"
-  %div{ :coloured => :yes }
-    %div.left{ :colour => :crosses }
-    .right= "Wrong!"
-  %div{ :coloured => :yes }
-    %div.left{ :colour => :exclamations }
-    .right= "Huh?"
-  %div{ :coloured => :yes }
-    %div.left{ :colour => :checks }
-    .right= "Nice!"
-  %div
-    %input{ :type => :button, :id => 'undo-btn', :value => 'undo last'} 
-  %div
-    %input{ :type => :button, :id => 'add-comment', :value => 'add comment'} 
-  %div
-    %input{ :type => :button, :id => 'flip-img', :value => 'flip image'} 
-  %div
-    %input{ :type => :button, :id => 'restore-img', :value => 'restore scan'} 
-
-  %div{ :section => "true" }= "One-click submit"
-  #one-click-submit
-    %input{ :type => :button, :i => 14, :f => 19, :c => 26, :value => "Blank!" }
-    %input{ :type => :button, :i => 15, :f => 19, :c => 26, :value => "Not Maths!" }
-    %input{ :type => :button, :i => 37, :f => 20, :c => 26, :value => "Plain wrong" }
-    %input{ :type => :button, :i => 18, :f => 24, :c => 28, :value => "Spot on" }
-    

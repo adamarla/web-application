@@ -140,6 +140,7 @@ $lightblue: lighten($deep-blue, 23%) ;
   } 
   &.selected {
     > .dropdown { > a { color: white ; } }
+    
     .long-badge { 
       border-radius: 4px ;
       background-color: $orange ;
@@ -249,3 +250,16 @@ button[data-toggle='button'] {
     font-size: 50px ;
   } 
 }
+
+#grading-panel { 
+  > #current-response { 
+    font : {
+      size: 20px ;
+      weight: 300 ;
+    } 
+    color : $orange ;
+    &.graded { color: $gradians-blue ; }
+  } 
+} 
+
+.btn-inverse.active { background-color: $deep-blue ; }
