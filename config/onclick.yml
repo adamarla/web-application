@@ -8,7 +8,7 @@ lnk-change-password :
 
 lnk-existing-quiz :
   left : 
-    show : left-4
+    show : left-1
   wide : 
     show : wide-X 
   default-lnk : true
@@ -70,6 +70,12 @@ lnk-new-quiz :
   wide :
     show : wide-wait
 
+lnk-wb-pending : 
+  left :
+    show : left-4
+  wide : 
+    show : wide-grd-canvas
+
 tab-qzb-courses : 
   toggle : tab
   url : teacher/courses
@@ -88,6 +94,10 @@ tab-qzb-questions :
 m-teacher-quizzes :
   toggle : dropdown 
   menu : teacher-quiz
+
+m-teacher-workbench : 
+  toggle : dropdown
+  menu : teacher-workbench
 
 m-account :
   toggle : dropdown
