@@ -5,7 +5,7 @@
 #  id         :integer         not null, primary key
 #  teacher_id :integer
 #  school     :string(255)
-#  zip_code   :string(255)
+#  zip_code   :string(30)
 #  country    :integer
 #  created_at :datetime
 #  updated_at :datetime

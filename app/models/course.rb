@@ -3,7 +3,7 @@
 # Table name: courses
 #
 #  id         :integer         not null, primary key
-#  name       :string(255)
+#  name       :string(50)
 #  board_id   :integer
 #  klass      :integer
 #  subject_id :integer

@@ -7,10 +7,10 @@
 #  created_at    :datetime
 #  updated_at    :datetime
 #  num_questions :integer
-#  name          :string(255)
+#  name          :string(70)
 #  klass         :integer
 #  subject_id    :integer
-#  atm_key       :string(255)
+#  atm_key       :string(20)
 #  total         :integer
 #  span          :integer
 #

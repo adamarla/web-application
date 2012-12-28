@@ -3,7 +3,7 @@
 # Table name: verticals
 #
 #  id         :integer         not null, primary key
-#  name       :string(255)
+#  name       :string(30)
 #  created_at :datetime
 #  updated_at :datetime
 #

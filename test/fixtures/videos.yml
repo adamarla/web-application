@@ -8,7 +8,7 @@
 #  instructional :boolean         default(FALSE)
 #  created_at    :datetime
 #  updated_at    :datetime
-#  title         :string(255)
+#  title         :string(70)
 #  active        :boolean         default(FALSE)
 #  index         :integer         default(-1)
 #

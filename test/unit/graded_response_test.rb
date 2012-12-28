@@ -12,7 +12,7 @@
 #  q_selection_id :integer
 #  system_marks   :float
 #  testpaper_id   :integer
-#  scan           :string(255)
+#  scan           :string(40)
 #  subpart_id     :integer
 #  page           :integer
 #  marks_teacher  :float

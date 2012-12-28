@@ -7,8 +7,8 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  is_admin        :boolean         default(FALSE)
-#  first_name      :string(255)
-#  last_name       :string(255)
+#  first_name      :string(30)
+#  last_name       :string(30)
 #  last_workset_on :datetime
 #
 

@@ -8,7 +8,7 @@
 #  completed   :boolean         default(FALSE)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  signature   :string(255)
+#  signature   :string(15)
 #
 
 require 'test_helper'

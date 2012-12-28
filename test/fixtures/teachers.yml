@@ -3,8 +3,8 @@
 # Table name: teachers
 #
 #  id         :integer         not null, primary key
-#  first_name :string(255)
-#  last_name  :string(255)
+#  first_name :string(30)
+#  last_name  :string(30)
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer

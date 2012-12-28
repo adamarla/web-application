@@ -4,7 +4,7 @@
 #
 #  id          :integer         not null, primary key
 #  quiz_id     :integer
-#  name        :string(255)
+#  name        :string(100)
 #  created_at  :datetime
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)

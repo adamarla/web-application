@@ -16,9 +16,9 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  loggable_id            :integer
-#  loggable_type          :string(255)
+#  loggable_type          :string(20)
 #  active                 :boolean         default(TRUE)
-#  username               :string(255)
+#  username               :string(50)
 #  trial                  :boolean         default(TRUE)
 #
 

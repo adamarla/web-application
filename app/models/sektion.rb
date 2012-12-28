@@ -5,7 +5,7 @@
 #  id         :integer         not null, primary key
 #  school_id  :integer
 #  klass      :integer
-#  name       :string(255)
+#  name       :string(40)
 #  created_at :datetime
 #  updated_at :datetime
 #  teacher_id :integer
