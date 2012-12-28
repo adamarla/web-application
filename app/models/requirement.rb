@@ -75,6 +75,26 @@ class Requirement < ActiveRecord::Base
     return actual
   end
 
+  def self.marks_if?(feedback)
+    # Returns the fraction of marks to given a certain feedback
+    # 'feedback' is an array of Requirement indices coming either as params[:checked]
+    # or from 'unmangle_feedback'
+    feedback = feedback.class == Fixnum ? self.unmangle_feedback(feedback) : feedback
+    feedback = Requirement.where(:id => feedback)
+
+    honest = feedback.where(:honest => true).select(:weight).first.weight 
+    if honest > 0
+      cogent = feedback.where(:cogent => true).select(:weight).first.weight 
+      complete = feedback.where(:complete => true).select(:weight).first.weight 
+      other = feedback.where(:other => true, :weight => 0).count
+      other = (other > 2) ? 2 : other 
+      fraction = ((cogent + complete) / 8.0) - (0.05 * other)
+    else
+      fraction = 0 # plagiarized => automatic 0 !!
+    end 
+    return fraction
+  end
+
   private 
     def ensure_unique_type
       return [self.honest, self.cogent, self.complete, self.other].count(true) == 1
