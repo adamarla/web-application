@@ -9,7 +9,9 @@ window.line = {
         tag (optional): written as the second line in a .two-line - if provided
     ###
     # type = if json.tag? then '.two-line' else ''
+
     obj = $('#toolbox').children('.single-line').eq(0).clone()
+    spanLeft = 11
 
     # Write contents of JSON 
     obj.find('.text').eq(0).children().eq(0).text json.name
@@ -25,15 +27,29 @@ window.line = {
     if json.tag?
       subtext.children().eq(0).text json.tag
       subtext.addClass 'span3'
-      text.addClass 'span8'
+      spanLeft -= 3
+      # text.addClass 'span8'
     else
-      text.addClass 'span11'
+      # text.addClass 'span11'
       subtext.remove()
     
     # If JSON has :badge 
+    b = obj.find('.badge').eq(0)
     if json.badge?
-      b = obj.find('.badge').eq(0)
       b.text json.badge
+
+    spanLeft -= 1
+
+    b = obj.find('.long-badge').eq(0)
+    if json.long?
+      b.text json.long
+      spanLeft -= 3
+      b.parent().prev().remove() # .span1
+      spanLeft += 1
+    else
+      b.parent().remove()
+
+    text.addClass "span#{spanLeft}"
 
     # Set the menu(string) as an attribute on .dropdown > a - if provided
     toggle = obj.find('.dropdown-toggle')[0]

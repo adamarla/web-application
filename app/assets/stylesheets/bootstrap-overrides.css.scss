@@ -155,14 +155,18 @@ $lightblue: lighten($deep-blue, 23%) ;
 
   .badge { 
      padding: 0px ; 
-     width: 14px ;
-     height:14px ;
      text-align: center ;
+     height: 14px ;
+     width: 14px ;
      color: $gray ;
      border-radius: 4px ;
      &:empty {
        width: 8px ; 
        height: 8px ;
+     } 
+     &.long-badge {
+       margin-right: 2px ;
+       width: 100% ;
      } 
   } 
 } 
@@ -201,7 +205,7 @@ $lightblue: lighten($deep-blue, 23%) ;
   > .tab-content { 
     .single-line { 
       font-size: 11px ; 
-      height: 20px ;
+      min-height: 20px ;
     }
   }
 } 
