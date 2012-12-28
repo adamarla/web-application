@@ -251,15 +251,5 @@ button[data-toggle='button'] {
   } 
 }
 
-#grading-panel { 
-  > #current-response { 
-    font : {
-      size: 20px ;
-      weight: 300 ;
-    } 
-    color : $orange ;
-    &.graded { color: $gradians-blue ; }
-  } 
-} 
-
+#grd-toolbar { position: fixed ; }
 .btn-inverse.active { background-color: $deep-blue ; }
