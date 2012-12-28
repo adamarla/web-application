@@ -186,12 +186,13 @@ ActiveRecord::Schema.define(:version => 20121227184846) do
   end
 
   create_table "requirements", :force => true do |t|
-    t.string  "text"
-    t.boolean "honest",   :default => false
-    t.boolean "cogent",   :default => false
-    t.boolean "complete", :default => false
-    t.boolean "other",    :default => false
-    t.integer "weight",   :default => -1
+    t.string  "text",       :limit => 100
+    t.string  "bottomline", :limit => 20
+    t.boolean "honest",                    :default => false
+    t.boolean "cogent",                    :default => false
+    t.boolean "complete",                  :default => false
+    t.boolean "other",                     :default => false
+    t.integer "weight",                    :default => -1
   end
 
   create_table "schools", :force => true do |t|

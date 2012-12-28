@@ -1,7 +1,8 @@
 class CreateRequirements < ActiveRecord::Migration
   def change
     create_table :requirements do |t|
-      t.string :text
+      t.string :text, :limit => 100
+      t.string :bottomline, :limit => 20
       t.boolean :honest, :default => false
       t.boolean :cogent, :default => false
       t.boolean :complete, :default => false
