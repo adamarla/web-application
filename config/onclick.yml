@@ -125,6 +125,15 @@ trapdoor-show-chart :
   wide : 
     show : graph-paper
 
+tab-grd-quiz :
+  toggle : tab
+
+tab-grd-page :
+  toggle : tab
+
+tab-grd-panel :
+  toggle : tab
+
 ##############################################################################
 ## Students 
 ##############################################################################

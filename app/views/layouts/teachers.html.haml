@@ -62,7 +62,7 @@
           #left-3
             = render :partial => 'teachers/wsl'
           #left-4
-            = render :partial => 'toolbox/grd-abacus'
+            = render :partial => 'toolbox/grd-pending'
         #middle.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
           #middle-X
@@ -75,6 +75,7 @@
             = render :partial => 'toolbox/wait'
           #graph-paper
           #wide-grd-canvas
-            = render :partial => 'toolbox/grd-canvas'
+            = render :partial => 'toolbox/grd-toolbar'
+            %canvas#grading-canvas{ :width => 600, :height => 800 }
 
     = yield :toolbox
