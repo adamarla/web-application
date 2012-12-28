@@ -77,13 +77,14 @@ class ExaminersController < ApplicationController
 =end
   def feedback 
     type = params[:type]
-    scale = Rubric[type] 
-    start = rubric_first_of_x_at type 
-    @delineated = []
-    scale.each { |k,v| @delineated.push({ :b => { :name => v['text'], :id => "#{start + k}" } }) unless v['text'].blank? }
-    
-    # delineated is something that we pass to RABL and it renders it as-is 
-    # But we ensure it has the form expected by line-item.js
+    case type
+      when 'honest' then @r = Requirement.where(:honest => true)
+      when 'cogent' then @r = Requirement.where(:cogent => true)
+      when 'complete' then @r = Requirement.where(:complete => true)
+      else @r = Requirement.where(:other => true)
+    end 
+
+    @r = @r.order(:id)
   end 
 
 

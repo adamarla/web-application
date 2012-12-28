@@ -71,8 +71,8 @@ jQuery ->
     else if url.match(/feedback/)
       type = url.substr(url.lastIndexOf("=") + 1)
       target = $("#pane-#{type}")
-      parentKey = "a"
-      childKey = "b"
+      parentKey = "rqms"
+      childKey = "rqm"
 
     ############################################################
     ## Common actions in response to JSON
