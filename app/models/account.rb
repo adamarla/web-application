@@ -101,6 +101,19 @@ class Account < ActiveRecord::Base
     return (self.email_is_real? ? self.email : nil)
   end
 
+  def pending_quizzes
+    pending = nil
+    case self.loggable_type
+      when 'Examiner'
+        pending = GradedResponse.with_scan.assigned_to(self.loggable_id).ungraded.map(&:q_selection_id).uniq
+      when 'Teacher'
+        tids = Testpaper.where(:quiz_id => self.loggable_id).map(&:id)
+        pending = GradedResponse.with_scan.ungraded.in_testpaper(tids).map(&:q_selection_id).uniq
+    end
+    quiz_ids = pending.nil? ? [] : QSelection.where(:id => pending).map(&:quiz_id).uniq
+    @quizzes = Quiz.where :id => quiz_ids
+  end
+
   protected 
 
     # Overriding Devise's default email-required validation. 

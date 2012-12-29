@@ -35,12 +35,6 @@ class Examiner < ActiveRecord::Base
     end
   end
 
-  def pending_quizzes
-    pending = GradedResponse.with_scan.assigned_to(self.id).ungraded.map(&:q_selection_id).uniq
-    quiz_ids = QSelection.where(:id => pending).map(&:quiz_id).uniq
-    @quizzes = Quiz.where :id => quiz_ids
-  end
-
   def block_db_slots( n = 6 )
     slots = []
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['create_question']}" 

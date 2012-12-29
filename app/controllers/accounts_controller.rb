@@ -21,4 +21,8 @@ class AccountsController < ApplicationController
              render(:json => {:status => "new password set"}, :status => :ok) 
   end
 
+  def pending_quizzes
+    @quizzes = current_account.pending_quizzes
+  end
+
 end
