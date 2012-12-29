@@ -1,14 +1,14 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Quiz", :id => 'tab-grd-quiz', :href => "#pane-grd-quiz"
+    = simple_link :for => "Worksheets", :id => 'tab-grd-ws', :href => "#pane-grd-ws"
   %li
-    = simple_link :for => "Page", :id => 'tab-grd-page', :href => "#pane-grd-page"
+    = simple_link :for => "Pages", :id => 'tab-grd-page', :href => "#pane-grd-page"
   %li
     = simple_link :for => "Question", :id => 'tab-grd-panel', :href => "#pane-grd-panel"
 
 .tab-content
-  #pane-grd-quiz.tab-pane
+  #pane-grd-ws.tab-pane
   #pane-grd-page.tab-pane
   #pane-grd-panel.tab-pane.nopurge-on-show
     = render :partial => 'toolbox/grd-abacus'
