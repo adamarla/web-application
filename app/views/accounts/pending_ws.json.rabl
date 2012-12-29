@@ -1,4 +1,5 @@
 
 collection @wks => :wks
-  attributes :id, :name 
-  node(:tag) { |m| m.quiz.name }
+  attribute :id
+  node(:name) { |m| m.quiz.name }
+  node(:tag) { |m| m.name }
