@@ -75,6 +75,8 @@ lnk-wb-pending :
     show : left-4
   wide : 
     show : wide-grd-canvas
+  autoclick :
+    tab : tab-grd-quiz
 
 tab-qzb-courses : 
   toggle : tab
@@ -127,9 +129,14 @@ trapdoor-show-chart :
 
 tab-grd-quiz :
   toggle : tab
+  url : ws/pending
+  panel :
+    url : pages/pending.json?id=:prev
 
 tab-grd-page :
   toggle : tab
+  panel :
+    url : gr/pending.json?id=:prev
 
 tab-grd-panel :
   toggle : tab

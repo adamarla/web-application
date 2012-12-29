@@ -101,17 +101,18 @@ class Account < ActiveRecord::Base
     return (self.email_is_real? ? self.email : nil)
   end
 
-  def pending_quizzes
+  def pending_ws
     pending = nil
     case self.loggable_type
       when 'Examiner'
-        pending = GradedResponse.with_scan.assigned_to(self.loggable_id).ungraded.map(&:q_selection_id).uniq
+        pending = GradedResponse.with_scan.assigned_to(self.loggable_id).ungraded
       when 'Teacher'
-        tids = Testpaper.where(:quiz_id => self.loggable_id).map(&:id)
-        pending = GradedResponse.with_scan.ungraded.in_testpaper(tids).map(&:q_selection_id).uniq
+        tids = Testpaper.where(:quiz_id => Quiz.where(:teacher_id => self.loggable_id).map(&:id)).map(&:id)
+        pending = GradedResponse.with_scan.ungraded.in_testpaper(tids)
     end
-    quiz_ids = pending.nil? ? [] : QSelection.where(:id => pending).map(&:quiz_id).uniq
-    @quizzes = Quiz.where :id => quiz_ids
+    ws_ids = pending.map(&:testpaper_id).uniq
+    # quiz_ids = pending.nil? ? [] : QSelection.where(:id => pending).map(&:quiz_id).uniq
+    @wks = Testpaper.where(:id => ws_ids)
   end
 
   protected 

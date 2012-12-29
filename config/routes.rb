@@ -18,7 +18,7 @@ Webapp::Application.routes.draw do
   # Account 
   resource :account, :only => [:update]
   match 'update_password' => 'accounts#update_password', :via => [:put, :post]
-  match 'quiz/pending' => 'accounts#pending_quizzes', :via => :get
+  match 'ws/pending' => 'accounts#pending_ws', :via => :get
 
   # Admin 
   resource :admin, :controller => :admin 
