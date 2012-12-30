@@ -25,4 +25,18 @@ class AccountsController < ApplicationController
     @wks = current_account.pending_ws
   end
 
+  def pending_pages
+    tid = params[:id]
+    who = current_account.loggable_type
+    @gr = nil
+
+    if (who == "Teacher" || who == "Examiner")
+      @gr = GradedResponse.in_testpaper(tid).ungraded.with_scan
+      @gr = ( who == 'Examiner' ) ? @gr.assigned_to(current_account.loggable_id) : @gr 
+    else
+      @gr = []
+    end
+    @pages = @gr.map(&:page).uniq.sort
+  end
+
 end

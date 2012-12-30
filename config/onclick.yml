@@ -60,7 +60,7 @@ lnk-download-solution :
   left : as-is 
   wide : as-is 
   url : disabled 
-  update-on : quiz/preview
+  update-on : quiz/preview pages/pending
 
 lnk-new-quiz :
   autoclick : 

@@ -19,6 +19,7 @@ Webapp::Application.routes.draw do
   resource :account, :only => [:update]
   match 'update_password' => 'accounts#update_password', :via => [:put, :post]
   match 'ws/pending' => 'accounts#pending_ws', :via => :get
+  match 'pages/pending' => 'accounts#pending_pages', :via => :get
 
   # Admin 
   resource :admin, :controller => :admin 
@@ -86,7 +87,6 @@ Webapp::Application.routes.draw do
   match 'quizzes/list' => 'quizzes#list', :via => :get
   match 'quiz/preview' => 'quizzes#preview', :via => :get
   match 'quiz/assign' => 'quizzes#assign_to', :via => [:put, :post]
-  match 'quiz/pending_pages' => 'quizzes#pending_pages', :via => :get
   match 'quiz/pending_scans' => 'quizzes#pending_scans', :via => :get
   match 'quiz/testpapers' => 'quizzes#testpapers', :via => :get
 
