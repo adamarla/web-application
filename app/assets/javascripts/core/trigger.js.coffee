@@ -341,18 +341,12 @@ jQuery ->
       panel = $(this).closest('.g-panel')[0]
       ajax = panel.dataset.url
       unless ajax is 'null'
-        ###
-          ajax is the base-url with :id and/or :prev placeholders
-          :id is * always * replaced with the current .single-line's marker
-          and :prev - if present - * always * with the previous tab's marker
-
-          Presence of :prev => tabbed content
-        ###
-        
-        url = ajax.replace ":id", $(this).attr('marker')
-        prev = if activeTab? $(activeTab).prev() else null
-        url = url.replace ":prev", prev.attr('marker') if prev?
-        $.get url
+        if activeTab?
+          id = activeTab.dataset.id || $(this).attr('marker')
+          url = ajax.replace ":id", id
+          prev = if activeTab.dataset.prev? then $(activeTab.dataset.prev) else $(activeTab).prev()
+          url = url.replace ":prev", prev.attr('marker') if prev.length isnt 0
+          $.get url
 
       # 5. Switch to next-tab - if so specified
       if activeTab?
