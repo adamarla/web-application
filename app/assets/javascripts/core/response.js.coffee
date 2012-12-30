@@ -23,6 +23,7 @@ jQuery ->
       target = $('#pane-grd-page')
       parentKey = 'pages'
       childKey = 'page'
+      karo.tab.enable 'tab-grd-page'
     else
       matched = false
 
