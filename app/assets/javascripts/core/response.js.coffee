@@ -1,7 +1,7 @@
 
 jQuery ->
 
-  $('#left').ajaxSuccess (e,xhr, settings) ->
+  $('#left').ajaxComplete (e,xhr, settings) ->
     url = settings.url
     matched = true
     json = $.parseJSON xhr.responseText
@@ -19,6 +19,10 @@ jQuery ->
       parentKey = 'wks'
       childKey = 'wk'
       menu = 'per-grd-ws'
+    else if url.match(/pages\/pending/)
+      target = $('#pane-grd-page')
+      parentKey = 'pages'
+      childKey = 'page'
     else
       matched = false
 
