@@ -23,7 +23,7 @@ jQuery ->
       target = $('#pane-grd-page')
       parentKey = 'pages'
       childKey = 'page'
-      karo.tab.enable 'tab-grd-page'
+      # karo.tab.enable 'tab-grd-page'
     else if url.match(/gr\/pending/)
       abacus.initialize json
     else

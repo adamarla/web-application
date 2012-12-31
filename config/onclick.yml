@@ -130,17 +130,21 @@ trapdoor-show-chart :
 tab-grd-ws :
   toggle : tab
   url : ws/pending
-  panel :
-    url : pages/pending.json?id=:id
+  autoclick :
+    tab : tab-grd-page
 
 tab-grd-page :
   toggle : tab
   prev : tab-grd-ws
-  panel :
-    url : gr/pending.json?id=:id&ws=:prev
+  url : pages/pending.json?id=:prev
+  autoclick :
+    tab : tab-grd-panel
 
 tab-grd-panel :
   toggle : tab
+  prev : tab-grd-page
+  id : tab-grd-ws
+  url : gr/pending.json?page=:prev&ws=:id
 
 ##############################################################################
 ## Students 
