@@ -72,7 +72,7 @@ window.canvas = {
 
     ctx = canvas.ctx
 
-    ctx.strokeStyle = if draw is true then canvas.colour.last else canvas.colour.white
+    ctx.strokeStyle = if draw is true then canvas.colour[canvas.mode] else canvas.colour.white
 
     switch canvas.mode
       when 'checks'
