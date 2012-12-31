@@ -41,7 +41,7 @@ class AccountsController < ApplicationController
 
   def pending_gr
     @ws_id = params[:ws].to_i
-    page = params[:id].to_i
+    page = params[:page].to_i
     who = current_account.loggable_type
     @gr = []
 
