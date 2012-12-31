@@ -7,24 +7,24 @@
     %input{ :type => :text, :limit => 40, :placeholder => "Enter comments here" }
   .btn-toolbar
     .btn-group
-      %button.btn.btn-inverse#btn-prev-scan
+      %button.btn.btn-inverse#btn-prev-scan{ :rel => :tooltip, :title => "Previous Scan" }
         %i{ :class => 'icon-white icon-fast-backward' }
-      %button.btn.btn-inverse#btn-prev-ques
+      %button.btn.btn-inverse#btn-prev-ques{ :rel => :tooltip, :title => "Previous Question" }
         %i{ :class => 'icon-white icon-backward' }
-      %button.btn.btn-inverse#btn-next-ques
+      %button.btn.btn-inverse#btn-next-ques{ :rel => :tooltip, :title => "Next Question" }
         %i{ :class => 'icon-white icon-forward' }
-      %button.btn.btn-inverse#btn-next-scan
+      %button.btn.btn-inverse#btn-next-scan{ :rel => :tooltip, :title => "Next Scan" }
         %i{ :class => 'icon-white icon-fast-forward' }
     .btn-group{ 'data-toggle' => 'buttons-radio' }
-      %button.btn.btn-inverse#btn-ok
+      %button.btn.btn-inverse#btn-ok{ :rel => :tooltip, :title => "Insert Tick(s)" }
         %i{ :class => 'icon-white icon-ok ' }
-      %button.btn.btn-inverse#btn-cross
+      %button.btn.btn-inverse#btn-cross{ :rel => :tooltip, :title => "Insert Cross(es)" }
         %i{ :class => 'icon-white icon-remove' }
-      %button.btn.btn-inverse#btn-what
+      %button.btn.btn-inverse#btn-what{ :rel => :tooltip, :title => "Insert Exclamation Mark(s)" }
         %i{ :class => 'icon-white icon-exclamation-sign' }
-      %button.btn.btn-inverse#btn-write
+      %button.btn.btn-inverse#btn-write{ :rel => :tooltip, :title => "Add a comment" }
         %i{ :class => 'icon-white icon-text-width' } 
     .btn-group
-      %button.btn.btn-inverse#btn-undo
+      %button.btn.btn-inverse#btn-undo{ :rel => :tooltip, :title => "Undo Last" }
         %i{ :class => 'icon-white icon-repeat' } 
 
