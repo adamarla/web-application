@@ -289,9 +289,10 @@ button[data-toggle='button'] {
   padding-top: 3px ;
   border-bottom: 1px solid $gray ;
 
+
   .badge { 
     padding-top: 4px ;
-    text-align: center ; 
+    padding-left: 4px ;
     background-color: transparent ;
     font : {
       size: 12px ;
@@ -300,8 +301,12 @@ button[data-toggle='button'] {
     color: $lightgray ;
     border-radius: 0px ;
   } 
+  &.selected { 
+    .badge { border-left: 2px solid $orange ; color: white ; }
+  } 
 
   .text { 
     color: white ;
   } 
+  cursor: pointer; 
 } 

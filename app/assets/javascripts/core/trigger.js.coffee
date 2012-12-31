@@ -424,3 +424,20 @@ jQuery ->
   $("[rel='tooltip']").hover ->
     $(this).tooltip 'show'
 
+  #####################################################################
+  ## Behaviour of the Grading Abacus  
+  #####################################################################
+
+  $('#form-feedback > .tabbable > .tab-content > .tab-pane > .requirement').click (event) ->
+    event.stopPropagation()
+    multiOk = $(this).parent().hasClass 'multi-select'
+
+    unless multiOk
+      for m in $(this).siblings('.requirement')
+        $(m).removeClass 'selected'
+        $(m).find("input[type='checkbox']").eq(0).prop 'checked', false
+    $(this).addClass 'selected'
+    $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
+    return true
+
+
