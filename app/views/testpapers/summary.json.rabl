@@ -7,4 +7,4 @@ collection @students => :students
   node(:graded) { |m| @answer_sheet.of_student(m.id).first.graded? } 
   # node(:graded_thus_far) { |m| @answer_sheet.of_student(m.id).first.graded_thus_far? }
   node(:max) { |m| @max }
-  node(:ticker) { |m| @answer_sheet.of_student(m.id).first.graded_thus_far_as_str } 
+  node(:tag) { |m| @answer_sheet.of_student(m.id).first.graded_thus_far_as_str } 
