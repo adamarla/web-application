@@ -135,6 +135,7 @@ tab-grd-ws :
 
 tab-grd-page :
   toggle : tab
+  prev : tab-grd-ws
   panel :
     url : gr/pending.json?id=:id&ws=:prev
 
