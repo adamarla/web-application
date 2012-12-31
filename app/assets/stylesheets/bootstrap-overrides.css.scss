@@ -253,7 +253,7 @@ button[data-toggle='button'] {
 }
 
 #grd-toolbar { 
-  position: fixed ; 
+  // position: fixed ; 
 
   > #grd-ticker {
     background: transparent ;
@@ -313,4 +313,14 @@ button[data-toggle='button'] {
     color: white ;
   } 
   cursor: pointer; 
+} 
+
+#control-panel { 
+  position: fixed ;
+  top: 0px ;
+  z-index: 3 ;
+} 
+
+#desktop { 
+  margin-top: 70px ;
 } 
