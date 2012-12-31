@@ -24,6 +24,8 @@ jQuery ->
       parentKey = 'pages'
       childKey = 'page'
       karo.tab.enable 'tab-grd-page'
+    else if url.match(/gr\/pending/)
+      abacus.initialize json
     else
       matched = false
 
@@ -101,3 +103,10 @@ jQuery ->
         preview.loadJson json, 'atm'
     return true
   
+  ########################################################
+  # Other .... 
+  ########################################################
+
+  $('#grading-canvas').on 'click', (event) ->
+    return canvas.record event
+

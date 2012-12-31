@@ -5,9 +5,6 @@ jQuery ->
     #new-examiner-link
   ###
 
-  $('#grading-canvas').on 'click', (event) ->
-    canvas.record event
-
   $('#add-examiner-link').click ->
     $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
 
