@@ -303,13 +303,12 @@ jQuery ->
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle')[0] else return false
     else # elsewhere on the single-line => select / de-select
-      multiOk = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
-      activeTab = null
       event.stopPropagation()
+      multiOk = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
+      activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
       
       # 1. De-select siblings if * not * multi-select 
       unless multiOk
-        activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
         for k in $(this).siblings('.single-line')
           $(k).removeClass 'selected'
           $(k).find('.badge').eq(0).removeClass 'badge-warning'
@@ -323,14 +322,14 @@ jQuery ->
         $(this).removeClass 'selected'
         badge.removeClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
-        if activeTab?
+        unless multiOk
           unless $(activeTab).parent().hasClass 'lock'
             $(activeTab).attr 'marker', null
       else
         $(this).addClass 'selected'
         badge.addClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
-        if activeTab?
+        unless multiOk
           unless $(activeTab).parent().hasClass 'lock'
             $(activeTab).attr 'marker', $(this).attr('marker')
 
