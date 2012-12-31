@@ -2,8 +2,9 @@
 -# requirement comes as a local from the calling partial
 
 .row-fluid.requirement
-  .span5
-    .badge= "#{requirement.bottomline}" 
-  .span7
+  .span3
+    .badge
+    .bottomline= "#{requirement.bottomline}" 
+  .span9
     .text= "#{requirement.text}"
     %input.hide{ :type => :checkbox, :name => "checked[#{requirement.id}]", :id => "checked_#{requirement.id}" }

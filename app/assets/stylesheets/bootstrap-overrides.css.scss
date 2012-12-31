@@ -290,25 +290,23 @@ button[data-toggle='button'] {
 } 
 
 .requirement { 
-  height: 30px ; 
+  height: 35px ; 
   font-size: 10px ;
   padding-top: 3px ;
   border-bottom: 1px solid $gray ;
 
-
   .badge { 
-    padding-top: 4px ;
-    padding-left: 4px ;
-    background-color: transparent ;
-    font : {
-      size: 12px ;
-      weight: 300 ;
-    } 
-    color: $lightgray ;
-    border-radius: 0px ;
+    padding: 0px ; 
+    width: 8px ;
+    height: 8px ;
   } 
   &.selected { 
-    .badge { border-left: 2px solid $orange ; color: white ; }
+    .badge { 
+      background-color: $orange ;
+    } 
+    .bottomline { 
+      color: $orange ;
+    } 
   } 
 
   .text { 
