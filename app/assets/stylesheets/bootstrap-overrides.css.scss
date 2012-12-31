@@ -252,5 +252,33 @@ button[data-toggle='button'] {
   } 
 }
 
-#grd-toolbar { position: fixed ; }
+#grd-toolbar { 
+  position: fixed ; 
+
+  > #grd-ticker {
+    background: transparent ;
+    border-radius: 3px ;
+
+    > .add-on, > input { 
+      background-color: rgba(43,43,43,0.9) ;
+      border: none ;
+      padding: { 
+        top: 8px ;
+        bottom: 8px ;
+      } 
+    } 
+    > .add-on { 
+      color: $orange ;
+      text-shadow: none ;
+      font-size: 15px ;
+    }
+    > input {
+      border-radius: 0px ;
+      border-left: 2px solid white ;
+      color: white ;
+      font-size: 12px ;
+      padding-left: 10px ;
+    } 
+  } 
+}
 .btn-inverse.active { background-color: $deep-blue ; }

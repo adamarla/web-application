@@ -31,7 +31,7 @@ window.abacus = {
     abacus.current.response = abacus.current.scan.children('.gr').eq(0)
 
     # Activate
-    # abacus.update.ticker()
+    abacus.update.ticker()
     if canvas.object?
       if canvas.object.attr('id') isnt 'grading-canvas'
         canvas.initialize '#grading-canvas'
@@ -75,7 +75,7 @@ window.abacus = {
 
   update : {
     ticker : () ->
-      m = abacus.root.children('#current-response').eq(0)
+      m = abacus.root.children('#grd-ticker').eq(0)
       cq = m.children().eq(0)
       cs = m.children().eq(1)
 

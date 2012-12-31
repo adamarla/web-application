@@ -1,6 +1,10 @@
 
-#grd-toolbar.span6.offset2
+#grd-toolbar.offset2
   #pending-scans.hide
+  #grd-ticker.input-prepend
+    %span.add-on
+    %span.add-on
+    %input{ :type => :text, :limit => 40, :placeholder => "Enter comments here" }
   .btn-toolbar
     .btn-group
       %button.btn.btn-inverse#btn-back
