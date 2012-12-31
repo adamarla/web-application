@@ -155,6 +155,13 @@ jQuery ->
   # When a tab is clicked and shown
   ###############################################
 
+  $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
+    if $(this).parent().hasClass 'disabled'
+      event.stopImmediatePropagation()
+      return false
+    else
+      return true
+
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()
 
