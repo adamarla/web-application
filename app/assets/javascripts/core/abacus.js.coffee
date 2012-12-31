@@ -194,12 +194,22 @@ jQuery ->
     Shared behaviour 
   ###
 
-  $('#btn-back').click (event) ->
+  $('#btn-prev-ques').click (event) ->
+    event.stopImmediatePropagation()
+    abacus.prev.response()
+    return true
+  
+  $('#btn-prev-scan').click (event) ->
     event.stopImmediatePropagation()
     abacus.prev.scan()
     return true
   
-  $('#btn-next').click (event) ->
+  $('#btn-next-ques').click (event) ->
+    event.stopImmediatePropagation()
+    abacus.next.response()
+    return true
+
+  $('#btn-next-scan').click (event) ->
     event.stopImmediatePropagation()
     abacus.next.scan()
     return true

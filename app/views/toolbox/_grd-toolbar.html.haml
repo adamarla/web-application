@@ -7,10 +7,14 @@
     %input{ :type => :text, :limit => 40, :placeholder => "Enter comments here" }
   .btn-toolbar
     .btn-group
-      %button.btn.btn-inverse#btn-back
-        %i{ :class => 'icon-white icon-chevron-left' }
-      %button.btn.btn-inverse#btn-next
-        %i{ :class => 'icon-white icon-chevron-right' }
+      %button.btn.btn-inverse#btn-prev-scan
+        %i{ :class => 'icon-white icon-fast-backward' }
+      %button.btn.btn-inverse#btn-prev-ques
+        %i{ :class => 'icon-white icon-backward' }
+      %button.btn.btn-inverse#btn-next-ques
+        %i{ :class => 'icon-white icon-forward' }
+      %button.btn.btn-inverse#btn-next-scan
+        %i{ :class => 'icon-white icon-fast-forward' }
     .btn-group{ 'data-toggle' => 'buttons-radio' }
       %button.btn.btn-inverse#btn-ok
         %i{ :class => 'icon-white icon-ok ' }
