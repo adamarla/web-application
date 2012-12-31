@@ -283,6 +283,12 @@ button[data-toggle='button'] {
 }
 .btn-inverse.active { background-color: $deep-blue ; }
 
+#form-feedback { 
+  > ul {
+    margin-right: 9px ;
+  } 
+} 
+
 .requirement { 
   height: 30px ; 
   font-size: 10px ;
