@@ -26,6 +26,8 @@ jQuery ->
       # karo.tab.enable 'tab-grd-page'
     else if url.match(/gr\/pending/)
       abacus.initialize json
+      grdTabs.initialize()
+      # karo.tab.enable 'tab-honest'
     else
       matched = false
 

@@ -98,15 +98,17 @@ $lightblue: lighten($deep-blue, 23%) ;
 
 .nav { 
   &.nav-pills, &.nav-tabs { 
-    > li { 
+    > li {
+      font-size: 14px ;
+      &:hover { background-color: $deep-blue ; }
       > a { 
         color: white ;
-        font: {
-          size: 14px ; 
-          weight: 200 ;
-        } 
-        &:hover { background-color: $deep-blue ; }
+        font-weight: 200 ;
       } 
+      &.disabled { 
+        > a { color: $lightgray ; } 
+        &:hover { background: transparent ; }
+      }
     }
   } 
 } 
@@ -205,10 +207,11 @@ $lightblue: lighten($deep-blue, 23%) ;
 .tabs-left, .tabs-right { 
   .nav-tabs { 
     > li {
+      font-size: 11px ;
       > a {
-        font-size: 11px ;
         text-align: right ; 
       }
+      &.disabled { color: $lightgray ; }
     }
   } 
 
