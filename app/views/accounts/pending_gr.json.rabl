@@ -4,15 +4,15 @@ node(:students) {
       :marker => m.id, 
       :name => "#{m.abbreviated_name}",
       :class => :student, 
-      :within => "#{@quiz_id}-#{@pending.select{ |k| k.student_id == m.id }.first.testpaper_id}"
+      :within => "#{@quiz}-#{@ws_id}"
    } }
 } 
 
-# @pending is an Ruby array - not ActiveRecord::Relation
+# @gr is an Ruby array - not ActiveRecord::Relation
 
 node(:scans) {
   @scans.map { |m|
-    @pending.select{ |k| k.scan == m}.take(1).map{ |n| { 
+    @gr.select{ |k| k.scan == m}.take(1).map{ |n| { 
       :class => :scan, 
       :parent => n.student_id, 
       :name => m, 
@@ -22,7 +22,7 @@ node(:scans) {
 } 
 
 node(:responses) {
-  @pending.map{ |m| { 
+  @gr.map{ |m| { 
     :label => m.name?, 
     :class => :gr, 
     :parent => @scans.index(m.scan), 

@@ -38,22 +38,6 @@ jQuery ->
     else if url.match(/questions\/list/)
       # flipchart initialized in core/behaviour 
       coreUtil.interface.displayJson json.questions, '#examiner-untagged', 'question', {radio:true}, true
-    else if url.match(/examiner\/pending_quizzes/)
-      coreUtil.interface.displayJson json.quizzes, '#pending-quizzes', 'quiz', {radio:true, button:true}
-      swissKnife.setButtonCaption '#pending-quizzes', 'answer-key'
-      for m in $('#pending-quizzes').find '.swiss-knife'
-        id = $(m).attr 'marker'
-        downloadBtn = $(m).children('input[type="button"]').eq(0)
-        downloadBtn.replaceWith "<a href=#{gutenberg.server}/mint/#{id}/answer-key/downloads/answer-key.pdf>answer-key</a>"
-    else if url.match(/quiz\/pending_pages/)
-      coreUtil.interface.displayJson json.pages, '#pending-pages', 'page'
-    else if url.match(/quiz\/pending_scans/)
-      here = $('#list-pending')
-      here.empty()
-      admin.build.list json.students, here, ['within']
-      admin.build.list json.scans, here, [], '.student'
-      admin.build.list json.responses, here, ['mcq', 'label'], '.scan'
-      abacus.initialize()
     else if url.match(/examiner\/suggestions/)
       tab_1 = $('#days-since-receipt')
       tab_2 = $('#typeset-wip')

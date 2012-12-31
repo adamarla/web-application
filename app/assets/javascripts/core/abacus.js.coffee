@@ -13,7 +13,7 @@ window.abacus = {
   #############################################################
 
   initialize : (json) ->
-    abacus.root = $('#grading-panel')
+    abacus.root = $('#grd-toolbar')
     abacus.list = abacus.root.children('#pending-scans').eq(0)
 
     # Prep
@@ -26,12 +26,17 @@ window.abacus = {
     abacus.parse json.responses, here, ['mcq', 'label'], '.scan'
 
     # Initialize 
-    abacus.current.student =  list.children('.student').eq(0)
+    abacus.current.student =  abacus.list.children('.student').eq(0)
     abacus.current.scan = abacus.current.student.children('.scan').eq(0)
     abacus.current.response = abacus.current.scan.children('.gr').eq(0)
 
     # Activate
-    abacus.update.ticker()
+    # abacus.update.ticker()
+    if canvas.object?
+      if canvas.object.attr('id') isnt 'grading-canvas'
+        canvas.initialize '#grading-canvas'
+    else
+      canvas.initialize '#grading-canvas'
     canvas.load abacus.current.scan
 
     return true
@@ -70,7 +75,7 @@ window.abacus = {
 
   update : {
     ticker : () ->
-      m = abacus.obj.children('#current-response').eq(0)
+      m = abacus.root.children('#current-response').eq(0)
       cq = m.children().eq(0)
       cs = m.children().eq(1)
 
@@ -129,9 +134,9 @@ window.abacus = {
         abacus.update.ticker()
         canvas.clear() # remove any annotations for a previous question on the same scan
         if result.attr('mcq') is 'false'
-          abacus.obj.removeAttr('mcq')
+          abacus.root.removeAttr('mcq')
         else
-          abacus.obj.attr('mcq','true')
+          abacus.root.attr('mcq','true')
         return result
 
       ###
@@ -201,21 +206,22 @@ jQuery ->
 
   $('#btn-ok').click (event) ->
     #event.stopImmediatePropagation()
-    canvas.mode 'checks'
+    canvas.mode = 'checks'
     return true
 
   $('#btn-cross').click (event) ->
     # event.stopImmediatePropagation()
-    canvas.mode 'crosses'
+    canvas.mode = 'crosses'
     return true
 
   $('#btn-what').click (event) ->
     # event.stopImmediatePropagation()
-    canvas.mode 'exclamations'
+    canvas.mode = 'exclamations'
     return true
 
   $('#btn-write').click (event) ->
     # event.stopImmediatePropagation()
+    canvas.mode = 'comments'
     return true
 
   $('#btn-undo').click (event) ->

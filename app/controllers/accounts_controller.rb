@@ -39,4 +39,21 @@ class AccountsController < ApplicationController
     @pages = @gr.map(&:page).uniq.sort
   end
 
+  def pending_gr
+    @ws_id = params[:ws].to_i
+    page = params[:id].to_i
+    who = current_account.loggable_type
+    @gr = []
+
+    if (who == "Teacher" || who == "Examiner")
+      @gr = GradedResponse.in_testpaper(@ws_id).ungraded.with_scan.on_page(page)
+      @gr = ( who == 'Examiner' ) ? @gr.assigned_to(current_account.loggable_id) : @gr 
+    end
+
+    @gr = @gr.sort{ |m,n| m.index? <=> n.index? }
+    @students = Student.where(:id => @gr.map(&:student_id).uniq)
+    @scans = @gr.map(&:scan).uniq
+    @quiz = Testpaper.where(:id => @ws_id).map(&:quiz_id).first
+  end
+
 end
