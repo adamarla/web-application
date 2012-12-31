@@ -4,7 +4,7 @@
   #grd-ticker.input-prepend
     %span.add-on
     %span.add-on
-    %input{ :type => :text, :limit => 40, :placeholder => "Write comment - then click on scan" }
+    %input{ :type => :text, :maxlength => 40, :placeholder => "Write comment - then click on scan" }
   .btn-toolbar
     .btn-group
       %button.btn.btn-inverse#btn-prev-scan{ :rel => :tooltip, :title => "Previous Scan" }
