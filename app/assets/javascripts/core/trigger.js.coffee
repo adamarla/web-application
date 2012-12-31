@@ -192,8 +192,9 @@ jQuery ->
       panelUrl = this.dataset.panelUrl
       panel.dataset.url = if panelUrl? then panelUrl else null
 
-    autoClick = this.dataset.autoclickLink
-    $("##{autoClick}").click() if autoClick?
+    # Auto-click any autoclick links - but not tabs 
+    autoLink = this.dataset.autoclickLink
+    $("##{autoLink}").click() if autoLink?
 
     ###
       Ensure that atmost 3 tabs are shown - including the just clicked one
