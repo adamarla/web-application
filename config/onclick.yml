@@ -177,16 +177,16 @@ tab-st-feedback :
 
 tab-honest :
   toggle : tab
-  url : feedback.json?type=honest
+  # url : feedback.json?type=honest
 
 tab-cogent :
   toggle : tab
-  url : feedback.json?type=cogent
+  # url : feedback.json?type=cogent
 
 tab-complete :
   toggle : tab
-  url : feedback.json?type=complete
+  # url : feedback.json?type=complete
 
 tab-other :
   toggle : tab
-  url : feedback.json?type=other
+  # url : feedback.json?type=other

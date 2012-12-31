@@ -19,7 +19,15 @@
 
     -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
     .tab-content.span7
-      #pane-honest.tab-pane
-      #pane-cogent.tab-pane
-      #pane-complete.tab-pane
+      #pane-honest.tab-pane.multi-select
+        - Requirement.where(:honest => true).order(:weight).each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
+      #pane-cogent.tab-pane.multi-select
+        - Requirement.where(:cogent => true).order(:weight).each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
+      #pane-complete.tab-pane.multi-select
+        - Requirement.where(:complete => true).order(:weight).each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
       #pane-other.tab-pane.multi-select
+        - Requirement.where(:other => true).order(:weight).each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }

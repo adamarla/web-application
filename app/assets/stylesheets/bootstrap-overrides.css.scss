@@ -282,3 +282,26 @@ button[data-toggle='button'] {
   } 
 }
 .btn-inverse.active { background-color: $deep-blue ; }
+
+.requirement { 
+  height: 30px ; 
+  font-size: 10px ;
+  padding-top: 3px ;
+  border-bottom: 1px solid $gray ;
+
+  .badge { 
+    padding-top: 4px ;
+    text-align: center ; 
+    background-color: transparent ;
+    font : {
+      size: 12px ;
+      weight: 300 ;
+    } 
+    color: $lightgray ;
+    border-radius: 0px ;
+  } 
+
+  .text { 
+    color: white ;
+  } 
+} 
