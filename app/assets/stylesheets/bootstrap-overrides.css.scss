@@ -308,9 +308,12 @@ button[data-toggle='button'] {
 } 
 
 .requirement { 
-  height: 35px ; 
+  min-height: 35px ; 
   font-size: 10px ;
-  padding-top: 3px ;
+  padding: {
+    top:3px ;
+    bottom: 3px ;
+  }
   border-bottom: 1px solid $gray ;
 
   .badge { 
@@ -326,7 +329,7 @@ button[data-toggle='button'] {
       size: 11px ;
       weight: 400 ;
     }
-    color: $gray ;
+    color: $lightgray ;
   } 
   &.selected { 
     .badge { 
