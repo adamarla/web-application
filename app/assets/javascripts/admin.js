@@ -2,4 +2,5 @@
 // in a manifest file - like this one. Instead, split JS code 
 // in other .js files and require them as needed
 
+//= require_directory ./shared
 //= require_directory ./admin 
