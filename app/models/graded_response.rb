@@ -17,6 +17,7 @@
 #  page           :integer
 #  marks_teacher  :float
 #  closed         :boolean         default(FALSE)
+#  feedback       :integer         default(0)
 #
 
 # Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#
@@ -66,11 +67,13 @@ class GradedResponse < ActiveRecord::Base
   end
   
   def self.graded
-    where('calibration_id IS NOT NULL')
+    # where('calibration_id IS NOT NULL')
+    where("feedback > ?", 0)
   end 
 
   def self.ungraded
-    where(:calibration_id => nil)
+    # where(:calibration_id => nil)
+    where(:feedback => 0)
   end
 
   def self.with_scan
@@ -81,9 +84,11 @@ class GradedResponse < ActiveRecord::Base
     where('scan IS NULL')
   end
 
+=begin
   def self.of_colour(colour) # colour => { pink: 1, orange:2, green: 3 }
     select{ |m| m.grade && m.grade.yardstick.colour == colour }
   end
+=end
 
   def self.on_topic(topic_id)
     select{ |m| m.q_selection.question.topic.id == topic_id }
@@ -98,9 +103,11 @@ class GradedResponse < ActiveRecord::Base
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
 
+=begin
   def self.calibrated_to(id)
     where(:calibration_id => id)
   end
+=end
 
   def self.disputed
     # Open disputes
@@ -162,15 +169,27 @@ class GradedResponse < ActiveRecord::Base
     return (self.marks_teacher.nil? ? self.system_marks : self.marks_teacher)
   end
 
+  def fdb( ids ) 
+    # ids = list of Requirement indices extracted from params[:checked] 
+    m = Requirement.mangle_into_feedback ids
+    n = Requirement.marks_if? ids
+    marks = self.subpart.marks
+    earned = n * marks
+    puts " --> earned = #{n}, max = #{marks}, final = #{earned}"
+    self.update_attributes :feedback => m, :system_marks => earned
+  end
+
   def reset
     # For times when a graded response has to be re-graded. Set the grade_id 
     # for the response to nil - as also the marks & graded? field of the 
     # corresponding answer sheet 
-    self.update_attribute :calibration_id, nil
+    #self.update_attribute :calibration_id, nil
+    self.update_attribute :feedback, 0
     a = AnswerSheet.where(:testpaper_id => self.testpaper_id, :student_id => self.student_id).first
     a.update_attributes :marks => nil, :graded => false unless a.nil?
   end 
 
+=begin
   def calibrate_to(calibration_id)
     # assigner = self.teacher?
     # grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
@@ -194,6 +213,7 @@ class GradedResponse < ActiveRecord::Base
       return :bad_request
     end
   end
+=end
 
   def index?
     # The index of the question / subpart to which this is the graded response
@@ -216,9 +236,11 @@ class GradedResponse < ActiveRecord::Base
     return page
   end
 
+=begin
   def colour? 
     return (self.calibration_id.nil? ? :transparent : self.calibration.colour?)
   end
+=end
 
   def siblings?
     qselection = self.q_selection

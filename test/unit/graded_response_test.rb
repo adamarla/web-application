@@ -17,6 +17,7 @@
 #  page           :integer
 #  marks_teacher  :float
 #  closed         :boolean         default(FALSE)
+#  feedback       :integer         default(0)
 #
 
 require 'test_helper'
