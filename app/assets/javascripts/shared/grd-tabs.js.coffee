@@ -5,6 +5,7 @@ window.grtb = {
   ul : null,
   form : null,
   current : null, # <li.active>
+  keyboard : false,
 
   show : () ->
     return false unless grtb.current?
@@ -25,6 +26,13 @@ window.grtb = {
     grtb.show()
     return false
 
+  select : (n) -> # n-th .requirement in currently active tab/pane, 0 < n < 10
+    active = grtb.ul.next().children('.active').eq(0)
+    target = active.children('.requirement').eq(n)
+    return true if target.length is 0
+    target.click()
+    return true
+
 }
 
 jQuery ->
@@ -37,6 +45,18 @@ jQuery ->
     grtb.current = grtb.ul.children('li').eq(0)
     grtb.root = grtb.ul.parent()
     grtb.form = grtb.root.parent()
+
+  #####################################################################
+  ## Enable / disable keyboard shortcuts 
+  #####################################################################
+
+  $('#tab-grd-ws, #tab-grd-page').on 'shown', (event) ->
+    grtb.keyboard = false
+    return true
+
+  $('#tab-grd-panel').on 'shown', (event) ->
+    grtb.keyboard = true
+    return true
 
   #####################################################################
   ## Behaviour of the Grading Abacus  
@@ -95,5 +115,29 @@ jQuery ->
       matched = false
 
     event.stopPropagation() if matched is true
+    return true
+
+  #####################################################################
+  ## Keyboard shortcuts to speeden grading
+  #####################################################################
+
+  $('body').on 'keypress', (event) ->
+    return true unless grtb.keyboard
+
+    lp = $('#left').children('#left-4').eq(0)
+    if lp.hasClass 'hide'
+      grtb.keyboard = false
+      return true
+    pane = lp.children().eq(1).children('#pane-grd-panel').eq(0)
+    unless pane.hasClass 'active'
+      grtb.keyboard = false
+      return true
+
+    key = event.which
+
+    unless (key < 49 || key > 57)
+      grtb.select( key - 49 )
+    else if key is 115
+      grtb.form.submit() if grtb.current.next().length is 0
     return true
 
