@@ -48,9 +48,9 @@ jQuery ->
   grtb.root.on 'click', '.requirement', (event) ->
     event.stopImmediatePropagation()
     multiOk = $(this).parent().hasClass 'multi-select'
-    isSelected = $(this).hasClass 'selected'
+    already = $(this).hasClass 'selected'
 
-    if isSelected
+    if already
       $(this).removeClass 'selected'
       $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
     else
@@ -63,8 +63,9 @@ jQuery ->
         $(m).find("input[type='checkbox']").eq(0).prop 'checked', false
 
       # Move to the next tab
-      grtb.current = grtb.current.next()
-      grtb.show()
+      unless already
+        grtb.current = grtb.current.next()
+        grtb.show()
     return true
 
   grtb.form.submit (event) ->
