@@ -99,16 +99,25 @@ $lightblue: lighten($deep-blue, 23%) ;
 .nav { 
   &.nav-pills, &.nav-tabs { 
     > li {
-      font-size: 14px ;
-      &:hover { background-color: $deep-blue ; }
-      > a { 
-        color: white ;
-        font-weight: 200 ;
+      font : {
+        size: 14px ;
+        weight: 200 ;
       } 
-      &.disabled { 
-        > a { color: $lightgray ; } 
-        &:hover { background: transparent ; }
+      &:hover { 
+        background: transparent ;
       }
+      &:not([class~='disabled']) {
+        > a { 
+          color: white ;
+          &:hover { border: 1px solid white; }
+        }
+      } 
+      &.disabled {
+        > a { 
+          color: $lightgray ;
+          &:hover { border: 1px dashed white ; }
+        }
+      } 
     }
   } 
 } 
