@@ -2,6 +2,8 @@
 window.abacus = {
   root : null,
   list : null,
+  commentBox : null,
+
   current : {
     student : null,
     scan : null,
@@ -13,8 +15,6 @@ window.abacus = {
   #############################################################
 
   initialize : (json) ->
-    abacus.root = $('#grd-toolbar')
-    abacus.list = abacus.root.children('#pending-scans').eq(0)
 
     # Prep
     here = abacus.list
@@ -85,20 +85,6 @@ window.abacus = {
       isGraded = abacus.current.response.hasClass('graded')
       if isGraded then m.addClass('graded') else m.removeClass('graded')
 
-      ###
-      $('#current-student').text abacus.current.student.attr 'name'
-
-      alreadyGraded = abacus.current.response.hasClass 'graded'
-      $('#current-question').text abacus.current.response.attr 'label'
-      $('#currently-annotating').text abacus.current.response.attr 'label'
-
-      if alreadyGraded
-        $('#current-question').addClass 'graded'
-        $('#currently-annotating').addClass 'graded'
-      else
-        $('#current-question').removeClass 'graded'
-        $('#currently-annotating').removeClass 'graded'
-      ###
       return true
   }
 
@@ -190,6 +176,12 @@ window.abacus = {
 #############################################################
 
 jQuery ->
+
+  unless abacus.root?
+    abacus.root = $('#grd-toolbar')
+    abacus.list = abacus.root.children('#pending-scans').eq(0)
+    abacus.commentBox = abacus.root.children('#grd-ticker').eq(0).children("input[type='text']").eq(0)
+
   ###
     Shared behaviour 
   ###
@@ -197,45 +189,55 @@ jQuery ->
   $('#btn-prev-ques').click (event) ->
     event.stopImmediatePropagation()
     abacus.prev.response()
+    grtb.keyboard = true
     return true
   
   $('#btn-prev-scan').click (event) ->
     event.stopImmediatePropagation()
     abacus.prev.scan()
+    grtb.keyboard = true
     return true
   
   $('#btn-next-ques').click (event) ->
     event.stopImmediatePropagation()
     abacus.next.response()
+    grtb.keyboard = true
     return true
 
   $('#btn-next-scan').click (event) ->
     event.stopImmediatePropagation()
     abacus.next.scan()
+    grtb.keyboard = true
     return true
 
   $('#btn-ok').click (event) ->
     #event.stopImmediatePropagation()
     canvas.mode = 'checks'
+    grtb.keyboard = true
     return true
 
   $('#btn-cross').click (event) ->
     # event.stopImmediatePropagation()
     canvas.mode = 'crosses'
+    grtb.keyboard = true
     return true
 
   $('#btn-what').click (event) ->
     # event.stopImmediatePropagation()
     canvas.mode = 'exclamations'
+    grtb.keyboard = true
     return true
 
   $('#btn-write').click (event) ->
     # event.stopImmediatePropagation()
     canvas.mode = 'comments'
+    abacus.commentBox.focus()
+    grtb.keyboard = false
     return true
 
   $('#btn-undo').click (event) ->
     event.stopImmediatePropagation()
+    grtb.keyboard = true
     return true
 
 

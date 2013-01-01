@@ -109,14 +109,14 @@ window.canvas = {
       when 'exclamations'
         canvas.exclamations.push x-3,y-13,x-3,y, x-3,y+5,x-3,y+7
       when 'comments'
-        if not $('#comment-box').hasClass 'hidden' # record only if comment-box is visible
-          commentBox = $('#comment-box').children().eq(0) # input[type="text"]
-          comment = $(commentBox).val()
+        comment = $(abacus.commentBox).val()
 
-          if comment.length isnt 0
-            canvas.comments.push x,y, comment
-            canvas.ctx.fillText comment, x, y
-          commentBox.focus()
+        if comment.length isnt 0
+          canvas.comments.push x,y, comment
+          canvas.ctx.fillText comment, x, y
+
+        abacus.commentBox.val ''
+        abacus.commentBox.focus() # take back focus
 
     canvas.drawMark()
     return true
