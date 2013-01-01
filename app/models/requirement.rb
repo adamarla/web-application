@@ -18,9 +18,7 @@ class Requirement < ActiveRecord::Base
 
   before_save :ensure_unique_type
 
-  def self.mangle_into_feedback( hash )
-    # hash = params[:checked]
-    ids = hash.keys.map(&:to_i).sort
+  def self.mangle_into_feedback( ids )
     mangled = 0 
     n_other = 0
 
@@ -78,8 +76,7 @@ class Requirement < ActiveRecord::Base
 
   def self.marks_if?(feedback)
     # Returns the fraction of marks to given a certain feedback
-    # 'feedback' is an array of Requirement indices coming either as params[:checked]
-    # or from 'unmangle_feedback'
+
     feedback = feedback.class == Fixnum ? self.unmangle_feedback(feedback) : feedback
     feedback = Requirement.where(:id => feedback)
 
@@ -93,7 +90,7 @@ class Requirement < ActiveRecord::Base
     else
       fraction = 0 # plagiarized => automatic 0 !!
     end 
-    return fraction
+    return (fraction > 0 ? fraction : 0)
   end
 
   private 
