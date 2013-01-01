@@ -250,13 +250,13 @@ jQuery ->
   ###
     Submit <form> everytime an <input> within $('#calibrations-summary form') loses focus.
     Loss of focus => teacher done inputting her allotment for that grade
-  ###
 
   $('#calibrations-summary form input').blur ->
     form = $(this).closest 'form'
     form.submit()
     return true
 
+  ###
   ###
     DISPUTE RESOLUTION
   ###
