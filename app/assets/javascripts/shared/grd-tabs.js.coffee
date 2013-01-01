@@ -9,8 +9,12 @@ window.grtb = {
   show : () ->
     return false unless grtb.current?
     grtb.current.removeClass 'disabled'
-    # disable all * subsequent * tabs first
-    $(m).addClass 'disabled' for m in grtb.current.nextAll('li')
+
+    # disable all * subsequent * tabs first and uncheck all checkboxes within them
+    for m in grtb.current.nextAll('li')
+      $(m).addClass 'disabled'
+      pane = $(m).children('a').eq(0).attr('href')
+      $(cb).prop 'checked', false for cb in $(pane).find("input[type='checkbox']")
 
     a = grtb.current.children('a').eq(0)
     karo.tab.enable a.attr 'id'
@@ -86,6 +90,7 @@ jQuery ->
 
     if url.match(/submit\/fdb/)
       abacus.next.response()
+      grtb.rewind()
     else
       matched = false
 
