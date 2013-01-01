@@ -15,6 +15,11 @@ window.grtb = {
     karo.tab.enable a.attr 'id'
     return true
 
+  rewind : () ->
+    grtb.current = grtb.ul.children('li').eq(0)
+    grtb.show()
+    return false
+
 }
 
 jQuery ->
