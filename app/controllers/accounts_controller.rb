@@ -56,4 +56,18 @@ class AccountsController < ApplicationController
     @quiz = Testpaper.where(:id => @ws_id).map(&:quiz_id).first
   end
 
+  def submit_fdb
+    r = GradedResponse.find(params[:id].to_i)
+    clicks = GradedResponse.annotations params[:clicks]
+
+    # Generate, then store, the mangled feedback
+    ids = params[:checked].keys.map(&:to_i)
+    r.fdb ids 
+    scan = "#{r.testpaper.quiz_id}-#{r.testpaper_id}/#{r.scan}"
+    Delayed::Job.enqueue AnnotateScan.new(scan, clicks), 
+      :priority => 10, :run_at => Time.zone.now unless clicks.empty?
+
+    render :json => { :status => :ok }, :status => :ok
+  end
+
 end

@@ -21,6 +21,7 @@ Webapp::Application.routes.draw do
   match 'ws/pending' => 'accounts#pending_ws', :via => :get
   match 'pages/pending' => 'accounts#pending_pages', :via => :get
   match 'gr/pending' => 'accounts#pending_gr', :via => :get
+  match 'submit/fdb' => 'accounts#submit_fdb', :via => [:put, :post]
 
   # Admin 
   resource :admin, :controller => :admin 

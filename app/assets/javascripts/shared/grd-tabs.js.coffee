@@ -3,6 +3,7 @@
 window.grtb = {
   root : null,
   ul : null,
+  form : null,
   current : null, # <li.active>
 
   show : () ->
@@ -31,6 +32,7 @@ jQuery ->
     grtb.ul = $('#form-feedback').find('ul.nav-tabs').eq(0)
     grtb.current = grtb.ul.children('li').eq(0)
     grtb.root = grtb.ul.parent()
+    grtb.form = grtb.root.parent()
 
   #####################################################################
   ## Behaviour of the Grading Abacus  
@@ -63,6 +65,29 @@ jQuery ->
       # Move to the next tab
       grtb.current = grtb.current.next()
       grtb.show()
+    return true
 
+  grtb.form.submit (event) ->
+    id = abacus.current.response.attr 'marker'
+    clicks = canvas.decompile()
+    action = "submit/fdb.json?id=#{id}&clicks=#{clicks}"
+    $(this).attr 'action', action
+    return true
+
+
+  #####################################################################
+  ## On successful submission of feedback 
+  #####################################################################
+
+  grtb.form.ajaxComplete (event, xhr,settings) ->
+    url = settings.url
+    matched = true
+
+    if url.match(/submit\/fdb/)
+      abacus.next.response()
+    else
+      matched = false
+
+    event.stopPropagation() if matched is true
     return true
 
