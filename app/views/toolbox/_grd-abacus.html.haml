@@ -29,5 +29,7 @@
         - Requirement.where(:complete => true).order(:weight).each_with_index do |m,j|
           = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }
       #pane-other.tab-pane.multi-select
+        .row-fluid.navbar
+          %button.btn.btn-inverse.pull-right{ :type => :submit }= "Submit"
         - Requirement.where(:other => true).order(:weight).each_with_index do |m, j|
           = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }
