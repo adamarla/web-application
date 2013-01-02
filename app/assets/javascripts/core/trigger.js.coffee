@@ -19,11 +19,10 @@ window.gutenberg = {
 
 window.menu = {
   close : (m) ->
-    return false if not m.hasClass 'dropdown-menu'
-    parent = m.parent().attr 'id'
-    if parent?
-      return true if parent is 'toolbox'
-    m.remove()
+    menu = m.closest(".dropdown-menu[role='menu']").eq(0)
+    toolboxed = menu.parent().attr('id') is 'toolbox'
+    return true if toolboxed
+    menu.remove()
     return true
 
   show : (m) ->
@@ -39,45 +38,6 @@ window.menu = {
       newObj.insertAfter $(m)
       newObj.addClass 'show'
     return true
-    ###
-    return false unless m.hasClass('dropdown-toggle')
-    menu = m.attr 'menu' # => is an ID attribute 
-    return false unless menu?
-    # alert menu
-
-    parent = m.parent()
-    menuObj = parent.children(menu).eq(0)
-    already = if menuObj.length > 0 then true else false
-    
-    # Links the control-panel have non-contextual - or fixed - menus. 
-    # They need not be removed on every click because they aren't shared across links
-    fixed = m.attr('fixed') is 'true'
-
-    # if there are any other 'sibling/cousin' menus open - then remove / hide them 
-    up = m.attr 'up'
-    up = if up? then parseInt(up) else 1
-    for z in [0 ... up-1]  # we have already gone one-level up
-      parent = parent.parent()
-
-    for uncle in parent.siblings()
-      lnk = $(uncle).find('.dropdown-toggle').eq(0)
-      siblingObj = $(uncle).find('.dropdown-menu').eq(0)
-      if siblingObj.length > 0
-        if lnk.attr('fixed') is 'true' then siblingObj.removeClass('show') else siblingObj.remove()
-
-    if already
-      if fixed then menuObj.addClass('show') else menuObj.remove()
-    else
-      # all task-lists are rendered within toolbox
-      menuObj = $('#toolbox').children(menu).eq(0)
-      if menuObj.length isnt 0
-        newId = "#{menuObj.attr('id')}-curr" # There shouldn't be 2 elements with the same ID
-        newObj = $(menuObj).clone()
-        newObj.attr 'id', newId
-        newObj.insertAfter m
-        newObj.addClass 'show'
-    return true
-    ###
 }
 
 window.karo = {
@@ -143,7 +103,8 @@ jQuery ->
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
-        menu.close $(p) unless $(p).parent().hasClass('dropdown-submenu')
+        # menu.close $(p) unless $(p).parent().hasClass('dropdown-submenu')
+        menu.close $(p)
     return true
 
   $('.g-panel').on 'click', "a[data-toggle='modal']", (event) ->
@@ -251,8 +212,8 @@ jQuery ->
     karo.tab.enable tab if tab?
 
     # If <a> is within a dropdown-menu, then close the dropdown menu
-    d = $(this).closest('.dropdown-menu')
-    menu.close $(d) if $(d).length isnt 0
+    # d = $(this).closest('.dropdown-menu')
+    menu.close $(this)
 
     # (YAML) Issue any AJAX requests
     ajax = this.dataset.url
@@ -271,8 +232,8 @@ jQuery ->
 
   # Auto-click the one link in #control-panel that is identified as the default link
 
-  for m in $('#toolbox > .dropdown-menu')
-    n.click() for n in $(m).find("a[data-default-lnk='true']").eq(0)
+   for m in $('#toolbox > .dropdown-menu')
+     n.click() for n in $(m).find("a[data-default-lnk='true']").eq(0)
 
   ###############################################
   # When a pagination link is clicked 
