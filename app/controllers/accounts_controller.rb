@@ -46,8 +46,9 @@ class AccountsController < ApplicationController
     @gr = []
 
     if (who == "Teacher" || who == "Examiner")
-      @gr = GradedResponse.in_testpaper(@ws_id).ungraded.with_scan.on_page(page)
+      @gr = GradedResponse.in_testpaper(@ws_id).ungraded.with_scan
       @gr = ( who == 'Examiner' ) ? @gr.assigned_to(current_account.loggable_id) : @gr 
+      @gr = @gr.on_page(page)
     end
 
     @gr = @gr.sort{ |m,n| m.index? <=> n.index? }
