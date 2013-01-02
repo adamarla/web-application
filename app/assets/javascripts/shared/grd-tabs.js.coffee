@@ -11,18 +11,28 @@ window.grtb = {
     return false unless grtb.current?
     grtb.current.removeClass 'disabled'
 
-    # disable all * subsequent * tabs first and uncheck all checkboxes within them
+    # disable and reset all * subsequent * tabs 
     for m in grtb.current.nextAll('li')
       $(m).addClass 'disabled'
-      pane = $(m).children('a').eq(0).attr('href')
-      $(cb).prop 'checked', false for cb in $(pane).find("input[type='checkbox']")
+      grtb.reset $(m)
 
     a = grtb.current.children('a').eq(0)
-    karo.tab.enable a.attr 'id'
+    karo.tab.enable a.attr('id')
+    return true
+
+  reset : (li) ->
+    # li as in ul.nav-tabs > li
+    pane = li.children('a').eq(0).attr('href')
+    content = li.parent().next()
+    pane = content.children("#{pane}").eq(0)
+    for k in $(pane).children('.requirement')
+      $(k).removeClass 'selected'
+      $(cb).prop 'checked', false for cb in $(k).find("input[type='checkbox']")
     return true
 
   rewind : () ->
     grtb.current = grtb.ul.children('li').eq(0)
+    grtb.reset grtb.current
     grtb.show()
     return false
 
