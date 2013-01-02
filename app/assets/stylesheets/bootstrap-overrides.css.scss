@@ -20,6 +20,10 @@ $lightblue: lighten($deep-blue, 23%) ;
 } 
 
 .navbar-inner { 
+  > ul > li > a:not([id='m-account']) { font-size: 15px ; }
+} 
+
+.navbar-inner { 
   border-radius: 0px ;
   background-color: $gradians-blue ;
 }
