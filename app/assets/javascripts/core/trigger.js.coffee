@@ -272,8 +272,7 @@ jQuery ->
   # Auto-click the one link in #control-panel that is identified as the default link
 
   for m in $('#toolbox > .dropdown-menu')
-    for n in $(m).find('a')
-      $(n).click() if n.dataset.defaultLnk is 'true'
+    n.click() for n in $(m).find("a[data-default-lnk='true']").eq(0)
 
   ###############################################
   # When a pagination link is clicked 
