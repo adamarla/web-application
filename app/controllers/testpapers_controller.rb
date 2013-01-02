@@ -16,4 +16,9 @@ class TestpapersController < ApplicationController
     @testpaper = Testpaper.find params[:id]
   end
 
+  def preview # the answer-key actually
+    ws = Testpaper.find params[:id].to_i
+    @quiz = ws.nil? ? nil : Quiz.where(:id => ws.quiz_id).first
+  end 
+
 end

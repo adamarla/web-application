@@ -131,6 +131,7 @@ Webapp::Application.routes.draw do
   # Testpaper
   match 'performance/ws' => 'testpapers#summary', :via => :get
   match 'testpaper/load' => 'testpapers#load', :via => :get
+  match 'ws/preview' => 'testpapers#preview', :via => :get
 
   # Trial Account 
   resource :trial_account, :only => [:create], :controller => :trial_account
