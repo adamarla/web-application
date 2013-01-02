@@ -186,6 +186,11 @@ jQuery ->
     Shared behaviour 
   ###
 
+  abacus.commentBox.focusin (event) ->
+    event.stopPropagation()
+    grtb.keyboard = false
+    return true
+
   $('#btn-prev-ques').click (event) ->
     event.stopImmediatePropagation()
     abacus.prev.response()
