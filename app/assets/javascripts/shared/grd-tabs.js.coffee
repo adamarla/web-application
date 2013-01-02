@@ -118,7 +118,7 @@ jQuery ->
     return true
 
   #####################################################################
-  ## Keyboard shortcuts to speeden grading
+  ## Keyboard shortcuts to speed-up grading
   #####################################################################
 
   $('body').on 'keypress', (event) ->
@@ -139,5 +139,28 @@ jQuery ->
       grtb.select( key - 49 )
     else if key is 115
       grtb.form.submit() if grtb.current.next().length is 0
+    return true
+
+  #####################################################################
+  ## Toggle between answer-key preview and grading 
+  #####################################################################
+
+  $('#btn-toggle-answerkey').click (event) ->
+    # event.stopPropagation()
+    backToGrading = $(this).hasClass('active')
+    grtb.keyboard = backToGrading
+
+    if backToGrading
+      $(this).text("See Solution")
+      show = $('#wide > #wide-grd-canvas')
+    else
+      $(this).text("Back to Grading")
+      show = $('#wide > #wide-X')
+      ws = $('#tab-grd-ws').parent().attr 'marker'
+      $.get "ws/preview.json?id=#{ws}"
+
+    $(m).addClass 'hide' for m in show.siblings()
+    show.removeClass 'hide'
+
     return true
 
