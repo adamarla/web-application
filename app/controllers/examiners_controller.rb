@@ -1,6 +1,6 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:update_workset]
+  before_filter :authenticate_account!, :except => [:receive_scans]
   respond_to :json
 
   def create 
@@ -37,7 +37,7 @@ class ExaminersController < ApplicationController
     render :json => {:slots => slots}, :status => :ok
   end
 
-  def update_workset
+  def receive_scans
     failures = Examiner.receive_scans
     render :json => failures, :status => :ok
   end

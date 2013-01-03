@@ -49,7 +49,7 @@ Webapp::Application.routes.draw do
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
-  match 'examiner/update_workset' => 'examiners#update_workset', :via => :get
+  match 'receive/scans' => 'examiners#receive_scans', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
   match 'examiner/suggestions/:id' => 'examiners#suggestions', :via => :get
   match 'rotate_scan' => 'examiners#rotate_scan', :via => :get
