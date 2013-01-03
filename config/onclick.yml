@@ -179,6 +179,10 @@ m-admin-schools :
   toggle : dropdown 
   menu : admin-schools 
 
+lnk-wb-receive :
+  notouch : true 
+  url : receive/scans
+
 lnk-admin-courses :
 
 lnk-wb-schools :
