@@ -303,6 +303,11 @@ button[data-toggle='button'] {
     } 
   } 
 }
+
+#grd-toolbar-btns { 
+  position: fixed ;
+} 
+
 .btn-inverse.active { background-color: $deep-blue ; }
 
 #form-feedback { 

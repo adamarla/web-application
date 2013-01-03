@@ -89,7 +89,12 @@
             = render :partial => 'toolbox/wait'
           #graph-paper
           #wide-grd-canvas
-            = render :partial => 'toolbox/grd-toolbar'
-            %canvas#grading-canvas{ :width => 600, :height => 800 }
+            .row-fluid
+              = render :partial => 'toolbox/grd-toolbar'
+            .row-fluid
+              .span1
+                = render :partial => 'toolbox/grd-toolbar-btns'
+              .span11
+                %canvas#grading-canvas{ :width => 600, :height => 800 }
     = yield :toolbox
     = yield :modals
