@@ -221,12 +221,12 @@ class Teacher < ActiveRecord::Base
     return Vertical.where(:id => vids).order(:name)
   end
 
-  def testpapers
+  def worksheets
 =begin
     A teacher can access:
-      1. any testpapers for her quizzes (obviously)
-      2. any public/non-exclusive testpapers from her colleagues
-          a. these testpapers would have been made public by the colleague herself.
+      1. any worksheets for her quizzes (obviously)
+      2. any public/non-exclusive worksheets from her colleagues
+          a. these worksheets would have been made public by the colleague herself.
              And so, its ok to show them
 =end
     of_colleagues = Quiz.where(:teacher_id => self.colleagues.map(&:id))
@@ -235,7 +235,7 @@ class Teacher < ActiveRecord::Base
     my_own = Testpaper.where(:quiz_id => Quiz.where(:teacher_id => self.id)).map(&:id)
     total = (others + my_own).uniq
 
-    @testpapers = Testpaper.where(:id => total).order('created_at DESC')
+    @worksheets = Testpaper.where(:id => total).order('created_at DESC')
   end
 
   def like_question(question_id)

@@ -115,7 +115,7 @@ Webapp::Application.routes.draw do
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/courses' => 'teachers#courses', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => [:put, :post]
-  match 'teacher/testpapers' => 'teachers#testpapers', :via => :get
+  match 'teacher/ws' => 'teachers#worksheets', :via => :get
   match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
   match 'teacher/like_q' => 'teachers#like_question', :via => :get
   match 'teacher/unlike_q' => 'teachers#unlike_question', :via => :get

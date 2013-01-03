@@ -54,10 +54,10 @@ class TeachersController < ApplicationController
     @courses = teacher.courses
   end
 
-  def testpapers
+  def worksheets
     teacher = Teacher.find params[:id]
     head :bad_request if teacher.nil?
-    @testpapers = teacher.testpapers
+    @worksheets = teacher.worksheets
   end
 
   def update 
