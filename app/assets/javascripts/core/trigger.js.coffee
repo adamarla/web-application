@@ -38,9 +38,30 @@ window.menu = {
       newObj.insertAfter $(m)
       newObj.addClass 'show'
     return true
+
+  update : (json, url) ->
+    for menu in $("#toolbox > ul[role='menu']")
+      for a in $(menu).find 'a'
+        continue unless a.dataset.ajax is 'disabled'
+        updateOn = a.dataset.updateOn
+
+        continue unless updateOn?
+        continue unless karo.url.match(url, updateOn)
+
+        href = karo.url.elaborate a, json
+        continue unless href?
+        $(a).attr 'href', href
+    return true
 }
 
 window.karo = {
+  nothing : () ->
+    return true
+
+  ajaxCall : (url, callback = karo.nothing) ->
+    $.get url, (json) ->
+      callback json, url
+    
   empty : (node) ->
     node = if typeof node is 'string' then $(node) else node
 
@@ -80,6 +101,36 @@ window.karo = {
       ul = pane.prev()
       return ul.children('li.active').eq(0)
   }
+
+  url : {
+    elaborate : (obj, json = null) ->
+      # obj = this where called and this = <a> with data-* attributes
+      # This method simply fills in the placeholders - :id, :prev, :a, :b etc - 
+      # in the data-url and returns the fully formed ajax url to call
+
+      ajax = obj.dataset.url
+      return ajax unless ajax? # => basically null 
+
+      for m in ["prev", "id"]
+        if ajax.indexOf ":#{m}" isnt -1 # => :prev / :id present 
+          from = if obj.dataset[m]? then $("##{obj.dataset[m]}") else $(obj)
+          marker = from.attr 'marker'
+          marker = if marker? then marker else from.parent().attr('marker')
+          ajax = ajax.replace ":#{m}", marker
+
+      if json?
+        for key in ['a', 'b', 'c', 'd', 'e'] # You really shouldnt have > 5 placeholders in a URL
+          break unless json[key]? # no :b if no :a, no :b if no :c etc
+          while ajax.search(":#{key}") isnt -1
+            ajax = ajax.replace ":#{key}", json[key]
+      return ajax
+
+    match : (url, updateOn) ->
+      tokens = updateOn.split ' '
+      for tk in tokens
+        return true if url.match tk
+      return false
+  }
 }
 
 jQuery ->
@@ -87,6 +138,7 @@ jQuery ->
     This next call is unassuming but rather important. We initialize 
     variables within the JS based on the results the server being accessed returns
   ###
+
   pinghandler = (response) ->
     if response.deployment is 'production'
       gutenberg.server = gutenberg.serverOptions.remote
@@ -137,6 +189,16 @@ jQuery ->
     pagination.disable pgn
 
     # Issue AJAX request * after * taking care of any :prev or :id in data-url
+    ajax = karo.url.elaborate this
+    if ajax?
+      proceed = true
+      if $(this).hasClass 'writeonce'
+        proceed = $($(this).attr('href')).children().length is 0
+      if proceed
+        karo.ajaxCall ajax
+        pagination.url.set pgn, ajax
+      
+    ###
     ajax = this.dataset.url
     if ajax?
       proceed = true
@@ -151,8 +213,9 @@ jQuery ->
             marker = from.attr 'marker'
             marker = if marker? then marker else from.parent().attr('marker')
             ajax = ajax.replace ":#{ph}", marker
-        $.get ajax
+        karo.ajaxCall ajax
         pagination.url.set pgn, ajax
+    ###
 
     # Set base-ajax url on containing panel
     ul = $(this).parent().parent() # => ul.nav-tabs
@@ -216,8 +279,8 @@ jQuery ->
     menu.close $(this)
 
     # (YAML) Issue any AJAX requests
-    ajax = this.dataset.url
-    $.get ajax if (ajax? and ajax isnt 'disabled')
+    ajax = karo.url.elaborate this
+    karo.ajaxCall ajax if (ajax? and ajax isnt 'disabled')
 
     return true
 
@@ -230,11 +293,6 @@ jQuery ->
     menu.show this
     return true
 
-  # Auto-click the one link in #control-panel that is identified as the default link
-
-   for m in $('#toolbox > .dropdown-menu')
-     n.click() for n in $(m).find("a[data-default-lnk='true']").eq(0)
-
   ###############################################
   # When a pagination link is clicked 
   ###############################################
@@ -246,7 +304,7 @@ jQuery ->
     for m in li.siblings 'li'
       $(m).removeClass 'active'
     li.addClass 'active'
-    $.get $(this).attr 'href'
+    karo.ajaxCall $(this).attr 'href'
     return false # already issued AJAX GET request. No need for further processing
 
   ###############################################
@@ -313,7 +371,7 @@ jQuery ->
           url = ajax.replace ":id", id
           prev = if activeTab.dataset.prev? then $(activeTab.dataset.prev) else $(activeTab).prev()
           url = url.replace ":prev", prev.attr('marker') if prev.length isnt 0
-          $.get url
+          karo.ajaxCall url, menu.update
 
       # 5. Switch to next-tab - if so specified
       if activeTab?
@@ -350,39 +408,6 @@ jQuery ->
     $(this).attr 'action', action
     return true
 
-  ###
-    All menus are rendered within #toolbox. And the links within the menus 
-    are - if so specified - updated based on the JSON received from successful 
-    AJAX call
-  ###
-
-  urlsMatch = (url, updateOn) ->
-    tokens = updateOn.split ' '
-    for tk in tokens
-      return true if url.match tk
-    return false
-
-  $('#toolbox > ul.dropdown-menu').ajaxComplete (e,xhr, settings) ->
-    url = settings.url
-
-    for a in $(this).find 'a'
-      updateOn = a.dataset.updateOn
-
-      continue unless updateOn?
-      continue unless urlsMatch(url, updateOn)
-
-      href = a.dataset.url
-      continue unless href?
-      json = $.parseJSON xhr.responseText
-      for key in ['a', 'b', 'c', 'd', 'e'] # You really shouldnt have > 5 placeholders in a URL
-        break unless json[key]?
-        while href.search(":#{key}") isnt -1
-          href = href.replace ":#{key}", json[key]
-      if a.dataset.url is 'disabled'
-        $(a).attr 'href', href # Set the new href
-      else
-        a.dataset.url = href
-    return true
 
   #####################################################################
   ## Show tooltips on hover
@@ -391,4 +416,11 @@ jQuery ->
   $("[rel='tooltip']").hover ->
     $(this).tooltip 'show'
 
+
+  #####################################################################
+  ## Auto-click the first default link 
+  #####################################################################
+
+   for m in $('#toolbox > .dropdown-menu')
+     n.click() for n in $(m).find("a[data-default-lnk='true']").eq(0)
 

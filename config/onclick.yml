@@ -53,13 +53,13 @@ tab-wsl-quizzes :
 lnk-ws-download :
   left : as-is
   wide : as-is
-  url : disabled
+  ajax : disabled
   update-on : testpaper/load
 
 lnk-download-solution :
   left : as-is 
   wide : as-is 
-  url : disabled 
+  ajax : disabled
   update-on : quiz/preview pages/pending
 
 lnk-new-quiz :
@@ -170,6 +170,31 @@ tab-st-feedback :
   url : student/feedback.json?id=:prev
   prev : tab-st-quizzes
 
+##############################################################################
+## Admin / Examiner specific  
+##############################################################################
+
+m-admin-wb :
+  toggle : dropdown 
+  menu : admin-wb
+
+m-admin-schools :
+  toggle : dropdown 
+  menu : admin-schools 
+
+lnk-admin-courses :
+
+lnk-wb-blockdb :
+  left : as-is
+  wide : as-is
+  middle : as-is
+  right : as-is
+  url : examiner/block_db_slots.json?id=:id
+  id : control-panel
+
+m-examiner-wb :
+  toggle : dropdown 
+  menu : examiner-wb
 
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
