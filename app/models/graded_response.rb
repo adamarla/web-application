@@ -175,7 +175,7 @@ class GradedResponse < ActiveRecord::Base
     n = Requirement.marks_if? ids
     marks = self.subpart.marks
     earned = n * marks
-    puts " --> earned = #{n}, max = #{marks}, final = #{earned}"
+    # puts " --> earned = #{n}, max = #{marks}, final = #{earned}"
     self.update_attributes :feedback => m, :system_marks => earned
   end
 
