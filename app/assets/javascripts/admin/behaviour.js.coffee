@@ -180,16 +180,6 @@ jQuery ->
     return true
  
   ###
-    Send request to web-service to shift any new scans from staging -> locker
-    and then assign these scans to examiners. Any examiner can inititate this
-    action for everyone else
-  ###
-  $('#new-scans-link').click (event) ->
-    event.stopPropagation()
-    $.get 'examiner/update_workset'
-    return true
-
-  ###
     Clicking the undo button when grading
   ###
   $('#undo-btn').click (event) ->
