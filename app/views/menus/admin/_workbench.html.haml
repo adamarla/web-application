@@ -1,0 +1,23 @@
+
+%ul.dropdown-menu.dropdown-inverse#admin-wb{ :role => :menu }
+  %li.dropdown-submenu
+    %a{ :href => '#' }= 'Pending Work' 
+    %ul.dropdown-menu
+      %li
+        = simple_link :for => "Grading", :id => 'lnk-wb-pending', 'default-lnk' => true
+      %li
+        = simple_link :for => "Tagging", :id => 'lnk-wb-tagging'
+      %li
+        = simple_link :for => "Suggestion Typesetting", :id => 'lnk-wb-typeset'
+  %li
+    = simple_link :for => "Block DB Slots", :id => 'lnk-wb-blockdb'
+  %li
+    = simple_link :for => "Receive Scans", :id => 'lnk-wb-receive'
+
+  %li.divider
+  %li.nav-header= "Manage"
+  %li
+    = simple_link :for => "Schools", :id => 'lnk-wb-schools'
+  %li
+    = simple_link :for => "Courses", :id => 'lnk-wb-courses'
+

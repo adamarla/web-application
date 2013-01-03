@@ -30,9 +30,7 @@ jQuery ->
     json = $.parseJSON xhr.responseText
     matched = true
 
-    if url.match(/schools\/list/)
-      coreUtil.interface.displayJson json.schools, '#schools-summary', 'school'
-    else if url.match(/courses\/list/)
+    if url.match(/courses\/list/)
       coreUtil.interface.displayJson json.courses, '#courses-summary', 'course', {radio:true, button:true}
       swissKnife.setButtonCaption '#courses-summary', 'edit'
     else if url.match(/questions\/list/)

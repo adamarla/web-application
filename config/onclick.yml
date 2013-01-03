@@ -184,6 +184,11 @@ m-admin-schools :
 
 lnk-admin-courses :
 
+lnk-wb-schools :
+  left :
+    show : left-1
+  url : schools/list
+
 lnk-wb-blockdb :
   left : as-is
   wide : as-is

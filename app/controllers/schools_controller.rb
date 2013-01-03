@@ -1,4 +1,5 @@
 class SchoolsController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!
   respond_to :json 
 
@@ -66,9 +67,12 @@ class SchoolsController < ApplicationController
   end 
 
   def list 
-    search_criterion = params[:criterion]
-    @schools = School.state_matches(search_criterion).order(:name).all
-    respond_with @schools 
+    @schools = School.order(:name)
+
+    n = @schools.count 
+    @per_pg, @last_pg = pagination_layout_details n
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @schools = @schools.page(pg).per(@per_pg)
   end 
 
 =begin
