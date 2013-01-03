@@ -2,6 +2,12 @@
 = simple_form_for :checked, :remote => true, :url => submit_fdb_path, 
   :html => { :id => 'form-feedback', :class => 'no-remove'} do |f|
 
+  .row-fluid.navbar.no-remove
+    .btn-group.pull-right
+      %button#btn-toggle-answerkey.btn.btn-primary{ :type => :button, 
+      'data-toggle' => :button }= "See Solution"
+      %button#btn-submit-fdb.btn.btn-inverse.disabled{ :type => :submit, :disabled => :disabled }= "Submit"
+
   .tabbable.tabs-left.no-remove
     %ul.nav.nav-tabs.span4.nopurge-on-show
       %li
@@ -29,7 +35,5 @@
         - Requirement.where(:complete => true).order(:weight).each_with_index do |m,j|
           = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }
       #pane-other.tab-pane.multi-select
-        .row-fluid.navbar
-          %button.btn.btn-inverse.pull-right{ :type => :submit }= "Submit"
         - Requirement.where(:other => true).order(:weight).each_with_index do |m, j|
           = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }

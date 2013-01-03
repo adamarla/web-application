@@ -16,6 +16,15 @@ window.grtb = {
       $(m).addClass 'disabled'
       grtb.reset $(m)
 
+    # Enable the feedback submit button only if on the last tab
+    submitBtn = $('#btn-submit-fdb')
+    if grtb.current.next().length isnt 0
+      submitBtn.addClass 'disabled'
+      submitBtn.prop 'disabled', true
+    else
+      submitBtn.removeClass 'disabled'
+      submitBtn.prop 'disabled', false
+
     a = grtb.current.children('a').eq(0)
     karo.tab.enable a.attr('id')
     return true
