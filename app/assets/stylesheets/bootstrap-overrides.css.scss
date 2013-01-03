@@ -359,3 +359,28 @@ button[data-toggle='button'] {
 #desktop { 
   margin-top: 70px ;
 } 
+
+form.smart { 
+  input[type='text'], span.add-on, select {
+    padding: 8px 6px ;
+    text-shadow: none ;
+    font-size: 12px ;
+  }
+
+  span.add-on { 
+    min-width: 60px ;
+    background-color: $deep-blue ;
+    color: white ; 
+    text-transform: lowercase ;
+  } 
+
+  input, select {
+    color: white ;
+    background: transparent ;
+    text-align: right ;
+  } 
+
+  select { 
+    line-height: 14px ;
+  } 
+} 
