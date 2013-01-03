@@ -1,0 +1,11 @@
+
+%ul#school-console.nav.nav-tabs.no-remove
+  %li
+    = simple_link :for => "Selected", :id => 'tab-selected-school', :href => '#pane-selected-school'
+  %li
+    = simple_link :for => "New", :id => 'tab-new-school', :href => '#pane-new-school'
+
+.tab-content
+  #pane-selected-school.tab-pane
+    = render :partial => 'schools/profile'
+  #pane-new-school.tab-pane

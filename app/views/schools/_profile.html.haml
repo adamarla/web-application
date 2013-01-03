@@ -1,0 +1,20 @@
+
+#school-profile-tab.tabbable.tabs-left.no-remove
+  %ul.nav.nav-tabs.span3
+    %li
+      = simple_link :for => 'General Info', :id => 'tab-school-general', :href => '#pane-school-general'
+    %li
+      = simple_link :for => 'Faculty', :id => 'tab-school-faculty', :href => '#pane-school-faculty'
+    %li
+      = simple_link :for => 'Sections', :id => 'tab-school-sektions', :href => '#pane-school-sektions'
+  .tab-content.span8
+    #pane-school-general.tab-pane
+      = simple_form_for :checked, :remote => true, :defaults => { :label => false, :wrapper => :append }, 
+      :html => { :id => 'form-school-general', :class => :smart } do |f| 
+        - [:name, :city, :zip_code, :phone].each do |m|
+          = f.input m do 
+            = f.input_field m
+            = content_tag :span, "#{m.to_s.humanize}", :class => "add-on"
+    #pane-school-faculty.tab-pane
+    #pane-school-sektions.tab-pane
+
