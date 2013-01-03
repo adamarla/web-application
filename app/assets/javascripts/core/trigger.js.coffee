@@ -257,18 +257,21 @@ jQuery ->
 
     event.stopImmediatePropagation()
     # (YAML) Hide / unhide panels as needed
-    for j in ['left', 'right', 'middle', 'wide']
-      if typeof this.dataset[j] is 'string'
-        continue if this.dataset[j] is 'as-is'
 
-      attr = "#{j}Show" # x-y in YAML => xY here
-      show = this.dataset[attr] # left-show, right-show etc 
-      panel = $("##{j}")
-      if not show?
-        panel.addClass 'hide'
-        continue
-      panel.removeClass 'hide'
-      karo.unhide(show, panel) unless show is 'no-remove'
+    notouch = if this.dataset.notouch? then (this.dataset.notouch is 'true') else false
+    unless notouch
+      for j in ['left', 'right', 'middle', 'wide']
+        if typeof this.dataset[j] is 'string'
+          continue if this.dataset[j] is 'as-is'
+
+        attr = "#{j}Show" # x-y in YAML => xY here
+        show = this.dataset[attr] # left-show, right-show etc 
+        panel = $("##{j}")
+        if not show?
+          panel.addClass 'hide'
+          continue
+        panel.removeClass 'hide'
+        karo.unhide(show, panel) unless show is 'no-remove'
 
     # If there be a tab that needs to be auto-clicked, then do that too
     tab = this.dataset.autoclickTab

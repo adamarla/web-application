@@ -33,7 +33,8 @@ module ApplicationHelper
           :id, 
           :menu, 
           'update-on', 
-          :url
+          :url,
+          :notouch
         ]
 
         first_level_keys.each do |m|

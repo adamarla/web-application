@@ -25,8 +25,7 @@ tab-wsb-sektions :
   toggle : tab
     
 lnk-wsb-new :
-  left : as-is
-  wide : as-is
+  notouch : true
   autoclick :
     tab : tab-wsb-sektions
 
@@ -51,14 +50,12 @@ tab-wsl-quizzes :
     link : lnk-existing-quiz
 
 lnk-ws-download :
-  left : as-is
-  wide : as-is
+  notouch : true
   ajax : disabled
   update-on : testpaper/load
 
 lnk-download-solution :
-  left : as-is 
-  wide : as-is 
+  notouch : true
   ajax : disabled
   update-on : quiz/preview pages/pending
 
@@ -192,10 +189,7 @@ lnk-wb-schools :
   url : schools/list
 
 lnk-wb-blockdb :
-  left : as-is
-  wide : as-is
-  middle : as-is
-  right : as-is
+  notouch : true
   url : examiner/block_db_slots.json?id=:id
   id : control-panel
 
@@ -217,6 +211,7 @@ tab-school-faculty :
 
 tab-school-sektions :
   toggle : tab
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################
@@ -236,3 +231,10 @@ tab-complete :
 tab-other :
   toggle : tab
   # url : feedback.json?type=other
+
+##############################################################################
+## Shared between ** all ** roles  
+##############################################################################
+
+lnk-logout :
+  notouch : true
