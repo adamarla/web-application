@@ -176,7 +176,16 @@ class GradedResponse < ActiveRecord::Base
     marks = self.subpart.marks
     earned = n * marks
     # puts " --> earned = #{n}, max = #{marks}, final = #{earned}"
-    self.update_attributes :feedback => m, :system_marks => earned
+    if self.update_attributes(:feedback => m, :system_marks => earned)
+      ws = Testpaper.where(:id => self.testpaper_id).first
+
+      if ws.publishable?
+        # Time to inform the teacher. You can do this only if teacher has provided 
+        # an e-mail address. The default we assign will not work
+        teacher = ws.quiz.teacher 
+        Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
+      end # of if 
+    end # of if 
   end
 
   def reset
