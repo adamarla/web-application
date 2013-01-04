@@ -14,7 +14,7 @@ jQuery ->
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
 
-    if url.match(/ws/)
+    if url.match(/ws\/list/)
       target = $('#pane-teacher-rc-1')
       parentKey = 'wks'
       childKey = 'wk'

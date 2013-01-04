@@ -64,8 +64,8 @@ jQuery ->
       childKey = "testpaper"
       menu = 'per-ws'
       clickFirst = true
-    else if url.match(/performance\/ws/)
-      target = $("#pane-ws-performance")
+    else if url.match(/ws\/summary/)
+      target = $("#pane-teacher-rc-2")
       parentKey = "students"
       childKey = "student"
     else if url.match(/feedback/)

@@ -139,9 +139,9 @@ tab-grd-panel :
 
 tab-teacher-rc-1 :
   toggle : tab
-  url : ws/ 
+  url : ws/list
   panel :
-    url : ws/students.json?id=:id
+    url : ws/summary.json?id=:id
   autoclick :
     tab : tab-teacher-rc-2
 

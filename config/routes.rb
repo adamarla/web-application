@@ -18,7 +18,7 @@ Webapp::Application.routes.draw do
   # Account 
   resource :account, :only => [:update]
   match 'update_password' => 'accounts#update_password', :via => [:put, :post]
-  match 'ws' => 'accounts#ws', :via => :get
+  match 'ws/list' => 'accounts#ws', :via => :get
   match 'ws/pending' => 'accounts#pending_ws', :via => :get
   match 'pages/pending' => 'accounts#pending_pages', :via => :get
   match 'gr/pending' => 'accounts#pending_gr', :via => :get
@@ -130,7 +130,7 @@ Webapp::Application.routes.draw do
   match 'qzb/echo' => 'teachers#qzb_echo', :via => [:put, :post]
 
   # Testpaper
-  match 'performance/ws' => 'testpapers#summary', :via => :get
+  match 'ws/summary' => 'testpapers#summary', :via => :get
   match 'testpaper/load' => 'testpapers#load', :via => :get
   match 'ws/preview' => 'testpapers#preview', :via => :get
 
