@@ -236,6 +236,7 @@ jQuery ->
 
     unless $(this).closest('.tabs-left').length isnt 0
       li = $(this).parent()
+      li.removeClass 'hide'
       for m in li.siblings('li')
         $(m).addClass 'hide'
 
