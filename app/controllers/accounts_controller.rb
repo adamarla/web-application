@@ -21,6 +21,10 @@ class AccountsController < ApplicationController
              render(:json => {:status => "new password set"}, :status => :ok) 
   end
 
+  def ws 
+    @wks = current_account.ws
+  end
+
   def pending_ws
     @wks = current_account.pending_ws
   end

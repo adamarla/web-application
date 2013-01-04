@@ -101,18 +101,45 @@ class Account < ActiveRecord::Base
     return (self.email_is_real? ? self.email : nil)
   end
 
-  def pending_ws
-    pending = nil
-    case self.loggable_type
-      when 'Examiner'
-        pending = GradedResponse.with_scan.assigned_to(self.loggable_id).ungraded
-      when 'Teacher'
-        tids = Testpaper.where(:quiz_id => Quiz.where(:teacher_id => self.loggable_id).map(&:id)).map(&:id)
-        pending = GradedResponse.with_scan.ungraded.in_testpaper(tids)
+  def ws
+    # Returns list of * all * worksheets that make sense for the given account type
+    # Filter minimally here. You might want to process the returned list differently 
+    # someplace else
+
+    @ws = nil
+    me = self.loggable_id 
+
+    case self.role
+      when :student
+        ids = AnswerSheet.where(:student_id => me).map(&:testpaper_id)
+        @ws = Testpaper.where(:id => ids, :publishable => true)
+      when :teacher 
+        ids = Quiz.where(:teacher_id => me).map(&:id)
+        @ws = Testpaper.where(:quiz_id => ids).select{ |m| m.has_scans? }
+      when :examiner
+        ids = GradedResponse.ungraded.assigned_to(me).map(&:testpaper_id).uniq
+        @ws = Testpaper.where(:id => ids)
+      when :admin
+        # For now, same as an examiner. But it could change tomorrow
+        ids = GradedResponse.ungraded.assigned_to(me).map(&:testpaper_id).uniq
+        @ws = Testpaper.where(:id => ids)
+      else 
+        @ws = []
     end
-    ws_ids = pending.map(&:testpaper_id).uniq
-    # quiz_ids = pending.nil? ? [] : QSelection.where(:id => pending).map(&:quiz_id).uniq
-    @wks = Testpaper.where(:id => ws_ids)
+    return @ws
+  end
+
+  def pending_ws
+    @ws = nil
+    case self.role 
+      when :teacher 
+        @ws = self.ws # can / will change later
+      when :student 
+        @ws = []
+      else 
+        @ws = self.ws
+    end
+    return @ws
   end
 
   protected 
