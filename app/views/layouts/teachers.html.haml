@@ -6,7 +6,6 @@
 -content_for :toolbox do
   #toolbox.hidden 
     = render :partial => 'teachers/disputed'
-    = render :partial => 'teachers/reportcards'
     = render :partial => 'teachers/sektions'
 
     = render :partial => 'toolbox/line'
@@ -19,6 +18,7 @@
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/teacher/workbench'
     = render :partial => 'menus/teacher/trapdoors' 
+    = render :partial => 'menus/teacher/rc' 
 
   -# #modals by itself is not hidden. But the modal partials within it are by themselves 
   #modals
@@ -56,13 +56,13 @@
           = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
           #left-1
             = render :partial => 'teachers/wsb', :locals => { :teacher => tchr }
-          #left-X
           #left-2
             = render :partial => 'teachers/qzb', :locals => { :teacher => tchr }
           #left-3
-            = render :partial => 'teachers/wsl'
           #left-4
             = render :partial => 'toolbox/grd-pending'
+          #left-5
+            = render :partial => 'teachers/rc', :locals => { :teacher => tchr }
         #middle.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
           #middle-X

@@ -1,0 +1,15 @@
+-# Variable teacher comes from the layout file 
+
+%ul.nav.nav-tabs
+  %li
+    = simple_link :for => "Worksheets", :href => '#pane-rc-ws', :id => 'tab-rc-ws'
+  %li
+    = simple_link :for => "Overall", :href => '#pane-rc-all', :id => 'tab-rc-all'
+  %li
+    = simple_link :for => "Specific", :href => '#pane-rc-one', :id => 'tab-rc-one'
+
+.tab-content
+  #pane-rc-ws.tab-pane
+  #pane-rc-all.tab-pane
+  #pane-rc-one.tab-pane
+

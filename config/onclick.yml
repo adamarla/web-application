@@ -98,17 +98,13 @@ m-teacher-workbench :
   toggle : dropdown
   menu : teacher-workbench
 
+m-report-cards :
+  toggle : dropdown
+  menu : teacher-rc
+
 m-account :
   toggle : dropdown
   menu : tasks-on-account
-
-lnk-ws-performance :
-  left : 
-    show : left-3
-  wide :
-    show : as-is
-  autoclick :
-    tab : tab-wsl
 
 tab-ws-performance :
   toggle : tab
@@ -142,6 +138,24 @@ tab-grd-panel :
   prev : tab-grd-page
   id : tab-grd-ws
   url : gr/pending.json?page=:prev&ws=:id
+
+tab-rc-ws :
+  toggle : tab
+  url : teacher/ws
+
+tab-rc-all :
+  toggle : tab
+
+tab-rc-one :
+  toggle : tab
+
+lnk-rc-ws :
+  left : 
+    show : left-5
+  wide :
+    show : wide-X
+  autoclick :
+    tab : tab-rc-ws
 
 ##############################################################################
 ## Students 
