@@ -174,7 +174,7 @@ class GradedResponse < ActiveRecord::Base
     m = Requirement.mangle_into_feedback ids
     n = Requirement.marks_if? ids
     marks = self.subpart.marks
-    earned = n * marks
+    earned = (n * marks).round(2)
     # puts " --> earned = #{n}, max = #{marks}, final = #{earned}"
     if self.update_attributes(:feedback => m, :system_marks => earned)
       ws = Testpaper.where(:id => self.testpaper_id).first
@@ -183,7 +183,7 @@ class GradedResponse < ActiveRecord::Base
         # Time to inform the teacher. You can do this only if teacher has provided 
         # an e-mail address. The default we assign will not work
         teacher = ws.quiz.teacher 
-        Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
+        # Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
       end # of if 
     end # of if 
   end
