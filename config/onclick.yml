@@ -139,23 +139,23 @@ tab-grd-panel :
   id : tab-grd-ws
   url : gr/pending.json?page=:prev&ws=:id
 
-tab-rc-ws :
+tab-teacher-rc-1 :
   toggle : tab
-  url : teacher/ws
+  url : ws/ 
 
-tab-rc-all :
-  toggle : tab
-
-tab-rc-one :
+tab-teacher-rc-2 :
   toggle : tab
 
-lnk-rc-ws :
+tab-teacher-rc-3 :
+  toggle : tab
+
+lnk-teacher-rc :
   left : 
     show : left-5
   wide :
     show : wide-X
   autoclick :
-    tab : tab-rc-ws
+    tab : tab-teacher-rc-1
 
 ##############################################################################
 ## Students 
@@ -236,19 +236,15 @@ tab-school-sektions :
 
 tab-honest :
   toggle : tab
-  # url : feedback.json?type=honest
 
 tab-cogent :
   toggle : tab
-  # url : feedback.json?type=cogent
 
 tab-complete :
   toggle : tab
-  # url : feedback.json?type=complete
 
 tab-other :
   toggle : tab
-  # url : feedback.json?type=other
 
 ##############################################################################
 ## Shared between ** all ** roles  
