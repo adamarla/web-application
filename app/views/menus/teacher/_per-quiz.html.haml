@@ -1,21 +1,15 @@
 
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
-  %li.dropdown-submenu
-    %a{ :href => "#" }= "Worksheets"
-    %ul.dropdown-menu
-      %li
-        = simple_link :for => "Make New", :id => 'lnk-wsb-new'
-      %li
-        = simple_link :for => "List", :id => 'lnk-wsb-existing'
-  %li.dropdown-submenu
-    %a{ :href => "#"}= "Download"
-    %ul.dropdown-menu
-      %li
-        = simple_link :for => "Solution (PDF)", :id => 'lnk-download-solution', 
-        :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf"
-  %li.dropdown-submenu
-    %a{ :href => "#"}= "Statistics"
-    %ul.dropdown-menu
-      %li
-        = simple_link :for => 'Performance - thus far', :id => 'lnk-ws-performance'
+  %li.nav-header= "Worksheets"
+  %li
+    = simple_link :for => "Make New", :id => 'lnk-wsb-new'
+  %li
+    = simple_link :for => "List", :id => 'lnk-wsb-existing'
+  %li.nav-header= "Download"
+  %li
+    = simple_link :for => "Solution (PDF)", :id => 'lnk-download-solution', 
+    :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf"
+  %li.nav-header= "Misc"
+  %li
+    = simple_link :for => 'Report Cards', :id => 'lnk-rc-ws'
             
