@@ -9,7 +9,7 @@
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
-#
+#http://www.skorks.com/2009/08/how-a-ruby-case-statement-works-and-what-you-can-do-with-it/
 
 class Testpaper < ActiveRecord::Base
   belongs_to :quiz
@@ -19,11 +19,21 @@ class Testpaper < ActiveRecord::Base
   has_many :students, :through => :answer_sheets
 
   def gradeable?
+    return false if self.publishable
     GradedResponse.in_testpaper(self.id).with_scan.ungraded.count > 0
   end
 
-  def grading_finished? 
-    GradedResponse.in_testpaper(self.id).with_scan.ungraded.count == 0
+  def has_scans?
+    # if false, then worksheet / testpaper is automatically ungradeable
+    GradedResponse.in_testpaper(self.id).with_scan.count > 0
+  end
+
+  def publishable? 
+    return true if self.publishable
+
+    ret = GradedResponse.in_testpaper(self.id).with_scan.ungraded.count == 0
+    self.update_attribute(:publishable, true) if ret
+    return ret
   end
 
   def compile_tex
