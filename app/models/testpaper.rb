@@ -18,6 +18,14 @@ class Testpaper < ActiveRecord::Base
   has_many :answer_sheets, :dependent => :destroy
   has_many :students, :through => :answer_sheets
 
+  def gradeable?
+    GradedResponse.in_testpaper(self.id).with_scan.ungraded.count > 0
+  end
+
+  def grading_finished? 
+    GradedResponse.in_testpaper(self.id).with_scan.ungraded.count == 0
+  end
+
   def compile_tex
     student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
     students = Student.where(:id => student_ids)
