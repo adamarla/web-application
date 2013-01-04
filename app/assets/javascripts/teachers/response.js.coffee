@@ -59,7 +59,7 @@ jQuery ->
       parentKey = 'questions'
       childKey = 'question'
     else if url.match(/quiz\/testpapers/)
-      target = $("#pane-wsl")
+      target = $("#pane-wsb-existing")
       parentKey = "testpapers"
       childKey = "testpaper"
       menu = 'per-ws'

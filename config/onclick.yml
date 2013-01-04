@@ -30,14 +30,12 @@ lnk-wsb-new :
     tab : tab-wsb-sektions
 
 lnk-wsb-existing :
-  left : 
-    show : left-3
-  wide : as-is
+  notouch : true
   update-on : quiz/preview
   autoclick :
-    tab : tab-wsl
+    tab : tab-wsb-existing
 
-tab-wsl :
+tab-wsb-existing :
   toggle : tab 
   url : quiz/testpapers.json?id=:prev
   prev : tab-wsb-quizzes
@@ -142,6 +140,10 @@ tab-grd-panel :
 tab-teacher-rc-1 :
   toggle : tab
   url : ws/ 
+  panel :
+    url : ws/students.json?id=:id
+  autoclick :
+    tab : tab-teacher-rc-2
 
 tab-teacher-rc-2 :
   toggle : tab
