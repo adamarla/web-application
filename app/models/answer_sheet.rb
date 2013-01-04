@@ -32,10 +32,16 @@ class AnswerSheet < ActiveRecord::Base
   def graded? 
     return true if self.graded
 
-    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
-    fully_graded = responses.ungraded.count > 0 ? false : true
-    self.update_attribute(:graded, fully_graded) if fully_graded 
-    return fully_graded
+    if self.testpaper.publishable
+      self.update_attribute :graded, true
+      ret = true 
+      # Note: there still might not be scans for all responses. But this 
+      # method only checks for whether all that have scans have been graded
+    else
+      ret = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).ungraded.count > 0
+      self.update_attribute(:graded, true) if ret
+    end
+    return ret
   end 
 
   def marks?
