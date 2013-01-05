@@ -125,7 +125,7 @@ class Requirement < ActiveRecord::Base
 
     def assign_position
       type = self.type?
-      last = Requirement.where(type => true).map(&:posn).sort.last
+      last = Requirement.where(type => true).where('posn IS NOT NULL').map(&:posn).sort.last
       self.update_attribute :posn, (last + 1)
     end
 
