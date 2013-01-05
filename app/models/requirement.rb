@@ -114,7 +114,7 @@ class Requirement < ActiveRecord::Base
   end
 
   def type?
-    type = obj.other ? :other : (obj.honest ? :honest : (obj.cogent ? :cogent : :complete))
+    type = self.other ? :other : (self.honest ? :honest : (self.cogent ? :cogent : :complete))
     return type
   end
 
