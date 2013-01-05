@@ -118,6 +118,28 @@ class Requirement < ActiveRecord::Base
     return type
   end
 
+  def self.ids_from_posn(posns)
+    # posn is an array of numbers of the following form : 
+    # [ honest_posn, cogent_posn, complete_pos, other_posns .. ]
+
+    # Btw, this method has really been written for calibration -> feedback translation
+
+    ret = []
+    posns.each_with_index do |p,j|
+      case j
+        when 0 
+          ret.push Requirement.where(:honest => true, :posn => p).map(&:id).first
+        when 1
+          ret.push Requirement.where(:cogent => true, :posn => p).map(&:id).first
+        when 2
+          ret.push Requirement.where(:complete => true, :posn => p).map(&:id).first
+        else
+          ret.push Requirement.where(:other => true, :posn => p).map(&:id).first
+      end  # of case
+    end # of do .. 
+    return ret
+  end
+
   private 
     def ensure_unique_type
       return [self.honest, self.cogent, self.complete, self.other].count(true) == 1
