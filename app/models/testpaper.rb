@@ -9,7 +9,7 @@
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
-#http://www.skorks.com/2009/08/how-a-ruby-case-statement-works-and-what-you-can-do-with-it/
+#
 
 class Testpaper < ActiveRecord::Base
   belongs_to :quiz

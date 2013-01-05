@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130101090256) do
+ActiveRecord::Schema.define(:version => 20130105040323) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20130101090256) do
     t.boolean "complete",                  :default => false
     t.boolean "other",                     :default => false
     t.integer "weight",                    :default => -1
+    t.integer "posn"
   end
 
   create_table "schools", :force => true do |t|

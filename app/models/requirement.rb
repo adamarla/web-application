@@ -10,6 +10,7 @@
 #  complete   :boolean         default(FALSE)
 #  other      :boolean         default(FALSE)
 #  weight     :integer         default(-1)
+#  posn       :integer
 #
 
 class Requirement < ActiveRecord::Base
@@ -17,15 +18,32 @@ class Requirement < ActiveRecord::Base
   validates :weight, :inclusion => { :in => [*-1..4] }
 
   before_save :ensure_unique_type
+  after_create :assign_position
+
+  def self.honest 
+    Requirement.where(:honest => true).order(:posn)
+  end
+
+  def self.cogent 
+    Requirement.where(:cogent => true).order(:posn)
+  end
+
+  def self.complete 
+    Requirement.where(:complete => true).order(:posn)
+  end
+
+  def self.other
+    Requirement.where(:other => true).order(:posn)
+  end
 
   def self.mangle_into_feedback( ids )
     mangled = 0 
     n_other = 0
 
     ids.each do |m|
-      type, index = Requirement.get_type_and_rel_index m
+      type, posn = Requirement.type_and_posn? m
       shift = 0
-      # Each requirement can have 15 scales => index = [0,14]. That looks plenty enough 
+      # Each requirement can have 15 scales => posn = [0,14]. That looks plenty enough 
       # But if you find yourself adding a lot of new scales, then buttress the code here
       case type 
         when :honest 
@@ -39,7 +57,7 @@ class Requirement < ActiveRecord::Base
           n_other += 1
       end # of case  
       break if shift < 0 
-      mangled |= (index << shift)
+      mangled |= (posn << shift)
     end # of each 
     return mangled
   end
@@ -52,9 +70,11 @@ class Requirement < ActiveRecord::Base
 
     [0,4,8,12,16,20,24,28].each do |shift|
       m = ( n & (mask << shift)) >> shift 
-      next if m == 0
+      break if m == 0
       rel.push (m-1)
     end
+
+    # rel = array of relative indices
 
     actual = [] 
     rel.each_with_index do |i,j|
@@ -68,8 +88,8 @@ class Requirement < ActiveRecord::Base
         else
           r = Requirement.where(:other => true)
       end # of case
-      r = r.order(:id).map(&:id)
-      actual.push r[i]
+      r = r.where(:posn => i).first.id
+      actual.push r
     end # of each
     return actual
   end
@@ -93,23 +113,25 @@ class Requirement < ActiveRecord::Base
     return (fraction > 0 ? fraction : 0)
   end
 
+  def type?
+    type = obj.other ? :other : (obj.honest ? :honest : (obj.cogent ? :cogent : :complete))
+    return type
+  end
+
   private 
     def ensure_unique_type
       return [self.honest, self.cogent, self.complete, self.other].count(true) == 1
     end 
 
-    def self.get_type_and_rel_index(obj)
+    def assign_position
+      type = self.type?
+      last = Requirement.where(type => true).map(&:posn).sort.last
+      self.update_attribute :posn, (last + 1)
+    end
+
+    def self.type_and_posn?(obj)
       obj = obj.class == Fixnum ? Requirement.find(obj) : obj
-      type = obj.other ? :other : (obj.honest ? :honest : (obj.cogent ? :cogent : :complete))
-      r = nil
-      case type
-        when :other then r = Requirement.where(:other =>  true)
-        when :honest then r = Requirement.where(:honest =>  true)
-        when :cogent then r = Requirement.where(:cogent =>  true)
-        when :complete then r = Requirement.where(:complete =>  true)
-      end
-      r = r.order(:id).map(&:id)
-      return [type, r.index(obj.id) + 1] # 1-indexed to diff. b/w no entry and first entry
+      return [obj.type?, obj.posn]
     end
 
 end

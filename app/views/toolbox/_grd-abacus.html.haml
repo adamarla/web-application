@@ -26,14 +26,14 @@
     -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
     .tab-content.span7
       #pane-honest.tab-pane
-        - Requirement.where(:honest => true).order(:weight).each_with_index do |m, j|
-          = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }
+        - Requirement.honest.each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
       #pane-cogent.tab-pane
-        - Requirement.where(:cogent => true).order(:weight).each_with_index do |m, j|
-          = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }
+        - Requirement.cogent.each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
       #pane-complete.tab-pane
-        - Requirement.where(:complete => true).order(:weight).each_with_index do |m,j|
-          = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }
+        - Requirement.complete.each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
       #pane-other.tab-pane.multi-select
-        - Requirement.where(:other => true).order(:weight).each_with_index do |m, j|
-          = render :partial => 'toolbox/requirement', :locals => { :requirement => m, :j => j }
+        - Requirement.other.each do |m|
+          = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
