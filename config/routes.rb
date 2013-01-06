@@ -32,9 +32,6 @@ Webapp::Application.routes.draw do
   # match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
   match 'boards/summary' => "boards#summary", :via => :get
 
-  # Common 
-  match 'comments/for' => 'calibrations#explain', :via => :get
-
   # Course
   resource :course, :only => [:show, :create, :update]
   match 'courses/list' => 'courses#list', :via => :get
@@ -43,9 +40,6 @@ Webapp::Application.routes.draw do
   match 'course/verticals' => 'courses#verticals', :via => :get
   match 'course/questions' => 'courses#questions', :via => :get 
   match 'course/topics_in' => 'courses#topics_in', :via => :get
-
-  # Calibrations
-  match 'calibrate' => 'calibrations#assign', :via => [:put, :post]
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
@@ -141,10 +135,6 @@ Webapp::Application.routes.draw do
   match 'try_us' => 'welcome#try_us', :via => :get
   match 'download' => 'welcome#download', :via => :get
   match 'how_it_works' => 'welcome#how_it_works', :via => :get
-
-  # Yardstick
-  resource :yardstick, :only => [:show, :create, :update]
-  match 'yardsticks/preview' => 'yardsticks#preview', :via => :get
 
   # Suggestion 
   match 'suggestion/block_db_slots' => 'suggestions#block_db_slots', :via => :post
