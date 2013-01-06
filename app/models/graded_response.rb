@@ -263,13 +263,7 @@ class GradedResponse < ActiveRecord::Base
     # The name of a graded response is a function of the quiz it is in, the
     # index of the parent question in the quiz and the index of the corresponding sub-part 
     # relative to the parent question 
-
-    selection = self.q_selection
-    num_parts = selection.question.num_parts?
-    return "Q.#{selection.index}" if num_parts == 0
-
-    c = [*'A'..'Z'][self.subpart.index]
-    return "Q.#{selection.index}-#{c}"
+    return self.subpart.name_if_in? self.testpaper.quiz_id
   end
 
   def teacher?

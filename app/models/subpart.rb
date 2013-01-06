@@ -41,8 +41,22 @@ class Subpart < ActiveRecord::Base
     return page
   end 
 
+  def name_if_in?(quiz)
+    qsel = QSelection.where(:quiz_id => quiz, :question_id => self.question_id).first
+    multi = self.question.num_parts? > 0
+
+    if multi
+      c = [*'A'..'Z'][self.index]
+      return "Q.#{qsel.index}-#{c}"
+    else
+      return "Q.#{qsel.index}"
+    end
+  end 
+
   def self.in_quiz(quiz)
-    where(:question_id => QSelection.where(:quiz_id => quiz).map(&:question_id))
+    # Returns the ordered list - by position in the quiz - of subparts in a quiz
+    qids = QSelection.where(:quiz_id => quiz).order(:index).map(&:question_id)
+    where(:question_id => qids).sort{ |m,n| qids.index(m.question_id) <=> qids.index(n.question_id) }.sort{ |m,n| m.index <=> n.index } 
   end
 
 end
