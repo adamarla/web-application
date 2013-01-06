@@ -393,18 +393,25 @@ form.smart {
   } 
 } 
 
-.question { 
-  padding: 5px ;
-  color: $orange ; 
-  font-size: 12px ;
-  margin: {
-    bottom: 6px ;
-    top: 6px ;
-  } 
-  font-weight: 300 ;
-  border-bottom: 1px solid $lightgray ;
-} 
-
 #fdb-panel { 
-  .requirement { border: none ; } 
+  > .row-fluid { 
+    padding: {
+      top: 5px ;
+      bottom: 5px ;
+    }
+    border-bottom: 1px solid $lightgray ;
+  } 
+
+  .requirement { border: none ; }
+
+  .question, .bottomline { 
+    font-size: 11px ;
+  } 
+  .text {
+    font-size: 10px ;
+    color: white ;
+  } 
+
+  .question { color: $gradians-blue ; }
+  .bottomline { color: $orange ; }
 } 
