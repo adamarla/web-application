@@ -24,11 +24,17 @@ jQuery ->
         shared : 'fdb-panel',
         klass : {
           ul : "span4 nopurge-on-show",
-          content : "span7",
-          a : "writeonce",
-          div : "multi-select"
+          content : "span7"
+        },
+        data : {
+          url : "view/fdb.json?id=:id"
         }
       }
+      return true
+    else if url.match(/view\/fdb/)
+      target = $('#fdb-panel')
+      $(m).addClass('hide') for m in target.children('.requirement')
+      target.children(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
       return true
     else
       matched = false

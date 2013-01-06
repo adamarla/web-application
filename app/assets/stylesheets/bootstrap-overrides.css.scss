@@ -394,11 +394,17 @@ form.smart {
 } 
 
 .question { 
-  color: white ;
-  border-bottom: 2px solid $orange ;
-  padding-bottom: 4px ;
+  padding: 5px ;
+  color: $orange ; 
+  font-size: 12px ;
   margin: {
     bottom: 6px ;
     top: 6px ;
   } 
+  font-weight: 300 ;
+  border-bottom: 1px solid $lightgray ;
+} 
+
+#fdb-panel { 
+  .requirement { border: none ; } 
 } 

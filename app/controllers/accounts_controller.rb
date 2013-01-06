@@ -75,4 +75,15 @@ class AccountsController < ApplicationController
     render :json => { :status => :ok }, :status => :ok
   end
 
+  def view_fdb
+    @fdb = GradedResponse.find(params[:id]).feedback
+    unless (@fdb.nil? || @fdb == 0) # => none so far 
+      @fdb = Requirement.unmangle_feedback @fdb 
+      render :json => { :fdb => @fdb }, :status => :ok
+    else
+      head :bad_request 
+    end
+
+  end
+
 end
