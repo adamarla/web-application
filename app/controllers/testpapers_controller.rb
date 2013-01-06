@@ -23,11 +23,14 @@ class TestpapersController < ApplicationController
 
   def layout
     # Returns ordered list of questions - renderable as .tabs-left
-    ws = Testpaper.find params[:id]
+    ws = Testpaper.find params[:ws]
+    student_id = params[:id]
+
     @who = current_account.loggable_type
     unless ws.nil?
       @quiz = ws.quiz
       @subparts = Subpart.in_quiz(@quiz.id)
+      @gr = GradedResponse.of_student(student_id).in_testpaper(ws.id)
     else
       head :bad_request 
     end
