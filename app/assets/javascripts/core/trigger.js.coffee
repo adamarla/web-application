@@ -90,7 +90,9 @@ window.karo = {
   tab : {
     enable : (id) ->
       m = $("##{id}")
-      m.parent().removeClass 'active' if m.parent().hasClass 'active'
+      li = m.parent()
+      li.removeClass 'disabled'
+      li.removeClass 'active' if li.hasClass 'active'
       m.tab 'show'
       return true
 
@@ -228,15 +230,21 @@ jQuery ->
     $("##{autoLink}").click() if autoLink?
 
     ###
-      Ensure that atmost 3 tabs are shown - including the just clicked one
-      Which means - show the current, previous (if present) and the next ( if present )
+      Do the next two for only * horizontal * tabs - not .tabs-left
+        1. Ensure that atmost 3 tabs are shown - including the just clicked one
+        2. disable all subsequent tabs 
 
-      However, do this only for horizontal tabs - not .tabs-left
+      Left-tabs are for special use-cases and therefore one can't make a 
+      blanket call on their behaviour. 
     ###
 
     unless $(this).closest('.tabs-left').length isnt 0
       li = $(this).parent()
       li.removeClass 'hide'
+
+      for m in li.nextAll('li')
+        $(m).addClass 'disabled'
+      ###
       for m in li.siblings('li')
         $(m).addClass 'hide'
 
@@ -245,6 +253,7 @@ jQuery ->
 
       $(p).removeClass 'hide' if p.length isnt 0
       $(n).removeClass 'hide' if n.length isnt 0
+      ###
 
     return true
 
