@@ -404,14 +404,11 @@ form.smart {
 
   .requirement { border: none ; }
 
-  .question, .bottomline { 
-    font-size: 11px ;
-  } 
   .text {
     font-size: 10px ;
     color: white ;
   } 
 
-  .question { color: $gradians-blue ; }
-  .bottomline { color: $orange ; }
+  .question { color: $gradians-blue ; font-weight: 300 ; font-size: 11px ; } 
+  .bottomline { color: $orange ; font-size: 12px ; }
 } 
