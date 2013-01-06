@@ -21,4 +21,15 @@ class TestpapersController < ApplicationController
     @quiz = ws.nil? ? nil : Quiz.where(:id => ws.quiz_id).first
   end 
 
+  def layout
+    # Returns ordered list of questions - renderable as .tabs-left
+    ws = Testpaper.find params[:id]
+    unless ws.nil?
+      @quiz = ws.quiz
+      @subparts = Subpart.in_quiz(@quiz.id)
+    else
+      head :bad_request 
+    end
+  end
+
 end

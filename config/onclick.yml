@@ -147,6 +147,9 @@ tab-teacher-rc-1 :
 
 tab-teacher-rc-2 :
   toggle : tab
+  panel :
+    url : ws/layout.json?id=:prev
+  prev : tab-teacher-rc-1
 
 tab-teacher-rc-3 :
   toggle : tab
