@@ -71,7 +71,7 @@ class Requirement < ActiveRecord::Base
     [0,4,8,12,16,20,24,28].each do |shift|
       m = ( n & (mask << shift)) >> shift 
       break if m == 0
-      rel.push (m-1)
+      rel.push m
     end
 
     # rel = array of relative indices
