@@ -1,0 +1,14 @@
+
+#fdb-panel.no-remove
+  .row-fluid.question= "Does it look like an honest effort?"
+  - Requirement.honest.each do |m|
+    = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
+  .row-fluid.question= "Is the work done relevant to the question?"
+  - Requirement.cogent.each do |m|
+    = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
+  .row-fluid.question= "Is the work done complete?"
+  - Requirement.complete.each do |m|
+    = render :partial => 'toolbox/requirement', :locals => { :requirement => m }
+  .row-fluid.question= "Anything else?"
+  - Requirement.other.each do |m|
+    = render :partial => 'toolbox/requirement', :locals => { :requirement => m }

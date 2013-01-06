@@ -24,6 +24,7 @@ class TestpapersController < ApplicationController
   def layout
     # Returns ordered list of questions - renderable as .tabs-left
     ws = Testpaper.find params[:id]
+    @who = current_account.loggable_type
     unless ws.nil?
       @quiz = ws.quiz
       @subparts = Subpart.in_quiz(@quiz.id)

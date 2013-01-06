@@ -392,3 +392,13 @@ form.smart {
     line-height: 14px ;
   } 
 } 
+
+.question { 
+  color: white ;
+  border-bottom: 2px solid $orange ;
+  padding-bottom: 4px ;
+  margin: {
+    bottom: 6px ;
+    top: 6px ;
+  } 
+} 

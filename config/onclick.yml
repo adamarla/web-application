@@ -150,6 +150,8 @@ tab-teacher-rc-2 :
   panel :
     url : ws/layout.json?id=:prev
   prev : tab-teacher-rc-1
+  autoclick :
+    tab : tab-teacher-rc-3
 
 tab-teacher-rc-3 :
   toggle : tab

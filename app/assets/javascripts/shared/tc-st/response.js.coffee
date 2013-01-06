@@ -18,6 +18,18 @@ jQuery ->
       target = $('#pane-teacher-rc-1')
       parentKey = 'wks'
       childKey = 'wk'
+    else if url.match(/ws\/layout/)
+      target = if json.user is 'Student' then '#pane-student-rc-2' else '#pane-teacher-rc-3'
+      leftTabs.create target, json, {
+        shared : 'fdb-panel',
+        klass : {
+          ul : "span4 nopurge-on-show",
+          content : "span7",
+          a : "writeonce",
+          div : "multi-select"
+        }
+      }
+      return true
     else
       matched = false
     ############################################################
