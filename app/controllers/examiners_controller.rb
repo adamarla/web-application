@@ -66,20 +66,4 @@ class ExaminersController < ApplicationController
     end
   end # of method
 
-=begin
-  Actions pertaining to feedback
-=end
-  def feedback 
-    type = params[:type]
-    case type
-      when 'honest' then @r = Requirement.where(:honest => true)
-      when 'cogent' then @r = Requirement.where(:cogent => true)
-      when 'complete' then @r = Requirement.where(:complete => true)
-      else @r = Requirement.where(:other => true)
-    end 
-
-    @r = @r.order(:id)
-  end 
-
-
 end
