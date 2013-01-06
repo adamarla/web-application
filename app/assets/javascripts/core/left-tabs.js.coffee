@@ -10,6 +10,7 @@
   Any other tweaking can be done using the options hash
   'options' is of the form : 
     options = { 
+      shared : < panel in toolbox >, (optional): if present, all tabs share the same panel
       klass : { => 'class' attributes to set on ... 
         root : ( .tabbable and .tabs-left are implicit )
         ul : ( root > ul: .nav & .nav-tabs are implicit )
@@ -56,6 +57,7 @@ window.leftTabs = {
 
     options = {}
     $.extend options, emptyOptions, optns # at the very least, ensure empty values 
+    sharedPanel = options.shared
 
     html = $("<div id='#{options.id.root}' class='tabbable tabs-left #{options.klass.root}'></div>")
 
@@ -64,7 +66,10 @@ window.leftTabs = {
     ul = $("<ul class='nav nav-tabs #{options.klass.ul}' id='#{options.id.ul}'></ul>")
     content = $("<div class='tab-content #{options.klass.content}' id='#{options.id.content}'></div>")
     ul.appendTo html
+
     content.appendTo html
+    if sharedPanel?
+      $("#toolbox").children("##{sharedPanel}").eq(0).clone().appendTo content
 
     # Collect the data-* attributes set on ul > li > a into one string. These are common to all <a>
     data = ""
@@ -75,9 +80,12 @@ window.leftTabs = {
     for m in json.tabs
       li = $("<li marker=#{m.id}></li>")
       li.appendTo ul
-      a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
+      if sharedPanel?
+        a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
+      else
+        a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
+        pane = $("<div class='tab-pane #{options.klass.div}' id='dyn-tab-#{m.id}'></div>")
+        pane.appendTo content
       a.appendTo li
-      pane = $("<div class='tab-pane #{options.klass.div}' id='dyn-tab-#{m.id}'></div>")
-      pane.appendTo content
     return true
 }
