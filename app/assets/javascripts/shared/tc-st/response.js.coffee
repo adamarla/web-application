@@ -22,6 +22,7 @@ jQuery ->
       target = if json.user is 'Student' then '#pane-student-rc-2' else '#pane-teacher-rc-3'
       leftTabs.create target, json, {
         shared : 'fdb-panel',
+        split : true,
         klass : {
           ul : "span4 nopurge-on-show",
           content : "span7"
@@ -35,10 +36,10 @@ jQuery ->
       target = $('#fdb-panel')
       $(m).addClass('hide') for m in target.find('.requirement')
       target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
-      score = target.find('.score').eq(0)
-      if score?
-        score.children().eq(0).text json.marks
-        score.children().eq(1).text "/ #{json.max}"
+
+      if json.split?
+        active = target.parent().prev().children('li.active').eq(0)
+        active.children('a.split').eq(0).text json.split
       return true
     else
       matched = false

@@ -81,7 +81,9 @@ window.leftTabs = {
       li = $("<li marker=#{m.id}></li>")
       li.appendTo ul
       if sharedPanel?
-        a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
+        a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='pull-left span6 #{options.klass.a}'>#{m.name}</a>")
+        if options.split
+          $("<a class='split span6 pull-right' href='#'>#{m.split}</a>").appendTo li
       else
         a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
         pane = $("<div class='tab-pane #{options.klass.div}' id='dyn-tab-#{m.id}'></div>")

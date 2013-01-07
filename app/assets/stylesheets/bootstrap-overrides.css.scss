@@ -6,10 +6,10 @@
 
 $gray: #191919 ;
 $lightgray: lighten($gray, 30%) ;
-$gradians-blue: #6ca7ab ;
-$orange:#ffa500 ;
+$gradians-blue: #6ca7ab ; // rgb(108,167,171)
+$orange:#ffa500 ; // rgb(255,165,0)
 $panel-colour: lighten(black, 17%) ;
-$deep-blue: #0081c2 ;
+$deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
 $lightblue: lighten($deep-blue, 23%) ;
 
@@ -402,18 +402,57 @@ form.smart {
     &:not([class~='navbar']) { border-bottom: 1px solid $lightgray ; }
   } 
 
-  .requirement { border: none ; }
+  .requirement { border: none ; text-align: right ; }
 
   .text {
     font-size: 10px ;
     color: white ;
   } 
 
-  .question { color: $gradians-blue ; font-weight: 300 ; font-size: 11px ; } 
+  .question { 
+    color: white ;  
+    font: { 
+      family: cursive ;
+      size: 12px ;
+    } 
+  }
   .bottomline { color: $orange ; font-size: 12px ; }
   .score { 
     > .maxmarks { font-size: 15px ; color: $orange ; text-align: center ;}
     > .marks { color: white ; font-size: 22px ; text-align: right ; }
     border-radius: 4px ;
+  } 
+} 
+
+.tabs-left { 
+  > .nav-tabs {
+    > li {
+      > a.split {
+        border-radius: 0px ;
+        background: rgba(70,136,71,0.8) ;
+        font: { 
+          size: 15px ;
+          family: cursive ;
+        } 
+        text-align: center ;
+        border: 1px solid white ;
+        border-left: none ;
+        margin: {
+          bottom: 10px ;
+          right: 0px ;
+        } 
+
+        &~a { 
+          font-size: 18px ;
+          border: 1px solid white ;
+          border-right: none ;
+          margin: {
+            right: -2px ;
+            bottom: 10px ;
+          }
+          &:hover { background-color: $deep-blue ; }
+        } 
+      } 
+    } 
   } 
 } 
