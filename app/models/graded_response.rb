@@ -175,7 +175,8 @@ class GradedResponse < ActiveRecord::Base
     n = Requirement.marks_if? ids
     marks = self.subpart.marks
     earned = (n * marks).round(2)
-    # puts " --> earned = #{n}, max = #{marks}, final = #{earned}"
+
+    self.reset if self.feedback # over-write previous feedback 
     if self.update_attributes(:feedback => m, :system_marks => earned)
       ws = Testpaper.where(:id => self.testpaper_id).first
 
@@ -190,39 +191,13 @@ class GradedResponse < ActiveRecord::Base
 
   def reset
     # For times when a graded response has to be re-graded. Set the grade_id 
-    # for the response to nil - as also the marks & graded? field of the 
+    # for the response to nil - as also the marks, graded? and honest? fields of the 
     # corresponding answer sheet 
-    #self.update_attribute :calibration_id, nil
+
     self.update_attribute :feedback, 0
     a = AnswerSheet.where(:testpaper_id => self.testpaper_id, :student_id => self.student_id).first
-    a.update_attributes :marks => nil, :graded => false unless a.nil?
+    a.update_attributes( :marks => nil, :graded => false, :honest => nil ) unless a.nil?
   end 
-
-=begin
-  def calibrate_to(calibration_id)
-    # assigner = self.teacher?
-    # grade = Grade.where( :teacher_id => assigner.id, :calibration_id => calibration_id ).first
-    c = Calibration.where(:id => calibration_id).first
-    marks = (self.subpart.marks * (c.allotment/100.0)).round(2)
-
-    # Notify the teacher as soon as the last response has been graded
-    if self.update_attributes(:calibration_id => c.id, :system_marks => marks)
-      remaining = GradedResponse.in_testpaper(self.testpaper_id).with_scan.ungraded.count
-      if remaining == 0
-        t = Testpaper.where(:id => self.testpaper_id).first
-        t.update_attribute :publishable, true
-
-        # Time to inform the teacher. You can do this only if teacher has provided 
-        # an e-mail address. The default we assign will not work
-        tchr = t.quiz.teacher 
-        Mailbot.grading_done(t).deliver if tchr.account.email_is_real?
-      end
-      return :ok
-    else
-      return :bad_request
-    end
-  end
-=end
 
   def index?
     # The index of the question / subpart to which this is the graded response
