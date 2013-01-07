@@ -399,7 +399,7 @@ form.smart {
       top: 5px ;
       bottom: 5px ;
     }
-    border-bottom: 1px solid $lightgray ;
+    &:not([class~='navbar']) { border-bottom: 1px solid $lightgray ; }
   } 
 
   .requirement { border: none ; }
@@ -411,4 +411,9 @@ form.smart {
 
   .question { color: $gradians-blue ; font-weight: 300 ; font-size: 11px ; } 
   .bottomline { color: $orange ; font-size: 12px ; }
+  .score { 
+    > .maxmarks { font-size: 15px ; color: $orange ; text-align: center ;}
+    > .marks { color: white ; font-size: 22px ; text-align: right ; }
+    border-radius: 4px ;
+  } 
 } 

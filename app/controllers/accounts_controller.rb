@@ -76,10 +76,12 @@ class AccountsController < ApplicationController
   end
 
   def view_fdb
-    @fdb = GradedResponse.find(params[:id]).feedback
-    unless (@fdb.nil? || @fdb == 0) # => none so far 
-      @fdb = Requirement.unmangle_feedback @fdb 
-      render :json => { :fdb => @fdb }, :status => :ok
+    gr = GradedResponse.find(params[:id])
+    fdb = gr.feedback
+
+    unless (fdb.nil? || fdb == 0) # => none so far 
+      fdb = Requirement.unmangle_feedback fdb 
+      render :json => { :fdb => fdb, :marks => gr.marks?, :max => gr.subpart.marks }, :status => :ok
     else
       head :bad_request 
     end

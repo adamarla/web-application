@@ -35,6 +35,10 @@ jQuery ->
       target = $('#fdb-panel')
       $(m).addClass('hide') for m in target.find('.requirement')
       target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
+      score = target.find('.score').eq(0)
+      if score?
+        score.children().eq(0).text json.marks
+        score.children().eq(1).text "/ #{json.max}"
       return true
     else
       matched = false

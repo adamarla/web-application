@@ -1,5 +1,11 @@
 
 #fdb-panel.no-remove
+  - if current_account.loggable_type == "Teacher"
+    .row-fluid.navbar
+      .score.pull-right.span4
+        .span7.marks
+        .span5.maxmarks
+        
   .row-fluid
     .question.span7= "An honest effort ?"
     .span4.offset1
