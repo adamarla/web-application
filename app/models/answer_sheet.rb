@@ -9,6 +9,7 @@
 #  updated_at   :datetime
 #  marks        :float
 #  graded       :boolean         default(FALSE)
+#  honest       :integer
 #
 
 class AnswerSheet < ActiveRecord::Base
@@ -22,6 +23,28 @@ class AnswerSheet < ActiveRecord::Base
   def self.for_testpaper(id)
     where(:testpaper_id => id)
   end
+
+  def honest?
+    # Returns the confidence we have that the student truly earned 
+    # the points he/she earned. Store only if honesty scores available for 
+    # all responses
+    return self.honest unless self.honest.nil?
+    g = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).with_scan
+    n = g.count - g.ungraded.count 
+
+    posns = g.graded.map(&:feedback).map{ |m| m & 15 }
+    score = 0 
+
+    posns.uniq.each do |m| 
+      score += (Requirement.where(:honest => true, :posn => m).map(&:weight).first * posns.count(m))  
+    end 
+
+    unless n == 0
+      score = ((score / ( 4 * n ).to_f) * 100).round(0) # max-weight = 4
+      self.update_attribute(:honest, score) unless g.ungraded.count
+    end
+    return ( n ? score : "-" ) # for times when none of the responses have been graded
+  end 
 
   def complete?
     # Complete if scans are available for every graded response of this student
