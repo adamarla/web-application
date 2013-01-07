@@ -456,3 +456,31 @@ form.smart {
     } 
   } 
 } 
+
+.data-point-label {
+  font: {
+    size: 10px ;
+    weight: normal ;
+  }
+  position: absolute ;
+  color: white ; 
+  text-transform: lowercase ;
+}
+
+#graph-paper {
+  width: 600px ;
+  height: 800px ;
+  padding: {
+    left: 20px ;
+    top: 20px ;
+  } 
+  color: $gradians-blue ;
+
+  &.hide-x{ .xAxis { > .tickLabel { display: none ; } } } 
+  &.hide-y{ .yAxis { > .tickLabel { display: none  ;} } }
+
+  > .legend { 
+    td { color: $gradians-blue ; padding-left: 3px ; font-size: 10px ; text-transform: lowercase ; } 
+  } 
+}
+

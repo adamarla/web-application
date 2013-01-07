@@ -110,13 +110,6 @@ tab-ws-performance :
     url : student/performance.json?id=:id&ws=:prev 
   url : performance/ws.json?id=:prev 
   prev : tab-wsl
-  autoclick :
-    link : trapdoor-show-chart
-
-trapdoor-show-chart :
-  left : as-is
-  wide : 
-    show : graph-paper
 
 tab-grd-ws :
   toggle : tab
@@ -145,14 +138,19 @@ tab-teacher-rc-1 :
   autoclick :
     tab : tab-teacher-rc-2
 
+trapdoor-show-chart :
+  left : as-is
+  wide : 
+    show : graph-paper
+
 tab-teacher-rc-2 :
   toggle : tab
   panel :
     url : ws/layout.json?ws=:prev&id=:id
   prev : tab-teacher-rc-1
   autoclick :
+    link : trapdoor-show-chart
     tab : tab-teacher-rc-3
-    link : trapdoor-show-scans 
 
 trapdoor-show-scans :
   left : as-is
@@ -161,6 +159,8 @@ trapdoor-show-scans :
 
 tab-teacher-rc-3 :
   toggle : tab
+  autoclick :
+    link : trapdoor-show-scans 
 
 lnk-teacher-rc :
   left : 

@@ -97,21 +97,6 @@ p > a, div > a {
   }
 }
 
-#flot-chart {
-  width: 600px ;
-  height: 800px ;
-  margin-left: 40px ;
-  margin-top: 40px ;
-  color: $gradians-blue ;
-
-  &.hide-x{ .xAxis { > .tickLabel { color: $gray ;} } }
-  &.hide-y{ .yAxis { > .tickLabel { color: $gray ;} } }
-
-  > .legend { 
-    td { color: $gradians-blue ; padding-left: 3px ; font-size: 10px ; text-transform: lowercase ; } 
-  } 
-}
-
 #footer {
   width: 80% ;
   text-align: center ;
@@ -148,15 +133,6 @@ p > a, div > a {
   text-transform: lowercase ;
 } 
 
-.data-point-label {
-  font: {
-    size: 10px ;
-    weight: normal ;
-  }
-  position: absolute ;
-  color: white ; 
-  text-transform: lowercase ;
-}
 
 .what-next, .what-now { 
   min-height: 80px ;

@@ -10,6 +10,7 @@ class TestpapersController < ApplicationController
     @students = @testpaper.students.order(:first_name)
     @answer_sheet = AnswerSheet.where(:testpaper_id => @testpaper.id)
     @max = @testpaper.quiz.total?
+    @n = @students.count
   end
 
   def load 
