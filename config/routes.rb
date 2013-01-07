@@ -88,7 +88,6 @@ Webapp::Application.routes.draw do
   # Student 
   resource :student, :only => [:create, :update, :show]
   match 'ws-preview' => 'students#responses', :via => :get
-  match 'student/testpapers' => 'students#testpapers', :via => :get
   match 'dispute' => 'students#dispute', :via => :get
   match 'student/feedback' => 'students#feedback', :via => :get
 

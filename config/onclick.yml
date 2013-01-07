@@ -185,7 +185,7 @@ lnk-st-trigger :
 
 tab-st-quizzes :
   toggle : tab
-  url : student/testpapers
+  url : ws/list 
   panel :
     url : ws-preview.json?id=:id 
 

@@ -23,6 +23,8 @@ class AccountsController < ApplicationController
 
   def ws 
     @wks = current_account.ws
+    @who = current_account.loggable_type
+    @wks = @wks.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse if @who == "Student"
   end
 
   def pending_ws

@@ -17,12 +17,7 @@ jQuery ->
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
 
-    if url.match(/student\/testpapers/)
-      target = $("#pane-st-quizzes")
-      parentKey = 'wrks'
-      childKey = 'wrk'
-      clickFirst = true
-    else if url.match(/ws-preview/)
+    if url.match(/ws-preview/)
       preview.loadJson json, 'locker'
     else if url.match(/student\/feedback/)
       leftTabs.create '#pane-st-feedback', json, {

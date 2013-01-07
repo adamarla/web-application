@@ -31,12 +31,6 @@ class StudentsController < ApplicationController
     render :json => { :status => :ok }, :status => :ok
   end
 
-  def testpapers
-    s = current_account.loggable
-    @publishable = Testpaper.where(:id => s.testpaper_ids).where(:publishable => true)
-    @publishable = @publishable.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse
-  end
-
   def feedback
     s = current_account.loggable
     @r = s.responses params[:id]
@@ -49,26 +43,6 @@ class StudentsController < ApplicationController
     r = s.responses params[:id]
     @scans = r.map(&:scan).uniq.sort
     @within = "#{tp.quiz_id}-#{tp.id}"
-
-=begin
-    student = Student.find params[:id]
-    testpaper = Testpaper.find params[:testpaper]
-    head :bad_request if (student.nil? || testpaper.nil?)
-
-    quiz_id = testpaper.quiz_id 
-
-    answers = student.responses testpaper
-    @info = answers.map{ |m| { :question => { 
-      :id => m.id,
-      :name => m.name?,
-      :ticker => "#{m.marks?} / #{m.subpart.marks}",
-      :pg => "#{m.subpart.on_page_in? quiz_id}"
-    } } }
-
-    @scans = answers.map(&:scan).uniq.sort
-    @within = "#{quiz_id}-#{testpaper.id}"
-    respond_with @info, @scans, @within
-=end
   end
 
 end
