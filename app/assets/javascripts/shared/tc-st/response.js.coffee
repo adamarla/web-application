@@ -19,6 +19,10 @@ jQuery ->
       parentKey = 'wks'
       childKey = 'wk'
     else if url.match(/ws\/layout/)
+      # load student scans 
+      preview.loadJson json, 'locker'
+
+      # prep the feedback panel
       target = if json.user is 'Student' then '#pane-student-rc-2' else '#pane-teacher-rc-3'
       leftTabs.create target, json, {
         shared : 'fdb-panel',

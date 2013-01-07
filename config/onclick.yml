@@ -152,6 +152,12 @@ tab-teacher-rc-2 :
   prev : tab-teacher-rc-1
   autoclick :
     tab : tab-teacher-rc-3
+    link : trapdoor-show-scans 
+
+trapdoor-show-scans :
+  left : as-is
+  wide : 
+    show : wide-X
 
 tab-teacher-rc-3 :
   toggle : tab
@@ -160,7 +166,7 @@ lnk-teacher-rc :
   left : 
     show : left-5
   wide :
-    show : wide-X
+    show : wide-wait
   autoclick :
     tab : tab-teacher-rc-1
 
