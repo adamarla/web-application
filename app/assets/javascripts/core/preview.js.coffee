@@ -122,14 +122,6 @@ jQuery ->
       index = images.index '.active'
       return index
       
-      ###
-      display = if typeof display is 'string' then $(display) else display
-      return null if display.hasClass 'hidden'
-      counter = display.find '.ppy-counter:first'
-      counter = if counter.length isnt 0 then parseInt(counter.text()) - 1 else 0
-      return counter
-      ###
-
     # Given a question UID, returns its position in the image-list (0-indexed)
     # Returns -1 if not found 
 
@@ -153,35 +145,6 @@ jQuery ->
 
       p.carousel to
       return true
-      ###
-      return if not from? or not to?
-      return if to is -1
-      return if from is to
-
-      display = if typeof display is 'string' then $(display) else display
-      return if display.hasClass 'hidden'
-
-      images = display.children('.ppy-imglist').eq(0).children('li')
-      nImages = images.length
-
-      if to > from
-        fwd = true
-        steps = to - from
-      else
-        fwd = false
-        steps = from - to
-
-      if steps > (nImages / 2)
-        steps = nImages - steps
-        fwd = not fwd
-
-      #alert "nImages --> #{nImages}, from --> #{from}, to --> #{to}, steps --> #{steps}, fwd --> #{fwd}"
-
-      btn = if fwd then display.find('.ppy-next:first') else display.find('.ppy-prev:first')
-      for j in [1..steps]
-        btn.click()
-      return true
-      ###
 
     ###
       Hop backwards/forwards one image. And when displaying the list of questions 
@@ -196,93 +159,6 @@ jQuery ->
       active.removeClass 'active'
       next.addClass 'active'
       return true
-
-      ###
-      display = if typeof display is 'string' then $(display) else display
-      images = display.find('.ppy-imglist').eq(0)
-      li = images.children('li')
-      nImages = li.length
-      current = preview.currIndex display # 0-indexed
-      hcurr = li.eq(current).attr 'hop'
-
-      if fwd
-        next = if (current + 1) < nImages then (current + 1) else 0
-        pressBtn = display.find '.ppy-next:first'
-      else
-        next = if current is 0 then nImages - 1 else current - 1
-        pressBtn = display.find '.ppy-prev:first'
-
-      hnext = li.eq(next).attr 'hop'
-      if fwd
-        # update side-panel if (hcurrent -> hnext) = (false -> true) OR (true -> true)
-        preview.sideScrollFwd(true) if hnext is "true"
-      else
-        # update side-panel if (hcurrent -> hnext) = (true -> false) OR (true -> true)
-        preview.sideScrollFwd(false) if hcurr is "true"
-      pressBtn.click()
-      return true
-      ###
-
-
-    ###
-    hardSetImgCaption : (imgId, newCaption, previewId = 0) ->
-      return if (not imgId? or not newCaption?)
-#      'oliveOil' is defined in Popeye's code (vendor/assets/javascripts)
-#      It is of the form [0,[...],1,[...],2,[...] .... ]. Each number represents
-#      a preview (yes, there can be > 1) and the following array has the captions
-#      for that preview
-      captions = oliveOil[2*previewId + 1]
-      return if imgId >= captions.length
-
-      captions[imgId] = newCaption
-      return true
-
-    softSetImgCaption : (newCaption, display = '#document-preview') ->
-      display = if typeof display is 'string' then $(display) else display
-      return null if display.hasClass 'hidden'
-      caption = display.find '.ppy-text:first'
-      return null if caption.length is 0
-      caption.text newCaption
-      return true
-
-    scrollImg: (images, event) ->
-      verticalTabs = $('#side-panel').find '.vertical-tabs:first > ul' # if present, we need the ui-tabs-nav
-      unless verticalTabs.length is 0 # => previewing yardsticks
-        numTabs = verticalTabs.find('li').length
-        index = verticalTabs.find('li.ui-tabs-selected').index()
-        next = (index + 1) % numTabs
-        prev = if index > 0 then index - 1 else numTabs - 1
-
-      key = event.keyCode
-      switch key
-        when 66 # 66 = 'B' for going back 
-          n = preview.hop false, images
-          verticalTabs.children('li').eq(prev).children('a:first').click() if prev?
-        when 78 # 78 = 'N' for going to next
-          n = preview.hop true, images
-          verticalTabs.children('li').eq(next).children('a:first').click() if next?
-      return true
-
-    sideScrollFwd: (fwd) ->
-      return if preview.blockKeyPress
-
-      ques = $('#side-panel').find '#question-options:first'
-      return if ques.length is 0 or ques.hasClass 'ui-tabs-hide' # ie. if not showing
-
-      options = ques.find('.swiss-knife')
-      nOptions = options.length
-      selected = options.filter('.selected').first()
-      current = if selected.length isnt 0 then selected.index() else 0
-
-      if fwd
-        next = (current + 1) % nOptions
-      else
-        next = if current > 0 then current - 1 else nOptions - 1
-
-      for m,j in options
-        if j == next then $(m).addClass('selected') else $(m).removeClass('selected')
-      return true
-    ###
 
   }
 
