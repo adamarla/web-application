@@ -31,11 +31,6 @@ class StudentsController < ApplicationController
     render :json => { :status => :ok }, :status => :ok
   end
 
-  def feedback
-    s = current_account.loggable
-    @r = s.responses params[:id]
-  end
-
   def responses
     s = current_account.loggable
     tp = Testpaper.find params[:id]
