@@ -106,7 +106,6 @@ window.karo = {
   url : {
     elaborate : (obj, json = null, tab = null) ->
       ajax = if tab? then tab.dataset.panelUrl else obj.dataset.url
-      alert $(tab).attr('id') if tab? 
       return ajax unless ajax? # => basically null 
 
       for m in ["prev", "id"]
