@@ -176,7 +176,7 @@ class GradedResponse < ActiveRecord::Base
     marks = self.subpart.marks
     earned = (n * marks).round(2)
 
-    self.reset if self.feedback # over-write previous feedback 
+    # self.reset if self.feedback # over-write previous feedback 
     if self.update_attributes(:feedback => m, :system_marks => earned)
       ws = Testpaper.where(:id => self.testpaper_id).first
 
