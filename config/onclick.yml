@@ -130,45 +130,45 @@ tab-grd-panel :
   id : tab-grd-ws
   url : gr/pending.json?page=:prev&ws=:id
 
-tab-teacher-rc-1 :
+tab-tc-rc-1 :
   toggle : tab
   url : ws/list
   panel :
     url : ws/summary.json?id=:id
   autoclick :
-    tab : tab-teacher-rc-2
+    tab : tab-tc-rc-2
 
 trapdoor-show-chart :
   left : as-is
   wide : 
     show : graph-paper
 
-tab-teacher-rc-2 :
+tab-tc-rc-2 :
   toggle : tab
   panel :
     url : ws/layout.json?ws=:prev&id=:id
-  prev : tab-teacher-rc-1
+  prev : tab-tc-rc-1
   autoclick :
     link : trapdoor-show-chart
-    tab : tab-teacher-rc-3
+    tab : tab-tc-rc-3
 
 trapdoor-show-scans :
   left : as-is
   wide : 
     show : wide-X
 
-tab-teacher-rc-3 :
+tab-tc-rc-3 :
   toggle : tab
   autoclick :
     link : trapdoor-show-scans 
 
-lnk-teacher-rc :
+lnk-tc-rc :
   left : 
     show : left-5
   wide :
     show : wide-wait
   autoclick :
-    tab : tab-teacher-rc-1
+    tab : tab-tc-rc-1
 
 ##############################################################################
 ## Students 
@@ -176,23 +176,25 @@ lnk-teacher-rc :
 
 lnk-st-trigger : 
   autoclick :
-    tab : tab-st-quizzes
+    tab : tab-st-rc-1
   left : 
     show : left-1
   wide :
     show : wide-X
   default-lnk : true
 
-tab-st-quizzes :
+tab-st-rc-1 :
   toggle : tab
   url : ws/list 
   panel :
-    url : ws-preview.json?id=:id 
+    url : ws/layout.json?ws=:id&id=:prev
+  prev : control-panel
+  autoclick :
+    tab : tab-st-rc-2
 
-tab-st-feedback :
+tab-st-rc-2 :
   toggle : tab
-  url : student/feedback.json?id=:prev
-  prev : tab-st-quizzes
+  prev : tab-st-rc-1
 
 ##############################################################################
 ## Admin / Examiner specific  

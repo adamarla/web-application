@@ -15,7 +15,7 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .single-line
 
     if url.match(/ws\/list/)
-      target = if json.user is "Student" then $('#pane-st-quizzes') else $('#pane-teacher-rc-1')
+      target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
       parentKey = 'wks'
       childKey = 'wk'
     else if url.match(/ws\/layout/)
@@ -23,10 +23,16 @@ jQuery ->
       preview.loadJson json, 'locker'
 
       # prep the feedback panel
-      target = if json.user is 'Student' then '#pane-student-rc-2' else '#pane-teacher-rc-3'
+      if json.user is 'Student'
+        target = '#pane-st-rc-2'
+        splitTab = false
+      else
+        target = '#pane-tc-rc-3'
+        splitTab = true
+
       leftTabs.create target, json, {
         shared : 'fdb-panel',
-        split : true,
+        split : splitTab,
         klass : {
           ul : "span4 nopurge-on-show",
           content : "span7"
