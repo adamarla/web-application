@@ -8,6 +8,7 @@ class CreateRequirements < ActiveRecord::Migration
       t.boolean :complete, :default => false
       t.boolean :other, :default => false
       t.integer :weight, :default => -1
+      t.integer :posn
     end
   end
 end

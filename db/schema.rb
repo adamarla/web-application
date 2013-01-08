@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121124024242) do
+ActiveRecord::Schema.define(:version => 20130107192631) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -27,9 +27,9 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "loggable_id"
-    t.string   "loggable_type"
+    t.string   "loggable_type",          :limit => 20
     t.boolean  "active",                                :default => true
-    t.string   "username"
+    t.string   "username",               :limit => 50
     t.boolean  "trial",                                 :default => true
   end
 
@@ -43,10 +43,11 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
     t.datetime "updated_at"
     t.float    "marks"
     t.boolean  "graded",       :default => false
+    t.integer  "honest"
   end
 
   create_table "boards", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :limit => 50
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -61,18 +62,18 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   end
 
   create_table "countries", :force => true do |t|
-    t.string "name"
+    t.string "name",         :limit => 50
     t.string "alpha_2_code"
   end
 
   create_table "courses", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :limit => 50
     t.integer  "board_id"
     t.integer  "klass"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "active",     :default => true
+    t.boolean  "active",                   :default => true
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -92,12 +93,12 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "examiners", :force => true do |t|
-    t.integer  "disputed",        :default => 0
+    t.integer  "disputed",                      :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_admin",        :default => false
-    t.string   "first_name"
-    t.string   "last_name"
+    t.boolean  "is_admin",                      :default => false
+    t.string   "first_name",      :limit => 30
+    t.string   "last_name",       :limit => 30
     t.datetime "last_workset_on"
   end
 
@@ -119,15 +120,16 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.boolean  "disputed",       :default => false
+    t.boolean  "disputed",                     :default => false
     t.integer  "q_selection_id"
     t.float    "system_marks"
     t.integer  "testpaper_id"
-    t.string   "scan"
+    t.string   "scan",           :limit => 40
     t.integer  "subpart_id"
     t.integer  "page"
     t.float    "marks_teacher"
-    t.boolean  "closed",         :default => false
+    t.boolean  "closed",                       :default => false
+    t.integer  "feedback",                     :default => 0
   end
 
   create_table "grades", :force => true do |t|
@@ -155,20 +157,20 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   end
 
   create_table "questions", :force => true do |t|
-    t.string   "uid"
-    t.integer  "n_picked",        :default => 0
+    t.string   "uid",             :limit => 20
+    t.integer  "n_picked",                      :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
     t.integer  "topic_id"
     t.integer  "suggestion_id"
-    t.integer  "difficulty",      :default => 1
+    t.integer  "difficulty",                    :default => 1
     t.integer  "marks"
     t.float    "length"
     t.integer  "answer_key_span"
-    t.integer  "calculation_aid", :default => 0
-    t.boolean  "restricted",      :default => true
-    t.boolean  "audited",         :default => false
+    t.integer  "calculation_aid",               :default => 0
+    t.boolean  "restricted",                    :default => true
+    t.boolean  "audited",                       :default => false
     t.integer  "audited_by"
   end
 
@@ -177,10 +179,10 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "num_questions"
-    t.string   "name"
+    t.string   "name",          :limit => 70
     t.integer  "klass"
     t.integer  "subject_id"
-    t.string   "atm_key"
+    t.string   "atm_key",       :limit => 20
     t.integer  "total"
     t.integer  "span"
   end
@@ -199,13 +201,13 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.string   "street_address"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip_code"
-    t.string   "phone"
+    t.string   "city",           :limit => 40
+    t.string   "state",          :limit => 40
+    t.string   "zip_code",       :limit => 15
+    t.string   "phone",          :limit => 20
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "tag"
+    t.string   "tag",            :limit => 40
     t.integer  "board_id"
     t.string   "xls"
   end
@@ -213,11 +215,11 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   create_table "sektions", :force => true do |t|
     t.integer  "school_id"
     t.integer  "klass"
-    t.string   "name"
+    t.string   "name",       :limit => 40
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "teacher_id"
-    t.boolean  "exclusive",  :default => false
+    t.boolean  "exclusive",                :default => false
   end
 
   create_table "specializations", :force => true do |t|
@@ -236,15 +238,15 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   create_table "students", :force => true do |t|
     t.integer  "guardian_id"
     t.integer  "school_id"
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "first_name",  :limit => 30
+    t.string   "last_name",   :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "klass"
   end
 
   create_table "subjects", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -263,10 +265,10 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   create_table "suggestions", :force => true do |t|
     t.integer  "teacher_id"
     t.integer  "examiner_id"
-    t.boolean  "completed",   :default => false
+    t.boolean  "completed",                 :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "signature"
+    t.string   "signature",   :limit => 15
   end
 
   create_table "syllabi", :force => true do |t|
@@ -278,8 +280,8 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   end
 
   create_table "teachers", :force => true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "first_name", :limit => 30
+    t.string   "last_name",  :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
@@ -287,15 +289,15 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
 
   create_table "testpapers", :force => true do |t|
     t.integer  "quiz_id"
-    t.string   "name"
+    t.string   "name",        :limit => 100
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "publishable", :default => false
-    t.boolean  "exclusive",   :default => true
+    t.boolean  "publishable",                :default => false
+    t.boolean  "exclusive",                  :default => true
   end
 
   create_table "topics", :force => true do |t|
-    t.string   "name"
+    t.string   "name",        :limit => 50
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "vertical_id"
@@ -304,27 +306,27 @@ ActiveRecord::Schema.define(:version => 20121124024242) do
   create_table "trial_accounts", :force => true do |t|
     t.integer  "teacher_id"
     t.string   "school"
-    t.string   "zip_code"
+    t.string   "zip_code",   :limit => 30
     t.integer  "country"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "verticals", :force => true do |t|
-    t.string   "name"
+    t.string   "name",       :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "videos", :force => true do |t|
     t.text     "url"
-    t.boolean  "restricted",    :default => true
-    t.boolean  "instructional", :default => false
+    t.boolean  "restricted",                  :default => true
+    t.boolean  "instructional",               :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title"
-    t.boolean  "active",        :default => false
-    t.integer  "index",         :default => -1
+    t.string   "title",         :limit => 70
+    t.boolean  "active",                      :default => false
+    t.integer  "index",                       :default => -1
   end
 
   create_table "yardsticks", :force => true do |t|

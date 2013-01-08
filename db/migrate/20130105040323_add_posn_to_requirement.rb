@@ -1,17 +1,10 @@
 class AddPosnToRequirement < ActiveRecord::Migration
   def change
-    add_column :requirements, :posn, :integer
-    # At this time, there already are some requirements in the DB - but without posn
-    # This initial set was, however, added in some order. Capture just that when determining
-    # their relative posni ( 1-indexed ). For subsequent requirements, determine the 
-    # relative posn before_save 
-    # Note: Anything about a requirement my change in the future - but never its posn!!
+    # Saw problems when migrating in earlier migrations 
+    # due to absence of :posn. Hence, added :posn when 
+    # requirement table is first created 
 
-    [:honest, :cogent, :complete, :other].each do |m|
-      r = Requirement.where(m => true).order(:id).each_with_index do |n,j|
-        n.update_attribute :posn, (j + 1)
-      end
-    end 
-
+    # However, not git rm'ing the migration. Just emptying it out
   end
+
 end
