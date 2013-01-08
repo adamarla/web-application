@@ -13,4 +13,4 @@ object false
     }
   } 
 
-  node(:who) { @who }
+  node(:user) { @who }

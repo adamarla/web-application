@@ -15,7 +15,7 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .single-line
 
     if url.match(/ws\/list/)
-      target = if json.who is "Student" then $('#pane-st-quizzes') else $('#pane-teacher-rc-1')
+      target = if json.user is "Student" then $('#pane-st-quizzes') else $('#pane-teacher-rc-1')
       parentKey = 'wks'
       childKey = 'wk'
     else if url.match(/ws\/layout/)
