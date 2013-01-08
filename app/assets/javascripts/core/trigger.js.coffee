@@ -157,7 +157,6 @@ jQuery ->
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
-        # menu.close $(p) unless $(p).parent().hasClass('dropdown-submenu')
         menu.close $(p)
     return true
 
