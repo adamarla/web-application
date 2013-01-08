@@ -97,25 +97,26 @@ window.karo = {
       return true
 
     find : (node) -> # the closest active tab within which - presumably - the node is
-      node = if typeof node is 'string' then $(node) else node
-      pane = node.closest('.tab-content').eq(0)
+      pane = $(node).closest('.tab-content').eq(0)
       return null if pane.length is 0
       ul = pane.prev()
-      return ul.children('li.active').eq(0)
+      return ul.children('li.active')[0]
   }
 
   url : {
-    elaborate : (obj, json = null) ->
-      # obj = this where called and this = <a> with data-* attributes
-      # This method simply fills in the placeholders - :id, :prev, :a, :b etc - 
-      # in the data-url and returns the fully formed ajax url to call
-
-      ajax = obj.dataset.url
+    elaborate : (obj, json = null, tab = null) ->
+      ajax = if tab? then tab.dataset.panelUrl else obj.dataset.url
+      alert $(tab).attr('id') if tab? 
       return ajax unless ajax? # => basically null 
 
       for m in ["prev", "id"]
         if ajax.indexOf ":#{m}" isnt -1 # => :prev / :id present 
-          from = if obj.dataset[m]? then $("##{obj.dataset[m]}") else $(obj)
+          if obj.dataset[m]?
+            from = $("##{obj.dataset[m]}")
+          else if (tab? and tab.dataset[m]?)
+            from = $("##{tab.dataset[m]}")
+          else from = $(obj)
+
           marker = from.attr 'marker'
           marker = if marker? then marker else from.parent().attr('marker')
           ajax = ajax.replace ":#{m}", marker
@@ -199,25 +200,6 @@ jQuery ->
       if proceed
         karo.ajaxCall ajax
         pagination.url.set pgn, ajax
-      
-    ###
-    ajax = this.dataset.url
-    if ajax?
-      proceed = true
-      if $(this).hasClass 'writeonce'
-        proceed = $($(this).attr('href')).children().length is 0
-
-      if proceed
-        # Remember - :prev and :id point to an <a>. The marker, however, is set on the parent <li>
-        for ph in ["prev", "id"]
-          if ajax.indexOf ":#{ph}" isnt -1 # => :prev / :id present 
-            from = if this.dataset[ph]? then $("##{this.dataset[ph]}") else $(this)
-            marker = from.attr 'marker'
-            marker = if marker? then marker else from.parent().attr('marker')
-            ajax = ajax.replace ":#{ph}", marker
-        karo.ajaxCall ajax
-        pagination.url.set pgn, ajax
-    ###
 
     # Set base-ajax url on containing panel
     ul = $(this).parent().parent() # => ul.nav-tabs
@@ -376,15 +358,10 @@ jQuery ->
         menu.close $(m)
 
       # 4. Issue AJAX request - if defined and set on containing panel
-      panel = $(this).closest('.g-panel')[0]
-      ajax = panel.dataset.url
-      unless ajax is 'null'
-        if activeTab?
-          id = activeTab.dataset.id || $(this).attr('marker')
-          url = ajax.replace ":id", id
-          prev = if activeTab.dataset.prev? then $(activeTab.dataset.prev) else $(activeTab).prev()
-          url = url.replace ":prev", prev.attr('marker') if prev.length isnt 0
-          karo.ajaxCall url, menu.update
+      tab = karo.tab.find this
+      tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
+      ajax = karo.url.elaborate this, null, tab
+      karo.ajaxCall ajax if ajax?
 
       # 5. Switch to next-tab - if so specified
       if activeTab?
