@@ -65,7 +65,7 @@ jQuery ->
       menu = 'per-ws'
       clickFirst = true
     else if url.match(/ws\/summary/)
-      target = $("#pane-teacher-rc-2")
+      target = $("#pane-tc-rc-2")
       parentKey = "students"
       childKey = "student"
 
