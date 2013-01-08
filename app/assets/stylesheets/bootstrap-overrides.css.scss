@@ -396,8 +396,8 @@ form.smart {
 #fdb-panel { 
   > .row-fluid { 
     padding: {
-      top: 5px ;
-      bottom: 5px ;
+      top: 8px ;
+      bottom: 10px ;
     }
     &:not([class~='navbar']) { border-bottom: 1px solid $lightgray ; }
   } 
@@ -406,15 +406,15 @@ form.smart {
 
   .text {
     font-size: 10px ;
-    color: white ;
+    color: $gradians-blue ;
   } 
 
   .question { 
     color: white ;  
     font: { 
-      family: cursive ;
-      size: 12px ;
+      size: 11px ;
     } 
+    text-transform: lowercase ;
   }
   .bottomline { color: $orange ; font-size: 12px ; }
   .score { 
