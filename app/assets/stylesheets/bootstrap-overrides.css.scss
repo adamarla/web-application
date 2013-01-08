@@ -484,3 +484,19 @@ form.smart {
   } 
 }
 
+#how-it-works { 
+  .carousel-caption {
+    h4 {
+      font:{
+        size: 18px ;
+        weight: 300 ;
+      }
+      color: $orange ;
+    } 
+
+    p {
+      font-size: 12px ;
+      color: white ;
+    } 
+  } 
+}

@@ -32,5 +32,27 @@
                         %input.input-small{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-primary{ :type => :submit }= "Sign In"
                         %button#btn-register.btn.white-bg{ :type => :button }= "Register"
-      .hero-unit
+      .row-fluid
+        .hero-unit.span6
+          #how-it-works.carousel.slide
+            .carousel-inner
+              .item 
+                .carousel-caption
+                  %h4= "Select questions to make a Worksheet"
+                  %p
+                    We have a growing database of questions. And you are welcome to send your own 
+                = image_tag "landing/carousel-I.jpg"
+              .item 
+                .carousel-caption
+                  %h4= "Students do their thing"
+                  %p
+                    They write as they normally do - with a pen, on paper
+                = image_tag "landing/carousel-II.jpg"
+              .item 
+                .carousel-caption
+                  %h4= "We take a first-look"
+                  %p
+                    And provide feedback and statistics
+                = image_tag "landing/carousel-III.jpg"
+
 

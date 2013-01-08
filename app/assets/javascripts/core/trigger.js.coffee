@@ -36,6 +36,8 @@ jQuery ->
 
   $.ajax pingargs
 
+  $('#how-it-works').carousel()
+
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
