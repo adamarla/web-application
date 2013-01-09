@@ -427,11 +427,11 @@ form.smart {
 .tabs-left { 
   > .nav-tabs {
     > li {
+      font-size: 13px ;
       > a.split {
         border-radius: 0px ;
         background: rgba(70,136,71,0.8) ;
         font: { 
-          size: 15px ;
           family: cursive ;
         } 
         text-align: center ;
@@ -443,7 +443,7 @@ form.smart {
         } 
 
         &~a { 
-          font-size: 18px ;
+          padding-right: 4px ;
           border: 1px solid white ;
           border-right: none ;
           margin: {
