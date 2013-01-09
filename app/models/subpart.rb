@@ -56,7 +56,12 @@ class Subpart < ActiveRecord::Base
   def self.in_quiz(quiz)
     # Returns the ordered list - by position in the quiz - of subparts in a quiz
     qids = QSelection.where(:quiz_id => quiz).order(:index).map(&:question_id)
-    where(:question_id => qids).sort{ |m,n| qids.index(m.question_id) <=> qids.index(n.question_id) }.sort{ |m,n| m.index <=> n.index } 
+    where(:question_id => qids).sort{ |m,n| 
+      m.index * qids.index(m.question_id) <=> n.index * qids.index(n.question_id) 
+    }.sort { |m,n| 
+      qids.index(m.question_id) <=> qids.index(n.question_id) 
+    } 
+    #where(:question_id => qids).sort{ |m,n| m.index <=> n.index }.sort{ |m,n| qids.index(m.question_id) <=> qids.index(n.question_id) }
   end
 
 end

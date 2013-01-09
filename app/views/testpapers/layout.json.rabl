@@ -13,5 +13,5 @@ object false
   node(:user) { @who }
 
   node(:preview) { 
-    { :id => "#{@ws.quiz_id}-#{@ws.id}", :scans => @gr.map(&:scan).uniq.sort }
+    { :id => "#{@ws.quiz_id}-#{@ws.id}", :scans => @gr.with_scan.map(&:scan).uniq.sort }
   } 
