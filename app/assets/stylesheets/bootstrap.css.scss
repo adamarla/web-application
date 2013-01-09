@@ -13,6 +13,7 @@ $deep-blue: #0081c2 ;
 $gradians-blue : #6ca7ab ;
 $orange : #fda500 ;
 $background: darken($panel-colour, 12%) ;
+$gray: #191919 ; // rgb(25,25,25)
 
 .clearfix {
   *zoom: 1;
@@ -4727,7 +4728,7 @@ a.thumbnail:hover {
   line-height: 21px;
   color: inherit;
   // background-color: #eeeeee;
-  background-color: transparent ;
+  background-color: rgba(25,25,25,0.7) ;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;

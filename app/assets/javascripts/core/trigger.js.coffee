@@ -36,7 +36,9 @@ jQuery ->
 
   $.ajax pingargs
 
-  $('#how-it-works').carousel()
+  $('#how-it-works').carousel({
+    interval : 5000
+  })
 
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
