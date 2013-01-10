@@ -204,6 +204,8 @@ jQuery ->
        Yes, this method does not allow a contextual menu to open if the 
        .single-line hasnt been selected first 
     ###
+    return false if $(this).hasClass 'disabled'
+
     clickedObj = $(event.target)
     m = null
 
