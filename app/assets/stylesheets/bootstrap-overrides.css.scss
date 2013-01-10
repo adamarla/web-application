@@ -12,6 +12,8 @@ $panel-colour: lighten(black, 17%) ;
 $deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
 $lightblue: lighten($deep-blue, 23%) ;
+$red: #d72323 ;
+$green: #57bc20 ;
 
 .navbar-inverse, .dropdown-menu {
   li > a {
@@ -162,6 +164,26 @@ $lightblue: lighten($deep-blue, 23%) ;
       color: $background ; 
     } 
   } 
+  &.disabled{
+    color: $lightgray ;
+    .subtext { color: $lightgray ; }
+  }
+  &.red {
+    .badge { 
+      background-color: $red ; 
+    }
+  } 
+  &.orange {
+    .badge { 
+      background-color: $orange ; 
+    }
+  } 
+  &.nodata {
+    .badge { display: none ; } 
+  } 
+  &.green {
+    .badge { background-color: $green ; }
+  } 
 
   > .dropdown { 
     font-size: 10px ;
@@ -172,7 +194,7 @@ $lightblue: lighten($deep-blue, 23%) ;
 
   .subtext { 
     font-size: 10px ;
-    color: $orange ;
+    color: inherit ; 
     text-transform: uppercase ;
   } 
 

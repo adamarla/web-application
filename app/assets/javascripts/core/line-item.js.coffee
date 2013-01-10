@@ -6,11 +6,13 @@ window.line = {
       Passed JSON is assumed to have atleast the following keys
         name: written as the first line 
         id: set as 'marker' attribute 
-        tag (optional): written as the second line in a .two-line - if provided
+        klass (optional) : Set on the .single-line as a class attribute - if provided
     ###
     # type = if json.tag? then '.two-line' else ''
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
+    obj.addClass(json.klass) if json.klass?
+
     spanLeft = 11
 
     # Write contents of JSON 

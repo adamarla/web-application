@@ -13,7 +13,7 @@ object false
           :graded => @answer_sheet.of_student(s.id).first.graded?,
           :tag => @answer_sheet.of_student(s.id).first.graded_thus_far_as_str, # the "a/b" bit 
           :y => @n - @students.index(s),
-          :badge => @answer_sheet.of_student(s.id).first.honest?
+          :klass => @answer_sheet.of_student(s.id).first.honest?
         }
       }
     }

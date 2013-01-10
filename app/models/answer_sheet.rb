@@ -28,13 +28,39 @@ class AnswerSheet < ActiveRecord::Base
     # Returns the confidence we have that the student truly earned 
     # the points he/she earned. Store only if honesty scores available for 
     # all responses
-    return self.honest unless self.honest.nil?
-    g = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).with_scan
-    n = g.count - g.ungraded.count 
 
-    posns = g.graded.map(&:feedback).map{ |m| m & 15 }
+    unless self.honest.nil?
+      case self.honest
+        when 0 then return :red
+        when 1, 2, 3 then return :orange 
+        when 4 then return :green 
+      end
+    end
+
+    g = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    scans = g.with_scan
+
+    return :disabled if scans.count == 0
+
+    posns = scans.graded.map(&:feedback).map{ |m| m & 15 }.uniq
+    scores = Requirement.where(:honest => true, :posn => posns)
+    
+    return :nodata if scores.empty?
+    lowest = scores.map(&:weight).sort.first
+
+    if scans.ungraded.count == 0
+      self.update_attribute :honest, lowest 
+    end
+
+    case lowest
+      when 0 then return :red
+      when 1,2,3 then return :orange
+      else return :green
+    end
+
+
+=begin
     score = 0 
-
     posns.uniq.each do |m| 
       score += (Requirement.where(:honest => true, :posn => m).map(&:weight).first * posns.count(m))  
     end 
@@ -44,6 +70,7 @@ class AnswerSheet < ActiveRecord::Base
       self.update_attribute(:honest, score) unless g.ungraded.count
     end
     return ( n ? score : "-" ) # for times when none of the responses have been graded
+=end
   end 
 
   def complete?
