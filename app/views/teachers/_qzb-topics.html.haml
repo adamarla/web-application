@@ -6,13 +6,13 @@
 
   .row-fluid.navbar
     = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"
-  #vert-tab.tabbable.tabs-left.no-remove
-    %ul.nav.nav-tabs.span4.nopurge-on-show
+  #vert-tab.tabbable.tabs-left
+    %ul.nav.nav-tabs.span4.nopurge-ever
       - teacher.verticals.each do |m|
         %li{ :marker => "#{m.id}" }
           = simple_link :for => "#{m.name}", :toggle => :tab, 
           :href => "#vert-#{m.id}", :url => "course/topics_in?id=:prev&vertical=:id",
-          :prev => 'tab-qzb-courses', :class => :writeonce
+          :prev => 'tab-qzb-courses'
 
     -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
     .tab-content.span7

@@ -41,9 +41,8 @@ jQuery ->
       karo.tab.enable 'tab-qzb-questions'
       leftTabs.create '#qzb-questions', json, {
         klass : {
-          ul : "span4 nopurge-on-show",
+          ul : "span4 nopurge-ever",
           content : "span7",
-          a : "writeonce",
           div : "multi-select"
         },
         data : {
@@ -113,10 +112,8 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      purge = if target.hasClass('writeonce') then target.children().length is 0 else true
-      if purge
-        karo.empty target
-        line.write(target, m[childKey], menu) for m in json[parentKey]
+      karo.empty target
+      line.write(target, m[childKey], menu) for m in json[parentKey]
 
       # Enable / disable paginator as needed 
       if json.last_pg?

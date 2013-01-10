@@ -58,10 +58,8 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      purge = if target.hasClass('writeonce') then target.children().length is 0 else true
-      if purge
-        karo.empty target
-        line.write(target, m[childKey], menu) for m in json[parentKey]
+      karo.empty target
+      line.write(target, m[childKey], menu) for m in json[parentKey]
 
       # Enable / disable paginator as needed 
       if json.last_pg?

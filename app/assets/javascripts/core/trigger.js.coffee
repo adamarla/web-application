@@ -66,9 +66,15 @@ jQuery ->
     event.stopPropagation()
 
     # Empty the last-enabled tab's contents - if needed
-    unless $(event.target).closest('.nav-tabs').eq(0).hasClass 'nopurge-on-show'
-      prevTab = $(event.relatedTarget)
-      karo.empty prevTab.attr('href') unless prevTab.length is 0
+    prevTab = event.relatedTarget
+    unless $(prevTab).length is 0
+      unless karo.checkWhether prevTab, 'nopurge-on-inactive'
+        karo.empty $(prevTab).attr('href')
+
+    # Empty the currently-enabled tab's contents - if needed
+    empty = not karo.checkWhether(this, 'nopurge-on-show')
+    if empty
+      karo.empty $(this).attr('href')
 
     # Disable paginator in parent panel 
     panel = $(this).closest('.g-panel')[0]
@@ -79,7 +85,7 @@ jQuery ->
     ajax = karo.url.elaborate this
     if ajax?
       proceed = true
-      if $(this).hasClass 'writeonce'
+      if karo.checkWhether this, 'nopurge-on-show'
         proceed = $($(this).attr('href')).children().length is 0
       if proceed
         karo.ajaxCall ajax
@@ -110,6 +116,9 @@ jQuery ->
 
       for m in li.nextAll('li')
         $(m).addClass 'disabled'
+        tab = $(m).children('a')[0]
+        unless karo.checkWhether tab, 'nopurge-on-disable'
+          karo.empty $(tab).attr('href')
       ###
       for m in li.siblings('li')
         $(m).addClass 'hide'
