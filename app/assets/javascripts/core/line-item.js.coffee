@@ -60,7 +60,12 @@ window.line = {
     # If JSON has :tag 
     if json.tag?
       subtext.text json.tag
-      spanLeft -= 2
+      unless mn
+        spanLeft -=3
+        subtext.removeClass 'span2'
+        subtext.addClass 'span3'
+      else
+        spanLeft -= 2
     else
       subtext.remove()
     textRow = text.parent()
