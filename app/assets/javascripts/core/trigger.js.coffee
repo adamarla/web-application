@@ -306,6 +306,4 @@ jQuery ->
   ## Auto-click the first default link 
   #####################################################################
 
-   for m in $('#toolbox > .dropdown-menu')
-     n.click() for n in $(m).find("a[data-default-lnk='true']").eq(0)
-
+   $("#toolbox > ul[role='menu']").find("a[data-default-lnk='true']").eq(0).click()
