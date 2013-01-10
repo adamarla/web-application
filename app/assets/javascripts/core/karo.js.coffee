@@ -17,7 +17,7 @@ window.karo = {
       csrf.appendTo node
     else
       for m in node.children()
-        if $(m).hasClass 'no-remove'
+        if karo.checkWhether m, 'no-remove'
           $(z).empty() for z in $(m).find('.purge')
         else
           $(m).remove()
@@ -25,12 +25,23 @@ window.karo = {
 
   unhide : (child, panel) -> # hide / unhide children in a panel
     for m in panel.children()
-      if $(m).hasClass 'pagination'
+      if karo.checkWhether m, 'pagination'
         pagination.disable $(m)
         continue
       id = $(m).attr 'id'
       if id is child then $(m).removeClass('hide') else $(m).addClass('hide')
     return true
+
+  checkWhether : (node, klass) ->
+    # 'node' could be anything but is generally expected to be ul > li > a in a .nav-tabs. 
+    # If either it or the grand-parent <ul> has class = klass, then return true
+    # Note: If the grand-parent <ul> has class = klass, then all <a> within it 
+    # do too
+
+    return true if $(node).hasClass klass
+    ul = $(node).closest('ul.nav-tabs').eq(0)
+    return false if ul.length is 0
+    return ul.hasClass(klass)
 
   tab : {
     enable : (id) ->
