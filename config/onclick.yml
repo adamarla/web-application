@@ -267,3 +267,7 @@ tab-other :
 
 lnk-logout :
   notouch : true
+
+m-downloads : 
+  menu : user-downloads
+  toggle : dropdown

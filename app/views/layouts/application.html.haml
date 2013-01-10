@@ -1,4 +1,9 @@
 
+- server = "#{Gutenberg['server']}"
+-content_for :toolbox do
+  #toolbox.hidden 
+    = render :partial => 'menus/user/download', :locals => { :server => server }
+
 !!!5
 
 %html{html_attrs}
@@ -17,13 +22,8 @@
               %ul.nav.span8.pull-right
                 %li
                   %a{ :href => "#"}= "Home"
-                %li
-                  %a{ :href => "#"}= "About Us"
                 %li.dropdown
-                  %a.dropdown-toggle{ :href => "#", "data-toggle" => :dropdown, :menu => '#user-downloads', :fixed => :true }
-                    Scanbot
-                    %b.caret
-                  = render :partial => 'menus/user/download'
+                  = simple_link :for => "Downloads", :id => 'm-downloads', :as => :dropdown 
                 %li
                   #signin-form.pull-right
                     %form.form-inline.pull-right{ :action => session_path(:account), :method => :post }
@@ -54,5 +54,7 @@
                   %p
                     And provide feedback and statistics
                 = image_tag "landing/carousel-III.jpg"
+
+    = yield :toolbox
 
 

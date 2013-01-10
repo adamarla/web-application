@@ -1,7 +1,7 @@
 
 -# Customized markers 
 - tchr = current_account.loggable
-- srvr = "#{Gutenberg['server']}"
+- server = "#{Gutenberg['server']}"
 
 -content_for :toolbox do
   #toolbox.hidden 
@@ -14,7 +14,7 @@
     = render :partial => 'menus/teacher/quiz_filter'
     = render :partial => 'menus/teacher/per-quiz'
     = render :partial => 'menus/teacher/per-ws'
-    = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => srvr }
+    = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => server }
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/teacher/workbench'
     = render :partial => 'menus/teacher/trapdoors' 
