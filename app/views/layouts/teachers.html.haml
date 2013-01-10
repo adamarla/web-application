@@ -42,7 +42,9 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span4{ :href => "#"}= "Gradians.com"
+              %a.brand.span4{ :href => "#"}
+                = image_tag "logo-mit-beta-2.png"
+                .tagline.span6.offset3= "Grades will happen"
               %ul.nav.span8.pull-right
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown

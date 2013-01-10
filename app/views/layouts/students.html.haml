@@ -25,7 +25,9 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span4{ :href => "#"}= "Gradians.com"
+              %a.brand.span4{ :href => "#"}
+                = image_tag "logo-mit-beta-2.png"
+                .tagline.span6.offset3= "Grades will happen"
               %ul.nav.span8.pull-right
                 %li#cp-account-link.dropdown.pull-right
                   = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'

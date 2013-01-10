@@ -365,7 +365,7 @@ button[data-toggle='button'] {
 } 
 
 #desktop { 
-  margin-top: 70px ;
+  margin-top: 110px ;
 } 
 
 form.smart { 
@@ -500,3 +500,20 @@ form.smart {
     } 
   } 
 }
+
+.hero-unit {
+  margin-top: 60px ;
+} 
+
+.tagline {
+  font: {
+    size: 12px ;
+    weight: 400;
+  } 
+  color: $orange ;
+  margin-top: -5% ;
+  text: {
+    align: right ;
+    transform: lowercase ;
+  } 
+} 
