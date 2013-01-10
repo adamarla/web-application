@@ -143,15 +143,16 @@ $green: #57bc20 ;
   } 
   font-size: 12px ; 
   cursor: pointer ; 
-  border-bottom: 1px solid $lightgray ;
-  text-transform: lowercase ;
+  // border-bottom: 1px solid $lightgray ;
+  color: white ;
+  text-transform: lowercase ; 
   &:nth-child(odd) {
-    color: white ; 
+    background-color: lighten($background, 5%) ; 
   } 
   &:nth-child(even) {
-    color: $gradians-blue ;
     font-weight: 400 ;
-  } 
+  }
+  
   &:hover {
     font-weight: 500 ;
   } 
