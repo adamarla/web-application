@@ -38,9 +38,17 @@ window.karo = {
     # Note: If the grand-parent <ul> has class = klass, then all <a> within it 
     # do too
 
+    nopurge = false
+    if klass.match(/nopurge/)
+      nopurge = true
+      return true if $(node).hasClass 'nopurge-ever'
+
     return true if $(node).hasClass klass
+
     ul = $(node).closest('ul.nav-tabs').eq(0)
     return false if ul.length is 0
+    if nopurge
+      return true if ul.hasClass 'nopurge-ever'
     return ul.hasClass(klass)
 
   tab : {
