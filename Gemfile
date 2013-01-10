@@ -43,6 +43,8 @@ group :production do
   gem 'thin'
 end
 
+gem 'dalli' # for caching
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
