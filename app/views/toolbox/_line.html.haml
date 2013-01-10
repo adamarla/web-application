@@ -7,17 +7,13 @@
 
 -# A single line entry - with mandatory text and optional subtext 
 .row-fluid.single-line
-  .dropdown
+  .dropdown.span2
     %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown, :up => 2 }
       More ...
       %span.caret
-  .row-fluid
-    .span1
-      .badge
-    .span4
-      .long-badge
-    .text.offset1
-      .row-fluid
-      = check_box_tag :tbd, :t, false, :class => :hide
-    .subtext
-      .row-fluid
+  .span1.badge
+  .span2.long-badge
+  .span
+    .text
+    = check_box_tag :tbd, :t, false, :class => :hide
+  .span2.subtext
