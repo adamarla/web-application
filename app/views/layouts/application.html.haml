@@ -34,29 +34,22 @@
                         %input.input-small{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-primary{ :type => :submit }= "Sign In"
                         %button#btn-register.btn.white-bg{ :type => :button }= "Register"
-      - cache do
-        .row-fluid
-          .hero-unit.span6
-            #how-it-works.carousel.slide
-              .carousel-inner
-                .item 
-                  .carousel-caption
-                    %h4= "1. Make a worksheet"
-                    %p
-                      Pick questions from our growing database on topics you would like students to work on
-                  = image_tag "landing/carousel-I.jpg"
-                .item 
-                  .carousel-caption
-                    %h4= "2. Students do their thing"
-                    %p
-                      They write as they normally do - with a pen, on paper
-                  = image_tag "landing/carousel-II.jpg"
-                .item 
-                  .carousel-caption
-                    %h4= "3. We take a first-look"
-                    %p
-                      And provide feedback and statistics
-                  = image_tag "landing/carousel-III.jpg"
+
+      .row-fluid
+        .hero-unit
+          #how-it-works.carousel.slide
+            .carousel-inner
+              .item 
+                = image_tag "landing/car-v1.png", :class => :offset1
+              .item 
+                = image_tag "landing/car-v2.png", :class => :offset1
+              .item 
+                = image_tag "landing/car-v3.png", :class => :offset1
+              -#
+                .carousel-caption
+                  %h4= "1. Make a worksheet"
+                  %p
+                    Pick questions from our growing database on topics you would like students to work on
 
     = yield :toolbox
 
