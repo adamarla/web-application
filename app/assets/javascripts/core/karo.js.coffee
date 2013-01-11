@@ -17,6 +17,7 @@ window.karo = {
       csrf.appendTo node
     else
       for m in node.children()
+        continue if $(m).hasClass 'no-touch'
         if karo.checkWhether m, 'no-remove'
           $(z).empty() for z in $(m).find('.purge')
         else
