@@ -53,6 +53,9 @@
                   = simple_link :for => "Report Cards", :as => :dropdown, :id => 'm-report-cards'
                 %li.dropdown
                   = simple_link :for => "Workbench", :as => :dropdown, :id => 'm-teacher-workbench'
+                %li.dropdown
+                  = simple_link :as => :dropdown, 
+                    :id => 'm-teacher-workbench', :icon => "icon-white icon-bell"
                 %li#cp-account-link.dropdown.pull-right
                   = simple_link :for => "Hello, #{tchr.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
