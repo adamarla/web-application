@@ -15,11 +15,12 @@
     = render :partial => 'menus/teacher/per-quiz'
     = render :partial => 'menus/teacher/per-ws'
     = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => server }
-    = render :partial => 'menus/user/account'
     = render :partial => 'menus/teacher/workbench'
     = render :partial => 'menus/teacher/trapdoors' 
     = render :partial => 'menus/teacher/rc' 
 
+    = render :partial => 'menus/user/account'
+    = render :partial => 'menus/user/notifications'
     = render :partial => 'toolbox/fdb-panel'
 
   -# #modals by itself is not hidden. But the modal partials within it are by themselves 
@@ -55,7 +56,7 @@
                   = simple_link :for => "Workbench", :as => :dropdown, :id => 'm-teacher-workbench'
                 %li.dropdown
                   = simple_link :as => :dropdown, 
-                    :id => 'm-teacher-workbench', :icon => "icon-white icon-bell"
+                    :id => 'm-notifications', :icon => "icon-white icon-bell"
                 %li#cp-account-link.dropdown.pull-right
                   = simple_link :for => "Hello, #{tchr.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid

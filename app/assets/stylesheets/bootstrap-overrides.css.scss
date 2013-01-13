@@ -16,8 +16,8 @@ $red: #d72323 ;
 $green: #57bc20 ;
 
 .navbar-inverse, .dropdown-menu {
-  li > a {
-    color: white ;
+  li { 
+    > a { color: white ; }
   }
 } 
 
@@ -41,6 +41,13 @@ $green: #57bc20 ;
       padding: 0px 20px ;
       text-transform: lowercase ;
     } 
+    &.notice {
+      padding: 5px ;
+      border-bottom: 1px solid white ;
+      font-size: 11px ;
+      color: white ;
+      > .subtext { color: $orange ; }
+    }
   } 
 } 
 
@@ -541,4 +548,9 @@ form.smart {
     align: right ;
     transform: lowercase ;
   } 
+} 
+
+#m-notifications { 
+  border-radius: 4px ;
+  &.on { background-color: $deep-blue ; }
 } 

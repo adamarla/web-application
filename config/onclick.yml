@@ -271,3 +271,7 @@ lnk-logout :
 m-downloads : 
   menu : user-downloads
   toggle : dropdown
+
+m-notifications :
+  menu : notifications
+  toggle : dropdown
