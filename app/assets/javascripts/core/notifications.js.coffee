@@ -37,9 +37,10 @@ window.notifier = {
     if json.notify.subtext?
       $("<div class='subtext'>#{json.notify.subtext}</div>").appendTo li
 
-    # get the notifier to start blinking
-    notifier.ticker = self.setInterval () -> notifier.blink(),
-    1000
+    # get the notifier to start blinking - unless already
+    unless notifier.ticker?
+      notifier.ticker = self.setInterval () -> notifier.blink(),
+      1000
     return true
 
   blink : () ->
@@ -54,4 +55,5 @@ jQuery ->
   $('#m-notifications').click ->
     window.clearInterval(notifier.ticker) if notifier.ticker?
     notifier.obj.removeClass 'on'
+    notifier.ticker = null
     return true
