@@ -11,7 +11,8 @@ class QuizzesController < ApplicationController
     students = params[:checked].keys   # we need just the IDs
     Delayed::Job.enqueue BuildTestpaper.new(quiz.id, students), :priority => 0, :run_at => Time.zone.now
     at = Delayed::Job.where('failed_at IS NULL').count
-    render :json => { :status => "Queued", :at => at }, :status => :ok
+    render :json => { :notify => { :text => "Worksheet received", 
+                                   :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
   end
 
   def list

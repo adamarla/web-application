@@ -106,7 +106,7 @@ jQuery ->
       target = $("#pane-#{type}")
       parentKey = "rqms"
       childKey = "rqm"
-    else if url.match(/teacher\/build_quiz/)
+    else if url.match(/teacher\/build_quiz/) || url.match(/quiz\/assign/)
       notifier.add json
 
     ############################################################
