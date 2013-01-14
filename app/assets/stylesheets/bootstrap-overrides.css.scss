@@ -518,6 +518,11 @@ form.smart {
 
 #how-it-works { 
   width: 100% ;
+  .attribution {
+    font-size: 10px ;
+    color: $gradians-blue ; 
+    bottom: 0px ;
+  } 
   .carousel-caption {
     left: 40%;
     right: 13%;
