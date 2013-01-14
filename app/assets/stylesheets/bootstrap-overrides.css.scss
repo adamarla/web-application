@@ -517,7 +517,13 @@ form.smart {
 }
 
 #how-it-works { 
+  width: 100% ;
   .carousel-caption {
+    left: 40%;
+    right: 13%;
+    padding: 10px ;
+    border-radius: 3px 3px 0px 0px ; 
+    bottom: 0px ; 
     h4 {
       font:{
         size: 18px ;
@@ -528,7 +534,9 @@ form.smart {
 
     p {
       font-size: 12px ;
-      color: white ;
+      color: white ; 
+      font-weight: 400 ;
+      line-height: 17px ;
     } 
   } 
 }

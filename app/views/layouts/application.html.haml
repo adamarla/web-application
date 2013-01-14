@@ -41,15 +41,25 @@
             .carousel-inner
               .item 
                 = image_tag "landing/slideshow-1.png"
+                .carousel-caption.offset1
+                  %p
+                    Pick from our database of questions. Or send us your own to add and use 
               .item 
                 = image_tag "landing/slideshow-2.png"
+                .carousel-caption.offset1
+                  %p
+                    Students do their work as they normally do - with pen on paper - on 
+                    their individually encoded worksheets
               .item 
                 = image_tag "landing/slideshow-3.png"
-              -#
-                .carousel-caption
-                  %h4= "1. Make a worksheet"
+                .carousel-caption.offset1
                   %p
-                    Pick questions from our growing database on topics you would like students to work on
+                    \... and provide our feedback. Teachers get a detailed picture of how an individual 
+                    student is doing on a specific topic
+            %a.carousel-control.left{ :href => "#how-it-works", 'data-slide' => :prev }
+              \&lsaquo;
+            %a.carousel-control.right{ :href => "#how-it-works", 'data-slide' => :next }
+              \&rsaquo;
 
     = yield :toolbox
 
