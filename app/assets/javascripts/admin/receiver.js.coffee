@@ -153,17 +153,3 @@ jQuery ->
         $('#edit-course').dialog('open')
     return true
 
-  $('#block-db-operation-summary').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/examiner\/block_db_slots/)
-    return if matched is null
-
-    e.stopPropagation()
-    json = $.parseJSON xhr.responseText
-    target = $('#created-slots')
-    target.hide()
-    target.empty() # purge any old summary from previous call
-    for slot in json.slots
-      $("<li class='code'>#{slot}</li>").appendTo target
-
-    target.fadeIn('slow')
-    return true

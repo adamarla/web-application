@@ -34,7 +34,7 @@ class ExaminersController < ApplicationController
   def block_db_slots
     examiner = Examiner.find params[:id]
     slots = examiner.block_db_slots
-    render :json => {:slots => slots}, :status => :ok
+    render :json => {:notify => { :text => "6 slots blocked", :subtext => "Do 'git fetch origin/master'"} }, :status => :ok
   end
 
   def receive_scans

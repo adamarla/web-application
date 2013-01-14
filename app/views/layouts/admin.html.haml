@@ -38,6 +38,7 @@
     = render :partial => 'toolbox/preview'
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/admin/workbench'
+    = render :partial => 'menus/user/notifications'
 
   
 - content_for :modals do
@@ -64,6 +65,9 @@
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
                   = simple_link :for => "Workbench", :as => :dropdown, :id => 'm-admin-wb'
+                %li.dropdown
+                  = simple_link :as => :dropdown, 
+                    :id => 'm-notifications', :icon => "icon-white icon-bell"
                 %li#cp-account-link.dropdown.pull-right
                   = simple_link :for => "Hello, #{admin.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
