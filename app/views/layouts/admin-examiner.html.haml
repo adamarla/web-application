@@ -1,43 +1,36 @@
 
 -# Customized markers 
-- admin = current_account.loggable
+- user = current_account.loggable
+- is_admin = current_account.role == :admin
 - srvr = "#{Gutenberg['server']}"
 
 - content_for :toolbox do 
   #toolbox.hidden 
-    = render :partial => 'boards/new'
-    = render :partial => 'schools/new'
-    = render :partial => 'schools/edit'
-    = render :partial => 'courses/new'
-    = render :partial => 'courses/edit'
-    = render :partial => 'topics/new'
-    = render :partial => 'verticals/new'
-    = render :partial => 'teachers/new'
-    = render :partial => 'teachers/specialization'
-    = render :partial => 'students/new'
-    = render :partial => 'examiners/new'
-    = render :partial => 'videos/new'
-    = render :partial => 'admin/console'
+    - if is_admin
+      = render :partial => 'courses/new'
+      = render :partial => 'courses/edit'
+      = render :partial => 'topics/new'
+      = render :partial => 'verticals/new'
+      = render :partial => 'teachers/new'
+      = render :partial => 'teachers/specialization'
+      = render :partial => 'students/new'
+      = render :partial => 'examiners/new'
+      = render :partial => 'admin/upload_xls'
+      = render :partial => 'courses/summary'
+      = render :partial => 'syllabi/edit'
+      = render :partial => 'examiners/list'
+      = render :partial => 'teachers/list'
+      = render :partial => 'boards/controls'
+      = render :partial => 'courses/controls'
+      = render :partial => 'schools/controls'
+      = render :partial => 'topics/controls'
 
-    = render :partial => 'boards/controls'
-    = render :partial => 'courses/controls'
-    = render :partial => 'schools/controls'
-    = render :partial => 'topics/controls'
-    = render :partial => 'examiners/workbench'
     = render :partial => 'examiners/pending_suggestions'
     = render :partial => 'examiners/blockDbSlots'
-    = render :partial => 'admin/upload_xls'
-
-    = render :partial => 'schools/admin-view'
-    = render :partial => 'courses/summary'
-    = render :partial => 'syllabi/edit'
-    = render :partial => 'examiners/list'
-    = render :partial => 'teachers/list'
-  
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
     = render :partial => 'menus/user/account'
-    = render :partial => 'menus/admin/workbench'
+    = render :partial => 'menus/admin/workbench', :locals => { :is_admin => is_admin }
     = render :partial => 'menus/user/notifications'
 
   
@@ -54,7 +47,7 @@
 
   %body 
     .container-fluid 
-      #control-panel.g-panel.row-fluid{ :marker => "#{admin.id}" } 
+      #control-panel.g-panel.row-fluid{ :marker => "#{user.id}" } 
         .span12
           .navbar.navbar-inverse
             .navbar-inner
@@ -62,33 +55,38 @@
                 = image_tag "logo-mit-beta-2.png"
                 .tagline.span6.offset3= "Grades will happen"
               %ul.nav.span8.pull-right
-                -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
                   = simple_link :for => "Workbench", :as => :dropdown, :id => 'm-admin-wb'
                 %li.dropdown
                   = simple_link :as => :dropdown, 
                     :id => 'm-notifications', :icon => "icon-white icon-bell"
                 %li#cp-account-link.dropdown.pull-right
-                  = simple_link :for => "Hello, #{admin.first_name}", :as => :dropdown, :id => 'm-account'
+                  = simple_link :for => "Hello, #{user.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
-          #left-1
-            #schools.content.no-remove
-          #left-X
-          #left-2
-          #left-3
+
+          - if is_admin
+            #left-1
+              #schools.content.no-remove
+            #left-X
+            #left-2
+            #left-3
           #left-4
             = render :partial => 'toolbox/grd-pending'
-        #middle.g-panel.span4
-          = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
-          #middle-X
-        #right.g-panel.span4
-          = render :partial => 'toolbox/paginator', :locals => { :id => 'right-paginator', :url => '#' }
-          #right-X
+
+        - if is_admin
+          #middle.g-panel.span4
+            = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
+            #middle-X
+          #right.g-panel.span4
+            = render :partial => 'toolbox/paginator', :locals => { :id => 'right-paginator', :url => '#' }
+            #right-X
+
         #wide.g-panel.span8
-          #wide-1
-            = render :partial => 'admin/school-console'
+          - if is_admin
+            #wide-1
+              = render :partial => 'admin/school-console'
           #wide-X
           #wide-wait
             = render :partial => 'toolbox/wait'

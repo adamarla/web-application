@@ -24,7 +24,7 @@ class ExaminersController < ApplicationController
   end 
 
   def show
-    render :nothing => true, :layout => 'examiner'
+    render :nothing => true, :layout => 'admin-examiner'
   end
 
   def list 
