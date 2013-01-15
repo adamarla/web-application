@@ -567,3 +567,38 @@ form.smart {
   border-radius: 4px ;
   &.on { background-color: $deep-blue ; }
 } 
+
+
+#tag-misc-properties {
+  > form { 
+    margin-top: 20px ;
+  } 
+
+  .row-fluid:not([class~='subpart-tagging']) {
+    margin-bottom: 20px ;
+  } 
+
+  .subpart-tagging {
+    > .label { 
+      font: { 
+        size: 14px ;
+        weight: normal ;
+      } 
+      color: $orange ;
+      background-color: transparent ;
+    } 
+  } 
+}
+
+select { 
+  background-color: $panel-colour ;
+  color: white ;
+  max-width: 95% ;
+  border-radius: 1px ;
+
+  + .help-block {
+    font-size: 11px ;
+    color: $gradians-blue;
+    margin-top: -4px ;
+  } 
+} 

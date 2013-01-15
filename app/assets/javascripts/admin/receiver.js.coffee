@@ -117,12 +117,6 @@ jQuery ->
       coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
     else if url.match(/school/)
       coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
-    else if url.match(/vertical\/topics/)
-      for here,j in ['#tag-question-topics', '#define-course-topics']
-        if j isnt 0
-          scroll.loadJson json.topics, 'topic', $(here), scroll.having.select
-        else
-          scroll.loadJson json.topics, 'topic', $(here), scroll.having.radio
     else if url.match(/teacher\/specializations/)
       here = $('#teacher-specialization')
       scroll.overlayJson json.subjects, 'subject', here, '.list-item', 'nop', 'check'

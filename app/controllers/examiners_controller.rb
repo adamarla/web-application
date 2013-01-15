@@ -31,6 +31,10 @@ class ExaminersController < ApplicationController
     @examiners = Examiner.order(:last_name)
   end 
 
+  def untagged
+    @questions = Question.author(current_account.loggable_id).untagged
+  end
+
   def block_db_slots
     examiner = Examiner.find params[:id]
     slots = examiner.block_db_slots

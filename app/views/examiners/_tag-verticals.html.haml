@@ -1,0 +1,11 @@
+
+-# Left-side tabs - one per section
+#verticals-tab.tabbable.tabs-left.no-remove
+  %ul.nav.nav-tabs.span4
+    - Vertical.order(:name).each do |m|
+      %li
+        = simple_link :for => "#{m.name}", :toggle => :tab, :marker => "#{m.id}",
+        :href => "#pane-vertical-topics", :url => "vertical/topics.json?id=:id"
+
+  .tab-content.span7
+    #pane-vertical-topics.tab-pane

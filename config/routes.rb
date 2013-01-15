@@ -44,6 +44,7 @@ Webapp::Application.routes.draw do
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
+  match 'untagged/list' => 'examiners#untagged', :via => :get
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
   match 'receive/scans' => 'examiners#receive_scans', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
@@ -74,7 +75,7 @@ Webapp::Application.routes.draw do
   match 'topics/list' => 'topics#list', :via => :get
 
   # Question
-  resource :question, :only => [:update], :controller => :question
+  match 'tag/question' => 'question#tag', :via => :post
   match 'questions/list' => 'question#list', :via => :get
   match 'question/preview' => 'question#preview', :via => :get
 

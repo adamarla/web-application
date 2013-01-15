@@ -14,8 +14,16 @@ jQuery ->
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
 
-    if url.match(/examiner\/block_db_slots/)
+    if url.match(/examiner\/block_db_slots/) || url.match(/tag\/question/)
       notifier.add json
+    else if url.match(/untagged\/list/)
+      target = $('#pane-tag-pending')
+      parentKey = 'pending'
+      childKey = 'q'
+    else if url.match(/vertical\/topics/)
+      target = $('#pane-vertical-topics')
+      parentKey = 'topics'
+      childKey = 'topic'
     else
       matched = false
 

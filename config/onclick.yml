@@ -245,6 +245,28 @@ tab-school-faculty :
 tab-school-sektions :
   toggle : tab
 
+lnk-wb-tagging :
+  left :
+    show : left-3
+  wide :
+    show : wide-X
+  autoclick :
+    tab : tab-tag-pending
+
+tab-tag-pending :
+  toggle : tab 
+  url : untagged/list
+  panel :
+    url : question/preview.json?id=:id
+  autoclick :
+    tab : tab-tag-topic
+
+tab-tag-topic :
+  toggle : tab 
+
+tab-tag-misc :
+  toggle : tab 
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################
