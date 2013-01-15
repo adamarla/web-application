@@ -277,7 +277,7 @@ jQuery ->
   # to the .tab-pane within which the form is 
   ###############################################
 
-  $('.tab-content > .tab-pane > form').submit (event) ->
+  $('.tab-content > .tab-pane form').submit (event) ->
     action = this.dataset.action
     return true unless action?
 
