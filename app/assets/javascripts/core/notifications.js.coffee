@@ -31,11 +31,19 @@ window.notifier = {
     hours = date.getHours()
     min = date.getMinutes()
 
+    if hours > 12
+      ampm = "PM"
+      hours -= 12
+    else
+      ampm = "AM"
+
+    min = if min > 10 then min else "0#{min}"
+
     li = $("<li class='notice'></li>").prependTo notifier.target
-    $("<div class='text'>#{hours}:#{min} - #{json.notify.text}</div>").appendTo li
+    $("<div class='text'>#{hours}:#{min} #{ampm} - #{json.notify.text}</div>").appendTo li
 
     if json.notify.subtext?
-      $("<div class='subtext'>#{json.notify.subtext}</div>").appendTo li
+      $("<div class='offset2 subtext'>#{json.notify.subtext}</div>").appendTo li
 
     # get the notifier to start blinking - unless already
     unless notifier.ticker?
