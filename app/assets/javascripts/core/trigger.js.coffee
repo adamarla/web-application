@@ -140,7 +140,9 @@ jQuery ->
   $('.g-panel, .content, .tab-pane, #toolbox').on 'click', '.dropdown-menu > li > a', (event) ->
     return true if this.dataset.toggle is 'tab'
     return true if $(this).hasClass 'carousel-control'
-    return false if $(this).parent().hasClass 'dropdown-submenu' # force click on sth. in the submenu 
+
+    if $(this).parent().hasClass 'dropdown-submenu'
+      return false unless this.dataset.defaultLnk is 'true'
 
     event.stopImmediatePropagation()
     # (YAML) Hide / unhide panels as needed
