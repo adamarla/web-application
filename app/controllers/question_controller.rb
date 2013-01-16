@@ -24,8 +24,8 @@ class QuestionController < ApplicationController
       misc = params[:misc]
 
       if nparts > 0
-        lengths = subparts.map{ |m| m.last[:length] }
-        marks = subparts.map{ |m| m.last[:marks] }
+        lengths = subparts.map{ |m| m.last[:length].to_i } # :subpart => { 0 => { :length => x, :marks => y }, ... }
+        marks = subparts.map{ |m| m.last[:marks].to_i }
 
         # Step 1: Set the marks and lengths in TeX. Only when that succeeds
         # should one update the DB
