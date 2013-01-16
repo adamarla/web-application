@@ -1,7 +1,7 @@
 
 jQuery ->
 
-  $('#left').ajaxComplete (e,xhr, settings) ->
+  $('#left').ajaxSuccess (e,xhr, settings) ->
     url = settings.url
     matched = true
     json = $.parseJSON xhr.responseText
@@ -21,7 +21,6 @@ jQuery ->
     else if url.match(/ws\/layout/)
       # load student scans 
       preview.loadJson json, 'locker'
-
       # prep the feedback panel
       if json.user is 'Student'
         target = '#pane-st-rc-2'
@@ -34,7 +33,7 @@ jQuery ->
         shared : 'fdb-panel',
         split : splitTab,
         klass : {
-          ul : "span4 nopurge-on-show",
+          ul : "span4 nopurge-ever",
           content : "span7"
         },
         data : {
