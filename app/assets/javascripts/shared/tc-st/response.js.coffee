@@ -33,6 +33,7 @@ jQuery ->
         shared : 'fdb-panel',
         split : splitTab,
         klass : {
+          root : "purge-destroy",
           ul : "span4 nopurge-ever",
           content : "span7"
         },
