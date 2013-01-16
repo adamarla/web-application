@@ -10,18 +10,23 @@ window.karo = {
   empty : (node) ->
     node = if typeof node is 'string' then $(node) else node
 
-    if node.is 'form'
-      csrf = node.children('div').eq(0) # retain cross-site forgery protection
-      csrf = csrf.detach()
-      node.empty()
-      csrf.appendTo node
-    else
-      for m in node.children()
-        continue if $(m).hasClass 'no-touch'
-        if karo.checkWhether m, 'no-remove'
-          $(z).empty() for z in $(m).find('.purge')
-        else
-          $(m).remove()
+    csrf = if node.is 'form' then node.children().eq(0) else null
+    csrf = csrf.detach() if csrf?
+
+    children = node.children()
+
+    for m in children
+      continue if $(m).hasClass 'purge-skip'
+      if $(m).hasClass 'purge-blind'
+        $(m).empty() # but retain $(m) as empty-shell
+      else if $(m).hasClass 'purge-destroy'
+        $(m).remove() # => remove $(m) altogether 
+      else if $(m).hasClass('leaf') || $(m).children().length is 0
+        $(m).remove() # => leaf node. Hence remove 
+      else
+        karo.empty $(m) # => dive into non-leaf child 
+
+    csrf.prependTo node if csrf?
     return true
 
   unhide : (child, panel) -> # hide / unhide children in a panel
