@@ -5,15 +5,18 @@ jQuery ->
     blockKeyPress: false,
 
     initialize : () ->
-      preview = $('#wide > #wide-X').eq(0)
+      wideX = $('#wide > #wide-X').eq(0)
 
-      preview.empty() if preview.length isnt 0
+      $(m).addClass 'hide' for m in wideX.siblings()
+      wideX.removeClass 'hide'
+
+      wideX.empty() if wideX.length isnt 0
       obj = $('#toolbox > #wp-preview').clone()
       obj.attr 'id', 'wide-X-carousel' # Working copy should have a different ID
 
       for a in obj.children('a')
         $(a).attr 'href', '#wide-X-carousel'
-      obj.appendTo preview
+      obj.appendTo wideX
       return true
 
     execute : () ->
