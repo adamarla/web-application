@@ -57,3 +57,15 @@ jQuery ->
     notifier.obj.removeClass 'on'
     notifier.ticker = null
     return true
+
+  ###
+    Any ajaxSuccess that returns a JSON with :notify should be captured here
+  ###
+
+  $('#control-panel').ajaxSuccess (e,xhr,settings) ->
+    json = $.parseJSON xhr.responseText
+    if json.notify?
+      notifier.add json
+    return true
+
+
