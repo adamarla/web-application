@@ -34,3 +34,10 @@ jQuery ->
     qtagger.enable(subparts.eq(j), true) for j in [0...show]
     return true
 
+  $('#tab-tag-misc').on 'shown', (event) ->
+    event.stopPropagation()
+    pane = $( $(this).attr 'href' )
+    form = pane.find('form').eq(0)
+    qtagger.enable( $(m),false) for m in form.children('.subpart-tagging')
+    form.find('#num-subparts option:first').prop 'selected', true
+    return true

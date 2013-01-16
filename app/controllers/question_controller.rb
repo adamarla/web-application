@@ -20,7 +20,7 @@ class QuestionController < ApplicationController
 
     unless question.nil?
       subparts = params[:subpart]
-      nparts = subparts.keys.count
+      nparts = subparts.blank? ? 0 : subparts.keys.count
       misc = params[:misc]
 
       if nparts > 0
@@ -54,17 +54,40 @@ class QuestionController < ApplicationController
           m.check_for_completeness unless m.nil?
 
           if question.update_subpart_info lengths, marks
-            render :json => { :notify => { :text => "#{question.uid} tagged" } }, :status => :ok
+            render :json => { 
+                              :notify => { 
+                                :text => "#{question.uid} tagged" 
+                              } 
+                            }, :status => :ok
           else
-            render :json => { :notify => { :text => "#{question.uid} subpart info update failed" } }, :status => :bad_request
+            render :json => { 
+                              :notify => { 
+                                :text => "#{question.uid} subpart info update failed" 
+                              } 
+                            }, :status => :bad_request
           end
-        else 
-          render :json => { :notify => { :text => "#{question.uid} TeX tagging failed!" } }, :status => :bad_request 
+        else # manifest == nil 
+          render :json => { 
+                            :notify => { 
+                              :text => "#{question.uid} TeX tagging failed!" 
+                            } 
+                          }, :status => :bad_request 
         end
+      else
+        render :json => { 
+                          :notify => { 
+                            :text => "#{question.uid} tagging failed", 
+                            :subtext => "Subpart count is zero" 
+                          } 
+                        }, :status => :ok 
       end # of if nparts > 0
     else
-      render :json => { :notify => { :text => "Tagging failed", :subtext => "Question not in DB" } }, 
-             :status => :bad_request
+      render :json => { 
+                        :notify => { 
+                          :text => "Tagging failed", 
+                          :subtext => "Question not in DB" 
+                        } 
+                      }, :status => :bad_request
     end 
   end # of method 
 
