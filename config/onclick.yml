@@ -180,7 +180,7 @@ lnk-st-trigger :
   left : 
     show : left-1
   wide :
-    show : wide-X
+    show : wide-wait
   default-lnk : true
 
 tab-st-rc-1 :
