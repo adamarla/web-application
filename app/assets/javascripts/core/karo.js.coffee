@@ -12,19 +12,22 @@ window.karo = {
 
     csrf = if node.is 'form' then node.children().eq(0) else null
     csrf = csrf.detach() if csrf?
-
+    
     children = node.children()
 
-    for m in children
-      continue if $(m).hasClass 'purge-skip'
-      if $(m).hasClass 'purge-blind'
-        $(m).empty() # but retain $(m) as empty-shell
-      else if $(m).hasClass 'purge-destroy'
-        $(m).remove() # => remove $(m) altogether 
-      else if $(m).hasClass('leaf') || $(m).children().length is 0
-        $(m).remove() # => leaf node. Hence remove 
-      else
-        karo.empty $(m) # => dive into non-leaf child 
+    if node.hasClass 'purge-blind'
+      node.empty()
+    else if node.hasClass 'purge-destroy'
+      node.remove()
+      return true
+    else if node.hasClass 'leaf' || children.length is 0
+      node.remove()
+      return true
+    else if node.hasClass 'purge-skip'
+      csrf.prependTo node if csrf?
+      return true
+    else
+      karo.empty $(m) for m in children
 
     csrf.prependTo node if csrf?
     return true
