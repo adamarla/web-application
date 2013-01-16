@@ -43,10 +43,13 @@ $green: #57bc20 ;
     } 
     &.notice {
       padding: 5px ;
-      border-bottom: 1px solid white ;
       font-size: 11px ;
       color: white ;
-      > .subtext { color: $orange ; }
+      > .subtext { 
+        color: $orange ; 
+        font-size: 10px ;
+        text-transform: lowercase ;
+      }
     }
   } 
 } 
