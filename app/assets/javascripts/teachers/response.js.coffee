@@ -23,8 +23,8 @@ jQuery ->
       parentKey = 'quizzes'
       childKey = 'quiz'
       menu = "per-quiz"
-      # pgnUrl = "quizzes/list"
       clickFirst = true
+      karo.empty target
     else if url.match(/sektion\/students/)
       target = $("#lp-sektion-#{json.sektion}")
       parentKey = "students"
