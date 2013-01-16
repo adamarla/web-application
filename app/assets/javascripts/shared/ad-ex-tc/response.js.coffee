@@ -72,12 +72,6 @@ jQuery ->
   ########################################################
 
   $('#wide').ajaxComplete (e, xhr, settings) ->
-    ###
-    matched = settings.url.match(/quiz\/preview/) or
-              settings.url.match(/question\/preview/)
-    return if matched is null
-    ###
-
     matched = true
     url = settings.url
     json = $.parseJSON xhr.responseText
@@ -88,21 +82,6 @@ jQuery ->
       $('#wide-wait').addClass 'hide'
       $('#wide-X').removeClass 'hide'
       preview.loadJson json, 'vault'
-      ###
-        When tagging questions, load any prior info about the question's 
-        difficulty and availability onto the <select>s in #misc-traits
-      ###
-
-      ###
-      misc = $('#side-panel').find '#misc-traits'
-      if misc.length isnt 0
-        restricted = misc.find '#misc_restricted'
-        restricted.val json.preview.restricted unless not restricted?
-        diff = misc.find '#misc_difficulty'
-        diff.val json.preview.difficulty unless not diff?
-      ###
-    else if url.match('quiz/preview') or url.match('ws/preview')
-      preview.loadJson json, 'atm'
     else
       matched = false
 
