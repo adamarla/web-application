@@ -2,12 +2,12 @@
 -# Left-side tabs - one per vertical
 
 = simple_form_for :checked, :remote => true, :url => qzb_echo_path, 
-  :html => { :id => 'form-qzb-topics', :class => 'no-remove'} do |f|
+  :html => { :id => 'form-qzb-topics'} do |f|
 
-  .row-fluid.navbar
+  .row-fluid.navbar.purge-skip
     = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"
   #vert-tab.tabbable.tabs-left
-    %ul.nav.nav-tabs.span4.nopurge-ever
+    %ul.nav.nav-tabs.span4.purge-skip.nopurge-ever
       - teacher.verticals.each do |m|
         %li{ :marker => "#{m.id}" }
           = simple_link :for => "#{m.name}", :toggle => :tab, 
@@ -17,4 +17,4 @@
     -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
     .tab-content.span7
       - teacher.verticals.each do |m|
-        .tab-pane.multi-select{ :id => "vert-#{m.id}" }
+        .tab-pane.multi-select.purge-blind{ :id => "vert-#{m.id}" }
