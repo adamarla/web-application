@@ -18,7 +18,7 @@ class QuizzesController < ApplicationController
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL')
-    @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:id].to_i)
+    @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:klass].to_i)
 
     n = @quizzes.count 
     @per_pg, @last_pg = pagination_layout_details n

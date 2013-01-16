@@ -2,10 +2,16 @@
 -# teacher and server come from layout file
 
 %ul#teacher-quiz.dropdown-menu.pull-right{ :role => :menu }
-  %li.nav-header= "quiz"
+  %li.nav-header= "Quizzes"
   %li
-    = simple_link :for => "New Quiz", :id => "lnk-new-quiz"
-    = simple_link :for => "Existing Quizzes", :id => "lnk-existing-quiz"
+    = simple_link :for => "Make New", :id => "lnk-new-quiz"
+  %li.dropdown-submenu
+    = simple_link :for => "List ( by grade )", :id => 'lnk-existing-quiz'
+    %ul.dropdown-menu
+      - [*9..12].each do |j|
+        %li
+          = simple_link :for => "Grade #{j}", :notouch => true, :url => "quizzes/list.json?klass=#{j}"
+
   %li.divider
   %li.nav-header= "Suggest Questions"
   %li
