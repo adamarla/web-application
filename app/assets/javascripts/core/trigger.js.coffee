@@ -81,6 +81,25 @@ jQuery ->
     pgn = $(panel).children('.pagination').eq(0)
     pagination.disable pgn
 
+
+    ###
+      Do the next two for only * horizontal * tabs - not .tabs-left
+        1. Ensure that atmost 3 tabs are shown - including the just clicked one
+        2. disable all subsequent tabs 
+
+      Left-tabs are for special use-cases and therefore one can't make a 
+      blanket call on their behaviour. 
+    ###
+    unless $(this).closest('.tabs-left').length isnt 0
+      li = $(this).parent()
+      li.removeClass 'hide'
+
+      for m in li.nextAll('li')
+        $(m).addClass 'disabled'
+        tab = $(m).children('a')[0]
+        unless karo.checkWhether tab, 'nopurge-on-disable'
+          karo.empty $(tab).attr('href')
+
     # Issue AJAX request * after * taking care of any :prev or :id in data-url
     ajax = karo.url.elaborate this
     if ajax?
@@ -101,35 +120,6 @@ jQuery ->
     # Auto-click any autoclick links - but not tabs 
     autoLink = this.dataset.autoclickLink
     $("##{autoLink}").click() if autoLink?
-
-    ###
-      Do the next two for only * horizontal * tabs - not .tabs-left
-        1. Ensure that atmost 3 tabs are shown - including the just clicked one
-        2. disable all subsequent tabs 
-
-      Left-tabs are for special use-cases and therefore one can't make a 
-      blanket call on their behaviour. 
-    ###
-
-    unless $(this).closest('.tabs-left').length isnt 0
-      li = $(this).parent()
-      li.removeClass 'hide'
-
-      for m in li.nextAll('li')
-        $(m).addClass 'disabled'
-        tab = $(m).children('a')[0]
-        unless karo.checkWhether tab, 'nopurge-on-disable'
-          karo.empty $(tab).attr('href')
-      ###
-      for m in li.siblings('li')
-        $(m).addClass 'hide'
-
-      p = li.prev('li')
-      n = li.next('li')
-
-      $(p).removeClass 'hide' if p.length isnt 0
-      $(n).removeClass 'hide' if n.length isnt 0
-      ###
 
     return true
 
