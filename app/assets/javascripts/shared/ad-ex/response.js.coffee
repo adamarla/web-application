@@ -32,7 +32,7 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      karo.empty target
+      # karo.empty target
       line.write(target, m[childKey], menu) for m in json[parentKey]
 
       # Enable / disable paginator as needed 
