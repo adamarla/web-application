@@ -7,6 +7,12 @@
     {tabs : [{name : xyz, id : 123}, {name : abc, id : 789} .... ]}
   Only this kind of JSON will result in tabs
 
+  Optionally, there can also be a key called :filters
+    { tabs: [{ ... }, { ... } ... ], filters : [a,b,c] }
+
+  Filters change the data-url of ul > li > a as follows:
+    <a data-url="url?a="true"&b="true"&c="true" ... ></a>
+
   Any other tweaking can be done using the options hash
   'options' is of the form : 
     options = { 
@@ -73,8 +79,16 @@ window.leftTabs = {
 
     # Collect the data-* attributes set on ul > li > a into one string. These are common to all <a>
     data = ""
-    for j in ['prev', 'url', 'panel-url']
+    for j in ['prev', 'panel-url']
       data += " data-#{j}='#{options.data[j]}'" if options.data[j]?
+
+    url = options.data.url
+    if url?
+      filters = json.filters
+      if filters?
+        url = if url.indexOf("?") > -1 then url else (url + "?")
+        url += "&filter[#{f}]" for f in filters
+      data += " data-url=#{url}" # -> final url - with filters
 
     # Then, write the JSON
     for m in json.tabs
