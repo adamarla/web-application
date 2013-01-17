@@ -86,8 +86,10 @@ module ApplicationHelper
 
     return false if (as.blank? ^ name.blank?) # either both present or neither
     klass = options.delete(:class) || "btn-inverse"
+    tooltip = options.delete(:tooltip) || nil
 
-    content_tag :button, :class => "btn #{klass}" do
+    content_tag :button, :class => "btn #{klass}", 
+      :rel => "#{tooltip.nil? ? nil : :tooltip}", :title => "#{tooltip.nil? ? nil : tooltip}" do
       render = label.blank? ? "" : label 
       render += (icon.blank? ? "" : content_tag(:i, nil, :class => "icon-white #{icon}") )
       unless as.blank?
