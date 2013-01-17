@@ -90,14 +90,18 @@ window.leftTabs = {
         url += "&filter[#{f}]" for f in filters
       data += " data-url=#{url}" # -> final url - with filters
 
+    data += " data-toggle='tab'"
+
     # Then, write the JSON
     for m in json.tabs
-      li = $("<li marker=#{m.id}></li>")
+      li = if options.split then $("<li marker=#{m.id} class='split'></li>") else $("<li marker=#{m.id}></li>")
       li.appendTo ul
       if sharedPanel?
+        html = "<a href=##{sharedPanel} #{data} class='#{options.klass.a}'>"
         if options.split
-          $("<a class='split span5 pull-right #{options.klass.a}' href='#'>#{m.split}</a>").appendTo li
-          a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='pull-left span7 #{options.klass.a}'>#{m.name}</a>")
+          html += "<div class='row-one'>#{m.name}</div>"
+          html += "<div class='row-two'>#{m.split}</div></a>"
+          a = $(html)
         else
           a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
       else

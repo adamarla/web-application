@@ -34,8 +34,8 @@ jQuery ->
         split : splitTab,
         klass : {
           root : "purge-destroy",
-          ul : "span4 nopurge-ever",
-          content : "span7"
+          ul : "span3 nopurge-ever",
+          content : "span8"
         },
         data : {
           url : "view/fdb.json?id=:id"

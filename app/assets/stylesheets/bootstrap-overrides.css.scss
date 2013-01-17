@@ -605,3 +605,24 @@ select {
     margin-top: -4px ;
   } 
 } 
+
+
+li.split { 
+  text-align: center ;
+
+  > a {
+    > .row-one { 
+      font-size: 15px ;
+      padding-bottom: 9px ;
+      border-bottom: 1px solid white ;
+    }
+    > .row-two {
+      font-size: 12px ;
+      padding-top: 4px ;
+    } 
+  } 
+  &.active {
+    background-color: $lightgray ;
+  }
+} 
+
