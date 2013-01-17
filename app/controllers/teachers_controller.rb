@@ -139,6 +139,7 @@ class TeachersController < ApplicationController
   def qzb_echo
     tids = params[:checked].keys.map(&:to_i)
     @topics = Topic.where(:id => tids)
+    @filters = params[:filter].blank? ? [] : params[:filter].keys
   end
 
   def build_quiz 
