@@ -16,7 +16,7 @@
   %li.nav-header= "Suggest Questions"
   %li
     = simple_link :for => "Suggestion Form", :id => 'lnk-suggestion-form',
-    :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
+    :url => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
 
   %li
     = simple_link :for => "Uploading a Word Document", :id => 'lnk-upload-suggestion'

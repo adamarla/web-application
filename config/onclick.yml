@@ -57,6 +57,10 @@ lnk-download-solution :
   ajax : disabled
   update-on : quiz/preview pages/pending
 
+lnk-suggestion-form :
+  notouch : true
+  ajax : disabled
+
 lnk-new-quiz :
   autoclick : 
     tab : tab-qzb-courses
