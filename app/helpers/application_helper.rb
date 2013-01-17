@@ -74,6 +74,30 @@ module ApplicationHelper
     # "<a #{attributes}>#{text}</a>".html_safe
   end 
 
+  # Generates a <button> with either an icon, text or both and an optional radio/checkbox
+  # Example: simple_button :for => "submit", :icon => 'icon-star', :class => 'btn-warning', :as => :radio, :name => "checked[25]"
+  def simple_button( options = {} )
+    label = options.delete :for
+    icon = options.delete :icon
+
+    return false unless ( label || icon )
+    as = options.delete :as 
+    name = options.delete :name 
+
+    return false if (as.blank? ^ name.blank?) # either both present or neither
+
+    content_tag :button, :class => "btn #{options.delete :class}" do
+      render = label.blank? ? "" : label 
+      render += (icon.blank? ? "" : content_tag(:i, nil, :class => "icon-white #{icon}") )
+      unless as.blank?
+        render += (as == :radio) ? 
+                  radio_button_tag(name, true, false, :class => :hide) : 
+                  check_box_tag(name, true, false, :class => :hide)
+      end
+      render.html_safe
+    end
+  end
+
   def html_attrs(lang = 'en-US')
     {:xmlns => "http://www.w3.org/1999/xhtml", 'xml:lang' => lang, :lang => lang}
   end 
