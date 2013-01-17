@@ -85,8 +85,9 @@ module ApplicationHelper
     name = options.delete :name 
 
     return false if (as.blank? ^ name.blank?) # either both present or neither
+    klass = options.delete(:class) || "btn-inverse"
 
-    content_tag :button, :class => "btn #{options.delete :class}" do
+    content_tag :button, :class => "btn #{klass}" do
       render = label.blank? ? "" : label 
       render += (icon.blank? ? "" : content_tag(:i, nil, :class => "icon-white #{icon}") )
       unless as.blank?
