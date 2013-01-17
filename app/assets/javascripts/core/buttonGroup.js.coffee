@@ -1,5 +1,13 @@
 
 window.buttonGroup = {
+  initialize : (obj) ->
+    return false unless obj.hasClass 'btn-group'
+    for m in obj.children('button')
+      $(m).removeClass 'active'
+      for z in $(m).children('input[type]')
+        $(z).prop 'checked', false
+    return true
+
   click : (button) ->
     unclick = button.hasClass 'active'
     if unclick then button.removeClass('active') else button.addClass('active')

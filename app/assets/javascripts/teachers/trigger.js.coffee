@@ -29,3 +29,10 @@ jQuery ->
     form.attr 'action', action
     form.submit()
     return true
+
+  $('#tab-qzb-topics').on 'shown', (event) ->
+    pane = $(this).closest('.nav-tabs').eq(0).next().children('.tab-pane.active').eq(0)
+    btnGroup = pane.find('.btn-group').eq(0)
+    buttonGroup.initialize btnGroup unless btnGroup.length is 0
+    return true
+
