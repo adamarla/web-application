@@ -387,6 +387,10 @@ button[data-toggle='button'] {
   position: fixed ;
   top: 0px ;
   z-index: 3 ;
+  min-width: 700px ;
+  ul {
+    margin-top: 15px ;
+  }
 } 
 
 #desktop { 

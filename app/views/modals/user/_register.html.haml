@@ -1,0 +1,48 @@
+
+#register_student.modal.fade.hide
+
+  .modal-header
+    %h3= "Hullo and welcome to Gradians!"
+  .modal-body
+    %p= "To get you started, we'll need this information (all fields are mandatory)"
+    %br
+    #registrationform.form-horizontal
+      .control-group
+        .control-label{ :for => :inputFName }= "First Name"
+        .controls 
+          %input.input-medium{ :type => :text, :id => :inputFName }
+      .control-group
+        .control-label{ :for => :inputLName }= "Last Name"
+        .controls 
+          %input.input-medium{ :type => :text, :id => :inputLName }
+      .control-group
+        .control-label{ :for => :inputEmail }= "eMail"
+        .controls 
+          %input.input-medium{ :type => :text, :id => :inputEmail }
+      .control-group
+        .control-label{ :for => :inputSchool }= "Grade Level (9 - 12)"
+        .controls 
+          %input.input-medium{ :type => :text, :id => :inputGrade }
+      .control-group
+        .control-label{ :for => :inputSchool }= "School"
+        .controls 
+          %input.input-medium{ :type => :text, :id => :inputSchool }
+      .control-group
+        .control-label{ :for => :inputCountry }= "Country"
+        .controls 
+          %input.input-medium{ :type => :text, :id => :inputCountry}
+      .control-group
+        .control-label{ :for => :inputPostalCode }= "Postal Code"
+        .controls 
+          %input.input-medium{ :type => :text, :id => :inputPostalCode}
+      .modal-footer
+        %button.btn{ :type => :submit }= "Maybe later, thanks!"
+        %button.btn.btn-primary{ :type => :submit }= "Sign me up!"
+
+#register_teacher.modal.fade.hide
+  .modal-body
+    %p= "Hello Teacher! Welcome to Gradians"
+
+#register_curious.modal.fade.hide
+  .modal-body
+    %p= "Hello Curious! Welcome to Gradians"

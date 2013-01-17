@@ -3,6 +3,9 @@
 -content_for :toolbox do
   #toolbox.hidden 
     = render :partial => 'menus/user/download', :locals => { :server => server }
+    = render :partial => 'menus/user/register', :locals => { :server => server }
+  #modals
+    = render :partial => 'modals/user/register'
 
 !!!5
 
@@ -29,11 +32,12 @@
                 %li
                   #signin-form.pull-right
                     %form.form-inline.pull-right{ :action => session_path(:account), :method => :post }
-                      %input.input-small{ :type => :text, :name => "account[login]", :placeholder => "Email / Login"}
+                      %input.input-medium{ :type => :text, :name => "account[login]", :placeholder => "Email / Login"}
                       .input-append
-                        %input.input-small{ :type => :password, :name => "account[password]", :placeholder => "Password" }
+                        %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-primary{ :type => :submit }= "Sign In"
-                        %button#btn-register.btn.white-bg{ :type => :button }= "Register"
+                %li.dropdown
+                  = simple_link :for => "Register", :id => 'm-registrations', :as => :dropdown 
 
       .row-fluid
         .hero-unit

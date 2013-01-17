@@ -271,3 +271,16 @@ lnk-logout :
 m-downloads : 
   menu : user-downloads
   toggle : dropdown
+
+m-registrations : 
+  menu : user-registrations
+  toggle : dropdown
+
+lnk-register-student :
+  toggle : modal
+
+lnk-register-teacher :
+  toggle : modal
+
+lnk-register-curious :
+  toggle : modal
