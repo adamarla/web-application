@@ -40,6 +40,14 @@ jQuery ->
     interval : 5000
   })
 
+  #####################################################################
+  # Behaviour of button-groups that are within forms
+  #####################################################################
+
+  $('form').on 'click', '.btn-group button', (event) ->
+    buttonGroup.click $(this)
+    return false # because we don't want to trigger form submission
+
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
@@ -301,3 +309,5 @@ jQuery ->
   #####################################################################
 
    $("#toolbox > ul[role='menu']").find("a[data-default-lnk='true']").eq(0).click()
+
+
