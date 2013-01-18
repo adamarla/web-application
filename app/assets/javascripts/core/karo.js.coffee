@@ -50,15 +50,16 @@ window.karo = {
     nopurge = false
     if klass.match(/nopurge/)
       nopurge = true
-      return true if $(node).hasClass 'nopurge-ever'
+      return true if ($(node).hasClass('nopurge-ever') || $(node).attr('nopurge-ever') is 'true')
 
-    return true if $(node).hasClass klass
+    if ($(node).hasClass(klass) || $(node).attr(klass) is 'true')
+      return true
 
     ul = $(node).closest('ul.nav-tabs').eq(0)
     return false if ul.length is 0
     if nopurge
-      return true if ul.hasClass 'nopurge-ever'
-    return ul.hasClass(klass)
+      return true if (ul.hasClass('nopurge-ever') || ul.attr('nopurge-ever') is 'true')
+    return (ul.hasClass(klass) || ul.attr(klass) is 'true')
 
   tab : {
     enable : (id) ->
