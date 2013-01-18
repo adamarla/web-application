@@ -6,7 +6,7 @@ object false
         :name => m.name_if_in?(@ws.quiz_id), 
         :id => @gr.where(:subpart_id => m.id).map(&:id).first,
         :split => @gr.where(:subpart_id => m.id).map(&:marks?).first,
-        :li_klass => @gr.where(:subpart_id => m.id).map(&:honest?).first
+        :colour => @gr.where(:subpart_id => m.id).map(&:honest?).first
       } 
     } 
   } 

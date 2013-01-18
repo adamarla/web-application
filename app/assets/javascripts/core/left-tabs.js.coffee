@@ -94,8 +94,18 @@ window.leftTabs = {
 
     # Then, write the JSON
     for m in json.tabs
-      li = if options.split then $("<li marker=#{m.id} class='split'></li>") else $("<li marker=#{m.id}></li>")
+      # make the <li>
+
+      liColour = m.colour
+
+      if options.split
+        li = $("<li marker=#{m.id} class='split' colour=#{if liColour? then liColour else null}></li>")
+      else
+        li = $("<li marker=#{m.id} colour=#{if liColour? then liColour else null}></li>")
+
       li.appendTo ul
+
+      # make the <a> to put inside the <li>
       if sharedPanel?
         html = "<a href=##{sharedPanel} #{data} class='#{options.klass.a}'>"
         if options.split

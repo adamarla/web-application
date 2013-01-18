@@ -12,8 +12,8 @@ $panel-colour: lighten(black, 17%) ;
 $deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
 $lightblue: lighten($deep-blue, 23%) ;
-$red: #d72323 ;
-$green: #57bc20 ;
+$red: #d72323 ; // rgb(215, 35, 35)
+$green: #57bc20 ; // rgb(87,188,32)
 
 .navbar-inverse, .dropdown-menu {
   li { 
@@ -463,31 +463,26 @@ form.smart {
   > .nav-tabs {
     > li {
       font-size: 11px ;
-      > a.split {
-        border-radius: 0px ;
-        background: rgba(70,136,71,0.8) ;
-        font: { 
-          family: cursive ;
-        } 
-        text-align: center ;
-        border: 1px solid white ;
-        border-left: none ;
-        margin: {
-          bottom: 10px ;
-          right: 0px ;
-        } 
-
-        &~a { 
-          padding-right: 4px ;
-          border: 1px solid white ;
-          border-right: none ;
-          margin: {
-            right: -2px ;
-            bottom: 10px ;
+      &.split {
+        margin-bottom: 10px ;
+        > a {
+          > .row-one { 
+            font-size: 15px ;
+            padding-bottom: 9px ;
+            border-bottom: 1px solid white ;
           }
-          &:hover { background-color: $deep-blue ; }
+          > .row-two {
+            font-size: 12px ;
+            padding-top: 4px ;
+          } 
         } 
-      } 
+      }
+      &[colour='green'] { > a { background: rgba(87,188,32,0.6) ;} }
+      &[colour='red'] { > a { background: rgba(215,35,35,0.6) ; } }
+      &[colour='orange'] { > a { background: rgba(255, 165, 0, 0.6) ; } }
+      &[colour][class~='active'] {
+        > a { border: 2px solid white ; }
+      }
     } 
   } 
 } 
@@ -610,19 +605,5 @@ select {
 li.split { 
   text-align: center ;
 
-  > a {
-    > .row-one { 
-      font-size: 15px ;
-      padding-bottom: 9px ;
-      border-bottom: 1px solid white ;
-    }
-    > .row-two {
-      font-size: 12px ;
-      padding-top: 4px ;
-    } 
-  } 
-  &.active {
-    background-color: $lightgray ;
-  }
 } 
 
