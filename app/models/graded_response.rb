@@ -165,6 +165,17 @@ class GradedResponse < ActiveRecord::Base
     return ret
   end # of method
 
+  def honest?
+    return :disabled if self.scan.nil?
+    return :nodata unless self.feedback
+    
+    case self.feedback & 15
+      when 0 then return :red
+      when 1,2,3 then return :orange
+      else return :green
+    end
+  end 
+
   def marks?
     return (self.marks_teacher.nil? ? self.system_marks : self.marks_teacher)
   end
