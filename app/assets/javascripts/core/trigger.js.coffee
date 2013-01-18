@@ -17,6 +17,48 @@ window.gutenberg = {
   the role-specific .js file
 ###
 
+window.trigger = {
+
+  click : (link, event = null) ->
+    return true if link.dataset.toggle is 'tab'
+    return true if $(link).hasClass 'carousel-control'
+
+    if $(link).parent().hasClass 'dropdown-submenu'
+      return false unless link.dataset.defaultLnk is 'true'
+
+    event.stopImmediatePropagation() if event?
+    # (YAML) Hide / unhide panels as needed
+
+    notouch = if link.dataset.notouch? then (link.dataset.notouch is 'true') else false
+    unless notouch
+      for j in ['left', 'right', 'middle', 'wide']
+        if typeof link.dataset[j] is 'string'
+          continue if link.dataset[j] is 'as-is'
+
+        attr = "#{j}Show" # x-y in YAML => xY here
+        show = link.dataset[attr] # left-show, right-show etc 
+        panel = $("##{j}")
+        if not show?
+          panel.addClass 'hide'
+          continue
+        panel.removeClass 'hide'
+        karo.unhide(show, panel) unless show is 'no-remove'
+
+    # If there be a tab that needs to be auto-clicked, then do that too
+    tab = link.dataset.autoclickTab
+    karo.tab.enable tab if tab?
+
+    # If <a> is within a dropdown-menu, then close the dropdown menu
+    # d = $(link).closest('.dropdown-menu')
+    menu.close $(link)
+
+    # (YAML) Issue any AJAX requests
+    ajax = karo.url.elaborate link
+    karo.ajaxCall ajax if (ajax? and ajax isnt 'disabled')
+
+    return true
+}
+
 jQuery ->
   ###
     This next call is unassuming but rather important. We initialize 
@@ -136,43 +178,7 @@ jQuery ->
   ###############################################
 
   $('.g-panel, .content, .tab-pane, #toolbox').on 'click', '.dropdown-menu > li > a', (event) ->
-    return true if this.dataset.toggle is 'tab'
-    return true if $(this).hasClass 'carousel-control'
-
-    if $(this).parent().hasClass 'dropdown-submenu'
-      return false unless this.dataset.defaultLnk is 'true'
-
-    event.stopImmediatePropagation()
-    # (YAML) Hide / unhide panels as needed
-
-    notouch = if this.dataset.notouch? then (this.dataset.notouch is 'true') else false
-    unless notouch
-      for j in ['left', 'right', 'middle', 'wide']
-        if typeof this.dataset[j] is 'string'
-          continue if this.dataset[j] is 'as-is'
-
-        attr = "#{j}Show" # x-y in YAML => xY here
-        show = this.dataset[attr] # left-show, right-show etc 
-        panel = $("##{j}")
-        if not show?
-          panel.addClass 'hide'
-          continue
-        panel.removeClass 'hide'
-        karo.unhide(show, panel) unless show is 'no-remove'
-
-    # If there be a tab that needs to be auto-clicked, then do that too
-    tab = this.dataset.autoclickTab
-    karo.tab.enable tab if tab?
-
-    # If <a> is within a dropdown-menu, then close the dropdown menu
-    # d = $(this).closest('.dropdown-menu')
-    menu.close $(this)
-
-    # (YAML) Issue any AJAX requests
-    ajax = karo.url.elaborate this
-    karo.ajaxCall ajax if (ajax? and ajax isnt 'disabled')
-
-    return true
+    return trigger.click this, event
 
   ###############################################
   # When the caret to open a contextual menu is clicked 
@@ -308,6 +314,8 @@ jQuery ->
   ## Auto-click the first default link 
   #####################################################################
 
-   $("#toolbox > ul[role='menu']").find("a[data-default-lnk='true']").eq(0).click()
+   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default-lnk='true']")
+     trigger.click m
+     return true
 
 
