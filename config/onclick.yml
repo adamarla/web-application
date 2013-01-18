@@ -178,7 +178,7 @@ lnk-tc-rc :
 ## Students 
 ##############################################################################
 
-lnk-st-trigger : 
+lnk-st-rc : 
   autoclick :
     tab : tab-st-rc-1
   left : 

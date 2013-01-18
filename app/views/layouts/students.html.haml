@@ -8,7 +8,6 @@
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
     = render :partial => 'menus/user/account'
-    = render :partial => 'students/trigger'
     = render :partial => 'toolbox/fdb-panel'
 
 !!!5
@@ -29,6 +28,10 @@
                 = image_tag "logo-mit-beta-2.png"
                 .tagline.span10.offset1= "Grades will happen"
               %ul.nav.span8
+                %li
+                  = simple_link :for => "Report Cards", :id => 'lnk-st-rc'
+                %li
+                  = simple_link :for => "Inbox", :id => 'lnk-st-inbox'
                 %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
