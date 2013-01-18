@@ -181,6 +181,15 @@ jQuery ->
     return trigger.click this, event
 
   ###############################################
+  # When an <a> in control-panel is clicked. The 
+  # <a> is NOT within a dropdown though
+  ###############################################
+
+  $('#control-panel').on 'click', 'a', (event) ->
+    return false if $(this).closest('ul').eq(0).hasClass 'dropdown-menu'
+    return trigger.click this, event
+
+  ###############################################
   # When the caret to open a contextual menu is clicked 
   ###############################################
 
