@@ -169,7 +169,10 @@ class GradedResponse < ActiveRecord::Base
     return :disabled if self.scan.nil?
     return :nodata unless self.feedback
     
-    case self.feedback & 15
+    posn = self.feedback & 15 
+    score = Requirement.honest.where(:posn => posn).map(&:weight).first
+
+    case score
       when 0 then return :red
       when 1,2,3 then return :orange
       else return :green
