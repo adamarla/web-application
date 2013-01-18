@@ -5,8 +5,16 @@ jQuery ->
     blockKeyPress: false,
 
     initialize : () ->
-      wideX = $('#wide > #wide-X').eq(0)
+      # step 1: hide siblings of #wide - except #left 
+      wide = $('#wide')
+      for m in wide.siblings()
+        continue if $(m).attr('id') is 'left'
+        $(m).addClass 'hide'
 
+      wide.removeClass 'hide'
+
+      # step 2: within #wide, hide siblings of #wide-X
+      wideX = wide.children('#wide-X').eq(0)
       $(m).addClass 'hide' for m in wideX.siblings()
       wideX.removeClass 'hide'
 
