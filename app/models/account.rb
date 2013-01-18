@@ -133,7 +133,8 @@ class Account < ActiveRecord::Base
     @ws = nil
     case self.role 
       when :teacher 
-        @ws = self.ws # can / will change later
+        ids = Quiz.where(:teacher_id => self.loggable_id).map(&:id)
+        @ws = Testpaper.where(:quiz_id => ids).select{ |m| !m.publishable? }
       when :student 
         @ws = []
       else 
