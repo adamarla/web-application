@@ -104,7 +104,7 @@ window.leftTabs = {
       if disable
         li += (if options.split then " class='split disabled'" else " class='disabled'")
       else
-        li += (if options.split then " class='split'" else null)
+        li += (if options.split then " class='split'" else " class=''")
 
       li = $("#{li}" + "></li>")
       li.appendTo ul
