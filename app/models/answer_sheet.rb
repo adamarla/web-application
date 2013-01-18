@@ -10,6 +10,7 @@
 #  marks        :float
 #  graded       :boolean         default(FALSE)
 #  honest       :integer
+#  received     :boolean         default(FALSE)
 #
 
 class AnswerSheet < ActiveRecord::Base
@@ -22,6 +23,16 @@ class AnswerSheet < ActiveRecord::Base
 
   def self.for_testpaper(id)
     where(:testpaper_id => id)
+  end
+
+  def received?
+    # Returns true if scans have been received for some or all 
+    # of the responses  
+
+    return true if self.received
+    ret = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).with_scan.count > 0
+    self.update_attribute(:received, ret) if ret
+    return ret
   end
 
   def honest?

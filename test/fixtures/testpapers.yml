@@ -9,6 +9,7 @@
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
+#  inboxed     :boolean         default(FALSE)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
