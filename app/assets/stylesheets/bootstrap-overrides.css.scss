@@ -128,7 +128,7 @@ $green: #57bc20 ; // rgb(87,188,32)
           &:hover { border: 1px solid white; }
         }
       } 
-      &.disabled {
+      &.disabled, &[disabled='true'] {
         > a { 
           color: $lightgray ;
           &:hover { border: 1px dashed white ; }

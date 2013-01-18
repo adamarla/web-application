@@ -97,12 +97,16 @@ window.leftTabs = {
       # make the <li>
 
       liColour = m.colour
+      disable = liColour is 'disabled' || liColour is 'nodata'
 
-      if options.split
-        li = $("<li marker=#{m.id} class='split' colour=#{if liColour? then liColour else null}></li>")
+      li = "<li marker=#{m.id}"
+      li += " colour=#{liColour}" unless disable
+      if disable
+        li += (if options.split then " class='split disabled'" else " class='disabled'")
       else
-        li = $("<li marker=#{m.id} colour=#{if liColour? then liColour else null}></li>")
+        li += (if options.split then " class='split'" else null)
 
+      li = $("#{li}" + "></li>")
       li.appendTo ul
 
       # make the <a> to put inside the <li>
