@@ -25,11 +25,11 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span4{ :href => "#"}
+              %a.brand.span3{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-                .tagline.span6.offset3= "Grades will happen"
-              %ul.nav.span8.pull-right
-                %li#cp-account-link.dropdown.pull-right
+                .tagline.span10.offset1= "Grades will happen"
+              %ul.nav.span8
+                %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
