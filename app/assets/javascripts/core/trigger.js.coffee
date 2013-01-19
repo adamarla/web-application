@@ -140,12 +140,14 @@ jQuery ->
       Left-tabs are for special use-cases and therefore one can't make a 
       blanket call on their behaviour. 
     ###
-    unless $(this).closest('.tabs-left').length isnt 0
+    ul = $(this).parent().parent() # => ul.nav-tabs
+
+    unless ul.parent().hasClass('tabs-left')
       li = $(this).parent()
       li.removeClass 'hide'
 
       for m in li.nextAll('li')
-        $(m).addClass 'disabled'
+        $(m).addClass 'disabled' unless karo.checkWhether(m, 'always-on')
         tab = $(m).children('a')[0]
         unless karo.checkWhether tab, 'nopurge-on-disable'
           karo.empty $(tab).attr('href')
@@ -162,7 +164,6 @@ jQuery ->
         pagination.url.set pgn, ajax
 
     # Set base-ajax url on containing panel
-    ul = $(this).parent().parent() # => ul.nav-tabs
     unless ul.hasClass 'lock'
       panelUrl = this.dataset.panelUrl
       panel.dataset.url = if panelUrl? then panelUrl else null
