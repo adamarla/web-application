@@ -543,6 +543,21 @@ form.smart {
       line-height: 17px ;
     } 
   } 
+
+  .carousel-control[data-slide] {
+    top: 110% ;
+    border: none ;
+    background-color: $gray ;
+  } 
+
+  .carousel-control[data-slide='prev'] {
+    left: 10% ;
+  }
+
+  .carousel-control[data-slide='next'] {
+    left: 90% ;
+  }
+
 }
 
 .hero-unit {

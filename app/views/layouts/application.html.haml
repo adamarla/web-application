@@ -37,7 +37,7 @@
 
       .row-fluid
         .hero-unit
-          #how-it-works.carousel.slide.offset1
+          #how-it-works.carousel.slide
             .carousel-inner
               .item 
                 = image_tag "landing/slideshow-1.png"
@@ -59,6 +59,10 @@
                   %p
                     \... and provide our feedback. Teachers get a detailed picture of how well individual 
                     students are doing on a specific topics
+            %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :prev}
+              \&lsaquo;
+            %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :next}
+              \&rsaquo;
 
     = yield :toolbox
 
