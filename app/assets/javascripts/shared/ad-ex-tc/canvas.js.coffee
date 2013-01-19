@@ -10,8 +10,6 @@ window.canvas = {
   mode : null,
   comments : null,
 
-  xoff: 0,
-  yoff: 0,
   last:0, # insert before updating index 
   colour : {
     crosses : "#ea5115",
@@ -31,10 +29,6 @@ window.canvas = {
     canvas.ctx.lineWidth = 3
     canvas.ctx.fillStyle = canvas.colour.blue
     canvas.ctx.font = "12px Ubuntu"
-
-    offset = canvas.object.offset()
-    canvas.xoff = offset.left
-    canvas.yoff = offset.top
 
     canvas.checks = new Array()
     canvas.crosses = new Array()
@@ -71,7 +65,6 @@ window.canvas = {
     return false if canvas.mode is "comments"
 
     ctx = canvas.ctx
-
     ctx.strokeStyle = if draw is true then canvas.colour[canvas.mode] else canvas.colour.white
 
     switch canvas.mode
@@ -95,11 +88,10 @@ window.canvas = {
 
   record: (event) ->
     return false unless canvas.mode?
-    x = event.pageX - canvas.xoff
-    y = event.pageY- canvas.yoff
+    x = event.pageX - canvas.object[0].offsetLeft
+    y = event.pageY- canvas.object[0].offsetTop
 
     return if x < 0 || y < 0 # click not inside canvas
-    # alert "#{x} --> #{y} --> #{canvas.mode}"
 
     switch canvas.mode
       when 'checks'
