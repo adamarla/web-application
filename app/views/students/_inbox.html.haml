@@ -1,0 +1,10 @@
+
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link :for => "New", :id => 'tab-st-inbox', :href => '#pane-st-inbox'
+  %li
+    = simple_link :for => "Sent", :id => 'tab-st-outbox', :href => '#pane-st-outbox'
+
+.tab-content
+  #pane-st-inbox.tab-pane
+  #pane-st-outbox.tab-pane

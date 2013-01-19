@@ -40,4 +40,25 @@ class StudentsController < ApplicationController
     @within = "#{tp.quiz_id}-#{tp.id}"
   end
 
+  def inbox
+    student = Student.find params[:id]
+    @ws = student.nil? ? [] : student.testpapers
+    unless @ws.empty?
+      @ws = @ws.where(:inboxed => true)
+      open = AnswerSheet.where(:student_id => student.id, :testpaper_id => @ws.map(&:id)).select{ |m| m.received? :none }
+      @ws = Testpaper.where :id => open.map(&:testpaper_id)
+    else
+      render :json => { :notify => { :text => "No new worksheets" }}, :status => :ok
+    end
+  end 
+
+  def inbox_echo
+    @ws = Testpaper.find params[:ws]
+    @quiz = @ws.quiz
+    @student = current_account.loggable
+  end
+
+  def outbox
+  end
+
 end

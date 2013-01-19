@@ -90,6 +90,9 @@ Webapp::Application.routes.draw do
   resource :student, :only => [:create, :update, :show]
   match 'ws-preview' => 'students#responses', :via => :get
   match 'dispute' => 'students#dispute', :via => :get
+  match 'inbox' => 'students#inbox', :via => :get
+  match 'inbox/echo' => 'students#inbox_echo', :via => :get
+  match 'outbox' => 'students#outbox', :via => :get
 
   # Sektion 
   resource :sektion, :only => [:create, :update]
@@ -126,6 +129,8 @@ Webapp::Application.routes.draw do
   match 'testpaper/load' => 'testpapers#load', :via => :get
   match 'ws/preview' => 'testpapers#preview', :via => :get
   match 'ws/layout' => 'testpapers#layout', :via => :get
+  match 'ws/publish' => 'testpapers#inbox', :via => :get
+  match 'ws/unpublish' => 'testpapers#uninbox', :via => :get
 
   # Trial Account 
   resource :trial_account, :only => [:create], :controller => :trial_account

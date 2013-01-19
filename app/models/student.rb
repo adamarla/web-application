@@ -76,6 +76,23 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def inbox
+    # Returns the worksheets that should be shown in a student's inbox
+    assigned = AnswerSheet.where(:student_id => self.id)
+    received = assigned.where(:received => true)
+    due = assigned.map(&:testpaper_id) - received.map(&:testpaper_id)
+    Testpaper.where(:id => due, :inboxed => true) 
+  end
+
+  def outbox
+    # Returns the worksheets that should be shown in a student's outbox
+    # Any student worksheet - with scans - but not yet graded ( at all ) 
+    # should be in the outbox
+    assigned = self.testpapers.map(&:id) 
+    g = GradedResponse.in_testpaper(assigned).of_student(self.id)
+
+  end
+
   def teachers
     Teacher.joins(:sektions).where('sektions.id = ?', self.sektion_id)
   end 

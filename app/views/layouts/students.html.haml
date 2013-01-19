@@ -7,8 +7,9 @@
   #toolbox.hidden 
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
-    = render :partial => 'menus/user/account'
     = render :partial => 'toolbox/fdb-panel'
+    = render :partial => 'menus/user/account'
+    = render :partial => 'menus/student/inbox'
 
 !!!5
 
@@ -39,6 +40,10 @@
           = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
           #left-1
             = render :partial => 'students/rc'
+        #middle.g-panel.span4
+          = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
+          #middle-1
+            = render :partial => 'students/inbox'
         #wide.g-panel.span8
           #wide-X
           #wide-wait
