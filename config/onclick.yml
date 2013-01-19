@@ -200,9 +200,10 @@ lnk-st-rc :
 lnk-st-inbox :
   autoclick :
     tab : tab-st-inbox
-  left : as-is
-  middle : 
-    show : middle-1
+  left : 
+    show : left-2 
+  wide :
+    show : wide-wait
 
 tab-st-rc-1 :
   toggle : tab
