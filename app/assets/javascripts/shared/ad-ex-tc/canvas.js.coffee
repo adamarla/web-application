@@ -112,6 +112,18 @@ window.canvas = {
           ctx.fillStyle = canvas.colour.white
           ctx.fillRect x,y,16,16 # overwrite image with a white rectangle 
           ctx.fillStyle = canvas.colour.blue
+    else if canvas.comments?
+      comment = canvas.comments.pop()
+      y = canvas.comments.pop()
+      x = canvas.comments.pop()
+      
+      ctx = canvas.ctx
+      ctx.fillStyle = canvas.colour.white
+      width = comment.length * 6
+      height = 16
+      #alert "deleting : #{x}, #{y}, #{width}, #{height}"
+      ctx.fillRect x,y - 14, width, height # overwrite image with a white rectangle 
+      ctx.fillStyle = canvas.colour.blue
 
     return true
   
