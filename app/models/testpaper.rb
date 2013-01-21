@@ -26,9 +26,13 @@ class Testpaper < ActiveRecord::Base
 
   def has_scans?
     # if false, then worksheet / testpaper is automatically ungradeable
-    received = AnswerSheet.where(:testpaper_id => self.id).select{ |m| m.received?(:fully) || m.received?(:partially)}
-    #received = AnswerSheet.where(:testpaper_id => self.id).select{ |m| m.received?(:none) }
-    return received.length > 0
+
+    ret = false 
+    AnswerSheet.where(:testpaper_id => self.id).each do |m|
+      ret |= (m.received?(:fully) || m.received?(:partially))
+      break if ret
+    end 
+    return ret
   end
 
   def publishable? 
