@@ -55,7 +55,9 @@ class ExaminersController < ApplicationController
   def restore_pristine_scan
     scan_in_locker = params[:id]
     Delayed::Job.enqueue RestorePristineScan.new(scan_in_locker), :priority => 5, :run_at => Time.zone.now
-    render :json => { :status => "Restoring"}, :status => :ok
+    render :json => { :notify => { 
+                      :text => "Restored scan", 
+                      :subtext => "Don't forget to re-grade all questions on the page" }}, :status => :ok
   end
 
   def suggestions
