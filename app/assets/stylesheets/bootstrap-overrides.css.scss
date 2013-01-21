@@ -341,6 +341,11 @@ button[data-toggle='button'] {
 
 #grd-toolbar-btns { 
   position: fixed ;
+  margin-top: 0px ;
+
+  > .btn-group-vertical { 
+    vertical-align: top ;
+  } 
 } 
 
 .btn-inverse.active { background-color: $deep-blue ; }
