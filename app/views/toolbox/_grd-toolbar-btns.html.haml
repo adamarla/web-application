@@ -1,23 +1,15 @@
 
 #grd-toolbar-btns.btn-toolbar
   .btn-group.btn-group-vertical
-    %button.btn.btn-inverse#btn-prev-scan{ :rel => :tooltip, :title => "Previous Scan" }
-      %i{ :class => 'icon-white icon-chevron-up' }
-    %button.btn.btn-inverse#btn-prev-ques{ :rel => :tooltip, :title => "Previous Question" }
-      %i{ :class => 'icon-white icon-chevron-left' }
-    %button.btn.btn-inverse#btn-next-ques{ :rel => :tooltip, :title => "Next Question" }
-      %i{ :class => 'icon-white icon-chevron-right' }
-    %button.btn.btn-inverse#btn-next-scan{ :rel => :tooltip, :title => "Next Scan" }
-      %i{ :class => 'icon-white icon-chevron-down' }
+    = simple_button :icon => "icon-chevron-up", :tooltip => "Previous Scan", :id => 'btn-prev-scan'
+    = simple_button :icon => "icon-chevron-left", :tooltip => "Previous Question", :id => 'btn-prev-ques'
+    = simple_button :icon => "icon-chevron-right", :tooltip => "Next Question", :id => 'btn-next-ques'
+    = simple_button :icon => "icon-chevron-down", :tooltip => "Next Scan", :id => 'btn-next-scan'
   .btn-group.btn-group-vertical{ 'data-toggle' => 'buttons-radio' }
-    %button.btn.btn-inverse#btn-ok{ :rel => :tooltip, :title => "Looks Good" }
-      %i{ :class => 'icon-white icon-ok ' }
-    %button.btn.btn-inverse#btn-cross{ :rel => :tooltip, :title => "Wrong!" }
-      %i{ :class => 'icon-white icon-remove' }
-    %button.btn.btn-inverse#btn-what{ :rel => :tooltip, :title => "How?"}
-      %i{ :class => 'icon-white icon-question-sign' }
-    %button.btn.btn-inverse#btn-write{ :rel => :tooltip, :title => "Add a comment" }
-      %i{ :class => 'icon-white icon-text-width' } 
-    %button.btn.btn-inverse#btn-undo{ :rel => :tooltip, :title => "Undo Last" }
-      %i{ :class => 'icon-white icon-repeat' } 
+    = simple_button :icon => "icon-leaf", :tooltip => "Fresh Copy", :id => 'btn-fresh-copy'
+    = simple_button :icon => "icon-ok", :tooltip => "Right!", :id => 'btn-ok'
+    = simple_button :icon => "icon-remove", :tooltip => "Wrong!", :id => 'btn-cross'
+    = simple_button :icon => "icon-question-sign", :tooltip => "How?", :id => 'btn-what'
+    = simple_button :icon => "icon-text-width", :tooltip => "Add a Comment", :id => 'btn-write'
+    = simple_button :icon => "icon-repeat", :tooltip => "Undo Last", :id => 'btn-undo'
 
