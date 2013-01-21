@@ -35,8 +35,9 @@ class AnswerSheet < ActiveRecord::Base
 
     n_total = gr.count 
     n_with_scan = gr.with_scan.count 
-    ret = false 
+    self.update_attribute :received, true if (n_with_scan == n_total)
 
+    ret = false 
     case extent
       when :none
         ret = (n_with_scan == 0)
@@ -45,7 +46,6 @@ class AnswerSheet < ActiveRecord::Base
       when :fully 
         ret = n_with_scan == n_total 
     end
-    self.update_attribute(:received, ret) if (ret && (extent == :fully))
     return ret
   end
 
