@@ -29,7 +29,7 @@ class Testpaper < ActiveRecord::Base
 
     ret = false 
     AnswerSheet.where(:testpaper_id => self.id).each do |m|
-      ret |= (m.received?(:fully) || m.received?(:partially))
+      ret |= (!m.received? :none)
       break if ret
     end 
     return ret
