@@ -112,11 +112,9 @@ class Examiner < ActiveRecord::Base
               x.update_attribute :scan, file
             end
 
-            # Update the answer-sheet to record that some scans have been received
-            answer_sheet = AnswerSheet.of_student(student).for_testpaper(testpaper).first 
-            unless answer_sheet.received
-              answer_sheet.update_attribute :received, true
-            end
+            ## :received field of AnswerSheets is updated when the first 
+            ## query to AnswerSheet.received? is made 
+
           else
             name = Student.find(student).name
             failures.push({:name => name, :id => page}) 
