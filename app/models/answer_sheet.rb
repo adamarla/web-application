@@ -32,15 +32,18 @@ class AnswerSheet < ActiveRecord::Base
     return ( extent == :none ? false : true ) if self.received
 
     gr = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+
+    n_total = gr.count 
+    n_with_scan = gr.with_scan.count 
     ret = false 
 
     case extent
       when :none
-        ret = (gr.count && (gr.with_scan.count  == 0))
+        ret = (n_with_scan == 0)
       when :partially 
-        ret = (gr.count && (gr.with_scan.count  < gr.count))
+        ret = (n_with_scan > 0 && n_with_scan < n_total)
       when :fully 
-        ret = (gr.count && (gr.with_scan.count  == gr.count))
+        ret = n_with_scan == n_total 
     end
     self.update_attribute(:received, ret) if (ret && (extent == :fully))
     return ret
