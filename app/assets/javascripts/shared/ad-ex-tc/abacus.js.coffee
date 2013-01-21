@@ -217,19 +217,19 @@ jQuery ->
 
   $('#btn-ok').click (event) ->
     #event.stopImmediatePropagation()
-    canvas.mode = 'checks'
+    canvas.mode = 'check'
     grtb.keyboard = true
     return true
 
   $('#btn-cross').click (event) ->
     # event.stopImmediatePropagation()
-    canvas.mode = 'crosses'
+    canvas.mode = 'cross'
     grtb.keyboard = true
     return true
 
   $('#btn-what').click (event) ->
     # event.stopImmediatePropagation()
-    canvas.mode = 'exclamations'
+    canvas.mode = 'question'
     grtb.keyboard = true
     return true
 
@@ -243,6 +243,7 @@ jQuery ->
   $('#btn-undo').click (event) ->
     event.stopImmediatePropagation()
     grtb.keyboard = true
+    canvas.undo()
     return true
 
 

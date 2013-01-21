@@ -130,35 +130,22 @@ class GradedResponse < ActiveRecord::Base
     # 'clicks' is of the form _R_ .... _G_ .... _T_ ...._C_, where R=red, T=turmeric, G=green
 
     ret = [] # passed to web-service request 
-    x_correction = 15 # see canvas.drawImage() call in canvas.js
+    # x_correction = 15 # see canvas.drawImage() call in canvas.js
 
-    ### LHS elements are scalar elements 
-    crosses = clicks.split('_R_').last.split('G_').first
-    ticks = clicks.split('_G_').last.split('T_').first 
-    exclamations = clicks.split('_T_').last.split('C_').first
-    comments = clicks.split('_C_')
-    comments = (comments.count != 2) ? nil : comments.last
+    ['cross', 'check', 'ques', 'comment'].each_with_index do |m,j|
+      pts = clicks.split("_#{m}b_").last.split("#{m}e_").first
+      next if pts.blank?
 
-    ### First, process the annotation marks 
-    [crosses, ticks, exclamations].each_with_index do |t, j|
-      c = t.split('_').select{ |m| !m.blank? }.map(&:to_i) # number of elements in 'c' guaranteed to be = 8N
-      index = 0 
-      c.each_slice(2) do |pt|
-        if (index % 2 == 1) 
-          ret.push({ :x => pt.first - x_correction, :y => pt.last, :code => j }) 
-        else 
-          ret.push({ :x => pt.first - x_correction, :y => pt.last })
-        end # of 'if'
-        index += 1
-      end # each_slice
-    end
-
-    ### Then process the comments 
-    unless comments.nil? 
-      cmnts = comments.split('_')
-      cmnts.each_slice(3) do |cm|
-        # cm = [x,y, comment]
-        ret.push( { :x => cm[0].to_i - x_correction, :y => cm[1].to_i, :code => 3, :text => cm[2] } )
+      unless m == 'comment'
+        pts = pts.split('_').select{ |m| !m.blank? }.map(&:to_i)
+        pts.each_slice(2) do |pt|
+          ret.push({ :x => pt.first, :y => pt.last, :code => j })
+        end
+      else
+        comments = pts.split '_'
+        comments.each_slice(3) do |comment|
+          ret.push({ :x => comment[0].to_i, :y => comment[1].to_i, :code => 3, :text => comment[2]})
+        end
       end
     end
 
