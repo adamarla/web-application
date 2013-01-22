@@ -23,9 +23,14 @@ jQuery ->
 
   $('#build-worksheet').click (event) ->
     event.stopPropagation()
-    form = $(this).parent().siblings('form.active').eq(0)
+    form = $(this).closest('.tab-content').children('form.active').eq(0)
     id = $('#tab-wsb-quizzes').parent().attr 'marker'
-    action = "quiz/assign?id=#{id}"
+
+    # See teachers/_wsb-sektions
+    publishBtn = $(this).parent().prev().children('#btn-publish-ws').eq(0)
+    publish = publishBtn.hasClass 'active'
+
+    action = if publish then "quiz/assign?id=#{id}&publish=yes" else "quiz/assign?id=#{id}"
     form.attr 'action', action
     form.submit()
     return true

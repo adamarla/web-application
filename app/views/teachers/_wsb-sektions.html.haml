@@ -9,9 +9,14 @@
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span8
-    .btn-group
-      %button.btn.btn-inverse#select-all-for-quiz= "Select All"
-      %button.btn.btn-inverse#build-worksheet= "Build Worksheet"
+    .btn-toolbar
+      .btn-group
+        = simple_button :icon => 'icon-align-justify', :id => 'select-all-for-quiz',
+          :tooltip => "Select All", :placement => :right
+        = simple_button :icon => 'icon-envelope', :id => 'btn-publish-ws', :toggle => :button,
+          :tooltip => "Send PDFs to students", :class => 'btn-primary', :placement => :right
+      .btn-group
+        = simple_button :icon => 'icon-wrench', :id => 'build-worksheet', :for => "Make PDF"
     - teacher.sektions.each do |m|
       = simple_form_for :checked, :url => quiz_assign_path, :remote => true,
       :html => { :id => "lp-sektion-#{m.id}", :class => 'multi-select'} do |f|

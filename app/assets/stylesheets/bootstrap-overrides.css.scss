@@ -493,6 +493,12 @@ form.smart {
   } 
 } 
 
+.tab-content {
+  .btn-group {
+    margin-bottom: 25px ;
+  }
+} 
+
 .data-point-label {
   font: {
     size: 10px ;
@@ -625,6 +631,5 @@ select {
 
 li.split { 
   text-align: center ;
-
 } 
 
