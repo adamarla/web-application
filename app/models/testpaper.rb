@@ -26,12 +26,7 @@ class Testpaper < ActiveRecord::Base
 
   def has_scans?
     # if false, then worksheet / testpaper is automatically ungradeable
-
-    ret = false 
-    AnswerSheet.where(:testpaper_id => self.id).each do |m|
-      ret |= (!m.received? :none)
-      break if ret
-    end 
+    ret = GradedResponse.in_testpaper(self.id).with_scan.count > 0
     return ret
   end
 
