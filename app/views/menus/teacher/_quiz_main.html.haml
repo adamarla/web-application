@@ -10,7 +10,8 @@
     %ul.dropdown-menu
       - [*9..12].each do |j|
         %li
-          = simple_link :for => "Grade #{j}", :notouch => true, :url => "quizzes/list.json?klass=#{j}"
+          = simple_link :for => "Grade #{j}", :id => "lnk-#{j}-quizzes", 
+            :url => "quizzes/list.json?klass=#{j}"
 
   %li.divider
   %li.nav-header= "Suggest Questions"
