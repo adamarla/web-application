@@ -89,8 +89,15 @@ module ApplicationHelper
     id = options.delete :id
     tooltip = options.delete(:tooltip) || nil
 
+    unless tooltip.nil?
+      rel = :tooltip
+      title = tooltip
+    else
+      rel = title = placement = nil
+    end
+
     content_tag :button, :class => "btn #{klass}", :id => id, 
-      :rel => "#{tooltip.nil? ? nil : :tooltip}", :title => "#{tooltip.nil? ? nil : tooltip}" do
+      :rel => rel, :title => title, :data => options do 
       render = label.blank? ? "" : label 
       render += (icon.blank? ? "" : content_tag(:i, nil, :class => "icon-white #{icon}") )
       unless as.blank?
