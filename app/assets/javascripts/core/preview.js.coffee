@@ -35,7 +35,7 @@ jQuery ->
       obj.carousel { interval:15000 }
       return true
 
-    loadJson : (json, source, obviousAlt = false) ->
+    loadJson : (json, source, suffix = null) ->
       ###
         This method will create the preview in all situations - 
         when viewing candidate question in the 'vault', existing 
@@ -107,7 +107,8 @@ jQuery ->
           hop = if (not multiRoot || (multiRoot && j == 0)) then true else false
           switch source
             when 'atm'
-              full = "#{base}/#{root}/answer-key/preview/page-#{page}.jpeg"
+              suffix = "preview" unless suffix?
+              full = "#{base}/#{root}/answer-key/#{suffix}/page-#{page}.jpeg"
               alt = "##{page}"
             when 'vault'
               full = "#{base}/#{root}/page-#{page}.jpeg"
