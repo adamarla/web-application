@@ -20,12 +20,14 @@ jQuery ->
     if url.match(/ws-preview/)
       preview.loadJson json, 'locker'
     else if url.match(/inbox\/echo/)
+      preview.loadJson json, 'atm', 'fillers'
       return true
     else if url.match(/inbox/)
       target = $('#pane-st-inbox')
       parentKey = 'inbox'
       childKey = 'ws'
       menu = 'st-inbox'
+      clickFirst = true
     else if url.match(/outbox/)
     else
       matched = false
