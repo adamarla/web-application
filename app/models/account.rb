@@ -129,6 +129,20 @@ class Account < ActiveRecord::Base
     return @ws
   end
 
+  def courses
+    @courses = []
+    me = self.loggable_id
+
+    case self.role
+      when :teacher 
+        @courses = current_account.loggable.courses
+      when :admin
+      else 
+        @courses = []
+    end 
+    return @courses
+  end 
+
   def pending_ws
     @ws = nil
     case self.role 
