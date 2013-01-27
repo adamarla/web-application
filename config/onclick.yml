@@ -115,6 +115,10 @@ m-account :
   toggle : dropdown
   menu : tasks-on-account
 
+m-howto : 
+  toggle : dropdown
+  menu : howto-guides
+
 tab-ws-performance :
   toggle : tab
   panel : 

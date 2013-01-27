@@ -18,6 +18,7 @@
     = render :partial => 'menus/teacher/workbench'
     = render :partial => 'menus/teacher/trapdoors' 
     = render :partial => 'menus/teacher/rc' 
+    = render :partial => 'menus/teacher/howto' 
 
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/user/notifications'
@@ -54,6 +55,8 @@
                   = simple_link :for => "Report Cards", :as => :dropdown, :id => 'm-report-cards'
                 %li.dropdown
                   = simple_link :for => "Workbench", :as => :dropdown, :id => 'm-teacher-workbench'
+                %li.dropdown
+                  = simple_link :for => "Help", :as => :dropdown, :id => 'm-howto'
                 %li.dropdown
                   = simple_link :as => :dropdown, 
                     :id => 'm-notifications', :icon => "icon-white icon-bell"
