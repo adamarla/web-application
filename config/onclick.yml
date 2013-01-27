@@ -119,6 +119,11 @@ m-howto :
   toggle : dropdown
   menu : howto-guides
 
+lnk-howto-1 : &type-notouch
+  notouch : true
+
+lnk-howto-2 : *type-notouch
+
 tab-ws-performance :
   toggle : tab
   panel : 
