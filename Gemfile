@@ -42,6 +42,7 @@ gem 'spreadsheet'
 gem 'simple_form'
 gem 'country_select'
 gem 'kaminari' # for pagination
+gem 'squeel' # to make active record queries more intuitive 
 
 gem 'delayed_job_active_record'
 
