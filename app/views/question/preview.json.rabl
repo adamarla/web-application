@@ -3,6 +3,8 @@
 # This form is in keeping with what is used in quizzes/preview & 
 # quizzes/get_candidates
 
-object @question => :preview
-  node(:scans) { |m| [*1..m.answer_key_span?] }
-  node(:id) { |m| m.uid }
+object false
+  node(:preview) {
+    { :id => @question.uid, :scans => [*1..@question.answer_key_span?] } 
+  } 
+  node(:caption) { @question.uid }
