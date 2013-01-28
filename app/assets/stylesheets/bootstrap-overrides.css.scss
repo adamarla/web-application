@@ -249,6 +249,9 @@ $green: #57bc20 ; // rgb(87,188,32)
     > .carousel-caption { 
       top: 0px ; 
       color: $orange ;
+      font: {
+        variant: small-caps ;
+      }
     }
   }
 } 
