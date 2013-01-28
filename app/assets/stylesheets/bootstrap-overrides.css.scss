@@ -22,7 +22,7 @@ $green: #57bc20 ; // rgb(87,188,32)
 } 
 
 .navbar-inner { 
-  > ul > li > a:not([id='m-account']) { font-size: 15px ; }
+  > ul > li > a:not([id='m-account']) { font-size: 14px ; }
 } 
 
 .navbar-inner { 
@@ -104,7 +104,7 @@ $green: #57bc20 ; // rgb(87,188,32)
 .g-panel { 
   h3 {
     font-weight: 300 ; 
-    color: $gradians-blue ;
+    // color: $gradians-blue ;
   }
 } 
 
@@ -244,9 +244,13 @@ $green: #57bc20 ; // rgb(87,188,32)
     text-align: center ;
   } 
 
-  .item > img { 
-    display: inline-block ;
-  } 
+  .item { 
+    > img { display: inline-block ; }
+    > .carousel-caption { 
+      top: 0px ; 
+      color: $orange ;
+    }
+  }
 } 
 
 .contextual-menu { 

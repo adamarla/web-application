@@ -105,10 +105,13 @@ jQuery ->
 
         for page,j in pages
           hop = if (not multiRoot || (multiRoot && j == 0)) then true else false
+          caption = json.caption
+
           switch source
             when 'atm'
               suffix = "preview" unless suffix?
               full = "#{base}/#{root}/answer-key/#{suffix}/page-#{page}.jpeg"
+              caption += " ( page #{page} )"
               alt = "##{page}"
             when 'vault'
               full = "#{base}/#{root}/page-#{page}.jpeg"
@@ -118,8 +121,13 @@ jQuery ->
               alt = "pg-#{j+1}"
             else break
 
-          img = "<div class=item hop=#{hop} m=#{j}><img alt=#{alt} src=#{full}></div>"
-          $(img).appendTo target
+          item = "<div class=item hop=#{hop} m=#{j}></div>"
+          item = $(item).appendTo target
+
+          img = $("<img alt=#{alt} src=#{full}>").appendTo $(item)
+
+          # Append caption - if specified
+          $("<div class='carousel-caption top'><h3>#{caption}</h3></div>").appendTo $(item) if caption?
 
       # Now, call the preview
       preview.execute()
