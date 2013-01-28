@@ -16,3 +16,5 @@ object false
   node(:preview) { 
     { :id => "#{@ws.quiz_id}-#{@ws.id}", :scans => @gr.with_scan.map(&:scan).uniq.sort }
   } 
+
+  node(:caption) { @ws.quiz.name }
