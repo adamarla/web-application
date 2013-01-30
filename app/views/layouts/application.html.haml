@@ -5,6 +5,7 @@
     = render :partial => 'menus/user/download', :locals => { :server => server }
     = render :partial => 'menus/user/register', :locals => { :server => server }
   #modals
+    = render :partial => 'modals/user/contactus'
     = render :partial => 'modals/user/register'
 
 !!!5
@@ -36,8 +37,9 @@
                       .input-append
                         %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-primary{ :type => :submit }= "Sign In"
+                        -#%button.btn.btn-info{ :href => "#contactus" , "data-toggle" => "modal" }= "Contact Us"
                 %li.dropdown
-                  = simple_link :for => "Register", :id => 'm-registrations', :as => :dropdown 
+                  = simple_link :for => "Register",  :id => "m-registrations", :as => :dropdown
 
       .row-fluid
         .hero-unit

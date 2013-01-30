@@ -3,6 +3,11 @@ class Mailbot < ActionMailer::Base
   default :from => "help@gradians.com" 
   layout 'mailbot'
 
+  def suggestion_email(contact_form)
+    mail :from => contact_form[:email], :subject => "Suggestion Email", 
+      :body => contact_form[:text], :to => "help@gradians.com"
+  end
+
 =begin
   def grading_done_email(teacher)
     @account = teacher.account

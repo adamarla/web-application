@@ -546,3 +546,8 @@ form.smart {
     transform: lowercase ;
   } 
 } 
+
+.typeahead.dropdown-menu {
+  z-index: 1051 ;
+}
+

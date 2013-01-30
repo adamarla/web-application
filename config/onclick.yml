@@ -282,5 +282,3 @@ lnk-register-student :
 lnk-register-teacher :
   toggle : modal
 
-lnk-register-curious :
-  toggle : modal

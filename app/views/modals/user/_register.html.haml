@@ -1,48 +1,75 @@
 
-#register_student.modal.fade.hide
+#register_student.modal.hide.fade
 
   .modal-header
-    %h3= "Hullo and welcome to Gradians!"
+    %h3= "Hello! Thank you for taking interest Gradians.com"
   .modal-body
-    %p= "To get you started, we'll need this information (all fields are mandatory)"
-    %br
-    #registrationform.form-horizontal
-      .control-group
-        .control-label{ :for => :inputFName }= "First Name"
-        .controls 
-          %input.input-medium{ :type => :text, :id => :inputFName }
-      .control-group
-        .control-label{ :for => :inputLName }= "Last Name"
-        .controls 
-          %input.input-medium{ :type => :text, :id => :inputLName }
-      .control-group
-        .control-label{ :for => :inputEmail }= "eMail"
-        .controls 
-          %input.input-medium{ :type => :text, :id => :inputEmail }
-      .control-group
-        .control-label{ :for => :inputSchool }= "Grade Level (9 - 12)"
-        .controls 
-          %input.input-medium{ :type => :text, :id => :inputGrade }
-      .control-group
-        .control-label{ :for => :inputSchool }= "School"
-        .controls 
-          %input.input-medium{ :type => :text, :id => :inputSchool }
-      .control-group
-        .control-label{ :for => :inputCountry }= "Country"
-        .controls 
-          %input.input-medium{ :type => :text, :id => :inputCountry}
-      .control-group
-        .control-label{ :for => :inputPostalCode }= "Postal Code"
-        .controls 
-          %input.input-medium{ :type => :text, :id => :inputPostalCode}
-      .modal-footer
-        %button.btn{ :type => :submit }= "Maybe later, thanks!"
-        %button.btn.btn-primary{ :type => :submit }= "Sign me up!"
+    #formblurb.form-horizontal
+      %h4= "Tell us how to reach you and someone from our team will"
+      %br
+      %form{ :id => "studentform",  :action => "welcome/register_student", :method => :post, "data-remote" => "true" } 
+        .control-group.error
+          .control-label{ :for => :inputName }= "Name"
+          .controls 
+            %input.input-long.required{ :type => :text, :id => :inputName , :name => "studentform[name]"}
+        .control-group.error
+          .control-label{ :for => :inputEmail }= "eMail"
+          .controls 
+            %input.input-long{ :type => :email, :id => :inputEmail , :name => "studentform[email]"}
+        .control-group.error
+          .control-label{ :for => :inputGradelevel }= "Grade Level (9 - 12)"
+          .controls 
+            %input.input-long{ :type => :text, :id => :inputGradelevel , :name => "studentform[gradelevel]"}
+        .control-group.error
+          .control-label{ :for => :inputSchool }= "School"
+          .controls 
+            %input.input-long{ :type => :text, :id => :inputSchool , :name => "studentform[school]"}
+        .control-group.error
+          .control-label{ :for => :inputCountry }= "Country"
+          .controls 
+            %input.input-long{ :type => :text, :id => :inputCountry , :name => "studentform[country]"}
+        .control-group
+          .controls
+            %button.btn.btn-info{ :id => "nobtn", :type => :reset }= "Thanks, another time"
+            %button.btn.btn-primary{ :id => "yesbtn", :type => :submit }= "Yaay, sign me up!"
 
-#register_teacher.modal.fade.hide
-  .modal-body
-    %p= "Hello Teacher! Welcome to Gradians"
+    #ackblurb{ :style => "display: none" }
+      %h4= "Thanks chief, we got it!"
 
-#register_curious.modal.fade.hide
+  .modal-footer
+
+#register_teacher.modal.hide.fade
+
+  .modal-header
+    %h3= "Hello! Thank you for taking interest Gradians.com"
   .modal-body
-    %p= "Hello Curious! Welcome to Gradians"
+    #formblurb.form-horizontal
+      %h4= "Tell us how to reach you and someone from our team will"
+      %br
+      %form{ :id => "teacherform",  :action => "welcome/register_teacher", :method => :post, "data-remote" => "true" } 
+        .control-group
+          .control-label{ :for => :inputName }= "Name"
+          .controls 
+            %input.input-long.required{ :type => :text, :id => :inputName , :name => "contact_form[name]"}
+        .control-group
+          .control-label{ :for => :inputEmail }= "eMail"
+          .controls 
+            %input.input-long{ :type => :email, :id => :inputEmail , :name => "contact_form[email]"}
+        .control-group
+          .control-label{ :for => :inputOrg }= "Organisation"
+          .controls 
+            %input.input-long{ :type => :text, :id => :inputOrg , :name => "contact_form[org]"}
+        .control-group
+          .control-label{ :for => :inputMessage }= "Message/Question"
+          .controls 
+            %textarea{ :rows => 8 , :cols => 72 , :name => "contact_form[text]" }
+        .control-group
+          .controls
+            %button.btn.btn-info{ :type => :reset }= "Clear"
+            %button.btn.btn-primary{ :type => :submit }= "Submit"
+
+    #ackblurb{ :style => "display: none" }
+      %h4= "Thanks chief, we got it!"
+
+  .modal-footer
+
