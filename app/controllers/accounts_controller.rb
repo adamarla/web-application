@@ -27,6 +27,10 @@ class AccountsController < ApplicationController
     @wks = @wks.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse if @who == "Student"
   end
 
+  def courses
+    @courses = current_account.courses
+  end 
+
   def pending_ws
     @wks = current_account.pending_ws
   end

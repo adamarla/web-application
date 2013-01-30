@@ -26,6 +26,12 @@ group :assets do
   gem 'uglifier'
 end 
 
+# Newer YAML parser. Default on Heroku Cedar is 'syck' which is unmaintained 
+# $> rails console 
+# $> YAML::ENGINE::yamler
+# Ref : http://effectif.com/ruby-on-rails/syck-and-psych-yaml-parsers-on-heroku
+# gem 'psych'
+
 gem 'jquery-rails'
 gem 'therubyracer'
 
@@ -36,6 +42,7 @@ gem 'spreadsheet'
 gem 'simple_form'
 gem 'country_select'
 gem 'kaminari' # for pagination
+gem 'squeel' # to make active record queries more intuitive 
 
 gem 'delayed_job_active_record'
 

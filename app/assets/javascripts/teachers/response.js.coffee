@@ -23,8 +23,8 @@ jQuery ->
       parentKey = 'quizzes'
       childKey = 'quiz'
       menu = "per-quiz"
-      # pgnUrl = "quizzes/list"
       clickFirst = true
+      karo.empty target
     else if url.match(/sektion\/students/)
       target = $("#lp-sektion-#{json.sektion}")
       parentKey = "students"
@@ -112,7 +112,7 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      karo.empty target
+      # karo.empty target
       line.write(target, m[childKey], menu) for m in json[parentKey]
 
       # Enable / disable paginator as needed 

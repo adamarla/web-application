@@ -9,6 +9,7 @@
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
+#  inboxed     :boolean         default(FALSE)
 #
 
 require 'test_helper'

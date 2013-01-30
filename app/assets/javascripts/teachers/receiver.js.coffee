@@ -114,20 +114,6 @@ jQuery ->
         continue if not q?
         b = q.children 'input[type="button"]'
         b.attr 'liked', true
-    else if url.match(/quiz\/assign/) || url.match(/teacher\/build_quiz/)
-      at = json.at
-      hours = Math.floor(at/60)
-      minutes = (at % 60)
-      minutes = if minutes < 10 then "0#{minutes}" else "#{minutes}"
-      eet = "#{hours}h:#{minutes}min" # about a minute per document
-
-      if url.match(/teacher\/build_quiz/) then g = $('#build-quiz-receipt') else g = $('#assign-quiz-receipt')
-
-      g.find('#job-position:first').children('.ticker-display-value').text "##{at}"
-      g.find('#job-eta:first').children('.ticker-display-value').text "#{eet}"
-
-      return true
-
     else if url.match(/teacher\/testpapers/)
       here = $('#testpaper')
       coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true}

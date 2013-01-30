@@ -57,7 +57,7 @@ class Quiz < ActiveRecord::Base
     return total
   end
 
-  def assign_to (students) 
+  def assign_to (students, publish = false) 
     # students : an array of selected students from the DB
 
     # Mappings to take care of :
@@ -68,7 +68,7 @@ class Quiz < ActiveRecord::Base
 
     ntests = Testpaper.where(:quiz_id => self.id).count
     assigned_name = Testpaper.name_if_students? students.map(&:id)
-    testpaper = self.testpapers.new :name => assigned_name # (1)
+    testpaper = self.testpapers.new :name => assigned_name, :inboxed => publish # (1)
     questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
     students.each do |s|

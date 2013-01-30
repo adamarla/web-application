@@ -44,6 +44,7 @@ Webapp::Application.routes.draw do
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
+  match 'untagged/list' => 'examiners#untagged', :via => :get
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
   match 'receive/scans' => 'examiners#receive_scans', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
@@ -74,7 +75,7 @@ Webapp::Application.routes.draw do
   match 'topics/list' => 'topics#list', :via => :get
 
   # Question
-  resource :question, :only => [:update], :controller => :question
+  match 'tag/question' => 'question#tag', :via => :post
   match 'questions/list' => 'question#list', :via => :get
   match 'question/preview' => 'question#preview', :via => :get
 
@@ -84,11 +85,15 @@ Webapp::Application.routes.draw do
   match 'quiz/preview' => 'quizzes#preview', :via => :get
   match 'quiz/assign' => 'quizzes#assign_to', :via => [:put, :post]
   match 'quiz/testpapers' => 'quizzes#testpapers', :via => :get
+  match 'find/schools' => 'schools#find', :via => :get
 
   # Student 
   resource :student, :only => [:create, :update, :show]
   match 'ws-preview' => 'students#responses', :via => :get
   match 'dispute' => 'students#dispute', :via => :get
+  match 'inbox' => 'students#inbox', :via => :get
+  match 'inbox/echo' => 'students#inbox_echo', :via => :get
+  match 'outbox' => 'students#outbox', :via => :get
 
   # Sektion 
   resource :sektion, :only => [:create, :update]
@@ -125,6 +130,8 @@ Webapp::Application.routes.draw do
   match 'testpaper/load' => 'testpapers#load', :via => :get
   match 'ws/preview' => 'testpapers#preview', :via => :get
   match 'ws/layout' => 'testpapers#layout', :via => :get
+  match 'ws/publish' => 'testpapers#inbox', :via => :get
+  match 'ws/unpublish' => 'testpapers#uninbox', :via => :get
 
   # Trial Account 
   resource :trial_account, :only => [:create], :controller => :trial_account

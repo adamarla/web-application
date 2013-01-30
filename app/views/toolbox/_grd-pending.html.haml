@@ -5,10 +5,11 @@
   %li
     = simple_link :for => "Pages", :id => 'tab-grd-page', :href => "#pane-grd-page"
   %li
-    = simple_link :for => "Grade", :id => 'tab-grd-panel', :href => "#pane-grd-panel"
+    = simple_link :for => "Grade", :id => 'tab-grd-panel', 
+      :href => "#pane-grd-panel", :class => 'nopurge-ever'
 
 .tab-content
   #pane-grd-ws.tab-pane
   #pane-grd-page.tab-pane
-  #pane-grd-panel.tab-pane.nopurge-on-show
+  #pane-grd-panel.tab-pane.static
     = render :partial => 'toolbox/grd-abacus'

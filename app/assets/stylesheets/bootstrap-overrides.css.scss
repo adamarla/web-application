@@ -12,17 +12,17 @@ $panel-colour: lighten(black, 17%) ;
 $deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
 $lightblue: lighten($deep-blue, 23%) ;
-$red: #d72323 ;
-$green: #57bc20 ;
+$red: #d72323 ; // rgb(215, 35, 35)
+$green: #57bc20 ; // rgb(87,188,32)
 
 .navbar-inverse, .dropdown-menu {
-  li > a {
-    color: white ;
+  li { 
+    > a { color: white ; }
   }
 } 
 
 .navbar-inner { 
-  > ul > li > a:not([id='m-account']) { font-size: 15px ; }
+  > ul > li > a:not([id='m-account']) { font-size: 14px ; }
 } 
 
 .navbar-inner { 
@@ -41,6 +41,16 @@ $green: #57bc20 ;
       padding: 0px 20px ;
       text-transform: lowercase ;
     } 
+    &.notice {
+      padding: 5px ;
+      font-size: 11px ;
+      color: white ;
+      > .subtext { 
+        color: $orange ; 
+        font-size: 10px ;
+        text-transform: lowercase ;
+      }
+    }
   } 
 } 
 
@@ -94,7 +104,7 @@ $green: #57bc20 ;
 .g-panel { 
   h3 {
     font-weight: 300 ; 
-    color: $gradians-blue ;
+    // color: $gradians-blue ;
   }
 } 
 
@@ -118,7 +128,7 @@ $green: #57bc20 ;
           &:hover { border: 1px solid white; }
         }
       } 
-      &.disabled {
+      &.disabled, &[disabled='true'] {
         > a { 
           color: $lightgray ;
           &:hover { border: 1px dashed white ; }
@@ -234,9 +244,16 @@ $green: #57bc20 ;
     text-align: center ;
   } 
 
-  .item > img { 
-    display: inline-block ;
-  } 
+  .item { 
+    > img { display: inline-block ; }
+    > .carousel-caption { 
+      top: 0px ; 
+      color: $orange ;
+      font: {
+        variant: small-caps ;
+      }
+    }
+  }
 } 
 
 .contextual-menu { 
@@ -331,6 +348,11 @@ button[data-toggle='button'] {
 
 #grd-toolbar-btns { 
   position: fixed ;
+  margin-top: 0px ;
+
+  > .btn-group-vertical { 
+    vertical-align: top ;
+  } 
 } 
 
 .btn-inverse.active { background-color: $deep-blue ; }
@@ -457,33 +479,35 @@ form.smart {
   > .nav-tabs {
     > li {
       font-size: 11px ;
-      > a.split {
-        border-radius: 0px ;
-        background: rgba(70,136,71,0.8) ;
-        font: { 
-          family: cursive ;
-        } 
-        text-align: center ;
-        border: 1px solid white ;
-        border-left: none ;
-        margin: {
-          bottom: 10px ;
-          right: 0px ;
-        } 
-
-        &~a { 
-          padding-right: 4px ;
-          border: 1px solid white ;
-          border-right: none ;
-          margin: {
-            right: -2px ;
-            bottom: 10px ;
+      margin-bottom: 5px ;
+      &.split {
+        margin-bottom: 10px ;
+        > a {
+          > .row-one { 
+            font-size: 15px ;
+            padding-bottom: 9px ;
+            border-bottom: 1px solid white ;
           }
-          &:hover { background-color: $deep-blue ; }
+          > .row-two {
+            font-size: 12px ;
+            padding-top: 4px ;
+          } 
         } 
-      } 
+      }
+      &[colour='green'] { > a { background: rgba(87,188,32,0.6) ;} }
+      &[colour='red'] { > a { background: rgba(215,35,35,0.6) ; } }
+      &[colour='orange'] { > a { background: rgba(255, 165, 0, 0.6) ; } }
+      &[colour][class~='active'] {
+        > a { border: 2px solid white ; }
+      }
     } 
   } 
+} 
+
+.tab-content {
+  .btn-group {
+    margin-bottom: 25px ;
+  }
 } 
 
 .data-point-label {
@@ -514,7 +538,18 @@ form.smart {
 }
 
 #how-it-works { 
+  width: 100% ;
+  .attribution {
+    font-size: 10px ;
+    color: $lightgray ;
+    bottom: 0px ;
+  } 
   .carousel-caption {
+    left: 40%;
+    right: 13%;
+    padding: 10px ;
+    border-radius: 3px 3px 0px 0px ; 
+    bottom: 0px ; 
     h4 {
       font:{
         size: 18px ;
@@ -525,9 +560,26 @@ form.smart {
 
     p {
       font-size: 12px ;
-      color: white ;
+      color: white ; 
+      font-weight: 400 ;
+      line-height: 17px ;
     } 
   } 
+
+  .carousel-control[data-slide] {
+    top: 110% ;
+    border: none ;
+    background-color: $gray ;
+  } 
+
+  .carousel-control[data-slide='prev'] {
+    left: 10% ;
+  }
+
+  .carousel-control[data-slide='next'] {
+    left: 90% ;
+  }
+
 }
 
 .hero-unit {
@@ -547,7 +599,55 @@ form.smart {
   } 
 } 
 
+<<<<<<< HEAD
 .typeahead.dropdown-menu {
   z-index: 1051 ;
 }
 
+=======
+#m-notifications { 
+  border-radius: 4px ;
+  &.on { background-color: $deep-blue ; }
+} 
+
+
+#tag-misc-properties {
+  > form { 
+    margin-top: 20px ;
+  } 
+
+  .row-fluid:not([class~='subpart-tagging']) {
+    margin-bottom: 20px ;
+  } 
+
+  .subpart-tagging {
+    > .label { 
+      font: { 
+        size: 14px ;
+        weight: normal ;
+      } 
+      color: $orange ;
+      background-color: transparent ;
+    } 
+  } 
+}
+
+select { 
+  background-color: $panel-colour ;
+  color: white ;
+  max-width: 95% ;
+  border-radius: 1px ;
+
+  + .help-block {
+    font-size: 11px ;
+    color: $gradians-blue;
+    margin-top: -4px ;
+  } 
+} 
+
+
+li.split { 
+  text-align: center ;
+} 
+
+>>>>>>> upstream/master

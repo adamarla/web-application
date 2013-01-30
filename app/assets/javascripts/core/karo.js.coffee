@@ -10,18 +10,26 @@ window.karo = {
   empty : (node) ->
     node = if typeof node is 'string' then $(node) else node
 
-    if node.is 'form'
-      csrf = node.children('div').eq(0) # retain cross-site forgery protection
-      csrf = csrf.detach()
+    csrf = if node.is 'form' then node.children().eq(0) else null
+    csrf = csrf.detach() if csrf?
+    
+    children = node.children()
+
+    if node.hasClass 'purge-blind'
       node.empty()
-      csrf.appendTo node
+    else if node.hasClass 'purge-destroy'
+      node.remove()
+      return true
+    else if node.hasClass 'leaf' || children.length is 0
+      node.remove()
+      return true
+    else if node.hasClass 'purge-skip'
+      csrf.prependTo node if csrf?
+      return true
     else
-      for m in node.children()
-        continue if $(m).hasClass 'no-touch'
-        if karo.checkWhether m, 'no-remove'
-          $(z).empty() for z in $(m).find('.purge')
-        else
-          $(m).remove()
+      karo.empty $(m) for m in children
+
+    csrf.prependTo node if csrf?
     return true
 
   unhide : (child, panel) -> # hide / unhide children in a panel
@@ -42,15 +50,16 @@ window.karo = {
     nopurge = false
     if klass.match(/nopurge/)
       nopurge = true
-      return true if $(node).hasClass 'nopurge-ever'
+      return true if ($(node).hasClass('nopurge-ever') || $(node).attr('nopurge-ever') is 'true')
 
-    return true if $(node).hasClass klass
+    if ($(node).hasClass(klass) || $(node).attr(klass) is 'true')
+      return true
 
     ul = $(node).closest('ul.nav-tabs').eq(0)
     return false if ul.length is 0
     if nopurge
-      return true if ul.hasClass 'nopurge-ever'
-    return ul.hasClass(klass)
+      return true if (ul.hasClass('nopurge-ever') || ul.attr('nopurge-ever') is 'true')
+    return (ul.hasClass(klass) || ul.attr(klass) is 'true')
 
   tab : {
     enable : (id) ->

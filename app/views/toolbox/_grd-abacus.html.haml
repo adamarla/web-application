@@ -1,15 +1,15 @@
 
 = simple_form_for :checked, :remote => true, :url => submit_fdb_path, 
-  :html => { :id => 'form-feedback', :class => 'no-remove'} do |f|
+  :html => { :id => 'form-feedback' } do |f|
 
-  .row-fluid.navbar.no-remove
+  .row-fluid.navbar
     .btn-group.pull-right
       %button#btn-toggle-answerkey.btn.btn-primary{ :type => :button, 
       'data-toggle' => :button }= "See Solution"
       %button#btn-submit-fdb.btn.btn-inverse.disabled{ :type => :submit, :disabled => :disabled }= "Submit"
 
-  .tabbable.tabs-left.no-remove
-    %ul.nav.nav-tabs.span4.nopurge-on-show
+  .tabbable.tabs-left
+    %ul.nav.nav-tabs.span4.nopurge-ever
       %li
         = simple_link :for => "An honest effort - even if incomplete?", 
         :id => "tab-honest", :href => "#pane-honest"

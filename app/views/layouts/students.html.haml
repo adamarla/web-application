@@ -7,9 +7,9 @@
   #toolbox.hidden 
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
-    = render :partial => 'menus/user/account'
-    = render :partial => 'students/trigger'
     = render :partial => 'toolbox/fdb-panel'
+    = render :partial => 'menus/user/account'
+    = render :partial => 'menus/student/inbox'
 
 !!!5
 
@@ -25,18 +25,29 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span4{ :href => "#"}
+              %a.brand.span3{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-                .tagline.span6.offset3= "Grades will happen"
-              %ul.nav.span8.pull-right
-                %li#cp-account-link.dropdown.pull-right
+                .tagline.span10.offset1= "Grades will happen"
+              %ul.nav.span8
+                %li
+                  = simple_link :for => "Report Cards", :id => 'lnk-st-rc'
+                %li
+                  = simple_link :for => "Inbox", :id => 'lnk-st-inbox'
+                %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
           #left-1
             = render :partial => 'students/rc'
+          #left-2
+            = render :partial => 'students/inbox'
+        #middle.g-panel.span4
+          = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
+          #middle-1
         #wide.g-panel.span8
           #wide-X
+          #wide-wait
+            = render :partial => 'toolbox/wait'
 
     = yield :toolbox

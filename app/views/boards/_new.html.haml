@@ -1,8 +1,0 @@
-
-#new-board-form.new-entity.close-on-submit
-  = semantic_form_for :board, :url => board_path, :remote => true do |f| 
-    = f.inputs do 
-      - for j in [*1..5] do
-        = f.input "new_#{j}", :as => :string, :label => "board ##{j}", :input_html => { :name => "board[#{j}]" }
-    .submit-buttons
-      = submit_tag 'submit'

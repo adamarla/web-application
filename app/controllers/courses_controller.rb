@@ -81,51 +81,25 @@ class CoursesController < ApplicationController
     head :bad_request if course.nil? 
 
     @topic = params[:topic].to_i
-    @questions = course.questions_on @topic
+    filters = params[:filter].blank? ? [] : params[:filter].keys
+    teacher = current_account.loggable_id
 
-=begin
-    tid = current_account.loggable_id # has to be a teacher. If not, then sth is wrong !
-    skip_used = params[:skip_previously_used] == "true" ? true : false
-    favs_only = params[:liked] == "true" ? true : false
-    suggested = params[:suggested] == "true" ? true : false
-    topic_ids = params[:checked].keys.map(&:to_i)
+    @questions = filters.include?("repeated") ? 
+        course.questions_on(@topic, teacher) : 
+        course.questions_on(@topic)
 
-    show = course.questions_on(topic_ids, (skip_used ? tid : nil)).map(&:id)
+    qids = @questions.map(&:id)
 
-    # Filteration order 
-    #   1. previously used 
-    #   2. favs 
-    #   3. suggested - only if favs_only = false
-
-    show = Favourite.where(:teacher_id => tid).map(&:question_id) & show if favs_only
-    if suggested 
-      show = Suggestion.where(:teacher_id => tid).map(&:question_ids).flatten & show unless favs_only
+    if filters.include? "suggested"
+      suggested = Suggestion.where(:teacher_id => teacher).completed.map(&:question_ids).flatten
+      qids &= suggested
     end
-    @questions = Question.where(:id => show) 
-=end
-=begin
-    Paying customers can see any question relevant to their syllabus. 
-    Non-paying customers - who might only be trialing - see a smaller set 
-    of questions. The code below realizes this logic
-=end
 
-=begin
-    unless current_account.nil?
-      case current_account.loggable_type
-        when "Examiner"
-        when "Teacher"
-          @questions = current_account.trial ? @questions.select{ |m| m.restricted == false } : @questions
-        else 
-          @questions = @questions.select{ |m| m.topic_id == -1 } # basically, nothing 
-      end
-    else
-      @questions = @questions.select{ |m| m.topic_id == -1 } # basically, nothing
+    if filters.include? "liked"
+      liked = Favourite.where(:teacher_id => teacher).map(&:question_id)
+      qids &= liked
     end
-    @topics = Topic.where(:id => topic_ids)
-    @fav = current_account.nil? ? [] : Favourite.where(:teacher_id => current_account.loggable_id).map(&:question_id)
-    @fav = @fav & @questions.map(&:id) 
-    respond_with @questions, @topics, @fav
-=end
+    @questions = Question.where(:id => qids)
   end
 
 end

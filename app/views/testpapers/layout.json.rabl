@@ -5,7 +5,8 @@ object false
       {
         :name => m.name_if_in?(@ws.quiz_id), 
         :id => @gr.where(:subpart_id => m.id).map(&:id).first,
-        :split => @gr.where(:subpart_id => m.id).map(&:marks?).first
+        :split => @gr.where(:subpart_id => m.id).map(&:marks?).first,
+        :colour => @gr.where(:subpart_id => m.id).map(&:honest?).first
       } 
     } 
   } 
@@ -15,3 +16,5 @@ object false
   node(:preview) { 
     { :id => "#{@ws.quiz_id}-#{@ws.id}", :scans => @gr.with_scan.map(&:scan).uniq.sort }
   } 
+
+  node(:caption) { @ws.quiz.name }

@@ -1,32 +1,15 @@
 
+window.abhinav = new Array()
+
 jQuery ->
   
-  ###
-    #new-examiner-link
-  ###
-
-  $('#add-examiner-link').click ->
-    $('#new-examiner').dialog('option', 'title', 'New Examiner').dialog('open')
-
-  $('#videos-link').click ->
-    $('#new-video').dialog('option', 'title', 'New Video').dialog('open')
-
-  $('#add-boards-link').click ->
-    $('#new-board-form').dialog('option', 'title', 'school boards').dialog('open')
-
-  $('#main-links a').click ->
-    return if $(this).attr('block_ajax') is "true"
-    id = $(this).attr 'id'
-    switch id
-      when 'account-link' then $.get 'examiners/list'
-      when 'boards-link' then $.get 'boards/summary'
-      when 'courses-link'
-        $.get 'courses/list'
-      when 'schools-link' then $.get 'schools/list'
-      when 'workbench-link'
-        $.get 'questions/list.json'
-        $.get 'verticals/list'
-    return true
+  $('#left-1 > input.typeahead').typeahead({
+    source : (query, process) ->
+      $.get "find/schools", { query : query }, (data) ->
+        names = []
+        names.push m.school.name for m in data
+        process names
+  })
 
   ###
     On minor-links click

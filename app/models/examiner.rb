@@ -111,6 +111,10 @@ class Examiner < ActiveRecord::Base
             db_records.each do |x|
               x.update_attribute :scan, file
             end
+
+            ## :received field of AnswerSheets is updated when the first 
+            ## query to AnswerSheet.received? is made 
+
           else
             name = Student.find(student).name
             failures.push({:name => name, :id => page}) 

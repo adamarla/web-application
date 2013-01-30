@@ -36,4 +36,28 @@ class TestpapersController < ApplicationController
     end
   end
 
+  def inbox # as a verb
+    ws = Testpaper.where(:id => params[:id]).first 
+
+    if ws.nil?
+      render :json => { :notify => { :text => "Worksheet not found" } }, :status => :ok
+    else 
+      ws.update_attribute :inboxed, true
+      render :json => { :notify => { 
+              :text => "#{ws.quiz.name} published"
+            } }, :status => :ok
+    end
+  end 
+
+  def uninbox
+    ws = Testpaper.where(:id => params[:id]).first 
+    if ws.nil?
+      render :json => { :notify => { :text => "Worksheet not found" } }, :status => :ok
+    else 
+      render :json => { :notify => { 
+              :text => "#{ws.quiz.name} recalled / un-published"
+            } }, :status => :ok
+    end
+  end
+
 end

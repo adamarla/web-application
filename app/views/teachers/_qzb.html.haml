@@ -2,13 +2,14 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Course", :href => '#pane-qzb-courses', :id => 'tab-qzb-courses'
+    = simple_link :for => "Course", :href => '#pane-qzb-courses', 
+      :id => 'tab-qzb-courses', :class => 'nopurge-ever'
   %li
     = simple_link :for => "Topics", :href => '#pane-qzb-topics', 
-      :id => 'tab-qzb-topics', :class => 'nopurge-ever'
+      :id => 'tab-qzb-topics', :class => 'nopurge-on-inactive nopurge-on-show'
   %li
     = simple_link :for => "Questions", :href => '#pane-qzb-questions', 
-      :id => 'tab-qzb-questions', :class => 'nopurge-on-disable'
+      :id => 'tab-qzb-questions'
 
 
 .tab-content
@@ -20,10 +21,10 @@
       :html => { :id => 'form-qzb', :class => 'no-remove', 
       'data-action' => "#{teacher_build_quiz_path}?id=:id", 'data-id' => 'tab-qzb-courses' } do |f|
 
-      .row-fluid.navbar.no-touch
+      .row-fluid.navbar.purge-skip
         .input-append.pull-right.span10
           = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"
           %button.btn.btn-inverse{ :type => :submit }= "Build Quiz"
-      #qzb-questions.purge.no-remove
+      #qzb-questions.purge-blind
 
     

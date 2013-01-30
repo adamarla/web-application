@@ -3,3 +3,8 @@
   %li
     = simple_link :for => "Download PDF", :id => 'lnk-ws-download',
     :url => "#{Gutenberg['server']}/atm/:a/:b/downloads/assignment-:c-:b.pdf"
+  %li.nav-header= "Publish"
+  %li
+    = simple_link :for => "Send to student accounts", :id => 'lnk-ws-publish'
+  %li
+    = simple_link :for => "Recall from student accounts", :id => 'lnk-ws-unpublish'

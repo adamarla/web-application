@@ -1,0 +1,9 @@
+
+%ul.dropdown-menu.dropdown-inverse#howto-guides{ :role => :menu }
+  %li.nav-header= "How-To ..."
+  %li
+    = simple_link :for => "Make - and publish - a worksheet", :id => 'lnk-howto-1', 
+      :href => "#{Gutenberg['server']}/front-desk/howto-guides/create_publish_ws.pdf"
+  %li
+    = simple_link :for => "Publish an existing worksheet", :id => 'lnk-howto-2',
+      :href => "#{Gutenberg['server']}/front-desk/howto-guides/publish_ws.pdf"

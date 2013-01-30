@@ -5,19 +5,23 @@ class QuizzesController < ApplicationController
 
   def assign_to
     quiz = Quiz.where(:id => params[:id]).first 
+    publish = params[:publish] == 'yes' 
+    puts " ******* #{publish}"
+
     head :bad_request if quiz.nil?
     teacher = quiz.teacher 
 
     students = params[:checked].keys   # we need just the IDs
-    Delayed::Job.enqueue BuildTestpaper.new(quiz.id, students), :priority => 0, :run_at => Time.zone.now
+    Delayed::Job.enqueue BuildTestpaper.new(quiz.id, students, publish), :priority => 0, :run_at => Time.zone.now
     at = Delayed::Job.where('failed_at IS NULL').count
-    render :json => { :status => "Queued", :at => at }, :status => :ok
+    render :json => { :notify => { :text => "Worksheet received", 
+                                   :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
   end
 
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL')
-    @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:id].to_i)
+    @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:klass].to_i)
 
     n = @quizzes.count 
     @per_pg, @last_pg = pagination_layout_details n

@@ -6,14 +6,21 @@
 lnk-change-password :
   toggle : modal
 
-lnk-existing-quiz :
+lnk-9-quizzes : &type001
   left : 
     show : left-1
   wide : 
     show : wide-X 
+
+lnk-10-quizzes : *type001
+lnk-11-quizzes : *type001
+lnk-12-quizzes : *type001
+
+lnk-existing-quiz :
   default-lnk : true
   autoclick :
     tab : tab-wsb-quizzes
+  << : *type001
 
 tab-wsb-quizzes :
   toggle : tab
@@ -56,6 +63,10 @@ lnk-download-solution :
   notouch : true
   ajax : disabled
   update-on : quiz/preview pages/pending
+
+lnk-suggestion-form :
+  notouch : true
+  ajax : disabled
 
 lnk-new-quiz :
   autoclick : 
@@ -103,6 +114,15 @@ m-report-cards :
 m-account :
   toggle : dropdown
   menu : tasks-on-account
+
+m-howto : 
+  toggle : dropdown
+  menu : howto-guides
+
+lnk-howto-1 : &type-notouch
+  notouch : true
+
+lnk-howto-2 : *type-notouch
 
 tab-ws-performance :
   toggle : tab
@@ -170,18 +190,36 @@ lnk-tc-rc :
   autoclick :
     tab : tab-tc-rc-1
 
+lnk-ws-publish :
+  notouch: true
+  url : ws/publish.json?id=:id
+  id : tab-wsb-existing
+
+lnk-ws-unpublish :
+  notouch: true
+  url : ws/unpublish.json?id=:id
+  id : tab-wsb-existing
+
 ##############################################################################
 ## Students 
 ##############################################################################
 
-lnk-st-trigger : 
+lnk-st-rc : 
   autoclick :
     tab : tab-st-rc-1
   left : 
     show : left-1
   wide :
-    show : wide-X
+    show : wide-wait
   default-lnk : true
+
+lnk-st-inbox :
+  autoclick :
+    tab : tab-st-inbox
+  left : 
+    show : left-2 
+  wide :
+    show : wide-wait
 
 tab-st-rc-1 :
   toggle : tab
@@ -195,6 +233,26 @@ tab-st-rc-1 :
 tab-st-rc-2 :
   toggle : tab
   prev : tab-st-rc-1
+
+tab-st-inbox :
+  toggle : tab
+  url : inbox.json?id=:prev
+  prev : control-panel
+  panel :
+    url : inbox/echo.json?ws=:id
+
+tab-st-outbox :
+  toggle : tab
+  url : outbox
+
+lnk-inbox-download :
+  notouch: true
+  ajax: disabled
+  update-on : inbox/echo
+
+##############################################################################
+## Admin Only 
+##############################################################################
 
 ##############################################################################
 ## Admin / Examiner specific  
@@ -245,6 +303,28 @@ tab-school-faculty :
 tab-school-sektions :
   toggle : tab
 
+lnk-wb-tagging :
+  left :
+    show : left-3
+  wide :
+    show : wide-X
+  autoclick :
+    tab : tab-tag-pending
+
+tab-tag-pending :
+  toggle : tab 
+  url : untagged/list
+  panel :
+    url : question/preview.json?id=:id
+  autoclick :
+    tab : tab-tag-topic
+
+tab-tag-topic :
+  toggle : tab 
+
+tab-tag-misc :
+  toggle : tab 
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################
@@ -281,4 +361,8 @@ lnk-register-student :
 
 lnk-register-teacher :
   toggle : modal
+
+m-notifications :
+  menu : notifications
+  toggle : dropdown
 

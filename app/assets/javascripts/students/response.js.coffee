@@ -19,6 +19,16 @@ jQuery ->
 
     if url.match(/ws-preview/)
       preview.loadJson json, 'locker'
+    else if url.match(/inbox\/echo/)
+      preview.loadJson json, 'atm', 'fillers'
+      return true
+    else if url.match(/inbox/)
+      target = $('#pane-st-inbox')
+      parentKey = 'inbox'
+      childKey = 'ws'
+      menu = 'st-inbox'
+      clickFirst = true
+    else if url.match(/outbox/)
     else
       matched = false
 
@@ -27,7 +37,7 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      karo.empty target
+      # karo.empty target
       line.write(target, m[childKey], menu) for m in json[parentKey]
 
       # Enable / disable paginator as needed 

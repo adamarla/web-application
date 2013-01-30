@@ -83,13 +83,17 @@ jQuery ->
 
   grtb.ul.on 'click', 'li', (event) ->
     event.stopPropagation()
+    return false unless grtb.keyboard # disable mouse-clicks too
     return false if $(this).hasClass 'disabled'
+
     grtb.current = $(this)
     grtb.show()
     return false # to prevent screen scrolling up
 
   grtb.root.on 'click', '.requirement', (event) ->
     event.stopImmediatePropagation()
+    return false unless grtb.keyboard # disable mouse-clicks too
+
     multiOk = $(this).parent().hasClass 'multi-select'
     already = $(this).hasClass 'selected'
 

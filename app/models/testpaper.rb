@@ -9,6 +9,7 @@
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
+#  inboxed     :boolean         default(FALSE)
 #
 
 class Testpaper < ActiveRecord::Base
@@ -19,19 +20,20 @@ class Testpaper < ActiveRecord::Base
   has_many :students, :through => :answer_sheets
 
   def gradeable?
-    return false if self.publishable
+    return false unless self.has_scans?
     GradedResponse.in_testpaper(self.id).with_scan.ungraded.count > 0
   end
 
   def has_scans?
     # if false, then worksheet / testpaper is automatically ungradeable
-    GradedResponse.in_testpaper(self.id).with_scan.count > 0
+    ret = GradedResponse.in_testpaper(self.id).with_scan.count > 0
+    return ret
   end
 
   def publishable? 
     return true if self.publishable
 
-    ret = GradedResponse.in_testpaper(self.id).with_scan.ungraded.count == 0
+    ret = (self.has_scans? & !self.gradeable?)
     self.update_attribute(:publishable, true) if ret
     return ret
   end

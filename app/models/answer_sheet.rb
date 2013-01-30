@@ -10,6 +10,7 @@
 #  marks        :float
 #  graded       :boolean         default(FALSE)
 #  honest       :integer
+#  received     :boolean         default(FALSE)
 #
 
 class AnswerSheet < ActiveRecord::Base
@@ -22,6 +23,38 @@ class AnswerSheet < ActiveRecord::Base
 
   def self.for_testpaper(id)
     where(:testpaper_id => id)
+  end
+
+  def received?(extent = :fully) # other options - :none, :partially
+    # Returns true if scans have been received for some or all 
+    # of the responses  
+
+    return ( extent == :none ? false : true ) if self.received
+
+    gr = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+
+    n_total = gr.count 
+    n_with_scan = gr.with_scan.count 
+    self.update_attribute :received, true if (n_with_scan == n_total)
+
+    ret = false 
+    case extent
+      when :none
+        ret = (n_with_scan == 0)
+      when :partially 
+        ret = (n_with_scan > 0 && n_with_scan < n_total)
+      when :fully 
+        ret = n_with_scan == n_total 
+    end
+    return ret
+  end
+
+  def complete?
+    return self.received? :fully
+  end
+
+  def publishable?
+    return self.testpaper.publishable?
   end
 
   def honest?
@@ -73,23 +106,24 @@ class AnswerSheet < ActiveRecord::Base
 =end
   end 
 
-  def complete?
-    # Complete if scans are available for every graded response of this student
-    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
-    return (responses.without_scan.count > 0 ? false : true)
-  end
+  def graded?( extent = :fully ) # or :partially or :none
+    return (extent != :none) if self.graded
 
-  def graded? 
-    return true if self.graded
-
+    ret = false
     if self.testpaper.publishable
-      self.update_attribute :graded, true
-      ret = true 
-      # Note: there still might not be scans for all responses. But this 
-      # method only checks for whether all that have scans have been graded
+      ret = ( extent == :none ) ? false : true
+      self.update_attribute :graded, true unless (extent == :none)
     else
-      ret = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).ungraded.count > 0
-      self.update_attribute(:graded, true) if ret
+      gr = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+      case extent
+        when :fully 
+          ret = gr.count ? (gr.graded.count == gr.count) : false 
+        when :partially 
+          ret = gr.count ? (gr.graded.count && (gr.graded.count < gr.count)) : false
+        when :none
+          ret = (gr.graded.count == 0) 
+      end
+      self.update_attribute(:graded, true) if (ret && (extent == :fully))
     end
     return ret
   end 

@@ -8,3 +8,8 @@
 .tab-content
   #pane-st-rc-1.tab-pane
   #pane-st-rc-2.tab-pane
+    .row-fluid.navbar.purge-skip
+      = content_tag :button, "Show Solution", { :class => 'btn btn-primary btn-large pull-right', 
+                                                :data => { :ws => 'tab-st-rc-1', :id => 'control-panel', :toggle => :button },
+                                                :id => 'btn-show-solution'}
+

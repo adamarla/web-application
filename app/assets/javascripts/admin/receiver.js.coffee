@@ -117,12 +117,6 @@ jQuery ->
       coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
     else if url.match(/school/)
       coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
-    else if url.match(/vertical\/topics/)
-      for here,j in ['#tag-question-topics', '#define-course-topics']
-        if j isnt 0
-          scroll.loadJson json.topics, 'topic', $(here), scroll.having.select
-        else
-          scroll.loadJson json.topics, 'topic', $(here), scroll.having.radio
     else if url.match(/teacher\/specializations/)
       here = $('#teacher-specialization')
       scroll.overlayJson json.subjects, 'subject', here, '.list-item', 'nop', 'check'
@@ -153,17 +147,3 @@ jQuery ->
         $('#edit-course').dialog('open')
     return true
 
-  $('#block-db-operation-summary').ajaxSuccess (e,xhr,settings) ->
-    matched = settings.url.match(/examiner\/block_db_slots/)
-    return if matched is null
-
-    e.stopPropagation()
-    json = $.parseJSON xhr.responseText
-    target = $('#created-slots')
-    target.hide()
-    target.empty() # purge any old summary from previous call
-    for slot in json.slots
-      $("<li class='code'>#{slot}</li>").appendTo target
-
-    target.fadeIn('slow')
-    return true

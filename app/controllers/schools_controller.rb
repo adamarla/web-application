@@ -48,6 +48,10 @@ class SchoolsController < ApplicationController
     head :bad_request if @school.nil?
   end 
 
+  def find
+    @schools = School.where{ name =~ params[:query] }
+  end
+
   def update 
     school = School.find params[:id] 
     status = :ok

@@ -139,6 +139,7 @@ class TeachersController < ApplicationController
   def qzb_echo
     tids = params[:checked].keys.map(&:to_i)
     @topics = Topic.where(:id => tids)
+    @filters = params[:filter].blank? ? [] : params[:filter].keys
   end
 
   def build_quiz 
@@ -151,7 +152,8 @@ class TeachersController < ApplicationController
 
     Delayed::Job.enqueue BuildQuiz.new(name, teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
     at = Delayed::Job.where('failed_at IS NULL').count
-    render :json => { :status => "Queued", :at => at }, :status => :ok
+    render :json => { :notify => { :text => "'#{name[0,13]} ...' received", 
+                                   :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
   end
 
   def like_question
