@@ -640,3 +640,34 @@ li.split {
   text-align: center ;
 } 
 
+#our-belief { 
+  > h1 {
+    color: white ;
+    font: {
+      weight: 300 ;
+      family: "Times New Roman", serif ;
+    } 
+  } 
+
+  > .span3, .span4 {
+    color: $gradians-blue ; 
+    margin-top: 20px ;
+    line-height: 16px ;
+  } 
+
+  span {
+    color: $gradians-blue ;
+    font: {
+      size: 17px ;
+      family: "Times New Roman", serif ;
+      weight: 300 ;
+    }
+  } 
+
+  p { 
+    margin-top: 15px ;
+    font-size: 12px ;
+    color: white ;
+    font-weight: 300 ;
+  } 
+} 
