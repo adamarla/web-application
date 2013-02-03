@@ -145,6 +145,9 @@ window.canvas = {
         comment = canvas.sanitize comment
         jaxified = canvas.jaxify comment
 
+        # escape backslashes etc. that are otherwise disallowed in URI
+        comment = encodeURIComponent comment
+
         index = if canvas.comments? then canvas.comments.length else 0
         id = "tex-fdb-#{index}"
 
