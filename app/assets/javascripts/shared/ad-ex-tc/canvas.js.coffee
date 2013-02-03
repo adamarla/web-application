@@ -145,6 +145,15 @@ window.canvas = {
         comment = canvas.sanitize comment
         jaxified = canvas.jaxify comment
 
+        # Push only unique comments into typeahead
+        unique = true
+        for m in canvas.typeahead
+          if m is comment
+            unique = false
+            break
+
+        canvas.typeahead.push comment if unique
+        
         # escape backslashes etc. that are otherwise disallowed in URI
         comment = encodeURIComponent comment
 
@@ -156,15 +165,6 @@ window.canvas = {
         MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [canvas.drawTex, script, event.pageX, event.pageY]
         
         canvas.comments.push x,y,comment
-        
-        # Push only unique comments into typeahead
-        unique = true
-        for m in canvas.typeahead
-          if m is comment
-            unique = false
-            break
-
-        canvas.typeahead.push comment if unique
         
         # clear comment-box and get ready for next comment
         abacus.commentBox.val ''
