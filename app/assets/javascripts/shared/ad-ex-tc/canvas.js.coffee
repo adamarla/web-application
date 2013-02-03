@@ -81,6 +81,16 @@ window.canvas = {
     tex.attr 'style', "position:absolute;left:#{x}px;top:#{y}px;color:#3f9129;"
     return true
 
+  sanitize : (comment) ->
+    ret = comment.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
+    # Make sure that all $'s are paired. Remember, the value this function returns 
+    # is what will be typeset remotely. Can't have LaTeX barf there
+    nDollar = (ret.match(/\$/g) || []).length
+
+    if nDollar % 2 isnt 0 # => odd # of $ => mismatched
+      ret += "$"
+    return ret
+    
   jaxify : (comment) ->
     ###
       The comment entered in the comment box is assumed to be more of regular 
@@ -92,7 +102,6 @@ window.canvas = {
       This method does that conversion from the user assumes and enters 
       to what MathJax assumes and renders
     ###
-    comment = comment.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
 
     text = true
     latex = false
@@ -132,6 +141,8 @@ window.canvas = {
       clicks.push x - 7, y-7
     else
         comment = $(abacus.commentBox).val()
+
+        comment = canvas.sanitize comment
         jaxified = canvas.jaxify comment
 
         index = if canvas.comments? then canvas.comments.length else 0
@@ -178,17 +189,11 @@ window.canvas = {
           ctx.fillStyle = canvas.colour.blue
     else if canvas.comments?
       comment = canvas.comments.pop()
-      y = canvas.comments.pop()
-      x = canvas.comments.pop()
-      
-      ctx = canvas.ctx
-      ctx.fillStyle = canvas.colour.white
-      width = comment.length * 6
-      height = 16
-      #alert "deleting : #{x}, #{y}, #{width}, #{height}"
-      ctx.fillRect x,y - 14, width, height # overwrite image with a white rectangle 
-      ctx.fillStyle = canvas.colour.blue
-
+      script = canvas.object.siblings('script:last')
+      if script.length isnt 0
+        span = script.prev()
+        span.remove()
+        script.remove()
     return true
   
   decompile: () ->
