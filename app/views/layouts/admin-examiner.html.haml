@@ -41,6 +41,9 @@
 %html{html_attrs}
   %head 
     = javascript_include_tag "application", "admin"
+    -#= javascript_include_tag "https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
+    = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
+    -#= javascript_include_tag "MathJax/MathJax.js?config=TeX-AMS_HTML"
     = stylesheet_link_tag "application" 
     = csrf_meta_tag
 
