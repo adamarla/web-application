@@ -141,6 +141,7 @@ window.canvas = {
       clicks.push x - 7, y-7
     else
         comment = $(abacus.commentBox).val()
+        return unless (comment.length and comment.match(/\S/)) # => ignore blank comments
 
         comment = canvas.sanitize comment
         jaxified = canvas.jaxify comment
@@ -176,6 +177,10 @@ window.canvas = {
     for m in ['check', 'cross', 'question']
       canvas.clicks[m].length = 0 if canvas.clicks[m]?
     canvas.comments.length = 0 if canvas.comments?
+    
+    # Unlike check-marks, crosses etc. - comments are rendered as HTML nodes by MathJax.
+    # These needed to be removed from the DOM
+    $(m).remove() for m in canvas.object.siblings 'span,script'
     canvas.last = 0
 
   undo: () ->
