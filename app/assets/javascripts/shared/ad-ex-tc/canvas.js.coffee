@@ -84,6 +84,8 @@ window.canvas = {
 
   sanitize : (comment) ->
     ret = comment.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
+    ret = ret.replace /(\\frac)/g, "\\dfrac" # \dfrac looks better on annotation
+
     # Make sure that all $'s are paired. Remember, the value this function returns 
     # is what will be typeset remotely. Can't have LaTeX barf there
     nDollar = (ret.match(/\$/g) || []).length
