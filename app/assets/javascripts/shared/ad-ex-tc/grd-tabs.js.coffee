@@ -165,6 +165,15 @@ jQuery ->
     return true
 
   #####################################################################
+  ## If btn-submit-fdb is explicitly clicked 
+  #####################################################################
+  $('#btn-submit-fdb').click (event) ->
+    event.stopPropagation()
+    grtb.form.submit()
+    return true
+
+
+  #####################################################################
   ## Toggle between answer-key preview and grading 
   #####################################################################
 
