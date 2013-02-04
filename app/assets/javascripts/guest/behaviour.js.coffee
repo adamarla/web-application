@@ -18,6 +18,11 @@ jQuery ->
     $('#register_student #formblurb').show()
     $('#register_student #ackblurb').hide()
 
+  $('#register_teacher').on 'hidden', ->
+    $('#teacherform')[0].reset()
+    $('#register_teacher #formblurb').show()
+    $('#register_teacher #ackblurb').hide()
+
   $('#m-registrations').click ->
     $.get 'welcome/countries.json'
     return true

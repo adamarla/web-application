@@ -3,9 +3,9 @@ class Mailbot < ActionMailer::Base
   default :from => "help@gradians.com" 
   layout 'mailbot'
 
-  def suggestion_email(contact_form)
-    mail :from => contact_form[:email], :subject => "Suggestion Email", 
-      :body => contact_form[:text], :to => "help@gradians.com"
+  def curious_email(teacherform)
+    mail :subject => teacherform[:email], 
+      :body => teacherform[:text], :to => "akshay@gradians.com"
   end
 
 =begin
@@ -14,6 +14,10 @@ class Mailbot < ActionMailer::Base
     mail :to => @account.email, :subject => "Your assignment has been graded"
   end 
 =end
+  def welcome_student(new_account)
+    @account = new_account
+    mail :to => @account.email, :subject => "Welcome to Gradians.com"
+  end
   
   def welcome_email(new_account)
     @account = new_account

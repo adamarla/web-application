@@ -4,29 +4,31 @@
 
 jQuery ->
 
-  $('#studentform').validate
+  $('#testform').validate {
     rules: {
-      inputName: {required: true},
-      inputEmail: {required:true, email: true},
-      inputGradeLevel: {required:true, maxlength: 2},
-      inputSchool: {required:true, minlength: 2},
-      inputCountry: {required:true, minlength: 1}
-    },
-    messages: {
-      inputName: "Please provide a name",
-      inputEmail: "Email is mandatory",
-      inputGradeLevel: "Please choose a Grade Level",
-      inputSchool: "Please provide your School's name",
-      inputCountry: "Please specify your country of residence",
+      "a[login]": { required: true }
+      "a[password]": { required: true }
     }
-    highlight: (label) ->
-      $(label).closest('.control-group').addClass('error')
+  }
+
+  $('#studentform').validate {
+    rules: {
+      "studentform[name]": {required: true},
+      "studentform[email]": {required: true},
+      "studentform[gradelevel]": {required: true},
+      "studentform[school]": {required: true},
+      "studentform[country]": {required: true},
+    },
+    highlight: (element, errorClass, validClass) ->
+      alert 'invalidity'
+      $(element).parents('.control-group').addClass('error')
     ,
-    unhighlight: (label) ->
-      $(label).closest('.control-group').removeClass('error')
+    unhighlight: (element, errorClass, validClass) ->
+      $(element).parents('.control-group').removeClass('error')
     ,
     errorClass: "help-inline",
     errorElement: "span"
+  }
 
   $('#try-us form').isHappy {
     fields: {

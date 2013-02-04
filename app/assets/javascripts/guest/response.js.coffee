@@ -22,9 +22,17 @@ jQuery ->
     matched = true
 
     if url.match(/welcome\/register_student/)
-      $('#register_student #formblurb').hide()
-      $('#register_student #ackblurb').show()
+      if json.status is "registered"
+        $('#register_student #formblurb').hide()
+        $('#register_student #errblurb').hide()
+        $('#register_student #ackblurb').show()
+      else
+        $('#register_student #errblurb').show()
     else if url.match(/welcome\/register_teacher/)
-      $('#register_teacher > .modal-body > #formblurb').hide()
-      $('#register_teacher > .modal-body > #ackblurb').show()
+      if json.status is "registered"
+        $('#register_teacher #formblurb').hide()
+        $('#register_teacher #errblurb').hide()
+        $('#register_teacher #ackblurb').show()
+      else
+        $('#register_teacher #errblurb').show()
 
