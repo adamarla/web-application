@@ -141,6 +141,7 @@ window.canvas = {
       clicks.push x - 7, y-7
     else
         comment = $(abacus.commentBox).val()
+        return unless (comment.length and comment.match(/\S/)) # => ignore blank comments
 
         comment = canvas.sanitize comment
         jaxified = canvas.jaxify comment
