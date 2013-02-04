@@ -23,11 +23,16 @@ window.canvas = {
 
   mode : null,
   comments : null,
+  typeahead : new Array(),
 
   last:0, # insert before updating index 
 
   initialize: (id) ->
     canvas.object = if typeof id is 'string' then $(id) else id
+    
+    $(abacus.commentBox).typeahead {
+      source : canvas.typeahead
+    }
 
     # Canvas context settings
     canvas.ctx = canvas.object[0].getContext('2d')
@@ -43,6 +48,7 @@ window.canvas = {
 
     canvas.comments = new Array()
     canvas.ctx.fillStyle = canvas.colour.blue
+    canvas.ctx.strokeStyle = canvas.colour.blue
     canvas.ctx.font = "12px Ubuntu"
     return true
     
@@ -69,6 +75,57 @@ window.canvas = {
     image.src = "#{gutenberg.server}/locker/#{folder}/#{src}"
     return true
 
+  drawTex : (script, x, y) ->
+    tex = script.prev('span')
+    #tex.attr 'style', "position:relative;font-size:10px;left:#{x}px;top:#{y}px;color:#3f9129;"
+    tex.attr 'style', "position:absolute;left:#{x}px;top:#{y}px;color:#3f9129;"
+    return true
+
+  sanitize : (comment) ->
+    ret = comment.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
+    # Make sure that all $'s are paired. Remember, the value this function returns 
+    # is what will be typeset remotely. Can't have LaTeX barf there
+    nDollar = (ret.match(/\$/g) || []).length
+
+    if nDollar % 2 isnt 0 # => odd # of $ => mismatched
+      ret += "$"
+    return ret
+    
+  jaxify : (comment) ->
+    ###
+      The comment entered in the comment box is assumed to be more of regular 
+      text with bits of inline-TeX thrown in ( enclosed between $..$ that is)
+
+      But MathJax expects TeX that is more of TeX with bits of regular 
+      text thrown in (enclosed between \text{...})
+
+      This method does that conversion from the user assumes and enters 
+      to what MathJax assumes and renders
+    ###
+
+    text = true
+    latex = false
+    z = "\\text{"
+
+    for m in comment
+      if text
+        if m is '$' # opening $
+          text = false
+          latex = true
+          z += " }"
+        else
+          z += m
+      else if latex
+        if m is '$' # => closing $
+          text = true
+          latex = false
+          z += "\\text{ "
+        else
+          z += m
+    z += "}" if text
+    return z
+    
+
   record: (event) ->
     return false unless canvas.mode?
     x = event.pageX - canvas.object[0].offsetLeft
@@ -85,10 +142,31 @@ window.canvas = {
     else
         comment = $(abacus.commentBox).val()
 
-        if comment.length isnt 0
-          canvas.comments.push x,y, comment
-          canvas.ctx.fillText comment, x, y
+        comment = canvas.sanitize comment
+        jaxified = canvas.jaxify comment
 
+        # Push only unique comments into typeahead
+        unique = true
+        for m in canvas.typeahead
+          if m is comment
+            unique = false
+            break
+
+        canvas.typeahead.push comment if unique
+        
+        # escape backslashes etc. that are otherwise disallowed in URI
+        comment = encodeURIComponent comment
+
+        index = if canvas.comments? then canvas.comments.length else 0
+        id = "tex-fdb-#{index}"
+
+        script = $("<script id=#{id} type='math/tex'>#{jaxified}</script>")
+        $(script).appendTo canvas.object.parent()
+        MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [canvas.drawTex, script, event.pageX, event.pageY]
+        
+        canvas.comments.push x,y,comment
+        
+        # clear comment-box and get ready for next comment
         abacus.commentBox.val ''
         abacus.commentBox.focus() # take back focus
     return true
@@ -114,17 +192,11 @@ window.canvas = {
           ctx.fillStyle = canvas.colour.blue
     else if canvas.comments?
       comment = canvas.comments.pop()
-      y = canvas.comments.pop()
-      x = canvas.comments.pop()
-      
-      ctx = canvas.ctx
-      ctx.fillStyle = canvas.colour.white
-      width = comment.length * 6
-      height = 16
-      #alert "deleting : #{x}, #{y}, #{width}, #{height}"
-      ctx.fillRect x,y - 14, width, height # overwrite image with a white rectangle 
-      ctx.fillStyle = canvas.colour.blue
-
+      script = canvas.object.siblings('script:last')
+      if script.length isnt 0
+        span = script.prev()
+        span.remove()
+        script.remove()
     return true
   
   decompile: () ->
@@ -172,3 +244,18 @@ window.canvas = {
     return ret
 
 }
+
+jQuery ->
+  MathJax.Hub.Config {
+    "HTML-CSS" : {
+      styles : {
+        ".mtext" : {
+          "font-size" : "11px"
+          "font-weight" : "300"
+        },
+        ".mo, .mrow .mn, .mrow .mi" : {
+          "font-size" : "80%"
+        }
+      }
+    }
+  }
