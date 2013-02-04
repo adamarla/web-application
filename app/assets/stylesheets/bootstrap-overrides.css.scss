@@ -334,7 +334,7 @@ button[data-toggle='button'] {
     > .add-on { 
       color: $orange ;
       text-shadow: none ;
-      font-size: 15px ;
+      font-size: 13px ;
     }
     > input {
       border-radius: 0px ;
@@ -342,6 +342,7 @@ button[data-toggle='button'] {
       color: white ;
       font-size: 10px ;
       padding-left: 10px ;
+      width: 100% ;
     } 
   } 
 }
