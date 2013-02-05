@@ -3,8 +3,9 @@
 ## Teachers 
 ##############################################################################
 
-lnk-change-password :
+lnk-edit-account :
   toggle : modal
+  notouch : true
 
 lnk-9-quizzes : &type001
   left : 
