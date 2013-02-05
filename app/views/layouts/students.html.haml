@@ -11,6 +11,9 @@
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/student/inbox'
 
+- content_for :modals do
+  = render :partial => 'modals/user/account'
+
 !!!5
 
 %html{html_attrs}
@@ -51,3 +54,4 @@
             = render :partial => 'toolbox/wait'
 
     = yield :toolbox
+    = yield :modals

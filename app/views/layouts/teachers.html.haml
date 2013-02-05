@@ -24,9 +24,8 @@
     = render :partial => 'menus/user/notifications'
     = render :partial => 'toolbox/fdb-panel'
 
-  -# #modals by itself is not hidden. But the modal partials within it are by themselves 
-  #modals
-    = render :partial => 'modals/user/account'
+- content_for :modals do
+  = render :partial => 'modals/user/account'
 
 
 !!!5
@@ -96,3 +95,4 @@
                 %canvas#grading-canvas{ :width => 600, :height => 800 }
 
     = yield :toolbox
+    = yield :modals
