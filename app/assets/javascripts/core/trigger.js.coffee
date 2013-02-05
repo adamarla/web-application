@@ -328,12 +328,3 @@ jQuery ->
      trigger.click m
      return true
 
-  #####################################################################
-  ## Close modal for changing account details on form submit 
-  #####################################################################
-  
-  $("#m-edit-account form").submit ->
-    popup = $(this).closest('.modal').eq(0)
-    popup.modal 'hide'
-    return true
-
