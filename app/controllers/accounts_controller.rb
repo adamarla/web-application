@@ -22,13 +22,13 @@ class AccountsController < ApplicationController
     end
 
     if email_updated == true
-      msg = passwd_updated ? "(Account) E-mail and password updated" : "(Account) E-mail updated"
+      msg = passwd_updated ? "E-mail and password updated" : "E-mail updated"
     elsif passwd_updated == true
-      msg = "(Account) Password updated"
+      msg = "Password updated"
     else
-      msg = "(Account) Nothing updated"
+      msg = "Nothing updated"
     end
-    render :json => { :notify => msg }, :status => :ok
+    render :json => { :notify => {:text => msg} }, :status => :ok
   end 
 
   def ws 
