@@ -142,7 +142,7 @@ class GradedResponse < ActiveRecord::Base
           ret.push({ :x => pt.first, :y => pt.last, :code => j })
         end
       else
-        comments = pts.split '_'
+        comments = pts.split "@dwr@" # Comes from canvas.js. See note there
         comments.each_slice(3) do |comment|
           ret.push({ :x => comment[0].to_i, :y => comment[1].to_i, :code => 3, :text => comment[2]})
         end

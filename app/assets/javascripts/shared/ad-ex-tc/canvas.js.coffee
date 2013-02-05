@@ -18,7 +18,8 @@ window.canvas = {
 
   colour : {
     white : "#ffffff",
-    blue : "#1b13f1"
+    blue : "#1b13f1",
+    green : "#3f9129"
   }
 
   mode : null,
@@ -78,11 +79,13 @@ window.canvas = {
   drawTex : (script, x, y) ->
     tex = script.prev('span')
     #tex.attr 'style', "position:relative;font-size:10px;left:#{x}px;top:#{y}px;color:#3f9129;"
-    tex.attr 'style', "position:absolute;left:#{x}px;top:#{y}px;color:#3f9129;"
+    tex.attr 'style', "position:absolute;left:#{x}px;top:#{y}px;color:#{canvas.colour.green};"
     return true
 
   sanitize : (comment) ->
     ret = comment.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
+    ret = ret.replace /(\\frac)/g, "\\dfrac" # \dfrac looks better on annotation
+
     # Make sure that all $'s are paired. Remember, the value this function returns 
     # is what will be typeset remotely. Can't have LaTeX barf there
     nDollar = (ret.match(/\$/g) || []).length
@@ -196,7 +199,7 @@ window.canvas = {
           ctx.fillRect x,y,16,16 # overwrite image with a white rectangle 
           ctx.fillStyle = canvas.colour.blue
     else if canvas.comments?
-      comment = canvas.comments.pop()
+      canvas.comments.pop() for m in [1..3] # 3 pops for 3 pushes
       script = canvas.object.siblings('script:last')
       if script.length isnt 0
         span = script.prev()
@@ -237,15 +240,14 @@ window.canvas = {
     ###
     
     l = canvas.comments.length
-    ret += "_commentb"
+    ret += "_commentb_"
 
-    for cmnts,index  in canvas.comments
-      j = (index % 3)
-      if (j < 2) # => 0 or 1
-        ret += "_#{canvas.comments[index]}"
-      else
-        ret += "_#{canvas.comments[index]}" # => += _"comment string"
-    ret += "_commente_"
+    # Now that all comments are basically LaTeX code, and given that anything goes in 
+    # LaTeX, we need a delimiter that is (highly) unlikely to occur in a piece of LaTeX text
+    # In short, it should be random. Hence "@dwr@" = deewar
+
+    ret += "#{data}@dwr@" for data in canvas.comments
+    ret += "commente_"
     return ret
 
 }
