@@ -168,7 +168,7 @@ window.canvas = {
         $(script).appendTo canvas.object.parent()
         MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [canvas.drawTex, script, event.pageX, event.pageY]
         
-        canvas.comments.push x-5,y-10,comment # premptive un-offsetting of the offset added by web-service
+        canvas.comments.push x,y,comment
         
         # clear comment-box and get ready for next comment
         abacus.commentBox.val ''
