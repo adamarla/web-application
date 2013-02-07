@@ -683,3 +683,12 @@ li.split {
     font-weight: 300 ;
   } 
 } 
+
+.spinner {
+  position: fixed ;
+  top: 9% ;
+  left: 50% ;
+  z-index: 1234 ;
+  width: 24px ;
+  height: 26px ;
+}
