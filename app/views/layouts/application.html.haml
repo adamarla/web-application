@@ -13,6 +13,8 @@
     = javascript_include_tag "application", "welcome"
     = csrf_meta_tag
   %body 
+    #spinner.spinner
+      = image_tag "loading.gif", :id => 'img-spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid
         .span12
