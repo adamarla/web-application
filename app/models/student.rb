@@ -110,6 +110,11 @@ class Student < ActiveRecord::Base
     return (self.absent_for_test?(testpaper_id) ? -1 : marks) 
   end
 
+  def honestly_attempted? (ws_id)
+    a = AnswerSheet.where(:student_id => self.id, :testpaper_id => ws_id).first
+    return a.nil? ? :disabled : a.honest?
+  end
+
   def responses(testpaper_id)
     a = GradedResponse.of_student(self.id).in_testpaper(testpaper_id).with_scan
     return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
