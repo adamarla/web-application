@@ -166,6 +166,19 @@ class GradedResponse < ActiveRecord::Base
     end
   end 
 
+  def colour? 
+    return :disabled if (self.scan.nil? or self.feedback == 0)
+
+    honest = Requirement.honest.where(:posn => (self.feedback & 15)).map(&:weight).first
+    return :red if honest == 0
+    frac = (self.system_marks / self.subpart.marks).round(2)
+    return :disabled if frac < 0.2
+    return :light if frac < 0.5
+    return :medium if frac < 0.85
+    return :dark if frac < 0.95
+    return :green
+  end
+
   def marks?
     return (self.marks_teacher.nil? ? self.system_marks : self.marks_teacher)
   end
@@ -220,12 +233,6 @@ class GradedResponse < ActiveRecord::Base
     self.update_attribute :page, page unless page < 1
     return page
   end
-
-=begin
-  def colour? 
-    return (self.calibration_id.nil? ? :transparent : self.calibration.colour?)
-  end
-=end
 
   def siblings?
     qselection = self.q_selection
