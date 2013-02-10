@@ -57,6 +57,13 @@ class Quiz < ActiveRecord::Base
     return total
   end
 
+  def subparts
+    # Returns the ordered list of subparts 
+    q = QSelection.where(:quiz_id => self.id).select('index, question_id').sort{ |m,n| m.index <=> n.index }
+    q = q.map{ |m| Question.find m.question_id }
+    return q.map{ |m| m.subparts.order(:index) }.flatten
+  end
+
   def assign_to (students, publish = false) 
     # students : an array of selected students from the DB
 

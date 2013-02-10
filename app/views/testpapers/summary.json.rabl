@@ -1,21 +1,30 @@
 
 
 object false 
+  
+  node(:root) { 
+    @students.map{ |s| 
+      id = @students.index s
+      marks = @totals[id]
 
-  node(:students) {
-    @students.map{ |s|
-      { :student => { 
+      { :datum => {
           :name => s.name, 
-          :id => s.id, 
-          :mean => @mean, # for the worksheet
-          :max => @max, # total for the quiz 
-          :marks => s.marks_scored_in(@testpaper.id),
-          :graded => @answer_sheet.of_student(s.id).first.graded?,
-          :tag => @answer_sheet.of_student(s.id).first.graded_thus_far_as_str, # the "a/b" bit 
-          :y => @n - @students.index(s),
-          :klass => @answer_sheet.of_student(s.id).first.honest?
+          :id => s.id,
+          :tag => (marks > -1 ? "#{marks}/#{@max}" : "no scans"),
+          :klass => @honest[id],
+          :spectrum => @questions.map{ |q| @g_all.where(:student_id => s.id, :subpart_id => q.id).first.colour?},
         }
       }
     }
-  }
+  } 
 
+  node(:max) { @max }
+  node(:totals) { @totals }
+  node(:questions) {
+    @questions.map{ |q| 
+      { 
+        :name => q.name_if_in?(@ws.quiz_id),
+        :id => q.id
+      }
+    }
+  } 

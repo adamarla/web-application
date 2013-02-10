@@ -65,51 +65,10 @@ jQuery ->
       clickFirst = true
     else if url.match(/ws\/summary/)
       target = $("#pane-tc-rc-2")
-      parentKey = "students"
-      childKey = "student"
+      parentKey = "root"
+      childKey = "datum"
 
-      # Draw the summary chart 
-      chart.initialize()
-      chart.series.define json.students, 'student', 'marks', 'y' # 0
-      chart.series.define json.students, 'student', 'mean', 'y' # 1
-      chart.series.define json.students, 'student', 'marks', 'y', chart.filter.geqZero # 2, overwrites some of #0
-      # chart.series.link 0,1 # 3
-
-      chart.series.customize 0, {
-        color: color.blue,
-        points : { show:true, radius: 5, fill: 0}
-      }
-      chart.series.customize 1, {
-        color: color.orange,
-        points : { show:true, radius: 2, fillColor: color.orange },
-        lines : { show: false },
-        label : "Avg = #{json.students[0].student.mean}"
-      }
-      chart.series.customize 2, {
-        color: color.red,
-        points: { show: true, radius: 5, fill: 0 },
-        label : "No Scans"
-      }
-      chart.series.customize 3, {
-        color: color.blue,
-        points: {show: false},
-        lines: {show: true, lineWidth: 1}
-      }
-      chart.draw {
-        xaxis : { min: 0, max: json.students[0].student.max, position: "top"},
-        yaxis: { ticks: json.students.length },
-        legend: { show: true, position:"ne", backgroundColor: "transparent" }
-      }
-      chart.series.label 0, json.students, 'student'
-    else if url.match(/feedback/)
-      type = url.substr(url.lastIndexOf("=") + 1)
-      target = $("#pane-#{type}")
-      parentKey = "rqms"
-      childKey = "rqm"
-
-    ############################################################
-    ## Common actions in response to JSON
-    ############################################################
+      wsSummary json
 
     if target? and target.length isnt 0
       # karo.empty target
