@@ -1,6 +1,7 @@
 /*
 *= require bootstrap.css.scss
 *= require bootstrap-overrides.css.scss
+*= require d3-charts.css.scss 
 *= require_directory ../../../vendor/assets/stylesheets/popeye 
 *= require ../../../vendor/assets/stylesheets/media-viewer/style 
 */ 

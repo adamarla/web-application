@@ -172,8 +172,7 @@ class GradedResponse < ActiveRecord::Base
     honest = Requirement.honest.where(:posn => (self.feedback & 15)).map(&:weight).first
     return :red if honest == 0
     frac = (self.system_marks / self.subpart.marks).round(2)
-    return :disabled if frac < 0.2
-    return :light if frac < 0.5
+    return :light if frac < 0.3
     return :medium if frac < 0.85
     return :dark if frac < 0.95
     return :green

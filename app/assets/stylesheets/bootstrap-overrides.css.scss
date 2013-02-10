@@ -531,10 +531,6 @@ form.smart {
 #graph-paper {
   width: 600px ;
   height: 800px ;
-  padding: {
-    left: 20px ;
-    top: 20px ;
-  } 
   color: $gradians-blue ;
 
   &.hide-x{ .xAxis { > .tickLabel { display: none ; } } } 
