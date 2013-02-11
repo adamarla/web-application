@@ -25,6 +25,10 @@ $green: #23898f ; // rgb(87,188,32)
 text {
   fill: white ;
   font-size: 10px ;
+  &.labels { 
+    font-size: 10px ;
+    font-weight: 300 ;
+  } 
 }
 
 rect {

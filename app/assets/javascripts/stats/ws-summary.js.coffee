@@ -31,6 +31,16 @@ window.wsSummary = (json) ->
   .attr('y',-7)
   .classed('cell', true)
 
+  # Question labels atop the squares 
+  svg.selectAll('g.labels').data(json.questions)
+  .enter()
+  .append('g')
+  .attr('transform', (d,i) -> return "translate(#{littleSqOffset + 10 + i*12},65) rotate(-90)")
+  .append('text')
+  .attr('class', 'labels')
+  .text (d) ->
+    return d.name
+
   # student names - extreme left
   svg.selectAll('g').data(json.root)
   .append('text')
