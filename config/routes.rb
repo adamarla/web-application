@@ -47,7 +47,8 @@ Webapp::Application.routes.draw do
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
   match 'receive/scans' => 'examiners#receive_scans', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
-  match 'examiner/suggestions/:id' => 'examiners#suggestions', :via => :get
+  match 'typeset/new' => 'examiners#typeset_new', :via => :get
+  match 'typeset/ongoing' => 'examiners#typeset_ongoing', :via => :get
   match 'rotate_scan' => 'examiners#rotate_scan', :via => :get
   match 'restore_scan' => 'examiners#restore_pristine_scan', :via => :get
 
@@ -142,7 +143,8 @@ Webapp::Application.routes.draw do
   match 'how_it_works' => 'welcome#how_it_works', :via => :get
 
   # Suggestion 
-  match 'suggestion/block_db_slots' => 'suggestions#block_db_slots', :via => :post
+  match 'suggestion/block_db_slots' => 'suggestions#block_db_slots', :via => :get
+  match 'suggestion/preview' => 'suggestions#preview', :via => :get
   
   root :to => "welcome#index"
 

@@ -24,7 +24,7 @@ class Suggestion < ActiveRecord::Base
     where(:examiner_id => id)
   end
 
-  def self.wip # wip = work in progress 
+  def self.ongoing
     where(:completed => false).select{ |m| m.question_ids.count > 0 }
   end
 

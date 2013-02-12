@@ -22,6 +22,12 @@ jQuery ->
       target = $('#pane-vertical-topics')
       parentKey = 'topics'
       childKey = 'topic'
+    else if url.match(/typeset\/new/)
+      target = $('#pane-typeset-new')
+      parentKey = 'typeset'
+      childKey = 'datum'
+      clickFirst = true
+      menu = 'blockdb-slots'
     else
       matched = false
 
@@ -42,4 +48,21 @@ jQuery ->
       target.children('.single-line').eq(0).click() if clickFirst
 
     e.stopPropagation() if matched is true
+    return true
+
+  ########################################################
+  #  WIDE PANEL
+  ########################################################
+
+  $('#wide').ajaxComplete (e, xhr, settings) ->
+    matched = true
+    url = settings.url
+    json = $.parseJSON xhr.responseText
+
+    if url.match(/suggestion\/preview/)
+      preview.loadJson json, 'locker'
+    else
+      matched = false
+
+    e.stopImmediatePropagation() if matched
     return true

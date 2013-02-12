@@ -326,6 +326,28 @@ tab-tag-topic :
 tab-tag-misc :
   toggle : tab 
 
+lnk-wb-typeset :
+  left :
+    show : left-5
+  wide :
+    show : wide-X
+  autoclick :
+    tab : tab-typeset-new
+
+tab-typeset-new :
+  toggle : tab
+  url : typeset/new
+  panel :
+    url : suggestion/preview.json?id=:id
+
+lnk-block-* : 
+  notouch : true
+  id : tab-typeset-new
+
+m-block-slots :
+  menu : blockdb-slots
+  toggle : dropdown
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################

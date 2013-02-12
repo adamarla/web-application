@@ -64,10 +64,6 @@ class Examiner < ActiveRecord::Base
     return GradedResponse.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
 
-  def suggestions
-    Suggestion.assigned_to self.id
-  end
-  
   def self.distribute_work
 =begin
   Distribution algorithm

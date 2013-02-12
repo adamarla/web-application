@@ -20,10 +20,6 @@ jQuery ->
       when 'grading-link'
         $.get 'examiner/pending_quizzes'
         canvas.initialize '#grading-canvas'
-      when 'suggestions-link'
-        flipchart.enableAll $('#pending-suggestions')
-        id = $('#control-panel').attr 'marker'
-        $.get "examiner/suggestions/#{id}"
     return true
 
   ###

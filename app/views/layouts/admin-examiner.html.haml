@@ -31,6 +31,7 @@
     = render :partial => 'menus/admin/workbench', :locals => { :is_admin => is_admin }
     = render :partial => 'menus/user/notifications'
     = render :partial => 'examiners/annotation-marks'
+    = render :partial => 'menus/examiner/blockdb'
 
   
 - content_for :modals do
@@ -80,6 +81,8 @@
             = render :partial => 'examiners/tag-pending'
           #left-4
             = render :partial => 'toolbox/grd-pending'
+          #left-5
+            = render :partial => 'toolbox/typeset-pending'
 
         - if is_admin
           #middle.g-panel.span4

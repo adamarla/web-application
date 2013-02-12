@@ -37,6 +37,9 @@ $green: #57bc20 ; // rgb(87,188,32)
 }
 
 .dropdown-menu { 
+  &.slim { 
+    min-width: 100px ;
+  }
   > li {
     > a { 
       font-size: 11px ;
