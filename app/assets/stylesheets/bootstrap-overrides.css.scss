@@ -19,6 +19,12 @@ $green: #57bc20 ; // rgb(87,188,32)
   li { 
     > a { color: white ; }
   }
+  p.footnote {
+    padding: 0px 20px ;
+    font-size: 9.5px ;
+    color: $gradians-blue ;
+    margin-top: -2px ;
+  } 
 } 
 
 .navbar-inner { 
@@ -139,7 +145,7 @@ $green: #57bc20 ; // rgb(87,188,32)
 } 
 
 .tab-content { 
-  min-height: 200px ;
+  min-height: 500px ;
   > form { 
     display: none ;
     &.active { display: block ; }
@@ -420,28 +426,39 @@ button[data-toggle='button'] {
   margin-top: 110px ;
 } 
 
+.modal {
+  &.slim { 
+    max-width: 350px ; 
+    background: rgba(25,25,25,0.8) ; 
+    border-radius: 0px ;
+  }
+} 
+
 form.smart { 
-  input[type='text'], span.add-on, select {
-    padding: 8px 6px ;
-    text-shadow: none ;
-    font-size: 12px ;
+  color: white ;
+
+  input {
+    color: $gradians-blue ;
+    border: {
+      radius: 0px ;
+    } 
+    background-color: transparent ;
+    width: 60% ;
+    padding: 5px 3px 5px 3px ;
+    font-size: 13px ;
+    font-weight: 300 ;
   }
 
-  span.add-on { 
-    min-width: 60px ;
-    background-color: $deep-blue ;
-    color: white ; 
-    text-transform: lowercase ;
-  } 
-
-  input, select {
-    color: white ;
-    background: transparent ;
-    text-align: right ;
-  } 
-
-  select { 
-    line-height: 14px ;
+  p.help-block {
+    float: left ;
+    text : {
+      transform: lowercase ;
+      align: right ;
+    } 
+    color: $orange ;
+    min-width: 34% ;
+    margin-right: 10px ;
+    font-size: 12px ;
   } 
 } 
 
@@ -524,10 +541,6 @@ form.smart {
 #graph-paper {
   width: 600px ;
   height: 800px ;
-  padding: {
-    left: 20px ;
-    top: 20px ;
-  } 
   color: $gradians-blue ;
 
   &.hide-x{ .xAxis { > .tickLabel { display: none ; } } } 
@@ -680,3 +693,12 @@ li.split {
     font-weight: 300 ;
   } 
 } 
+
+.spinner {
+  position: fixed ;
+  top: 9% ;
+  left: 50% ;
+  z-index: 1234 ;
+  width: 24px ;
+  height: 26px ;
+}

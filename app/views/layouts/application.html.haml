@@ -17,6 +17,8 @@
     = javascript_include_tag "application", "welcome"
     = csrf_meta_tag
   %body 
+    #spinner.spinner
+      = image_tag "loading.gif", :id => 'img-spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid
         .span12
@@ -40,6 +42,7 @@
                         -#%button.btn.btn-info{ :href => "#contactus" , "data-toggle" => "modal" }= "Contact Us"
                 %li.dropdown
                   = simple_link :for => "Register",  :id => "m-registrations", :as => :dropdown
+                        -#%button#btn-register.btn.white-bg{ :type => :button }= "Register"
 
       .row-fluid
         .hero-unit

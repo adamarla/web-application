@@ -24,9 +24,8 @@
     = render :partial => 'menus/user/notifications'
     = render :partial => 'toolbox/fdb-panel'
 
-  -# #modals by itself is not hidden. But the modal partials within it are by themselves 
-  #modals
-    = render :partial => 'modals/user/account'
+- content_for :modals do
+  = render :partial => 'modals/user/account'
 
 
 !!!5
@@ -35,11 +34,13 @@
   %head 
     = javascript_include_tag "application", "teachers"
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
+    = javascript_include_tag "http://d3js.org/d3.v3.min.js"
     = stylesheet_link_tag "application" 
     = csrf_meta_tag
 
   %body 
-
+    #spinner.spinner
+      = image_tag "loading.gif", :id => 'img-spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid{ :marker => "#{tchr.id}" } 
         .span12
@@ -96,3 +97,4 @@
                 %canvas#grading-canvas{ :width => 600, :height => 800 }
 
     = yield :toolbox
+    = yield :modals

@@ -60,6 +60,19 @@ window.trigger = {
 }
 
 jQuery ->
+
+  ###
+    A spinner to show that AJAX request is in process. The spinner is shown only 
+    in the control panel 
+  ###
+
+  $('#spinner').bind 'ajaxSend', () ->
+    $(this).show()
+  .bind 'ajaxStop', () ->
+    $(this).hide()
+  .bind 'ajaxError', () ->
+    $(this).hide()
+
   ###
     This next call is unassuming but rather important. We initialize 
     variables within the JS based on the results the server being accessed returns
@@ -327,5 +340,4 @@ jQuery ->
    for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default-lnk='true']")
      trigger.click m
      return true
-
 

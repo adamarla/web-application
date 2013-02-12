@@ -16,8 +16,7 @@ Webapp::Application.routes.draw do
   match 'ping' => 'application#ping', :via => :get
 
   # Account 
-  resource :account, :only => [:update]
-  match 'update_password' => 'accounts#update_password', :via => [:put, :post]
+  match 'account' => 'accounts#update', :via => :post
   match 'ws/list' => 'accounts#ws', :via => :get
   match 'ws/pending' => 'accounts#pending_ws', :via => :get
   match 'pages/pending' => 'accounts#pending_pages', :via => :get

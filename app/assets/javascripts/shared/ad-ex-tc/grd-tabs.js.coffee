@@ -116,6 +116,14 @@ jQuery ->
     return true
 
   grtb.form.submit (event) ->
+    annotated = false
+    annotated |= (canvas.clicks[m].length isnt 0) for m in ['check', 'cross', 'question']
+    annotated |= (canvas.comments.length isnt 0)
+
+    if not annotated
+      alert "Add atleast a comment or annotate with a check, cross or question mark"
+      return false
+
     id = abacus.current.response.attr 'marker'
     clicks = canvas.decompile()
     action = "submit/fdb.json?id=#{id}&clicks=#{clicks}"

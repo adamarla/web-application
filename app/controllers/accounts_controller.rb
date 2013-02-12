@@ -2,24 +2,34 @@ class AccountsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json
 
-  def update
-    account = Account.find params[:id]
-    head :bad_request if account.nil?
-    done = account.update_attribute :email, params[:account][:email]
+  def update 
+    email_updated = passwd_updated = nil
+    details = params[:updated]
 
-    done ? render(:json => {:status => "new e-mail set"}, :status => :ok) : 
-           render(:json => {:status => "update failed"}, :status => :bad_request)
-  end
+    unless details[:email].blank?
+      email_updated |= (current_account.update_attribute :email, details[:email])
+    end
 
-  def update_password
     # Ref: https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-edit-their-password
-    account = params[:account]
-    failed = current_account.update_attributes(:password => account[:password], 
-                                               :password_confirmation => account[:password_confirmation]) ? false : true
-    sign_in current_account, :bypass => true unless failed
-    failed ? render(:json => {:status => "update failed"}, :status => :bad_request) :
-             render(:json => {:status => "new password set"}, :status => :ok) 
-  end
+    unless details[:password].blank?
+      unless details[:password_confirmation].blank?
+        passwd_updated |= (current_account.update_attributes(
+            :password => details[:password], 
+            :password_confirmation => details[:password_confirmation]))
+
+        sign_in current_account, :bypass => true if passwd_updated 
+      end
+    end
+
+    if email_updated == true
+      msg = passwd_updated ? "E-mail and password updated" : "E-mail updated"
+    elsif passwd_updated == true
+      msg = "Password updated"
+    else
+      msg = "Nothing updated"
+    end
+    render :json => { :notify => {:text => msg} }, :status => :ok
+  end 
 
   def ws 
     @wks = current_account.ws

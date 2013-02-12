@@ -4,13 +4,15 @@ class TestpapersController < ApplicationController
 
   def summary
     # students who got this testpaper
-    @testpaper = Testpaper.find params[:id]
-    head :bad_request if @testpaper.nil?
-    @mean = @testpaper.mean?
-    @students = @testpaper.students.order(:first_name)
-    @answer_sheet = AnswerSheet.where(:testpaper_id => @testpaper.id)
-    @max = @testpaper.quiz.total?
-    @n = @students.count
+    @ws = Testpaper.find params[:id]
+    head :bad_request if @ws.nil?
+    # @mean = @ws.mean?
+    @students = @ws.students.order(:first_name)
+    @totals = @students.map{ |s| s.marks_scored_in @ws.id }
+    @honest = @students.map{ |s| s.honestly_attempted? @ws.id }
+    @max = @ws.quiz.total?
+    @questions = @ws.quiz.subparts # subparts actually - and index ordered 
+    @g_all = GradedResponse.in_testpaper @ws.id
   end
 
   def load 

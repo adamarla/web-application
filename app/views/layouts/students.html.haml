@@ -11,6 +11,9 @@
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/student/inbox'
 
+- content_for :modals do
+  = render :partial => 'modals/user/account'
+
 !!!5
 
 %html{html_attrs}
@@ -20,6 +23,8 @@
     = csrf_meta_tag
 
   %body 
+    #spinner.spinner
+      = image_tag "loading.gif", :id => 'img-spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid{ :marker => "#{student.id}" } 
         .span12
@@ -51,3 +56,4 @@
             = render :partial => 'toolbox/wait'
 
     = yield :toolbox
+    = yield :modals
