@@ -19,6 +19,12 @@ $green: #57bc20 ; // rgb(87,188,32)
   li { 
     > a { color: white ; }
   }
+  p.footnote {
+    padding: 0px 20px ;
+    font-size: 9.5px ;
+    color: $gradians-blue ;
+    margin-top: -2px ;
+  } 
 } 
 
 .navbar-inner { 
