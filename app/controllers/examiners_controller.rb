@@ -67,7 +67,8 @@ class ExaminersController < ApplicationController
 
   def typeset_ongoing
     examiner = current_account.loggable
-    @new = examiner.nil? ? [] : Suggestion.assigned_to(examiner.id).ongoing
+    @ongoing = examiner.nil? ? [] : Suggestion.assigned_to(examiner.id).ongoing
+    @ongoing = Question.where(:id => @ongoing.map(&:question_ids).flatten)
   end # of method
 
 end

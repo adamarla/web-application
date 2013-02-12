@@ -348,6 +348,12 @@ m-block-slots :
   menu : blockdb-slots
   toggle : dropdown
 
+tab-typeset-ongoing :
+  toggle : tab
+  url : typeset/ongoing
+  panel :
+    url : suggestion/preview.json?id=:id
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################

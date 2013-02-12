@@ -2,8 +2,8 @@
 object false
   node(:typeset) {
     @new.map { |m|
-      age = m.days_since_receipt
-      tag = age > 0 ? "#{age} day(s) old" : "Today"
+      age = m.days_since_receipt / 7
+      tag = age > 0 ? "#{age} weeks" : "This week"
       {
         :datum => { 
           :name => m.teacher.name,
