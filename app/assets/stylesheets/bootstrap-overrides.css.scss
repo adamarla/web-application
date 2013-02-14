@@ -214,8 +214,8 @@ $green: #57bc20 ; // rgb(87,188,32)
 
   .subtext { 
     font-size: 10px ;
-    color: inherit ; 
-    text-transform: uppercase ;
+    color: $orange ; 
+    text-transform: lowercase ; 
     text-align: right ;
   } 
 
