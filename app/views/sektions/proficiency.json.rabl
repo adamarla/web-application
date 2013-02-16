@@ -1,7 +1,8 @@
 
-collection @students => :students
-  attribute :name 
-  node(:y){ |m| @students.count - @students.index(m) }
-  node(:relative){ |m| @relative[@students.index(m)] }
-  node(:benchmark){ |m| @benchmark_teacher }
-  node(:db){ |m| @benchmark_db }
+object false
+  node(:proficiency) { 
+    @proficiency
+  } 
+
+  node(:benchmark) { @avg }
+  node(:dbavg) { @db_avg }

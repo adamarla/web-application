@@ -1,0 +1,20 @@
+
+%ul.nav.nav-tabs
+  %li
+    = simple_link :for => "Section", :id => "tab-deepdive-sektion",
+      :href => '#pane-deepdive-sektion', :class => 'nopurge-ever'
+  %li
+    = simple_link :for => "Topic", :id => "tab-deepdive-topic",
+      :href => '#pane-deepdive-topic', :class => 'nopurge-ever'
+
+.tab-content
+  #pane-deepdive-sektion.tab-pane
+  #pane-deepdive-topic.tab-pane
+    .tabbable.tabs-left
+      %ul.nav.nav-tabs.span4.purge-skip.lock
+        - teacher.verticals.each do |m|
+          %li{ :marker => "#{m.id}" }
+            = simple_link :for => "#{m.name}", :href => "#deepdive-topics", :id => "deepdive-#{m.id}"
+      .tab-content
+        #deepdive-topics
+

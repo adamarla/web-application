@@ -35,8 +35,9 @@ class Topic < ActiveRecord::Base
     # Returns the weighted average marks for questions on given topic
     # for a given grade level - junior(1), middle(2) or senior(3)
 
-    target_difficulty = type == :senior ? 3 : (type == :junior ? 1 : 2)
-    qids = Question.on_topic(self.id).difficulty(target_difficulty).map(&:id)
+    # target_difficulty = type == :senior ? 3 : (type == :junior ? 1 : 2)
+    # qids = Question.on_topic(self.id).difficulty(target_difficulty).map(&:id)
+    qids = Question.on_topic(self.id).map(&:id)
     subparts = Subpart.where(:question_id => qids)
     return 0 if subparts.count == 0
 

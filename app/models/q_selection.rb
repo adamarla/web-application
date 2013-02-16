@@ -34,4 +34,8 @@ class QSelection < ActiveRecord::Base
     where('start_page <= ?', n).where('end_page >= ?', n)
   end
 
+  def self.on_topic(n)
+    select{ |m| m.question.topic_id == n }
+  end
+
 end
