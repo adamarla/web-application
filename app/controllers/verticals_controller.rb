@@ -27,6 +27,15 @@ class VerticalsController < ApplicationController
     me = Vertical.find params[:id]
     unless me.nil?
       @topics = me.topics
+      if current_account.loggable_type == "Teacher"
+        ids = @topics.map(&:id)
+        questions_used = QSelection.where(:quiz_id => Quiz.where(:teacher_id => current_account.loggable_id)).map(&:question)
+        topics_used = questions_used.map(&:topic_id)
+        @unused = ids - topics_used # operation ensures that all topics belong_to same vertical
+      else
+        @unused = []
+      end
+
     else
       head :bad_request
     end

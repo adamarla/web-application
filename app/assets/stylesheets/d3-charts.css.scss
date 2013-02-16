@@ -1,6 +1,6 @@
 
 $gray: #191919 ; // rgb(25,25,25)
-$lightgray: lighten($gray, 30%) ;
+$lightgray: lighten($gray, 35%) ;
 $gradians-blue: #6ca7ab ; // rgb(108,167,171)
 $orange:#ffa500 ; // rgb(255,165,0)
 $panel-colour: lighten(black, 17%) ;
@@ -27,7 +27,10 @@ text {
   font-size: 10px ;
   &.labels { 
     font-size: 10px ;
-    font-weight: 300 ;
+  } 
+  &.slider-text { 
+    fill: $gradians-blue ;
+    text-transform: uppercase ;
   } 
 }
 
@@ -38,5 +41,31 @@ rect {
   &.medium{ fill: lighten($green, 30%) ; }
   &.dark{ fill: lighten($green,10%) ; }
   &.red{ fill: lighten($red,10%) ; }
- 
+} 
+
+line {
+  &.slider { 
+    stroke: $lightgray ;
+    stroke-width: 0.25 ;
+  } 
+} 
+
+circle { 
+  &.slider { 
+    fill: $orange ;  
+  } 
+  &.empty { 
+    fill: transparent ;
+    stroke: $orange ;
+  } 
+} 
+
+g.blue { 
+  fill: $gradians-blue ; 
+} 
+
+polygon {
+  &.tip { 
+    fill: $orange ; 
+  } 
 } 

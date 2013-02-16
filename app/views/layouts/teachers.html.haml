@@ -75,7 +75,9 @@
           #left-4
             = render :partial => 'toolbox/grd-pending'
           #left-5
-            = render :partial => 'teachers/rc', :locals => { :teacher => tchr }
+            = render :partial => 'teachers/rc'
+          #left-6
+            = render :partial => 'teachers/deepdive', :locals => { :teacher => tchr }
         #middle.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
           #middle-X
