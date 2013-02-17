@@ -44,10 +44,8 @@ rect {
 } 
 
 line {
-  &.slider { 
-    stroke: $lightgray ;
-    stroke-width: 0.25 ;
-  } 
+  stroke: $lightgray ;
+  stroke-width: 0.25 ;
 } 
 
 circle { 
@@ -64,8 +62,39 @@ g.blue {
   fill: $gradians-blue ; 
 } 
 
+g {
+  line {
+    stroke-linecap : "round" ;
+  }
+  &.t-avg {
+    line {
+      stroke-width: 2;
+      stroke: $orange ;
+      stroke-dasharray: 3,6 ;
+    }
+  } 
+  &.db-avg {
+    line {
+      stroke-width: 2;
+      stroke: $gradians-blue ;
+      stroke-dasharray: 3,6 ;
+    }
+  }
+} 
+
 polygon {
   &.tip { 
     fill: $orange ; 
   } 
+} 
+
+.axis path, .axis line { 
+  fill: none ; 
+  stroke: $lightgray ;
+  shape-rendering: crispEdges ;
+} 
+
+.axis text { 
+  font-family: "Ubuntu 'Trebuchet MS' sans-serif" ;
+  font-size: 12px ;
 } 

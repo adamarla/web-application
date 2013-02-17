@@ -48,32 +48,43 @@ window.wsDeepdive = {
     .attr('cx', (d,i) -> return scaleX(2))
     .attr('class', 'empty')
 
-    # Add markers for DB-avg and teacher-avg benchmarks 
-    sliders = svg.selectAll('g.benchmark').data(['t-avg', 'db-avg'])
+    # Add sliders 
+    benchmarks = [
+      {text: "Just the basics", value : 0},
+      {text: "Your benchmark", value: 2.5},
+      {text: "Avg. Difficulty", value: 3},
+      {text: "Tough", value: 6}
+    ]
+
+    sliders = svg.selectAll('g.sliders')
+    .data(benchmarks)
     .enter()
     .append('g')
-    .attr('class', (d,i) -> return "benchmark #{d}")
-    .attr('transform', (d,i) ->
-      ubound = if i is 0 then textWidth else (w - 100)
-      return "translate(#{ubound + tipH}, 50) rotate(90)"
+    .attr('class', (d,i) ->
+      switch i
+        when 0,3 then return 'sliders'
+        when 1 then return 'sliders t-avg'
+        when 2 then return 'sliders db-avg'
     )
-    
-    sliders.append('line')
-    .attr('x1', tipH)
-    .attr('x2', (nStudents * 18) - 50)
-    .attr('y1', tipW / 2)
-    .attr('y2', tipW / 2)
-    .classed('slider', true)
+    .attr('transform', (d,i) ->
+      return "translate(#{scaleX(d.value)},60)"
+    )
 
-    sliders.append('polygon')
-    .attr('points', "0,0 #{tipW/2},#{tipH} 0,#{tipW}")
-    .classed('tip', true)
+    sliders.append('line')
+    .attr('x1', 0)
+    .attr('y1', (d,i) ->
+      return (if i is 1 then -1 else -20)
+    )
+    .attr('x2', 0)
+    .attr('y2', nStudents * 16)
 
     sliders.append('text')
-    .text (d) ->
-      return (if d is 't-avg' then "Your benchmark" else "DB-Avg")
-    .classed('slider-text', true)
-    .attr('x', sliderWidth/3)
+    .attr('x', -5)
+    .attr('y', (d,i) ->
+      return (if i is 1 then -3 else -22)
+    )
+    .text (d) -> return d.text
+    return true
 
   loadProficiencyData : (json) ->
     w = 600
@@ -98,11 +109,11 @@ window.wsDeepdive = {
 
     svg.select('g.t-avg')
     .transition()
-    .attr('transform', "translate(#{scaleX(avg)}, 50) rotate(90)")
+    .attr('transform', "translate(#{scaleX(avg)}, 60)")
 
     svg.select('g.db-avg')
     .transition()
-    .attr('transform', "translate(#{scaleX(dbAvg)}, 50) rotate(90)")
+    .attr('transform', "translate(#{scaleX(dbAvg)}, 60)")
 
     return true
 }
