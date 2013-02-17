@@ -49,7 +49,15 @@ window.line = {
 
     # Write contents of JSON 
     text = obj.find('.text').eq(0)
-    text.text json.name
+
+    if json.name.search(/\$.*\$/) isnt -1
+      jaxified = karo.jaxify json.name
+      text.replaceWith "<script id='tex-#{json.id}' type='math/tex'>#{jaxified}</script>"
+      j = obj.find('script')[0]
+      text = $(j)
+      MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
+    else
+      text.text json.name
     obj.attr 'marker', json.id
     for a in obj.find("input[type='checkbox']")
       $(a).attr 'name', "checked[#{json.id}]"

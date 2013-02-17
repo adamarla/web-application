@@ -82,53 +82,6 @@ window.canvas = {
     tex.attr 'style', "position:absolute;left:#{x}px;top:#{y}px;color:#{canvas.colour.green};"
     return true
 
-  sanitize : (comment) ->
-    ret = comment.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
-    # ret = ret.replace /(\\frac)/g, "\\dfrac" # \dfrac looks better on annotation
-
-    # Make sure that all $'s are paired. Remember, the value this function returns 
-    # is what will be typeset remotely. Can't have LaTeX barf there
-    nDollar = (ret.match(/\$/g) || []).length
-
-    if nDollar % 2 isnt 0 # => odd # of $ => mismatched
-      ret += "$"
-    return ret
-    
-  jaxify : (comment) ->
-    ###
-      The comment entered in the comment box is assumed to be more of regular 
-      text with bits of inline-TeX thrown in ( enclosed between $..$ that is)
-
-      But MathJax expects TeX that is more of TeX with bits of regular 
-      text thrown in (enclosed between \text{...})
-
-      This method does that conversion from the user assumes and enters 
-      to what MathJax assumes and renders
-    ###
-
-    text = true
-    latex = false
-    z = "\\text{"
-
-    for m in comment
-      if text
-        if m is '$' # opening $
-          text = false
-          latex = true
-          z += " }"
-        else
-          z += m
-      else if latex
-        if m is '$' # => closing $
-          text = true
-          latex = false
-          z += "\\text{ "
-        else
-          z += m
-    z += "}" if text
-    return z
-    
-
   record: (event) ->
     return false unless canvas.mode?
     x = event.pageX - canvas.object[0].offsetLeft
@@ -146,8 +99,8 @@ window.canvas = {
         comment = $(abacus.commentBox).val()
         return unless (comment.length and comment.match(/\S/)) # => ignore blank comments
 
-        comment = canvas.sanitize comment
-        jaxified = canvas.jaxify comment
+        comment = karo.sanitize comment
+        jaxified = karo.jaxify comment
 
         # Push only unique comments into typeahead
         unique = true
