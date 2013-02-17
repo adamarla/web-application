@@ -67,7 +67,7 @@ window.leftTabs = {
 
     html = $("<div id='#{options.id.root}' class='tabbable tabs-left #{options.klass.root}'></div>")
 
-    # Prep the shell
+    # <ul> 
     html.appendTo root
     ul = $("<ul class='nav nav-tabs #{options.klass.ul}' id='#{options.id.ul}'></ul>")
     content = $("<div class='tab-content #{options.klass.content}' id='#{options.id.content}'></div>")
@@ -93,7 +93,7 @@ window.leftTabs = {
     data += " data-toggle='tab'"
 
     # Then, write the JSON
-    for m in json.tabs
+    for m,i in json.tabs
       # make the <li>
 
       liColour = m.colour
@@ -109,7 +109,15 @@ window.leftTabs = {
       li = $("#{li}" + "></li>")
       li.appendTo ul
 
-      # make the <a> to put inside the <li>
+      # 3. <a> 
+      isTex = false
+      if m.name.search(/\$.*\$/) isnt -1 # => TeX => wrap inside a <script>
+        jaxified = karo.jaxify m.name
+        script = "<script id='tex-tab-#{i}' type='math/tex'>#{jaxified}</script>"
+        isTex = true
+      else
+        script = m.name
+
       if sharedPanel?
         html = "<a href=##{sharedPanel} #{data} class='#{options.klass.a}'>"
         if options.split
@@ -117,11 +125,15 @@ window.leftTabs = {
           html += "<div class='row-two'>#{m.split}</div></a>"
           a = $(html)
         else
-          a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
+          a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
       else
-        a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{m.name}</a>")
+        a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
         pane = $("<div class='tab-pane #{options.klass.div}' id='dyn-tab-#{m.id}'></div>")
         pane.appendTo content
-      a.appendTo li
+
+      a = a.appendTo li
+      if isTex
+        j = a.children('script')[0]
+        MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
     return true
 }

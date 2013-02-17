@@ -33,6 +33,20 @@
 %html{html_attrs}
   %head 
     = javascript_include_tag "application", "teachers"
+    %script{ :type => "text/x-mathjax-config" } 
+      MathJax.Hub.Config({
+      "HTML-CSS" : {
+      mtextFontInherit : true
+      },
+      styles : {
+      ".mrow > .mtext" : {
+      "font-family" : "Ubuntu 'Trebuchet MS' sans-serif",
+      "font-weight" : 400,
+      "font-size" : "14px",
+      "text-transform" : "lowercase"
+      }
+      }
+      });
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = javascript_include_tag "http://d3js.org/d3.v3.min.js"
     = stylesheet_link_tag "application" 
