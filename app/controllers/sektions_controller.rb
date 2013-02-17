@@ -74,9 +74,9 @@ class SektionsController < ApplicationController
     head :bad_request if (sektion.nil? || @topic.nil?)
 
     teacher = current_account.loggable
-    quizzes = Quiz.where(:teacher_id => teacher.id)
-    selections = QSelection.where(:quiz_id => quizzes.map(&:id)).on_topic(@topic.id)
-    responses = GradedResponse.where(:q_selection_id => selections.map(&:id).uniq).graded
+    quizzes = Quiz.where(:teacher_id => teacher.id) # all quizzes by teacher
+    selections = QSelection.where(:quiz_id => quizzes.map(&:id)).on_topic(@topic.id) # all questions on topic
+    responses = GradedResponse.where(:q_selection_id => selections.map(&:id).uniq).graded # all responses to those questions
 
     subparts = Subpart.where(:question_id => selections.map(&:question_id).uniq)
     @avg = (subparts.map(&:marks).inject(:+) / subparts.count.to_f).round(2)
@@ -85,7 +85,8 @@ class SektionsController < ApplicationController
     @proficiency = sektion.students.map do |s|
       graded = responses.where(:student_id => s.id)
       unless graded.empty?
-        total = Subpart.where(:id => graded.map(&:subpart_id)).map(&:marks).inject(:+)
+        # total = Subpart.where(:id => graded.map(&:subpart_id)).map(&:marks).inject(:+)
+        total = graded.map(&:subpart).map(&:marks).inject(:+) # takes care of the case when a question is repeated 
         scored = graded.map(&:system_marks).inject(:+)
         {:id => s.id, :score => (scored / total.to_f).round(2)}
       else
