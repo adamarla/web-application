@@ -92,7 +92,7 @@ window.wsDeepdive = {
       x = if score is -1 then 0 else score
 
       circle = svg.select("g[marker='#{m.id}'] > circle")
-      circle.transition().attr('cx', scaleX(x))
+      circle.transition().attr('cx', scaleX(x) - 5)
       empty = (score < 0)
       circle.classed('slider', !empty).classed('empty', empty)
 
