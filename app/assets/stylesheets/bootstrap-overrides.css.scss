@@ -158,19 +158,14 @@ $green: #57bc20 ; // rgb(87,188,32)
 .single-line {
   padding: {
     top: 3px ;
-    bottom: 3px ;
+    bottom: 2px ;
   } 
   min-height: 24px ;
   font-size: 11px ; 
   cursor: pointer ; 
   color: white ;
   text-transform: lowercase ; 
-  &:nth-child(odd) {
-    background-color: lighten($background, 5%) ; 
-  } 
-  &:nth-child(even) {
-    font-weight: 400 ;
-  }
+  border-bottom: 1px solid $lightgray ; 
   
   &:hover {
     font-weight: 500 ;
