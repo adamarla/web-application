@@ -153,8 +153,29 @@ class Student < ActiveRecord::Base
     return g.count == 0
   end
 
-  def proficiency?(topic_id)
+  def proficiency(teacher_id = nil)
+    responses = GradedResponse.of_student(self.id).graded
+    responses = responses.in_quiz(Quiz.where(:teacher_id => teacher_id).map(&:id)) unless teacher_id.nil?
+
+    topics = responses.map(&:q_selection).map(&:question).map(&:topic).map(&:id).uniq
+    topics = Topic.where(:id => topics).sort{ |m,n| m.name <=> n.name }
+    ret = { :proficiency => [] }
+
+    topics.each do |t|
+      on_topic = responses.on_topic t.id
+      attempted = on_topic.map(&:subpart).map(&:marks)
+      n_attempted = attempted.count
+      total = attempted.inject(:+)
+      scored = on_topic.map(&:system_marks).inject(:+)
+      ret[:proficiency].push({ :id => t.id, :name => t.name, 
+                               :score => (scored/total.to_f).round(2),
+                               :avg => (total/n_attempted.to_f).round(2) })
+    end
+    return ret
+  end
+
 =begin
+  def proficiency?(topic_id)
     Proficiency can be absolute or relative. Absolute proficiency takes into 
     account the toughness of the questions students tackled on a topic. If a teacher
     consistently picked easy questions, then even if the student got them all right,
@@ -165,7 +186,6 @@ class Student < ActiveRecord::Base
     opposed to over the toughest questions he/she could have tackled
 
     This method returns the absolute proficiency
-=end
     g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
     return 0 if g.count == 0
 
@@ -174,6 +194,7 @@ class Student < ActiveRecord::Base
     score = (marks/max).round(2)
     return score
   end
+=end
 
   private 
     def destroyable? 

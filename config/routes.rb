@@ -94,6 +94,7 @@ Webapp::Application.routes.draw do
   match 'inbox' => 'students#inbox', :via => :get
   match 'inbox/echo' => 'students#inbox_echo', :via => :get
   match 'outbox' => 'students#outbox', :via => :get
+  match 'overall/proficiency' => 'students#proficiency', :via => :get
 
   # Sektion 
   resource :sektion, :only => [:create, :update]

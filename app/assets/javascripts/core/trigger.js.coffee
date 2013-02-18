@@ -96,6 +96,15 @@ jQuery ->
   })
 
   #####################################################################
+  ## Do nothing if a.brand is clicked 
+  #####################################################################
+
+  $('a.brand').click (event) ->
+    event.stopImmediatePropagation()
+    return false
+
+
+  #####################################################################
   # Behaviour of button-groups that are within forms
   #####################################################################
 
@@ -119,11 +128,17 @@ jQuery ->
   ###############################################
 
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
-    if $(this).parent().hasClass 'disabled'
+    li = $(this).parent()
+
+    if li.hasClass 'disabled'
       event.stopImmediatePropagation()
       return false
-    else
-      return true
+    else if this.dataset.prev?
+      m = $("##{this.dataset.prev}").parent() # the <li> - not the <a>
+      if not m.attr('marker')? # no selection made in data-prev
+        event.stopImmediatePropagation()
+        return false
+    return true
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()

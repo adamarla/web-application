@@ -23,6 +23,12 @@ class StudentsController < ApplicationController
     @student.save ? respond_with(@student) : head(:bad_request)  
   end 
 
+  def proficiency
+    student = Student.find params[:id]
+    teacher = current_account.nil? ? nil : (current_account.loggable_type == "Teacher" ? current_account.loggable : nil)
+    @json = student.proficiency teacher
+  end
+
   def dispute
     s_id = current_account.loggable_id
     response = GradedResponse.where(:id => params[:id], :student_id => s_id)

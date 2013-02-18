@@ -7,10 +7,6 @@ window.wsDeepdive = {
 
     nStudents = json.students.length
     textWidth = 150
-    tipW = 10
-    tipH = tipW/2
-    sliderWidth = (nStudents * 18) - 50
-    sliderWidth = if sliderWidth < 0 then 40 else sliderWidth
 
     # <svg>
     svg = d3.select('#graph-paper').append('svg')
@@ -116,4 +112,59 @@ window.wsDeepdive = {
     .attr('transform', "translate(#{scaleX(dbAvg)}, 60)")
 
     return true
+
+  byStudent : (json) ->
+    $('#graph-paper > svg').remove()
+    w = 600
+    h = 800
+
+    nTopics = json.proficiency.length
+    textWidth = 150
+
+    # <svg>
+    svg = d3.select('#graph-paper').append('svg')
+    .attr('width', w)
+    .attr('height', h)
+
+    # x-scale
+    scaleX = d3.scale.linear()
+    scaleX.domain([0,6]).range([textWidth, w-100])
+
+    # Create one per row per topic 
+    topics = svg.selectAll('g').data(json.proficiency)
+    .enter()
+    .append('g')
+    .attr('transform', (d,i) -> return "translate(0,#{80 + i*15})")
+
+    topics.append('text')
+    .text (d) -> return d.name
+
+    topics.append('line')
+    .attr('x1', textWidth)
+    .attr('x2', w - 100)
+    .attr('class', 'slider')
+    .attr('transform', "translate(0,-5)")
+
+    topics.append('circle')
+    .attr('r', 5)
+    .attr('cy', -5)
+    .attr('cx', (d,i) ->
+      return scaleX(parseFloat(d.score) * parseFloat(d.avg))
+    )
+    .classed('slider', true)
+
+    topics.append('line')
+    .classed('benchmark', true).
+    attr('x1', (d,i) ->
+      return scaleX(parseFloat(d.avg))
+    )
+    .attr('x2', (d,i) ->
+      return scaleX(parseFloat(d.avg))
+    )
+    .attr('y1', -15)
+    .attr('y2', 3)
+
+    return true
+    
+    
 }

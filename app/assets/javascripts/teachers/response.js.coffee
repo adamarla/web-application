@@ -26,7 +26,11 @@ jQuery ->
       clickFirst = true
       karo.empty target
     else if url.match(/sektion\/students/)
-      target = $("#lp-sektion-#{json.sektion}")
+      if json.context is 'deepdive'
+        target = $('#pane-dive-3')
+        target.empty()
+      else
+        target = $("#lp-sektion-#{json.sektion}")
       parentKey = "students"
       childKey = 'student'
       wsDeepdive.students json
@@ -70,7 +74,7 @@ jQuery ->
       childKey = "datum"
       wsSummary json
     else if url.match(/teacher\/sektions/)
-      target = $('#pane-deepdive-sektion')
+      target = $('#pane-dive-1')
       parentKey = 'sektions'
       childKey = 'sektion'
     else if url.match(/vertical\/topics/)
@@ -79,6 +83,8 @@ jQuery ->
       childKey = 'topic'
     else if url.match(/sektion\/proficiency/)
       wsDeepdive.loadProficiencyData json
+    else if url.match(/overall\/proficiency/)
+      wsDeepdive.byStudent json
     else
       matched = false
 
