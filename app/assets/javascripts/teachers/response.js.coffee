@@ -26,7 +26,11 @@ jQuery ->
       clickFirst = true
       karo.empty target
     else if url.match(/sektion\/students/)
-      target = $("#lp-sektion-#{json.sektion}")
+      if json.context is 'deepdive'
+        target = $('#pane-dive-3')
+        target.empty()
+      else
+        target = $("#lp-sektion-#{json.sektion}")
       parentKey = "students"
       childKey = 'student'
       wsDeepdive.students json
