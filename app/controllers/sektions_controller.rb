@@ -66,6 +66,7 @@ class SektionsController < ApplicationController
   def students 
     @sektion = Sektion.find params[:id]
     @students = @sektion.students.order(:first_name)
+    @context = params[:context]
   end 
 
   def proficiency

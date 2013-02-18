@@ -8,3 +8,4 @@ node(:students) {
 }
 
 node(:sektion) { @sektion.id } 
+node(:context) { @context.blank? ? "unknown" : @context }

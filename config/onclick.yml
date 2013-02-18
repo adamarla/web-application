@@ -213,7 +213,7 @@ tab-dive-1 :
   toggle : tab
   url : teacher/sektions
   panel : 
-    url : sektion/students.json?id=:id
+    url : sektion/students.json?id=:id&context=deepdive
   autoclick : 
     tab : tab-dive-2
 
