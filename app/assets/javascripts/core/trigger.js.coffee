@@ -125,8 +125,10 @@ jQuery ->
       event.stopImmediatePropagation()
       return false
     else if this.dataset.prev?
-      event.stopImmediatePropagation()
-      return false if $("##{this.dataset.prev}").attr('marker') is null # no selection made in data-prev
+      m = $("##{this.dataset.prev}").parent() # the <li> - not the <a>
+      if not m.attr('marker')? # no selection made in data-prev
+        event.stopImmediatePropagation()
+        return false
     return true
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
