@@ -119,7 +119,7 @@ window.wsDeepdive = {
     h = 800
 
     nTopics = json.proficiency.length
-    textWidth = 150
+    textWidth = 0
 
     # <svg>
     svg = d3.select('#graph-paper').append('svg')
@@ -134,37 +134,44 @@ window.wsDeepdive = {
     topics = svg.selectAll('g').data(json.proficiency)
     .enter()
     .append('g')
-    .attr('transform', (d,i) -> return "translate(0,#{80 + i*15})")
+    .attr('transform', (d,i) -> return "translate(0,#{120 + i*45})")
 
     topics.append('text')
+    .attr('x', textWidth)
+    .attr('y', -15)
     .text (d) -> return d.name
 
-    topics.append('line')
-    .attr('x1', textWidth)
-    .attr('x2', w - 100)
-    .attr('class', 'slider')
-    .attr('transform', "translate(0,-5)")
-
-    topics.append('circle')
-    .attr('r', 5)
-    .attr('cy', -5)
-    .attr('cx', (d,i) ->
-      return scaleX(parseFloat(d.score) * parseFloat(d.avg))
+    # wide rectangles - light-blue - to show benchmark
+    topics.append('rect')
+    .classed('light', true)
+    .attr('x', textWidth)
+    .attr('y', -10)
+    .attr('height', 20)
+    .attr('width', (d,i) ->
+      return scaleX(parseFloat(d.benchmark)) - textWidth
     )
-    .classed('slider', true)
 
+    # narrow rectangles within wide rectangles to show student's proficiency
+    topics.append('rect')
+    .classed('dark', true)
+    .attr('x', textWidth)
+    .attr('y', -3)
+    .attr('height', 6)
+    .attr('width', (d,i) ->
+      return scaleX(parseFloat(d.score) * parseFloat(d.benchmark)) - textWidth
+    )
+
+    # vertical tick to show historical average
     topics.append('line')
-    .classed('benchmark', true).
-    attr('x1', (d,i) ->
-      return scaleX(parseFloat(d.avg))
+    .classed('black', true)
+    .attr('y1', -7)
+    .attr('y2', 7)
+    .attr('x1', (d,i) ->
+      return scaleX parseFloat(d.historical_avg)
     )
     .attr('x2', (d,i) ->
-      return scaleX(parseFloat(d.avg))
+      return scaleX parseFloat(d.historical_avg)
     )
-    .attr('y1', -15)
-    .attr('y2', 3)
 
     return true
-    
-    
 }
