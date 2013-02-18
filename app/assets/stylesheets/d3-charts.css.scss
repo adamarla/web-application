@@ -32,20 +32,29 @@ text {
     fill: $gradians-blue ;
     text-transform: uppercase ;
   } 
+  &.bold { 
+    font-size: 13px ;
+    font-weight: 300 ;
+  } 
 }
 
 rect {
+  &.light{ fill: lightsteelblue ; }
+  &.dark{ fill: steelblue ; }
+/*
   &.green{ fill: darken($green, 5%) ; }
   &.disabled{ fill: lighten($background,55%) ; } 
   &.light{ fill: lighten($green, 50%) ; }
   &.medium{ fill: lighten($green, 30%) ; }
   &.dark{ fill: lighten($green,10%) ; }
   &.red{ fill: lighten($red,10%) ; }
+*/
 } 
 
 line {
   stroke: $lightgray ;
   stroke-width: 0.25 ;
+  &.black { stroke: black ; stroke-width: 1.5; }
 } 
 
 circle { 
@@ -56,6 +65,9 @@ circle {
     fill: transparent ;
     stroke: $orange ;
   } 
+  &.blue {
+    fill: $gradians-blue ;
+  }
 } 
 
 g.blue { 
