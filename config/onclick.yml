@@ -221,6 +221,12 @@ tab-dive-2 :
   toggle : tab
   prev : tab-dive-1
 
+tab-dive-3 : 
+  toggle : tab
+  prev : tab-dive-1
+  panel :
+    url : overall/proficiency.json?id=:id
+
 deepdive-* : 
   toggle : tab
   url : vertical/topics?id=:id
