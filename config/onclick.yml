@@ -201,32 +201,32 @@ lnk-ws-unpublish :
   url : ws/unpublish.json?id=:id
   id : tab-wsb-existing
 
-lnk-deep-dive :
+lnk-rc-deepdive :
   left : 
     show : left-6
   wide :
     show : graph-paper
   autoclick :
-    tab : tab-deepdive-sektion
+    tab : tab-dive-1
 
-tab-deepdive-sektion :
+tab-dive-1 :
   toggle : tab
   url : teacher/sektions
   panel : 
     url : sektion/students.json?id=:id
   autoclick : 
-    tab : tab-deepdive-topic
+    tab : tab-dive-2
 
-tab-deepdive-topic :
+tab-dive-2 :
   toggle : tab
-  prev : tab-deepdive-sektion
+  prev : tab-dive-1
 
 deepdive-* : 
   toggle : tab
   url : vertical/topics?id=:id
   panel :
     url : sektion/proficiency?of=:prev&in=:id
-  prev : tab-deepdive-sektion
+  prev : tab-dive-1
 
 ##############################################################################
 ## Students 
