@@ -119,11 +119,15 @@ jQuery ->
   ###############################################
 
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
-    if $(this).parent().hasClass 'disabled'
+    li = $(this).parent()
+
+    if li.hasClass 'disabled'
       event.stopImmediatePropagation()
       return false
-    else
-      return true
+    else if this.dataset.prev?
+      event.stopImmediatePropagation()
+      return false if $("##{this.dataset.prev}").attr('marker') is null # no selection made in data-prev
+    return true
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()
