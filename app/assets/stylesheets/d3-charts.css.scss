@@ -65,6 +65,10 @@ g.blue {
 g {
   line {
     stroke-linecap : "round" ;
+    &.benchmark {
+      fill: $gradians-blue ;
+      stroke-width: 2 ;
+    } 
   }
   &.t-avg {
     line {
@@ -98,3 +102,4 @@ polygon {
   font-family: "Ubuntu 'Trebuchet MS' sans-serif" ;
   font-size: 12px ;
 } 
+

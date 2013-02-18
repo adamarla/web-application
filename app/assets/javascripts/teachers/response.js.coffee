@@ -83,6 +83,8 @@ jQuery ->
       childKey = 'topic'
     else if url.match(/sektion\/proficiency/)
       wsDeepdive.loadProficiencyData json
+    else if url.match(/overall\/proficiency/)
+      wsDeepdive.byStudent json
     else
       matched = false
 
