@@ -207,7 +207,7 @@ window.wsDeepdive = {
 
     # narrow rectangles within wide rectangles to show student's proficiency
     topics.append('rect')
-    .classed('dark', true)
+    .classed('blue', true)
     .attr('x', textWidth)
     .attr('y', -3)
     .attr('height', 6)
