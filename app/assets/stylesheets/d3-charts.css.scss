@@ -8,9 +8,13 @@ $deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
 $lightblue: lighten($deep-blue, 23%) ;
 $red: #d72323 ; // rgb(215, 35, 35)
-//$green: #57bc20 ; // rgb(87,188,32)
-//$green: #27830e ; // rgb(87,188,32)
+$steel: #56a5ec ;
 $green: #23898f ; // rgb(87,188,32)
+
+$lightrect : #dcdcdc ;
+$darkrect : #555555 ;
+//$mediumrect : #a2b5cd ; *
+$mediumrect : darken(#b7b7b7,20%) ;
 
 .bar-text {
   font-size: 10px ;
@@ -18,7 +22,7 @@ $green: #23898f ; // rgb(87,188,32)
 } 
 
 .bar { 
-  fill: steelblue ; 
+  fill: $mediumrect ; 
   border: 1px solid white ;
 } 
 
@@ -39,16 +43,11 @@ text {
 }
 
 rect {
-  &.light{ fill: lightsteelblue ; }
-  &.dark{ fill: steelblue ; }
-/*
-  &.green{ fill: darken($green, 5%) ; }
-  &.disabled{ fill: lighten($background,55%) ; } 
-  &.light{ fill: lighten($green, 50%) ; }
-  &.medium{ fill: lighten($green, 30%) ; }
-  &.dark{ fill: lighten($green,10%) ; }
-  &.red{ fill: lighten($red,10%) ; }
-*/
+  &.light{ fill: $lightrect ; }
+  &.dark, &.green { fill: $darkrect ; }
+  &.medium{ fill: $mediumrect ; } 
+  &.disabled{ stroke: lighten($background,55%) ; stroke-width: 0.25px ; } 
+  &.red{ fill: lighten($red,10%) ; } 
 } 
 
 line {
