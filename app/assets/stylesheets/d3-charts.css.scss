@@ -13,7 +13,6 @@ $green: #23898f ; // rgb(87,188,32)
 
 $lightrect : #dcdcdc ;
 $darkrect : #555555 ;
-//$mediumrect : #a2b5cd ; *
 $mediumrect : darken(#b7b7b7,20%) ;
 
 .bar-text {
@@ -48,6 +47,7 @@ rect {
   &.medium{ fill: $mediumrect ; } 
   &.disabled{ stroke: lighten($background,55%) ; stroke-width: 0.25px ; } 
   &.red{ fill: lighten($red,10%) ; } 
+  &.blue { fill: #104e8b ; }
 } 
 
 line {
