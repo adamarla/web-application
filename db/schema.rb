@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130219180230) do
+ActiveRecord::Schema.define(:version => 20130219182513) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -46,6 +46,9 @@ ActiveRecord::Schema.define(:version => 20130219180230) do
     t.integer  "honest"
     t.boolean  "received",     :default => false
   end
+
+  add_index "answer_sheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
+  add_index "answer_sheets", ["testpaper_id"], :name => "index_answer_sheets_on_testpaper_id"
 
   create_table "boards", :force => true do |t|
     t.string   "name",       :limit => 50
@@ -182,6 +185,8 @@ ActiveRecord::Schema.define(:version => 20130219180230) do
     t.integer  "audited_by"
   end
 
+  add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"
+
   create_table "quizzes", :force => true do |t|
     t.integer  "teacher_id"
     t.datetime "created_at"
@@ -194,6 +199,8 @@ ActiveRecord::Schema.define(:version => 20130219180230) do
     t.integer  "total"
     t.integer  "span"
   end
+
+  add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
 
   create_table "requirements", :force => true do |t|
     t.string  "text",       :limit => 100
