@@ -63,11 +63,12 @@ window.karo = {
 
   tab : {
     enable : (id) ->
-      m = $("##{id}")
-      li = m.parent()
+      m = $("##{id}")[0]
+      li = $(m).parent()
       li.removeClass 'disabled'
       li.removeClass 'active' if li.hasClass 'active'
-      m.tab 'show'
+      $(m).tab 'show'
+      trigger.click m
       return true
 
     find : (node) -> # the closest active tab within which - presumably - the node is

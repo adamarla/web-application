@@ -16,7 +16,6 @@
     = render :partial => 'menus/teacher/per-ws'
     = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => server }
     = render :partial => 'menus/teacher/workbench'
-    = render :partial => 'menus/teacher/trapdoors' 
     = render :partial => 'menus/teacher/rc' 
     = render :partial => 'menus/teacher/howto' 
 
@@ -102,7 +101,9 @@
           #wide-X
           #wide-wait
             = render :partial => 'toolbox/wait'
-          #graph-paper.offset1
+          #wide-chart-1.offset1
+          #wide-chart-2.offset1
+          #wide-chart-3.offset1
           #wide-grd-canvas
             .row-fluid
               = render :partial => 'toolbox/grd-toolbar'

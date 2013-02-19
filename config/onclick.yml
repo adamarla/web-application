@@ -159,29 +159,20 @@ tab-tc-rc-1 :
   autoclick :
     tab : tab-tc-rc-2
 
-trapdoor-show-chart :
-  left : as-is
-  wide : 
-    show : graph-paper
-
 tab-tc-rc-2 :
   toggle : tab
   panel :
     url : ws/layout.json?ws=:prev&id=:id
   prev : tab-tc-rc-1
+  wide :
+    show : wide-chart-1
   autoclick :
-    link : trapdoor-show-chart
     tab : tab-tc-rc-3
-
-trapdoor-show-scans :
-  left : as-is
-  wide : 
-    show : wide-X
 
 tab-tc-rc-3 :
   toggle : tab
-  autoclick :
-    link : trapdoor-show-scans 
+  wide :
+    show : wide-X
 
 lnk-tc-rc :
   left : 
@@ -205,7 +196,7 @@ lnk-rc-deepdive :
   left : 
     show : left-6
   wide :
-    show : graph-paper
+    show : wide-chart-2
   autoclick :
     tab : tab-dive-1
 
@@ -220,12 +211,16 @@ tab-dive-1 :
 tab-dive-2 :
   toggle : tab
   prev : tab-dive-1
+  wide :
+    show : wide-chart-2
 
 tab-dive-3 : 
   toggle : tab
   prev : tab-dive-1
   panel :
     url : overall/proficiency.json?id=:id
+  wide :
+    show : wide-chart-3
 
 deepdive-* : 
   toggle : tab

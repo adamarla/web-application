@@ -1,7 +1,10 @@
 
 window.wsDeepdive = {
   students : (json) ->
-    $('#graph-paper > svg').remove()
+    target = $('#wide-chart-2')[0]
+    $(target).empty()
+
+    #$('#wide-chart-1 > svg').remove()
     w = 600
     h = 800
 
@@ -9,7 +12,7 @@ window.wsDeepdive = {
     textWidth = 150
 
     # <svg>
-    svg = d3.select('#graph-paper').append('svg')
+    svg = d3.select(target).append('svg')
     .attr('width', w)
     .attr('height', h)
 
@@ -92,7 +95,7 @@ window.wsDeepdive = {
     scaleX.domain([0,6]).range([textWidth, w-100]).clamp(true)
 
     # <svg>
-    svg = d3.select('#graph-paper > svg')
+    svg = d3.select('#wide-chart-2 > svg')
 
     for m,i in json.proficiency
       score = parseFloat(m.score) * avg
@@ -114,15 +117,16 @@ window.wsDeepdive = {
     return true
 
   byStudent : (json) ->
-    $('#graph-paper > svg').remove()
+    target = $('#wide-chart-3')[0]
+    $(target).empty()
+
     w = 600
     h = 800
-
     nTopics = json.proficiency.length
     textWidth = 10
 
     # <svg>
-    svg = d3.select('#graph-paper').append('svg')
+    svg = d3.select(target).append('svg')
     .attr('width', w)
     .attr('height', h)
 
