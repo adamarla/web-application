@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121174135) do
+ActiveRecord::Schema.define(:version => 20130219180230) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -133,6 +133,10 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.integer  "feedback",                     :default => 0
   end
 
+  add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
+  add_index "graded_responses", ["student_id"], :name => "index_graded_responses_on_student_id"
+  add_index "graded_responses", ["testpaper_id"], :name => "index_graded_responses_on_testpaper_id"
+
   create_table "grades", :force => true do |t|
     t.float    "allotment"
     t.integer  "teacher_id"
@@ -156,6 +160,9 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.integer  "index"
     t.integer  "end_page"
   end
+
+  add_index "q_selections", ["question_id"], :name => "index_q_selections_on_question_id"
+  add_index "q_selections", ["quiz_id"], :name => "index_q_selections_on_quiz_id"
 
   create_table "questions", :force => true do |t|
     t.string   "uid",             :limit => 20
