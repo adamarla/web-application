@@ -55,6 +55,8 @@ line {
   stroke: $lightgray ;
   stroke-width: 0.25 ;
   &.black { stroke: black ; stroke-width: 1.5; }
+  &.scale { stroke: white ; stroke-width: 0.75; }
+  &.tick { stroke: white ; stroke-width: 1; }
 } 
 
 circle { 
@@ -112,6 +114,6 @@ polygon {
 
 .axis text { 
   font-family: "Ubuntu 'Trebuchet MS' sans-serif" ;
-  font-size: 12px ;
+  font-size: 11px ;
 } 
 

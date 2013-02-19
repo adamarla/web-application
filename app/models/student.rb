@@ -160,7 +160,7 @@ class Student < ActiveRecord::Base
 
     topics = of_student.map(&:q_selection).map(&:question).map(&:topic).map(&:id).uniq
     topics = Topic.where(:id => topics).sort{ |m,n| m.name <=> n.name }
-    ret = { :proficiency => [] }
+    ret = { :proficiency => [ {:name => "Example", :score => 0.43, :benchmark => 3.5, :historical_avg => 2.5 } ] }
 
     topics.each do |t|
       # student-specific

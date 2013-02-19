@@ -119,7 +119,7 @@ window.wsDeepdive = {
     h = 800
 
     nTopics = json.proficiency.length
-    textWidth = 0
+    textWidth = 10
 
     # <svg>
     svg = d3.select('#graph-paper').append('svg')
@@ -130,12 +130,62 @@ window.wsDeepdive = {
     scaleX = d3.scale.linear()
     scaleX.domain([0,6]).range([textWidth, w-100])
 
+    # A seprate axis for non-example data 
+    xAxis = d3.svg.axis()
+
+    xAxis.scale(scaleX)
+    .orient('bottom')
+    .ticks(5)
+
     # Create one per row per topic 
     topics = svg.selectAll('g').data(json.proficiency)
     .enter()
     .append('g')
-    .attr('transform', (d,i) -> return "translate(0,#{120 + i*45})")
+    .attr('transform', (d,i) ->
+      vOffset = if i is 0 then 80 else 120
+      return "translate(#{scaleX(0)},#{vOffset + i*45})"
+    )
 
+    axis = svg.select('g')
+    
+    ticks = axis.selectAll('g')
+    .data([
+      { text: "Bare basics (0)", j: 0 },
+      { text: "Student proficiency", j: 1.5},
+      { text: "Class average", j: 2.5 },
+      { text: "Your benchmark", j: 3.5},
+      { text: "Tough (6)", j: 6 } ])
+    .enter()
+    .append('g')
+    .attr('transform', (d,i) ->
+      return "translate(#{scaleX(d.j)}, -40)"
+    )
+
+    ticks.append('line')
+    .attr('x1', 0)
+    .attr('x2', 0)
+    .attr('y1', 0)
+    .attr('y2', 8)
+    .classed('tick', true)
+
+    ticks.append('text')
+    .attr('y', (d,i) ->
+      return (if i is 2 then 18 else -5)
+    )
+    .attr('x', (d,i) ->
+      return (if i > 0 then -15 else 0)
+    )
+    .text (d) -> return d.text
+
+    # Horizontal line thru the ticks
+    axis.append('line')
+    .attr('x1', textWidth)
+    .attr('x2', w - 100)
+    .attr('y1', -40)
+    .attr('y2', -40)
+    .classed('scale', true)
+
+    # Topic names atop the individual bars
     topics.append('text')
     .attr('x', textWidth)
     .attr('y', -15)
@@ -172,6 +222,12 @@ window.wsDeepdive = {
     .attr('x2', (d,i) ->
       return scaleX parseFloat(d.historical_avg)
     )
+
+    svg.append('g')
+    .classed('axis', true)
+    .attr('transform', "translate(#{textWidth}, 115)")
+    .call(xAxis)
+
 
     return true
 }
