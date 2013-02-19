@@ -1,6 +1,8 @@
 
 window.wsSummary = (json) ->
-  $('#graph-paper > svg').remove()
+  target = $('#wide-chart-1')[0]
+  $(target).empty()
+
   w = 600
   h = 800
 
@@ -9,7 +11,7 @@ window.wsSummary = (json) ->
   quizTotal = parseInt json.max
 
   # <svg>
-  svg = d3.select('#graph-paper').append('svg')
+  svg = d3.select(target).append('svg')
   .attr('width', w)
   .attr('height', h)
 
