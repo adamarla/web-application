@@ -197,7 +197,7 @@ class GradedResponse < ActiveRecord::Base
         # Time to inform the teacher. You can do this only if teacher has provided 
         # an e-mail address. The default we assign will not work
         teacher = ws.quiz.teacher 
-        # Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
+        Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
       end # of if 
     end # of if 
   end
