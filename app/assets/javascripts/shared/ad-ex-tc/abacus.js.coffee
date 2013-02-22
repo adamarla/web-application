@@ -251,3 +251,9 @@ jQuery ->
     scan = "#{abacus.current.student.attr 'within'}/#{abacus.current.scan.attr 'name'}"
     $.get "restore_scan.json?id=#{scan}"
     return true
+
+  $('#btn-rotate').click (event) ->
+    event.stopImmediatePropagation()
+    scan = "#{abacus.current.student.attr 'within'}/#{abacus.current.scan.attr 'name'}"
+    $.get "rotate_scan.json?id=#{scan}"
+    return true
