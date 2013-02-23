@@ -85,6 +85,10 @@ jQuery ->
       wsDeepdive.loadProficiencyData json
     else if url.match(/overall\/proficiency/)
       wsDeepdive.byStudent json
+    else if url.match(/quiz\/questions/)
+      target = $('#editqz-1')
+      parentKey = 'questions'
+      childKey = 'datum'
     else
       matched = false
 
