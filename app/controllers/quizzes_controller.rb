@@ -18,6 +18,27 @@ class QuizzesController < ApplicationController
                                    :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
   end
 
+  def remove_questions
+    quiz = Quiz.find params[:id]
+    unless quiz.nil?
+      remove = params[:checked].keys.map(&:to_i)
+      n_ws = quiz.testpaper_ids.count 
+
+      if n_ws == 0
+        current = QSelection.where(:quiz_id => quiz.id).map(&:question_id)
+        quiz.question_ids = (current - remove) 
+        quiz.lay_it_out # Re-layout the quiz !!
+        Delayed::Job.enqueue CompileQuiz.new quiz
+      end
+      render :json => { :notify => { :text => "#{remove.count} questions removed" } }, :status => :ok
+    else
+      render :json => { :notify => { :text => "Quiz not found" } }, :status => :ok
+    end
+  end
+
+  def add_questions
+  end
+
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL')
@@ -28,6 +49,11 @@ class QuizzesController < ApplicationController
     pg = params[:page].nil? ? 1 : params[:page].to_i
     @quizzes = @quizzes.order('created_at DESC').page(pg).per(@per_pg)
   end
+
+  def questions
+    quiz = Quiz.find params[:id]
+    @questions = quiz.nil? ? [] : quiz.questions
+  end 
 
   def preview
     @quiz = Quiz.where(:id => params[:id]).first

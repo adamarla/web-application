@@ -30,6 +30,12 @@ lnk-edit-qz :
   wide :
     show : wide-X
 
+tab-editqz-1 : 
+  url : quiz/questions.json?id=:prev
+  panel :
+    url : question/preview?id=:id
+  prev : tab-wsb-quizzes
+
 tab-wsb-quizzes :
   url : quizzes/list
   panel :

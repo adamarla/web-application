@@ -86,6 +86,9 @@ Webapp::Application.routes.draw do
   match 'quiz/assign' => 'quizzes#assign_to', :via => [:put, :post]
   match 'quiz/testpapers' => 'quizzes#testpapers', :via => :get
   match 'find/schools' => 'schools#find', :via => :get
+  match 'quiz/questions' => 'quizzes#questions', :via => :get
+  match 'quiz/trim' => 'quizzes#remove_questions', :via => [:put, :post]
+  match 'quiz/add' => 'quizzes#add_questions', :via => [:put, :post]
 
   # Student 
   resource :student, :only => [:create, :update, :show]
