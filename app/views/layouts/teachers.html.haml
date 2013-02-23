@@ -11,7 +11,7 @@
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
 
-    = render :partial => 'menus/teacher/per-quiz'
+    = render :partial => 'menus/teacher/per-qz'
     = render :partial => 'menus/teacher/per-ws'
     = render :partial => 'menus/teacher/qz-main', :locals => { :teacher => tchr, :server => server }
     = render :partial => 'menus/teacher/workbench'
@@ -90,6 +90,8 @@
             = render :partial => 'teachers/rc'
           #left-6
             = render :partial => 'teachers/deepdive', :locals => { :teacher => tchr }
+          #left-7
+            = render :partial => 'teachers/edit-qz'
         #middle.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
           #middle-X
