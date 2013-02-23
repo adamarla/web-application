@@ -5,6 +5,6 @@
 
 object false
   node(:preview) {
-    { :id => @question.uid, :scans => [*1..@question.answer_key_span?] } 
+    { :id => @question.simple_uid, :scans => [*1..@question.answer_key_span?] } 
   } 
   node(:caption) { @question.uid }
