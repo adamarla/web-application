@@ -1,8 +1,11 @@
 
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
+  %li.nav-header= "This quiz"
+  %li
+    = simple_link :for => "edit = add / remove questions", :id => 'lnk-edit-qz'
   %li.nav-header= "Worksheets"
   %li
-    = simple_link :for => "Make New", :id => 'lnk-wsb-new'
+    = simple_link :for => "New", :id => 'lnk-wsb-new'
   %li
     = simple_link :for => "List", :id => 'lnk-wsb-existing'
   %li.nav-header= "Download"
