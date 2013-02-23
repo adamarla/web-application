@@ -11,10 +11,9 @@
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
 
-    = render :partial => 'menus/teacher/quiz_filter'
     = render :partial => 'menus/teacher/per-quiz'
     = render :partial => 'menus/teacher/per-ws'
-    = render :partial => 'menus/teacher/quiz_main', :locals => { :teacher => tchr, :server => server }
+    = render :partial => 'menus/teacher/qz-main', :locals => { :teacher => tchr, :server => server }
     = render :partial => 'menus/teacher/workbench'
     = render :partial => 'menus/teacher/rc' 
     = render :partial => 'menus/teacher/howto' 

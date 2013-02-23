@@ -4,19 +4,14 @@
 %ul#teacher-quiz.dropdown-menu.pull-right{ :role => :menu }
   %li.nav-header= "Quizzes"
   %li
-    = simple_link :for => "Make New", :id => "lnk-new-quiz"
-  %li.dropdown-submenu
-    = simple_link :for => "List ( by grade )", :id => 'lnk-existing-quiz'
-    %ul.dropdown-menu
-      - [*9..12].each do |j|
-        %li
-          = simple_link :for => "Grade #{j}", :id => "lnk-#{j}-quizzes", 
-            :url => "quizzes/list.json?klass=#{j}"
+    = simple_link :for => "New", :id => "lnk-new-quiz"
+  %li
+    = simple_link :for => "List", :id => 'lnk-existing-quiz'
 
   %li.divider
   %li.nav-header= "Suggest Questions"
   %li
-    = simple_link :for => "Suggestion Form", :id => 'lnk-suggestion-form',
+    = simple_link :for => "Using suggestion form", :id => 'lnk-suggestion-form',
     :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
 
   %li
