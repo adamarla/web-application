@@ -15,7 +15,6 @@
 #  length          :float
 #  answer_key_span :integer
 #  calculation_aid :integer         default(0)
-#  restricted      :boolean         default(TRUE)
 #  audited         :boolean         default(FALSE)
 #  audited_by      :integer
 #
@@ -105,6 +104,10 @@ class Question < ActiveRecord::Base
     select{ |m| m.marks? > 0 }.sort{ |m,n| m.marks? <=> n.marks? }
   end
 
+  def simple_uid
+    return "#{self.topic_id}-#{self.id}"
+  end
+  
   def ticker?
     unless self.topic_id.nil?
       return "#{self.topic.name} (#{self.marks?} points)"
