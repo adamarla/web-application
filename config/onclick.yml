@@ -7,15 +7,15 @@ lnk-edit-account :
   toggle : modal
   notouch : true
 
-lnk-9-quizzes : &type001
-  left : 
-    show : left-1
-  wide : 
-    show : wide-X 
-
-lnk-10-quizzes : *type001
-lnk-11-quizzes : *type001
-lnk-12-quizzes : *type001
+#lnk-9-quizzes : &type001
+#  left : 
+#    show : left-1
+#  wide : 
+#    show : wide-X 
+#
+#lnk-10-quizzes : *type001
+#lnk-11-quizzes : *type001
+#lnk-12-quizzes : *type001
 
 lnk-existing-quiz :
   default-lnk : true
