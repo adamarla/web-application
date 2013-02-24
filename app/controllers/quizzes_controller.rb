@@ -24,29 +24,11 @@ class QuizzesController < ApplicationController
       remove = params[:checked].nil? ? [] : params[:checked].keys.map(&:to_i)
 
       if remove.count > 0
-        n_ws = quiz.testpaper_ids.count 
-        current = QSelection.where(:quiz_id => quiz.id).map(&:question_id)
-        now = current - remove
-        msg = "#{remove.count} question(s) removed"
-
-        if n_ws == 0
-          quiz.question_ids = now
-          quiz.update_attributes :num_questions => now.count , :total => nil, :span => nil
-          quiz.lay_it_out # Re-layout the quiz !!
-          subtext = "Quiz edited in-place"
-          Delayed::Job.enqueue CompileQuiz.new quiz
-        else # some worksheet from before => clone this quiz
-          similarly_named = Quiz.where{ name =~ "#{quiz.name}%" }
-          version = similarly_named.count + 1
-          name = "#{quiz.name} (ver. #{version})"
-          subtext = "A new version had to be created"
-          Delayed::Job.enqueue BuildQuiz.new(name, quiz.teacher_id, now), :priority => 0, :run_at => Time.zone.now
-        end # if
-        render :json => { :notify => { :text => msg, :subtext => subtext } }, :status => :ok
-      else # nothing to remove
-        render :json => { :notify => { :text => quiz.name, :subtext => "No questions dropped" } }, :status => :ok
+        msg,subtext = quiz.remove_questions remove
+      else
+        msg, subtext = [quiz.name, "No questions dropped"]
       end
-
+      render :json => { :notify => { :text => msg, :subtext => subtext } }, :status => :ok
     else # unless 
       render :json => { :notify => { :text => "Quiz not found" } }, :status => :ok
     end
