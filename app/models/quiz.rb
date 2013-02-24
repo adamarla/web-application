@@ -249,27 +249,41 @@ class Quiz < ActiveRecord::Base
     return @students, @pending, @scans
   end
 
-  def remove_questions(remove_ids)
-    n_ws = self.testpaper_ids.count 
-    current = QSelection.where(:quiz_id => self.id).map(&:question_id)
-    now = current - remove_ids
-    msg = "#{remove_ids.count} question(s) removed"
+  def clone?
+    return self if self.testpaper_ids.count == 0
+    
+    # there should be just one editable clone at a time
+    clone = Quiz.where(:parent_id => self.id).select{ |m| m.testpaper_ids.count == 0 }.first
+    return clone
+  end
 
-    if n_ws == 0
-      self.question_ids = now
-      self.update_attributes :num_questions => now.count , :total => nil, :span => nil
-      self.lay_it_out # Re-layout the quiz !!
-      subtext = "Quiz edited in-place"
-      Delayed::Job.enqueue CompileQuiz.new self
-    else # some worksheet from before => clone this quiz
-      name = "#{self.name} (clone)"
-      subtext = "A new version had to be created"
-      Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, now, self.id), :priority => 0, :run_at => Time.zone.now
-    end # if
+  def clone
+    selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
+    name = "#{self.name} (clone)"
+    Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, selections, self.id), 
+                                       :priority => 0, :run_at => Time.zone.now
+  end
+
+  def remove_questions(question_ids)
+    return self.add_remove_questions question_ids, false
+  end
+
+  def add_questions(question_ids)
+    return self.add_remove_questions question_ids, true 
+  end
+
+
+  def add_remove_questions(question_ids, add = false)
+    return false if question_ids.count == 0
+
+    clone = self.clone?
+    msg = "#{question_ids.count} question(s) #{add ? 'added' : 'removed'}"
+    subtext = clone.nil? ? "A new version had to be created" : "Quiz edited in place"
+
+    self.clone if clone.nil? # job #1 
+    Delayed::Job.enqueue EditQuiz.new(self), :priority => 0, :run_at => Time.zone.now # job #2
     return msg, subtext
   end
 
-  def add_questions(qids)
-  end
 end # of class
 
