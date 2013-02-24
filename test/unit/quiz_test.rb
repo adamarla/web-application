@@ -13,6 +13,7 @@
 #  atm_key       :string(20)
 #  total         :integer
 #  span          :integer
+#  parent_id     :integer
 #
 
 require 'test_helper'
