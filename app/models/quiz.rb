@@ -248,4 +248,29 @@ class Quiz < ActiveRecord::Base
     return @students, @pending, @scans
   end
 
+  def remove_questions(remove_ids)
+    n_ws = self.testpaper_ids.count 
+    current = QSelection.where(:quiz_id => self.id).map(&:question_id)
+    now = current - remove_ids
+    msg = "#{remove_ids.count} question(s) removed"
+
+    if n_ws == 0
+      self.question_ids = now
+      self.update_attributes :num_questions => now.count , :total => nil, :span => nil
+      self.lay_it_out # Re-layout the quiz !!
+      subtext = "Quiz edited in-place"
+      Delayed::Job.enqueue CompileQuiz.new self
+    else # some worksheet from before => clone this quiz
+      similarly_named = Quiz.where{ name =~ "#{self.name}%" }
+      version = similarly_named.count + 1
+      name = "#{self.name} (ver. #{version})"
+      subtext = "A new version had to be created"
+      Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, now), :priority => 0, :run_at => Time.zone.now
+    end # if
+    return msg, subtext
+  end
+
+  def add_questions(qids)
+  end
 end # of class
+
