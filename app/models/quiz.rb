@@ -13,6 +13,7 @@
 #  atm_key       :string(20)
 #  total         :integer
 #  span          :integer
+#  parent_id     :integer
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -261,11 +262,9 @@ class Quiz < ActiveRecord::Base
       subtext = "Quiz edited in-place"
       Delayed::Job.enqueue CompileQuiz.new self
     else # some worksheet from before => clone this quiz
-      similarly_named = Quiz.where{ name =~ "#{self.name}%" }
-      version = similarly_named.count + 1
-      name = "#{self.name} (ver. #{version})"
+      name = "#{self.name} (clone)"
       subtext = "A new version had to be created"
-      Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, now), :priority => 0, :run_at => Time.zone.now
+      Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, now, self.id), :priority => 0, :run_at => Time.zone.now
     end # if
     return msg, subtext
   end

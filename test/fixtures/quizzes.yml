@@ -13,6 +13,7 @@
 #  atm_key       :string(20)
 #  total         :integer
 #  span          :integer
+#  parent_id     :integer
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

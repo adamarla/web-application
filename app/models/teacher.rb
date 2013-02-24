@@ -103,10 +103,10 @@ class Teacher < ActiveRecord::Base
     return Question.where(:id => q_ids)
   end
 
-  def build_quiz_with (name, question_ids)
+  def build_quiz_with (name, question_ids, parent_id = nil)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
                      :num_questions => question_ids.count, 
-                     :name => name
+                     :name => name, :parent_id => parent_id
 
     # Ideally, one should ask for the TeX to be compiled before saving
     # @quiz into the database. But in this case, we need a quiz-ID and its layout 

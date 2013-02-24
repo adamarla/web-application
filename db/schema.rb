@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130224181058) do
+ActiveRecord::Schema.define(:version => 20130224183300) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -187,8 +187,10 @@ ActiveRecord::Schema.define(:version => 20130224181058) do
     t.string   "atm_key",       :limit => 20
     t.integer  "total"
     t.integer  "span"
+    t.integer  "parent_id"
   end
 
+  add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
   add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
 
   create_table "requirements", :force => true do |t|
