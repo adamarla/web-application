@@ -4,7 +4,6 @@
 #
 #  id             :integer         not null, primary key
 #  student_id     :integer
-#  calibration_id :integer
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
@@ -25,7 +24,6 @@
 class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
-  belongs_to :calibration
   belongs_to :q_selection
   belongs_to :testpaper
   belongs_to :subpart
@@ -67,12 +65,10 @@ class GradedResponse < ActiveRecord::Base
   end
   
   def self.graded
-    # where('calibration_id IS NOT NULL')
     where("feedback > ?", 0)
   end 
 
   def self.ungraded
-    # where(:calibration_id => nil)
     where(:feedback => 0)
   end
 
@@ -102,12 +98,6 @@ class GradedResponse < ActiveRecord::Base
     # Relatively time expensive. Chain towards the end 
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
-
-=begin
-  def self.calibrated_to(id)
-    where(:calibration_id => id)
-  end
-=end
 
   def self.disputed
     # Open disputes
