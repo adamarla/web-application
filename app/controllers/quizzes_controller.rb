@@ -28,7 +28,7 @@ class QuizzesController < ApplicationController
         current = QSelection.where(:quiz_id => quiz.id).map(&:question_id)
         now = current - remove
         quiz.question_ids = now
-        quiz.update_attributes :num_questions => now.count , :total => nil
+        quiz.update_attributes :num_questions => now.count , :total => nil, :span => nil
         quiz.lay_it_out # Re-layout the quiz !!
         Delayed::Job.enqueue CompileQuiz.new quiz
       end
