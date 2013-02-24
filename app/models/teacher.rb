@@ -113,10 +113,9 @@ class Teacher < ActiveRecord::Base
     return Question.where(:id => q_ids)
   end
 
-  def build_quiz_with (name, question_ids, course)
+  def build_quiz_with (name, question_ids)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
                      :num_questions => question_ids.count, 
-                     :subject_id => course.subject_id, :klass => course.klass,
                      :name => name
 
     # Ideally, one should ask for the TeX to be compiled before saving

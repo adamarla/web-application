@@ -144,13 +144,14 @@ class TeachersController < ApplicationController
 
   def build_quiz 
     teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
-    course = Course.find params[:id]
-    head :bad_request if (teacher.nil? || course.nil?)
+    # course = Course.find params[:id]
+    # head :bad_request if (teacher.nil? || course.nil?)
+    head :bad_request if teacher.nil? 
 
     name = params[:checked].delete :name
     question_ids = params[:checked].keys.map(&:to_i)
 
-    Delayed::Job.enqueue BuildQuiz.new(name, teacher.id, question_ids, course), :priority => 0, :run_at => Time.zone.now
+    Delayed::Job.enqueue BuildQuiz.new(name, teacher.id, question_ids), :priority => 0, :run_at => Time.zone.now
     at = Delayed::Job.where('failed_at IS NULL').count
     render :json => { :notify => { :text => "'#{name[0,13]} ...' received", 
                                    :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
