@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130223052508) do
+ActiveRecord::Schema.define(:version => 20130224175938) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -54,15 +54,6 @@ ActiveRecord::Schema.define(:version => 20130223052508) do
     t.string   "name",       :limit => 50
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "calibrations", :force => true do |t|
-    t.integer "insight_id"
-    t.integer "formulation_id"
-    t.integer "calculation_id"
-    t.integer "mcq_id"
-    t.float   "allotment"
-    t.boolean "enabled",        :default => true
   end
 
   create_table "countries", :force => true do |t|
@@ -120,7 +111,6 @@ ActiveRecord::Schema.define(:version => 20130223052508) do
 
   create_table "graded_responses", :force => true do |t|
     t.integer  "student_id"
-    t.integer  "calibration_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
