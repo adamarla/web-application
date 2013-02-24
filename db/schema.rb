@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130224175938) do
+ActiveRecord::Schema.define(:version => 20130224181058) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -334,16 +334,6 @@ ActiveRecord::Schema.define(:version => 20130224175938) do
     t.string   "title",         :limit => 70
     t.boolean  "active",                      :default => false
     t.integer  "index",                       :default => -1
-  end
-
-  create_table "yardsticks", :force => true do |t|
-    t.boolean "mcq",         :default => false
-    t.string  "meaning"
-    t.boolean "insight",     :default => false
-    t.boolean "formulation", :default => false
-    t.boolean "calculation", :default => false
-    t.integer "weight",      :default => 1
-    t.string  "bottomline"
   end
 
 end

@@ -80,12 +80,6 @@ class GradedResponse < ActiveRecord::Base
     where('scan IS NULL')
   end
 
-=begin
-  def self.of_colour(colour) # colour => { pink: 1, orange:2, green: 3 }
-    select{ |m| m.grade && m.grade.yardstick.colour == colour }
-  end
-=end
-
   def self.on_topic(topic_id)
     select{ |m| m.q_selection.question.topic.id == topic_id }
   end
