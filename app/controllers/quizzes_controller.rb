@@ -26,11 +26,13 @@ class QuizzesController < ApplicationController
 
       if n_ws == 0
         current = QSelection.where(:quiz_id => quiz.id).map(&:question_id)
-        quiz.question_ids = (current - remove) 
+        now = current - remove
+        quiz.question_ids = now
+        quiz.update_attributes :num_questions => now.count , :total => nil
         quiz.lay_it_out # Re-layout the quiz !!
         Delayed::Job.enqueue CompileQuiz.new quiz
       end
-      render :json => { :notify => { :text => "#{remove.count} questions removed" } }, :status => :ok
+      render :json => { :notify => { :text => "#{remove.count} question(s) removed" } }, :status => :ok
     else
       render :json => { :notify => { :text => "Quiz not found" } }, :status => :ok
     end
