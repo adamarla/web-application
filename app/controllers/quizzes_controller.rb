@@ -67,8 +67,8 @@ class QuizzesController < ApplicationController
   end
 
   def questions
-    quiz = Quiz.find params[:id]
-    @questions = quiz.nil? ? [] : quiz.questions
+    @quiz = Quiz.find params[:id]
+    # @questions = quiz.nil? ? [] : quiz.questions
   end 
 
   def preview

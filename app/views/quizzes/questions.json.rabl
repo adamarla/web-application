@@ -1,7 +1,13 @@
 
 object false
   node(:questions) {
-    @questions.map { |m|
-      {:datum => {:name => m.simple_uid, :id => m.id, :tag => "#{m.span?} pg" } }
+    selections = QSelection.where(:quiz_id => @quiz.id).order(:index)
+    selections.map { |m|
+      q = m.question
+      {:datum => { 
+        :name => "Ques ##{m.index} (#{q.simple_uid})", 
+        :id => q.id, 
+        :tag => "#{q.span?} pg" 
+      } }
     }
   }
