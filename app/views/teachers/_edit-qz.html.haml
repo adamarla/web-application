@@ -16,7 +16,8 @@
       'data-action' => "#{quiz_trim_path}?id=:id", 'data-id' => 'tab-wsb-quizzes' } do |f|
 
       .row-fluid.navbar.purge-skip
-        %button.btn.btn-inverse.pull-right{ :type => :submit }= "Remove Selected"
+        %button.btn.btn-primary.pull-right{ :id => 'btn-editqz-nodrop', :type => :submit }= "Remove Nothing"
+        %button.btn.btn-inverse.pull-left{ :type => :submit }= "Remove Selected"
       #editqz-1.multi-select
 
   #pane-editqz-2.tab-pane
