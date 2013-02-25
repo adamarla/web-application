@@ -1,7 +1,8 @@
 
 class CompileQuiz < Struct.new(:quiz)
   def perform
-    n_questions = QSelection.where(:quiz_id => quiz.id).count
+    question_ids = QSelection.where(:quiz_id => quiz.id).map(&:question_id)
+    n_questions = question_ids.count 
     quiz.update_attributes :num_questions => n_questions, :total => nil, :span => nil
     quiz.lay_it_out
 
