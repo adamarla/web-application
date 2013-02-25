@@ -1,8 +1,18 @@
 
 class BuildQuiz < Struct.new(:name, :teacher_id, :question_ids, :parent_id) 
   def perform
-    @teacher = Teacher.find teacher_id
-    response,status = @teacher.build_quiz_with name, question_ids, parent_id
+    quiz = Quiz.new :name => name, :teacher_id => teacher_id, 
+                    :question_ids => question_ids, 
+                    :num_questions => question_ids.count,
+                    :parent_id => parent_id
+
+    status = quiz.save ? :ok : :bad_request
+    unless status == :bad_request
+      Delayed::Job.enqueue CompileQuiz.new(quiz)
+    end
+
+    # @teacher = Teacher.find teacher_id
+    # response,status = @teacher.build_quiz_with name, question_ids, parent_id
   end 
 
   def error(job, exception)
