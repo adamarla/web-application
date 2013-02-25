@@ -5,7 +5,7 @@ object false
       { :datum => {
           :name => m.simple_uid,
           :id => m.id,
-          :tag => m.span?
+          :tag => "#{m.span?} pg"
         }
       }
     }
