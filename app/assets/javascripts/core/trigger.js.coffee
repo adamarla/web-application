@@ -20,13 +20,13 @@ window.gutenberg = {
 window.trigger = {
 
   click : (link, event = null) ->
-    return true if link.dataset.toggle is 'tab'
     return true if $(link).hasClass 'carousel-control'
+    isTab = link.dataset.toggle is 'tab'
 
     if $(link).parent().hasClass 'dropdown-submenu'
       return false unless link.dataset.defaultLnk is 'true'
 
-    event.stopImmediatePropagation() if event?
+    event.stopImmediatePropagation() if event? and not isTab
     # (YAML) Hide / unhide panels as needed
 
     notouch = if link.dataset.notouch? then (link.dataset.notouch is 'true') else false
@@ -39,10 +39,13 @@ window.trigger = {
         show = link.dataset[attr] # left-show, right-show etc 
         panel = $("##{j}")
         if not show?
+          continue if isTab
           panel.addClass 'hide'
           continue
         panel.removeClass 'hide'
         karo.unhide(show, panel) unless show is 'no-remove'
+
+    return true if isTab # process tabs here only insofar as hiding/unhiding is concerned
 
     # If there be a tab that needs to be auto-clicked, then do that too
     tab = link.dataset.autoclickTab
@@ -96,6 +99,15 @@ jQuery ->
   })
 
   #####################################################################
+  ## Do nothing if a.brand is clicked 
+  #####################################################################
+
+  $('a.brand').click (event) ->
+    event.stopImmediatePropagation()
+    return false
+
+
+  #####################################################################
   # Behaviour of button-groups that are within forms
   #####################################################################
 
@@ -119,11 +131,18 @@ jQuery ->
   ###############################################
 
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
-    if $(this).parent().hasClass 'disabled'
+    li = $(this).parent()
+
+    if li.hasClass 'disabled'
       event.stopImmediatePropagation()
       return false
-    else
-      return true
+    else if this.dataset.prev?
+      m = $("##{this.dataset.prev}").parent() # the <li> - not the <a>
+      if not m.attr('marker')? # no selection made in data-prev
+        event.stopImmediatePropagation()
+        return false
+    trigger.click this
+    return true
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()

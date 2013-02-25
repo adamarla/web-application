@@ -18,6 +18,17 @@ module ApplicationHelper
 
     unless id.blank?
       onclick = OnClick[id]
+      data[:toggle] = :tab unless id.match(/^tab-/).nil?
+
+      # Allow keys that are actually reg-exps. Useful when a whole family of similarly named 
+      # keys need to be generated via a for loop in the HAML
+      if onclick.nil?
+        keys = OnClick.keys
+        matches = keys.map{ |k| /#{k}/.match("#{id}") } # k could be a reg-exp
+        idx = matches.index{ |m| m }
+        onclick = idx.nil? ? nil : OnClick[keys[idx]] # first place where reg-ex match passes
+      end
+
       unless onclick.nil?
         first_level_keys = [
           :left,

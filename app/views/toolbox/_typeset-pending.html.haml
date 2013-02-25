@@ -1,0 +1,11 @@
+
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link :for => "New", :id => 'tab-typeset-new', :href => '#pane-typeset-new'
+  %li
+    = simple_link :for => "In Process", :id => 'tab-typeset-ongoing', :href => '#pane-typeset-ongoing'
+
+.tab-content
+  #pane-typeset-new.tab-pane
+  #pane-typeset-ongoing.tab-pane
+

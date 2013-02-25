@@ -18,16 +18,40 @@ class QuizzesController < ApplicationController
                                    :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
   end
 
+  def remove_questions
+    quiz = Quiz.find params[:id]
+    unless quiz.nil?
+      remove = params[:checked].nil? ? [] : params[:checked].keys.map(&:to_i)
+
+      if remove.count > 0
+        msg,subtext = quiz.remove_questions remove
+      else
+        msg, subtext = [quiz.name, "No questions dropped"]
+      end
+      render :json => { :notify => { :text => msg, :subtext => subtext } }, :status => :ok
+    else # unless 
+      render :json => { :notify => { :text => "Quiz not found" } }, :status => :ok
+    end
+  end
+
+  def add_questions
+  end
+
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL')
-    @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:klass].to_i)
+    # @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:klass].to_i)
 
     n = @quizzes.count 
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i
     @quizzes = @quizzes.order('created_at DESC').page(pg).per(@per_pg)
   end
+
+  def questions
+    @quiz = Quiz.find params[:id]
+    # @questions = quiz.nil? ? [] : quiz.questions
+  end 
 
   def preview
     @quiz = Quiz.where(:id => params[:id]).first

@@ -13,6 +13,7 @@
 #  atm_key       :string(20)
 #  total         :integer
 #  span          :integer
+#  parent_id     :integer
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -248,4 +249,41 @@ class Quiz < ActiveRecord::Base
     return @students, @pending, @scans
   end
 
+  def clone?
+    return self if self.testpaper_ids.count == 0
+    
+    # there should be just one editable clone at a time
+    clone = Quiz.where(:parent_id => self.id).select{ |m| m.testpaper_ids.count == 0 }.first
+    return clone
+  end
+
+  def clone
+    selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
+    name = "#{self.name} (edited)"
+    Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, selections, self.id), 
+                                       :priority => 0, :run_at => Time.zone.now
+  end
+
+  def remove_questions(question_ids)
+    return self.add_remove_questions question_ids, false
+  end
+
+  def add_questions(question_ids)
+    return self.add_remove_questions question_ids, true 
+  end
+
+
+  def add_remove_questions(question_ids, add = false)
+    return false if question_ids.count == 0
+
+    clone = self.clone?
+    msg = "#{question_ids.count} question(s) #{add ? 'added' : 'removed'}"
+    subtext = clone.nil? ? "A new version had to be created" : "Quiz edited in place"
+
+    self.clone if clone.nil? # job #1 
+    Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), :priority => 0, :run_at => Time.zone.now # job #2
+    return msg, subtext
+  end
+
 end # of class
+

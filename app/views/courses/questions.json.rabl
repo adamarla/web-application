@@ -3,7 +3,7 @@ object false
 
 node(:questions) {
   @questions.map{ |m|
-    { :question => {:name => m.uid, :id => m.id, :tag => "#{m.span_as_str}", :badge => m.marks? } }
+    { :question => {:name => m.simple_uid, :id => m.id, :tag => "#{m.span_as_str}", :badge => m.marks? } }
   }
 } 
 

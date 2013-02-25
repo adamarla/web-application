@@ -7,4 +7,4 @@ object false
   node(:preview) {
     { :id => @question.uid, :scans => [*1..@question.answer_key_span?] } 
   } 
-  node(:caption) { @question.uid }
+  node(:caption) { @question.simple_uid }

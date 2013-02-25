@@ -26,9 +26,14 @@ jQuery ->
       clickFirst = true
       karo.empty target
     else if url.match(/sektion\/students/)
-      target = $("#lp-sektion-#{json.sektion}")
+      if json.context is 'deepdive'
+        target = $('#pane-dive-3')
+        target.empty()
+      else
+        target = $("#lp-sektion-#{json.sektion}")
       parentKey = "students"
       childKey = 'student'
+      wsDeepdive.students json
     else if url.match(/teacher\/courses/)
       target = $('#pane-qzb-courses')
       parentKey = 'courses'
@@ -67,12 +72,36 @@ jQuery ->
       target = $("#pane-tc-rc-2")
       parentKey = "root"
       childKey = "datum"
-
       wsSummary json
+    else if url.match(/teacher\/sektions/)
+      target = $('#pane-dive-1')
+      parentKey = 'sektions'
+      childKey = 'sektion'
+    else if url.match(/vertical\/topics/)
+      target = $('#deepdive-topics')
+      parentKey = 'topics'
+      childKey = 'topic'
+    else if url.match(/sektion\/proficiency/)
+      wsDeepdive.loadProficiencyData json
+    else if url.match(/overall\/proficiency/)
+      wsDeepdive.byStudent json
+    else if url.match(/quiz\/questions/)
+      target = $('#editqz-1')
+      parentKey = 'questions'
+      childKey = 'datum'
+    else
+      matched = false
 
     if target? and target.length isnt 0
       # karo.empty target
       line.write(target, m[childKey], menu) for m in json[parentKey]
+
+      # Disable any newly added .single-line if its marker in json.disable
+      if json.disable? # => an array of indices
+        j = target.children('.single-line')
+        for m in json.disable
+          k = j.filter("[marker=#{m}]")[0]
+          $(k).addClass 'disabled' if k?
 
       # Enable / disable paginator as needed 
       if json.last_pg?

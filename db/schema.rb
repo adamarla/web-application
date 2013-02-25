@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130121174135) do
+ActiveRecord::Schema.define(:version => 20130224183300) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -47,19 +47,13 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.boolean  "received",     :default => false
   end
 
+  add_index "answer_sheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
+  add_index "answer_sheets", ["testpaper_id"], :name => "index_answer_sheets_on_testpaper_id"
+
   create_table "boards", :force => true do |t|
     t.string   "name",       :limit => 50
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "calibrations", :force => true do |t|
-    t.integer "insight_id"
-    t.integer "formulation_id"
-    t.integer "calculation_id"
-    t.integer "mcq_id"
-    t.float   "allotment"
-    t.boolean "enabled",        :default => true
   end
 
   create_table "countries", :force => true do |t|
@@ -117,7 +111,6 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
 
   create_table "graded_responses", :force => true do |t|
     t.integer  "student_id"
-    t.integer  "calibration_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
@@ -132,6 +125,10 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.boolean  "closed",                       :default => false
     t.integer  "feedback",                     :default => 0
   end
+
+  add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
+  add_index "graded_responses", ["student_id"], :name => "index_graded_responses_on_student_id"
+  add_index "graded_responses", ["testpaper_id"], :name => "index_graded_responses_on_testpaper_id"
 
   create_table "grades", :force => true do |t|
     t.float    "allotment"
@@ -157,6 +154,9 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.integer  "end_page"
   end
 
+  add_index "q_selections", ["question_id"], :name => "index_q_selections_on_question_id"
+  add_index "q_selections", ["quiz_id"], :name => "index_q_selections_on_quiz_id"
+
   create_table "questions", :force => true do |t|
     t.string   "uid",             :limit => 20
     t.integer  "n_picked",                      :default => 0
@@ -170,10 +170,11 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.float    "length"
     t.integer  "answer_key_span"
     t.integer  "calculation_aid",               :default => 0
-    t.boolean  "restricted",                    :default => true
     t.boolean  "audited",                       :default => false
     t.integer  "audited_by"
   end
+
+  add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"
 
   create_table "quizzes", :force => true do |t|
     t.integer  "teacher_id"
@@ -186,7 +187,11 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.string   "atm_key",       :limit => 20
     t.integer  "total"
     t.integer  "span"
+    t.integer  "parent_id"
   end
+
+  add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
+  add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
 
   create_table "requirements", :force => true do |t|
     t.string  "text",       :limit => 100
@@ -263,6 +268,8 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.boolean "few_lines",     :default => false
   end
 
+  add_index "subparts", ["question_id"], :name => "index_subparts_on_question_id"
+
   create_table "suggestions", :force => true do |t|
     t.integer  "teacher_id"
     t.integer  "examiner_id"
@@ -329,16 +336,6 @@ ActiveRecord::Schema.define(:version => 20130121174135) do
     t.string   "title",         :limit => 70
     t.boolean  "active",                      :default => false
     t.integer  "index",                       :default => -1
-  end
-
-  create_table "yardsticks", :force => true do |t|
-    t.boolean "mcq",         :default => false
-    t.string  "meaning"
-    t.boolean "insight",     :default => false
-    t.boolean "formulation", :default => false
-    t.boolean "calculation", :default => false
-    t.integer "weight",      :default => 1
-    t.string  "bottomline"
   end
 
 end

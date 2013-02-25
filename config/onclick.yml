@@ -7,30 +7,41 @@ lnk-edit-account :
   toggle : modal
   notouch : true
 
-lnk-9-quizzes : &type001
-  left : 
-    show : left-1
-  wide : 
-    show : wide-X 
-
-lnk-10-quizzes : *type001
-lnk-11-quizzes : *type001
-lnk-12-quizzes : *type001
+#lnk-9-quizzes : &type001
+#
+#lnk-10-quizzes : *type001
+#lnk-11-quizzes : *type001
+#lnk-12-quizzes : *type001
 
 lnk-existing-quiz :
   default-lnk : true
   autoclick :
     tab : tab-wsb-quizzes
-  << : *type001
+  left : 
+    show : left-1
+  wide : 
+    show : wide-X 
+
+lnk-edit-qz :
+  autoclick :
+    tab : tab-editqz-1
+  left :
+    show : left-7
+  wide :
+    show : wide-X
+
+tab-editqz-1 : 
+  url : quiz/questions.json?id=:prev
+  panel :
+    url : question/preview?id=:id
+  prev : tab-wsb-quizzes
 
 tab-wsb-quizzes :
-  toggle : tab
   url : quizzes/list
   panel :
     url : quiz/preview?id=:id
 
 tab-wsb-sektions :
-  toggle : tab
     
 lnk-wsb-new :
   notouch : true
@@ -44,14 +55,12 @@ lnk-wsb-existing :
     tab : tab-wsb-existing
 
 tab-wsb-existing :
-  toggle : tab 
   url : quiz/testpapers.json?id=:prev
   prev : tab-wsb-quizzes
   panel :
     url : testpaper/load?id=:id
 
 tab-wsl-quizzes :
-  toggle : tab
   autoclick :
     link : lnk-existing-quiz
 
@@ -86,19 +95,15 @@ lnk-wb-pending :
     tab : tab-grd-ws
 
 tab-qzb-courses : 
-  toggle : tab
   url : teacher/courses
   autoclick :
     tab : tab-qzb-topics
 
 tab-qzb-verticals :
-  toggle : tab
 
 tab-qzb-topics : 
-  toggle : tab
 
 tab-qzb-questions :
-  toggle : tab
 
 m-teacher-quizzes :
   toggle : dropdown 
@@ -126,62 +131,46 @@ lnk-howto-1 : &type-notouch
 lnk-howto-2 : *type-notouch
 
 tab-ws-performance :
-  toggle : tab
   panel : 
     url : student/performance.json?id=:id&ws=:prev 
   url : performance/ws.json?id=:prev 
   prev : tab-wsl
 
 tab-grd-ws :
-  toggle : tab
   url : ws/pending
   autoclick :
     tab : tab-grd-page
 
 tab-grd-page :
-  toggle : tab
   prev : tab-grd-ws
   url : pages/pending.json?id=:prev
   autoclick :
     tab : tab-grd-panel
 
 tab-grd-panel :
-  toggle : tab
   prev : tab-grd-page
   id : tab-grd-ws
   url : gr/pending.json?page=:prev&ws=:id
 
 tab-tc-rc-1 :
-  toggle : tab
   url : ws/list
   panel :
     url : ws/summary.json?id=:id
   autoclick :
     tab : tab-tc-rc-2
 
-trapdoor-show-chart :
-  left : as-is
-  wide : 
-    show : graph-paper
-
 tab-tc-rc-2 :
-  toggle : tab
   panel :
     url : ws/layout.json?ws=:prev&id=:id
   prev : tab-tc-rc-1
+  wide :
+    show : wide-chart-1
   autoclick :
-    link : trapdoor-show-chart
     tab : tab-tc-rc-3
 
-trapdoor-show-scans :
-  left : as-is
-  wide : 
-    show : wide-X
-
 tab-tc-rc-3 :
-  toggle : tab
-  autoclick :
-    link : trapdoor-show-scans 
+  wide :
+    show : wide-X
 
 lnk-tc-rc :
   left : 
@@ -200,6 +189,39 @@ lnk-ws-unpublish :
   notouch: true
   url : ws/unpublish.json?id=:id
   id : tab-wsb-existing
+
+lnk-rc-deepdive :
+  left : 
+    show : left-6
+  wide :
+    show : wide-chart-2
+  autoclick :
+    tab : tab-dive-1
+
+tab-dive-1 :
+  url : teacher/sektions
+  panel : 
+    url : sektion/students.json?id=:id&context=deepdive
+  autoclick : 
+    tab : tab-dive-2
+
+tab-dive-2 :
+  prev : tab-dive-1
+  wide :
+    show : wide-chart-2
+
+tab-dive-3 : 
+  prev : tab-dive-1
+  panel :
+    url : overall/proficiency.json?id=:id
+  wide :
+    show : wide-chart-3
+
+deepdive-* : 
+  url : vertical/topics?id=:id
+  panel :
+    url : sektion/proficiency?of=:prev&in=:id
+  prev : tab-dive-1
 
 ##############################################################################
 ## Students 
@@ -223,7 +245,6 @@ lnk-st-inbox :
     show : wide-wait
 
 tab-st-rc-1 :
-  toggle : tab
   url : ws/list 
   panel :
     url : ws/layout.json?ws=:id&id=:prev
@@ -232,18 +253,15 @@ tab-st-rc-1 :
     tab : tab-st-rc-2
 
 tab-st-rc-2 :
-  toggle : tab
   prev : tab-st-rc-1
 
 tab-st-inbox :
-  toggle : tab
   url : inbox.json?id=:prev
   prev : control-panel
   panel :
     url : inbox/echo.json?ws=:id
 
 tab-st-outbox :
-  toggle : tab
   url : outbox
 
 lnk-inbox-download :
@@ -290,19 +308,14 @@ m-examiner-wb :
   menu : examiner-wb
 
 tab-new-school :
-  toggle : tab
 
 tab-selected-school :
-  toggle : tab
 
 tab-school-general :
-  toggle : tab
 
 tab-school-faculty :
-  toggle : tab
 
 tab-school-sektions :
-  toggle : tab
 
 lnk-wb-tagging :
   left :
@@ -313,7 +326,6 @@ lnk-wb-tagging :
     tab : tab-tag-pending
 
 tab-tag-pending :
-  toggle : tab 
   url : untagged/list
   panel :
     url : question/preview.json?id=:id
@@ -321,26 +333,46 @@ tab-tag-pending :
     tab : tab-tag-topic
 
 tab-tag-topic :
-  toggle : tab 
 
 tab-tag-misc :
-  toggle : tab 
+
+lnk-wb-typeset :
+  left :
+    show : left-5
+  wide :
+    show : wide-X
+  autoclick :
+    tab : tab-typeset-new
+
+tab-typeset-new :
+  url : typeset/new
+  panel :
+    url : suggestion/preview.json?id=:id
+
+lnk-block-* : 
+  notouch : true
+  id : tab-typeset-new
+
+m-block-slots :
+  menu : blockdb-slots
+  toggle : dropdown
+
+tab-typeset-ongoing :
+  url : typeset/ongoing
+  panel :
+    url : suggestion/preview.json?id=:id
 
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################
 
 tab-honest :
-  toggle : tab
 
 tab-cogent :
-  toggle : tab
 
 tab-complete :
-  toggle : tab
 
 tab-other :
-  toggle : tab
 
 ##############################################################################
 ## Shared between ** all ** roles  

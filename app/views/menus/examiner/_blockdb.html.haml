@@ -1,0 +1,6 @@
+
+%ul.dropdown-menu.dropdown-inverse.slim#blockdb-slots{ :role => :menu }
+  %li.nav-header= "Block ..."
+  - [*1..9].each do |m|
+    %li
+      = simple_link :for => "#{m} slot(s)", :id => "lnk-block-#{m}", :url => "suggestion/block_db_slots?n=#{m}&sid=:id"

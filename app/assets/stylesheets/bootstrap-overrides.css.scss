@@ -13,7 +13,7 @@ $deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
 $lightblue: lighten($deep-blue, 23%) ;
 $red: #d72323 ; // rgb(215, 35, 35)
-$green: #57bc20 ; // rgb(87,188,32)
+$green: #347235 ; // rgb(87,188,32)
 
 .navbar-inverse, .dropdown-menu {
   li { 
@@ -37,6 +37,9 @@ $green: #57bc20 ; // rgb(87,188,32)
 }
 
 .dropdown-menu { 
+  &.slim { 
+    min-width: 100px ;
+  }
   > li {
     > a { 
       font-size: 11px ;
@@ -155,19 +158,14 @@ $green: #57bc20 ; // rgb(87,188,32)
 .single-line {
   padding: {
     top: 3px ;
-    bottom: 3px ;
+    bottom: 2px ;
   } 
   min-height: 24px ;
   font-size: 11px ; 
   cursor: pointer ; 
   color: white ;
   text-transform: lowercase ; 
-  &:nth-child(odd) {
-    background-color: lighten($background, 5%) ; 
-  } 
-  &:nth-child(even) {
-    font-weight: 400 ;
-  }
+  border-bottom: 1px solid $lightgray ; 
   
   &:hover {
     font-weight: 500 ;
@@ -211,8 +209,8 @@ $green: #57bc20 ; // rgb(87,188,32)
 
   .subtext { 
     font-size: 10px ;
-    color: inherit ; 
-    text-transform: uppercase ;
+    color: $orange ; 
+    text-transform: lowercase ; 
     text-align: right ;
   } 
 

@@ -4,7 +4,6 @@
 #
 #  id             :integer         not null, primary key
 #  student_id     :integer
-#  calibration_id :integer
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
@@ -25,7 +24,6 @@
 class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
-  belongs_to :calibration
   belongs_to :q_selection
   belongs_to :testpaper
   belongs_to :subpart
@@ -67,12 +65,10 @@ class GradedResponse < ActiveRecord::Base
   end
   
   def self.graded
-    # where('calibration_id IS NOT NULL')
     where("feedback > ?", 0)
   end 
 
   def self.ungraded
-    # where(:calibration_id => nil)
     where(:feedback => 0)
   end
 
@@ -83,12 +79,6 @@ class GradedResponse < ActiveRecord::Base
   def self.without_scan
     where('scan IS NULL')
   end
-
-=begin
-  def self.of_colour(colour) # colour => { pink: 1, orange:2, green: 3 }
-    select{ |m| m.grade && m.grade.yardstick.colour == colour }
-  end
-=end
 
   def self.on_topic(topic_id)
     select{ |m| m.q_selection.question.topic.id == topic_id }
@@ -102,12 +92,6 @@ class GradedResponse < ActiveRecord::Base
     # Relatively time expensive. Chain towards the end 
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
-
-=begin
-  def self.calibrated_to(id)
-    where(:calibration_id => id)
-  end
-=end
 
   def self.disputed
     # Open disputes
@@ -197,7 +181,7 @@ class GradedResponse < ActiveRecord::Base
         # Time to inform the teacher. You can do this only if teacher has provided 
         # an e-mail address. The default we assign will not work
         teacher = ws.quiz.teacher 
-        # Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
+        Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
       end # of if 
     end # of if 
   end

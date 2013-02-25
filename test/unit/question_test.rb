@@ -15,7 +15,6 @@
 #  length          :float
 #  answer_key_span :integer
 #  calculation_aid :integer         default(0)
-#  restricted      :boolean         default(TRUE)
 #  audited         :boolean         default(FALSE)
 #  audited_by      :integer
 #

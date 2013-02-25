@@ -40,24 +40,6 @@ jQuery ->
         continue if not key? or not id? or not pId?
         $(a).attr 'href', "#{gutenberg.server}/atm/#{key}/#{id}/downloads/assignment-#{pId}-#{id}.pdf"
 
-    else if url.match(/teacher\/sektions/)
-      child = $('#side-panel').children().eq(0).attr 'id'
-      switch child
-        when 'deep-dive' then here = $('#deep-dive-section')
-        when 'quizzes-summary' then here = $('#sektion-list')
-        when 'sektions-summary' then here = $('#all-my-sektions')
-        else here = null
-      coreUtil.interface.displayJson json.sektions, here, 'sektion', {radio:true, link:true} unless here is null
-
-      # Edit the <a> in the swiss-knives to point to downloadble list of student names
-      for m in json.sektions
-        r = m.sektion
-        sk = here.find ".swiss-knife[marker=#{r.id}]"
-        continue if sk.length is 0
-
-        a = sk.children('a').eq(0)
-        a.text 'download list'
-        a.attr 'href', "#{gutenberg.server}/front-desk/schools/#{r.lookin}/#{r.lookfor}.pdf"
     else if url.match(/sektion\.json/)
       if json.sektion? # same URL for create & update actions, but different JSON responses 
         item = swissKnife.forge json, 'sektion', {radio:true}, 'ticker'
@@ -70,20 +52,9 @@ jQuery ->
       here = $('#enrolled-students')
       scroll.loadJson json.students, 'student', here
       here.accordion scroll.options
-      ###
-      else if url.match(/sektion\/students/)
-        here = $("#lp-sektion-#{json.sektion}")
-        here.empty()
-        for s in json.students
-          line.write here, s.student
-      ###
     else if url.match(/teacher\/courses/)
       here = $('#courses-taught')
       coreUtil.interface.displayJson json.courses, here, 'course', {radio:true}
-    else if url.match(/course\/verticals/)
-      here = $('#topic-selection-list > form:first > .form-fields')
-      scroll.initialize json.verticals, 'vertical', here
-      here.accordion scroll.options
     else if url.match(/course\/topics_in/)
       here = $('#topic-selection-list > form:first > .form-fields')
       scroll.loadJson json.topics, 'topic', here

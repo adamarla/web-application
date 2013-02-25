@@ -1,6 +1,6 @@
 
 $gray: #191919 ; // rgb(25,25,25)
-$lightgray: lighten($gray, 30%) ;
+$lightgray: lighten($gray, 35%) ;
 $gradians-blue: #6ca7ab ; // rgb(108,167,171)
 $orange:#ffa500 ; // rgb(255,165,0)
 $panel-colour: lighten(black, 17%) ;
@@ -8,9 +8,12 @@ $deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
 $lightblue: lighten($deep-blue, 23%) ;
 $red: #d72323 ; // rgb(215, 35, 35)
-//$green: #57bc20 ; // rgb(87,188,32)
-//$green: #27830e ; // rgb(87,188,32)
+$steel: #56a5ec ;
 $green: #23898f ; // rgb(87,188,32)
+
+$lightrect : #dcdcdc ;
+$darkrect : #555555 ;
+$mediumrect : darken(#b7b7b7,20%) ;
 
 .bar-text {
   font-size: 10px ;
@@ -18,7 +21,7 @@ $green: #23898f ; // rgb(87,188,32)
 } 
 
 .bar { 
-  fill: steelblue ; 
+  fill: $mediumrect ; 
   border: 1px solid white ;
 } 
 
@@ -27,16 +30,89 @@ text {
   font-size: 10px ;
   &.labels { 
     font-size: 10px ;
+  } 
+  &.slider-text { 
+    fill: $gradians-blue ;
+    text-transform: uppercase ;
+  } 
+  &.bold { 
+    font-size: 13px ;
     font-weight: 300 ;
   } 
 }
 
 rect {
-  &.green{ fill: darken($green, 5%) ; }
-  &.disabled{ fill: lighten($background,55%) ; } 
-  &.light{ fill: lighten($green, 50%) ; }
-  &.medium{ fill: lighten($green, 30%) ; }
-  &.dark{ fill: lighten($green,10%) ; }
-  &.red{ fill: lighten($red,10%) ; }
- 
+  &.light{ fill: $lightrect ; }
+  &.dark, &.green { fill: $darkrect ; }
+  &.medium{ fill: $mediumrect ; } 
+  &.disabled{ stroke: lighten($background,55%) ; stroke-width: 0.25px ; } 
+  &.red{ fill: lighten($red,10%) ; } 
+  &.blue { fill: #104e8b ; }
 } 
+
+line {
+  stroke: $lightgray ;
+  stroke-width: 0.25 ;
+  &.black { stroke: black ; stroke-width: 1.5; }
+  &.scale { stroke: white ; stroke-width: 0.75; }
+  &.tick { stroke: white ; stroke-width: 1; }
+} 
+
+circle { 
+  &.slider { 
+    fill: $orange ;  
+  } 
+  &.empty { 
+    fill: transparent ;
+    stroke: $orange ;
+  } 
+  &.blue {
+    fill: $gradians-blue ;
+  }
+} 
+
+g.blue { 
+  fill: $gradians-blue ; 
+} 
+
+g {
+  line {
+    stroke-linecap : "round" ;
+    &.benchmark {
+      fill: $gradians-blue ;
+      stroke-width: 2 ;
+    } 
+  }
+  &.t-avg {
+    line {
+      stroke-width: 2;
+      stroke: $orange ;
+      stroke-dasharray: 3,6 ;
+    }
+  } 
+  &.db-avg {
+    line {
+      stroke-width: 2;
+      stroke: $gradians-blue ;
+      stroke-dasharray: 3,6 ;
+    }
+  }
+} 
+
+polygon {
+  &.tip { 
+    fill: $orange ; 
+  } 
+} 
+
+.axis path, .axis line { 
+  fill: none ; 
+  stroke: $lightgray ;
+  shape-rendering: crispEdges ;
+} 
+
+.axis text { 
+  font-family: "Ubuntu 'Trebuchet MS' sans-serif" ;
+  font-size: 11px ;
+} 
+

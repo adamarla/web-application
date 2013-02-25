@@ -1,29 +1,29 @@
 
 #fdb-panel.static
   .row-fluid
-    .question.span7= "An honest effort ?"
-    .span5
+    .question.span6= "An honest attempt- even if wrong or incomplete?"
+    .span5.pull-right
       - Requirement.honest.each do |m|
         .row-fluid.hide.requirement{ :marker => m.id }
           .row.bottomline= "#{m.bottomline}"
           .row.text= "#{m.text}"
   .row-fluid
-    .question.span7= "Is the work done relevant to the question?" 
-    .span5
+    .question.span6= "Is the line of reasoning clear, correct and easy to follow?" 
+    .span5.pull-right
       - Requirement.cogent.each do |m|
         .row-fluid.hide.requirement{ :marker => m.id }
           .row.bottomline= "#{m.bottomline}"
           .row.text= "#{m.text}"
   .row-fluid
-    .question.span7= "Is it complete ?"
-    .span5
+    .question.span6= "Has the line of reasoning been taken to its logical conclusion?"
+    .span5.pull-right
       - Requirement.complete.each do |m|
         .row-fluid.hide.requirement{ :marker => m.id }
           .row.bottomline= "#{m.bottomline}"
           .row.text= "#{m.text}"
   .row-fluid
-    .question.span7= "Anything else ?"
-    .span5
+    .question.span6= "Anything else ?"
+    .span5.pull-right
       - Requirement.other.each do |m|
         .row-fluid.hide.requirement{ :marker => m.id }
           .row.bottomline= "#{m.bottomline}"
