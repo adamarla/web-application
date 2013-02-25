@@ -1,6 +1,10 @@
 
 class CompileQuiz < Struct.new(:quiz)
   def perform
+    n_questions = QSelection.where(:quiz_id => quiz.id).count
+    quiz.update_attributes :num_questions => n_questions, :total => nil, :span => nil
+    quiz.lay_it_out
+
     response = quiz.compile_tex unless quiz.nil?
     manifest = response[:manifest]
     status = manifest.blank? ? :bad_request : :ok
