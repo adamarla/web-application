@@ -14,3 +14,4 @@ object false
   node(:topic) { @topic }
   node(:last_pg) { @last_pg }
   node(:pg) { @pg }
+  node(:context) { @context }

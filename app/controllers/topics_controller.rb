@@ -34,6 +34,7 @@ class TopicsController < ApplicationController
     @per_pg, @last_pg = pagination_layout_details n
     @pg = params[:page].nil? ? 1 : params[:page].to_i
     @questions = @questions.order(:marks).page(@pg).per(@per_pg)
+    @context = params[:context]
   end
 
 end
