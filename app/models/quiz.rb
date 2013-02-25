@@ -259,7 +259,7 @@ class Quiz < ActiveRecord::Base
 
   def clone
     selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
-    name = "#{self.name} (clone)"
+    name = "#{self.name} (edited)"
     Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, selections, self.id), 
                                        :priority => 0, :run_at => Time.zone.now
   end
@@ -281,7 +281,7 @@ class Quiz < ActiveRecord::Base
     subtext = clone.nil? ? "A new version had to be created" : "Quiz edited in place"
 
     self.clone if clone.nil? # job #1 
-    Delayed::Job.enqueue EditQuiz.new(self), :priority => 0, :run_at => Time.zone.now # job #2
+    Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), :priority => 0, :run_at => Time.zone.now # job #2
     return msg, subtext
   end
 
