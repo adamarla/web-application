@@ -41,6 +41,7 @@ jQuery ->
     buttonGroup.initialize btnGroup unless btnGroup.length is 0
     return true
 
+  ###
   $('#btn-editqz-nodrop').click (event) ->
     target = $('#editqz-1')
     for m in target.children('.single-line')

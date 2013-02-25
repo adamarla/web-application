@@ -38,30 +38,31 @@ jQuery ->
       target = $('#pane-qzb-courses')
       parentKey = 'courses'
       childKey = 'course'
-    else if url.match(/course\/topics_in/)
-      target = $("#vert-#{json.vertical}")
-      parentKey = 'topics'
-      childKey = 'topic'
     else if url.match(/qzb\/echo/)
-      karo.tab.enable 'tab-qzb-questions'
-      leftTabs.create '#qzb-questions', json, {
+      next = if json.context is 'qzb' then 'tab-qzb-questions' else 'tab-editqz-3'
+      karo.tab.enable next
+
+      root = "##{json.context}-questions"
+      leftTabs.create root, json, {
         klass : {
           ul : "span4 nopurge-ever",
           content : "span7",
           div : "multi-select"
         },
         data : {
-          url : "course/questions?id=:prev&topic=:id"
-          prev : "tab-qzb-courses",
+          url : "questions/on?id=:id&context=#{json.context}",
           'panel-url' : "question/preview?id=:id"
+        },
+        id : {
+          div : "#{json.context}-pick"
         }
       }
       return true
-    else if url.match(/course\/questions/)
+    else if url.match(/questions\/on/)
       topic = json.topic
-      target = $("#dyn-tab-#{topic}")
+      target = $("##{json.context}-pick-#{topic}")
       parentKey = 'questions'
-      childKey = 'question'
+      childKey = 'datum'
     else if url.match(/quiz\/testpapers/)
       target = $("#pane-wsb-existing")
       parentKey = "testpapers"
@@ -78,7 +79,10 @@ jQuery ->
       parentKey = 'sektions'
       childKey = 'sektion'
     else if url.match(/vertical\/topics/)
-      target = $('#deepdive-topics')
+      if json.context isnt 'deepdive'
+        target = $("##{json.context}-#{json.vertical}")
+      else
+        target = $('#deepdive-topics')
       parentKey = 'topics'
       childKey = 'topic'
     else if url.match(/sektion\/proficiency/)
