@@ -1,4 +1,5 @@
 class TopicsController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!
   respond_to :json
 
@@ -24,5 +25,16 @@ class TopicsController < ApplicationController
     @categories = Vertical.order(:name).all 
     respond_with @categories 
   end 
+
+  def questions
+    @topic = params[:id].to_i
+    @questions = Question.where(:topic_id => @topic).order(:id) 
+    n = @questions.count 
+
+    @per_pg, @last_pg = pagination_layout_details n
+    @pg = params[:page].nil? ? 1 : params[:page].to_i
+    @questions = @questions.order(:marks).page(@pg).per(@per_pg)
+    @context = params[:context]
+  end
 
 end

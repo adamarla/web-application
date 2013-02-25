@@ -73,6 +73,7 @@ Webapp::Application.routes.draw do
   # Topic 
   resource :topic, :only => [:create, :update]
   match 'topics/list' => 'topics#list', :via => :get
+  match 'questions/on' => 'topics#questions', :via => :get
 
   # Question
   match 'tag/question' => 'question#tag', :via => :post

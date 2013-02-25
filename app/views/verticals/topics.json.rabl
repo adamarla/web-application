@@ -11,3 +11,5 @@ object false
   } 
 
   node(:disable) { @unused }
+  node(:context) { @context }
+  node(:vertical) { @vertical.id }

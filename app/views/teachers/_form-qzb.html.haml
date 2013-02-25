@@ -1,0 +1,10 @@
+
+= simple_form_for :checked, :remote => true, 
+  :html => { :id => "form-#{context}", :class => 'no-remove', 
+  'data-action' => "#{teacher_build_quiz_path}?context=#{context}" } do |f|
+
+  .row-fluid.navbar.purge-skip
+    .input-append.pull-right.span10
+      = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"
+      %button.btn.btn-inverse{ :type => :submit }= "Build Quiz"
+  %div.purge-blind{ :id => "#{context}-questions" }
