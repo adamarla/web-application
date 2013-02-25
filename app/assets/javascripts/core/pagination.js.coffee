@@ -30,10 +30,11 @@ window.pagination = {
   url : {
     set : (obj, baseUrl) ->
       ul = $(obj).children().eq(0)
-      json = baseUrl.indexOf(".json?") isnt -1
+      hasParams = baseUrl.indexOf('?') isnt -1
       for m,j in ul.children('li')
         a = $(m).children('a').eq(0)
-        a.attr 'href', (if json then "#{baseUrl}&page=#{j+1}" else "#{baseUrl}.json?page=#{j+1}")
+        url = if hasParams then "#{baseUrl}&page=#{j+1}" else "#{baseUrl}?page=#{j+1}"
+        a.attr 'href', url
       return true
 
     add : (parameter, obj) ->
