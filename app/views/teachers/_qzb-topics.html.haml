@@ -1,8 +1,9 @@
 
 -# Left-side tabs - one per vertical
+-# 'context' comes from parent partial
 
 = simple_form_for :checked, :remote => true, :url => "#{qzb_echo_path}?context=#{context}", 
-  :html => { :id => 'form-qzb-topics'} do |f|
+  :html => { :id => "form-#{context}-topics" } do |f|
 
   .row-fluid.navbar.purge-skip
     = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"

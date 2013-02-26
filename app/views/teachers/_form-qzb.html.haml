@@ -1,10 +1,17 @@
 
+- action = context == :editqz ? "#{quiz_edit_path}?id=:id&op=add" : teacher_build_quiz_path
+- data_id = context == :editqz ? "tab-wsb-quizzes" : nil
+- btn_text = context == :editqz ? "Add Selected" : "Build Quiz"
+
 = simple_form_for :checked, :remote => true, 
   :html => { :id => "form-#{context}", :class => 'no-remove', 
-  'data-action' => "#{teacher_build_quiz_path}?context=#{context}" } do |f|
+  'data-action' => "#{action}", 'data-id' => "#{data_id}" } do |f|
 
   .row-fluid.navbar.purge-skip
-    .input-append.pull-right.span10
-      = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"
-      %button.btn.btn-inverse{ :type => :submit }= "Build Quiz"
+    - if context == :editqz
+      %button.btn.btn-inverse.pull-right{ :type => :submit }= "#{btn_text}"
+    - else
+      .input-append.pull-right.span10
+        = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"
+        %button.btn.btn-inverse{ :type => :submit }= "#{btn_text}"
   %div.purge-blind{ :id => "#{context}-questions" }
