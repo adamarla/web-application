@@ -2,7 +2,6 @@
 class BuildTestpaper < Struct.new(:quiz, :student_ids, :publish)
   def perform
     students = Student.where(:id => student_ids)
-    quiz.assign_to(students, publish) unless students.blank?
 =begin
     If: 
       1. this quiz is a clone of some other quiz
@@ -18,6 +17,9 @@ class BuildTestpaper < Struct.new(:quiz, :student_ids, :publish)
         quiz.update_attribute :name, name
       end
     end
+    
+    # issue request only after re-naming
+    quiz.assign_to(students, publish) unless students.blank?
   end
 
 end
