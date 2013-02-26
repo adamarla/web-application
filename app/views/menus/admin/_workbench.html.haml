@@ -20,12 +20,7 @@
     %li.divider
     %li.nav-header= "Manage"
     %li
-      = simple_link :for => "Schools", :id => 'lnk-wb-schools'
-    %li.dropdown-submenu
-      = simple_link :for => "Courses", :id => 'lnk-wb-courses'
-      %ul.dropdown-menu
-        - [*9..12].each do |m|
-          %li
-            = simple_link :for => "Grade #{m}", :id => "lnk-#{m}-course", :url => "courses/list.json?klass=#{m}"
-
+      = simple_link :for => "Schools", :id => 'lnk-mng-schools'
+    %li
+      = simple_link :for => "Topics", :id => 'lnk-mng-topics'
 

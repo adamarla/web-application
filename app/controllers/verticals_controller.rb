@@ -26,6 +26,7 @@ class VerticalsController < ApplicationController
   def topics
     @vertical = Vertical.find params[:id]
     @context = params[:context]
+    @is_admin = current_account.role? :admin
 
     unless @vertical.nil?
       @topics = @vertical.topics

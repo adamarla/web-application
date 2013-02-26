@@ -4,17 +4,21 @@ class TopicsController < ApplicationController
   respond_to :json
 
   def create 
-    vertical = params[:vertical]
-    added = true 
+    vertical = params[:id]
 
-    params[:names].each_value do |v|
-      next if v.blank?
-      topic = Topic.new :name => v, :vertical_id => vertical
-      added &= topic.save
-      break if !added
+    unless vertical.nil?
+      name = params[:checked][:name]
+      unless name.blank?
+        vertical = vertical.to_i
+        topic = Topic.new :name => name, :vertical_id => vertical
+        msg = topic.save ? "New topic added" : "Failed to add topic"
+      else
+        msg = "Specify name for new  topic"
+      end
+    else
+      msg = "No vertical specified"
     end
-    added ? render(:json => {:status => 'Done'}, :status => :ok) : 
-            render(:json => {:status => 'Oops!'}, :status => :bad_request)
+    render :json => { :notify => { :text => msg } }, :status => :ok
   end 
 
   def update 
