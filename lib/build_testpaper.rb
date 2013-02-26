@@ -13,7 +13,7 @@ class BuildTestpaper < Struct.new(:quiz, :student_ids, :publish)
     unless quiz.parent_id.nil?
       unless quiz.testpaper_ids.count > 0
         name = quiz.name 
-        name = name.sub "(edited)", "(#{Date.today.strftime('%b %Y')})"
+        name = name.sub "(edited)", "(#{Date.today.strftime('%m/%y')})"
         quiz.update_attribute :name, name
       end
     end
