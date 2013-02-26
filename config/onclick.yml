@@ -289,7 +289,18 @@ lnk-wb-receive :
   notouch : true 
   url : receive/scans
 
-lnk-admin-courses :
+lnk-mng-topics : 
+  left : 
+    show : left-2
+  autoclick :
+    tab : tab-mng-topics-1
+
+tab-mng-topics-1 :
+  url : verticals/list
+  panel :
+    url : vertical/topics?id=:id
+
+tab-mng-topics-2 :
 
 lnk-wb-schools :
   left :
