@@ -218,7 +218,7 @@ tab-dive-3 :
     show : wide-chart-3
 
 deepdive-* : 
-  url : vertical/topics?id=:id
+  url : vertical/topics?id=:id&context=deepdive
   panel :
     url : sektion/proficiency?of=:prev&in=:id
   prev : tab-dive-1
