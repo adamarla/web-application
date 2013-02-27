@@ -24,10 +24,13 @@ class VerticalsController < ApplicationController
   end
 
   def topics
-    me = Vertical.find params[:id]
-    unless me.nil?
-      @topics = me.topics
-      if current_account.loggable_type == "Teacher"
+    @vertical = Vertical.find params[:id]
+    @context = params[:context]
+    @is_admin = current_account.role? :admin
+
+    unless @vertical.nil?
+      @topics = @vertical.topics
+      if (current_account.loggable_type == "Teacher" && @context == "deepdive") 
         ids = @topics.map(&:id)
         questions_used = QSelection.where(:quiz_id => Quiz.where(:teacher_id => current_account.loggable_id)).map(&:question)
         topics_used = questions_used.map(&:topic_id)
@@ -35,7 +38,6 @@ class VerticalsController < ApplicationController
       else
         @unused = []
       end
-
     else
       head :bad_request
     end

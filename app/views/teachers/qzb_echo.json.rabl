@@ -7,3 +7,4 @@ object false
   } 
 
   node(:filters) { @filters }
+  node(:context) { @context }

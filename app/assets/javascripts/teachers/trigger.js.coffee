@@ -41,3 +41,13 @@ jQuery ->
     buttonGroup.initialize btnGroup unless btnGroup.length is 0
     return true
 
+  ###
+  $('#btn-editqz-nodrop').click (event) ->
+    target = $('#editqz-1')
+    for m in target.children('.single-line')
+      $(m).removeClass 'selected'
+      $(j).prop('checked', false) for j in $(m).find("input[type='checkbox']")
+      $(k).removeClass 'badge-warning' for k in $(m).children('.badge')
+    return true
+
+

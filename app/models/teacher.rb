@@ -103,6 +103,7 @@ class Teacher < ActiveRecord::Base
     return Question.where(:id => q_ids)
   end
 
+=begin
   def build_quiz_with (name, question_ids, parent_id = nil)
     @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
                      :num_questions => question_ids.count, 
@@ -138,6 +139,7 @@ class Teacher < ActiveRecord::Base
     end
     return response, status
   end
+=end
 
   def username?
     self.account.username

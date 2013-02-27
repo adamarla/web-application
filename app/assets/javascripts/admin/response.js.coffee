@@ -19,6 +19,15 @@ jQuery ->
       parentKey = 'schools'
       childKey = 'school'
       pgnUrl = "schools/list"
+    else if url.match(/verticals\/list/)
+      target = $('#pane-mng-topics-1')
+      parentKey = 'verticals'
+      childKey = 'vertical'
+    else if url.match(/vertical\/topics/)
+      karo.tab.enable 'tab-mng-topics-2'
+      target = '#pane-mng-topics-2'
+      parentKey = 'topics'
+      childKey = 'topic'
     else
       matched = false
 
@@ -27,7 +36,7 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      karo.empty target
+      # karo.empty target
       line.write(target, m[childKey], menu) for m in json[parentKey]
 
       # Enable / disable paginator as needed 

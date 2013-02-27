@@ -24,7 +24,7 @@ class Topic < ActiveRecord::Base
   has_many :syllabi
   belongs_to :vertical
 
-  before_validation :humanize_name
+  #before_validation :humanize_name
 
   def difficulty_in(course_id)
     entry = Syllabus.where(:course_id => course_id, :topic_id => self.id).first

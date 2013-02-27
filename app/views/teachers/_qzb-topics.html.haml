@@ -1,28 +1,27 @@
 
 -# Left-side tabs - one per vertical
+-# 'context' comes from parent partial
 
-= simple_form_for :checked, :remote => true, :url => qzb_echo_path, 
-  :html => { :id => 'form-qzb-topics'} do |f|
+= simple_form_for :checked, :remote => true, :url => "#{qzb_echo_path}?context=#{context}", 
+  :html => { :id => "form-#{context}-topics" } do |f|
 
   .row-fluid.navbar.purge-skip
+    = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"
+  -#
     .btn-group{ 'data-toggle' => 'buttons-checkbox' }
-
       = simple_button :icon => 'icon-thumbs-up', :as => :checkbox, 
         :name => "filter[liked]", :for => 'liked'
 
       = simple_button :icon => 'icon-ban-circle', :as => :checkbox, 
         :name => "filter[repeated]", :for => 'ignore used'
 
-    = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"
-  #vert-tab.tabbable.tabs-left
+  %div.tabbable.tabs-left{ :id => "#{context}-verticals-tab" }
     %ul.nav.nav-tabs.span4.purge-skip.nopurge-ever
-      - teacher.verticals.each do |m|
+      - Vertical.all.each do |m|
         %li{ :marker => "#{m.id}" }
           = simple_link :for => "#{m.name}", :toggle => :tab, 
-          :href => "#vert-#{m.id}", :url => "course/topics_in?id=:prev&vertical=:id",
-          :prev => 'tab-qzb-courses'
+          :href => "##{context}-#{m.id}", :url => "vertical/topics.json?id=:id&context=#{context}"
 
-    -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
     .tab-content.span7
-      - teacher.verticals.each do |m|
-        .tab-pane.multi-select.purge-blind{ :id => "vert-#{m.id}" }
+      - Vertical.all.each do |m|
+        .tab-pane.multi-select{ :id => "#{context}-#{m.id}" }

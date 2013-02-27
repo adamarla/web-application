@@ -38,30 +38,31 @@ jQuery ->
       target = $('#pane-qzb-courses')
       parentKey = 'courses'
       childKey = 'course'
-    else if url.match(/course\/topics_in/)
-      target = $("#vert-#{json.vertical}")
-      parentKey = 'topics'
-      childKey = 'topic'
     else if url.match(/qzb\/echo/)
-      karo.tab.enable 'tab-qzb-questions'
-      leftTabs.create '#qzb-questions', json, {
+      next = if json.context is 'qzb' then 'tab-qzb-questions' else 'tab-editqz-3'
+      karo.tab.enable next
+
+      root = "##{json.context}-questions"
+      leftTabs.create root, json, {
         klass : {
-          ul : "span4 nopurge-ever",
+          ul : "span4",
           content : "span7",
-          div : "multi-select"
+          div : "multi-select pagination"
         },
         data : {
-          url : "course/questions?id=:prev&topic=:id"
-          prev : "tab-qzb-courses",
+          url : "questions/on?id=:id&context=#{json.context}",
           'panel-url' : "question/preview?id=:id"
+        },
+        id : {
+          div : "#{json.context}-pick"
         }
       }
       return true
-    else if url.match(/course\/questions/)
+    else if url.match(/questions\/on/)
       topic = json.topic
-      target = $("#dyn-tab-#{topic}")
+      target = $("##{json.context}-pick-#{topic}")
       parentKey = 'questions'
-      childKey = 'question'
+      childKey = 'datum'
     else if url.match(/quiz\/testpapers/)
       target = $("#pane-wsb-existing")
       parentKey = "testpapers"
@@ -78,7 +79,10 @@ jQuery ->
       parentKey = 'sektions'
       childKey = 'sektion'
     else if url.match(/vertical\/topics/)
-      target = $('#deepdive-topics')
+      if json.context isnt 'deepdive'
+        target = $("##{json.context}-#{json.vertical}")
+      else
+        target = $('#deepdive-topics')
       parentKey = 'topics'
       childKey = 'topic'
     else if url.match(/sektion\/proficiency/)
@@ -93,8 +97,33 @@ jQuery ->
       matched = false
 
     if target? and target.length isnt 0
+      writeData = true
+
+      # Enable / disable paginator as needed 
+      if json.last_pg?
+        pagination.enable pgn, json.last_pg
+
+        ###
+          this next bit of code is done only for teachers and in a very specific 
+          contexts - picking questions to add to a quiz - either when its 
+          first being built or when its being edited subsequently
+
+          the issue is that we would like pagination with multi-select. 
+          with pagination, we can break a long list down into manageable chunks
+          But multi-select requires that we retain any previously loaded data 
+          and selections
+        ###
+        if target.hasClass 'pagination'
+          if json.pg?
+            page = target.children("div[page='#{json.pg}']")
+            $("<div page=#{json.pg} class='multi-select purge-skip'></div>").appendTo target if page.length is 0
+            target = target.children("div[page='#{json.pg}']").eq(0)
+            $(m).addClass 'hide' for m in target.siblings()
+            target.removeClass 'hide'
+            writeData = target.children().length is 0
+
       # karo.empty target
-      line.write(target, m[childKey], menu) for m in json[parentKey]
+      line.write(target, m[childKey], menu) for m in json[parentKey] if writeData
 
       # Disable any newly added .single-line if its marker in json.disable
       if json.disable? # => an array of indices
@@ -103,10 +132,6 @@ jQuery ->
           k = j.filter("[marker=#{m}]")[0]
           $(k).addClass 'disabled' if k?
 
-      # Enable / disable paginator as needed 
-      if json.last_pg?
-        pagination.enable pgn, json.last_pg
-        # pagination.url.set pgn, pgnUrl
 
       # Auto-click first line - if needed
       target.children('.single-line').eq(0).click() if clickFirst

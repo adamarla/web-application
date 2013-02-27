@@ -73,6 +73,7 @@ Webapp::Application.routes.draw do
   # Topic 
   resource :topic, :only => [:create, :update]
   match 'topics/list' => 'topics#list', :via => :get
+  match 'questions/on' => 'topics#questions', :via => :get
 
   # Question
   match 'tag/question' => 'question#tag', :via => :post
@@ -87,8 +88,7 @@ Webapp::Application.routes.draw do
   match 'quiz/testpapers' => 'quizzes#testpapers', :via => :get
   match 'find/schools' => 'schools#find', :via => :get
   match 'quiz/questions' => 'quizzes#questions', :via => :get
-  match 'quiz/trim' => 'quizzes#remove_questions', :via => [:put, :post]
-  match 'quiz/add' => 'quizzes#add_questions', :via => [:put, :post]
+  match 'quiz/edit' => 'quizzes#add_remove_questions', :via => [:put, :post]
 
   # Student 
   resource :student, :only => [:create, :update, :show]

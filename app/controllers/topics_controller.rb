@@ -1,19 +1,24 @@
 class TopicsController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!
   respond_to :json
 
   def create 
-    vertical = params[:vertical]
-    added = true 
+    vertical = params[:id]
 
-    params[:names].each_value do |v|
-      next if v.blank?
-      topic = Topic.new :name => v, :vertical_id => vertical
-      added &= topic.save
-      break if !added
+    unless vertical.nil?
+      name = params[:checked][:name]
+      unless name.blank?
+        vertical = vertical.to_i
+        topic = Topic.new :name => name, :vertical_id => vertical
+        msg = topic.save ? "New topic added" : "Failed to add topic"
+      else
+        msg = "Specify name for new  topic"
+      end
+    else
+      msg = "No vertical specified"
     end
-    added ? render(:json => {:status => 'Done'}, :status => :ok) : 
-            render(:json => {:status => 'Oops!'}, :status => :bad_request)
+    render :json => { :notify => { :text => msg } }, :status => :ok
   end 
 
   def update 
@@ -24,5 +29,16 @@ class TopicsController < ApplicationController
     @categories = Vertical.order(:name).all 
     respond_with @categories 
   end 
+
+  def questions
+    @topic = params[:id].to_i
+    @questions = Question.where(:topic_id => @topic).order(:id) 
+    n = @questions.count 
+
+    @per_pg, @last_pg = pagination_layout_details n
+    @pg = params[:page].nil? ? 1 : params[:page].to_i
+    @questions = @questions.order(:marks).page(@pg).per(@per_pg)
+    @context = params[:context]
+  end
 
 end

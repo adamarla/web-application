@@ -218,7 +218,7 @@ tab-dive-3 :
     show : wide-chart-3
 
 deepdive-* : 
-  url : vertical/topics?id=:id
+  url : vertical/topics?id=:id&context=deepdive
   panel :
     url : sektion/proficiency?of=:prev&in=:id
   prev : tab-dive-1
@@ -289,7 +289,18 @@ lnk-wb-receive :
   notouch : true 
   url : receive/scans
 
-lnk-admin-courses :
+lnk-mng-topics : 
+  left : 
+    show : left-2
+  autoclick :
+    tab : tab-mng-topics-1
+
+tab-mng-topics-1 :
+  url : verticals/list
+  panel :
+    url : vertical/topics?id=:id
+
+tab-mng-topics-2 :
 
 lnk-wb-schools :
   left :

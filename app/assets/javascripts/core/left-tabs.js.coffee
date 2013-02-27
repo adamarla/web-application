@@ -49,7 +49,7 @@ emptyOptions = {
     ul : "",
     a : "",
     content : "",
-    div : ""
+    div : null
   },
   data : {
     prev : ""
@@ -127,8 +127,9 @@ window.leftTabs = {
         else
           a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
       else
-        a = $("<a href='#dyn-tab-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
-        pane = $("<div class='tab-pane #{options.klass.div}' id='dyn-tab-#{m.id}'></div>")
+        divId = if options.id.div? then options.id.div else "dyn-tab"
+        a = $("<a href='##{divId}-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
+        pane = $("<div class='tab-pane #{options.klass.div}' id='#{divId}-#{m.id}'></div>")
         pane.appendTo content
 
       a = a.appendTo li

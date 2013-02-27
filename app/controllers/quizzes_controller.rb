@@ -6,35 +6,34 @@ class QuizzesController < ApplicationController
   def assign_to
     quiz = Quiz.where(:id => params[:id]).first 
     publish = params[:publish] == 'yes' 
-    puts " ******* #{publish}"
 
     head :bad_request if quiz.nil?
     teacher = quiz.teacher 
 
     students = params[:checked].keys   # we need just the IDs
-    Delayed::Job.enqueue BuildTestpaper.new(quiz.id, students, publish), :priority => 0, :run_at => Time.zone.now
+    Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
     at = Delayed::Job.where('failed_at IS NULL').count
     render :json => { :notify => { :text => "Worksheet received", 
                                    :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
   end
 
-  def remove_questions
+  def add_remove_questions
     quiz = Quiz.find params[:id]
-    unless quiz.nil?
-      remove = params[:checked].nil? ? [] : params[:checked].keys.map(&:to_i)
+    op = params[:op] 
 
-      if remove.count > 0
-        msg,subtext = quiz.remove_questions remove
+    unless quiz.nil?
+      question_ids = params[:checked].nil? ? [] : params[:checked].keys.map(&:to_i)
+
+      if question_ids.count > 0
+        msg,subtext = (op == "remove") ? quiz.remove_questions(question_ids) : quiz.add_questions(question_ids)
       else
-        msg, subtext = [quiz.name, "No questions dropped"]
+        msg = quiz.name
+        subtext = (op == "remove") ? "No questions dropped" : "No questions added"
       end
       render :json => { :notify => { :text => msg, :subtext => subtext } }, :status => :ok
     else # unless 
       render :json => { :notify => { :text => "Quiz not found" } }, :status => :ok
     end
-  end
-
-  def add_questions
   end
 
   def list

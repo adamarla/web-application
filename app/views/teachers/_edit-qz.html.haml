@@ -1,24 +1,24 @@
 
-%ul.nav.nav-tabs
+%ul.nav.nav-tabs.always-on
   %li
-    = simple_link :for => 'Drop', :href => '#pane-editqz-1', :id => 'tab-editqz-1'
+    = simple_link :for => 'Remove Ques', :href => '#pane-editqz-1', :id => 'tab-editqz-1'
   %li
-    = simple_link :for => 'Search', :href => '#pane-editqz-2', :id => 'tab-editqz-2'
+    = simple_link :for => 'Add Topics', :href => '#pane-editqz-2', :id => 'tab-editqz-2',
+      :class => 'nopurge-on-show nopurge-on-inactive'
   %li
-    = simple_link :for => 'Add', :href => '#pane-editqz-3', :id => 'tab-editqz-3'
-  %li
-    = simple_link :for => 'Build', :href => '#pane-editqz-4', :id => 'tab-editqz-4'
+    = simple_link :for => 'Add Ques', :href => '#pane-editqz-3', :id => 'tab-editqz-3'
 
 .tab-content
   #pane-editqz-1.tab-pane
     = simple_form_for :checked, :remote => true, 
       :html => { :id => 'form-editqz-1', :class => 'no-remove', 
-      'data-action' => "#{quiz_trim_path}?id=:id", 'data-id' => 'tab-wsb-quizzes' } do |f|
+      'data-action' => "#{quiz_edit_path}?id=:id&op=remove", 'data-id' => 'tab-wsb-quizzes' } do |f|
 
       .row-fluid.navbar.purge-skip
         %button.btn.btn-inverse.pull-right{ :type => :submit }= "Remove Selected"
       #editqz-1.multi-select
 
   #pane-editqz-2.tab-pane
+    = render :partial => 'teachers/qzb-topics', :locals => { :context => :editqz }
   #pane-editqz-3.tab-pane
-  #pane-editqz-4.tab-pane
+    = render :partial => 'teachers/form-qzb', :locals => { :context => :editqz }
