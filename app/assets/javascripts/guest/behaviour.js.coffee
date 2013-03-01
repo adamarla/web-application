@@ -17,11 +17,13 @@ jQuery ->
     $('#studentform')[0].reset()
     $('#register_student #formblurb').show()
     $('#register_student #ackblurb').hide()
+    $('#register_student #errblurb').hide()
 
   $('#register_teacher').on 'hidden', ->
     $('#teacherform')[0].reset()
     $('#register_teacher #formblurb').show()
     $('#register_teacher #ackblurb').hide()
+    $('#register_teacher #errblurb').hide()
 
   $('#m-registrations').click ->
     $.get 'welcome/countries.json'
