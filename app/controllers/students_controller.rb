@@ -20,7 +20,11 @@ class StudentsController < ApplicationController
       account = @student.build_account :username => username, :email => email,  
                                       :password => password, :password_confirmation => password
     end 
-    @student.save ? respond_with(@student) : head(:bad_request)  
+    if @student.save
+      respond_with(@student) 
+    else 
+      head(:bad_request)  
+    end
   end 
 
   def proficiency
@@ -62,6 +66,9 @@ class StudentsController < ApplicationController
     @ws = Testpaper.find params[:ws]
     @quiz = @ws.quiz
     @student = current_account.loggable
+    unless @ws.nil? 
+      AnswerSheet.where(:testpaper_id => @ws.id, :student_id => @student.id).first.compile_tex
+    end
   end
 
   def outbox

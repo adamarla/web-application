@@ -34,11 +34,14 @@
             %button.btn.btn-info{ :id => "nobtn", :type => :reset }= "Nah, another time"
 
     #ackblurb{ :style => "display: none" }
-      %h4= "You're all set! Check your email for registration information"
+      %h4= "You are all set! Check your email for login information"
+      %p 
+        You have taken your very first step towards a unique,
+        pressure-free, practise experience where the only thing between
+        you and the subject is - a little helping hand. No judgement, no
+        expectation, no comparisons and most importantly no grades! 
     #errblurb{ :style => "display: none" }
       %h4= "Sorry you need to enter all the fields!"
-
-  .modal-footer
 
 #register_teacher.modal.hide.fade
 
@@ -64,7 +67,7 @@
         .control-group
           .control-label{ :for => :inputMessage }= "Message/Question(Optional)"
           .controls 
-            %textarea{ :rows => 8 , :cols => 72 , :name => "teacherform[text]" }
+            %textarea{ :rows => 6 , :cols => 72 , :name => "teacherform[text]" }
         .control-group
           .controls
             %button.btn.btn-primary{ :type => :submit }= "Submit"
@@ -73,7 +76,5 @@
     #ackblurb{ :style => "display: none" }
       %h4= "You'll hear from us very shortly"
     #errblurb{ :style => "display: none" }
-      .label= "Please fill all the required fields!"
-
-  .modal-footer
+      %h4= "Please fill all the required fields!"
 

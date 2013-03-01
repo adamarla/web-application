@@ -6,6 +6,8 @@ class Mailbot < ActionMailer::Base
   def curious_email(teacherform)
     mail :subject => teacherform[:email], 
       :body => teacherform[:text], :to => "akshay@gradians.com"
+    mail :subject => teacherform[:email], 
+      :body => teacherform[:text], :to => "abhinav@gradians.com"
   end
 
 =begin

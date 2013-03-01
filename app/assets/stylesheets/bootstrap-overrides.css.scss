@@ -98,6 +98,34 @@ $green: #347235 ; // rgb(87,188,32)
   &.narrow { 
     width: 350px ;
   } 
+
+  &.slim { 
+    max-width: 350px ; 
+    background: rgba(25,25,25,0.8) ; 
+    border-radius: 0px ;
+  }
+
+  #errblurb {
+    > h4 {
+      color: red ;
+    }
+  }
+
+  h3 {
+    color: white ;
+  }
+
+  h4 {
+    color: white ;
+  }
+  
+  p {
+    color: white ;
+  }
+
+  .control-label {
+    color: white ;
+  }
 } 
 
 #lnk-logout{ color: $orange ; }
@@ -424,14 +452,6 @@ button[data-toggle='button'] {
   margin-top: 110px ;
 } 
 
-.modal {
-  &.slim { 
-    max-width: 350px ; 
-    background: rgba(25,25,25,0.8) ; 
-    border-radius: 0px ;
-  }
-} 
-
 form.smart { 
   color: white ;
 
@@ -700,3 +720,4 @@ li.split {
   width: 24px ;
   height: 26px ;
 }
+

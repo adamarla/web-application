@@ -20,7 +20,7 @@ jQuery ->
     if url.match(/ws-preview/)
       preview.loadJson json, 'locker'
     else if url.match(/inbox\/echo/)
-      preview.loadJson json, 'atm', 'fillers'
+      preview.loadJson json, 'atm' 
       return true
     else if url.match(/inbox/)
       target = $('#pane-st-inbox')

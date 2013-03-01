@@ -38,7 +38,6 @@ class WelcomeController < ApplicationController
   end
 
   def register_student 
-
     studentform = params[:studentform]
     if studentform[:name].length == 0 or 
        studentform[:email].length == 0 or
@@ -48,35 +47,49 @@ class WelcomeController < ApplicationController
 
       render :json => { :status => "bad request" }
     else
-#    if school.nil?
-#      school = School.new
-#      school[:name] = studentform[:school]
-#    end
-#    unless school.save head(:bad_request)
       student = Student.new 
-      theSchool = School.find_by_id(10)
       student.name = studentform[:name]
-      student.school = theSchool
-      student.klass = studentform[:gradelevel]
-      password = "gradians"
-      username = create_username_for student, :student
+      student.klass = studentform[:gradelevel].to_i
       email = studentform[:email]
+      school = School.find_by_id(GRADIANS_UNIVERSITY_ID)
+      password = "gradians"
 
+      username = create_username_for student, :student
       unless username.blank?
         account = student.build_account :username => username, :email => email,
-                                      :password => password, :password_confirmation => password
-        if student.save 
-          render :json => {:status => "registered"}
-          Mailbot.welcome_student(account).deliver
-        else
-          render :json => {:status => "Failed!"} 
+                      :password => password, :password_confirmation => password
+      end
+
+      case student.klass
+        when 9
+          quiz_ids = GRADE_09_SUBJECT_01
+          sektion_id = GRADE_09_CURRENT_SEKTION
+        when 10
+          quiz_ids = GRADE_10_SUBJECT_01
+          sektion_id = GRADE_10_CURRENT_SEKTION
+        when 11
+          quiz_ids = GRADE_11_SUBJECT_01
+          sektion_id = GRADE_11_CURRENT_SEKTION
+        when 12
+          quiz_ids = GRADE_12_SUBJECT_01
+          sektion_id = GRADE_12_CURRENT_SEKTION
+      end
+      sektion = Sektion.find_by_id(sektion_id)
+      student.sektions << sektion
+      
+      if student.save
+        quiz_ids.each do |quiz_id|
+          publish = true
+          quiz = Quiz.find_by_id(quiz_id)
+          students = [student[:id]]
+          Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
         end
+        Mailbot.welcome_student(account).deliver
+        render :json => {:status => "registered"}
       else
-        render :json => {:status => "Failed!"}
-      end 
-
+        render :json => {:status => "Failed!"} 
+      end
     end
-
   end
 
   def register_teacher 
@@ -94,5 +107,17 @@ class WelcomeController < ApplicationController
       render :json => { :status => "registered" } 
     end
   end
+
+  GRADIANS_UNIVERSITY_ID = 13 
+
+  GRADE_09_SUBJECT_01 = [266]
+  GRADE_10_SUBJECT_01 = [266]
+  GRADE_11_SUBJECT_01 = [267]
+  GRADE_12_SUBJECT_01 = [267]
+
+  GRADE_09_CURRENT_SEKTION = 82
+  GRADE_10_CURRENT_SEKTION = 83 
+  GRADE_11_CURRENT_SEKTION = 84 
+  GRADE_12_CURRENT_SEKTION = 85
 
 end

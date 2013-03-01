@@ -11,6 +11,7 @@
 #  graded       :boolean         default(FALSE)
 #  honest       :integer
 #  received     :boolean         default(FALSE)
+#  prepped      :boolean         default(FALSE)
 #
 
 class AnswerSheet < ActiveRecord::Base
@@ -153,5 +154,31 @@ class AnswerSheet < ActiveRecord::Base
     marks = absent ? -1 : self.marks?
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
+
+  def compile_tex
+
+    return if self.prepped
+
+    student_ids = [self.student_id]
+    students = Student.where(:id => student_ids)
+    names = []
+    students.each do |s|
+      names.push({ :id => s.id, :name => s.name })
+    end
+    testpaper = self.testpaper
+    quiz = testpaper.quiz
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['prep_test']}"
+    response = SavonClient.request :wsdl, :prepTest do
+      soap.body = {
+        :quiz => { :id => quiz.id, :name => quiz.teacher.school.name },
+        :instance => { :id => self.testpaper_id, :name => testpaper.name },
+        :students => names
+      }
+    end
+    self.prepped = !response[:prep_test_response][:manifest].nil?
+    self.save
+    return response.to_hash[:prep_test_response]
+    
+  end #of method
 
 end
