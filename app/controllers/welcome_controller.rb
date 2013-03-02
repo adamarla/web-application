@@ -39,13 +39,23 @@ class WelcomeController < ApplicationController
 
   def register_student 
     studentform = params[:studentform]
-    if studentform[:name].length == 0 or 
-       studentform[:email].length == 0 or
-       studentform[:school].length == 0 or
-       studentform[:gradelevel].length == 0 or
-       studentform[:country].length == 0
+    name = studentform[:name]
+    email = studentform[:email]
+    school_name = studentform[:school]
+    grade_level = studentform[:gradelevel].to_i
+    country = studentform[:country]
 
-      render :json => { :status => "bad request" }
+
+    if name.length == 0  
+      render :json => { :status => "error", :message => "Please enter a name" }
+    elsif email.length == 0
+      render :json => { :status => "error", :message => "Please provide an email" }
+    elsif school_name.length == 0
+      render :json => { :status => "error", :message => "Please enter a school" }
+    elsif grade_level < 8 or grade_level > 12
+      render :json => { :status => "error", :message => "For grades (9 - 12) only" }
+    elsif country.length == 0
+      render :json => { :status => "error", :message => "Please provide Country of residence" }
     else
       student = Student.new 
       student.name = studentform[:name]
@@ -85,26 +95,28 @@ class WelcomeController < ApplicationController
           Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
         end
         Mailbot.welcome_student(account).deliver
-        render :json => {:status => "registered"}
+        render :json => {:status => "registered", :message =>"You are all set #{student.first_name}. Welcome to gradians, check your email for further instruction." }
       else
-        render :json => {:status => "Failed!"} 
+        render :json => {:status => "Failed!", :message => "Oops! Glitch at our end, we'll look into it. Please come back soon!"} 
       end
     end
   end
 
   def register_teacher 
-
     teacherform = params[:teacherform]    
-    puts teacherform[:name]
-    puts teacherform[:name].length
+    name = teacherform[:name]
+    email = teacherform[:email]
+    org = teacherform[:org]
 
-    if teacherform[:name].length == 0 or 
-       teacherform[:email].length == 0 or
-       teacherform[:org].length == 0
-      render :json => { :status => "bad request" }
+    if name.length == 0
+      render :json => { :status => "error", :message => "Please provide your first and last names" }
+    elsif email.length == 0
+      render :json => { :status => "error", :message => "Please provide a working email address" }
+    elsif org.length == 0
+      render :json => { :status => "error", :message => "Please provide the name of your School" }
     else
       Mailbot.curious_email(teacherform)
-      render :json => { :status => "registered" } 
+      render :json => { :status => "registered", :message => "Got it. Thanks #{name}, you'll hear from us very shortly" } 
     end
   end
 

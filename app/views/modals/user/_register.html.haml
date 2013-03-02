@@ -9,7 +9,7 @@
       %br
       %form{ :id => "studentform",  :action => "welcome/register_student", :method => :post, "data-remote" => "true" } 
         .control-group
-          .control-label{ :for => "studentform[name]" }= "Student Name"
+          .control-label{ :for => "studentform[name]" }= "Full Name"
           .controls 
             %input.input-long.required{ :type => :text, :id => "studentform[name]" , :name => "studentform[name]"}
         .control-group
@@ -30,16 +30,12 @@
             %input.input-long{ :type => :text, :id => "studentform[country]" , :name => "studentform[country]"}
         .control-group
           .controls
-            %button.btn.btn-primary.submit{ :id => "yesbtn", :type => :submit }= "Yaay, sign me up!"
-            %button.btn.btn-info{ :id => "nobtn", :type => :reset }= "Nah, another time"
+            %button.btn.btn-primary.submit{ :id => "yesbtn", :type => :submit }= "Register!"
+            %button.btn.btn-info{ :id => "nobtn", :type => :reset }= "Not now!"
 
     #ackblurb{ :style => "display: none" }
       %h4= "You are all set! Check your email for login information"
-      %p 
-        You have taken your very first step towards a unique,
-        pressure-free, practise experience where the only thing between
-        you and the subject is - a little helping hand. No judgement, no
-        expectation, no comparisons and most importantly no grades! 
+      %button.btn.btn-primary.pull-right{ :id => "dismissbtn" }= "Dismiss"
     #errblurb{ :style => "display: none" }
       %h4= "Sorry you need to enter all the fields!"
 
@@ -67,7 +63,7 @@
         .control-group
           .control-label{ :for => :inputMessage }= "Message/Question(Optional)"
           .controls 
-            %textarea{ :rows => 6 , :cols => 72 , :name => "teacherform[text]" }
+            %textarea{ :rows => 4 , :cols => 72 , :name => "teacherform[text]" }
         .control-group
           .controls
             %button.btn.btn-primary{ :type => :submit }= "Submit"
@@ -75,6 +71,7 @@
 
     #ackblurb{ :style => "display: none" }
       %h4= "You'll hear from us very shortly"
+      %button.btn.btn-primary.pull-right{ :id => "dismissbtn" }= "Dismiss"
     #errblurb{ :style => "display: none" }
       %h4= "Please fill all the required fields!"
 

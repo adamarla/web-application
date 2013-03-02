@@ -8,6 +8,15 @@ jQuery ->
   $('#register_student #nobtn').on 'click', ->
     $('#register_student').modal('hide')   
 
+  $('#register_student #dismissbtn').on 'click', ->
+    $('#register_student').modal('hide')   
+
+  $('#register_teacher #nobtn').on 'click', ->
+    $('#register_teacher').modal('hide')   
+
+  $('#register_teacher #dismissbtn').on 'click', ->
+    $('#register_teacher').modal('hide')   
+
   $('#contactus').on 'hidden', ->
     $('#theform')[0].reset()
     $('#formblurb').show()

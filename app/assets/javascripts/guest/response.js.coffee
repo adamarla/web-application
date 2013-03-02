@@ -23,16 +23,20 @@ jQuery ->
 
     if url.match(/welcome\/register_student/)
       if json.status is "registered"
+        $('#register_student #ackblurb h4').html(json.message)
         $('#register_student #formblurb').hide()
         $('#register_student #errblurb').hide()
         $('#register_student #ackblurb').show()
       else
+        $('#register_student #errblurb h4').html(json.message)
         $('#register_student #errblurb').show()
     else if url.match(/welcome\/register_teacher/)
       if json.status is "registered"
+        $('#register_teacher #ackblurb h4').html(json.message)
         $('#register_teacher #formblurb').hide()
         $('#register_teacher #errblurb').hide()
         $('#register_teacher #ackblurb').show()
       else
+        $('#register_teacher #errblurb h4').html(json.message)
         $('#register_teacher #errblurb').show()
 
