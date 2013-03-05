@@ -9,25 +9,25 @@
       %br
       %form{ :id => "studentform",  :action => "welcome/register_student", :method => :post, "data-remote" => "true" } 
         .control-group
-          .control-label{ :for => "studentform[name]" }= "Full Name"
+          .control-label{ :for => "studentform[name]" }= "Name"
           .controls 
-            %input.input-long.required{ :type => :text, :id => "studentform[name]" , :name => "studentform[name]"}
+            %input.input-long.required{ :type => :text, :id => "studentform[name]" , :name => "studentform[name]", :placeholder => "First and Last Name"}
         .control-group
-          .control-label{ :for => "studentform[email]" }= "eMail"
+          .control-label{ :for => "studentform[email]" }= "Email"
           .controls 
-            %input.input-long.required.email{ :type => :email, :id => "studentform[email]", :name => "studentform[email]"}
+            %input.input-long.required.email{ :type => :email, :id => "studentform[email]", :name => "studentform[email]", :placeholder => "you@email.com"}
         .control-group
           .control-label{ :for => "studentform[gradelevel]" }= "Grade Level (9 - 12)"
           .controls 
-            %input.input-long{ :type => :text, :id => "studentform[gradelevel]" , :name => "studentform[gradelevel]"}
+            %input.input-long{ :type => :text, :id => "studentform[gradelevel]" , :name => "studentform[gradelevel]", :placeholder => "10"}
         .control-group
-          .control-label{ :for => "studentform[school]" }= "School"
+          .control-label{ :for => "studentform[password]" }= "Password"
           .controls 
-            %input.input-long{ :type => :text, :id => "studentform[school]" , :name => "studentform[school]"}
+            %input.input-long{ :type => :password, :id => "studentform[password]" , :name => "studentform[password]", :placeholder => "******"}
         .control-group
           .control-label{ :for => "studentform[country]" }= "Country"
           .controls 
-            %input.input-long{ :type => :text, :id => "studentform[country]" , :name => "studentform[country]"}
+            %input.input-long{ :type => :text, :id => "studentform[country]" , :name => "studentform[country]", :placeholder => "India"}
         .control-group
           .controls
             %button.btn.btn-primary.submit{ :id => "yesbtn", :type => :submit }= "Register!"
@@ -51,23 +51,23 @@
         .control-group
           .control-label{ :for => :inputName }= "Name"
           .controls 
-            %input.input-long{ :type => :text, :id => :inputName , :name => "teacherform[name]"}
+            %input.input-long{ :type => :text, :id => :inputName , :name => "teacherform[name]", :placeholder => "First and Last Name" }
         .control-group
-          .control-label{ :for => :inputEmail }= "eMail"
+          .control-label{ :for => :inputEmail }= "Email"
           .controls 
-            %input.input-long{ :type => :email, :id => :inputEmail , :name => "teacherform[email]"}
+            %input.input-long{ :type => :email, :id => :inputEmail , :name => "teacherform[email]", :placeholder => "Email" }
         .control-group
-          .control-label{ :for => :inputOrg }= "Organisation"
+          .control-label{ :for => :inputPassword }= "Password"
           .controls 
-            %input.input-long{ :type => :text, :id => :inputOrg , :name => "teacherform[org]"}
+            %input.input-long{ :type => "password", :name => "teacherform[password]" , :placeholder => "*******"}
         .control-group
-          .control-label{ :for => :inputMessage }= "Message/Question(Optional)"
+          .control-label{ :for => "teacherform[country]" }= "Country"
           .controls 
-            %textarea{ :rows => 4 , :cols => 72 , :name => "teacherform[text]" }
+            %input.input-long{ :type => :text, :id => "teacherform[country]" , :name => "teacherform[country]", :placeholder => "India"}
         .control-group
           .controls
             %button.btn.btn-primary{ :type => :submit }= "Submit"
-            %button.btn.btn-info{ :type => :reset }= "Clear"
+            %button.btn.btn-info{ :id => "nobtn", :type => :reset }= "Clear"
 
     #ackblurb{ :style => "display: none" }
       %h4= "You'll hear from us very shortly"

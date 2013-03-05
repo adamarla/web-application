@@ -41,28 +41,26 @@ class WelcomeController < ApplicationController
     studentform = params[:studentform]
     name = studentform[:name]
     email = studentform[:email]
-    school_name = studentform[:school]
+    password = studentform[:password]
     grade_level = studentform[:gradelevel].to_i
     country = studentform[:country]
 
 
     if name.length == 0  
-      render :json => { :status => "error", :message => "Please enter a name" }
+      render :json => { :status => "error", :message => "Name: required" }
     elsif email.length == 0
-      render :json => { :status => "error", :message => "Please provide an email" }
-    elsif school_name.length == 0
-      render :json => { :status => "error", :message => "Please enter a school" }
+      render :json => { :status => "error", :message => "Email: required" }
+    elsif password.length == 0
+      render :json => { :status => "error", :message => "Password: required" }
     elsif grade_level < 8 or grade_level > 12
-      render :json => { :status => "error", :message => "For grades (9 - 12) only" }
+      render :json => { :status => "error", :message => "Grades 9 through 12 only" }
     elsif country.length == 0
       render :json => { :status => "error", :message => "Please provide Country of residence" }
     else
       student = Student.new 
-      student.name = studentform[:name]
-      student.klass = studentform[:gradelevel].to_i
-      email = studentform[:email]
+      student.name = name
+      student.klass = grade_level
       school = School.find_by_id(GRADIANS_UNIVERSITY_ID)
-      password = "gradians"
 
       username = create_username_for student, :student
       unless username.blank?
@@ -106,17 +104,31 @@ class WelcomeController < ApplicationController
     teacherform = params[:teacherform]    
     name = teacherform[:name]
     email = teacherform[:email]
-    org = teacherform[:org]
+    password = teacherform[:password]
+    country = teacherform[:country]
 
     if name.length == 0
-      render :json => { :status => "error", :message => "Please provide your first and last names" }
+      render :json => { :status => "error", :message => "Name: required" }
     elsif email.length == 0
-      render :json => { :status => "error", :message => "Please provide a working email address" }
-    elsif org.length == 0
-      render :json => { :status => "error", :message => "Please provide the name of your School" }
+      render :json => { :status => "error", :message => "Email: required" }
+    elsif password.length == 0
+      render :json => { :status => "error", :message => "Password: required" }
+    elsif country.length == 0
+      render :json => { :status => "error", :message => "Country: required" }
     else
-      Mailbot.curious_email(teacherform)
-      render :json => { :status => "registered", :message => "Got it. Thanks #{name}, you'll hear from us very shortly" } 
+      school = School.find_by_id(GRADIANS_UNIVERSITY_ID)
+      teacher = school.teachers.build :name => teacherform[:name]
+
+      username = create_username_for teacher, :teacher
+      account = teacher.build_account :email => email, :username => username,
+                :password => password, :password_confirmation => password
+
+      if teacher.save
+        Mailbot.welcome_teacher(account).deliver
+        render :json => { :status => "registered", :message => "Thank you #{teacher.first_name}, and welcome to Gradians. Check your email for further instruction" } 
+      else
+        render :json => {:status => "Failed!", :message => "Oops! Glitch at our end, we'll look into it. Please come back soon!"} 
+      end
     end
   end
 

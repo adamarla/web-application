@@ -26,23 +26,23 @@
             .navbar-inner
               %a.brand.span4{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-                .tagline.span6.offset3= "Grades will happen"
+                .tagline.span6.offset3= "Grade will happen"
               %ul.nav.span8.pull-right
+                -#%li
+                  -#%a{ :href => "#"}= "Home"
                 %li
-                  %a{ :href => "#"}= "Home"
-                %li.dropdown
-                  = simple_link :for => "Downloads", :id => 'm-downloads', :as => :dropdown 
-                %li
-                  #signin-form.pull-right
-                    %form.form-inline.pull-right{ :action => session_path(:account), :method => :post }
-                      %input.input-medium{ :type => :text, :name => "account[login]", :placeholder => "Email / Login"}
+                  #signin-form
+                    %form.form-inline{ :action => session_path(:account), :method => :post }
+                      %input.input-medium{ :type => :text, :name => "account[login]", :placeholder => "Email"}
                       .input-append
                         %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-primary{ :type => :submit }= "Sign In"
-                        -#%button.btn.btn-info{ :href => "#contactus" , "data-toggle" => "modal" }= "Contact Us"
                 %li.dropdown
                   = simple_link :for => "Register",  :id => "m-registrations", :as => :dropdown
-                  -#%button#btn-register.btn.white-bg{ :type => :button }= "Register"
+                %li.dropdown
+                  = simple_link :for => "Downloads", :id => 'm-downloads', :as => :dropdown 
+                -#%li
+                  %button.btn.btn-info.dropdown-toggle{ :id => "m-registrations", :as => "dropdown", "data-toggle" => "dropdown" , :href => "#" }= "Register"
 
       .row-fluid
         .hero-unit

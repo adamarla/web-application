@@ -1,6 +1,6 @@
 class Mailbot < ActionMailer::Base
   #default from: "from@example.com"
-  default :from => "help@gradians.com" 
+  default :from => "<Gradians-help>help@gradians.com" 
   layout 'mailbot'
 
   def curious_email(teacherform)
@@ -17,6 +17,11 @@ class Mailbot < ActionMailer::Base
   end 
 =end
   def welcome_student(new_account)
+    @account = new_account
+    mail :to => @account.email, :subject => "Welcome to Gradians.com"
+  end
+
+  def welcome_teacher(new_account)
     @account = new_account
     mail :to => @account.email, :subject => "Welcome to Gradians.com"
   end
