@@ -1,6 +1,6 @@
 class Mailbot < ActionMailer::Base
   #default from: "from@example.com"
-  default :from => "<Gradians-help>help@gradians.com" 
+  default :from => "help@gradians.com" 
   layout 'mailbot'
 
   def curious_email(teacherform)
