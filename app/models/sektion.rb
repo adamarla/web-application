@@ -3,26 +3,23 @@
 # Table name: sektions
 #
 #  id         :integer         not null, primary key
-#  school_id  :integer
-#  klass      :integer
 #  name       :string(40)
 #  created_at :datetime
 #  updated_at :datetime
 #  teacher_id :integer
-#  exclusive  :boolean         default(FALSE)
+#  uid        :string(10)
 #
 
 class Sektion < ActiveRecord::Base
-  validates :klass, :presence => true 
   validates :name, :presence => true 
-  validates :name, :uniqueness => { :scope => [:school_id] } 
 
-  belongs_to :school
+  belongs_to :teacher
 
   has_many :student_rosters
   has_many :students, :through => :student_rosters
 
-  after_update :rebuild_student_roster_pdf
+  #after_update :rebuild_student_roster_pdf
+  after_create :assign_uid
 
   def self.of_klass(k)
     where(:klass => k)
@@ -33,11 +30,11 @@ class Sektion < ActiveRecord::Base
   end
 
   def label 
-    return self.student_ids.empty? ? "#{self.name}" : "#{self.klass} - #{self.name}"
+    return self.name
   end 
 
   def taught_by? (teacher) 
-    self.teacher_id == teacher.id || (self.school_id == teacher.school_id && teacher.klasses.include?(self.klass)) 
+    return self.teacher_id == teacher.id
   end 
 
   def update_student_list ( student_list ) 
@@ -59,7 +56,7 @@ class Sektion < ActiveRecord::Base
     # TeX has a problem w/ most of the rest ( unless escaped ). No one has a problem
     # with the hyphen. So, we do everything to only have it in the PDF file name
     pdf_file = "#{self.name.split(/[\s\W]+/).join('-')}"
-    return "#{self.klass}-#{pdf_file}"
+    return pdf_file 
   end
 
 =begin
@@ -90,21 +87,28 @@ class Sektion < ActiveRecord::Base
   end #down
 
     
-    def rebuild_student_roster_pdf
-      students = self.students.map{ |m| { :id => m.username?, :name => m.name } }
-      students.push({ :id => "", :name => ""}) if students.count.odd?
+  def rebuild_student_roster_pdf
+    students = self.students.map{ |m| { :id => m.username?, :name => m.name } }
+    students.push({ :id => "", :name => ""}) if students.count.odd?
 
-      SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_student_roster']}" 
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_student_roster']}" 
 
-      response = SavonClient.request :wsdl, :generateStudentRoster do  
-        soap.body = {
-          :school => { :id => self.school_id, :name => self.school.name },
-          :group => { :id => self.id, :name => self.pdf },
-          :members => students 
-        }
-       end # of response 
-       return response.to_hash[:generate_student_roster]
-    end
+    response = SavonClient.request :wsdl, :generateStudentRoster do  
+      soap.body = {
+        :school => { :id => self.school_id, :name => self.school.name },
+        :group => { :id => self.id, :name => self.pdf },
+        :members => students 
+      }
+     end # of response 
+     return response.to_hash[:generate_student_roster]
+  end
+
+  def assign_uid
+    return if self.teacher_id.nil?
+    uid = "#{self.teacher_id.to_s(36)}-#{Time.now.seconds_since_midnight.to_i.to_s(36)}"
+    uid = uid.upcase
+    self.update_attribute :uid, uid
+  end
 
   private
 end

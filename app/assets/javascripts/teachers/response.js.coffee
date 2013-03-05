@@ -34,12 +34,8 @@ jQuery ->
       parentKey = "students"
       childKey = 'student'
       wsDeepdive.students json
-    else if url.match(/teacher\/courses/)
-      target = $('#pane-qzb-courses')
-      parentKey = 'courses'
-      childKey = 'course'
     else if url.match(/qzb\/echo/)
-      next = if json.context is 'qzb' then 'tab-qzb-questions' else 'tab-editqz-3'
+      next = if json.context is 'qzb' then 'tab-qzb-2' else 'tab-editqz-3'
       karo.tab.enable next
 
       root = "##{json.context}-questions"

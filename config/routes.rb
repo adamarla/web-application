@@ -27,20 +27,6 @@ Webapp::Application.routes.draw do
   # Admin 
   resource :admin, :controller => :admin 
 
-  # Board 
-  resource :board, :only => [:create, :update]
-  # match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
-  match 'boards/summary' => "boards#summary", :via => :get
-
-  # Course
-  resource :course, :only => [:show, :create, :update]
-  match 'courses/list' => 'courses#list', :via => :get
-  match 'course/profile' => 'courses#profile', :via => :get
-  match 'course/coverage' => 'courses#coverage', :via => :get
-  match 'course/verticals' => 'courses#verticals', :via => :get
-  match 'course/questions' => 'courses#questions', :via => :get 
-  match 'course/topics_in' => 'courses#topics_in', :via => :get
-
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'untagged/list' => 'examiners#untagged', :via => :get
@@ -105,16 +91,12 @@ Webapp::Application.routes.draw do
   match 'sektion/students' => 'sektions#students', :via => :get
   match 'sektion/proficiency' => 'sektions#proficiency', :via => :get
 
-  # Syllabus
-  resource :syllabus, :only => [:show, :update]
-   
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
   # match 'teacher/update_roster' => 'teachers#update_roster', :via => [:put, :post]
   match 'teacher/sektions' => 'teachers#sektions', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
-  match 'teacher/courses' => 'teachers#courses', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => [:put, :post]
   match 'teacher/ws' => 'teachers#worksheets', :via => :get
   match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get

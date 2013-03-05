@@ -16,7 +16,7 @@
   #pane-dive-2.tab-pane
     .tabbable.tabs-left
       %ul.nav.nav-tabs.span4.purge-skip.lock
-        - teacher.verticals.each do |m|
+        - Vertical.all.each do |m|
           %li{ :marker => "#{m.id}" }
             = simple_link :for => "#{m.name}", :href => "#deepdive-topics", :id => "tab-deepdive-#{m.id}"
       .tab-content
