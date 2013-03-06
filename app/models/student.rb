@@ -4,19 +4,16 @@
 #
 #  id          :integer         not null, primary key
 #  guardian_id :integer
-#  school_id   :integer
 #  first_name  :string(30)
 #  last_name   :string(30)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  klass       :integer
 #
 
 include ApplicationUtil
 
 class Student < ActiveRecord::Base
   belongs_to :guardian
-  belongs_to :school
 
   has_many :student_rosters, :dependent => :destroy 
   has_many :sektions, :through => :student_rosters
@@ -39,14 +36,6 @@ class Student < ActiveRecord::Base
   # be, I am temporarily disabling all destruction
 
   before_destroy :destroyable? 
-
-  def self.in_klass(klass)
-    where(:klass => klass)
-  end
-
-  def self.in_school(id)
-    where(:school_id => id)
-  end
 
   def self.name_begins_with( allowed = [] )
     return if allowed.empty? 
