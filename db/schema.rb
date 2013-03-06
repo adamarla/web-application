@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306134400) do
+ActiveRecord::Schema.define(:version => 20130306135456) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20130306134400) do
     t.boolean  "graded",       :default => false
     t.integer  "honest"
     t.boolean  "received",     :default => false
-    t.boolean  "prepped",      :default => false
+    t.boolean  "compiled",     :default => false
   end
 
   add_index "answer_sheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
