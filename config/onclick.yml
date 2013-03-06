@@ -385,6 +385,17 @@ m-downloads :
   menu : user-downloads
   toggle : dropdown
 
+m-registrations : 
+  menu : user-registrations
+  toggle : dropdown
+
+lnk-register-student :
+  toggle : modal
+
+lnk-register-teacher :
+  toggle : modal
+
 m-notifications :
   menu : notifications
   toggle : dropdown
+

@@ -85,7 +85,7 @@ jQuery ->
     if response.deployment is 'production'
       gutenberg.server = gutenberg.serverOptions.remote
     else
-      gutenberg.server = gutenberg.serverOptions.remote
+      gutenberg.server = gutenberg.serverOptions.local
     
   pingargs =
   	url: '/ping'

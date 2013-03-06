@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20130306074402) do
     t.boolean  "graded",       :default => false
     t.integer  "honest"
     t.boolean  "received",     :default => false
+    t.boolean  "prepped",      :default => false
   end
 
   add_index "answer_sheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
@@ -217,6 +218,7 @@ ActiveRecord::Schema.define(:version => 20130306074402) do
     t.string   "last_name",   :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "atm_key",     :limit => 20
   end
 
   create_table "subjects", :force => true do |t|

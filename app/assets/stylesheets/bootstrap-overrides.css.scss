@@ -98,6 +98,34 @@ $green: #347235 ; // rgb(87,188,32)
   &.narrow { 
     width: 350px ;
   } 
+
+  &.slim { 
+    max-width: 350px ; 
+    background: rgba(25,25,25,0.8) ; 
+    border-radius: 0px ;
+  }
+
+  #errblurb {
+    > h4 {
+      color: red ;
+    }
+  }
+
+  h3 {
+    color: white ;
+  }
+
+  h4 {
+    color: white ;
+  }
+  
+  p {
+    color: white ;
+  }
+
+  .control-label {
+    color: white ;
+  }
 } 
 
 #lnk-logout{ color: $orange ; }
@@ -414,18 +442,14 @@ button[data-toggle='button'] {
   position: fixed ;
   top: 0px ;
   z-index: 3 ;
+  min-width: 700px ;
+  ul {
+    margin-top: 15px ;
+  }
 } 
 
 #desktop { 
   margin-top: 110px ;
-} 
-
-.modal {
-  &.slim { 
-    max-width: 350px ; 
-    background: rgba(25,25,25,0.8) ; 
-    border-radius: 0px ;
-  }
 } 
 
 form.smart { 
@@ -607,6 +631,10 @@ form.smart {
   } 
 } 
 
+.typeahead.dropdown-menu {
+  z-index: 1051 ;
+}
+
 #m-notifications { 
   border-radius: 4px ;
   &.on { background-color: $deep-blue ; }
@@ -692,3 +720,4 @@ li.split {
   width: 24px ;
   height: 26px ;
 }
+

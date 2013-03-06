@@ -8,6 +8,7 @@
 #  last_name   :string(30)
 #  created_at  :datetime
 #  updated_at  :datetime
+#  atm_key     :string(20)
 #
 
 include ApplicationUtil
@@ -30,6 +31,7 @@ class Student < ActiveRecord::Base
   validates :first_name, :presence => true
 
   after_save  :reset_login_info
+  after_create  :generate_atm_key
 
   # When should a student be destroyed? My guess, some fixed time after 
   # he/she graduates. But as I haven't quite decided what that time should
@@ -169,6 +171,21 @@ class Student < ActiveRecord::Base
                                :historical_avg => historical_avg })
     end
     return ret
+  end
+
+  def generate_atm_key
+    if self.atm_key.nil?
+      SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generateStudentCode']}"
+      response = SavonClient.request :wsdl, :generateStudentCode do
+        soap.body = { :id => self.id }
+      end
+      manifest = response[:generate_student_code_response][:manifest]
+      unless manifest.nil?
+        root = manifest[:root]
+        self.atm_key = root.split('/').last 
+        self.save
+      end
+    end
   end
 
 =begin

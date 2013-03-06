@@ -3,12 +3,28 @@ class Mailbot < ActionMailer::Base
   default :from => "help@gradians.com" 
   layout 'mailbot'
 
+  def curious_email(teacherform)
+    mail :subject => teacherform[:email], 
+      :body => teacherform[:text], :to => "akshay@gradians.com"
+    mail :subject => teacherform[:email], 
+      :body => teacherform[:text], :to => "abhinav@gradians.com"
+  end
+
 =begin
   def grading_done_email(teacher)
     @account = teacher.account
     mail :to => @account.email, :subject => "Your assignment has been graded"
   end 
 =end
+  def welcome_student(new_account)
+    @account = new_account
+    mail :to => @account.email, :subject => "Welcome to Gradians.com"
+  end
+
+  def welcome_teacher(new_account)
+    @account = new_account
+    mail :to => @account.email, :subject => "Welcome to Gradians.com"
+  end
   
   def welcome_email(new_account)
     @account = new_account

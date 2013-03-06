@@ -59,6 +59,26 @@ class Testpaper < ActiveRecord::Base
     return response.to_hash[:assign_quiz_response]
   end #of method
 
+  def compile_individual_tex(student_id)
+    student_ids = [student_id]
+    students = Student.where(:id => student_ids)
+
+    names = []
+    students.each do |s|
+      names.push({ :id => s.id, :name => s.name })
+    end
+
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['prep_test']}"
+    response = SavonClient.request :wsdl, :prepTest do  
+      soap.body = { 
+        :quiz => { :id => self.quiz_id, :name => self.quiz.teacher.school.name },
+        :instance => { :id => self.id, :name => self.name },
+        :students => names 
+      }
+    end
+    return response.to_hash[:prep_test_response]
+  end #of method
+
   def mean?
     # Returns the average for the class/group that took this testpaper
     # Only graded responses and only those students that have
