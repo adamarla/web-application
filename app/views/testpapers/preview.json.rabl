@@ -3,7 +3,7 @@
 
 object false
   node(:preview) {
-    { :id => @quiz.atm_key, :scans => [*1..@quiz.span?] } 
+    { :id => @quiz.uid, :scans => [*1..@quiz.span?] } 
   } 
-  node(:a) { @quiz.atm_key }
+  node(:a) { @quiz.uid }
   node(:caption) { @quiz.name }
