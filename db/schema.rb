@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306055312) do
+ActiveRecord::Schema.define(:version => 20130306061633) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -190,16 +190,13 @@ ActiveRecord::Schema.define(:version => 20130306055312) do
 
   create_table "schools", :force => true do |t|
     t.string   "name"
-    t.string   "street_address"
-    t.string   "city",           :limit => 40
-    t.string   "state",          :limit => 40
-    t.string   "zip_code",       :limit => 15
-    t.string   "phone",          :limit => 20
+    t.string   "zip_code",   :limit => 15
+    t.string   "phone",      :limit => 20
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "tag",            :limit => 40
-    t.integer  "board_id"
     t.string   "xls"
+    t.integer  "country_id"
+    t.string   "uid",        :limit => 10
   end
 
   create_table "sektions", :force => true do |t|
