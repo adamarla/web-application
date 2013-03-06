@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306074402) do
+ActiveRecord::Schema.define(:version => 20130306134400) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(:version => 20130306074402) do
     t.string   "last_name",   :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "atm_key",     :limit => 20
+    t.string   "uid",         :limit => 20
   end
 
   create_table "subjects", :force => true do |t|

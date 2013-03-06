@@ -8,7 +8,7 @@
 #  last_name   :string(30)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  atm_key     :string(20)
+#  uid         :string(20)
 #
 
 require 'test_helper'
