@@ -21,12 +21,8 @@ class Sektion < ActiveRecord::Base
   #after_update :rebuild_student_roster_pdf
   after_create :assign_uid
 
-  def self.of_klass(k)
-    where(:klass => k)
-  end
-
   def self.in_school(s)
-    where(:school_id => s)
+    where(:teacher_id => Teacher.where(:school_id => s).map(&:id))
   end
 
   def label 
