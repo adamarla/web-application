@@ -80,7 +80,7 @@ lnk-suggestion-form :
 
 lnk-new-quiz :
   autoclick : 
-    tab : tab-qzb-courses
+    tab : tab-qzb-1
   left :
     show : left-2
   wide :
@@ -93,17 +93,6 @@ lnk-wb-pending :
     show : wide-grd-canvas
   autoclick :
     tab : tab-grd-ws
-
-tab-qzb-courses : 
-  url : teacher/courses
-  autoclick :
-    tab : tab-qzb-topics
-
-tab-qzb-verticals :
-
-tab-qzb-topics : 
-
-tab-qzb-questions :
 
 m-teacher-quizzes :
   toggle : dropdown 

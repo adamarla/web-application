@@ -17,8 +17,6 @@ class TrialAccountController < ApplicationController
       # 1. Build the sign-up account 
       account = @teacher.build_account :email => @email, :username => username,
                 :password => @password, :password_confirmation => @password
-      # 2. Specify the specialization 
-      @teacher.specializations.build :subject_id => course.subject_id, :klass => course.klass
 
       # 3. Store other information provided in the sign-form
       @teacher.build_trial_account :school => p[:school], 

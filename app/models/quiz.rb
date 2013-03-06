@@ -8,9 +8,8 @@
 #  updated_at    :datetime
 #  num_questions :integer
 #  name          :string(70)
-#  klass         :integer
 #  subject_id    :integer
-#  atm_key       :string(20)
+#  uid           :string(20)
 #  total         :integer
 #  span          :integer
 #  parent_id     :integer
@@ -220,7 +219,7 @@ class Quiz < ActiveRecord::Base
     return true
   end
 
-  def self.extract_atm_key(manifest_root)
+  def self.extract_uid(manifest_root)
     # manifest_root = http://< ... >:8080/atm/<atm-key>
     return manifest_root.split('/').last
   end

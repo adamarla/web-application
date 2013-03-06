@@ -38,22 +38,6 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id]
   end
 
-  def topics_this_section
-    teacher = Teacher.find params[:id]
-    sektion = Sektion.find params[:section_id]
-    head :bad_request if (teacher.nil? || sektion.nil?)
-    subject = teacher.subjects.first 
-    board = teacher.school.board_id
-    course = Course.where(:board_id => board, :klass => sektion.klass, :subject_id => subject.id).first
-    @topics = course.topics
-  end
-
-  def courses
-    teacher = current_account.loggable 
-    head :bad_request if teacher.nil? 
-    @courses = teacher.courses
-  end
-
   def worksheets
     teacher = current_account.loggable 
     head :bad_request if teacher.nil?
@@ -87,28 +71,6 @@ class TeachersController < ApplicationController
     end 
   end 
 
-  def specializations
-    @subjects = Subject.all
-    @teacher = Teacher.find params[:id]
-  end 
-
-  def update_specialization
-    teacher = Teacher.find params[:id]
-    new_object_ids = [] 
-
-    params[:subject].keys.each do |m|
-      s_id = m.to_i
-      klasses = params[:subject][m].keys.map(&:to_i)
-      klasses.each do |k|
-        s = Specialization.where(:teacher_id => teacher.id, :klass => k, :subject_id => s_id).first
-        s = teacher.specializations.create(:subject_id => s_id, :klass => k) if s.nil?
-        new_object_ids.push s.id
-      end
-    end 
-    teacher.specialization_ids = new_object_ids 
-    render :json => { :status => "Done" }, :status => :ok
-  end 
-  
   def sektions
     teacher = params[:id].nil? ? current_account.loggable : Teacher.find(params[:id])
     @sektions = teacher.nil? ? [] : teacher.sektions
@@ -145,8 +107,6 @@ class TeachersController < ApplicationController
 
   def build_quiz 
     teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
-    # course = Course.find params[:id]
-    # head :bad_request if (teacher.nil? || course.nil?)
     head :bad_request if teacher.nil? 
 
     name = params[:checked].delete :name

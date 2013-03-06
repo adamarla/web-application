@@ -27,20 +27,6 @@ Webapp::Application.routes.draw do
   # Admin 
   resource :admin, :controller => :admin 
 
-  # Board 
-  resource :board, :only => [:create, :update]
-  # match 'get_course_details/:board_id' => 'boards#get_course_details', :via => :get
-  match 'boards/summary' => "boards#summary", :via => :get
-
-  # Course
-  resource :course, :only => [:show, :create, :update]
-  match 'courses/list' => 'courses#list', :via => :get
-  match 'course/profile' => 'courses#profile', :via => :get
-  match 'course/coverage' => 'courses#coverage', :via => :get
-  match 'course/verticals' => 'courses#verticals', :via => :get
-  match 'course/questions' => 'courses#questions', :via => :get 
-  match 'course/topics_in' => 'courses#topics_in', :via => :get
-
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'untagged/list' => 'examiners#untagged', :via => :get
@@ -54,14 +40,11 @@ Webapp::Application.routes.draw do
 
   # School 
   resource :school, :only => [:show, :create, :update]
-  match 'add_students' => 'schools#add_students', :via => :post
   match 'schools/list' => 'schools#list', :via => :get 
-  match 'school/sektions' => 'schools#sektions', :via => :get
   match 'upload_student_list' => 'schools#upload_student_list', :via => :post
 
   # Verticals 
   resource :vertical, :only => [:create]
-  match 'vertical/topics_in_course' => 'verticals#topics_in_course', :via => :get
   match 'verticals/list' => 'verticals#list', :via => :get
   match 'vertical/topics' => 'verticals#topics', :via => :get
 
@@ -101,27 +84,19 @@ Webapp::Application.routes.draw do
 
   # Sektion 
   resource :sektion, :only => [:create, :update]
-  match 'sektions/list' => 'sektions#list', :via => :get
   match 'sektion/students' => 'sektions#students', :via => :get
   match 'sektion/proficiency' => 'sektions#proficiency', :via => :get
 
-  # Syllabus
-  resource :syllabus, :only => [:show, :update]
-   
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
   # match 'teacher/update_roster' => 'teachers#update_roster', :via => [:put, :post]
   match 'teacher/sektions' => 'teachers#sektions', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
-  match 'teacher/courses' => 'teachers#courses', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => [:put, :post]
   match 'teacher/ws' => 'teachers#worksheets', :via => :get
-  match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
   match 'teacher/like_q' => 'teachers#like_question', :via => :get
   match 'teacher/unlike_q' => 'teachers#unlike_question', :via => :get
-  match 'teacher/specializations' => 'teachers#specializations', :via => :get
-  match 'update_specialization' => 'teachers#update_specialization', :via => :post
   match 'teacher/students' => 'teachers#students', :via => :get
   match 'teacher/students_with_names' => 'teachers#students_with_names', :via => :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', :via => :get

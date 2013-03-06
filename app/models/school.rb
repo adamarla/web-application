@@ -2,30 +2,24 @@
 #
 # Table name: schools
 #
-#  id             :integer         not null, primary key
-#  name           :string(255)
-#  street_address :string(255)
-#  city           :string(40)
-#  state          :string(40)
-#  zip_code       :string(15)
-#  phone          :string(20)
-#  created_at     :datetime
-#  updated_at     :datetime
-#  tag            :string(40)
-#  board_id       :integer
-#  xls            :string(255)
+#  id         :integer         not null, primary key
+#  name       :string(255)
+#  zip_code   :string(15)
+#  phone      :string(20)
+#  created_at :datetime
+#  updated_at :datetime
+#  xls        :string(255)
+#  country_id :integer
+#  uid        :string(10)
 #
 
 class School < ActiveRecord::Base
   has_one :account, :as => :loggable
-  has_many :students
   has_many :teachers
-  has_many :sektions
 
   validates :name, :presence =>true
-  validates :tag, :presence => true
   validates :zip_code, :presence => true
-  validates :board_id, :presence => true
+  after_create :assign_uid
 
   mount_uploader :xls, ExcelUploader # Railscast #253
 
@@ -39,19 +33,6 @@ class School < ActiveRecord::Base
   # - which can be hacked - de-fang the operation in the model itself. 
 
   before_destroy :destroyable? 
-
-  def create_sektions(klasses, names) 
-    # 'klasses' and 'names' are arrays 
-
-    klasses.each { |klass|
-      names.each { |name| 
-        grp = self.sektions.new :klass => klass, :name => name 
-        grp.save 
-        # 'save' can fail because of uniqueness validation. That's ok
-      }
-    }
-    return true 
-  end # of method  
 
   def activate(state)
     # activates/deactivates a school's account and also of anyone - students
@@ -89,6 +70,12 @@ class School < ActiveRecord::Base
     account = student.build_account :username => username, :email => email, 
                                     :password => password, :password_confirmation => password
     return student.save
+  end
+
+  def assign_uid
+    uid = "#{self.id.to_s(36)}-#{Time.now.seconds_since_midnight.to_i.to_s(36)}"
+    uid = uid.upcase
+    self.update_attribute :uid, uid
   end
 
   private 
