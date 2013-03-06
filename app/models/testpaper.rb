@@ -51,7 +51,7 @@ class Testpaper < ActiveRecord::Base
 
     response = SavonClient.request :wsdl, :assignQuiz do  
       soap.body = { 
-        :quiz => { :id => self.quiz_id, :name => self.quiz.teacher.school.name },
+        :quiz => { :id => self.quiz_id, :name => self.quiz.name },
         :instance => { :id => self.id, :name => self.name },
         :students => names 
       }
@@ -89,18 +89,6 @@ class Testpaper < ActiveRecord::Base
   def closed_on?
     # Returns the approximate date when grading for this testpaper / worksheet was finished
     last = AnswerSheet.where(:testpaper_id => self.id).order(:updated_at).last.updated_at
-  end
-
-  def self.name_if_students?(student_ids)
-    sektion_ids = StudentRoster.where(:student_id => student_ids).map(&:sektion_id).uniq
-    sektions = Sektion.where(:id => sektion_ids).order(:klass).order(:name)
-    klasses = sektions.map(&:klass).uniq
-
-    name = ""
-    klasses.each do |k|
-      name.concat " #{k} - #{sektions.where(:klass => k).map(&:name).join(", ")} "  
-    end
-    return name.strip # example: 11-(A,B,Weak students) 12-(A)
   end
 
   def rebuild_testpaper_report_pdf
