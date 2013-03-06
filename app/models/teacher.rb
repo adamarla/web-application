@@ -28,9 +28,6 @@ class Teacher < ActiveRecord::Base
   has_many :quizzes, :dependent => :destroy 
   has_many :sektions, :dependent => :destroy
 
-  #has_many :specializations, :dependent => :destroy
-  #has_many :subjects, :through => :specializations
-
   has_many :favourites, :dependent => :destroy
   has_many :suggestions
 
@@ -50,10 +47,6 @@ class Teacher < ActiveRecord::Base
 
   #after_validation :setup_account, :if => :first_time_save?
   #before_destroy :destroyable? 
-
-  def klasses
-    Specialization.where(:teacher_id => self.id).map(&:klass).uniq
-  end 
 
   def students 
     sk = Sektion.where(:teacher_id => self.id).map(&:id)
@@ -147,21 +140,6 @@ class Teacher < ActiveRecord::Base
       middle = split[1...last].map{ |m| m.humanize[0] }.join('.')
       self.last_name = middle.empty? ? "#{split.last.humanize}" : "#{middle} #{split.last.humanize}"
     end
-  end
-
-  def colleagues(strict = true)
-=begin
-    A colleague is defined as someone who is: 
-      1. a teacher in the same school 
-      2. teaches some or all of the same subjects 
-      3. ( if strict = true ) and at the same grade levels 
-=end
-    ids = Teacher.where(:school_id => self.school_id).map(&:id) - [self.id]
-
-    candidates = Specialization.where(:teacher_id => ids, :subject_id => self.subject_ids)
-    candidates = strict ? candidates.where(:klass => self.klasses) : candidates
-
-    return Teacher.where(:id => candidates.map(&:teacher_id).uniq)
   end
 
   def roster 

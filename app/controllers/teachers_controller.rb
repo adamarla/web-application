@@ -87,28 +87,6 @@ class TeachersController < ApplicationController
     end 
   end 
 
-  def specializations
-    @subjects = Subject.all
-    @teacher = Teacher.find params[:id]
-  end 
-
-  def update_specialization
-    teacher = Teacher.find params[:id]
-    new_object_ids = [] 
-
-    params[:subject].keys.each do |m|
-      s_id = m.to_i
-      klasses = params[:subject][m].keys.map(&:to_i)
-      klasses.each do |k|
-        s = Specialization.where(:teacher_id => teacher.id, :klass => k, :subject_id => s_id).first
-        s = teacher.specializations.create(:subject_id => s_id, :klass => k) if s.nil?
-        new_object_ids.push s.id
-      end
-    end 
-    teacher.specialization_ids = new_object_ids 
-    render :json => { :status => "Done" }, :status => :ok
-  end 
-  
   def sektions
     teacher = params[:id].nil? ? current_account.loggable : Teacher.find(params[:id])
     @sektions = teacher.nil? ? [] : teacher.sektions
