@@ -47,7 +47,6 @@ Webapp::Application.routes.draw do
 
   # Verticals 
   resource :vertical, :only => [:create]
-  match 'vertical/topics_in_course' => 'verticals#topics_in_course', :via => :get
   match 'verticals/list' => 'verticals#list', :via => :get
   match 'vertical/topics' => 'verticals#topics', :via => :get
 
@@ -99,7 +98,6 @@ Webapp::Application.routes.draw do
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => [:put, :post]
   match 'teacher/ws' => 'teachers#worksheets', :via => :get
-  match 'teacher/topics_this_section' => 'teachers#topics_this_section', :via => :get
   match 'teacher/like_q' => 'teachers#like_question', :via => :get
   match 'teacher/unlike_q' => 'teachers#unlike_question', :via => :get
   match 'teacher/students' => 'teachers#students', :via => :get

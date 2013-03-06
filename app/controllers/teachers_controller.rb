@@ -38,22 +38,6 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id]
   end
 
-  def topics_this_section
-    teacher = Teacher.find params[:id]
-    sektion = Sektion.find params[:section_id]
-    head :bad_request if (teacher.nil? || sektion.nil?)
-    subject = teacher.subjects.first 
-    board = teacher.school.board_id
-    course = Course.where(:board_id => board, :klass => sektion.klass, :subject_id => subject.id).first
-    @topics = course.topics
-  end
-
-  def courses
-    teacher = current_account.loggable 
-    head :bad_request if teacher.nil? 
-    @courses = teacher.courses
-  end
-
   def worksheets
     teacher = current_account.loggable 
     head :bad_request if teacher.nil?
@@ -123,8 +107,6 @@ class TeachersController < ApplicationController
 
   def build_quiz 
     teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
-    # course = Course.find params[:id]
-    # head :bad_request if (teacher.nil? || course.nil?)
     head :bad_request if teacher.nil? 
 
     name = params[:checked].delete :name
