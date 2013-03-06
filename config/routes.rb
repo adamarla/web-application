@@ -40,9 +40,7 @@ Webapp::Application.routes.draw do
 
   # School 
   resource :school, :only => [:show, :create, :update]
-  match 'add_students' => 'schools#add_students', :via => :post
   match 'schools/list' => 'schools#list', :via => :get 
-  match 'school/sektions' => 'schools#sektions', :via => :get
   match 'upload_student_list' => 'schools#upload_student_list', :via => :post
 
   # Verticals 
@@ -86,7 +84,6 @@ Webapp::Application.routes.draw do
 
   # Sektion 
   resource :sektion, :only => [:create, :update]
-  match 'sektions/list' => 'sektions#list', :via => :get
   match 'sektion/students' => 'sektions#students', :via => :get
   match 'sektion/proficiency' => 'sektions#proficiency', :via => :get
 

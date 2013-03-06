@@ -3,33 +3,6 @@ class SchoolsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
-  def add_students
-    @school = School.find params[:id]
-    head :bad_request if @school.nil?
-
-    status = :ok
-    klass = params[:klass].to_i
-
-    params[:names].each do |i, name|
-      next if name.blank?
-      student = Student.new :name => name
-      username = create_username_for student, :student
-      next if username.blank? 
-
-      email = "#{username}@drona.com"
-      student.school = @school
-      password = @school.zip_code
-      student.klass = klass
-
-      account = student.build_account :username => username, :email => email,
-                                      :password => password, 
-                                      :password_confirmation => password
-      status = student.save ? :ok : :bad_request
-      break if status == :bad_request
-    end
-    status == :ok ? respond_with(@school) : head(:bad_request)
-  end
-
   def create 
     email = params[:school].delete :email # email is part of Account model 
     @school = School.new params[:school] 
@@ -85,10 +58,6 @@ class SchoolsController < ApplicationController
     @who_wants_to_know = current_account.nil? ? :guest : current_account.role
   end 
 =end
-
-  def sektions 
-    @sektions = Sektion.where(:school_id => params[:id]).order(:klass).order(:name)
-  end 
 
   def upload_student_list
     @school = School.find params[:id]

@@ -8,7 +8,6 @@
 #  updated_at    :datetime
 #  num_questions :integer
 #  name          :string(70)
-#  klass         :integer
 #  subject_id    :integer
 #  uid           :string(20)
 #  total         :integer
