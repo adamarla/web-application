@@ -10,7 +10,7 @@
 #  name          :string(70)
 #  klass         :integer
 #  subject_id    :integer
-#  atm_key       :string(20)
+#  uid           :string(20)
 #  total         :integer
 #  span          :integer
 #  parent_id     :integer

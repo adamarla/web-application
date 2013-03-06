@@ -108,10 +108,10 @@ class Teacher < ActiveRecord::Base
         @quiz.destroy
       else
         # The atm-key is the randomized access point to this quiz in mint/
-        atm_key = Quiz.extract_atm_key manifest[:root] 
+        uid = Quiz.extract_uid manifest[:root] 
         span = manifest[:image].class == Array ? manifest[:image].count : 1
-        @quiz.update_attributes :atm_key => atm_key, :span => span
-        response = {:atm_key => atm_key, :name => @quiz.name }
+        @quiz.update_attributes :uid => uid, :span => span
+        response = {:atm_key => uid, :name => @quiz.name }
 
         # Increment n_picked for each of the questions picked for this quiz
         Question.where(:id => question_ids).each do |m|

@@ -11,9 +11,9 @@ class CompileQuiz < Struct.new(:quiz)
     status = manifest.blank? ? :bad_request : :ok
 
     unless status == :bad_request
-      atm = Quiz.extract_atm_key manifest[:root]
+      atm = Quiz.extract_uid manifest[:root]
       span = manifest[:image].class == Array ? manifest[:image].count : 1
-      quiz.update_attributes :atm_key => atm, :span => span
+      quiz.update_attributes :uid => atm, :span => span
       response = {:atm_key => atm, :name => quiz.name }
 
       # Increment n_picked for each of the questions picked for this quiz
