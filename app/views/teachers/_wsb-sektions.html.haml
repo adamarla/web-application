@@ -5,7 +5,7 @@
     - teacher.sektions.each do |m|
       %li
         = simple_link :for => "#{m.label}", :toggle => :tab, :marker => "#{m.id}",
-        :href => "#lp-sektion-#{m.id}", :url => "sektion/students.json?id=#{m.id}"
+        :href => "#wsb-sektions", :url => "sektion/students.json?id=#{m.id}"
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span8
@@ -17,8 +17,7 @@
           :tooltip => "Send PDFs to students", :class => 'btn-primary', :placement => :right
       .btn-group
         = simple_button :icon => 'icon-wrench', :id => 'build-worksheet', :for => "Make PDF"
-    - teacher.sektions.each do |m|
-      = simple_form_for :checked, :url => quiz_assign_path, :remote => true,
-      :html => { :id => "lp-sektion-#{m.id}", :class => 'multi-select'} do |f|
-        .tab-pane.multi-select
+    = simple_form_for :checked, :url => quiz_assign_path, :remote => true,
+    :html => { :id => 'wsb-sektions', :class => 'multi-select'} do |f|
+      .tab-pane.multi-select
 

@@ -30,7 +30,8 @@ jQuery ->
         target = $('#pane-dive-3')
         target.empty()
       else
-        target = $("#lp-sektion-#{json.sektion}")
+        target = $('#wsb-sektions')
+
       parentKey = "students"
       childKey = 'student'
       wsDeepdive.students json
