@@ -1,4 +1,14 @@
 
+getMarker = (obj) ->
+  marker = $(obj).attr 'marker'
+  return marker if marker?
+  if $(obj).is 'li'
+    a = $(obj).children('a')[0]
+    return null unless a?
+    return getMarker(a)
+  return null
+
+
 window.gutenberg = {
   serverOptions : {
     local : "http://localhost:8080",
@@ -326,7 +336,7 @@ jQuery ->
   # to the .tab-pane within which the form is 
   ###############################################
 
-  $('.tab-content > .tab-pane form').submit (event) ->
+  $('.tab-content form').submit (event) ->
     action = this.dataset.action
     return true unless action?
 
@@ -339,7 +349,8 @@ jQuery ->
         obj = if obj? then $("##{obj}").parent() else null # $(obj) is an <a>. Marker is on the parent <li>
         unless obj?
           obj = if j is "prev" then activeTab.prev() else activeTab
-        action = action.replace ":#{j}", obj.attr('marker')
+        marker = getMarker(obj)
+        action = action.replace ":#{j}", marker
     $(this).attr 'action', action
     return true
 
