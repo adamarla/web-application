@@ -83,9 +83,10 @@ Webapp::Application.routes.draw do
   match 'overall/proficiency' => 'students#proficiency', :via => :get
 
   # Sektion 
-  resource :sektion, :only => [:create, :update]
   match 'sektion/students' => 'sektions#students', :via => :get
   match 'sektion/proficiency' => 'sektions#proficiency', :via => :get
+  match 'add/sektion' => 'sektions#create', :via => :post
+  match 'update/sektion' => 'sektions#update', :via => :post
 
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]

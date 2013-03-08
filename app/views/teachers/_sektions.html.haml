@@ -1,25 +1,8 @@
 
-#update-sektion
-  = render :partial => 'toolbox/name_filter', 
-           :locals => { :url => "teacher/students_with_names.json?id=#{current_account.loggable_id}" }
-  = semantic_form_for :sektion, :remote => true, 
-                      :url => "/sektion.json", :method => :put do |f|
-    .submit-buttons
-      = submit_tag "update section"
-    #enrolled-students.as-accordion
-      - [*9..12].each do |grd|
-        .scroll-heading{ :marker => "#{grd}" }= "Grade #{grd}"
-        .scroll-content.purgeable{ :columns => 2 }
+#my-sektions
+  = simple_form_for :new, :url => add_sektion_path, :remote => true do |f|
+    .input-append.nopurge.offset1
+      = f.input_field :name, :placeholder => "New Section"
+      %button.btn.btn-inverse{ :type => :submit }= "Add Section"
+  #my-sektions-list.push-down
 
-#sektions-summary
-  = semantic_form_for :sektion, :remote => true, 
-                      :url => "#{sektion_path}.json?id=#{current_account.loggable_id}", 
-                      :method => :post do |f|
-    #misc-sektion-attributes
-      = text_field_tag :name, nil, :class => :left, :placeholder => "new section name"
-      = check_box_tag :exclusive, true, false, :id => 'private-sektion'
-      = label_tag 'private-sektion', "visible only to me"
-    .submit-buttons
-      = submit_tag "add section"
-    
-  #all-my-sektions.playlist

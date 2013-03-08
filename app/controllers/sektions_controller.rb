@@ -4,14 +4,15 @@ class SektionsController < ApplicationController
 
 
   def create 
-    teacher = Teacher.find params[:id]
-    name = params[:name]
-    sk = name.nil? ? nil : teacher.sektions.build(:name => name)
-    if sk.nil?
+    teacher = params[:id].blank? ? current_account.loggable : Teacher.find(params[:id])
+    name = params[:new][:name]
+    @sk = name.nil? ? nil : teacher.sektions.build(:name => name)
+
+    if @sk.nil?
       render :json => { :notify => { :text => "No name given to section" } }, :status => :ok
     else
-      saved = sk.save
-      render :json => { :notify => { :text => "#{saved ? '#{name} created' : 'Error saving #{name}'}" } }, :status => :ok
+      saved = @sk.save
+      render :json => { :notify => { :text => "Error saving #{name}}" } }, :status => :ok unless saved
     end
   end 
 

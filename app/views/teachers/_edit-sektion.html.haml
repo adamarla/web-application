@@ -1,0 +1,12 @@
+
+#mng-sektions.tabbable.tabs-left
+  %ul.nav.nav-tabs.span3
+    - teacher.sektions.each do |m|
+      %li
+        = simple_link :for => "#{m.label}", :toggle => :tab, :marker => "#{m.id}",
+        :href => "#enrolled-students", :url => "sektion/students.json?id=#{m.id}&context=edit"
+
+  .tab-content.span8
+    = simple_form_for :new, :url => update_sektion_path, :remote => true do |f|
+      %button.btn.btn-inverse.nopurge{ :type => :submit }= "Remove Selected"
+      .tab-pane.push-down#enrolled-students
