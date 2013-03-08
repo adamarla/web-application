@@ -27,6 +27,24 @@ class StudentsController < ApplicationController
     end
   end 
 
+  def enroll 
+    code = params[:enroll][:sektion]
+    sid = params[:id]
+    student = sid.blank? ? current_account.loggable : Student.where(:id => sid).first
+
+    unless code.blank?
+      sk = Sektion.where{ uid =~ "#{code}" }.first
+      unless sk.nil?
+        sk.students << student unless student.nil?
+        render :json => { :notify => { :text => "Successfully enrolled in '#{sk.name}'" }}, :status => :ok 
+      else
+        render :json => { :notify => { :text => "No section with code '#{code}' found" }}, :status => :ok 
+      end
+    else
+      render :json => { :notify => { :text => "Enrollment failed", :subtext => "No section code provided" }}, :status => :ok
+    end
+  end
+
   def proficiency
     student = Student.find params[:id]
     teacher = current_account.nil? ? nil : (current_account.loggable_type == "Teacher" ? current_account.loggable : nil)

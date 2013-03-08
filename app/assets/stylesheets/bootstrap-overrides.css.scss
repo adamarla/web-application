@@ -65,6 +65,30 @@ $green: #347235 ; // rgb(87,188,32)
       }
     }
   } 
+
+  > form { 
+    padding: 5px ;
+    input {
+      background: transparent ;
+      color: white ;
+      font: {
+        size: 15px ;
+      } 
+      border: {
+        style : none ;
+        radius: 0px; 
+        bottom: 1px solid $gradians-blue ;
+      } 
+      padding: 6px ; 
+      min-height: 18px ;
+    } 
+
+    p.help-block {
+      font-size: 10px ;
+      color: $gradians-blue ; 
+      margin-top: -4px ;
+    } 
+  } 
 } 
 
 .instruction { 

@@ -81,6 +81,7 @@ Webapp::Application.routes.draw do
   match 'inbox/echo' => 'students#inbox_echo', :via => :get
   match 'outbox' => 'students#outbox', :via => :get
   match 'overall/proficiency' => 'students#proficiency', :via => :get
+  match 'enroll' => 'students#enroll', :via => :post
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', :via => :get
