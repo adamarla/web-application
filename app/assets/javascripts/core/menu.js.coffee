@@ -1,7 +1,9 @@
 
 window.menu = {
-  close : (m) ->
+  close : (m, force = false) ->
     menu = m.closest(".dropdown-menu[role='menu']").eq(0)
+    if menu.hasClass 'force-close'
+      return false unless force
     toolboxed = menu.parent().attr('id') is 'toolbox'
     return true if toolboxed
     menu.remove()
