@@ -443,6 +443,7 @@ button[data-toggle='button'] {
   top: 0px ;
   z-index: 3 ;
   min-width: 700px ;
+  width: 1024px ;
   ul {
     margin-top: 15px ;
   }
@@ -721,3 +722,7 @@ li.split {
   height: 26px ;
 }
 
+.container-fluid {
+  width: 1024px ;
+  margin: 0 auto ;
+}
