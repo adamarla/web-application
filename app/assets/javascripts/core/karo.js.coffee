@@ -62,8 +62,8 @@ window.karo = {
     return (ul.hasClass(klass) || ul.attr(klass) is 'true')
 
   tab : {
-    enable : (id) ->
-      m = $("##{id}")[0]
+    enable : (obj) ->
+      m = if typeof obj is 'string' then $("##{obj}")[0] else obj
       li = $(m).parent()
       li.removeClass 'disabled'
       li.removeClass 'active' if li.hasClass 'active'
