@@ -109,6 +109,21 @@ jQuery ->
   })
 
   #####################################################################
+  ## Forms within dropdown menus  
+  #####################################################################
+  $('li.dropdown').on 'click', 'form button', (event) ->
+    btn = $(event.target)
+    submit = if btn.hasClass('dismiss') then false else true
+    unless submit
+      event.stopImmediatePropagation()
+      menu.close btn, true
+    return submit
+
+  $('li.dropdown').on 'submit', 'ul.dropdown-menu form', (event) ->
+    menu.close $(event.target), true
+    return true
+
+  #####################################################################
   ## Do nothing if a.brand is clicked 
   #####################################################################
 
@@ -370,4 +385,5 @@ jQuery ->
    for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default-lnk='true']")
      trigger.click m
      return true
+
 
