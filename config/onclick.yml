@@ -211,7 +211,13 @@ lnk-mng-sektions :
     show : left-8
   middle :
     show : middle-1
+  autoclick :
+    tab : tab-mng-sektions-1
+
+tab-mng-sektions-1 :
   url : teacher/sektions?context=edit
+  panel : 
+    url : ping/sektion?id=:id
 
 ##############################################################################
 ## Students 

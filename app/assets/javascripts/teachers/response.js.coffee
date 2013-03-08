@@ -74,7 +74,7 @@ jQuery ->
       childKey = "datum"
       wsSummary json
     else if url.match(/teacher\/sektions/)
-      target = if json.context is 'deepdive' then $('#pane-dive-1') else $('#my-sektions-list')
+      target = if json.context is 'deepdive' then $('#pane-dive-1') else $('#pane-mng-sektions-1')
       parentKey = 'sektions'
       childKey = 'sektion'
     else if url.match(/vertical\/topics/)

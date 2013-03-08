@@ -2,18 +2,23 @@ class SektionsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
+  def ping
+    @sk = Sektion.find params[:id]
+  end
 
   def create 
     teacher = params[:id].blank? ? current_account.loggable : Teacher.find(params[:id])
-    name = params[:new][:name]
-    @sk = name.nil? ? nil : teacher.sektions.build(:name => name)
+    names = params[:new].values.select{ |m| !m.blank? }
+    @sk = []
 
-    if @sk.nil?
-      render :json => { :notify => { :text => "No name given to section" } }, :status => :ok
-    else
-      saved = @sk.save
-      render :json => { :notify => { :text => "Error saving #{name}}" } }, :status => :ok unless saved
-    end
+    names.each do |m| 
+      @sk.push teacher.sektions.build(:name => m)
+    end 
+
+    @sk.each do |m| 
+      m.save
+      sleep 1 # very important. Keeps uids separated
+    end 
   end 
 
   def update 
