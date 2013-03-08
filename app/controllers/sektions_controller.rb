@@ -18,18 +18,31 @@ class SektionsController < ApplicationController
 
   def update 
     sektion = Sektion.find params[:id]
-    student_ids = params[:checked].keys.map(&:to_i)
+    editable = (sektion && (sektion.teacher_id == current_account.loggable_id))
 
-=begin
-    Do NOT change the relative order of the next 2 lines !!
-    The first line updates the StudentRoster table - not Sektion
-    The second line updates the Sektion object 
-
-    Request for re-generation of roster PDF is tied to (2). So, (2) must
-    happen AFTER (1)
-=end
-    sektion.student_ids = student_ids
-    render :json => { :status => "updated" }, :status => :ok
+    if editable
+      student_ids = sektion.student_ids
+      remove = params[:checked].keys.map(&:to_i)
+      retain = student_ids - remove
+      sektion.student_ids = retain
+      render :json => { 
+        :notify => { 
+          :text => "#{sektion.name} updated", 
+          :subtext => "#{remove.count} student(s) removed" 
+        } }, :status => :ok
+    elsif sektion.nil?
+      render :json => { 
+        :notify => { 
+          :text => "Update failed", 
+          :subtext => "Specified section not found" 
+        } }, :status => :ok
+    else
+      render :json => { 
+        :notify => { 
+          :text => "Update failed", 
+          :subtext => "Cannot update someone else's section" 
+        } }, :status => :ok
+    end
   end 
 
   def update_student_list 
