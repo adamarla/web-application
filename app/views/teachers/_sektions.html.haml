@@ -1,8 +1,14 @@
 
-#my-sektions
-  = simple_form_for :new, :url => add_sektion_path, :remote => true do |f|
-    .input-append.nopurge.offset1
-      = f.input_field :name, :placeholder => "New Section"
-      %button.btn.btn-inverse{ :type => :submit }= "Add Section"
-  #my-sektions-list.push-down
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link :for => "Existing", :href => '#pane-mng-sektions-1', :id => 'tab-mng-sektions-1'
+  %li
+    = simple_link :for => "Add more...", :href => '#pane-mng-sektions-2', :id => 'tab-mng-sektions-2'
 
+.tab-content
+  #pane-mng-sektions-1.tab-pane
+  #pane-mng-sektions-2.tab-pane.nopurge
+    = simple_form_for :new, :url => add_sektion_path, :remote => true do |f|
+      - [*1..5].each do |m|
+        = f.input_field "#{m}", :placeholder => "new section ##{m}"
+      %button.btn.btn-inverse.pull-right{ :type => :submit }= "Add"

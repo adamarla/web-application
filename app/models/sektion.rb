@@ -33,20 +33,6 @@ class Sektion < ActiveRecord::Base
     return self.teacher_id == teacher.id
   end 
 
-  def update_student_list ( student_list ) 
-    # student_list is a hash of the form : { 1 => true, 2 => false, 3 => true ... }
-    # and is actually equal to params[:checked]
-
-    student_list.each { |student_id, assign| 
-      student = Student.find student_id 
-      if assign 
-        student.update_attribute(:sektion_id, self.id) 
-      else 
-        student.update_attribute(:sektion_id, nil) if student.sektion_id == self.id 
-      end 
-    } 
-  end 
-
   def pdf
     # UNIX has problem w/ some non-word characters in filenames
     # TeX has a problem w/ most of the rest ( unless escaped ). No one has a problem

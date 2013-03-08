@@ -87,11 +87,11 @@ Webapp::Application.routes.draw do
   match 'sektion/proficiency' => 'sektions#proficiency', :via => :get
   match 'add/sektion' => 'sektions#create', :via => :post
   match 'update/sektion' => 'sektions#update', :via => :post
+  match 'ping/sektion' => 'sektions#ping', :via => :get
 
   # Teacher 
   resource :teacher, :only => [:create, :update, :show]
   match 'teachers/list' => 'teachers#list', :via => :get
-  # match 'teacher/update_roster' => 'teachers#update_roster', :via => [:put, :post]
   match 'teacher/sektions' => 'teachers#sektions', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
   match 'teacher/build_quiz' => 'teachers#build_quiz', :via => [:put, :post]
