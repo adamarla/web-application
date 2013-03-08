@@ -107,6 +107,9 @@ jQuery ->
           shared : 'wsb-sektions',
           data : { url : "sektion/students?id=:id"}
         }
+    else if url.match(/ping\/sektion/)
+      tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
+      karo.tab.enable tab if tab?
     else
       matched = false
 
