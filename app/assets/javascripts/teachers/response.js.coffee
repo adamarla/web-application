@@ -29,6 +29,8 @@ jQuery ->
       if json.context is 'deepdive'
         target = $('#pane-dive-3')
         target.empty()
+      else if json.context is 'edit'
+        target = $('#enrolled-students')
       else
         target = $('#wsb-sektions')
 
@@ -72,7 +74,7 @@ jQuery ->
       childKey = "datum"
       wsSummary json
     else if url.match(/teacher\/sektions/)
-      target = $('#pane-dive-1')
+      target = if json.context is 'deepdive' then $('#pane-dive-1') else $('#my-sektions-list')
       parentKey = 'sektions'
       childKey = 'sektion'
     else if url.match(/vertical\/topics/)
@@ -90,6 +92,21 @@ jQuery ->
       target = $('#editqz-1')
       parentKey = 'questions'
       childKey = 'datum'
+    else if url.match(/add\/sektion/)
+      target = $('#my-sektions-list')
+      parentKey = 'sektion'
+      childKey = 'new'
+      # Add the new created section wherever sections are shown in left-tabs 
+      leftTabs.add '#mng-sektions', json,
+        {
+          shared : 'enrolled-students',
+          data : { url : "sektion/students?id=:id&context=edit"}
+        }
+      leftTabs.add '#sektions-tab', json,
+        {
+          shared : 'wsb-sektions',
+          data : { url : "sektion/students?id=:id"}
+        }
     else
       matched = false
 

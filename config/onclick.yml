@@ -7,12 +7,6 @@ lnk-edit-account :
   toggle : modal
   notouch : true
 
-#lnk-9-quizzes : &type001
-#
-#lnk-10-quizzes : *type001
-#lnk-11-quizzes : *type001
-#lnk-12-quizzes : *type001
-
 lnk-existing-quiz :
   default-lnk : true
   autoclick :
@@ -188,7 +182,7 @@ lnk-rc-deepdive :
     tab : tab-dive-1
 
 tab-dive-1 :
-  url : teacher/sektions
+  url : teacher/sektions?context=deepdive
   panel : 
     url : sektion/students.json?id=:id&context=deepdive
   autoclick : 
@@ -211,6 +205,13 @@ deepdive-* :
   panel :
     url : sektion/proficiency?of=:prev&in=:id
   prev : tab-dive-1
+
+lnk-mng-sektions :
+  left : 
+    show : left-8
+  middle :
+    show : middle-1
+  url : teacher/sektions?context=edit
 
 ##############################################################################
 ## Students 

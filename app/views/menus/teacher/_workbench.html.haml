@@ -1,4 +1,13 @@
 
 %ul.dropdown-menu.dropdown-inverse#teacher-workbench{ :role => :menu }
   %li
-    = simple_link :for => "Grade these", :id => 'lnk-wb-pending'
+    = simple_link :for => "Grading Work (pending)", :id => 'lnk-wb-pending'
+  %li
+    = simple_link :for => "Upload Questions", :id => 'lnk-upload-suggestion'
+  %li
+    = simple_link :for => "Manage Section / Study Groups", :id => 'lnk-mng-sektions'
+-#
+  %li
+    = simple_link :for => "Using suggestion form", :id => 'lnk-suggestion-form',
+    :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
+
