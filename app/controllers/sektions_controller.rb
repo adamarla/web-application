@@ -45,13 +45,6 @@ class SektionsController < ApplicationController
     end
   end 
 
-  def update_student_list 
-    section = Sektion.find params[:id] 
-    head :bad_request if section.nil? 
-
-    render :json => { :status => "Done" }, :status => (section.update_student_list(params[:checked]) ? :ok : :bad_request)
-  end 
-
   def students 
     @sektion = Sektion.find params[:id]
     @students = @sektion.students.order(:first_name)
