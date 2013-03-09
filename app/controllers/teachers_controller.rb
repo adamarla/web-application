@@ -1,35 +1,21 @@
 class TeachersController < ApplicationController
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, :except => [:create]
   respond_to :json
 
-  def create 
-    school = School.find params[:id] 
-    head :bad_request if school.nil? 
+  def create
+    info = params[:register]
+    teacher = Teacher.new :name => info[:name]
+    username = create_username_for teacher, :teacher
+    account = teacher.build_account :email => info[:email], :password => info[:password],
+                                    :password_confirmation => info[:password], :trial => false,
+                                    :username => username
+    if teacher.save 
+      render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+    else
+      render :json => { :notify => { :text => "Registration Failed" }}, :status => :ok
+    end
+  end 
 
-    names = params[:names]
-    success = true 
-    who = current_account.loggable
-    trial = who.nil? ? true : (who.is_admin ? false : true) # if admin creating, then non-trial 
-
-    names.each do |slot, name|
-      next if name.blank?
-      @teacher = school.teachers.build :name => name
-      username = create_username_for @teacher, :teacher
-      email = "#{username}@drona.com"
-      password = school.zip_code
-
-      unless username.nil?
-        account = @teacher.build_account :email => email, :username => username, 
-                      :password => password, :password_confirmation => password , :trial => trial
-        success &= @teacher.save 
-      else
-        success = false
-      end
-    end # of each 
-
-    success ? render(:json => { :status => "done" }, :status => :ok) : head(:bad_request)
-  end # of create
- 
   def show 
     render :nothing => true, :layout => 'teachers'
   end 

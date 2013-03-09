@@ -387,3 +387,12 @@ jQuery ->
      return true
 
 
+  #####################################################################
+  ## Auto-click teacher's tab in registration drop down 
+  #####################################################################
+
+  $('#m-registrations').click (event) ->
+    event.stopImmediatePropagation()
+    karo.tab.enable 'tab-register-1'
+    return true
+
