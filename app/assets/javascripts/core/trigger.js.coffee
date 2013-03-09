@@ -112,14 +112,16 @@ jQuery ->
   ## Forms within dropdown menus  
   #####################################################################
   $('li.dropdown').on 'click', 'form button', (event) ->
-    btn = $(event.target)
+    btn = $(this)
     submit = if btn.hasClass('dismiss') then false else true
     unless submit
       event.stopImmediatePropagation()
+      $(this).closest('li.dropdown').removeClass 'active' # call before removing form from OM
       menu.close btn, true
     return submit
 
   $('li.dropdown').on 'submit', 'ul.dropdown-menu form', (event) ->
+    $(this).closest('li.dropdown').removeClass 'active'
     menu.close $(event.target), true
     return true
 
