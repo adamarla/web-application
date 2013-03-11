@@ -7,11 +7,3 @@
     = simple_link :for => "New", :id => "lnk-new-quiz"
   %li
     = simple_link :for => "List", :id => 'lnk-existing-quiz'
-
-  %li.divider
-  %li.nav-header= "Suggest Questions"
-  %li
-    = simple_link :for => "Using suggestion form", :id => 'lnk-suggestion-form',
-    :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
-  %li
-    = simple_link :for => "Uploading a Word Document", :id => 'lnk-upload-suggestion', :href => "#m-suggestion-upload"
