@@ -1,9 +1,0 @@
-
-#new-course
-  = semantic_form_for :course, :remote => true, :url => course_path do |f| 
-    %div
-      = f.inputs do 
-        = f.input :name, :label => false, :input_html => { :placeholder => 'give the course a name' } 
-      .submit-buttons.right
-        = submit_tag 'create'
-    #define-course-topics.as-accordion
