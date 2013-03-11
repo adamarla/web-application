@@ -10,6 +10,7 @@
     = render :partial => 'toolbox/fdb-panel'
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/student/inbox'
+    = render :partial => 'menus/student/enroll'
 
 - content_for :modals do
   = render :partial => 'modals/user/account'
@@ -33,11 +34,13 @@
               %a.brand.span3{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
                 .tagline.span10.offset1= "Grades will happen"
-              %ul.nav.span8
+              %ul.nav.span8.pull-right
                 %li
                   = simple_link :for => "Report Cards", :id => 'lnk-st-rc'
                 %li
                   = simple_link :for => "Inbox", :id => 'lnk-st-inbox'
+                %li.dropdown
+                  = simple_link :for => "Enroll", :as => :dropdown, :id => 'm-enroll-self'
                 %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid

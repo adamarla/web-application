@@ -1,57 +1,30 @@
 class TeachersController < ApplicationController
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, :except => [:create]
   respond_to :json
 
-  def create 
-    school = School.find params[:id] 
-    head :bad_request if school.nil? 
+  def create
+    info = params[:register]
+    country = Country.where{ name =~ "%#{info[:country]}%" }.first unless info[:country].blank?
+    teacher = country.nil? ? Teacher.new(:name => info[:name]) : 
+                             Teacher.new(:name => info[:name], :country_id => country.id)
+    username = create_username_for teacher, :teacher
+    account = teacher.build_account :email => info[:email], :password => info[:password],
+                                    :password_confirmation => info[:password], :trial => false,
+                                    :username => username
+    teacher.zip_code = info[:zip].blank? ? nil : info[:zip]
+    if teacher.save 
+      render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+    else
+      render :json => { :notify => { :text => "Registration Failed" }}, :status => :ok
+    end
+  end 
 
-    names = params[:names]
-    success = true 
-    who = current_account.loggable
-    trial = who.nil? ? true : (who.is_admin ? false : true) # if admin creating, then non-trial 
-
-    names.each do |slot, name|
-      next if name.blank?
-      @teacher = school.teachers.build :name => name
-      username = create_username_for @teacher, :teacher
-      email = "#{username}@drona.com"
-      password = school.zip_code
-
-      unless username.nil?
-        account = @teacher.build_account :email => email, :username => username, 
-                      :password => password, :password_confirmation => password , :trial => trial
-        success &= @teacher.save 
-      else
-        success = false
-      end
-    end # of each 
-
-    success ? render(:json => { :status => "done" }, :status => :ok) : head(:bad_request)
-  end # of create
- 
   def show 
     render :nothing => true, :layout => 'teachers'
   end 
 
   def load
     @teacher = Teacher.find params[:id]
-  end
-
-  def topics_this_section
-    teacher = Teacher.find params[:id]
-    sektion = Sektion.find params[:section_id]
-    head :bad_request if (teacher.nil? || sektion.nil?)
-    subject = teacher.subjects.first 
-    board = teacher.school.board_id
-    course = Course.where(:board_id => board, :klass => sektion.klass, :subject_id => subject.id).first
-    @topics = course.topics
-  end
-
-  def courses
-    teacher = current_account.loggable 
-    head :bad_request if teacher.nil? 
-    @courses = teacher.courses
   end
 
   def worksheets
@@ -87,31 +60,10 @@ class TeachersController < ApplicationController
     end 
   end 
 
-  def specializations
-    @subjects = Subject.all
-    @teacher = Teacher.find params[:id]
-  end 
-
-  def update_specialization
-    teacher = Teacher.find params[:id]
-    new_object_ids = [] 
-
-    params[:subject].keys.each do |m|
-      s_id = m.to_i
-      klasses = params[:subject][m].keys.map(&:to_i)
-      klasses.each do |k|
-        s = Specialization.where(:teacher_id => teacher.id, :klass => k, :subject_id => s_id).first
-        s = teacher.specializations.create(:subject_id => s_id, :klass => k) if s.nil?
-        new_object_ids.push s.id
-      end
-    end 
-    teacher.specialization_ids = new_object_ids 
-    render :json => { :status => "Done" }, :status => :ok
-  end 
-  
   def sektions
     teacher = params[:id].nil? ? current_account.loggable : Teacher.find(params[:id])
     @sektions = teacher.nil? ? [] : teacher.sektions
+    @context = params[:context]
   end
 
   def students 
@@ -145,8 +97,6 @@ class TeachersController < ApplicationController
 
   def build_quiz 
     teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
-    # course = Course.find params[:id]
-    # head :bad_request if (teacher.nil? || course.nil?)
     head :bad_request if teacher.nil? 
 
     name = params[:checked].delete :name

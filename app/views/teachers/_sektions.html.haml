@@ -1,25 +1,14 @@
 
-#update-sektion
-  = render :partial => 'toolbox/name_filter', 
-           :locals => { :url => "teacher/students_with_names.json?id=#{current_account.loggable_id}" }
-  = semantic_form_for :sektion, :remote => true, 
-                      :url => "/sektion.json", :method => :put do |f|
-    .submit-buttons
-      = submit_tag "update section"
-    #enrolled-students.as-accordion
-      - [*9..12].each do |grd|
-        .scroll-heading{ :marker => "#{grd}" }= "Grade #{grd}"
-        .scroll-content.purgeable{ :columns => 2 }
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link :for => "Existing", :href => '#pane-mng-sektions-1', :id => 'tab-mng-sektions-1'
+  %li
+    = simple_link :for => "Add more...", :href => '#pane-mng-sektions-2', :id => 'tab-mng-sektions-2'
 
-#sektions-summary
-  = semantic_form_for :sektion, :remote => true, 
-                      :url => "#{sektion_path}.json?id=#{current_account.loggable_id}", 
-                      :method => :post do |f|
-    #misc-sektion-attributes
-      = text_field_tag :name, nil, :class => :left, :placeholder => "new section name"
-      = check_box_tag :exclusive, true, false, :id => 'private-sektion'
-      = label_tag 'private-sektion', "visible only to me"
-    .submit-buttons
-      = submit_tag "add section"
-    
-  #all-my-sektions.playlist
+.tab-content
+  #pane-mng-sektions-1.tab-pane
+  #pane-mng-sektions-2.tab-pane.nopurge
+    = simple_form_for :new, :url => add_sektion_path, :remote => true do |f|
+      - [*1..5].each do |m|
+        = f.input_field "#{m}", :placeholder => "new section ##{m}"
+      %button.btn.btn-inverse.pull-right{ :type => :submit }= "Add"

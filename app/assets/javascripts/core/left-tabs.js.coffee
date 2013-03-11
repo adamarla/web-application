@@ -137,4 +137,21 @@ window.leftTabs = {
         j = a.children('script')[0]
         MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
     return true
+
+  add : (root, json, options = null) ->
+    return false unless options? # this method only works w/ shared hrefs
+    return false unless options.shared?
+    return false unless options.data.url?
+
+    root = if typeof root is 'string' then $(root) else root
+    ul = root.children('ul.nav-tabs').eq(0)
+
+    url = options.data.url
+    hasId = url.search(":id") isnt -1
+
+    for m in json.tabs
+      ajax = if hasId then url.replace(":id", m.id) else url
+      html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-url='#{ajax}'>#{m.name}</a></li>"
+      $(html).prependTo ul
+    return true
 }

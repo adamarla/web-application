@@ -4,13 +4,11 @@
 #
 #  id          :integer         not null, primary key
 #  guardian_id :integer
-#  school_id   :integer
 #  first_name  :string(30)
 #  last_name   :string(30)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  klass       :integer
-#  atm_key     :string(20)
+#  uid         :string(20)
 #
 
 require 'test_helper'

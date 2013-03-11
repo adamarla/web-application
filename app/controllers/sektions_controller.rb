@@ -2,65 +2,52 @@ class SektionsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json 
 
+  def ping
+    @sk = Sektion.find params[:id]
+  end
 
   def create 
-    teacher = Teacher.find params[:id]
-    name = params[:name]
-    exclusive = params[:exclusive].blank? ? false : true
+    teacher = params[:id].blank? ? current_account.loggable : Teacher.find(params[:id])
+    names = params[:new].values.select{ |m| !m.blank? }
+    @sk = []
 
-    for_now = teacher.klasses.first
-    @sektion = Sektion.new :name => name, :school_id => teacher.school_id,
-                           :klass => for_now, :teacher_id => teacher.id, :exclusive => exclusive
-    head :bad_request unless @sektion.save
+    names.each do |m| 
+      @sk.push teacher.sektions.build(:name => m)
+    end 
+
+    @sk.each do |m| 
+      m.save
+      sleep 1 # very important. Keeps uids separated
+    end 
   end 
 
   def update 
     sektion = Sektion.find params[:id]
-    student_ids = params[:checked].keys.map(&:to_i)
+    editable = (sektion && (sektion.teacher_id == current_account.loggable_id))
 
-    # The klass/grade of a sektion is the klass of the majority of students 
-    # in that sektion OR the higher klass - in case of equal # of students 
-
-    klasses = Student.where(:id => student_ids).map(&:klass)
-    n_occurrences = [*9..12].map{ |m| klasses.count m }
-    klass = [*9..12].at(n_occurrences.index n_occurrences.max)
-
-=begin
-    Do NOT change the relative order of the next 2 lines !!
-    The first line updates the StudentRoster table - not Sektion
-    The second line updates the Sektion object 
-
-    Request for re-generation of roster PDF is tied to (2). So, (2) must
-    happen AFTER (1)
-=end
-    sektion.student_ids = student_ids
-    sektion.update_attribute :klass, klass 
-    render :json => { :status => "updated" }, :status => :ok
-  end 
-
-  def list 
-    if current_account
-      case current_account.role 
-        when :admin
-          @sektions = Sektion.where(:school_id => params[:school_id]) 
-        when :school 
-          @sektions = Sektion.where(:school_id => current_account.loggable.id) 
-        when :student 
-          @sektions = Sektion.where(:id => current_account.loggable.sektion_id)
-        else 
-          @sektions = [] 
-      end 
-      respond_with @sektions.order(:klass).order(:name)
+    if editable
+      student_ids = sektion.student_ids
+      remove = params[:checked].keys.map(&:to_i)
+      retain = student_ids - remove
+      sektion.student_ids = retain
+      render :json => { 
+        :notify => { 
+          :text => "#{sektion.name} updated", 
+          :subtext => "#{remove.count} student(s) removed" 
+        } }, :status => :ok
+    elsif sektion.nil?
+      render :json => { 
+        :notify => { 
+          :text => "Update failed", 
+          :subtext => "Specified section not found" 
+        } }, :status => :ok
     else
-      head :bad_request 
-    end 
-  end # of action 
-
-  def update_student_list 
-    section = Sektion.find params[:id] 
-    head :bad_request if section.nil? 
-
-    render :json => { :status => "Done" }, :status => (section.update_student_list(params[:checked]) ? :ok : :bad_request)
+      render :json => { 
+        :notify => { 
+          :text => "Update failed", 
+          :subtext => "Cannot update someone else's section" 
+        } }, :status => :ok
+    end
   end 
 
   def students 

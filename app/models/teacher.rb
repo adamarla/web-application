@@ -8,6 +8,8 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer
+#  country_id :integer
+#  zip_code   :string(10)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -22,15 +24,12 @@ include REXML
 include ApplicationUtil
 
 class Teacher < ActiveRecord::Base
-  belongs_to :school 
-
+  belongs_to :country
   has_one :account, :as => :loggable, :dependent => :destroy
   has_one :trial_account, :dependent => :destroy
 
   has_many :quizzes, :dependent => :destroy 
-
-  has_many :specializations, :dependent => :destroy
-  has_many :subjects, :through => :specializations
+  has_many :sektions, :dependent => :destroy
 
   has_many :favourites, :dependent => :destroy
   has_many :suggestions
@@ -52,24 +51,10 @@ class Teacher < ActiveRecord::Base
   #after_validation :setup_account, :if => :first_time_save?
   #before_destroy :destroyable? 
 
-  def klasses
-    Specialization.where(:teacher_id => self.id).map(&:klass).uniq
-  end 
-
-  def sektions( all = true )
-    # By default, this method returns all sektions that a teacher CAN teach - even if she 
-    # doesn't teach some of them. To get only the sektions a teacher teaches, pass false to this method
-    s = Sektion.in_school(self.school_id).of_klass(self.klasses)
-    s = s - Sektion.where(:exclusive => true).where('teacher_id <> ?', self.id)
-    s = s.where(:teacher_id => self.id) unless all
-    return s.sort{ |m, n| m.klass <=> n.klass }.sort{ |m,n| m.name <=> n.name }
-  end
-
-  def students( all = true, filter = [] )
-    # This method returns all the students a teacher can teach - even if she does 
-    # actually teach them 
-    students = Student.where(:school_id => self.school_id, :klass => self.klasses)
-    return filter.empty? ? students : students.name_begins_with(filter)
+  def students 
+    sk = Sektion.where(:teacher_id => self.id).map(&:id)
+    sids = StudentRoster.where(:sektion_id => sk).map(&:student_id).uniq
+    return Student.where(:id => sids)
   end 
 
   def benchmark(topic, level = :senior)
@@ -126,10 +111,10 @@ class Teacher < ActiveRecord::Base
         @quiz.destroy
       else
         # The atm-key is the randomized access point to this quiz in mint/
-        atm_key = Quiz.extract_atm_key manifest[:root] 
+        uid = Quiz.extract_uid manifest[:root] 
         span = manifest[:image].class == Array ? manifest[:image].count : 1
-        @quiz.update_attributes :atm_key => atm_key, :span => span
-        response = {:atm_key => atm_key, :name => @quiz.name }
+        @quiz.update_attributes :uid => uid, :span => span
+        response = {:atm_key => uid, :name => @quiz.name }
 
         # Increment n_picked for each of the questions picked for this quiz
         Question.where(:id => question_ids).each do |m|
@@ -160,21 +145,6 @@ class Teacher < ActiveRecord::Base
     end
   end
 
-  def colleagues(strict = true)
-=begin
-    A colleague is defined as someone who is: 
-      1. a teacher in the same school 
-      2. teaches some or all of the same subjects 
-      3. ( if strict = true ) and at the same grade levels 
-=end
-    ids = Teacher.where(:school_id => self.school_id).map(&:id) - [self.id]
-
-    candidates = Specialization.where(:teacher_id => ids, :subject_id => self.subject_ids)
-    candidates = strict ? candidates.where(:klass => self.klasses) : candidates
-
-    return Teacher.where(:id => candidates.map(&:teacher_id).uniq)
-  end
-
   def roster 
     # Yes, yes.. We could have gotten the same thing by simply calling self.sektions
     # But if we return an ActiveRelation, then we get the benefit of lazy loading
@@ -184,32 +154,6 @@ class Teacher < ActiveRecord::Base
   def set_subjects(list_of_ids = [])
     list_of_ids.each_with_index { |a, index| list_of_ids[index] = a.to_i } 
     self.subjects = Subject.where :id => list_of_ids
-  end
-
-  def courses
-    specializations  = Specialization.where :teacher_id => self.id
-    board = self.school.board_id 
-    
-=begin
-    What if teacher teaches 9th class maths and 10th class physics? 
-    Should we then return:
-      1. 9th class maths & 10th class physics only OR 
-      2. 9th & 10th class maths & physics 
-
-    For now, we will go with (1). But who knows, (2) might be better
-=end
-    cids = []
-    specializations.each do |s| 
-      cids.concat Course.where(:board_id => board, :klass => s.klass, :subject_id => s.subject_id).map(&:id)
-    end 
-    return Course.where(:id => cids)
-  end
-
-  def verticals
-    courses = self.courses
-    topics = courses.map(&:topic_ids).flatten.uniq
-    vids = Topic.where(:id => topics).map(&:vertical_id).uniq
-    return Vertical.where(:id => vids).order(:name)
   end
 
   def worksheets

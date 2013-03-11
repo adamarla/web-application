@@ -4,20 +4,17 @@
 #
 #  id          :integer         not null, primary key
 #  guardian_id :integer
-#  school_id   :integer
 #  first_name  :string(30)
 #  last_name   :string(30)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  klass       :integer
-#  atm_key     :string(20)
+#  uid         :string(20)
 #
 
 include ApplicationUtil
 
 class Student < ActiveRecord::Base
   belongs_to :guardian
-  belongs_to :school
 
   has_many :student_rosters, :dependent => :destroy 
   has_many :sektions, :through => :student_rosters
@@ -34,21 +31,13 @@ class Student < ActiveRecord::Base
   validates :first_name, :presence => true
 
   after_save  :reset_login_info
-  after_create  :generate_atm_key
+  after_create  :generate_uid
 
   # When should a student be destroyed? My guess, some fixed time after 
   # he/she graduates. But as I haven't quite decided what that time should
   # be, I am temporarily disabling all destruction
 
   before_destroy :destroyable? 
-
-  def self.in_klass(klass)
-    where(:klass => klass)
-  end
-
-  def self.in_school(id)
-    where(:school_id => id)
-  end
 
   def self.name_begins_with( allowed = [] )
     return if allowed.empty? 
@@ -184,8 +173,8 @@ class Student < ActiveRecord::Base
     return ret
   end
 
-  def generate_atm_key
-    if self.atm_key.nil?
+  def generate_uid
+    if self.uid.nil?
       SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generateStudentCode']}"
       response = SavonClient.request :wsdl, :generateStudentCode do
         soap.body = { :id => self.id }
@@ -193,33 +182,11 @@ class Student < ActiveRecord::Base
       manifest = response[:generate_student_code_response][:manifest]
       unless manifest.nil?
         root = manifest[:root]
-        self.atm_key = root.split('/').last 
+        self.uid = root.split('/').last 
         self.save
       end
     end
   end
-
-=begin
-  def proficiency?(topic_id)
-    Proficiency can be absolute or relative. Absolute proficiency takes into 
-    account the toughness of the questions students tackled on a topic. If a teacher
-    consistently picked easy questions, then even if the student got them all right,
-    one really can't say the student is proficient
-
-    Relative proficiency - on the other hand - normalizes marks student has earned
-    over just the maximum marks a student could have earned over those questions - as 
-    opposed to over the toughest questions he/she could have tackled
-
-    This method returns the absolute proficiency
-    g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
-    return 0 if g.count == 0
-
-    marks = g.map(&:marks?).inject(:+).to_f
-    max = 6 * g.count # 6 marks are for the toughest questions 
-    score = (marks/max).round(2)
-    return score
-  end
-=end
 
   private 
     def destroyable? 

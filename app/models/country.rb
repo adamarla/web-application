@@ -8,6 +8,7 @@
 #
 
 class Country < ActiveRecord::Base
+  has_many :teachers
 
   def self.collection
     Country.all.map{ |c|

@@ -1,4 +1,14 @@
 
+getMarker = (obj) ->
+  marker = $(obj).attr 'marker'
+  return marker if marker?
+  if $(obj).is 'li'
+    a = $(obj).children('a')[0]
+    return null unless a?
+    return getMarker(a)
+  return null
+
+
 window.gutenberg = {
   serverOptions : {
     local : "http://localhost:8080",
@@ -97,6 +107,23 @@ jQuery ->
   $('#how-it-works').carousel({
     interval : 5000
   })
+
+  #####################################################################
+  ## Forms within dropdown menus  
+  #####################################################################
+  $('li.dropdown').on 'click', 'form button', (event) ->
+    btn = $(this)
+    submit = if btn.hasClass('dismiss') then false else true
+    unless submit
+      event.stopImmediatePropagation()
+      $(this).closest('li.dropdown').removeClass 'active' # call before removing form from OM
+      menu.close btn, true
+    return submit
+
+  $('li.dropdown').on 'submit', 'ul.dropdown-menu form', (event) ->
+    $(this).closest('li.dropdown').removeClass 'active'
+    menu.close $(event.target), true
+    return true
 
   #####################################################################
   ## Do nothing if a.brand is clicked 
@@ -326,7 +353,7 @@ jQuery ->
   # to the .tab-pane within which the form is 
   ###############################################
 
-  $('.tab-content > .tab-pane form').submit (event) ->
+  $('.tab-content form').submit (event) ->
     action = this.dataset.action
     return true unless action?
 
@@ -339,7 +366,8 @@ jQuery ->
         obj = if obj? then $("##{obj}").parent() else null # $(obj) is an <a>. Marker is on the parent <li>
         unless obj?
           obj = if j is "prev" then activeTab.prev() else activeTab
-        action = action.replace ":#{j}", obj.attr('marker')
+        marker = getMarker(obj)
+        action = action.replace ":#{j}", marker
     $(this).attr 'action', action
     return true
 
@@ -359,4 +387,14 @@ jQuery ->
    for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default-lnk='true']")
      trigger.click m
      return true
+
+
+  #####################################################################
+  ## Auto-click teacher's tab in registration drop down 
+  #####################################################################
+
+  $('#m-registrations').click (event) ->
+    event.stopImmediatePropagation()
+    karo.tab.enable 'tab-register-1'
+    return true
 

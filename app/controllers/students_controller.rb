@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, :except => [:create]
   respond_to :json
 
   def show
@@ -7,25 +7,38 @@ class StudentsController < ApplicationController
   end
 
   def create 
-    school = School.find params[:id] 
-    head :bad_request if school.nil?
-    
-    @student = Student.new params[:student]
-    username = create_username_for @student, :student 
-    email = params[:student].delete(:email) || "#{username}@drona.com"
-    @student.school = school 
-    password = school.zip_code
-
-    unless username.blank?
-      account = @student.build_account :username => username, :email => email,  
-                                      :password => password, :password_confirmation => password
-    end 
-    if @student.save
-      respond_with(@student) 
-    else 
-      head(:bad_request)  
+    info = params[:register]
+    student = Student.new :name => info[:name]
+    username = create_username_for student, :student 
+    account = student.build_account :email => info[:email], :password => info[:password],
+                                    :password_confirmation => info[:password], :trial => false,
+                                    :username => username
+    if student.save 
+      enroll_in = Sektion.where{ uid =~ info[:code] }.first
+      enroll_in.students << student unless enroll_in.nil?
+      render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+    else
+      render :json => { :notify => { :text => "Registration Failed" }}, :status => :ok
     end
   end 
+
+  def enroll 
+    code = params[:enroll][:sektion]
+    sid = params[:id]
+    student = sid.blank? ? current_account.loggable : Student.where(:id => sid).first
+
+    unless code.blank?
+      sk = Sektion.where{ uid =~ "#{code}" }.first
+      unless sk.nil?
+        sk.students << student unless student.nil?
+        render :json => { :notify => { :text => "Successfully enrolled in '#{sk.name}'" }}, :status => :ok 
+      else
+        render :json => { :notify => { :text => "No section with code '#{code}' found" }}, :status => :ok 
+      end
+    else
+      render :json => { :notify => { :text => "Enrollment failed", :subtext => "No section code provided" }}, :status => :ok
+    end
+  end
 
   def proficiency
     student = Student.find params[:id]

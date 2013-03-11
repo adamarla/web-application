@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130301073402) do
+ActiveRecord::Schema.define(:version => 20130311060411) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -45,31 +45,15 @@ ActiveRecord::Schema.define(:version => 20130301073402) do
     t.boolean  "graded",       :default => false
     t.integer  "honest"
     t.boolean  "received",     :default => false
-    t.boolean  "prepped",      :default => false
+    t.boolean  "compiled",     :default => false
   end
 
   add_index "answer_sheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
   add_index "answer_sheets", ["testpaper_id"], :name => "index_answer_sheets_on_testpaper_id"
 
-  create_table "boards", :force => true do |t|
-    t.string   "name",       :limit => 50
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "countries", :force => true do |t|
     t.string "name",         :limit => 50
     t.string "alpha_2_code"
-  end
-
-  create_table "courses", :force => true do |t|
-    t.string   "name",       :limit => 50
-    t.integer  "board_id"
-    t.integer  "klass"
-    t.integer  "subject_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "active",                   :default => true
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -183,9 +167,8 @@ ActiveRecord::Schema.define(:version => 20130301073402) do
     t.datetime "updated_at"
     t.integer  "num_questions"
     t.string   "name",          :limit => 70
-    t.integer  "klass"
     t.integer  "subject_id"
-    t.string   "atm_key",       :limit => 20
+    t.string   "uid",           :limit => 20
     t.integer  "total"
     t.integer  "span"
     t.integer  "parent_id"
@@ -207,34 +190,21 @@ ActiveRecord::Schema.define(:version => 20130301073402) do
 
   create_table "schools", :force => true do |t|
     t.string   "name"
-    t.string   "street_address"
-    t.string   "city",           :limit => 40
-    t.string   "state",          :limit => 40
-    t.string   "zip_code",       :limit => 15
-    t.string   "phone",          :limit => 20
+    t.string   "zip_code",   :limit => 15
+    t.string   "phone",      :limit => 20
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "tag",            :limit => 40
-    t.integer  "board_id"
     t.string   "xls"
+    t.integer  "country_id"
+    t.string   "uid",        :limit => 10
   end
 
   create_table "sektions", :force => true do |t|
-    t.integer  "school_id"
-    t.integer  "klass"
     t.string   "name",       :limit => 40
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "teacher_id"
-    t.boolean  "exclusive",                :default => false
-  end
-
-  create_table "specializations", :force => true do |t|
-    t.integer  "teacher_id"
-    t.integer  "subject_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "klass"
+    t.string   "uid",        :limit => 10
   end
 
   create_table "student_rosters", :force => true do |t|
@@ -244,13 +214,11 @@ ActiveRecord::Schema.define(:version => 20130301073402) do
 
   create_table "students", :force => true do |t|
     t.integer  "guardian_id"
-    t.integer  "school_id"
     t.string   "first_name",  :limit => 30
     t.string   "last_name",   :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "klass"
-    t.string   "atm_key",     :limit => 20
+    t.string   "uid",         :limit => 20
   end
 
   create_table "subjects", :force => true do |t|
@@ -281,20 +249,14 @@ ActiveRecord::Schema.define(:version => 20130301073402) do
     t.string   "signature",   :limit => 15
   end
 
-  create_table "syllabi", :force => true do |t|
-    t.integer  "course_id"
-    t.integer  "topic_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "difficulty", :default => 1
-  end
-
   create_table "teachers", :force => true do |t|
     t.string   "first_name", :limit => 30
     t.string   "last_name",  :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
+    t.integer  "country_id"
+    t.string   "zip_code",   :limit => 10
   end
 
   create_table "testpapers", :force => true do |t|

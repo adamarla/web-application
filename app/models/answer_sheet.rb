@@ -11,7 +11,7 @@
 #  graded       :boolean         default(FALSE)
 #  honest       :integer
 #  received     :boolean         default(FALSE)
-#  prepped      :boolean         default(FALSE)
+#  compiled     :boolean         default(FALSE)
 #
 
 class AnswerSheet < ActiveRecord::Base
@@ -157,7 +157,7 @@ class AnswerSheet < ActiveRecord::Base
 
   def compile_tex
 
-    return if self.prepped
+    return if self.compiled
 
     student_ids = [self.student_id]
     students = Student.where(:id => student_ids)
@@ -175,10 +175,9 @@ class AnswerSheet < ActiveRecord::Base
         :students => names
       }
     end
-    self.prepped = !response[:prep_test_response][:manifest].nil?
-    self.save
+
+    self.update_attribute(:compiled, true) unless response[:prep_test_response][:manifest].nil?
     return response.to_hash[:prep_test_response]
-    
   end #of method
 
 end

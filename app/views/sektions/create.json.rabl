@@ -1,5 +1,5 @@
 
-object @sektion => :sektion
-  attribute :id
-  attribute :label => :name 
-  node(:ticker) { 'new' }
+object false 
+  node(:tabs) { 
+    @sk.map{ |m| { :id => m.id, :name => m.name, :tag => m.uid } }
+  } 

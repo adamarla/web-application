@@ -2,22 +2,18 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Course", :href => '#pane-qzb-courses', 
-      :id => 'tab-qzb-courses', :class => 'nopurge-ever'
+    = simple_link :for => "Topics", :href => '#pane-qzb-1', 
+      :id => 'tab-qzb-1', :class => 'nopurge-on-inactive nopurge-on-show'
   %li
-    = simple_link :for => "Topics", :href => '#pane-qzb-topics', 
-      :id => 'tab-qzb-topics', :class => 'nopurge-on-inactive nopurge-on-show'
-  %li
-    = simple_link :for => "Questions", :href => '#pane-qzb-questions', 
-      :id => 'tab-qzb-questions'
+    = simple_link :for => "Questions", :href => '#pane-qzb-2', 
+      :id => 'tab-qzb-2'
 
 
 .tab-content
-  #pane-qzb-courses.tab-pane
-  #pane-qzb-topics.tab-pane
+  #pane-qzb-1.tab-pane
     -#= render :partial => 'teachers/qzb-topics', :locals => { :teacher => teacher }
     = render :partial => 'teachers/qzb-topics', :locals => { :context => :qzb }
-  #pane-qzb-questions.tab-pane
+  #pane-qzb-2.tab-pane
     = render :partial => 'teachers/form-qzb', :locals => { :context => :qzb }
 
     

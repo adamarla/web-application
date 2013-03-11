@@ -8,6 +8,8 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer
+#  country_id :integer
+#  zip_code   :string(10)
 #
 
 require 'test_helper'

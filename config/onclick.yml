@@ -7,12 +7,6 @@ lnk-edit-account :
   toggle : modal
   notouch : true
 
-#lnk-9-quizzes : &type001
-#
-#lnk-10-quizzes : *type001
-#lnk-11-quizzes : *type001
-#lnk-12-quizzes : *type001
-
 lnk-existing-quiz :
   default-lnk : true
   autoclick :
@@ -84,7 +78,7 @@ lnk-upload-suggestion :
 
 lnk-new-quiz :
   autoclick : 
-    tab : tab-qzb-courses
+    tab : tab-qzb-1
   left :
     show : left-2
   wide :
@@ -97,17 +91,6 @@ lnk-wb-pending :
     show : wide-grd-canvas
   autoclick :
     tab : tab-grd-ws
-
-tab-qzb-courses : 
-  url : teacher/courses
-  autoclick :
-    tab : tab-qzb-topics
-
-tab-qzb-verticals :
-
-tab-qzb-topics : 
-
-tab-qzb-questions :
 
 m-teacher-quizzes :
   toggle : dropdown 
@@ -203,7 +186,7 @@ lnk-rc-deepdive :
     tab : tab-dive-1
 
 tab-dive-1 :
-  url : teacher/sektions
+  url : teacher/sektions?context=deepdive
   panel : 
     url : sektion/students.json?id=:id&context=deepdive
   autoclick : 
@@ -226,6 +209,19 @@ deepdive-* :
   panel :
     url : sektion/proficiency?of=:prev&in=:id
   prev : tab-dive-1
+
+lnk-mng-sektions :
+  left : 
+    show : left-8
+  middle :
+    show : middle-1
+  autoclick :
+    tab : tab-mng-sektions-1
+
+tab-mng-sektions-1 :
+  url : teacher/sektions?context=edit
+  panel : 
+    url : ping/sektion?id=:id
 
 ##############################################################################
 ## Students 
@@ -272,6 +268,10 @@ lnk-inbox-download :
   notouch: true
   ajax: disabled
   update-on : inbox/echo
+
+m-enroll-self : 
+  toggle : dropdown 
+  menu : enrollment-form
 
 ##############################################################################
 ## Admin Only 

@@ -1,7 +1,16 @@
 
-collection @sektions => :sektions 
-  attribute :id
-  attribute :label => :name
-  node(:tag) { |m| "#{m.students.count} student(s)" }
-  node(:lookin) { |m| "#{m.school_id}/rosters" }
-  node(:lookfor) { |m| "#{m.id}-#{m.pdf}" }
+
+object false
+  node(:sektions) {
+    deepdiving = (@context == 'deepdive')
+    @sektions.map{ |sk|
+      {
+        :sektion => {
+          :id => sk.id,
+          :name => sk.label,
+          :tag => "#{deepdiving ? "#{sk.students.count} student(s)" : "#{sk.uid}" }"
+        }
+      }
+    }
+  }
+  node(:context) { @context }

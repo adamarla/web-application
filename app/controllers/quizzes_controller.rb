@@ -5,16 +5,19 @@ class QuizzesController < ApplicationController
 
   def assign_to
     quiz = Quiz.where(:id => params[:id]).first 
-    publish = params[:publish] == 'yes' 
 
-    head :bad_request if quiz.nil?
-    teacher = quiz.teacher 
-
-    students = params[:checked].keys   # we need just the IDs
-    Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
-    at = Delayed::Job.where('failed_at IS NULL').count
-    render :json => { :notify => { :text => "Worksheet received", 
-                                   :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
+    unless quiz.nil?
+      publish = params[:publish] == 'yes' 
+      teacher = quiz.teacher 
+      students = params[:checked].keys   # we need just the IDs
+      Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
+      at = Delayed::Job.where('failed_at IS NULL').count
+      render :json => { :notify => { :text => "Worksheet received", 
+                                     :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
+    else 
+      render :json => { :notify => { :text => "Oops! No quiz specified",
+                                     :subtext => "Need to know what quiz to make worksheet for" } }, :status => :ok
+    end
   end
 
   def add_remove_questions
@@ -38,8 +41,7 @@ class QuizzesController < ApplicationController
 
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
-    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('atm_key IS NOT NULL')
-    # @quizzes = params[:klass].nil? ? @quizzes.order(:klass) : @quizzes.where(:klass => params[:klass].to_i)
+    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('uid IS NOT NULL')
 
     n = @quizzes.count 
     @per_pg, @last_pg = pagination_layout_details n

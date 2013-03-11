@@ -1,6 +1,6 @@
 
 -# Customized markers 
-- tchr = current_account.loggable
+- tc = current_account.loggable
 - server = "#{Gutenberg['server']}"
 
 -content_for :toolbox do
@@ -13,8 +13,8 @@
 
     = render :partial => 'menus/teacher/per-qz'
     = render :partial => 'menus/teacher/per-ws'
-    = render :partial => 'menus/teacher/qz-main', :locals => { :teacher => tchr, :server => server }
-    = render :partial => 'menus/teacher/workbench'
+    = render :partial => 'menus/teacher/qz-main', :locals => { :teacher => tc, :server => server }
+    = render :partial => 'menus/teacher/workbench', :locals => { :server => server }
     = render :partial => 'menus/teacher/rc' 
     = render :partial => 'menus/teacher/howto' 
 
@@ -55,46 +55,50 @@
     #spinner.spinner
       = image_tag "loading.gif", :id => 'img-spinner'
     .container-fluid 
-      #control-panel.g-panel.row-fluid{ :marker => "#{tchr.id}" } 
+      #control-panel.g-panel.row-fluid{ :marker => "#{tc.id}" } 
         .span12
           .navbar.navbar-inverse
             .navbar-inner
               %a.brand.span3{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
                 .tagline.span10.offset1= "Grades will happen"
-              %ul.nav.span8
+              %ul.nav.span8.pull-right
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
                   = simple_link :for => "Quizzes", :as => :dropdown, :id => 'm-teacher-quizzes'
                 %li.dropdown
                   = simple_link :for => "Report Cards", :as => :dropdown, :id => 'm-report-cards'
                 %li.dropdown
-                  = simple_link :for => "Workbench", :as => :dropdown, :id => 'm-teacher-workbench'
+                  = simple_link :for => "Misc.", :as => :dropdown, :id => 'm-teacher-workbench'
                 %li.dropdown
                   = simple_link :for => "Help", :as => :dropdown, :id => 'm-howto'
                 %li.dropdown
                   = simple_link :as => :dropdown, 
                     :id => 'm-notifications', :icon => "icon-white icon-bell"
                 %li#cp-account-link.dropdown
-                  = simple_link :for => "Hello, #{tchr.first_name}", :as => :dropdown, :id => 'm-account'
+                  = simple_link :for => "Hello, #{tc.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
           #left-1
-            = render :partial => 'teachers/wsb', :locals => { :teacher => tchr }
+            = render :partial => 'teachers/wsb', :locals => { :teacher => tc }
           #left-2
-            = render :partial => 'teachers/qzb', :locals => { :teacher => tchr }
+            = render :partial => 'teachers/qzb', :locals => { :teacher => tc }
           #left-3
           #left-4
             = render :partial => 'toolbox/grd-pending'
           #left-5
             = render :partial => 'teachers/rc'
           #left-6
-            = render :partial => 'teachers/deepdive', :locals => { :teacher => tchr }
+            = render :partial => 'teachers/deepdive', :locals => { :teacher => tc }
           #left-7
             = render :partial => 'teachers/edit-qz'
+          #left-8
+            = render :partial => 'teachers/sektions'
         #middle.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
+          #middle-1
+            = render :partial => 'teachers/edit-sektion', :locals => { :teacher => tc }
           #middle-X
         #right.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'right-paginator', :url => '#' }

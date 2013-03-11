@@ -15,6 +15,10 @@ $lightblue: lighten($deep-blue, 23%) ;
 $red: #d72323 ; // rgb(215, 35, 35)
 $green: #347235 ; // rgb(87,188,32)
 
+.push-down { 
+  margin-top: 20px ;
+} 
+
 .navbar-inverse, .dropdown-menu {
   li { 
     > a { color: white ; }
@@ -60,6 +64,30 @@ $green: #347235 ; // rgb(87,188,32)
         text-transform: lowercase ;
       }
     }
+  } 
+
+  form { 
+    padding: 5px ;
+    input {
+      background: transparent ;
+      color: white ;
+      font: {
+        size: 15px ;
+      } 
+      border: {
+        style : none ;
+        radius: 0px; 
+        bottom: 1px solid $gradians-blue ;
+      } 
+      padding: 6px ; 
+      min-height: 18px ;
+    } 
+
+    p.help-block {
+      font-size: 10px ;
+      color: $gradians-blue ; 
+      margin-top: -4px ;
+    } 
   } 
 } 
 
@@ -178,7 +206,7 @@ $green: #347235 ; // rgb(87,188,32)
 .tab-content { 
   min-height: 500px ;
   > form { 
-    display: none ;
+    // display: none ;
     &.active { display: block ; }
   } 
 }  
@@ -733,3 +761,12 @@ li.split {
    font-size: 13px ;
   }
 }
+
+a#m-registrations + ul { 
+  margin-top: 0px ;
+  > ul { margin-top: 0px ; }
+  > .tab-content {
+    min-height: 200px ;
+    button { margin-top: 20px ; }
+  }
+} 

@@ -19,11 +19,11 @@
 #  audited_by      :integer
 #
 
-#     __:has_many___      __:has_many___   ____:has_many__
-#    |              |    |              | |               |
-#  Board --------> Courses ---------> Sp.Topics ---------> Questions
-#    |               |  |               | |               |
-#    |__:belongs_to__|  |___:has_many___| |__:belongs_to__|
+#     __:has_many____      ____:has_many___    ____:has_many__
+#    |               |    |                |  |               |
+#  Subject --------> Vertical -----------> Topics ---------> Questions
+#    |               |  |                  |   |               |
+#    |__:belongs_to__|  |___:has_many______|   |__:belongs_to__|
 #    
 
 #     __:has_many_____     ___:has_many___  

@@ -9,11 +9,11 @@
 #  vertical_id :integer
 #
 
-#     __:has_many___      __:has_many___   ____:has_many__
-#    |              |    |              | |               |
-#  Board --------> Courses ---------> Sp.Topics ---------> Questions
-#    |               |  |               | |               |
-#    |__:belongs_to__|  |___:has_many___| |__:belongs_to__|
+#     __:has_many____      ____:has_many___    ____:has_many__
+#    |               |    |                |  |               |
+#  Subject --------> Vertical -----------> Topics ---------> Questions
+#    |               |  |                  |   |               |
+#    |__:belongs_to__|  |___:has_many______|   |__:belongs_to__|
 #    
 
 class Topic < ActiveRecord::Base
@@ -63,22 +63,6 @@ class Topic < ActiveRecord::Base
     Question.where(:topic_id => self.id).each do |m|
       m.update_attribute :topic_id, target
     end
-
-    # Change syllabus entries for any course that previously contained self
-    # Look out for double entries, that is, courses that have both self and target
-
-    courses = Syllabus.where(:topic_id => self.id).map(&:course_id)
-    Course.where(:id => courses).each do |m| 
-      s = Syllabus.where(:course_id => m.id)
-      if s.where(:topic_id => target).empty? 
-        orig = s.where(:topic_id => self.id).first
-        orig.update_attribute :topic_id, target
-      else # both target and self in syllabus 
-        topics = s.map(&:topic_id)
-        m.topic_ids = (topics - [self.id])
-      end
-    end 
-
     # Now, you may destroy self
     self.destroy 
   end
