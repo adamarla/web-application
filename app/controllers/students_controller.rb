@@ -18,7 +18,9 @@ class StudentsController < ApplicationController
       enroll_in.students << student unless enroll_in.nil?
       render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
     else
-      render :json => { :notify => { :text => "Registration Failed" }}, :status => :ok
+      render :json => { :errors => { :email => student.account.errors[:email], 
+                                     :password => student.account.errors[:password] }},
+                                     :status => :bad_request
     end
   end 
 

@@ -763,3 +763,12 @@ a#m-registrations + ul {
     button { margin-top: 20px ; }
   }
 } 
+
+.error { 
+  font-size: 11px ;
+  margin: {
+    top: -5px ;
+    bottom: 7px ;
+  } 
+  color: $orange ;
+} 

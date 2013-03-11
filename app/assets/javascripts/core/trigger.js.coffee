@@ -120,6 +120,7 @@ jQuery ->
       menu.close btn, true
     return submit
 
+  ###
   $('li.dropdown').on 'submit', 'ul.dropdown-menu form', (event) ->
     $(this).closest('li.dropdown').removeClass 'active'
     menu.close $(event.target), true

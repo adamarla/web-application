@@ -15,7 +15,9 @@ class TeachersController < ApplicationController
     if teacher.save 
       render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
     else
-      render :json => { :notify => { :text => "Registration Failed" }}, :status => :ok
+      render :json => { :errors => { :email => teacher.account.errors[:email], 
+                                     :password => teacher.account.errors[:password] }},
+                                     :status => :bad_request
     end
   end 
 

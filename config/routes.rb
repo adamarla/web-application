@@ -74,7 +74,8 @@ Webapp::Application.routes.draw do
   match 'quiz/edit' => 'quizzes#add_remove_questions', :via => [:put, :post]
 
   # Student 
-  resource :student, :only => [:create, :update, :show]
+  resource :student, :only => [:update, :show]
+  match 'register/student' => 'students#create', :via => :post
   match 'ws-preview' => 'students#responses', :via => :get
   match 'dispute' => 'students#dispute', :via => :get
   match 'inbox' => 'students#inbox', :via => :get
@@ -91,7 +92,8 @@ Webapp::Application.routes.draw do
   match 'ping/sektion' => 'sektions#ping', :via => :get
 
   # Teacher 
-  resource :teacher, :only => [:create, :update, :show]
+  resource :teacher, :only => [:update, :show]
+  match 'register/teacher' => 'teachers#create', :via => :post
   match 'teachers/list' => 'teachers#list', :via => :get
   match 'teacher/sektions' => 'teachers#sektions', :via => :get
   match 'teacher/load' => 'teachers#load', :via => :get
