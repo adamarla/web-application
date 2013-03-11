@@ -271,3 +271,26 @@ jQuery ->
     $(this).addClass 'selected'
     return true
 
+  ###
+    SUGGESTION UPLOAD
+  ###
+  $('#uploadbtn').on 'click', ->
+    formData = new FormData($('#suggestiondoc')[0])
+    $.ajax
+      url: 'teacher/upload_suggestion'
+      type: 'POST'
+      data: formData
+      cache: false
+      contentType: false
+      processData: false
+
+
+  $('#m-suggestion-upload').on 'hidden', ->
+    $('#m-suggestion-upload #suggestiondoc')[0].reset()
+    $('#m-suggestion-upload #instruction').show()
+    $('#m-suggestion-upload #ackblurb').hide()
+    $('#m-suggestion-upload #suggestiondoc').show()
+
+  $('#m-suggestion-upload #dismissbtn').on 'click', ->
+    $('#m-suggestion-upload').modal('hide')
+

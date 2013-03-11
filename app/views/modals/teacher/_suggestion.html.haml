@@ -1,0 +1,28 @@
+
+#m-suggestion-upload.modal.fade.hide
+
+  .modal-header
+    %h3= "Please upload the Question and its Solution"
+  .modal-body
+    #instruction
+      %p.lead
+        Browse to a file on your computer to upload it for type setting. 
+        It doesn't matter if it is a .txt, .doc, .docx, .pdf or any other
+        file format, as long as it follows the following simple rules:
+      %ul
+        %li It contains the Question in it's entirety 
+        %li 
+          If there is a preferred solution, it is provided alongside (if not, we will solve it). 
+          %ul
+            %li At any rate, please be sure to provide numerical answers if any for cross-checking purposes
+        %li It does not cite references such as books or papers. We cannot honor these 
+    %br
+    %form{ :id => "suggestiondoc", :enctype => "multipart/form-data" }
+      .control-group
+        .controls
+          %input.required{ :type => :file, :id => "suggestiondoc[inputfile]", :name => "suggestiondoc[inputfile]" , :placeholder => "browse for file" }
+          %input{ :type => "hidden" , :name => "authenticity_token" , :value => form_authenticity_token.to_s }
+          %button.btn.btn-primary{ :id => "uploadbtn", :type => :button }= "Upload"
+    #ackblurb{ :style => "display: none" } 
+      %p 
+      %button.btn.btn-primary{ :id => "dismissbtn", :type => :button }= "Dismiss"

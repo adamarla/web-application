@@ -5,6 +5,17 @@
 
 jQuery ->
 
+  $('#m-suggestion-upload').ajaxSuccess (e,xhr,settings) ->
+    json = $.parseJSON xhr.responseText
+    url = settings.url
+    matched = true
+
+    if url.match(/teacher\/upload_suggestion/)
+      $('#m-suggestion-upload #suggestiondoc').hide()
+      $('#m-suggestion-upload #instruction').hide()
+      $('#m-suggestion-upload #ackblurb p').html(json.message) 
+      $('#m-suggestion-upload #ackblurb').show()
+
   $('#left').ajaxSuccess (e,xhr,settings) ->
     json = $.parseJSON xhr.responseText
     url = settings.url
