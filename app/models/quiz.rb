@@ -74,7 +74,7 @@ class Quiz < ActiveRecord::Base
     #   4. graded_response <-> student
 
     ntests = Testpaper.where(:quiz_id => self.id).count
-    assigned_name = Testpaper.name_if_students? students.map(&:id)
+    assigned_name = "##{ntests + 1} - #{Date.today.strftime('%B %d, %Y')}" 
     testpaper = self.testpapers.new :name => assigned_name, :inboxed => publish # (1)
     questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
@@ -202,7 +202,7 @@ class Quiz < ActiveRecord::Base
 
     response = SavonClient.request :wsdl, :buildQuiz do  
       soap.body = { 
-         :quiz => { :id => self.id, :name => self.name },
+         :quiz => { :id => self.id, :name => self.latex_safe_name },
          :teacher => { :id => teacher.id, :name => teacher.name },
          :page => self.layout?
       }
@@ -281,6 +281,17 @@ class Quiz < ActiveRecord::Base
     self.clone if clone.nil? # job #1 
     Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), :priority => 0, :run_at => Time.zone.now # job #2
     return msg, subtext
+  end
+
+  def latex_safe_name
+    safe = self.name 
+    # The following 10 characters have special meaning in LaTeX and hence need to 
+    # be escaped with a backslash before typesetting 
+
+    ['#', '$', '&', '^', '%', '\\', '_', '{',  '}', '~'].each do |m|
+      safe = safe.gsub m, "\#{m}"
+    end 
+    return safe
   end
 
 end # of class

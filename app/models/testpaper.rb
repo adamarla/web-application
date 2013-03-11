@@ -51,7 +51,7 @@ class Testpaper < ActiveRecord::Base
 
     response = SavonClient.request :wsdl, :assignQuiz do  
       soap.body = { 
-        :quiz => { :id => self.quiz_id, :name => self.quiz.name },
+        :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name },
         :instance => { :id => self.id, :name => self.name },
         :students => names 
       }
