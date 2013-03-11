@@ -7,16 +7,12 @@
 - content_for :toolbox do 
   #toolbox.hidden 
     - if is_admin
-      = render :partial => 'courses/new'
-      = render :partial => 'courses/edit'
       = render :partial => 'topics/new'
       = render :partial => 'verticals/new'
       = render :partial => 'teachers/new'
-      = render :partial => 'teachers/specialization'
       = render :partial => 'students/new'
       = render :partial => 'examiners/new'
       = render :partial => 'admin/upload_xls'
-      = render :partial => 'courses/summary'
       = render :partial => 'syllabi/edit'
       = render :partial => 'examiners/list'
       = render :partial => 'teachers/list'
