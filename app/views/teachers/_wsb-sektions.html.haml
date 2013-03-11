@@ -9,15 +9,15 @@
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span8
-    .btn-toolbar
-      .btn-group
-        = simple_button :icon => 'icon-align-justify', :id => 'select-all-for-quiz',
-          :tooltip => "Select All", :placement => :right
-        = simple_button :icon => 'icon-envelope', :id => 'btn-publish-ws', :toggle => :button,
-          :tooltip => "Send PDFs to students", :class => 'btn-primary', :placement => :right
-      .btn-group
-        = simple_button :icon => 'icon-wrench', :id => 'build-worksheet', :for => "Make PDF"
-    = simple_form_for :checked, :url => quiz_assign_path, :remote => true,
-    :html => { :class => 'multi-select'} do |f|
+    = simple_form_for :checked, :remote => true, 
+    :html => { :class => 'multi-select', 'data-action' => "#{quiz_assign_path}?id=:id", 'data-id' => 'tab-wsb-quizzes'} do |f|
+      .btn-toolbar.purge-skip
+        .btn-group
+          = simple_button :icon => 'icon-align-justify', :id => 'select-all-for-quiz',
+            :tooltip => "Select All", :placement => :right
+          = simple_button :icon => 'icon-envelope', :id => 'btn-publish-ws', :toggle => :button,
+            :tooltip => "Send PDFs to students", :class => 'btn-primary', :placement => :right
+        .btn-group
+          = simple_button :icon => 'icon-wrench', :id => 'build-worksheet', :for => "Make PDF"
       #wsb-sektions.tab-pane.multi-select
 

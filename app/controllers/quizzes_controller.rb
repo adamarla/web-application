@@ -5,16 +5,19 @@ class QuizzesController < ApplicationController
 
   def assign_to
     quiz = Quiz.where(:id => params[:id]).first 
-    publish = params[:publish] == 'yes' 
 
-    head :bad_request if quiz.nil?
-    teacher = quiz.teacher 
-
-    students = params[:checked].keys   # we need just the IDs
-    Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
-    at = Delayed::Job.where('failed_at IS NULL').count
-    render :json => { :notify => { :text => "Worksheet received", 
-                                   :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
+    unless quiz.nil?
+      publish = params[:publish] == 'yes' 
+      teacher = quiz.teacher 
+      students = params[:checked].keys   # we need just the IDs
+      Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
+      at = Delayed::Job.where('failed_at IS NULL').count
+      render :json => { :notify => { :text => "Worksheet received", 
+                                     :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
+    else 
+      render :json => { :notify => { :text => "Oops! No quiz specified",
+                                     :subtext => "Need to know what quiz to make worksheet for" } }, :status => :ok
+    end
   end
 
   def add_remove_questions
