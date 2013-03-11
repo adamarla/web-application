@@ -289,7 +289,7 @@ class Quiz < ActiveRecord::Base
     # be escaped with a backslash before typesetting 
 
     ['#', '$', '&', '^', '%', '\\', '_', '{',  '}', '~'].each do |m|
-      safe = safe.gsub m, "\#{m}"
+      safe = safe.gsub m, "\\#{m}"
     end 
     return safe
   end
