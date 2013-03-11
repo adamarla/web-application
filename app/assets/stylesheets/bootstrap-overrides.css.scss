@@ -756,6 +756,8 @@ li.split {
 }
 
 a#m-registrations + ul { 
+  margin-top: 0px ;
+  > ul { margin-top: 0px ; }
   > .tab-content {
     min-height: 200px ;
     button { margin-top: 20px ; }

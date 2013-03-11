@@ -8,6 +8,8 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer
+#  country_id :integer
+#  zip_code   :string(10)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -22,6 +24,7 @@ include REXML
 include ApplicationUtil
 
 class Teacher < ActiveRecord::Base
+  belongs_to :country
   has_one :account, :as => :loggable, :dependent => :destroy
   has_one :trial_account, :dependent => :destroy
 

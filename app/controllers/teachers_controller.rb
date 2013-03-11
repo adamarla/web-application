@@ -4,11 +4,14 @@ class TeachersController < ApplicationController
 
   def create
     info = params[:register]
-    teacher = Teacher.new :name => info[:name]
+    country = Country.where{ name =~ "%#{info[:country]}%" }.first unless info[:country].blank?
+    teacher = country.nil? ? Teacher.new(:name => info[:name]) : 
+                             Teacher.new(:name => info[:name], :country_id => country.id)
     username = create_username_for teacher, :teacher
     account = teacher.build_account :email => info[:email], :password => info[:password],
                                     :password_confirmation => info[:password], :trial => false,
                                     :username => username
+    teacher.zip_code = info[:zip].blank? ? nil : info[:zip]
     if teacher.save 
       render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
     else

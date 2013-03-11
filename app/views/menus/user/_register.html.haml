@@ -11,6 +11,8 @@
         = f.input :name, :hint => "Full name"
         = f.input :email, :hint => "Your e-mail. Will also be used for logging in"
         = f.input :password, :hint => "Password. Recommend at least 6-characters"
+        = f.input :country, :hint => "Country?", :input_html => { :id => 'rg-country' }
+        = f.input :zip, :hint => "School's Zip/Pin Code"
         %button.btn.btn-large.btn-primary.pull-right{:type => :submit}= "Register"
         %button.btn.btn-large.btn-inverse.pull-left.dismiss= "Dismiss"
     #pane-register-2.tab-pane.push-down
