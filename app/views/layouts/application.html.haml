@@ -2,7 +2,6 @@
 - server = "#{Gutenberg['server']}"
 -content_for :toolbox do
   #toolbox.hidden 
-    = render :partial => 'menus/user/download', :locals => { :server => server }
     = render :partial => 'menus/user/register', :locals => { :server => server }
   #modals
 
@@ -37,8 +36,6 @@
                         %button.btn.btn-primary{ :type => :submit }= "Sign In"
                 %li.dropdown
                   = simple_link :for => "Register",  :id => "m-registrations", :as => :dropdown
-                %li.dropdown
-                  = simple_link :for => "Downloads", :id => 'm-downloads', :as => :dropdown 
                 -#%li
                   %button.btn.btn-info.dropdown-toggle{ :id => "m-registrations", :as => "dropdown", "data-toggle" => "dropdown" , :href => "#" }= "Register"
 
