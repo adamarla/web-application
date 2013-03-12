@@ -107,6 +107,10 @@ $green: #347235 ; // rgb(87,188,32)
 
 #signin-form { 
   margin-top: 10px ;
+  input { 
+    padding: 11px 19px ;
+    font-size: 12px ;
+  } 
 } 
 
 .orange { 
@@ -764,6 +768,18 @@ a#m-registrations + ul {
   }
 } 
 
+#m-registrations { 
+  border-radius: 5px ;
+  background-color: $deep-blue ;
+} 
+
+#register { 
+  margin: {
+    left: 60px ;
+    top: 8px ;
+  }
+}
+
 .error { 
   font-size: 11px ;
   margin: {
@@ -772,3 +788,4 @@ a#m-registrations + ul {
   } 
   color: $orange ;
 } 
+
