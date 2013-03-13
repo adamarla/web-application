@@ -12,6 +12,7 @@
     %title= "Grades will happen ..."
     = stylesheet_link_tag "application" 
     = javascript_include_tag "application", "welcome"
+    = javascript_include_tag "external" if Rails.env == "production"
     = csrf_meta_tag
   %body 
     #spinner.spinner

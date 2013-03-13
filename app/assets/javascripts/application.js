@@ -4,7 +4,6 @@
 
 //= require jquery 
 //= require jquery_ujs 
-//= require jquery-validate
 //= require bootstrap 
 //= require_directory ./core
 //= require_directory ../../../vendor/assets/javascripts/happy 
