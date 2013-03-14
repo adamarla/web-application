@@ -762,6 +762,13 @@ li.split {
   margin: 0 auto ;
 }
 
+#m-suggestion-upload {
+  li {
+   color: white ;
+   font-size: 13px ;
+  }
+}
+
 a#m-registrations + ul { 
   margin-top: 0px ;
   > ul { margin-top: 0px ; }

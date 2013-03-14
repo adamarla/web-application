@@ -104,6 +104,7 @@ Webapp::Application.routes.draw do
   match 'teacher/students' => 'teachers#students', :via => :get
   match 'teacher/students_with_names' => 'teachers#students_with_names', :via => :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', :via => :get
+  match 'teacher/upload_suggestion' => 'suggestions#upload', :via => :post
   match 'disputed' => 'teachers#disputed', :via => :get
   match 'overwrite/marks' => 'teachers#overwrite_marks', :via => [:put, :post]
   match 'qzb/echo' => 'teachers#qzb_echo', :via => [:put, :post]

@@ -37,7 +37,7 @@ class Teacher < ActiveRecord::Base
   validates :first_name, :presence => true  
   validates_associated :account
 
-  after_create :generate_suggestion_form
+#  after_create :generate_suggestion_form
   after_save   :reset_login_info
 
 =begin

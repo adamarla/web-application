@@ -72,6 +72,10 @@ lnk-suggestion-form :
   notouch : true
   ajax : disabled
 
+lnk-upload-suggestion :
+  toggle : modal
+  notouch : true
+
 lnk-new-quiz :
   autoclick : 
     tab : tab-qzb-1

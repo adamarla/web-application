@@ -3,6 +3,6 @@ object false
   node(:preview) {
     {
       :id => "0-#{@suggestion.teacher_id}",
-      :scans => [@suggestion.signature]
+      :scans => @suggestion.expand_pages()
     }
   } 
