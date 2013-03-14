@@ -1,0 +1,30 @@
+
+TUTORIAL SPECIFIC DATASET ATTRIBUTES
+-------------------------------------
+
+SET ON <ol>
+------------
+
+  (i) data-enable
+  
+  The *only* dropdown-toggle in the control-panel that
+  should be active when this tutorial launches. You want 
+  to do this to make sure that user opens only the menu that you
+  iwant him/her to
+
+  (ii) data-onwards
+  
+  There are tutorials that follow immediately after this one. 
+  However, they cannot start until the user does some action. 
+  So, stay in 'tutorial' mode so that when the user does that action, 
+  the next tutorial can begin
+                       
+
+Set on an <a> anywhere in the control-panel 
+---------------------------------------------
+
+  (i) data-launch
+
+  The tutorial to lauch on click. Only the tutorial name needs to be 
+  specified, not the CSS selector 
+

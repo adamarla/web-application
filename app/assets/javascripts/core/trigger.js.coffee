@@ -69,12 +69,13 @@ window.trigger = {
     ajax = karo.url.elaborate link
     karo.ajaxCall ajax if (ajax? and ajax isnt 'disabled')
 
-    # If 'link' is a 'help-launcher' then ... 
-    if $(link).hasClass 'help-launcher'
-      help = link.dataset.launch
-      tutorial.start help
-    else if link.dataset.tutorial?
-      tutorial.start link.dataset.tutorial
+    # if 'link' is within the Help menu, then ..
+    help = link.dataset.launch
+    if help?
+      if $(link).hasClass 'help-launcher'
+        tutorial.start help
+      else if tutorial.active
+        tutorial.start help
 
     return true
 }

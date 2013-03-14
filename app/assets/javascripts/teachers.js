@@ -3,5 +3,4 @@
 //= require_directory ./shared/tc-st
 //= require_directory ./stats
 //= require_directory ./teachers 
-//= require ../../../vendor/assets/javascripts/flot/jquery.flot.min
-//= require ../../../vendor/assets/javascripts/flot/jquery.flot.threshold.min
+//= require_directory ../../../vendor/assets/javascripts/joyride

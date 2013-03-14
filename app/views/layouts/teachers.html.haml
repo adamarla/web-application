@@ -25,6 +25,11 @@
 - content_for :modals do
   = render :partial => 'modals/user/account'
 
+- content_for :tutorials do 
+  #tutorials
+    = render :partial => 'tutorials/teacher/qzb/one'
+    = render :partial => 'tutorials/teacher/qzb/two'
+    = render :partial => 'tutorials/teacher/make-a-ws'
 
 !!!5
 
@@ -47,7 +52,7 @@
       });
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = javascript_include_tag "http://d3js.org/d3.v3.min.js"
-    = stylesheet_link_tag "application" 
+    = stylesheet_link_tag "application", "teachers" 
     = csrf_meta_tag
 
   %body 
@@ -120,3 +125,4 @@
 
     = yield :toolbox
     = yield :modals
+    = yield :tutorials

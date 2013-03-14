@@ -17,6 +17,7 @@ jQuery ->
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
+    lesson = null
 
     if url.match(/quizzes\/list/)
       target = $('#pane-wsb-quizzes')
