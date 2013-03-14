@@ -107,6 +107,10 @@ $green: #347235 ; // rgb(87,188,32)
 
 #signin-form { 
   margin-top: 10px ;
+  input { 
+    padding: 11px 19px ;
+    font-size: 12px ;
+  } 
 } 
 
 .orange { 
@@ -161,8 +165,8 @@ $green: #347235 ; // rgb(87,188,32)
   background: $deep-blue ;
   float: right ;
   margin-top: 5px ;
-  height: 10px ;
-  padding: 9px 13px 12px 13px ;
+  height: 12px ;
+  padding: 13px 15px ; 
   border-radius: 4px ;
 } 
 
@@ -770,3 +774,25 @@ a#m-registrations + ul {
     button { margin-top: 20px ; }
   }
 } 
+
+#m-registrations { 
+  border-radius: 5px ;
+  background-color: $deep-blue ;
+} 
+
+#register { 
+  margin: {
+    left: 60px ;
+    top: 8px ;
+  }
+}
+
+.error { 
+  font-size: 11px ;
+  margin: {
+    top: -5px ;
+    bottom: 7px ;
+  } 
+  color: $orange ;
+} 
+

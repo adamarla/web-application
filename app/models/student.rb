@@ -29,6 +29,7 @@ class Student < ActiveRecord::Base
   has_many :testpapers, :through => :answer_sheets
 
   validates :first_name, :presence => true
+  validates_associated :account
 
   after_save  :reset_login_info
   after_create  :generate_uid

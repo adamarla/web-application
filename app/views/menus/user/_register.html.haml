@@ -7,19 +7,23 @@
       = simple_link :for => "Student", :id => 'tab-register-2', :href => '#pane-register-2'
   .tab-content.pull-left
     #pane-register-1.tab-pane.push-down
-      = simple_form_for :register, :url => teacher_path, :remote => true, :defaults => { :label => false } do |f|
+      = simple_form_for :register, :url => register_teacher_path, :remote => true, :defaults => { :label => false } do |f|
         = f.input :name, :hint => "Full name"
         = f.input :email, :hint => "Your e-mail. Will also be used for logging in"
-        = f.input :password, :hint => "Password. Recommend at least 6-characters"
+        .error.email.hide= "Oops, e-mail address already taken"
+        = f.input :password, :hint => "Password (minimum 6 characters)"
+        .error.password.hide= "Password should be atleast 6 characters long"
         = f.input :country, :hint => "Country?", :input_html => { :id => 'rg-country' }
         = f.input :zip, :hint => "School's Zip/Pin Code"
         %button.btn.btn-large.btn-primary.pull-right{:type => :submit}= "Register"
         %button.btn.btn-large.btn-inverse.pull-left.dismiss= "Dismiss"
     #pane-register-2.tab-pane.push-down
-      = simple_form_for :register, :url => student_path, :remote => true, :defaults => { :label => false } do |f|
+      = simple_form_for :register, :url => register_student_path, :remote => true, :defaults => { :label => false } do |f|
         = f.input :name, :hint => "Full name"
         = f.input :email, :hint => "Your e-mail. Will also be used for logging in"
-        = f.input :password, :hint => "Password. Recommend at least 6-characters"
+        .error.email.hide= "Oops, e-mail address already taken"
+        = f.input :password, :hint => "Password (minimum 6 characters)"
+        .error.password.hide= "Password should be atleast 6 characters long"
         = f.input :code, :hint => "Your teacher must have given you a code for the course. Enter that here"
         %button.btn.btn-large.btn-primary.pull-right{:type => :submit}= "Register"
         %button.btn.btn-large.btn-inverse.pull-left.dismiss= "Dismiss"

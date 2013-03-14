@@ -120,6 +120,7 @@ jQuery ->
       menu.close btn, true
     return submit
 
+  ###
   $('li.dropdown').on 'submit', 'ul.dropdown-menu form', (event) ->
     $(this).closest('li.dropdown').removeClass 'active'
     menu.close $(event.target), true
@@ -299,48 +300,44 @@ jQuery ->
       multiOk = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
       activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
       
-      # 1. De-select siblings if * not * multi-select 
-      unless multiOk
-        for k in $(this).siblings('.single-line')
-          $(k).removeClass 'selected'
-          $(k).find('.badge').eq(0).removeClass 'badge-warning'
-          $(k).find("input[type='checkbox']").eq(0).prop 'checked', false
-
-      # 2. Then select / deselect $(this)
       isClicked = $(this).hasClass 'selected'
       badge = $(this).find('.badge').eq(0)
 
       if isClicked
-        $(this).removeClass 'selected'
-        badge.removeClass 'badge-warning'
-        $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
-        unless multiOk
-          unless $(activeTab).parent().hasClass 'lock'
-            $(activeTab).attr 'marker', null
+        if multiOk
+          $(this).removeClass 'selected'
+          badge.removeClass 'badge-warning'
+          $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
       else
         $(this).addClass 'selected'
         badge.addClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
+
         unless multiOk
+          # 1. Remove selected from siblings if not multi-select
+          for k in $(this).siblings('.single-line')
+            $(k).removeClass 'selected'
+            $(k).find('.badge').eq(0).removeClass 'badge-warning'
+            $(k).find("input[type='checkbox']").eq(0).prop 'checked', false
           unless $(activeTab).parent().hasClass 'lock'
             $(activeTab).attr 'marker', $(this).attr('marker')
 
-      # 3. Close any previously open menus - perhaps belonging to a sibling 
-      for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
-        menu.close $(m)
+        # 2. Close any previously open menus - perhaps belonging to a sibling 
+        for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
+          menu.close $(m)
 
-      # 4. Issue AJAX request - if defined and set on containing panel
-      tab = karo.tab.find this
-      tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
-      ajax = karo.url.elaborate this, null, tab
-      karo.ajaxCall ajax if ajax?
+        # 3. Issue AJAX request - if defined and set on containing panel
+        tab = karo.tab.find this
+        tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
+        ajax = karo.url.elaborate this, null, tab
+        karo.ajaxCall ajax if ajax?
 
-      # 5. Switch to next-tab - if so specified
-      if activeTab?
-        # activeTab is a <li> and what we are looking for is in the <a> within it
-        a = $(activeTab).children('a')[0]
-        next = a.dataset.autoclickTab
-        karo.tab.enable next if next?
+        # 4. Switch to next-tab - if so specified
+        if activeTab?
+          # activeTab is a <li> and what we are looking for is in the <a> within it
+          a = $(activeTab).children('a')[0]
+          next = a.dataset.autoclickTab
+          karo.tab.enable next if next?
 
     # End of method 
     return true

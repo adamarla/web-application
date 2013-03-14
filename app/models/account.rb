@@ -32,6 +32,11 @@ class Account < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :login, :trial
   attr_accessor :login
 
+  validates :email, :presence => true
+  validates :email, :uniqueness => true
+  validates :password, :presence => true
+  validates :password, :length => { :minimum => 6 }
+
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
   belongs_to :loggable, :polymorphic => true
