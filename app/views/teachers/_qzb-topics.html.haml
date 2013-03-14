@@ -6,7 +6,7 @@
   :html => { :id => "form-#{context}-topics" } do |f|
 
   .row-fluid.navbar.purge-skip
-    = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions"
+    = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions", :id => "#{context}-tab1-btn-show"
   -#
     .btn-group{ 'data-toggle' => 'buttons-checkbox' }
       = simple_button :icon => 'icon-thumbs-up', :as => :checkbox, 
