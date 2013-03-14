@@ -133,6 +133,8 @@ jQuery ->
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
+    else if url.match(/build_quiz/)
+      lesson = 'qzb-milestone-7'
     else
       matched = false
 
@@ -176,10 +178,8 @@ jQuery ->
       # Auto-click first line - if needed
       target.children('.single-line').eq(0).click() if clickFirst
       
-      # If in tutorial mode, then start the next tutorial - if any
-      if tutorial.active
-        tutorial.start lesson if lesson?
-      
-
+    # If in tutorial mode, then start the next tutorial - if any
+    if tutorial.active
+      tutorial.start lesson if lesson?
     e.stopPropagation() if matched is true
     return true
