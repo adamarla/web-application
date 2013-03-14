@@ -93,6 +93,7 @@ class QuestionController < ApplicationController
 
   def preview
     @question = Question.find params[:id] 
+    @context = params[:context] || "unknown" 
   end
 
 end # of class

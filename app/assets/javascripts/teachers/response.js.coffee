@@ -39,7 +39,12 @@ jQuery ->
       childKey = 'student'
       wsDeepdive.students json
     else if url.match(/qzb\/echo/)
-      next = if json.context is 'qzb' then 'tab-qzb-2' else 'tab-editqz-3'
+      if json.context is 'qzb'
+        next = 'tab-qzb-2'
+        lesson = 'qzb-milestone-4'
+      else
+        next = 'tab-editqz-3'
+
       karo.tab.enable next
 
       root = "##{json.context}-questions"
@@ -51,18 +56,23 @@ jQuery ->
         },
         data : {
           url : "questions/on?id=:id&context=#{json.context}",
-          'panel-url' : "question/preview?id=:id"
+          'panel-url' : "question/preview?id=:id&context=#{json.context}"
         },
         id : {
-          div : "#{json.context}-pick"
+          div : "#{json.context}-pick",
+          ul : "#{json.context}-ul-milestone-4",
+          root : "#{json.context}-div-milestone-5"
         }
       }
+      if tutorial.active
+        tutorial.start lesson if lesson?
       return true
     else if url.match(/questions\/on/)
       topic = json.topic
       target = $("##{json.context}-pick-#{topic}")
       parentKey = 'questions'
       childKey = 'datum'
+      lesson = 'qzb-milestone-5'
     else if url.match(/quiz\/testpapers/)
       target = $("#pane-wsb-existing")
       parentKey = "testpapers"

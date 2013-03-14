@@ -8,3 +8,4 @@ object false
     { :id => @question.uid, :scans => [*1..@question.answer_key_span?] } 
   } 
   node(:caption) { @question.simple_uid }
+  node(:context) { @context }
