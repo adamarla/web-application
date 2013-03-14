@@ -479,6 +479,9 @@ button[data-toggle='button'] {
   ul {
     margin-top: 15px ;
   }
+  .dropdown-toggle {
+    &.disabled { color: $lightgray ; }
+  }
 } 
 
 #desktop { 

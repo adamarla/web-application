@@ -69,6 +69,13 @@ window.trigger = {
     ajax = karo.url.elaborate link
     karo.ajaxCall ajax if (ajax? and ajax isnt 'disabled')
 
+    # If 'link' is a 'help-launcher' then ... 
+    if $(link).hasClass 'help-launcher'
+      help = link.dataset.launch
+      tutorial.start help
+    else if link.dataset.tutorial?
+      tutorial.start link.dataset.tutorial
+
     return true
 }
 
@@ -107,6 +114,8 @@ jQuery ->
   $('#how-it-works').carousel({
     interval : 5000
   })
+
+  tutorial.initialize()
 
   #####################################################################
   ## Forms within dropdown menus  
@@ -256,6 +265,7 @@ jQuery ->
 
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
+    return false if $(this).hasClass 'disabled'
     menu.show this
     return true
 
