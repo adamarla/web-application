@@ -10,6 +10,9 @@ window.tutorial = {
       'tipLocation' : 'right',
       'nubPosition' : 'left',
       'scroll' : false,
+      'nextButton' : false,
+      'startTimerOnClick' : false,
+      'timer' : 20000,
       'postRideCallback' : () ->
         last = tutorial.root.children('ol').filter("[id=#{tutorial.current}]")[0]
         $(last).joyride 'destroy'
