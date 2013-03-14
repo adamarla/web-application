@@ -27,8 +27,8 @@
 
 - content_for :tutorials do 
   #tutorials
-    = render :partial => 'tutorials/teacher/qzb/one'
-    = render :partial => 'tutorials/teacher/qzb/two'
+    - ['one', 'two', 'three', 'four'].each do |m|
+      = render :partial => "tutorials/teacher/qzb/#{m}"
     = render :partial => 'tutorials/teacher/make-a-ws'
 
 !!!5

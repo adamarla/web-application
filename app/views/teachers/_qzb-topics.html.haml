@@ -6,7 +6,8 @@
   :html => { :id => "form-#{context}-topics" } do |f|
 
   .row-fluid.navbar.purge-skip
-    = f.button :submit, :class => 'btn-inverse pull-right', :value => "Show Questions", :id => "#{context}-tab1-btn-show"
+    = f.button :submit, :class => 'btn-inverse pull-right', 
+      :value => "Show Questions", :id => "#{context}-btn-milestone-4"
   -#
     .btn-group{ 'data-toggle' => 'buttons-checkbox' }
       = simple_button :icon => 'icon-thumbs-up', :as => :checkbox, 
@@ -16,7 +17,7 @@
         :name => "filter[repeated]", :for => 'ignore used'
 
   %div.tabbable.tabs-left{ :id => "#{context}-verticals-tab" }
-    %ul.nav.nav-tabs.span4.purge-skip.nopurge-ever{ :id => "#{context}-help-pt-1" }
+    %ul.nav.nav-tabs.span4.purge-skip.nopurge-ever{ :id => "#{context}-ul-milestone-2" }
       - Vertical.all.each do |m|
         %li{ :marker => "#{m.id}" }
           = simple_link :for => "#{m.name}", :toggle => :tab, 
