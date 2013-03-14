@@ -9,6 +9,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  signature   :string(15)
+#  pages       :integer         default(1)
 #
 
 class Suggestion < ActiveRecord::Base
@@ -34,6 +35,20 @@ class Suggestion < ActiveRecord::Base
   
   def self.completed
     where :completed => true
+  end
+
+  def expand_pages
+    basename = self.signature.split('.')[0]
+    pages = []
+    unless self.pages == 1
+      self.pages.times { |i|
+        pages << "#{basename}-#{i+1}"
+      }
+    else
+      pages = [basename]
+    end
+    puts pages.to_s
+    return pages
   end
 
   def check_for_completeness
