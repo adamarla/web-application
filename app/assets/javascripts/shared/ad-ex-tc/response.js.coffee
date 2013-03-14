@@ -82,6 +82,8 @@ jQuery ->
       $('#wide-wait').addClass 'hide'
       $('#wide-X').removeClass 'hide'
       preview.loadJson json, 'vault'
+      if tutorial.active
+        tutorial.start 'qzb-milestone-6' if json.context is 'qzb'
     else
       matched = false
 
