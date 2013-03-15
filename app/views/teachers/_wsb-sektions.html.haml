@@ -2,7 +2,7 @@
 -# Left-side tabs - one per section
 #sektions-tab.tabbable.tabs-left
   %ul.nav.nav-tabs.span3
-    - teacher.display_sektions_list.each do |m|
+    - teacher.sektions.each do |m|
       %li
         = simple_link :for => "#{m.label}", :toggle => :tab, :marker => "#{m.id}",
         :href => "#wsb-sektions", :url => "sektion/students.json?id=#{m.id}"

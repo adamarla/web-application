@@ -64,7 +64,7 @@ class TeachersController < ApplicationController
 
   def sektions
     teacher = params[:id].nil? ? current_account.loggable : Teacher.find(params[:id])
-    @sektions = teacher.nil? ? [] : teacher.display_sektions_list
+    @sektions = teacher.nil? ? [] : teacher.sektions
     @context = params[:context]
   end
 
