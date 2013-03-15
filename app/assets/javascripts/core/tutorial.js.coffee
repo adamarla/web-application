@@ -6,11 +6,12 @@ window.tutorial = {
   active : false,
 
   options : {
-    shared : {
+    defaults : {
       'tipLocation' : 'right',
       'nubPosition' : 'left',
       'scroll' : false,
       'nextButton' : false,
+      'timer' : 0,
       'postRideCallback' : () ->
         last = tutorial.root.children('ol').filter("[id=#{tutorial.current}]")[0]
         $(last).joyride 'destroy'
@@ -18,6 +19,13 @@ window.tutorial = {
         $(m).removeClass('disabled') for m in $('#control-panel').find('a.dropdown-toggle')
         tutorial.active = false unless last.dataset.onwards is 'true'
         return true
+    },
+
+    specificTo : {
+      'qzb-milestone-7' : {
+        'startTimerOnClick' : false,
+        'timer' : 14000
+      }
     }
   },
 
@@ -46,9 +54,14 @@ window.tutorial = {
 
     tutorial.current = n
     tutorial.deactivateControlPanel()
+    consolidated = $.extend {}, tutorial.options.defaults
+
+    if tutorial.options.specificTo[n]?
+      consolidated = $.extend consolidated, tutorial.options.specificTo[n]
 
     obj = $("##{tutorial.current}")[0]
-    $(obj).joyride(tutorial.options.shared)
+    # $(obj).joyride(tutorial.options.default)
+    $(obj).joyride(consolidated)
     return true
 
   initialize : () ->
