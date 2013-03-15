@@ -187,6 +187,12 @@ class Teacher < ActiveRecord::Base
     self.favourites.delete m # will also destroy because of the :dependent => :destroy
   end
 
+  def display_sektions_list
+    return self.sektions << Sektion.find_by_id(GRADIANS_ID)
+  end
+
+  GRADIANS_ID = 58
+
 #####  PRIVATE ######################
 
   private 
