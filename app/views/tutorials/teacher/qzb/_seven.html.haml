@@ -1,10 +1,24 @@
 
-%ol.hide{ :id => 'qzb-milestone-7', :data => { :enable => 'm-notifications', :onwards => :true }}
+%ol.hide{ :id => 'qzb-milestone-7', 
+  :data => { :enable => 'm-notifications', 
+             :onwards => :true, 
+             :options => 'startTimerOnClick:false;timer:6000' } }
   %li{ :data => { :id => 'm-notifications', :options => "tipLocation:bottom;nubPosition:top" } }
     %h6= "#7"
     %p
-      When the <b>bell starts to blink</b>, then it means your request for 
-      making a PDF of your quiz has been received. Please note that there might 
-      be other requests in the queue before yours and that each request takes 
-      about 45-60 seconds to process. Click the bell to see the 
-      <b>estimated time</b> to completion
+      A <b>blinking bell</b> means that our system has received your request for making the quiz
+    %p
+      <b>Click on the bell</b> to know the <b>estimated time</b> after which your quiz will be ready
+    %p
+      The reason you might have to wait a bit is because all requests are placed in 
+      a queue and are processed in the order in which they are received. And there 
+      might be other requests before yours
+
+  %li{ :data => { :id => 'm-teacher-quizzes', :options => "tipLocation:bottom;nubPosition:top" } }
+    %h6= "#8"
+    %p
+      <b>That's it!</b>. You are done making the quiz and can either <b>continue
+      using the site</b> as normal <b>or</b> even <b>logout</b>
+    %p
+      <b>To see the quiz you just made</b>, click here and select <b>List</b> 
+      after the time reported in the last step
