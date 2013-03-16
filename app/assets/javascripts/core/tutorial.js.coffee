@@ -47,7 +47,7 @@ window.tutorial = {
       if tutorial.current isnt n
         last = tutorial.root.children('ol').filter("[id=#{tutorial.current}]")[0]
         $(last).joyride 'destroy'
-      else
+      else if tutorial.active
         tutorial.deactivateControlPanel()
         $("##{tutorial.current}").joyride('restart')
         return true
@@ -60,15 +60,18 @@ window.tutorial = {
       consolidated = $.extend consolidated, tutorial.options.specificTo[n]
 
     obj = $("##{tutorial.current}")[0]
-    # $(obj).joyride(tutorial.options.default)
-    $(obj).joyride(consolidated)
+    walkThru = $(obj).joyride 'init', consolidated
+    $(obj).joyride 'show', walkThru
     return true
 
   initialize : () ->
     tutorial.root = $('#tutorials') unless tutorial.root?
     tutorial.list.length = 0
     tutorial.list.push($(m).attr('id')) for m in tutorial.root.children('ol')
-    tutorial.start tutorial.list[0], true
+    tutorial.current = tutorial.list[0]
+    tutorial.active = false
+    obj = $("##{tutorial.current}")[0]
+    $(obj).joyride 'init', tutorial.options.defaults
     return true
     
 }
