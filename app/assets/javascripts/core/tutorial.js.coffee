@@ -25,6 +25,10 @@ window.tutorial = {
       'qzb-milestone-7' : {
         'startTimerOnClick' : false,
         'timer' : 14000
+      },
+      'wsb-milestone-1' : {
+        'startTimerOnClick' : false,
+        'timer' : 1400
       }
     }
   },
@@ -39,29 +43,27 @@ window.tutorial = {
     return true
     
 
-  start : (n = null, preInitilization = false) ->
+  start : (n = null, initializing = false) ->
     return false unless n?
-    tutorial.active = not preInitilization
 
-    if tutorial.current?
-      if tutorial.current isnt n
-        last = tutorial.root.children('ol').filter("[id=#{tutorial.current}]")[0]
-        $(last).joyride 'destroy'
-      else if tutorial.active
-        tutorial.deactivateControlPanel()
-        $("##{tutorial.current}").joyride('restart')
-        return true
+    tutorial.active = true
+    if tutorial.current is n
+      tutorial.deactivateControlPanel()
+      $("##{tutorial.current}").joyride('restart')
+      return true
+    else
+      last = tutorial.root.children('ol').filter("[id=#{tutorial.current}]")[0]
+      $(last).joyride 'destroy'
+      tutorial.current = n
+      # tutorial.deactivateControlPanel()
 
-    tutorial.current = n
-    tutorial.deactivateControlPanel()
-    consolidated = $.extend {}, tutorial.options.defaults
-
-    if tutorial.options.specificTo[n]?
-      consolidated = $.extend consolidated, tutorial.options.specificTo[n]
-
-    obj = $("##{tutorial.current}")[0]
-    walkThru = $(obj).joyride 'init', consolidated
-    $(obj).joyride 'show', walkThru
+      consolidated = {}
+      $.extend consolidated, tutorial.options.defaults
+      if tutorial.options.specificTo[n]?
+        $.extend consolidated, tutorial.options.specificTo[n]
+      obj = $("##{tutorial.current}")[0]
+      $(obj).joyride('init', consolidated)
+      tutorial.start n
     return true
 
   initialize : () ->
@@ -69,7 +71,6 @@ window.tutorial = {
     tutorial.list.length = 0
     tutorial.list.push($(m).attr('id')) for m in tutorial.root.children('ol')
     tutorial.current = tutorial.list[0]
-    tutorial.active = false
     obj = $("##{tutorial.current}")[0]
     $(obj).joyride 'init', tutorial.options.defaults
     return true
