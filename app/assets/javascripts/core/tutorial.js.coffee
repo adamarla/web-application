@@ -43,7 +43,7 @@ window.tutorial = {
     return true
     
 
-  start : (n = null, initializing = false) ->
+  start : (n = null) ->
     return false unless n?
 
     tutorial.active = true
