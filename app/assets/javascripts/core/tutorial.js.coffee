@@ -26,9 +26,9 @@ window.tutorial = {
         'startTimerOnClick' : false,
         'timer' : 14000
       },
-      'wsb-milestone-1' : {
+      'wsb-milestone-3' : {
         'startTimerOnClick' : false,
-        'timer' : 1400
+        'timer' : 7000
       }
     }
   },

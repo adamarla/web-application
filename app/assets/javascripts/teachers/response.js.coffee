@@ -45,6 +45,7 @@ jQuery ->
         target = $('#enrolled-students')
       else
         target = $('#wsb-sektions')
+        lesson = 'wsb-milestone-3'
 
       parentKey = "students"
       childKey = 'student'
