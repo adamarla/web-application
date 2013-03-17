@@ -9,7 +9,7 @@
 
   .row-fluid.navbar.purge-skip
     - if context == :editqz
-      %button.btn.btn-inverse.pull-right{ :type => :submit }= "#{btn_text}"
+      %button.btn.btn-inverse.pull-right{ :type => :submit, :id => "#{context}-btn-final" }= "#{btn_text}"
     - else
       .input-append.pull-right.span10
         = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"

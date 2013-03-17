@@ -23,6 +23,6 @@
           = simple_link :for => "#{m.name}", :toggle => :tab, 
           :href => "##{context}-#{m.id}", :url => "vertical/topics.json?id=:id&context=#{context}"
 
-    .tab-content.span7
+    .tab-content.span7{ :id => "#{context}-div-milestone-4" }
       - Vertical.all.each do |m|
         .tab-pane.multi-select{ :id => "#{context}-#{m.id}" }

@@ -29,6 +29,14 @@ window.tutorial = {
       'wsb-milestone-3' : {
         'startTimerOnClick' : false,
         'timer' : 7000
+      },
+      'editqz-milestone-2' : {
+        'startTimerOnClick' : false,
+        'timer' : 7000
+      },
+      'editqz-milestone-4' : {
+        'startTimerOnClick' : false,
+        'timer' : 7000
       }
     }
   },

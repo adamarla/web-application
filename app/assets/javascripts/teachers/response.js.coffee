@@ -56,6 +56,7 @@ jQuery ->
         lesson = 'qzb-milestone-4'
       else
         next = 'tab-editqz-3'
+        lesson = 'editqz-milestone-5'
 
       karo.tab.enable next
 
@@ -84,7 +85,7 @@ jQuery ->
       target = $("##{json.context}-pick-#{topic}")
       parentKey = 'questions'
       childKey = 'datum'
-      lesson = 'qzb-milestone-5'
+      lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
     else if url.match(/quiz\/testpapers/)
       target = $("#pane-wsb-existing")
       parentKey = "testpapers"
@@ -103,7 +104,8 @@ jQuery ->
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
         target = $("##{json.context}-#{json.vertical}")
-        lesson = "qzb-milestone-3"
+        milestone = if json.context is 'qzb' then 3 else 4
+        lesson = "#{json.context}-milestone-#{milestone}"
       else
         target = $('#deepdive-topics')
       parentKey = 'topics'
@@ -116,6 +118,7 @@ jQuery ->
       target = $('#editqz-1')
       parentKey = 'questions'
       childKey = 'datum'
+      lesson = 'editqz-milestone-2'
     else if url.match(/add\/sektion/)
       target = $('#my-sektions-list')
       parentKey = 'sektion'
