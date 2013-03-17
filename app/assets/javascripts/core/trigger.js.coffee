@@ -73,6 +73,9 @@ window.trigger = {
     # launch any help tied to this link
     help = link.dataset.launch
     if help?
+      autoclick = link.dataset.autoclick
+      trigger.click $("##{autoclick}")[0] if autoclick?
+
       if $(link).hasClass 'help-launcher'
         tutorial.start help
       else if tutorial.active
