@@ -92,6 +92,7 @@ jQuery ->
       childKey = "testpaper"
       menu = 'per-ws'
       clickFirst = true
+      lesson = 'publish-milestone-2'
     else if url.match(/ws\/summary/)
       target = $("#pane-tc-rc-2")
       parentKey = "root"

@@ -15,7 +15,7 @@ body {
   background: rgba(255,255,255,0.8); 
   color: black;
   display: none;
-  width: 200px;
+  max-width: 250px;
   z-index: 101;
   top: 0; /* keeps the page from scrolling when calculating position */
   left: 0;
