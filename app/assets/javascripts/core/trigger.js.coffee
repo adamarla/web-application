@@ -55,7 +55,8 @@ window.trigger = {
         panel.removeClass 'hide'
         karo.unhide(show, panel) unless show is 'no-remove'
 
-    return true if isTab # process tabs here only insofar as hiding/unhiding is concerned
+    return true if isTab
+    # process tabs here only insofar as hiding/unhiding is concerned
 
     # If there be a tab that needs to be auto-clicked, then do that too
     tab = link.dataset.autoclickTab
@@ -69,7 +70,7 @@ window.trigger = {
     ajax = karo.url.elaborate link
     karo.ajaxCall ajax if (ajax? and ajax isnt 'disabled')
 
-    # if 'link' is within the Help menu, then ..
+    # launch any help tied to this link
     help = link.dataset.launch
     if help?
       if $(link).hasClass 'help-launcher'
@@ -232,6 +233,16 @@ jQuery ->
       if proceed
         karo.ajaxCall ajax
         pagination.url.set pgn, ajax
+    else
+      # launch any help tied to this link. Do this ONLY for tabs that do NOT 
+      # result in an ajax call. For tabs that do, tutorials are launched AFTER
+      # AJAX response has been received
+      help = this.dataset.launch
+      if help?
+        if $(this).hasClass 'help-launcher'
+          tutorial.start help
+        else if tutorial.active
+          tutorial.start help
 
     # Set base-ajax url on containing panel
     unless ul.hasClass 'lock'
