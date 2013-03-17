@@ -125,6 +125,7 @@ jQuery ->
       target = $('#my-sektions-list')
       parentKey = 'sektion'
       childKey = 'new'
+      lesson = 'mng-sektions-milestone-4'
       # Show UIDs of the newly created sections alongside the <input> boxes
 
       form = $('#pane-mng-sektions-2 > form').eq(0)

@@ -13,5 +13,5 @@
       - [*1..5].each do |m|
         %div{ :marker => m }
           = f.input_field "#{m}", :placeholder => "new section ##{m}"
-          .subtext.pull-right
+          .subtext.pull-right{ :id => "sektion-uid-#{m}" }
       %button.btn.btn-inverse.pull-right{ :type => :submit }= "Add"
