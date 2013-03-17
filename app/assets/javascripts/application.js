@@ -6,4 +6,4 @@
 //= require jquery_ujs 
 //= require bootstrap 
 //= require_directory ./core
-//= require_directory ../../../vendor/assets/javascripts/happy 
+//= require_directory ../../../vendor/assets/javascripts/joyride
