@@ -102,6 +102,7 @@ jQuery ->
       target = if json.context is 'deepdive' then $('#pane-dive-1') else $('#pane-mng-sektions-1')
       parentKey = 'sektions'
       childKey = 'sektion'
+      lesson = 'mng-sektions-milestone-2'
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
         target = $("##{json.context}-#{json.vertical}")
@@ -124,6 +125,13 @@ jQuery ->
       target = $('#my-sektions-list')
       parentKey = 'sektion'
       childKey = 'new'
+      # Show UIDs of the newly created sections alongside the <input> boxes
+
+      form = $('#pane-mng-sektions-2 > form').eq(0)
+      for m in json.tabs
+        div = form.children("div[marker=#{m.marker}]").eq(0)
+        div.children(".subtext").eq(0).text m.tag
+
       # Add the new created section wherever sections are shown in left-tabs 
       leftTabs.add '#mng-sektions', json,
         {

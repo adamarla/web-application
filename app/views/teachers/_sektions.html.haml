@@ -3,12 +3,15 @@
   %li
     = simple_link :for => "Existing", :href => '#pane-mng-sektions-1', :id => 'tab-mng-sektions-1'
   %li
-    = simple_link :for => "Add more...", :href => '#pane-mng-sektions-2', :id => 'tab-mng-sektions-2'
+    = simple_link :for => "Add more...", :href => '#pane-mng-sektions-2', 
+      :id => 'tab-mng-sektions-2', :launch => 'mng-sektions-milestone-3'
 
 .tab-content
   #pane-mng-sektions-1.tab-pane
   #pane-mng-sektions-2.tab-pane.nopurge
     = simple_form_for :new, :url => add_sektion_path, :remote => true do |f|
       - [*1..5].each do |m|
-        = f.input_field "#{m}", :placeholder => "new section ##{m}"
+        %div{ :marker => m }
+          = f.input_field "#{m}", :placeholder => "new section ##{m}"
+          .subtext.pull-right
       %button.btn.btn-inverse.pull-right{ :type => :submit }= "Add"

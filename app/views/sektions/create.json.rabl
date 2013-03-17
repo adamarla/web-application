@@ -1,5 +1,5 @@
 
 object false 
   node(:tabs) { 
-    @sk.map{ |m| { :id => m.id, :name => m.name, :tag => m.uid } }
+    @sk.values.map{ |m| { :id => m.id, :name => m.name, :tag => m.uid, :marker => @sk.key(m) } }
   } 

@@ -9,16 +9,13 @@ class SektionsController < ApplicationController
   def create 
     teacher = params[:id].blank? ? current_account.loggable : Teacher.find(params[:id])
     names = params[:new].values.select{ |m| !m.blank? }
-    @sk = []
+    @sk = {}
 
-    names.each do |m| 
-      @sk.push teacher.sektions.build(:name => m)
-    end 
-
-    @sk.each do |m| 
-      m.save
-      sleep 1 # very important. Keeps uids separated
-    end 
+    params[:new].each do |k,v|
+      next if v.blank?
+      @sk[k] = teacher.sektions.create(:name => v)
+      sleep 1 # very important. Keeps uids separate
+    end
   end 
 
   def update 
