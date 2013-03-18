@@ -32,9 +32,9 @@ class Account < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :login, :trial
   attr_accessor :login
 
-  validates :email, :presence => true
-  validates :email, :uniqueness => true
-  validates :password, :presence => true
+  validates :email, :presence => true, :on => :save
+  validates :email, :uniqueness => true, :on => :save
+  validates :password, :presence => true, :on => :save
   validates :password, :length => { :minimum => 6 }, :on => :save
 
   # An account can be for a student, parent, teacher, school etc. 

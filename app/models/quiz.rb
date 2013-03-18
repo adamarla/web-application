@@ -91,7 +91,6 @@ class Quiz < ActiveRecord::Base
           g = GradedResponse.new(:q_selection_id => q.id, :student_id => s.id, :subpart_id => p.id)
           testpaper.graded_responses << g
         end
-        #testpaper.graded_responses << GradedResponse.new(:q_selection_id => q.id, :student_id => s.id) #(3) & (4)
       end
     end # student loop 
 
