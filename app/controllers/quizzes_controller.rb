@@ -10,6 +10,7 @@ class QuizzesController < ApplicationController
       publish = params[:publish] == 'yes' 
       teacher = quiz.teacher 
       students = params[:checked].keys   # we need just the IDs
+      puts " ############## students = #{students}.count --> #{students}"
       Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
       at = Delayed::Job.where('failed_at IS NULL').count
       render :json => { :notify => { :text => "Worksheet received", 
