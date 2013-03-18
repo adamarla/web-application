@@ -96,6 +96,7 @@ class Quiz < ActiveRecord::Base
     if testpaper.students.empty?
       return {}
     else
+      puts " ######### is_valid = #{tespaper.valid?} --> #{testpaper.errors}"
       response = (testpaper.save) ? testpaper.compile_tex : {}
       testpaper.destroy if response[:manifest].blank? 
       return response
