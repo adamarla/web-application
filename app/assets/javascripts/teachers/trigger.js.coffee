@@ -16,14 +16,19 @@ jQuery ->
 
   $('#select-all-for-quiz').click (event) ->
     event.stopPropagation()
-    target = $('#sektions-tab').children('.tab-content').eq(0).children('form.active').eq(0)
-    for m in target.children('.single-line')
-      $(m).click()
-    return true
+    $(m).click() for m in $('#wsb-sektions').children('.single-line')
+    return false
 
   $('#build-worksheet').click (event) ->
+    someChecked = false
+    for m in $('#wsb-sektions').find("input[type='checkbox']")
+      someChecked |= $(m).prop('checked')
+      break if someChecked
+    
     event.stopPropagation()
-    form = $(this).closest('.tab-content').children('form.active').eq(0)
+    return false if not someChecked
+
+    form = $(this).closest('.tab-content').children('form').eq(0)
     id = $('#tab-wsb-quizzes').parent().attr 'marker'
 
     # See teachers/_wsb-sektions
