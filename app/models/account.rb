@@ -35,7 +35,7 @@ class Account < ActiveRecord::Base
   validates :email, :presence => true
   validates :email, :uniqueness => true
   validates :password, :presence => true
-  # validates :password, :length => { :minimum => 6 }
+  validates :password, :length => { :minimum => 6 }, :on => :save
 
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
