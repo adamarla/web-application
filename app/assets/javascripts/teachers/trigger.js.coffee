@@ -26,8 +26,9 @@ jQuery ->
       break if someChecked
     
     event.stopPropagation()
-    return false if not someChecked
+    return someChecked
 
+    ###
     form = $(this).closest('.tab-content').children('form').eq(0)
     id = $('#tab-wsb-quizzes').parent().attr 'marker'
 
@@ -38,7 +39,9 @@ jQuery ->
     action = if publish then "quiz/assign?id=#{id}&publish=yes" else "quiz/assign?id=#{id}"
     form.attr 'action', action
     form.submit()
+    alert '1'
     return true
+    ###
 
   $('#tab-qzb-topics').on 'shown', (event) ->
     pane = $(this).closest('.nav-tabs').eq(0).next().children('.tab-pane.active').eq(0)
