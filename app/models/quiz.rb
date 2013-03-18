@@ -73,18 +73,20 @@ class Quiz < ActiveRecord::Base
     #   3. graded_response <-> testpaper
     #   4. graded_response <-> student
 
-    ntests = Testpaper.where(:quiz_id => self.id).count
+    past = Testpaper.where(:quiz_id => self.id).map(&:id)
+    ntests = past.count
     assigned_name = "##{ntests + 1} - #{Date.today.strftime('%B %d, %Y')}" 
-    testpaper = self.testpapers.new :name => assigned_name, :inboxed => publish # (1)
-    questions = QSelection.where(:quiz_id => self.id).order(:start_page)
+    testpaper = self.testpapers.build :name => assigned_name, :inboxed => publish # (1)
+    picked_questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
     students.each do |s|
+      taken = AnswerSheet.where(:student_id => s.id).map(&:testpaper_id)
       # Don't issue the same quiz to the same students
-      next if s.quiz_ids.include? self.id
+      next unless (taken & past).blank? 
 
       testpaper.students << s # (2) 
-      questions.each do |q|
-        subparts = Subpart.where(:question_id => q.question.id).order(:index)
+      picked_questions.each do |q|
+        subparts = Subpart.where(:question_id => q.question_id).order(:index)
         subparts.each do |p|
           g = GradedResponse.new(:q_selection_id => q.id, :student_id => s.id, :subpart_id => p.id)
           testpaper.graded_responses << g
