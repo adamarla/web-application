@@ -98,6 +98,9 @@ jQuery ->
   .bind 'ajaxError', () ->
     $(this).hide()
 
+  # Initialize tutorials
+  tutorial.initialize()
+
   ###
     This next call is unassuming but rather important. We initialize 
     variables within the JS based on the results the server being accessed returns
@@ -108,6 +111,9 @@ jQuery ->
       gutenberg.server = gutenberg.serverOptions.remote
     else
       gutenberg.server = gutenberg.serverOptions.local
+    if response.new is true
+      tutorial.start 'welcome-milestone-1' if response.who is 'Teacher'
+    return true
     
   pingargs =
   	url: '/ping'
@@ -120,7 +126,6 @@ jQuery ->
     interval : 5000
   })
 
-  tutorial.initialize()
 
   #####################################################################
   ## Forms within dropdown menus  

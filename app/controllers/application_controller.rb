@@ -10,7 +10,17 @@ class ApplicationController < ActionController::Base
   end 
 
   def ping
-    render :json => {:deployment => Rails.env}
+    if current_account
+      case current_account.loggable_type
+        when "Teacher"
+          is_new = current_account.loggable.quizzes.count < 2
+        else 
+          is_new = false
+      end
+      render :json => { :deployment => Rails.env, :new => is_new, :who => current_account.loggable_type }
+    else
+      render :json => {:deployment => Rails.env}
+    end
   end
 
 end
