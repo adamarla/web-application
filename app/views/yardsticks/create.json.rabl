@@ -1,2 +1,0 @@
-object @yardstick
-  attributes :annotation

@@ -1,3 +1,0 @@
-
-object @calibration 
-  attribute :allotment
