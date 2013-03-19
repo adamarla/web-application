@@ -23,8 +23,10 @@
     = render :partial => 'toolbox/fdb-panel'
 
 - content_for :modals do
-  = render :partial => 'modals/user/account'
-  = render :partial => 'modals/teacher/suggestion'
+  #modal-forms
+    = render :partial => 'modals/user/account'
+    = render :partial => 'modals/teacher/suggestion'
+  #notifications.hidden
 
 - content_for :tutorials do 
   #tutorials

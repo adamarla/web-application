@@ -132,6 +132,8 @@ $green: #347235 ; // rgb(87,188,32)
 } 
 
 .modal { 
+  font-weight: 300 ;
+  padding: 10px ;
   &.narrow { 
     width: 350px ;
   } 
@@ -141,21 +143,18 @@ $green: #347235 ; // rgb(87,188,32)
     background: rgba(25,25,25,0.8) ; 
     border-radius: 0px ;
   }
-
-  #errblurb {
-    > h4 {
-      color: red ;
-    }
-  }
-
-  h3 {
-    color: white ;
-  }
-
-  h4 {
-    color: white ;
-  }
   
+  h1,h2,h3,h4,h5,h6 { 
+    color: $orange ;
+  } 
+
+  h1 { font-size: 18px ; }
+  h2 { font-size: 16px ; }
+  h3 { font-size: 14px ; }
+  h4 { font-size: 14px ; }
+  h5 { font-size: 14px ; }
+  h6 { font-size: 12px ; }
+
   p {
     color: white ;
   }
