@@ -23,7 +23,7 @@ class SuggestionsController < ApplicationController
 
     unless Suggestion.where( :teacher_id => teacher_id ,
                          :signature => signature ).count == 0
-      render :json => { :status => :error , :message =>
+      render :json => { :status => :duplicate , :message =>
         "You uploaded this exact same file before" }
     else
 

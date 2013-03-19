@@ -132,6 +132,10 @@ $green: #347235 ; // rgb(87,188,32)
 } 
 
 .modal { 
+  &.medium { 
+    width: 460px ;
+  } 
+
   &.narrow { 
     width: 350px ;
   } 
