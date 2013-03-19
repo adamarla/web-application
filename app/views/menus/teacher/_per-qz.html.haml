@@ -1,18 +1,14 @@
 
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
-  %li.nav-header= "This quiz"
   %li
-    = simple_link :for => "add / remove questions", :id => 'lnk-edit-qz'
-  %li.nav-header= "Worksheets"
+    = simple_link :for => "Edit Quiz", :id => 'lnk-edit-qz'
   %li
-    = simple_link :for => "New", :id => 'lnk-wsb-new', :launch => 'wsb-milestone-2'
+    = simple_link :for => "New Worksheet", :id => 'lnk-wsb-new', :launch => 'wsb-milestone-2'
   %li
-    = simple_link :for => "List", :id => 'lnk-wsb-existing'
-  %li.nav-header= "Download"
+    = simple_link :for => "List Worksheets", :id => 'lnk-wsb-existing'
   %li
-    = simple_link :for => "Solution (PDF)", :id => 'lnk-download-solution', 
+    = simple_link :for => "Download Solution (PDF)", :id => 'lnk-download-solution', 
     :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf"
-  %li.nav-header= "Misc"
   %li
-    = simple_link :for => 'Report Cards', :id => 'lnk-rc-ws'
+    = simple_link :for => 'View Report Cards', :id => 'lnk-rc-ws'
             

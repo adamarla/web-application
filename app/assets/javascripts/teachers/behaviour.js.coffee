@@ -119,7 +119,7 @@ jQuery ->
       when 'courses-taught'
         $.get "course/verticals.json?id=#{marker}"
       when 'sektion-list'
-        $.get "sektion/students.json?id=#{marker}"
+        $.get "sektion/students.json?id=#{marker}&context=#{marker}"
       when 'testpaper'
         wide = $('#wide-panel')
         first = wide.children().eq(0).attr 'id'
