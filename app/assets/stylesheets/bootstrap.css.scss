@@ -5036,7 +5036,9 @@ a.thumbnail:hover {
     transition: opacity .3s linear, top .3s ease-out;
     top: -25%;
     &.in {
-      top: 70%;
+      // top: 70%;
+      top: 250px ;
+      left: 60% ;
     }
   }
 }
