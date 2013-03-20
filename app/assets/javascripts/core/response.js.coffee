@@ -30,7 +30,7 @@ jQuery ->
       m = a.next() # next = ul.dropdown-menu
       menu.close m, true
       a.parent().removeClass 'active' # parent = .dropdown
-      notifier.show '#n-registered'
+      notifier.show 'n-registered'
       # $('#n-registered').modal 'show'
     else
       matched = false

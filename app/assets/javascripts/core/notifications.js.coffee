@@ -1,12 +1,11 @@
 
 ###
-  Notifications are * always * shown in the same place 
-  in the control panel and * always * as a dropdown
+  All notifications are shown as slide-down modals. 
+  Notifications respond to json - if provided. However the JSON must be of the 
+  following form: 
 
-  The dropdown is * always * an <a> with id = 'm-notifications'
-
-  The JSON below should also be of the form 
     :notify => { :text => ..., :subtext => ...., :data => ... }
+
   :text (mandatory)
   :subtext, :data (optional)
 ###
@@ -22,11 +21,24 @@ window.notifier = {
     # is an idiot / child and presses the same button again and again 
 
     return true if notifier.current?
-    notifier.current = if typeof obj is 'string' then $(obj)[0] else obj
+    notifier.current = if typeof obj is 'string' then $("##{obj}")[0] else obj
 
-    if notifier.current.dataset.autohide is 'true'
+    if json?
+      if json.notify?
+        if json.notify.text?
+          t = $(notifier.current).find('.text').eq(0)
+          t.text json.notify.text
+        if json.notify.subtext?
+          t = $(notifier.current).find('.subtext').eq(0)
+          t.text json.notify.subtext
+
+    autoHideIn = notifier.current.dataset.autohide
+
+    if autoHideIn?
+      autoHideIn = parseInt(autoHideIn)
       notifier.ticker = window.setInterval () -> notifier.hide(),
-      10000
+      autoHideIn
+
     $(notifier.current).removeClass 'hide'
     $(notifier.current).modal 'show'
     return true
