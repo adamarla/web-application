@@ -303,6 +303,22 @@ $green: #347235 ; // rgb(87,188,32)
     padding: 2px ;
     text-align: center ;
   } 
+
+  button {
+    &[data-toggle='button'] {
+      background-color: transparent ;
+      &.active {
+        background-color: rgba(0,129,194,0.7) ;
+      }
+    }
+    > i {
+      vertical-align: middle ;
+      margin-left: 5% ;
+    } 
+    box-shadow: none ;
+    padding: 1px 2px 2px 2px ;  
+  }
+
 } 
 
 #wide-X > #wide-X-carousel { 

@@ -325,18 +325,27 @@ jQuery ->
 
     clickedObj = $(event.target)
     m = null
+    hasButton = $(this).children('button').length > 0
 
     if clickedObj.hasClass('dropdown')
       m = clickedObj
     else if clickedObj.hasClass 'dropdown-toggle'
       m = clickedObj.parent()
+    else if clickedObj.is 'button'
+      if clickedObj.hasClass('active')
+        clickedObj.removeClass 'active'
+        clickedObj.children("input[type='checkbox']").eq(0).prop 'checked', false
+      else
+        clickedObj.addClass 'active'
+        clickedObj.children("input[type='checkbox']").eq(0).prop 'checked', true
+      return false
 
     if m? # => if clicked to see dropdown menu
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle')[0] else return false
     else # elsewhere on the single-line => select / de-select
       event.stopPropagation()
-      multiOk = $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
+      multiOk = if hasButton then false else $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
       activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
       
       isClicked = $(this).hasClass 'selected'
@@ -357,9 +366,11 @@ jQuery ->
           for k in $(this).siblings('.single-line')
             $(k).removeClass 'selected'
             $(k).find('.badge').eq(0).removeClass 'badge-warning'
-            $(k).find("input[type='checkbox']").eq(0).prop 'checked', false
-          unless $(activeTab).parent().hasClass 'lock'
-            $(activeTab).attr 'marker', $(this).attr('marker')
+            $(k).find("input[type='checkbox']").eq(0).prop 'checked', false unless hasButton
+
+          if not hasButton
+            if not $(activeTab).parent().hasClass 'lock'
+              $(activeTab).attr 'marker', $(this).attr('marker')
 
         # 2. Close any previously open menus - perhaps belonging to a sibling 
         for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
