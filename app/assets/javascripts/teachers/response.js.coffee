@@ -103,6 +103,7 @@ jQuery ->
       parentKey = 'sektions'
       childKey = 'sektion'
       lesson = 'mng-sektions-milestone-2'
+      clickFirst = true
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
         target = $("##{json.context}-#{json.vertical}")

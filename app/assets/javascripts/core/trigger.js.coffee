@@ -261,6 +261,15 @@ jQuery ->
     autoLink = this.dataset.autoclickLink
     $("##{autoLink}").click() if autoLink?
 
+    ###
+      If corresponding tab-pane has statically rendered .tabs-left, 
+      then autoclick the first tab
+    ###
+    pane = $($(this).attr('href'))
+    for m in pane.find('.tabs-left')
+      firstTab = $(m).find('ul > li > a').eq(0)
+      firstTab.click()
+
     return true
 
   ###############################################
