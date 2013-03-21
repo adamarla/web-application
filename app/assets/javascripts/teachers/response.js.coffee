@@ -150,6 +150,7 @@ jQuery ->
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
     else if url.match(/build_quiz/)
+      lesson = 'qzb-milestone-7'
       monitor.add json
       $('#lnk-existing-quiz').click()
     else
