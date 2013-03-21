@@ -259,8 +259,15 @@ class Quiz < ActiveRecord::Base
   def clone
     selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
     name = "#{self.name} (edited)"
-    Delayed::Job.enqueue BuildQuiz.new(name, self.teacher_id, selections, self.id), 
-                                       :priority => 0, :run_at => Time.zone.now
+
+    copy = Quiz.new :name => name, :teacher_id => self.teacher_id, 
+                    :question_ids => selections, :num_questions => selections.count, 
+                    :parent_id => self.id 
+    status = copy.save ? :ok : :bad_request 
+    if status == :ok
+      job = Delayed::Job.enqueue CompileQuiz.new(copy)
+      copy.update_attribute :uid, job.id.to_s
+    end
   end
 
   def remove_questions(question_ids)
@@ -304,6 +311,9 @@ class Quiz < ActiveRecord::Base
 
     # If compilation fails, then the Quiz object itself is destroyed. In which case
     # there is no way this object method can be called
+
+    # This method will also (wrongly) return true for quizzes made before Aug-Sept 2012. 
+    # Back then, the UID used to be a 9-digit number - before we moved to base-36 encoding
     self.uid.to_i.to_s == self.uid
   end
 
