@@ -17,7 +17,7 @@ window.monitor = {
   start : () ->
     return false if monitor.ticker?
     monitor.ticker = window.setInterval () -> monitor.ping(),
-    5000
+    40000
     return true
 
   stop : () ->
