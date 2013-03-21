@@ -48,6 +48,7 @@ window.monitor = {
         clone.push j if j isnt m
     monitor.quizzes.length = 0  # first, empty
     monitor.quizzes = clone.slice(0)
+    monitor.stop() if monitor.isEmpty()
 
     # Launch notifier
     target = $('#n-quiz-compiled')
