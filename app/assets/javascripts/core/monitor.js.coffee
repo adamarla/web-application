@@ -43,24 +43,24 @@ window.monitor = {
 
     clone = []
     for m in json.compiled
-      id = parseInt m.id
       for j in monitor.quizzes
-        alert "j = #{j} --> #{typeof j} ==> m = #{m.id} --> #{typeof m.id}"
         clone.push j if j isnt m.id
 
     if clone.length > 0
       monitor.quizzes.length = 0  # first, empty
       monitor.quizzes = clone.slice(0)
+
     monitor.stop() if monitor.isEmpty()
 
     # Launch notifier
-    target = $('#n-quiz-compiled')
-    ul = target.children('ul').eq(0)
-    ul.empty()
+    if json.compiled.length > 0
+      target = $('#n-quiz-compiled')
+      ul = target.children('ul').eq(0)
+      ul.empty()
 
-    for m in json.compiled
-      $("<li>#{m.name}</li>").appendTo ul
+      for m in json.compiled
+        $("<li>#{m.name}</li>").appendTo ul
+      notifier.show 'n-quiz-compiled'
 
-    notifier.show 'n-quiz-compiled'
     return true
 }
