@@ -41,17 +41,13 @@ window.monitor = {
     # We can afford to use an inefficient algo because the arrays 
     # in question will never get too large ( < 5 elements )
 
-    remaining = []
     for m in json.compiled
-      for j in monitor.quizzes
-        if j isnt m.id
-          remaining.push(j)
-        else
-          alert "match found #{j} == #{m.id}"
-
-    if remaining.length > 0
-      monitor.quizzes.length = 0  # first, empty
-      monitor.quizzes = remaining.slice(0)
+      if monitor.quizzes.indexOf(m.id) isnt -1
+        remaining = []
+        for j in monitor.quizzes
+          remaining.push(j) if j isnt m.id
+        monitor.quizzes.length = 0  # clear 
+        monitor.quizzes = remaining.slice(0) # copy everything other than just compiled quiz
 
     monitor.stop() if monitor.isEmpty()
 
