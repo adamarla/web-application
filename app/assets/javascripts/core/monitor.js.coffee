@@ -45,8 +45,8 @@ window.monitor = {
     for m in json.compiled
       id = parseInt m.id
       for j in monitor.quizzes
-        alert "j = #{j} --> #{typeof j} ==> m = #{m} --> #{typeof m}"
-        clone.push j if j isnt m
+        alert "j = #{j} --> #{typeof j} ==> m = #{m.id} --> #{typeof m.id}"
+        clone.push j if j isnt m.id
 
     if clone.length > 0
       monitor.quizzes.length = 0  # first, empty
