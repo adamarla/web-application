@@ -42,8 +42,9 @@ class QuizzesController < ApplicationController
 
   def list
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
-    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id).where('uid IS NOT NULL')
+    @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id)
 
+    @disable = @quizzes.select{ |m| m.compiling? }.map(&:id) 
     n = @quizzes.count 
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i

@@ -54,7 +54,6 @@ jQuery ->
     else if url.match(/qzb\/echo/)
       if json.context is 'qzb'
         next = 'tab-qzb-2'
-        lesson = 'qzb-milestone-4'
       else
         next = 'tab-editqz-3'
         lesson = 'editqz-milestone-5'
@@ -151,7 +150,7 @@ jQuery ->
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
     else if url.match(/build_quiz/)
-      lesson = 'qzb-milestone-7'
+      $('#lnk-existing-quiz').click()
     else
       matched = false
 
@@ -193,7 +192,7 @@ jQuery ->
 
 
       # Auto-click first line - if needed
-      target.children('.single-line').eq(0).click() if clickFirst
+      target.children('.single-line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst
       
     # If in tutorial mode, then start the next tutorial - if any
     if tutorial.active
