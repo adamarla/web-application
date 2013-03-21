@@ -111,9 +111,10 @@ class TeachersController < ApplicationController
     unless status == :bad_request
       job = Delayed::Job.enqueue CompileQuiz.new(quiz)
       quiz.update_attribute :uid, job.id.to_s
+      render :json => { :monitor => { :quiz => quiz.id } }, :status => :ok
+    else
+      render :json => { :monitor => { :quiz => nil } }, :status => :ok
     end
-    # Delayed::Job.enqueue BuildQuiz.new(name, teacher.id, question_ids, nil), :priority => 0, :run_at => Time.zone.now
-    render :json => { :notify => { :text => "request received" } }, :status => :ok
   end
 
   def like_question
