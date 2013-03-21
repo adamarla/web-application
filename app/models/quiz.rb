@@ -295,5 +295,28 @@ class Quiz < ActiveRecord::Base
     return safe
   end
 
+  def compiling?
+    # The CompileQuiz job's database ID (pure numeric) is stored as the initial UID 
+    # of the quiz. If the quiz compiles successfully, then the UID 
+    # is over-written with the randomized string the Savon request returns
+    # By checking whether the quiz's UID is pure numeric or not, we can infer 
+    # whether its being compiled or not 
+
+    # If compilation fails, then the Quiz object itself is destroyed. In which case
+    # there is no way this object method can be called
+    self.uid.to_i.to_s == self.uid
+  end
+
+  def est_minutes_to_compilation?
+    if self.compiling?
+      queued = Delayed::Job.where(:failed_at => nil).order(:priority).order(:created_at).map(&:id)
+      job_id = self.uid.to_i
+      at = queued.index job_id
+      return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
+    else
+      return 0
+    end
+  end
+
 end # of class
 
