@@ -24,7 +24,7 @@ window.tutorial = {
     specificTo : {
       'wsb-milestone-3' : {
         'startTimerOnClick' : false,
-        'timer' : 7000
+        'timer' : 14000
       },
       'editqz-milestone-2' : {
         'startTimerOnClick' : false,
