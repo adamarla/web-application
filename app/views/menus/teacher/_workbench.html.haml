@@ -1,14 +1,15 @@
 
 %ul.dropdown-menu.dropdown-inverse#teacher-workbench{ :role => :menu }
   %li
-    = simple_link :for => "Grade Scans", :id => 'lnk-wb-pending'
+    = simple_link :for => "Grade Worksheets", :id => 'lnk-wb-pending'
   %li
-    = simple_link :for => "Upload Questions", :id => 'lnk-upload-suggestion', :href => "#m-suggestion-upload"
+    = simple_link :for => "Suggest Question(s)", :id => 'lnk-upload-suggestion', :href => "#m-suggestion-upload"
   %li
-    = simple_link :for => "Manage Study Groups", :id => 'lnk-mng-sektions'
+    = simple_link :for => "Add/Edit Study Groups", :id => 'lnk-mng-sektions'
   %li
-    %a{ :href => "#{server}/winbot/app.publish/winbot.application"}
-      Upload Scans (Windows only)
+    = simple_link :for => 'Download Scanbot (Windows only)', :href => "#{server}/winbot/app.publish/winbot.application"
+    %p.footnote
+      You will need this application to send scans to Gradians.com
 -#
   %li
     = simple_link :for => "Using suggestion form", :id => 'lnk-suggestion-form',
