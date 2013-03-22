@@ -5,7 +5,7 @@ module ApplicationHelper
     text = options.delete :for 
     dropdown = options.delete :as
     dropdown = dropdown.blank? ? false : true
-    icon = dropdown ? options.delete(:icon) : nil
+    icon = options.delete(:icon)
 
     return false if (text.blank? && icon.blank?) # one or the other has to be there
 
@@ -79,7 +79,11 @@ module ApplicationHelper
         html = "<a #{attributes}><i class='#{icon}'></i>#{text}<span class='caret'></span></a>" 
       end
     else
-      html = "<a #{attributes}>#{text}</a>" 
+      if icon.blank?
+        html = "<a #{attributes}>#{text}</a>" 
+      else
+        html = "<a #{attributes}><i class='#{icon} icon-white'></i> #{text}</a>" 
+      end
     end
     return html.html_safe
     # "<a #{attributes}>#{text}</a>".html_safe
