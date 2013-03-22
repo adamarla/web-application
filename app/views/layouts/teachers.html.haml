@@ -42,6 +42,8 @@
     - ['one', 'two', 'three', 'four'].each do |m|
       = render :partial => "tutorials/teacher/mng-sektions/#{m}"
     - ['one'].each do |m|
+      = render :partial => "tutorials/teacher/upload-scans/#{m}"
+    - ['one'].each do |m|
       = render :partial => "tutorials/teacher/welcome/#{m}"
 
 !!!5
@@ -86,7 +88,7 @@
                 %li.dropdown
                   = simple_link :for => "Report Cards", :as => :dropdown, :id => 'm-report-cards'
                 %li.dropdown
-                  = simple_link :for => "Tools", :as => :dropdown, :id => 'm-teacher-workbench'
+                  = simple_link :for => "Misc.", :as => :dropdown, :id => 'm-teacher-workbench'
                 %li.dropdown
                   = simple_link :for => "Help", :as => :dropdown, :id => 'm-howto'
                 %li.dropdown
