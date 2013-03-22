@@ -8,7 +8,8 @@ class BuildQuiz < Struct.new(:name, :teacher_id, :question_ids, :parent_id)
 
     status = quiz.save ? :ok : :bad_request
     unless status == :bad_request
-      Delayed::Job.enqueue CompileQuiz.new(quiz)
+      job = Delayed::Job.enqueue CompileQuiz.new(quiz)
+      quiz.update_attribute :uid, job.id.to_s
     end
 
     # @teacher = Teacher.find teacher_id

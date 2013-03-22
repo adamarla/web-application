@@ -23,6 +23,7 @@ Webapp::Application.routes.draw do
   match 'gr/pending' => 'accounts#pending_gr', :via => :get
   match 'submit/fdb' => 'accounts#submit_fdb', :via => [:put, :post]
   match 'view/fdb' => 'accounts#view_fdb', :via => :get
+  match 'ping/queue' => 'accounts#poll_delayed_job_queue', :via => :get
 
   # Admin 
   resource :admin, :controller => :admin 

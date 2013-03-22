@@ -132,6 +132,10 @@ $green: #347235 ; // rgb(87,188,32)
 } 
 
 .modal { 
+
+  font-weight: 300 ;
+  padding: 10px ;
+
   &.medium { 
     width: 460px ;
   } 
@@ -145,26 +149,27 @@ $green: #347235 ; // rgb(87,188,32)
     background: rgba(25,25,25,0.8) ; 
     border-radius: 0px ;
   }
-
-  #errblurb {
-    > h4 {
-      color: red ;
-    }
-  }
-
-  h3 {
-    color: white ;
-  }
-
-  h4 {
-    color: white ;
-  }
   
+  h1,h2,h3,h4,h5,h6 { 
+    color: $orange ;
+  } 
+
+  h1 { font-size: 18px ; }
+  h2 { font-size: 16px ; }
+  h3 { font-size: 14px ; }
+  h4 { font-size: 14px ; }
+  h5 { font-size: 14px ; }
+  h6 { font-size: 12px ; }
+
   p {
     color: white ;
   }
 
   .control-label {
+    color: white ;
+  }
+
+  ul {
     color: white ;
   }
 } 
@@ -237,7 +242,8 @@ $green: #347235 ; // rgb(87,188,32)
   border-bottom: 1px solid $lightgray ; 
   
   &:hover {
-    font-weight: 600 ;
+    // font-weight: 600 ;
+    border-bottom: 2px solid $orange ;
   } 
   &.selected {
     > .dropdown { > a { color: white ; } }
@@ -308,6 +314,22 @@ $green: #347235 ; // rgb(87,188,32)
     padding: 2px ;
     text-align: center ;
   } 
+
+  button {
+    &[data-toggle='button'] {
+      background-color: transparent ;
+      &.active {
+        background-color: rgba(0,129,194,0.7) ;
+      }
+    }
+    > i {
+      vertical-align: middle ;
+      margin-left: 5% ;
+    } 
+    box-shadow: none ;
+    padding: 1px 2px 2px 2px ;  
+  }
+
 } 
 
 #wide-X > #wide-X-carousel { 

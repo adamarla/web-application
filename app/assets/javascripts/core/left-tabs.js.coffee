@@ -136,6 +136,11 @@ window.leftTabs = {
       if isTex
         j = a.children('script')[0]
         MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
+
+    # Once the left-tabs have been built, auto-click the first tab. There are 
+    # almost no situations when this isn't required 
+    firstTab = html.find('ul > li > a').eq(0)
+    firstTab.click()
     return true
 
   add : (root, json, options = null) ->
@@ -153,5 +158,7 @@ window.leftTabs = {
       ajax = if hasId then url.replace(":id", m.id) else url
       html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-url='#{ajax}'>#{m.name}</a></li>"
       $(html).prependTo ul
+    firstTab = ul.find('li > a').eq(0)
+    firstTab.click()
     return true
 }

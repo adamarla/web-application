@@ -104,4 +104,9 @@ class AccountsController < ApplicationController
 
   end
 
+  def poll_delayed_job_queue
+    quiz_ids = params[:quizzes].map(&:to_i)
+    @compiled = Quiz.where(:id => quiz_ids).select{ |m| !m.compiling? }
+  end 
+
 end

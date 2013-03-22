@@ -23,12 +23,15 @@
     = render :partial => 'toolbox/fdb-panel'
 
 - content_for :modals do
-  = render :partial => 'modals/user/account'
-  = render :partial => 'modals/teacher/suggestion'
+  #modal-forms
+    = render :partial => 'modals/user/account'
+    = render :partial => 'modals/teacher/suggestion'
+  #notifications
+    = render :partial => 'notifications/quiz-compiled'
 
 - content_for :tutorials do 
   #tutorials
-    - ['one', 'two', 'three', 'four', 'five', 'six', 'seven'].each do |m|
+    - ['one', 'three', 'five', 'six', 'seven'].each do |m|
       = render :partial => "tutorials/teacher/qzb/#{m}"
     - ['one', 'two', 'three'].each do |m|
       = render :partial => "tutorials/teacher/wsb/#{m}"

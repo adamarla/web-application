@@ -13,7 +13,7 @@
       %span.caret
   .span1.badge
   .span2.long-badge
-  .span
-    .text
-    = check_box_tag :tbd, :t, false, :class => :hide
+  .text
   .span2.subtext
+  = simple_button :icon => 'icon-plus-sign', :as => :checkbox, :name => 'checked', :class => 'btn-mini', :toggle => :button
+  = check_box_tag :tbd, :t, false, :class => :hide

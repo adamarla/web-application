@@ -33,6 +33,7 @@ jQuery ->
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
     lesson = null
+    buttons = null
 
     if url.match(/quizzes\/list/)
       target = $('#pane-wsb-quizzes')
@@ -57,7 +58,6 @@ jQuery ->
     else if url.match(/qzb\/echo/)
       if json.context is 'qzb'
         next = 'tab-qzb-2'
-        lesson = 'qzb-milestone-4'
       else
         next = 'tab-editqz-3'
         lesson = 'editqz-milestone-5'
@@ -90,6 +90,7 @@ jQuery ->
       parentKey = 'questions'
       childKey = 'datum'
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
+      buttons = 'icon-plus-sign'
     else if url.match(/quiz\/testpapers/)
       target = $("#pane-wsb-existing")
       parentKey = "testpapers"
@@ -107,6 +108,7 @@ jQuery ->
       parentKey = 'sektions'
       childKey = 'sektion'
       lesson = 'mng-sektions-milestone-2'
+      clickFirst = true
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
         target = $("##{json.context}-#{json.vertical}")
@@ -153,6 +155,8 @@ jQuery ->
       karo.tab.enable tab if tab?
     else if url.match(/build_quiz/)
       lesson = 'qzb-milestone-7'
+      monitor.add json
+      $('#lnk-existing-quiz').click()
     else
       matched = false
 
@@ -183,7 +187,7 @@ jQuery ->
             writeData = target.children().length is 0
 
       # karo.empty target
-      line.write(target, m[childKey], menu) for m in json[parentKey] if writeData
+      line.write(target, m[childKey], menu, buttons) for m in json[parentKey] if writeData
 
       # Disable any newly added .single-line if its marker in json.disable
       if json.disable? # => an array of indices
@@ -194,7 +198,7 @@ jQuery ->
 
 
       # Auto-click first line - if needed
-      target.children('.single-line').eq(0).click() if clickFirst
+      target.children('.single-line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst
       
     # If in tutorial mode, then start the next tutorial - if any
     if tutorial.active

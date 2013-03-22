@@ -1,16 +1,60 @@
 
 ###
-  Notifications are * always * shown in the same place 
-  in the control panel and * always * as a dropdown
+  All notifications are shown as slide-down modals. 
+  Notifications respond to json - if provided. However the JSON must be of the 
+  following form: 
 
-  The dropdown is * always * an <a> with id = 'm-notifications'
-
-  The JSON below should also be of the form 
     :notify => { :text => ..., :subtext => ...., :data => ... }
+
   :text (mandatory)
   :subtext, :data (optional)
 ###
 
+window.notifier = {
+  ticker : null,
+  current : null,
+
+  show : (obj, json = null) ->
+    # show only one notification at a time. If the notification auto-hides, then 
+    # it would persist for only 3 seconds. Unlikely that the user would do anything
+    # in that time that could spawn another notification. Unless, of course the user
+    # is an idiot / child and presses the same button again and again 
+
+    return true if notifier.current?
+    notifier.current = if typeof obj is 'string' then $("##{obj}")[0] else obj
+
+    if json?
+      if json.notify?
+        if json.notify.text?
+          t = $(notifier.current).find('.text').eq(0)
+          t.text json.notify.text
+        if json.notify.subtext?
+          t = $(notifier.current).find('.subtext').eq(0)
+          t.text json.notify.subtext
+
+    autoHideIn = notifier.current.dataset.autohide
+
+    if autoHideIn?
+      autoHideIn = parseInt(autoHideIn)
+      notifier.ticker = window.setInterval () -> notifier.hide(),
+      autoHideIn
+
+    $(notifier.current).removeClass 'hide'
+    $(notifier.current).modal 'show'
+    return true
+
+  hide : () ->
+    if notifier.ticker?
+      window.clearTimeout notifier.ticker
+      notifier.ticker = null
+    if notifier.current?
+      $(notifier.current).modal('hide')
+      $(notifier.current).addClass 'hide'
+      notifier.current = null
+    return true
+}
+
+###
 window.notifier = {
   obj : null,
   target : null,
@@ -66,9 +110,7 @@ jQuery ->
     notifier.ticker = null
     return true
 
-  ###
-    Any ajaxSuccess that returns a JSON with :notify should be captured here
-  ###
+  # Any ajaxSuccess that returns a JSON with :notify should be captured here
 
   $('#control-panel').ajaxSuccess (e,xhr,settings) ->
     json = $.parseJSON xhr.responseText

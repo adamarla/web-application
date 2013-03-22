@@ -1,6 +1,6 @@
 
 window.line = {
-  write : (here, json, menu) ->
+  write : (here, json, menu, buttons = null) ->
     here = if typeof here is 'string' then $(here) else here
     ###
       Passed JSON is assumed to have atleast the following keys
@@ -12,6 +12,7 @@ window.line = {
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
     obj.addClass(json.klass) if json.klass?
+    elements = obj.children()
 
     mn = bdg = lngBdg = sbTxt = false
     spanLeft = 11
@@ -28,57 +29,85 @@ window.line = {
     else
       dropDown.remove()
     
+    ###
+      If there are buttons, then remove the following to make space 
+        1. .subtext & .long-badge
+        2. any other input[type='checkbox']
+        3. long-badge
+    ###
+    if buttons?
+      $(m).remove() for m in obj.children(".subtext")
+      $(m).remove() for m in obj.children(".long-badge")
+      $(m).remove() for m in obj.children("input[type='checkbox']")
+
+      buttonsToKeep = if typeof buttons is 'string' then [buttons] else buttons # turn into an array
+      for m in obj.children('button')
+        i = $(m).children().eq(0)
+        for k in buttonsToKeep
+          if i.hasClass k
+            spanLeft -= 1
+            continue
+          else
+            i.parent().remove()
+    else
+      $(m).remove() for m in obj.children('button')
+    
+    text = obj.children(".text").eq(0)
+
     # If JSON has :badge 
-    b = obj.find('.badge').eq(0)
-    if (json.badge? or not json.long?)
-      if json.badge?
-        b.text json.badge
-      else
-        b.removeClass 'span1'
+    if json.long?
+      b = obj.children('.long-badge').eq(0)
+      if b.length isnt 0
+        b.text json.long
+        spanLeft -= (if mn then 1 else 2)
+        b.addClass 'offset1' unless mn
+        lngBdg = true
+    else
+      b = obj.children('.badge').eq(0)
+      b.text json.badge if b.length isnt 0
       spanLeft -= (if mn then 1 else 2)
       b.addClass 'offset1' unless mn
-      b.next().remove() # long-badge
+      b.removeClass 'span1' unless json.badge?
       bdg = true
-    else if json.long?
-      b = obj.find('.long-badge').eq(0)
-      b.text json.long
-      spanLeft -= (if mn then 2 else 3)
-      b.addClass 'offset1' unless mn
-      b.prev().remove() # badge 
-      lngBdg = true
+
+    $(m).remove() for m in obj.children('.badge') if lngBdg
+    $(m).remove() for m in obj.children('.long-badge') if bdg
 
     # Write contents of JSON 
-    text = obj.find('.text').eq(0)
+    text = obj.children(".text").eq(0)
 
-    if json.name.search(/\$.*\$/) isnt -1
+    if json.name.search(/\$.*\$/) isnt -1 # => LaTeX
       jaxified = karo.jaxify json.name
-      text.replaceWith "<script id='tex-#{json.id}' type='math/tex'>#{jaxified}</script>"
+      text.replaceWith "<div class='tex'><script id='tex-#{json.id}' type='math/tex'>#{jaxified}</script></div>"
+      # kinda imp. to wrap <script> within some <div>
       j = obj.find('script')[0]
-      text = $(j)
+      text = $(j).parent()
       MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
     else
       text.text json.name
+
     obj.attr 'marker', json.id
-    for a in obj.find("input[type='checkbox']")
+    for a in obj.find("input[type='checkbox']") # either an immediate child or one inside a button
       $(a).attr 'name', "checked[#{json.id}]"
       $(a).attr 'id', "checked_#{json.id}"
 
-    subtext = obj.find('.subtext').eq(0)
-
-    # If JSON has :tag 
-    if json.tag?
-      subtext.text json.tag
-      unless mn
-        spanLeft -=3
-        subtext.removeClass 'span2'
-        subtext.addClass 'span3'
+    subtext = obj.children(".subtext").eq(0)
+    if subtext.length > 0
+      # If JSON has :tag 
+      if json.tag?
+        $(m).remove() for m in obj.children('button')
+        subtext.text json.tag
+        unless mn
+          spanLeft -=3
+          subtext.removeClass 'span2'
+          subtext.addClass 'span3'
+        else
+          spanLeft -= 2
       else
-        spanLeft -= 2
-    else
-      subtext.remove()
-    textRow = text.parent()
-    textRow.removeClass 'span'
-    textRow.addClass "span#{spanLeft}"
+        subtext.remove()
+
+    # .text is always used
+    text.addClass "span#{spanLeft}"
 
     # Append the cloned and edited obj
     obj.appendTo here

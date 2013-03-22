@@ -98,16 +98,23 @@ class TeachersController < ApplicationController
   end
 
   def build_quiz 
-    teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
-    head :bad_request if teacher.nil? 
+    teacher_id = current_account.loggable_type == "Teacher" ? current_account.loggable_id : nil
+    head :bad_request if teacher_id.nil? 
 
     name = params[:checked].delete :name
     question_ids = params[:checked].keys.map(&:to_i)
+    quiz = Quiz.new :name => name, :teacher_id => teacher_id, 
+                    :question_ids => question_ids, 
+                    :num_questions => question_ids.count
 
-    Delayed::Job.enqueue BuildQuiz.new(name, teacher.id, question_ids, nil), :priority => 0, :run_at => Time.zone.now
-    at = Delayed::Job.where('failed_at IS NULL').count
-    render :json => { :notify => { :text => "'#{name[0,13]} ...' received", 
-                                   :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
+    status = quiz.save ? :ok : :bad_request
+    unless status == :bad_request
+      job = Delayed::Job.enqueue CompileQuiz.new(quiz)
+      quiz.update_attribute :uid, job.id.to_s
+      render :json => { :monitor => { :quiz => quiz.id } }, :status => :ok
+    else
+      render :json => { :monitor => { :quiz => nil } }, :status => :ok
+    end
   end
 
   def like_question

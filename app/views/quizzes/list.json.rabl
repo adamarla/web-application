@@ -7,7 +7,7 @@ node(:quizzes) {
       :quiz => {
         :name => n.name,
         :id => n.id,
-        :tag => "#{n.span?} pg",
+        :tag => (n.compiling? ? "#{n.est_minutes_to_compilation?} min" : "#{n.span?} pg"),
         :badge => n.total?
       }
     }
@@ -15,4 +15,5 @@ node(:quizzes) {
 }
 
 node(:last_pg) { @last_pg }
+node(:disable) { @disable }
 
