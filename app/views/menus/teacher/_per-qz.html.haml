@@ -1,14 +1,14 @@
 
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
   %li
-    = simple_link :for => "Edit Quiz", :id => 'lnk-edit-qz', :icon => 'icon-pencil'
+    = simple_link :for => "Edit Quiz", :id => 'lnk-edit-qz', :icon => 'icon-edit'
   %li
-    = simple_link :for => "New Worksheet", :id => 'lnk-wsb-new', :launch => 'wsb-milestone-2', :icon => 'icon-wrench'
+    = simple_link :for => "New Worksheet", :id => 'lnk-wsb-new', :launch => 'wsb-milestone-2', :icon => 'icon-plus-sign'
   %li
     = simple_link :for => "List Worksheets", :id => 'lnk-wsb-existing', :icon => 'icon-list'
   %li
     = simple_link :for => "Download Solution (PDF)", :id => 'lnk-download-solution', 
-    :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", :icon => 'icon-arrow-down'
+    :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", :icon => 'icon-download'
   %li
     = simple_link :for => 'View Report Cards', :id => 'lnk-rc-ws', :icon => 'icon-list'
             
