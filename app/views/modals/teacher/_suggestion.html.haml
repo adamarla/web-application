@@ -8,7 +8,13 @@
     :html => { :target => 'upload-status' } do |f|
       = f.file_field :uploaded_doc
       .subtext.hide= "Please select a file first"
-      %button.btn.btn-large.btn-primary.push-down= "Upload (.pdf, .doc, .jpeg)"
+      .row-fluid
+        .span4
+          %button.btn.btn-large.btn-primary.push-down.pull-left= "Upload"
+        .span8.push-down
+          .subtext= "Accepted formats"
+          .subtext.white
+            PDF, Microsoft Word Document, OpenOffice Document, Images (.jpeg, .gif etc) <b>or</b> Simple Text file
       %h3
         By clicking on upload, you acknowledge that
       .row-fluid
