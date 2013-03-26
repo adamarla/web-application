@@ -273,7 +273,7 @@ jQuery ->
   ###
   
   $('#m-suggestion-upload').on 'click', 'button', (event) ->
-    file = $(this).siblings("input[type='file']")[0]
+    file = $(this).closest('.row-fluid').siblings("input[type='file']")[0]
     if $(file).val().length > 0 # => sth. selected
       $(file).next().addClass 'hide' # => next = plz. select file first msg 
     else
