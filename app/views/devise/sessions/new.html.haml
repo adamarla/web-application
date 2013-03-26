@@ -1,11 +1,4 @@
 
-#sign-in-form
-  = semantic_form_for :account, :url => session_path(:account) do |f|
-    = f.inputs do
-      = f.input :login, :wrapper_html => { :class => :left }
-      = f.input :password, :as => :password, :wrapper_html => { :class => :left }
-      = submit_tag 'login', :class => 'orange-submit-btn'
-  -#recover-password
-    - if devise_mapping.recoverable? && controller_name != 'passwords'
-      = link_to 'Forgot your password?', new_password_path(:account)
-
+-# Nothing really gets rendered for welcome/index. Everything that needs to be 
+-# shown is in the layout files
+#nothing-really

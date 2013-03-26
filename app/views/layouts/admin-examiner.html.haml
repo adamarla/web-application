@@ -6,14 +6,6 @@
 
 - content_for :toolbox do 
   #toolbox.hidden 
-    - if is_admin
-      = render :partial => 'topics/new'
-      = render :partial => 'verticals/new'
-      = render :partial => 'teachers/new'
-      = render :partial => 'students/new'
-      = render :partial => 'examiners/new'
-      = render :partial => 'admin/upload_xls'
-
     = render :partial => 'examiners/blockDbSlots'
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'

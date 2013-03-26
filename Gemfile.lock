@@ -37,8 +37,6 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
     cancan (1.6.8)
-    carrierwave (0.5.8)
-      activesupport (~> 3.0)
     coffee-rails (3.1.1)
       coffee-script (>= 2.2.0)
       railties (~> 3.1.0)
@@ -63,8 +61,6 @@ GEM
     eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
-    formtastic (2.2.1)
-      actionpack (>= 3.0)
     gyoku (0.4.6)
       builder (>= 2.1.2)
     haml (3.1.7)
@@ -128,7 +124,6 @@ GEM
     rake (10.0.3)
     rdoc (3.12)
       json (~> 1.4)
-    ruby-ole (1.2.11.4)
     sass (3.2.1)
     sass-rails (3.1.4)
       actionpack (~> 3.1.0)
@@ -147,8 +142,6 @@ GEM
     simple_form (2.0.4)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
-    spreadsheet (0.7.3)
-      ruby-ole (>= 1.0)
     sprockets (2.0.4)
       hike (~> 1.2)
       rack (~> 1.0)
@@ -184,13 +177,11 @@ PLATFORMS
 DEPENDENCIES
   annotate (= 2.4.0)
   cancan
-  carrierwave
   coffee-rails
   country_select
   dalli
   delayed_job_active_record
   devise (= 2.0.1)
-  formtastic
   haml
   haml-rails
   jquery-rails
@@ -201,7 +192,6 @@ DEPENDENCIES
   sass-rails (= 3.1.4)
   savon
   simple_form
-  spreadsheet
   squeel
   therubyracer
   thin
