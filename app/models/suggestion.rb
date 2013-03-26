@@ -38,16 +38,10 @@ class Suggestion < ActiveRecord::Base
   end
 
   def expand_pages
-    basename = self.signature.split('.')[0]
     pages = []
-    unless self.pages == 1
-      self.pages.times { |i|
-        pages << "#{basename}-#{i+1}"
-      }
-    else
-      pages = [basename]
-    end
-    puts pages.to_s
+    self.pages.times { |i|
+      pages << "page-#{i+1}"
+    }
     return pages
   end
 
