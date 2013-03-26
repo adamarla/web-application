@@ -13,10 +13,10 @@
 #
 
 class Suggestion < ActiveRecord::Base
-  
   has_many :questions
   belongs_to :teacher  
-  
+  validates :signature, :uniqueness => true
+
   def self.unassigned
     where(:examiner_id => nil)
   end  
@@ -35,6 +35,32 @@ class Suggestion < ActiveRecord::Base
   
   def self.completed
     where :completed => true
+  end
+
+  def self.mime_type(upload_params)
+    mime = upload_params.content_type
+    if mime == 'application/octet-stream'
+      uploaded_file = upload_params.tempfile
+      mime = `file -b --mime-type #{File.absolute_path uploaded_file}`.gsub(/\n/,"")
+    end
+    return mime
+  end
+
+  def self.valid_mime_type?(mime)
+    matcher = ["^image", "pdf", "opendocument.text", "msword", "document"]
+    valid = false
+    extension = nil
+
+    matcher.each_with_index do |m,j|
+      valid = mime.match(/#{m}/).nil? ? false : true
+      if valid
+        # 01 => to-pdf -> convert 
+        # 02 => run convert directly
+        extension = j < 2 ? ".02" : ".01"
+        break
+      end
+    end 
+    return valid, extension 
   end
 
   def expand_pages
