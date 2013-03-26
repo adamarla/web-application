@@ -16,7 +16,7 @@ group :development do
 end 
 
 gem 'cancan' # Ryan Bate's gem for defining roles and role permissions
-gem 'formtastic'
+# gem 'formtastic'
 
 # Gems used only for assets and not required in production 
 # environment by default (Railscast #282)
@@ -37,8 +37,8 @@ gem 'therubyracer'
 
 gem 'rabl'
 gem 'savon'
-gem 'carrierwave' # for uploading 
-gem 'spreadsheet'
+# gem 'carrierwave' # for uploading 
+# gem 'spreadsheet'
 gem 'simple_form'
 gem 'country_select'
 gem 'kaminari' # for pagination

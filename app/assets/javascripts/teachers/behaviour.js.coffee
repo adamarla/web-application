@@ -1,4 +1,11 @@
 
+
+window.postUpload = () -> # written as onload in modal/teachers/_suggestion.html.haml
+  uploadModal = $('#m-suggestion-upload')
+  uploadModal.find("input[type='file']").eq(0).val null
+  uploadModal.modal 'hide'
+  return true
+
 jQuery ->
   window.variables = {
     testpaper : {
@@ -248,16 +255,6 @@ jQuery ->
     return true
 
   ###
-    Submit <form> everytime an <input> within $('#calibrations-summary form') loses focus.
-    Loss of focus => teacher done inputting her allotment for that grade
-
-  $('#calibrations-summary form input').blur ->
-    form = $(this).closest 'form'
-    form.submit()
-    return true
-
-  ###
-  ###
     DISPUTE RESOLUTION
   ###
   $('#disputes').on 'click', '.swiss-knife', (event) ->
@@ -274,23 +271,14 @@ jQuery ->
   ###
     SUGGESTION UPLOAD
   ###
-  $('#uploadbtn').on 'click', ->
-    formData = new FormData($('#suggestiondoc')[0])
-    $.ajax
-      url: 'teacher/upload_suggestion'
-      type: 'POST'
-      data: formData
-      cache: false
-      contentType: false
-      processData: false
-
-
-  $('#m-suggestion-upload').on 'hidden', ->
-    $('#m-suggestion-upload #suggestiondoc')[0].reset()
-    $('#m-suggestion-upload #instruction').show()
-    $('#m-suggestion-upload #ackblurb').hide()
-    $('#m-suggestion-upload #suggestiondoc').show()
-
-  $('#m-suggestion-upload #dismissbtn').on 'click', ->
-    $('#m-suggestion-upload').modal('hide')
+  
+  $('#m-suggestion-upload').on 'click', 'button', (event) ->
+    file = $(this).siblings("input[type='file']")[0]
+    if $(file).val().length > 0 # => sth. selected
+      $(file).next().addClass 'hide' # => next = plz. select file first msg 
+    else
+      $(file).next().removeClass 'hide'
+      event.stopImmediatePropagation()
+      return false
+    return true
 

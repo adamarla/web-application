@@ -1,19 +1,25 @@
 
-#m-suggestion-upload.modal.fade.hide.medium
-
-  .modal-header 
-    %button.close{ "data-dismiss" => "modal", "aria-hidden" => "true"}= "x"
-    %h4= "Please upload file containing Question and Solution"
+#m-suggestion-upload.modal.fade.slim{ :role => :dialog }
+  .modal-header
+    %h2= "Upload File with Suggested Question(s)"
+    %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
   .modal-body
-    #instruction
-      %p 
-        <small class="text-warning">Do <bold>not</bold> cite references from books, papers etc.</small><br/>
-        <small class="text-warning">Most file formats <em>(doc, docx, odt, pdf, jpeg, tiff etc)</em> are accepted</small>
-    %form.center{ :id => "suggestiondoc", :enctype => "multipart/form-data" }
-      .control-group
-        .controls
-          %input.required{ :type => :file, :id => "suggestiondoc[inputfile]", :name => "suggestiondoc[inputfile]" , :placeholder => "browse for file" }
-          %input{ :type => "hidden" , :name => "authenticity_token" , :value => form_authenticity_token.to_s }
-          %button.btn.btn-primary{ :id => "uploadbtn", :type => :button }= "Upload"
-    #ackblurb{ :style => "display: none" } 
-      %p 
+    = simple_form_for :suggestion, :url => suggestion_path, :remote => true, :multipart => true, 
+    :html => { :target => 'upload-status' } do |f|
+      = f.file_field :uploaded_doc
+      .subtext.hide= "Please select a file first"
+      %button.btn.btn-large.btn-primary.push-down= "Upload (.pdf, .doc, .jpeg)"
+      %h3
+        By clicking on upload, you acknowledge that
+      .row-fluid
+        .span5
+          .subtext.white
+            To the best of your knowledge, you have never uploaded these same questions before
+          .subtext.white 
+            These are questions you would want to ask your students 
+        .span5.offset1
+          .subtext.white
+            You are ok with other teachers using these questions in 
+            their assignments
+          .subtext.white
+            These are your own questions - and not drawn from copyrighted sources
