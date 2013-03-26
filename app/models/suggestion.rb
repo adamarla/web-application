@@ -47,7 +47,7 @@ class Suggestion < ActiveRecord::Base
   end
 
   def self.valid_mime_type?(mime)
-    matcher = ["^image", "pdf", "opendocument.text", "msword", "document"]
+    matcher = ["^image", "pdf", "text/plain", "opendocument.text", "msword", "document"]
     valid = false
     extension = nil
 
@@ -56,7 +56,7 @@ class Suggestion < ActiveRecord::Base
       if valid
         # 01 => to-pdf -> convert 
         # 02 => run convert directly
-        extension = j < 2 ? ".02" : ".01"
+        extension = j < 2 ? "02" : "01"
         break
       end
     end 
