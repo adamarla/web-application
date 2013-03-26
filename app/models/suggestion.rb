@@ -47,7 +47,7 @@ class Suggestion < ActiveRecord::Base
   end
 
   def self.valid_mime_type?(mime)
-    matcher = ["^image", "pdf", "opendocument.text", "msword", "document"]
+    matcher = ["^image", "pdf", "text/plain", "opendocument.text", "msword", "document"]
     valid = false
     extension = nil
 
@@ -56,7 +56,7 @@ class Suggestion < ActiveRecord::Base
       if valid
         # 01 => to-pdf -> convert 
         # 02 => run convert directly
-        extension = j < 2 ? ".02" : ".01"
+        extension = j < 2 ? "02" : "01"
         break
       end
     end 
@@ -64,16 +64,10 @@ class Suggestion < ActiveRecord::Base
   end
 
   def expand_pages
-    basename = self.signature.split('.')[0]
     pages = []
-    unless self.pages == 1
-      self.pages.times { |i|
-        pages << "#{basename}-#{i+1}"
-      }
-    else
-      pages = [basename]
-    end
-    puts pages.to_s
+    self.pages.times { |i|
+      pages << "page-#{i+1}"
+    }
     return pages
   end
 
