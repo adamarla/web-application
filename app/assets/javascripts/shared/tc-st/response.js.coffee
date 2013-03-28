@@ -22,16 +22,18 @@ jQuery ->
       # load student scans 
       preview.loadJson json, 'locker'
       # prep the feedback panel
+      splitTab = true
       if json.user is 'Student'
         target = '#pane-st-rc-2'
-        splitTab = false
+        writeBoth = false
       else
         target = '#pane-tc-rc-3'
-        splitTab = true
+        writeBoth = true
 
       leftTabs.create target, json, {
         shared : 'fdb-panel',
         split : splitTab,
+        writeBoth : writeBoth,
         klass : {
           root : "purge-destroy",
           ul : "span3 nopurge-ever",

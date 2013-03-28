@@ -121,8 +121,11 @@ window.leftTabs = {
       if sharedPanel?
         aHtml = "<a href=##{sharedPanel} #{data} class='#{options.klass.a}'>"
         if options.split
-          aHtml += "<div class='row-one'>#{m.name}</div>"
-          aHtml += "<div class='row-two'>#{m.split}</div></a>"
+          aHtml += "<div class='pull-left'>#{m.name}</div>"
+          if options.writeBoth
+            aHtml += "<div class='pull-right'>#{m.split}</div></a>"
+          else
+            aHtml += "<div class='pull-right'></div></a>"
           a = $(aHtml)
         else
           a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")

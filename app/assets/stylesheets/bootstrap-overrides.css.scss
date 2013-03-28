@@ -589,22 +589,35 @@ button[data-toggle='button'] {
       &.split {
         margin-bottom: 10px ;
         > a {
-          > .row-one { 
-            font-size: 15px ;
-            padding-bottom: 9px ;
-            border-bottom: 1px solid white ;
-          }
-          > .row-two {
-            font-size: 12px ;
-            padding-top: 4px ;
+          min-height: 20px ;
+          background: transparent ;
+          border: 0.5px dotted white ;
+
+          > div { 
+            border-radius: 4px ;
+            &:not(:empty) {
+              width: 50% ; 
+              text-align: center ; 
+              padding: 3px 0px ;
+            }
+            &:empty { 
+              width: 8px ;
+              height: 8px ;
+              margin-top:6px ;
+            } 
           } 
         } 
       }
-      &[colour='green'] { > a { background: rgba(87,188,32,0.6) ;} }
-      &[colour='red'] { > a { background: rgba(215,35,35,0.6) ; } }
-      &[colour='orange'] { > a { background: rgba(255, 165, 0, 0.6) ; } }
+
+      &[colour='green'] { .pull-right { background: $green ; } }
+      &[colour='orange'] { .pull-right { background: $orange ; } }
+      &[colour='red'] { .pull-right { background: $red ; } }
+
       &[colour][class~='active'] {
-        > a { border: 2px solid white ; }
+        > a { 
+          border: 2px solid white ; 
+          > .pull-left { font-weight: 500 ; font-size: 12px ; }
+        } 
       }
     } 
   } 
