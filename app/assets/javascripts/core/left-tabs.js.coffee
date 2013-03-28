@@ -119,11 +119,11 @@ window.leftTabs = {
         script = m.name
 
       if sharedPanel?
-        html = "<a href=##{sharedPanel} #{data} class='#{options.klass.a}'>"
+        aHtml = "<a href=##{sharedPanel} #{data} class='#{options.klass.a}'>"
         if options.split
-          html += "<div class='row-one'>#{m.name}</div>"
-          html += "<div class='row-two'>#{m.split}</div></a>"
-          a = $(html)
+          aHtml += "<div class='row-one'>#{m.name}</div>"
+          aHtml += "<div class='row-two'>#{m.split}</div></a>"
+          a = $(aHtml)
         else
           a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
       else
