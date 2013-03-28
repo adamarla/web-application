@@ -27,7 +27,7 @@ class TestpapersController < ApplicationController
   def layout
     # Returns ordered list of questions - renderable as .tabs-left
     @ws = Testpaper.find params[:ws]
-    student_id = params[:id]
+    student_id = params[:id].blank? ? current_account.loggable_id : params[:id]
 
     @who = current_account.loggable_type
     unless @ws.nil?

@@ -250,8 +250,7 @@ lnk-st-inbox :
 tab-st-rc-1 :
   url : ws/list 
   panel :
-    url : ws/layout.json?ws=:id&id=:prev
-  prev : control-panel
+    url : ws/layout.json?ws=:id
   autoclick :
     tab : tab-st-rc-2
 
