@@ -272,9 +272,9 @@ lnk-inbox-download :
   ajax: disabled
   update-on : inbox/echo
 
-m-enroll-self : 
-  toggle : dropdown 
-  menu : enrollment-form
+lnk-enroll-self : 
+  toggle : modal 
+  notouch : true
 
 ##############################################################################
 ## Admin Only 

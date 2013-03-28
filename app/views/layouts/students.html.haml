@@ -10,10 +10,10 @@
     = render :partial => 'toolbox/fdb-panel'
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/student/inbox'
-    = render :partial => 'menus/student/enroll'
 
 - content_for :modals do
   = render :partial => 'modals/user/account'
+  = render :partial => 'modals/student/enroll'
 
 !!!5
 
@@ -40,7 +40,7 @@
                 %li
                   = simple_link :for => "Inbox", :id => 'lnk-st-inbox'
                 %li.dropdown
-                  = simple_link :for => "Enroll", :as => :dropdown, :id => 'm-enroll-self'
+                  = simple_link :for => "Enroll", :id => 'lnk-enroll-self', :href => '#m-enroll-self'
                 %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid

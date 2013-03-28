@@ -1,6 +1,0 @@
-
-%ul.dropdown-menu.force-close{ :id => 'enrollment-form', :role => :menu }
-  = simple_form_for :enroll, :url => enroll_path, :remote => true, :defaults => { :label => false } do |f|
-    = f.input :sektion, :hint => "Enter code provided by teacher"
-    %button.btn.btn-primary.pull-right{ :type => :submit, :id => :chutiya }= "Enroll"
-    %button.btn.btn-inverse.pull-left.dismiss{:id => :benchod }= "Dismiss"

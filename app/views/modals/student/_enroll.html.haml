@@ -1,0 +1,5 @@
+
+#m-enroll-self.modal.fade.slim{ :role => :dialog }
+  = simple_form_for :enroll, :url => enroll_path, :remote => true, :defaults => { :label => false } do |f|
+    = f.input :sektion, :hint => "Your teacher must have given you a code. Enter that here"
+    %button.btn.btn-primary.btn-large.pull-right{ :type => :submit }= "Enroll"

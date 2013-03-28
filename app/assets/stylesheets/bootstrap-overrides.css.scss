@@ -135,22 +135,21 @@ $green: #347235 ; // rgb(87,188,32)
 } 
 
 .modal { 
-
   font-weight: 300 ;
   padding: 10px ;
+  background: rgba(25,25,25,0.8) ; 
+  border-radius: 0px ;
 
-  &.medium { 
+  &.wide { 
     width: 460px ;
   } 
 
-  &.narrow { 
-    width: 350px ;
+  &.slim { 
+    width: 250px ;
   } 
 
-  &.slim { 
+  &.regular { 
     max-width: 350px ; 
-    background: rgba(25,25,25,0.8) ; 
-    border-radius: 0px ;
   }
   
   h1,h2,h3,h4,h5,h6 { 
@@ -174,6 +173,36 @@ $green: #347235 ; // rgb(87,188,32)
 
   ul {
     color: white ;
+  }
+
+  form { 
+    input:not([type='submit']) {
+      background: transparent ; 
+      font: { 
+        size: 15px ;
+      } 
+      color: white ; 
+      border: {
+        style: none ;
+        bottom: 1px solid $deep-blue ;
+        radius: 0px ;
+      }
+      padding: 6px ;
+      min-height: 18px ;
+    } 
+
+    input[type='file'] {
+      font-size: 11px ;
+      border: none ;
+    } 
+
+    p {
+      &.help-block { 
+        font-size: 11px ;
+        margin-top: -4px ;
+        color: white ; 
+      }
+    }
   }
 } 
 
@@ -519,34 +548,6 @@ button[data-toggle='button'] {
 
 #desktop { 
   margin-top: 110px ;
-} 
-
-form.smart { 
-  color: white ;
-
-  input {
-    color: $gradians-blue ;
-    border: {
-      radius: 0px ;
-    } 
-    background-color: transparent ;
-    width: 60% ;
-    padding: 5px 3px 5px 3px ;
-    font-size: 13px ;
-    font-weight: 300 ;
-  }
-
-  p.help-block {
-    float: left ;
-    text : {
-      transform: lowercase ;
-      align: right ;
-    } 
-    color: $orange ;
-    min-width: 34% ;
-    margin-right: 10px ;
-    font-size: 12px ;
-  } 
 } 
 
 #fdb-panel { 
