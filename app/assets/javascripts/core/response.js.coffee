@@ -47,7 +47,8 @@ jQuery ->
       form = active.children('form').eq(0)
       errors = form.children('.error')
 
-      for m in ['email', 'password']
+      for m in ['email', 'password', 'sektion']
+        continue unless json.errors[m]?
         continue if json.errors[m].length is 0
         e = errors.filter(".#{m}").eq(0)
         e.removeClass 'hide'

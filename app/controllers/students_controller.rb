@@ -8,21 +8,26 @@ class StudentsController < ApplicationController
 
   def create 
     info = params[:register]
-    student = Student.new :name => info[:name]
-    username = create_username_for student, :student 
-    account = student.build_account :email => info[:email], :password => info[:password],
-                                    :password_confirmation => info[:password], :trial => false,
-                                    :username => username
-    if student.save 
-      enroll_in = Sektion.where{ uid =~ info[:code] }.first
-      enroll_in.students << student unless enroll_in.nil?
-      render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+    enroll_in = Sektion.where{ uid =~ info[:code] }.first
+
+    if enroll_in.nil?
+      render :json => { :errors => { :sektion => "Not found!" } }, :status => :bad_request
     else
-      render :json => { :errors => { :email => student.account.errors[:email], 
-                                     :password => student.account.errors[:password] }},
-                                     :status => :bad_request
-    end
-  end 
+      student = Student.new :name => info[:name]
+      username = create_username_for student, :student 
+      account = student.build_account :email => info[:email], :password => info[:password],
+                                      :password_confirmation => info[:password], :trial => false,
+                                      :username => username
+      if student.save
+        enroll_in.students << student
+        render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+      else
+        render :json => { :errors => { :email => student.account.errors[:email], 
+                                       :password => student.account.errors[:password] }},
+                                       :status => :bad_request
+      end # else
+    end # else
+  end # of method 
 
   def enroll 
     code = params[:enroll][:sektion]

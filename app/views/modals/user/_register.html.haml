@@ -26,4 +26,5 @@
         = f.input :password, :hint => "Password (minimum 6 characters)"
         .error.password.hide= "Password should be atleast 6 characters long"
         = f.input :code, :hint => "Your teacher must have given you a code for the course. Enter that here"
+        .error.sektion.hide= "Code not found! Did you forget the hyphen (-)?"
         %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
