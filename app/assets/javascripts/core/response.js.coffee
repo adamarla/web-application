@@ -26,12 +26,10 @@ jQuery ->
     if url.match('account')
       $('#m-edit-account').modal 'hide'
     else if url.match(/register/)
-      a = $('#m-registrations')
-      m = a.next() # next = ul.dropdown-menu
-      menu.close m, true
-      a.parent().removeClass 'active' # parent = .dropdown
+      register = $('#m-register')
+      register.modal 'hide'
+      $(m).val(null) for m in register.find("input.required")
       notifier.show 'n-registered'
-      # $('#n-registered').modal 'show'
     else
       matched = false
 
@@ -44,7 +42,7 @@ jQuery ->
     json = $.parseJSON xhr.responseText
 
     if url.match('register')
-      tabContent = $('#m-registrations').next('ul').children('.tab-content').eq(0)
+      tabContent = $('#m-register').children('.tab-content').eq(0)
       active = tabContent.children('.active').eq(0)
       form = active.children('form').eq(0)
       errors = form.children('.error')
@@ -57,6 +55,6 @@ jQuery ->
     else
       matched = false
 
-    e.stopImmediatePropagation() if matched
+    # e.stopImmediatePropagation() if matched
     return true
 

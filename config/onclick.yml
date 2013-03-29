@@ -402,9 +402,9 @@ m-downloads :
   menu : user-downloads
   toggle : dropdown
 
-m-registrations : 
-  menu : user-registrations
-  toggle : dropdown
+lnk-register :
+  toggle : modal
+  notouch: true
 
 lnk-register-student :
   toggle : modal

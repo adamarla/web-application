@@ -816,16 +816,14 @@ li.split {
   }
 }
 
-a#m-registrations + ul { 
-  margin-top: 0px ;
+#m-register {
   > ul { margin-top: 0px ; }
   > .tab-content {
     min-height: 200px ;
-    button { margin-top: 20px ; }
   }
 } 
 
-#m-registrations { 
+#lnk-register { 
   border-radius: 5px ;
   background-color: $deep-blue ;
 } 
