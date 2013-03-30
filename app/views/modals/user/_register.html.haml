@@ -1,5 +1,5 @@
 
-%ul.dropdown-menu.force-close{ :role => :menu, :id => 'user-registrations' }
+#m-register.modal.fade.hide.slim
   %ul.nav.nav-tabs.always-on
     %li
       = simple_link :for => "Teacher", :id => 'tab-register-1', :href => '#pane-register-1'
@@ -7,7 +7,8 @@
       = simple_link :for => "Student", :id => 'tab-register-2', :href => '#pane-register-2'
   .tab-content.pull-left
     #pane-register-1.tab-pane.push-down
-      = simple_form_for :register, :url => register_teacher_path, :remote => true, :defaults => { :label => false } do |f|
+      = simple_form_for :register, :url => register_teacher_path, 
+      :remote => true, :defaults => { :label => false }, :html => { :id => 'fm-register-teacher' } do |f|
         = f.input :name, :hint => "Full name"
         = f.input :email, :hint => "Your e-mail. Will also be used for logging in"
         .error.email.hide= "Oops, e-mail address already taken"
@@ -15,15 +16,15 @@
         .error.password.hide= "Password should be atleast 6 characters long"
         = f.input :country, :hint => "Country?", :input_html => { :id => 'rg-country' }
         = f.input :zip, :hint => "School's Zip/Pin Code"
-        %button.btn.btn-large.btn-primary.pull-right{:type => :submit}= "Register"
-        %button.btn.btn-large.btn-inverse.pull-left.dismiss= "Dismiss"
+        %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
     #pane-register-2.tab-pane.push-down
-      = simple_form_for :register, :url => register_student_path, :remote => true, :defaults => { :label => false } do |f|
+      = simple_form_for :register, :url => register_student_path, 
+      :remote => true, :defaults => { :label => false }, :html => { :id => 'fm-register-student' } do |f|
         = f.input :name, :hint => "Full name"
         = f.input :email, :hint => "Your e-mail. Will also be used for logging in"
         .error.email.hide= "Oops, e-mail address already taken"
         = f.input :password, :hint => "Password (minimum 6 characters)"
         .error.password.hide= "Password should be atleast 6 characters long"
         = f.input :code, :hint => "Your teacher must have given you a code for the course. Enter that here"
-        %button.btn.btn-large.btn-primary.pull-right{:type => :submit}= "Register"
-        %button.btn.btn-large.btn-inverse.pull-left.dismiss= "Dismiss"
+        .error.sektion.hide= "Code not found! Did you forget the hyphen (-)?"
+        %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"

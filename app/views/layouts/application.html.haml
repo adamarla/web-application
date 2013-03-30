@@ -2,9 +2,9 @@
 - server = "#{Gutenberg['server']}"
 -content_for :toolbox do
   #toolbox.hidden 
-    = render :partial => 'menus/user/register', :locals => { :server => server }
   #modals
     = render :partial => 'notifications/registered'
+    = render :partial => 'modals/user/register', :locals => { :server => server }
 
 !!!5
 
@@ -37,7 +37,7 @@
                         %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-large.btn-primary{ :type => :submit }= "Sign In"
                 %li.dropdown{ :id => 'register' }
-                  = simple_link :for => "Register",  :id => "m-registrations", :as => :dropdown
+                  = simple_link :for => "Register",  :id => "lnk-register", :href => '#m-register'
                 -#%li
                   %button.btn.btn-info.dropdown-toggle{ :id => "m-registrations", 
                   :as => "dropdown", "data-toggle" => "dropdown" , :href => "#" }= "Register"
