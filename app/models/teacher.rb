@@ -52,12 +52,6 @@ class Teacher < ActiveRecord::Base
   #after_validation :setup_account, :if => :first_time_save?
   #before_destroy :destroyable? 
 
-  def sektions 
-    sk = Sektion.where(:teacher_id => self.id)
-    return (sk.empty? ? Sektion.where(:id => 58) : sk) 
-    # at the very least, return the default sektion we create for all teachers
-  end 
-
   def students 
     sk = Sektion.where(:teacher_id => self.id).map(&:id)
     sids = StudentRoster.where(:sektion_id => sk).map(&:student_id).uniq

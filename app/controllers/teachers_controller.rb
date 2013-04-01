@@ -64,7 +64,12 @@ class TeachersController < ApplicationController
 
   def sektions
     teacher = params[:id].nil? ? current_account.loggable : Teacher.find(params[:id])
-    @sektions = teacher.nil? ? [] : teacher.sektions
+    if teacher.nil?
+      @sektions = []
+    else
+      @sektions = teacher.sektions
+      @sektions = Sektion.where(:id => 58) if @sektions.blank?
+    end
     @context = params[:context]
   end
 
