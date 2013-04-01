@@ -1,5 +1,14 @@
 
 jQuery ->
+  $('form').ajaxSuccess (e, xhr, settings) ->
+    matched = true
+    url = settings.url
+
+    if url is $(this).attr('action')
+      $(m).val(null) for m in $(this).find("input[type='text'],input[type='password'],input[type='email']")
+    else
+      matched = false
+    return true
 
   $('#wide').ajaxComplete (e, xhr, settings) ->
     matched = true
@@ -28,7 +37,6 @@ jQuery ->
     else if url.match(/register/)
       register = $('#m-register')
       register.modal 'hide'
-      $(m).val(null) for m in register.find("input.required")
       notifier.show 'n-registered'
     else
       matched = false
