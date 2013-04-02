@@ -401,21 +401,35 @@ jQuery ->
   # to the .tab-pane within which the form is 
   ###############################################
 
-  $('.tab-content form').submit (event) ->
+  $('form').submit (event) ->
     action = this.dataset.action
     return true unless action?
 
-    activeTab = $(this).closest('.tab-content').prev().children('li.active').eq(0)
+    id = this.dataset.id
+    prev = this.dataset.prev
+    panes = $(this).closest('.tab-content')[0]
+    if panes?
+      activeTab = $(panes).prev().children('li.active')[0]
+
+    if id?
+      id = $("##{id}")[0]
+      id = if id.dataset.toggle is 'tab' then $(id).parent() else $(id)
+    else if activeTab?
+      id = $(activeTab)
+
+    if prev?
+      prev = $("##{prev}")[0]
+      prev = if prev.dataset.toggle is 'tab' then $(prev).parent() else $(prev)
+    else if activeTab?
+      prev = $(activeTab).prev()
 
     for j in ["prev", "id"]
       at = action.indexOf ":#{j}"
       if at isnt -1 # => is present 
-        obj = this.dataset[j]
-        obj = if obj? then $("##{obj}").parent() else null # $(obj) is an <a>. Marker is on the parent <li>
-        unless obj?
-          obj = if j is "prev" then activeTab.prev() else activeTab
+        obj = if j is 'prev' then prev else id
         marker = getMarker(obj)
         action = action.replace ":#{j}", marker
+    alert action
     $(this).attr 'action', action
     return true
 
