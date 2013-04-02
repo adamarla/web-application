@@ -15,5 +15,5 @@ node(:quizzes) {
 }
 
 node(:last_pg) { @last_pg }
-node(:disable) { @disable }
+node(:disabled) { @disabled }
 

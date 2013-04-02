@@ -1,0 +1,5 @@
+
+#m-add-sektion.modal.fade.slim{ :role => :dialog }
+  = simple_form_for :new, :url => add_sektion_path, :remote => true, :defaults => { :label => false } do |f|
+    = f.input :sektion, :hint => "Give the new section a name"
+    %button.btn.btn-primary.btn-large.pull-right{ :type => :submit }= "Add"

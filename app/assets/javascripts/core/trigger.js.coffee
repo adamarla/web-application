@@ -429,7 +429,6 @@ jQuery ->
         obj = if j is 'prev' then prev else id
         marker = getMarker(obj)
         action = action.replace ":#{j}", marker
-    alert action
     $(this).attr 'action', action
     return true
 

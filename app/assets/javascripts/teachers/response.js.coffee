@@ -46,8 +46,9 @@ jQuery ->
       if json.context is 'deepdive'
         target = $('#pane-dive-3')
         target.empty()
-      else if json.context is 'edit'
+      else if json.context is 'list'
         target = $('#enrolled-students')
+        karo.empty target
       else
         target = $('#wsb-sektions')
         lesson = 'wsb-milestone-3'
@@ -107,7 +108,6 @@ jQuery ->
       target = if json.context is 'deepdive' then $('#pane-dive-1') else $('#pane-mng-sektions-1')
       parentKey = 'sektions'
       childKey = 'sektion'
-      lesson = 'mng-sektions-milestone-2'
       clickFirst = true
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
@@ -128,28 +128,10 @@ jQuery ->
       childKey = 'datum'
       lesson = 'editqz-milestone-2'
     else if url.match(/add\/sektion/)
-      target = $('#my-sektions-list')
+      target = $('#pane-mng-sektions-1')
       parentKey = 'sektion'
       childKey = 'new'
-      lesson = 'mng-sektions-milestone-4'
-      # Show UIDs of the newly created sections alongside the <input> boxes
-
-      form = $('#pane-mng-sektions-2 > form').eq(0)
-      for m in json.tabs
-        div = form.children("div[marker=#{m.marker}]").eq(0)
-        div.children(".subtext").eq(0).text m.tag
-
-      # Add the new created section wherever sections are shown in left-tabs 
-      leftTabs.add '#mng-sektions', json,
-        {
-          shared : 'enrolled-students',
-          data : { url : "sektion/students?id=:id&context=edit"}
-        }
-      leftTabs.add '#sektions-tab', json,
-        {
-          shared : 'wsb-sektions',
-          data : { url : "sektion/students?id=:id"}
-        }
+      $('#m-add-sektion').modal 'hide'
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
@@ -157,11 +139,13 @@ jQuery ->
       lesson = 'qzb-milestone-7'
       monitor.add json
       $('#lnk-existing-quiz').click()
+    else if url.match(/update\/sektion/)
+      target = $('#enrolled-students')
     else
       matched = false
 
     if target? and target.length isnt 0
-      writeData = true
+      writeData = if (parentKey? and childKey?) then true else false
 
       # Enable / disable paginator as needed 
       if json.last_pg?
@@ -186,16 +170,17 @@ jQuery ->
             target.removeClass 'hide'
             writeData = target.children().length is 0
 
-      # karo.empty target
-      line.write(target, m[childKey], menu, buttons) for m in json[parentKey] if writeData
+      # Render the returned JSON - in columns if so desired
+      lines.columnify target, json[parentKey], childKey, menu, buttons if writeData
+      # line.write(target, m[childKey], menu, buttons) for m in json[parentKey] if writeData
 
-      # Disable any newly added .single-line if its marker in json.disable
-      if json.disable? # => an array of indices
-        j = target.children('.single-line')
-        for m in json.disable
-          k = j.filter("[marker=#{m}]")[0]
-          $(k).addClass 'disabled' if k?
-
+      # Disable / hide any .single-line whose marker is in json.[disabled, hide]
+      for m in ['disabled', 'hide']
+        continue unless json[m]
+        j = target.find('.single-line')
+        for k in json[m]
+          l = j.filter("[marker=#{k}]")[0]
+          $(l).addClass(m) if l?
 
       # Auto-click first line - if needed
       target.children('.single-line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst

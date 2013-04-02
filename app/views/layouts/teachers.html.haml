@@ -26,6 +26,7 @@
   #modal-forms
     = render :partial => 'modals/user/account'
     = render :partial => 'modals/teacher/suggestion'
+    = render :partial => 'modals/teacher/add-sektion'
   #notifications
     = render :partial => 'notifications/quiz-compiled'
 
@@ -118,8 +119,6 @@
             = render :partial => 'teachers/sektions'
         #middle.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
-          #middle-1
-            = render :partial => 'teachers/edit-sektion', :locals => { :teacher => tc }
           #middle-X
         #right.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'right-paginator', :url => '#' }
@@ -131,6 +130,8 @@
           #wide-chart-1.offset1
           #wide-chart-2.offset1
           #wide-chart-3.offset1
+          #wide-4
+            = render :partial => 'teachers/edit-sektion', :locals => { :teacher => tc }
           #wide-grd-canvas
             .row-fluid
               = render :partial => 'toolbox/grd-toolbar'
