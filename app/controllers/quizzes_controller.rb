@@ -10,7 +10,6 @@ class QuizzesController < ApplicationController
       publish = params[:publish] == 'yes' 
       teacher = quiz.teacher 
       students = params[:checked].keys   # we need just the IDs
-      puts " ############## students = #{students.count} --> #{students}"
       Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
       at = Delayed::Job.where('failed_at IS NULL').count
       render :json => { :notify => { :text => "Worksheet received", 
@@ -44,7 +43,7 @@ class QuizzesController < ApplicationController
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
     @quizzes = teacher.nil? ? [] : Quiz.where(:teacher_id => teacher.id)
 
-    @disable = @quizzes.select{ |m| m.compiling? }.map(&:id) 
+    @disabled = @quizzes.select{ |m| m.compiling? }.map(&:id) 
     n = @quizzes.count 
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i

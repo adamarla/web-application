@@ -210,18 +210,22 @@ deepdive-* :
     url : sektion/proficiency?of=:prev&in=:id
   prev : tab-dive-1
 
+lnk-add-sektion :
+  toggle : modal 
+  notouch : true 
+
 lnk-mng-sektions :
   left : 
     show : left-8
-  middle :
-    show : middle-1
+  wide :
+    show : wide-4
   autoclick :
     tab : tab-mng-sektions-1
 
 tab-mng-sektions-1 :
-  url : teacher/sektions?context=edit
+  url : teacher/sektions?context=list
   panel : 
-    url : ping/sektion?id=:id
+    url : sektion/students?id=:id&context=list
 
 help-* :
   notouch : true

@@ -162,15 +162,16 @@ jQuery ->
     buttonGroup.click $(this)
     return false # because we don't want to trigger form submission
 
+  $('.g-panel').on 'click', "a[data-toggle='modal']", (event) ->
+    m = $(this).attr 'href'
+    $(m).modal()
+    event.stopImmediatePropagation()
+    return true
+
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
         menu.close $(p)
-    return true
-
-  $('.g-panel').on 'click', "a[data-toggle='modal']", (event) ->
-    m = $(this).attr 'href'
-    $(m).modal()
     return true
 
   ###############################################
@@ -316,7 +317,7 @@ jQuery ->
   # When a single line is clicked  
   ###############################################
 
-  $('.content, .tab-pane').on 'click', '.single-line', (event) ->
+  $('.content, .tab-pane, .column').on 'click', '.single-line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
        .single-line hasnt been selected first 
@@ -400,19 +401,32 @@ jQuery ->
   # to the .tab-pane within which the form is 
   ###############################################
 
-  $('.tab-content form').submit (event) ->
+  $('form').submit (event) ->
     action = this.dataset.action
     return true unless action?
 
-    activeTab = $(this).closest('.tab-content').prev().children('li.active').eq(0)
+    id = this.dataset.id
+    prev = this.dataset.prev
+    panes = $(this).closest('.tab-content')[0]
+    if panes?
+      activeTab = $(panes).prev().children('li.active')[0]
+
+    if id?
+      id = $("##{id}")[0]
+      id = if id.dataset.toggle is 'tab' then $(id).parent() else $(id)
+    else if activeTab?
+      id = $(activeTab)
+
+    if prev?
+      prev = $("##{prev}")[0]
+      prev = if prev.dataset.toggle is 'tab' then $(prev).parent() else $(prev)
+    else if activeTab?
+      prev = $(activeTab).prev()
 
     for j in ["prev", "id"]
       at = action.indexOf ":#{j}"
       if at isnt -1 # => is present 
-        obj = this.dataset[j]
-        obj = if obj? then $("##{obj}").parent() else null # $(obj) is an <a>. Marker is on the parent <li>
-        unless obj?
-          obj = if j is "prev" then activeTab.prev() else activeTab
+        obj = if j is 'prev' then prev else id
         marker = getMarker(obj)
         action = action.replace ":#{j}", marker
     $(this).attr 'action', action

@@ -12,6 +12,7 @@
 
 class Sektion < ActiveRecord::Base
   validates :name, :presence => true 
+  validates :name, :uniqueness => { :scope => :teacher_id }
 
   belongs_to :teacher
 
@@ -23,6 +24,14 @@ class Sektion < ActiveRecord::Base
 
   def self.in_school(s)
     where(:teacher_id => Teacher.where(:school_id => s).map(&:id))
+  end
+
+  def self.is_empty
+    select{ |m| m.student_ids.count == 0 }
+  end
+
+  def self.non_empty
+    select{ |m| m.student_ids.count > 0 }
   end
 
   def label 

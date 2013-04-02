@@ -207,13 +207,15 @@ $green: #347235 ; // rgb(87,188,32)
 } 
 
 #lnk-logout{ color: $orange ; }
-#m-account {
+#m-account, #lnk-add-sektion {
   background: $deep-blue ;
   float: right ;
   margin-top: 5px ;
   height: 12px ;
   padding: 13px 15px ; 
   border-radius: 4px ;
+  color: white ; 
+  text-decoration: none ;
 } 
 
 .g-panel { 

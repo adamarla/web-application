@@ -7,14 +7,15 @@ class SektionsController < ApplicationController
   end
 
   def create 
-    teacher = params[:id].blank? ? current_account.loggable : Teacher.find(params[:id])
-    names = params[:new].values.select{ |m| !m.blank? }
-    @sk = {}
-
-    params[:new].each do |k,v|
-      next if v.blank?
-      @sk[k] = teacher.sektions.create(:name => v)
-      sleep 1 # very important. Keeps uids separate
+    sektion = params[:new][:sektion]
+    unless sektion.blank?
+      teacher = current_account.loggable
+      @sk = teacher.sektions.build :name => sektion
+      unless @sk.save
+        render :json => { :notify => { :text => @sk.errors[:name] } }, :status => :bad_request
+      end
+    else
+      render :json => { :notify => { :text => "No name for sektion" } }, :status => :bad_request
     end
   end 
 
@@ -24,20 +25,9 @@ class SektionsController < ApplicationController
 
     if editable
       student_ids = sektion.student_ids
-      remove = params[:checked].keys.map(&:to_i)
-      retain = student_ids - remove
+      @removed = params[:checked].keys.map(&:to_i)
+      retain = student_ids - @removed
       sektion.student_ids = retain
-      render :json => { 
-        :notify => { 
-          :text => "#{sektion.name} updated", 
-          :subtext => "#{remove.count} student(s) removed" 
-        } }, :status => :ok
-    elsif sektion.nil?
-      render :json => { 
-        :notify => { 
-          :text => "Update failed", 
-          :subtext => "Specified section not found" 
-        } }, :status => :ok
     else
       render :json => { 
         :notify => { 

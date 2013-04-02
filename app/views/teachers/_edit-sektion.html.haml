@@ -1,12 +1,11 @@
 
-#mng-sektions.tabbable.tabs-left
-  %ul.nav.nav-tabs.span3.lock
-    - teacher.sektions.each do |m|
-      %li
-        = simple_link :for => "#{m.label}", :toggle => :tab, :marker => "#{m.id}",
-        :href => "#enrolled-students", :url => "sektion/students.json?id=#{m.id}&context=edit"
+#enrolled-students 
+  = simple_form_for :remove, :remote => true, 
+  :html => { :data => { :action => "#{update_sektion_path}?id=:id", :id => 'tab-mng-sektions-1' } } do |f| 
+    .row-fluid
+      %button.btn.btn-primary.btn-large.offset4{ :type => :submit }= "Remove Selected"
+    .row-fluid.push-down
+      .column.span3.purge-blind.multi-select
+      .column.span3.offset1.purge-blind.multi-select
+      .column.span3.offset1.purge-blind.multi-select
 
-  .tab-content.span8
-    = simple_form_for :new, :remote => true, :html => { 'data-action' => "#{update_sektion_path}?id=:id"} do |f|
-      %button.btn.btn-inverse.nopurge{ :type => :submit }= "Remove Selected"
-      .tab-pane.push-down.multi-select#enrolled-students
