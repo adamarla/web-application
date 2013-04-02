@@ -162,15 +162,16 @@ jQuery ->
     buttonGroup.click $(this)
     return false # because we don't want to trigger form submission
 
+  $('.g-panel').on 'click', "a[data-toggle='modal']", (event) ->
+    m = $(this).attr 'href'
+    $(m).modal()
+    event.stopImmediatePropagation()
+    return true
+
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
         menu.close $(p)
-    return true
-
-  $('.g-panel').on 'click', "a[data-toggle='modal']", (event) ->
-    m = $(this).attr 'href'
-    $(m).modal()
     return true
 
   ###############################################
@@ -316,7 +317,7 @@ jQuery ->
   # When a single line is clicked  
   ###############################################
 
-  $('.content, .tab-pane').on 'click', '.single-line', (event) ->
+  $('.content, .tab-pane, .column').on 'click', '.single-line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
        .single-line hasnt been selected first 
