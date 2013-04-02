@@ -1,7 +1,13 @@
 
+
+### 
+  Single line 
+###
+
 window.line = {
   write : (here, json, menu, buttons = null) ->
     here = if typeof here is 'string' then $(here) else here
+
     ###
       Passed JSON is assumed to have atleast the following keys
         name: written as the first line 
@@ -114,3 +120,30 @@ window.line = {
     return true
 }
 
+### 
+  All lines 
+###
+
+
+window.lines = {
+  columnify : (here, json, childKey, menu, buttons = null) ->
+    # json = array of N objects 
+    here = if typeof here is 'string' then $(here) else here
+    columns = here.find '.column'
+    nColumns = columns.length
+    perColumn = if nColumns > 0 then ((json.length / nColumns ) + 1) else json.length
+
+    currIndex = 0
+    currColumn = if nColumns > 0 then columns.eq(currIndex) else here
+    nAdded = 0
+
+    for m,j in json
+      if nAdded > perColumn
+        currIndex += 1
+        currColumn = columns.eq(currIndex)
+        nAdded = 0
+      line.write currColumn, m[childKey], menu, buttons
+      nAdded += 1
+    return true
+
+}
