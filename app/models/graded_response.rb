@@ -207,7 +207,8 @@ class GradedResponse < ActiveRecord::Base
     return self.page unless self.page.nil? 
 
     if self.scan
-      quiz, testpaper, student, page = self.scan.split('-').map(&:to_i)
+      page = self.scan[10].to_i(36)
+      # quiz, testpaper, student, page = self.scan.split('-').map(&:to_i)
     else
       start_pg = QSelection.where(:id => self.q_selection_id).select(:start_page).first.start_page
       offset = Subpart.where(:id => self.subpart_id).select(:relative_page).first.relative_page
@@ -217,12 +218,23 @@ class GradedResponse < ActiveRecord::Base
     return page
   end
 
-  def siblings?
-    qselection = self.q_selection
-    student = self.student_id
-    quiz = qselection.quiz_id 
-    question = qselection.question_id 
-    return GradedResponse.of_student(student).in_quiz(quiz).to_db_question(question) - [self]
+  def siblings_same_worksheet
+    # same student, same worksheet
+    ids = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).map(&:id) - [self.id]
+    GradedResponse.where(:id => ids)
+  end
+
+  def siblings_same_page
+    # same student, same worksheet, same page 
+    pg = self.page?
+    self.siblings_same_worksheet.on_page(pg)
+  end
+
+  def siblings_same_question
+    # same student, same worksheet, same question - perhaps different pages
+    db_question_id = self.subpart.question_id 
+    ids = self.siblings_same_worksheet.to_db_question(db_question_id).map(&:id) - [self.id]
+    GradedResponse.where(:id => ids)
   end
 
   def name?
