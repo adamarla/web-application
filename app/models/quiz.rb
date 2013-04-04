@@ -187,14 +187,6 @@ class Quiz < ActiveRecord::Base
     last = selected.last.end_page 
     layout = [] # return value
 
-    if for_wsdl 
-      key_1 = :number
-      key_2 = :question
-    else
-      key_1 = :page
-      key_2 = :question
-    end
-
     [*1..last].each do |page|
       q_on_page = selected.where(:start_page => page)
 
@@ -203,7 +195,7 @@ class Quiz < ActiveRecord::Base
       else
         on_page = q_on_page.map(&:question_id)
       end
-      layout.push( { key_1 => page, key_2 => on_page } )
+      layout.push( { :number => page, :question => on_page } )
     end
     return layout
   end
