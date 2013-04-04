@@ -33,6 +33,8 @@
 # does not want to use a Quiz anymore. We hide the Quiz then. And if she really
 # does not use it for - say, 3 months - then we really do destroy the Quiz (using a cronjob)
 
+include GeneralQueries
+
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
 
@@ -171,27 +173,37 @@ class Quiz < ActiveRecord::Base
     end
   end # lay_it_out
 
-  def layout?
-    # Sample layout --> [{ :number => 1, :question => [{:id => 1}, {:id => 2}] }]
-    #
-    # The form of the layout returned from here is determined by the WSDL. We 
-    # really don't have much choice 
+  def layout?(for_wsdl = true)
+=begin
+    The structure of the returned hash depends on 'for_wsdl'
 
-    j = self.q_selections.order(:start_page).select('question_id, end_page')
-    last = j.last.end_page 
-    layout = [] 
+    If true, then its [ { :number => page, :question => [ { :id => uid } ... ] } ... ]
+    Otherwise, its [ { :page => page, :question => [ <db-ids> ... ] } ... ]
+
+    The latter form is useful when distributing work
+=end
+
+    selected = QSelection.where(:quiz_id => self.id).order(:start_page)
+    last = selected.last.end_page 
+    layout = [] # return value
+
+    if for_wsdl 
+      key_1 = :number
+      key_2 = :question
+    else
+      key_1 = :page
+      key_2 = :question
+    end
 
     [*1..last].each do |page|
-      q_on_page = j.where(:start_page => page).map(&:question_id)
-      q_on_page.each_with_index do |qid, index|
-        # Previously, we sent the question's DB id. Now, we send the containing
-        # folder's name - which really is just the millisecond time-stamp at 
-        # which the question was created 
+      q_on_page = selected.where(:start_page => page)
 
-        uid = Question.where(:id => qid).first.uid 
-        q_on_page[index] = { :id => uid }
+      if for_wsdl 
+        on_page = q_on_page.map{ |m| { :id => m.question.uid } } 
+      else
+        on_page = q_on_page.map(&:question_id)
       end
-      layout.push( { :number => page, :question => q_on_page })
+      layout.push( { key_1 => page, key_2 => on_page } )
     end
     return layout
   end
@@ -203,7 +215,7 @@ class Quiz < ActiveRecord::Base
 
     response = SavonClient.request :wsdl, :buildQuiz do  
       soap.body = { 
-         :quiz => { :id => self.id, :name => self.latex_safe_name },
+         :quiz => { :id => self.id, :name => self.latex_safe_name, :value => encrypt(self.id,7) },
          :teacher => { :id => teacher.id, :name => teacher.name },
          :page => self.layout?
       }
