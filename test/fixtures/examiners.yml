@@ -10,6 +10,8 @@
 #  first_name      :string(30)
 #  last_name       :string(30)
 #  last_workset_on :datetime
+#  n_assigned      :integer         default(0)
+#  n_graded        :integer         default(0)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
