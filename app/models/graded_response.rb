@@ -182,7 +182,12 @@ class GradedResponse < ActiveRecord::Base
         # an e-mail address. The default we assign will not work
         teacher = ws.quiz.teacher 
         Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
-      end # of if 
+      end # mail sent 
+
+      # Increment n_graded count of the grading examiner
+      e = Examiner.find self.examiner_id
+      n_graded = e.n_graded + 1
+      e.update_attribute :n_graded, n_graded
     end # of if 
   end
 

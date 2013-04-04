@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130312060820) do
+ActiveRecord::Schema.define(:version => 20130404083236) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(:version => 20130312060820) do
     t.string   "first_name",      :limit => 30
     t.string   "last_name",       :limit => 30
     t.datetime "last_workset_on"
+    t.integer  "n_assigned",                    :default => 0
+    t.integer  "n_graded",                      :default => 0
   end
 
   create_table "faculty_rosters", :force => true do |t|
