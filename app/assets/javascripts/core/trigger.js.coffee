@@ -411,13 +411,13 @@ jQuery ->
     if panes?
       activeTab = $(panes).prev().children('li.active')[0]
 
-    if id?
+    if id? and id.length > 0
       id = $("##{id}")[0]
       id = if id.dataset.toggle is 'tab' then $(id).parent() else $(id)
     else if activeTab?
       id = $(activeTab)
 
-    if prev?
+    if prev? and prev.length > 0
       prev = $("##{prev}")[0]
       prev = if prev.dataset.toggle is 'tab' then $(prev).parent() else $(prev)
     else if activeTab?
@@ -429,6 +429,7 @@ jQuery ->
         obj = if j is 'prev' then prev else id
         marker = getMarker(obj)
         action = action.replace ":#{j}", marker
+    # alert action
     $(this).attr 'action', action
     return true
 

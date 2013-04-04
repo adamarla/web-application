@@ -21,6 +21,7 @@ class StudentsController < ApplicationController
       if student.save
         enroll_in.students << student
         render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+        Mailbot.welcome_student(student.account).deliver
       else
         render :json => { :errors => { :email => student.account.errors[:email], 
                                        :password => student.account.errors[:password] }},

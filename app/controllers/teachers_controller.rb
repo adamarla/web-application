@@ -14,6 +14,7 @@ class TeachersController < ApplicationController
     teacher.zip_code = info[:zip].blank? ? nil : info[:zip]
     if teacher.save 
       render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+      Mailbot.welcome_teacher(teacher.account).deliver
     else
       render :json => { :errors => { :email => teacher.account.errors[:email], 
                                      :password => teacher.account.errors[:password] }},

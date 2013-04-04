@@ -127,8 +127,6 @@ Webapp::Application.routes.draw do
   match 'how_it_works' => 'welcome#how_it_works', :via => :get
   match 'welcome/countries' => 'welcome#countries', :via => :get
   match 'welcome/contactus' => 'welcome#contactus', :via => :post
-  match 'welcome/register_student' => 'welcome#register_student', :via => :post
-  match 'welcome/register_teacher' => 'welcome#register_teacher', :via => :post
 
   # Suggestion 
   resource :suggestion, :only => [:create]
