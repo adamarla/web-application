@@ -137,7 +137,7 @@ class Examiner < ActiveRecord::Base
       ws_ids = unassigned.map(&:testpaper_id).uniq
       examiners = Examiner.select{ |m| m.account.active }
       n_examiners = examiners.count
-      LIMIT = 20
+      limit = 20
 
       ws_ids.each do |ws|
         quiz = Quiz.find(Testpaper.find(ws).quiz_id)
@@ -159,7 +159,7 @@ class Examiner < ActiveRecord::Base
             next if n == 0
             n_students = (n / num_questions) # n % num_questions == 0. If not, then sth. wrong with receiveScan
           end
-          n_reqd = (n_students / LIMIT) + 1
+          n_reqd = (n_students / limit) + 1
           n_reqd = (n_reqd > n_examiners) ? n_examiners : n_reqd 
           per_examiner = (n_students / n_reqd) + 1
           examiners = examiners.sort{ |m,n| m.n_assigned <=> n.n_assigned }
