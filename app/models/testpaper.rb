@@ -12,6 +12,8 @@
 #  inboxed     :boolean         default(FALSE)
 #
 
+include GeneralQueries
+
 class Testpaper < ActiveRecord::Base
   belongs_to :quiz
 
@@ -40,19 +42,19 @@ class Testpaper < ActiveRecord::Base
 
   def compile_tex
     student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
-    students = Student.where(:id => student_ids)
+    students = Student.where(:id => student_ids).order(:id)
 
     names = []
-    students.each do |s|
-      names.push({ :id => s.id, :name => s.name })
+    students.each_with_index do |s,j|
+      names.push({ :id => s.id, :name => s.name, :value => encrypt(j,3) })
     end
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
 
     response = SavonClient.request :wsdl, :assignQuiz do  
       soap.body = { 
-        :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name },
-        :instance => { :id => self.id, :name => self.name },
+        :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name, :value => encrypt(self.quiz_id, 7) },
+        :instance => { :id => self.id, :name => self.name, :value => encrypt(self.id, 7) },
         :students => names 
       }
     end
