@@ -105,7 +105,12 @@ jQuery ->
       childKey = "datum"
       wsSummary json
     else if url.match(/teacher\/sektions/)
-      target = if json.context is 'deepdive' then $('#pane-dive-1') else $('#pane-mng-sektions-1')
+      if json.context is 'list'
+        target = $('#pane-mng-sektions-1')
+        lesson = 'mng-sektions-milestone-2'
+      else
+        target = $('#pane-dive-1')
+
       parentKey = 'sektions'
       childKey = 'sektion'
       clickFirst = true
@@ -132,6 +137,7 @@ jQuery ->
       parentKey = 'sektion'
       childKey = 'new'
       $('#m-add-sektion').modal 'hide'
+      lesson = 'mng-sektions-milestone-3'
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?

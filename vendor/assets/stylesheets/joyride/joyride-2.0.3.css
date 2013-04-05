@@ -162,8 +162,13 @@ body {
 }
 
 .joyride-tip-guide p > b {
-  color: #0f1268 ;
-  font-weight: 600 ;
+  /* color: #0f1268 ; */
+  color: #080d99 ;
+  font-weight: 400 ;
+}
+
+.joyride-tip-guide p > tt {
+  font-size: 9px ;
 }
 
 .joyride-tip-guide a {
