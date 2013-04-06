@@ -16,7 +16,7 @@ jQuery ->
     json = $.parseJSON xhr.responseText
 
     if url.match('quiz/preview') or url.match('ws/preview')
-      preview.loadJson json, 'atm'
+      preview.loadJson json, 'mint'
     else
       matched = false
 

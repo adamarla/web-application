@@ -9,8 +9,9 @@
 
 object false
   node(:preview) {
-    { :id => @quiz.uid, :scans => [*1..@quiz.span?] } 
+    { :id => @uid, :scans => [*1..@quiz.span?] } 
   } 
-  node(:a) { @quiz.uid }
+  node(:a) { @uid }
+  node(:b) { @quiz.id }
   node(:caption) { @quiz.name }
 

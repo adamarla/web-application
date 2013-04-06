@@ -108,12 +108,12 @@ jQuery ->
           caption = json.caption
 
           switch source
-            when 'atm'
+            when 'mint'
               suffix = "preview" unless suffix?
               if root.indexOf("-") isnt -1
                 full = "#{base}/#{root}/#{suffix}/page-#{page}.jpeg"
               else
-                full = "#{base}/#{root}/answer-key/#{suffix}/page-#{page}.jpeg"
+                full = "#{base}/quiz/#{root}/preview/page-#{page}.jpeg"
               caption += " ( page #{page} )"
               alt = "##{page}"
             when 'vault'

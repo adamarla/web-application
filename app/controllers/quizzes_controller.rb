@@ -57,6 +57,7 @@ class QuizzesController < ApplicationController
 
   def preview
     @quiz = Quiz.where(:id => params[:id]).first
+    @uid = encrypt(@quiz.id, 7)
     head :bad_request if @quiz.nil?
   end
 

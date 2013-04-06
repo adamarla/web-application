@@ -8,7 +8,7 @@
     = simple_link :for => "List Worksheets", :id => 'lnk-wsb-existing', :icon => 'icon-list'
   %li
     = simple_link :for => "Download Solution (PDF)", :id => 'lnk-download-solution', 
-    :url => "#{Gutenberg['server']}/atm/:a/answer-key/downloads/answer-key.pdf", :icon => 'icon-download'
+    :url => "#{Gutenberg['server']}/mint/quiz/:a/answer-key-:b.pdf", :icon => 'icon-download'
   %li
     = simple_link :for => 'View Report Cards', :id => 'lnk-rc-ws', :icon => 'icon-list'
             

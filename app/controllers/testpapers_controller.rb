@@ -1,4 +1,5 @@
 class TestpapersController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!
   respond_to :json
 
@@ -17,6 +18,7 @@ class TestpapersController < ApplicationController
 
   def load 
     @testpaper = Testpaper.find params[:id]
+    @uid = encrypt(@testpaper.id, 7)
   end
 
   def preview # the answer-key actually
