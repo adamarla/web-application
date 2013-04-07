@@ -116,7 +116,7 @@ class TeachersController < ApplicationController
     status = quiz.save ? :ok : :bad_request
     unless status == :bad_request
       job = Delayed::Job.enqueue CompileQuiz.new(quiz)
-      quiz.update_attribute :uid, job.id.to_s
+      quiz.update_attribute :job_id, job.id
       render :json => { :monitor => { :quiz => quiz.id } }, :status => :ok
     else
       render :json => { :monitor => { :quiz => nil } }, :status => :ok
