@@ -9,10 +9,10 @@
 #  num_questions :integer
 #  name          :string(70)
 #  subject_id    :integer
-#  uid           :string(20)
 #  total         :integer
 #  span          :integer
 #  parent_id     :integer
+#  job_id        :integer         default(-1)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

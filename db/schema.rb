@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130404083236) do
+ActiveRecord::Schema.define(:version => 20130407192526) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -170,10 +170,10 @@ ActiveRecord::Schema.define(:version => 20130404083236) do
     t.integer  "num_questions"
     t.string   "name",          :limit => 70
     t.integer  "subject_id"
-    t.string   "uid",           :limit => 20
     t.integer  "total"
     t.integer  "span"
     t.integer  "parent_id"
+    t.integer  "job_id",                      :default => -1
   end
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"

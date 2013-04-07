@@ -9,10 +9,10 @@
 #  num_questions :integer
 #  name          :string(70)
 #  subject_id    :integer
-#  uid           :string(20)
 #  total         :integer
 #  span          :integer
 #  parent_id     :integer
+#  job_id        :integer         default(-1)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -223,11 +223,6 @@ class Quiz < ActiveRecord::Base
     return true
   end
 
-  def self.extract_uid(manifest_root)
-    # manifest_root = http://< ... >:8080/atm/<atm-key>
-    return manifest_root.split('/').last
-  end
-
   # Returns the list of micro-topics touched upon in this Quiz - as an array of indices
   def micros
     self.questions.map{|q| q.topic_id}.uniq
@@ -307,25 +302,18 @@ class Quiz < ActiveRecord::Base
   end
 
   def compiling?
-    # The CompileQuiz job's database ID (pure numeric) is stored as the initial UID 
-    # of the quiz. If the quiz compiles successfully, then the UID 
-    # is over-written with the randomized string the Savon request returns
-    # By checking whether the quiz's UID is pure numeric or not, we can infer 
-    # whether its being compiled or not 
-
     # If compilation fails, then the Quiz object itself is destroyed. In which case
     # there is no way this object method can be called
 
     # This method will also (wrongly) return true for quizzes made before Aug-Sept 2012. 
     # Back then, the UID used to be a 9-digit number - before we moved to base-36 encoding
-    self.uid.to_i.to_s == self.uid
+    return self.job_id > 0
   end
 
   def est_minutes_to_compilation?
     if self.compiling?
       queued = Delayed::Job.where(:failed_at => nil).order(:priority).order(:created_at).map(&:id)
-      job_id = self.uid.to_i
-      at = queued.index job_id
+      at = queued.index self.job_id
       return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
     else
       return 0

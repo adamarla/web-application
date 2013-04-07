@@ -9,7 +9,7 @@ class BuildQuiz < Struct.new(:name, :teacher_id, :question_ids, :parent_id)
     status = quiz.save ? :ok : :bad_request
     unless status == :bad_request
       job = Delayed::Job.enqueue CompileQuiz.new(quiz)
-      quiz.update_attribute :uid, job.id.to_s
+      quiz.update_attribute :job_id, job.id
     end
 
     # @teacher = Teacher.find teacher_id
@@ -19,7 +19,7 @@ class BuildQuiz < Struct.new(:name, :teacher_id, :question_ids, :parent_id)
   def error(job, exception)
     # Delayed::Job.first/last -> to see details of the objecet stored in the DB
     yaml = YAML.load(job.handler)
-    Quiz.where(:teacher_id => yaml.teacher_id, :uid => nil).each do |quiz|
+    Quiz.where(:teacher_id => yaml.teacher_id).where(compiling > 0).each do |quiz|
       quiz.destroy unless quiz.nil?
     end
   end
