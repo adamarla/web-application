@@ -117,9 +117,6 @@ Webapp::Application.routes.draw do
   match 'ws/publish' => 'testpapers#inbox', :via => :get
   match 'ws/unpublish' => 'testpapers#uninbox', :via => :get
 
-  # Trial Account 
-  resource :trial_account, :only => [:create], :controller => :trial_account
-  
   # Welcome
   match 'about_us' => 'welcome#about_us', :via => :get
   match 'try_us' => 'welcome#try_us', :via => :get
