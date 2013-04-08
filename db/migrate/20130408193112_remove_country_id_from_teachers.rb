@@ -9,9 +9,9 @@ class RemoveCountryIdFromTeachers < ActiveRecord::Migration
   end
 
   def down
-    add_column :teachers, :country_id
+    add_column :teachers, :country_id, :integer
     Teacher.all.each do |m|
-      m.update_attribute :country_id, m.account.country
+      m.update_attribute(:country_id, m.account.country) unless m.account.nil?
     end 
   end
 end
