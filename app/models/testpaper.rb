@@ -62,19 +62,23 @@ class Testpaper < ActiveRecord::Base
   end #of method
 
   def compile_individual_tex(student_id)
-    student_ids = [student_id]
-    students = Student.where(:id => student_ids)
+
+    student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
+    students = Student.where(:id => student_ids).order(:id)
 
     names = []
-    students.each do |s|
-      names.push({ :id => s.id, :name => s.name })
+    students.each_with_index do |s,j|
+      if s[:id] == student_id
+        names.push({ :id => s.id, :name => s.name, :value => encrypt(j,3) })
+        break
+      end
     end
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['prep_test']}"
     response = SavonClient.request :wsdl, :prepTest do  
       soap.body = { 
-        :quiz => { :id => self.quiz_id, :name => self.quiz.teacher.school.name },
-        :instance => { :id => self.id, :name => self.name },
+        :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name , :value => encrypt(self.quiz_id, 7) },
+        :instance => { :id => self.id, :name => self.name , :value => encrypt(self.id, 7) },
         :students => names 
       }
     end
