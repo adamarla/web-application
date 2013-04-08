@@ -31,7 +31,7 @@ class Student < ActiveRecord::Base
   validates :first_name, :presence => true
   validates_associated :account
 
-  after_save  :reset_login_info
+  # after_save  :reset_login_info
   after_create  :generate_uid
 
   # When should a student be destroyed? My guess, some fixed time after 
