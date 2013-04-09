@@ -48,12 +48,12 @@ window.wsSummary = (json) ->
   .append('text')
   .attr('y', 2)
   .text (d) ->
-    return d.datum.name
+    return d.name
 
   # colour code the little squares
   svg.selectAll('g').data(json.root)
   .selectAll('rect')
-  .data((d,i) -> return d.datum.spectrum)
+  .data((d,i) -> return d.spectrum)
   .attr('class', (d,i) -> return d)
 
   # bar-chart to show total scores
