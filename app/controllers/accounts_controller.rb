@@ -109,4 +109,16 @@ class AccountsController < ApplicationController
     @compiled = Quiz.where(:id => quiz_ids).select{ |m| !m.compiling? }
   end 
 
+  def by_country
+    type = params[:type].humanize
+    @accounts = Account.where(:loggable_type => type)
+    @countries = Country.where(:id => @accounts.map(&:country).uniq)
+  end
+
+  def in_country
+    @type = params[:type].humanize
+    country_id = params[:country].to_i
+    @accounts = Account.where(:loggable_type => @type).where(:country => country_id)
+  end
+
 end

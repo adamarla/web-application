@@ -8,7 +8,6 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer
-#  country_id :integer
 #  zip_code   :string(10)
 #
 
@@ -24,9 +23,7 @@ include REXML
 include ApplicationUtil
 
 class Teacher < ActiveRecord::Base
-  belongs_to :country
   has_one :account, :as => :loggable, :dependent => :destroy
-  has_one :trial_account, :dependent => :destroy
 
   has_many :quizzes, :dependent => :destroy 
   has_many :sektions, :dependent => :destroy
@@ -37,8 +34,8 @@ class Teacher < ActiveRecord::Base
   validates :first_name, :presence => true  
   validates_associated :account
 
-#  after_create :generate_suggestion_form
-  after_save   :reset_login_info
+  # after_create :generate_suggestion_form
+  # after_save   :reset_login_info
 
 =begin
   Destroying a teacher should be a very rare event. It probably 

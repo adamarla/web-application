@@ -7,22 +7,20 @@ jQuery ->
     json = $.parseJSON xhr.responseText
 
     target = null # where to write the returned JSON
-    parentKey = null
-    childKey = null
+    key = null
     menu = null # ID of contextual menu to attach w/ each .single-line
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
+    buttons = null
 
     if url.match(/ws\/pending/)
       target = $('#pane-grd-ws')
-      parentKey = 'wks'
-      childKey = 'wk'
+      key = 'wks'
       # menu = 'per-grd-ws'
     else if url.match(/pages\/pending/)
       target = $('#pane-grd-page')
-      parentKey = 'pages'
-      childKey = 'page'
+      key = 'pages'
       # karo.tab.enable 'tab-grd-page'
     else if url.match(/gr\/pending/)
       abacus.initialize json
@@ -35,8 +33,11 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
+      writeData = if key? then true else false
       karo.empty target
-      line.write(target, m[childKey], menu) for m in json[parentKey]
+
+      # Render the returned JSON - in columns if so desired
+      lines.columnify target, json[key], menu, buttons if writeData
 
       # Enable / disable paginator as needed 
       if json.last_pg?
@@ -49,24 +50,6 @@ jQuery ->
     e.stopPropagation() if matched is true
     return true
 
-  ###
-  $('#side-panel').ajaxSuccess (e,xhr,settings) ->
-    url = settings.url
-    matched = true
-    json = $.parseJSON xhr.responseText
-
-    if url.match(/comments\/for/)
-      here = $('#side-panel').children().eq(0).find('.calibrations').eq(0)
-      coreUtil.interface.grades.initializePanel here
-      coreUtil.interface.grades.summarize json, here
-      coreUtil.interface.grades.loadDetails json, here
-    else
-      matched = false
-
-    e.stopPropagation() if matched is true
-    return true
-  ###
-  
   ########################################################
   #  WIDE PANEL
   ########################################################

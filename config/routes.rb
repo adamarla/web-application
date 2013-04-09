@@ -24,6 +24,8 @@ Webapp::Application.routes.draw do
   match 'submit/fdb' => 'accounts#submit_fdb', :via => [:put, :post]
   match 'view/fdb' => 'accounts#view_fdb', :via => :get
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', :via => :get
+  match 'byCountry' => 'accounts#by_country', :via => :get
+  match 'inCountry' => 'accounts#in_country', :via => :get
 
   # Admin 
   resource :admin, :controller => :admin 
@@ -117,9 +119,6 @@ Webapp::Application.routes.draw do
   match 'ws/publish' => 'testpapers#inbox', :via => :get
   match 'ws/unpublish' => 'testpapers#uninbox', :via => :get
 
-  # Trial Account 
-  resource :trial_account, :only => [:create], :controller => :trial_account
-  
   # Welcome
   match 'about_us' => 'welcome#about_us', :via => :get
   match 'try_us' => 'welcome#try_us', :via => :get

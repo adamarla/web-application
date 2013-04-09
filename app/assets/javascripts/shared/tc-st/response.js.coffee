@@ -7,17 +7,16 @@ jQuery ->
     json = $.parseJSON xhr.responseText
 
     target = null # where to write the returned JSON
-    parentKey = null
-    childKey = null
+    key = null
     menu = null # ID of contextual menu to attach w/ each .single-line
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
+    buttons = null
 
     if url.match(/ws\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
-      parentKey = 'wks'
-      childKey = 'wk'
+      key = 'wks'
     else if url.match(/ws\/layout/)
       # load student scans 
       preview.loadJson json, 'locker'
@@ -60,8 +59,11 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
+      writeData = if key? then true else false
       karo.empty target
-      line.write(target, m[childKey], menu) for m in json[parentKey]
+
+      # Render the returned JSON - in columns if so desired
+      lines.columnify target, json[key], menu, buttons if writeData
 
       # Enable / disable paginator as needed 
       if json.last_pg?
