@@ -14,7 +14,6 @@
     = render :partial => 'menus/user/notifications'
     = render :partial => 'examiners/annotation-marks'
     = render :partial => 'menus/examiner/blockdb'
-
   
 - content_for :modals do
   = render :partial => 'modals/user/account'
@@ -24,9 +23,7 @@
 %html{html_attrs}
   %head 
     = javascript_include_tag "application", "admin"
-    -#= javascript_include_tag "https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
-    -#= javascript_include_tag "MathJax/MathJax.js?config=TeX-AMS_HTML"
     = stylesheet_link_tag "application" 
     = csrf_meta_tag
 
@@ -42,11 +39,11 @@
                 = image_tag "logo-mit-beta-2.png"
                 .tagline.span10.offset1= "Grades will happen"
               %ul.nav.span8.pull-right
+                - if is_admin
+                  %li.dropdown
+                    = simple_link :for => 'System Monitor', :id => 'lnk-admin-console'
                 %li.dropdown
                   = simple_link :for => "Workbench", :as => :dropdown, :id => 'm-admin-wb'
-                %li.dropdown
-                  = simple_link :as => :dropdown, 
-                    :id => 'm-notifications', :icon => "icon-white icon-bell"
                 %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{user.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid
@@ -55,7 +52,7 @@
 
           - if is_admin
             #left-1
-              #schools.content.no-remove
+              = render :partial => 'admin/system-overview'
             #left-X
             #left-2
               = render :partial => "admin/mng-topics"
@@ -79,6 +76,8 @@
           - if is_admin
             #wide-1
               = render :partial => 'admin/school-console'
+            #wide-2
+              = render :partial => 'admin/accounts-in-country'
           #wide-X
           #wide-wait
             = render :partial => 'toolbox/wait'

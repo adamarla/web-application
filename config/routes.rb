@@ -24,6 +24,8 @@ Webapp::Application.routes.draw do
   match 'submit/fdb' => 'accounts#submit_fdb', :via => [:put, :post]
   match 'view/fdb' => 'accounts#view_fdb', :via => :get
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', :via => :get
+  match 'byCountry' => 'accounts#by_country', :via => :get
+  match 'inCountry' => 'accounts#in_country', :via => :get
 
   # Admin 
   resource :admin, :controller => :admin 

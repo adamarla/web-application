@@ -278,15 +278,26 @@ lnk-enroll-self :
 ## Admin Only 
 ##############################################################################
 
+lnk-admin-console :
+  left :
+    show : left-1
+  wide :
+    show : wide-2
+  autoclick :
+    tab : tab-teacher-accounts
+
+tab-teacher-accounts :
+  url : byCountry?type=teacher
+  panel : 
+    url : inCountry?type=teacher&country=:id
+
+
 ##############################################################################
 ## Admin / Examiner specific  
 ##############################################################################
 
 m-admin-wb :
   menu : admin-wb
-
-m-admin-console :
-  menu : admin-console
 
 m-admin-schools :
   menu : admin-schools 

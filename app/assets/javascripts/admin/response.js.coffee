@@ -26,8 +26,12 @@ jQuery ->
       target = $('#pane-mng-topics-2')
       key = 'topics'
     else if url.match(/byCountry/)
-      target = '#pane-teacher-accounts'
+      target = $('#pane-teacher-accounts')
       key = 'accounts'
+    else if url.match(/inCountry/)
+      target = $('#accounts-in-country')
+      key = 'accounts'
+      karo.empty target
     else
       matched = false
 
