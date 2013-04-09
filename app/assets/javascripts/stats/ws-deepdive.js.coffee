@@ -22,11 +22,11 @@ window.wsDeepdive = {
     svg.selectAll('g').data(json.students)
     .enter()
     .append('g')
-    .attr('marker', (d,i) -> return d.student.id)
+    .attr('marker', (d,i) -> return d.id)
     .attr('transform', (d,i) -> return "translate(0,#{80 + i*15})")
     .append('text')
     .text (d) ->
-      return d.student.name
+      return d.name
 
     # 2. Add the slider 
     scaleX = d3.scale.linear()
