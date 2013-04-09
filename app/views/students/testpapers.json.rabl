@@ -1,5 +1,8 @@
 
-collection @publishable => :wrks
-  attribute :id
-  node(:name) { |m| m.quiz.name }
-  node(:tag) { |m| m.closed_on?.strftime('%b %d, %Y') }
+object false
+  node(:wrks) {
+    @publishable.map{ |m|
+      { :id => m.id, :name => m.quiz.name, :tag => m.closed_on?.strftime('%b '%d, '%Y') }  
+    }
+  }
+

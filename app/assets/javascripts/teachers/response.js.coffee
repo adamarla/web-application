@@ -26,8 +26,7 @@ jQuery ->
     matched = true
 
     target = null # where to write the returned JSON
-    parentKey = null
-    childKey = null
+    key = null
     menu = null # ID of contextual menu to attach w/ each .single-line
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
@@ -37,8 +36,7 @@ jQuery ->
 
     if url.match(/quizzes\/list/)
       target = $('#pane-wsb-quizzes')
-      parentKey = 'quizzes'
-      childKey = 'quiz'
+      key = 'quizzes'
       menu = "per-quiz"
       clickFirst = true
       karo.empty target
@@ -53,8 +51,7 @@ jQuery ->
         target = $('#wsb-sektions')
         lesson = 'wsb-milestone-3'
 
-      parentKey = "students"
-      childKey = 'student'
+      key = "students"
       wsDeepdive.students json
     else if url.match(/qzb\/echo/)
       if json.context is 'qzb'
@@ -88,21 +85,18 @@ jQuery ->
     else if url.match(/questions\/on/)
       topic = json.topic
       target = $("##{json.context}-pick-#{topic}")
-      parentKey = 'questions'
-      childKey = 'datum'
+      key = 'questions'
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = 'icon-plus-sign'
     else if url.match(/quiz\/testpapers/)
       target = $("#pane-wsb-existing")
-      parentKey = "testpapers"
-      childKey = "testpaper"
+      key = "testpapers"
       menu = 'per-ws'
       clickFirst = true
       lesson = 'publish-milestone-2'
     else if url.match(/ws\/summary/)
       target = $("#pane-tc-rc-2")
-      parentKey = "root"
-      childKey = "datum"
+      key = "root"
       wsSummary json
     else if url.match(/teacher\/sektions/)
       if json.context is 'list'
@@ -111,8 +105,7 @@ jQuery ->
       else
         target = $('#pane-dive-1')
 
-      parentKey = 'sektions'
-      childKey = 'sektion'
+      key = 'sektions'
       clickFirst = true
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
@@ -121,21 +114,18 @@ jQuery ->
         lesson = "#{json.context}-milestone-#{milestone}"
       else
         target = $('#deepdive-topics')
-      parentKey = 'topics'
-      childKey = 'topic'
+      key = 'topics'
     else if url.match(/sektion\/proficiency/)
       wsDeepdive.loadProficiencyData json
     else if url.match(/overall\/proficiency/)
       wsDeepdive.byStudent json
     else if url.match(/quiz\/questions/)
       target = $('#editqz-1')
-      parentKey = 'questions'
-      childKey = 'datum'
+      key = 'questions'
       lesson = 'editqz-milestone-2'
     else if url.match(/add\/sektion/)
       target = $('#pane-mng-sektions-1')
-      parentKey = 'sektion'
-      childKey = 'new'
+      key = 'sektion'
       $('#m-add-sektion').modal 'hide'
       lesson = 'mng-sektions-milestone-3'
     else if url.match(/ping\/sektion/)
@@ -151,7 +141,7 @@ jQuery ->
       matched = false
 
     if target? and target.length isnt 0
-      writeData = if (parentKey? and childKey?) then true else false
+      writeData = if key? then true else false
 
       # Enable / disable paginator as needed 
       if json.last_pg?
@@ -177,8 +167,7 @@ jQuery ->
             writeData = target.children().length is 0
 
       # Render the returned JSON - in columns if so desired
-      lines.columnify target, json[parentKey], childKey, menu, buttons if writeData
-      # line.write(target, m[childKey], menu, buttons) for m in json[parentKey] if writeData
+      lines.columnify target, json[key], menu, buttons if writeData
 
       # Disable / hide any .single-line whose marker is in json.[disabled, hide]
       for m in ['disabled', 'hide']

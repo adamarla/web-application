@@ -3,7 +3,7 @@ object false
 
 node(:students) { 
   @students.map{ |m| 
-    { :student => { :name => m.name, :id => m.id } }
+    { :name => m.name, :id => m.id } 
   }
 }
 

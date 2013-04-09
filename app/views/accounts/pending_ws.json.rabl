@@ -1,5 +1,5 @@
 
-collection @wks => :wks
-  attribute :id
-  node(:name) { |m| m.quiz.name }
-  node(:tag) { |m| m.name }
+object false
+  node(:wks) { 
+    @wks.map{ |m| { :id => m.id, :name => m.quiz.name, :tag => m.name } }
+  } 

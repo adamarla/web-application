@@ -126,7 +126,7 @@ window.line = {
 
 
 window.lines = {
-  columnify : (here, json, childKey, menu, buttons = null) ->
+  columnify : (here, json, menu, buttons = null) ->
     # json = array of N objects 
     here = if typeof here is 'string' then $(here) else here
     columns = here.find '.column'
@@ -142,7 +142,7 @@ window.lines = {
         currIndex += 1
         currColumn = columns.eq(currIndex)
         nAdded = 0
-      line.write currColumn, m[childKey], menu, buttons
+      line.write currColumn, m, menu, buttons
       nAdded += 1
     return true
 

@@ -1,5 +1,7 @@
 
-collection @r => :rqms
-  attribute :id 
-  attribute :text => :name 
-  attribute :bottomline => :long
+object false
+  node(:rqms) {
+    @r.map{ |m|
+      { :id => m.id, :name => m.text, :long => m.bottomline }
+    }
+  }

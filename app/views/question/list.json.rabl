@@ -1,5 +1,8 @@
 
-collection @questions => :questions
-  attribute :id
-  attribute :uid => :name
-  node(:ticker) { |m| m.ticker? }
+object false
+  node(:questions) { 
+    @questions.map{ |m|
+      { :id => m.id, :name => m.uid, :tag => m.ticker? }
+    }
+  } 
+
