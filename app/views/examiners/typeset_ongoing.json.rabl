@@ -5,10 +5,8 @@ object false
   node(:typeset) { 
     @ongoing.map{ |m|
       {
-        :datum => {
-          :id => m.suggestion_id,
-          :tag => m.uid
-        }
+        :id => m.suggestion_id,
+        :tag => m.uid
       }
     }
   } 

@@ -1,4 +1,5 @@
 
-collection @verticals => :verticals
-  attributes :name, :id 
-  node(:tag) { |m| "#{Question.where(:topic_id => m.topic_ids).count} ques" }
+object false
+  node(:verticals) {
+    @verticals.map{ |m| { :name => m.name, :id => m.id, :tag => "#{Question.where(:topic_id => m.topic_ids).count } ques" } }
+  } 

@@ -19,6 +19,7 @@ module ApplicationHelper
     unless id.blank?
       onclick = OnClick[id]
       data[:toggle] = :tab unless id.match(/^tab-/).nil?
+      data[:toggle] = :dropdown if dropdown
 
       # Allow keys that are actually reg-exps. Useful when a whole family of similarly named 
       # keys need to be generated via a for loop in the HAML

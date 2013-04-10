@@ -3,24 +3,20 @@
 
 %ul.dropdown-menu.dropdown-inverse#admin-wb{ :role => :menu }
   %li.dropdown-submenu
-    %a{ :href => '#' }= 'Pending Work' 
+    = simple_link :for => 'Pending Work', :icon => 'icon-time'
     %ul.dropdown-menu
       %li
-        = simple_link :for => "Grading", :id => 'lnk-wb-pending', 'default-lnk' => true
+        = simple_link :for => "Grading", :id => 'lnk-wb-pending', 'default-lnk' => true, :icon => 'icon-pencil'
       %li
-        = simple_link :for => "Tagging", :id => 'lnk-wb-tagging'
+        = simple_link :for => "Tagging", :id => 'lnk-wb-tagging', :icon => 'icon-tag'
       %li
-        = simple_link :for => "Suggestion Typesetting", :id => 'lnk-wb-typeset'
+        = simple_link :for => "Suggestion Typesetting", :id => 'lnk-wb-typeset', :icon => 'icon-font'
   %li
-    = simple_link :for => "Block DB Slots", :id => 'lnk-wb-blockdb'
+    = simple_link :for => "Block DB Slots", :id => 'lnk-wb-blockdb', :icon => 'icon-lock'
   %li
-    = simple_link :for => "Receive Scans", :id => 'lnk-wb-receive'
+    = simple_link :for => "Receive Scans", :id => 'lnk-wb-receive', :icon => 'icon-download'
 
   - if is_admin
-    %li.divider
-    %li.nav-header= "Manage"
     %li
-      = simple_link :for => "Schools", :id => 'lnk-mng-schools'
-    %li
-      = simple_link :for => "Topics", :id => 'lnk-mng-topics'
+      = simple_link :for => "Add Topics", :id => 'lnk-mng-topics', :icon => 'icon-plus-sign'
 

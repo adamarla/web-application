@@ -19,7 +19,7 @@
 #  loggable_type          :string(20)
 #  active                 :boolean         default(TRUE)
 #  username               :string(50)
-#  trial                  :boolean         default(TRUE)
+#  country                :integer         default(100)
 #
 
 class Account < ActiveRecord::Base

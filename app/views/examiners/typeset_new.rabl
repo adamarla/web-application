@@ -5,11 +5,9 @@ object false
       age = m.days_since_receipt / 7
       tag = age > 0 ? "#{age} weeks" : "This week"
       {
-        :datum => { 
-          :name => m.teacher.name,
-          :id => m.id,
-          :tag => tag 
-        }
+        :name => m.teacher.name,
+        :id => m.id,
+        :tag => tag 
       }
     } 
   } 

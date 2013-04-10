@@ -7,25 +7,22 @@ jQuery ->
     json = $.parseJSON xhr.responseText
 
     target = null # where to write the returned JSON
-    parentKey = null
-    childKey = null
+    key = null
     menu = null # ID of contextual menu to attach w/ each .single-line
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
+    buttons = null
 
     if url.match(/untagged\/list/)
       target = $('#pane-tag-pending')
-      parentKey = 'pending'
-      childKey = 'q'
+      key = 'pending'
     else if url.match(/vertical\/topics/)
       target = $('#pane-vertical-topics')
-      parentKey = 'topics'
-      childKey = 'topic'
+      key = 'topics'
     else if url.match(/typeset\/new/)
       target = $('#pane-typeset-new')
-      parentKey = 'typeset'
-      childKey = 'datum'
+      key = 'typeset'
       clickFirst = true
       menu = 'blockdb-slots'
     else
@@ -36,8 +33,9 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      # karo.empty target
-      line.write(target, m[childKey], menu) for m in json[parentKey]
+      writeData = if key? then true else false
+      # Render the returned JSON - in columns if so desired
+      lines.columnify target, json[key], menu, buttons if writeData
 
       # Enable / disable paginator as needed 
       if json.last_pg?

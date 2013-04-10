@@ -2,7 +2,7 @@
 object false 
   node(:testpapers) {
     @testpapers.map { |m|
-      { :testpaper => { :name => "#{m.name}", :tag => "#{m.created_at.to_date.strftime('%b %Y')}", :id => m.id } }
+      { :name => "#{m.name}", :tag => "#{m.created_at.to_date.strftime('%b %Y')}", :id => m.id }
     }
   } 
 

@@ -5,11 +5,9 @@ object false
     deepdiving = (@context == 'deepdive')
     @sektions.map{ |sk|
       {
-        :sektion => {
-          :id => sk.id,
-          :name => sk.label,
-          :tag => "#{deepdiving ? "#{sk.students.count} student(s)" : "#{sk.uid}" }"
-        }
+        :id => sk.id,
+        :name => sk.label,
+        :tag => "#{deepdiving ? "#{sk.students.count} student(s)" : "#{sk.uid}" }"
       }
     }
   }

@@ -1,6 +1,6 @@
 
   node :typesets do 
-    @questions.map{ |m| { :typeset => {:id => m.id, :name => m.uid, :ticker => m.topic.name }  } } 
+    @questions.map{ |m| {:id => m.id, :name => m.uid, :ticker => m.topic.name }  }  
   end
 
   node :preview do

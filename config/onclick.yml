@@ -93,23 +93,18 @@ lnk-wb-pending :
     tab : tab-grd-ws
 
 m-teacher-quizzes :
-  toggle : dropdown 
   menu : teacher-quiz
 
 m-teacher-workbench : 
-  toggle : dropdown
   menu : teacher-workbench
 
 m-report-cards :
-  toggle : dropdown
   menu : teacher-rc
 
 m-account :
-  toggle : dropdown
   menu : tasks-on-account
 
 m-howto : 
-  toggle : dropdown
   menu : howto-guides
 
 lnk-howto-1 : &type-notouch
@@ -283,16 +278,28 @@ lnk-enroll-self :
 ## Admin Only 
 ##############################################################################
 
+lnk-admin-console :
+  left :
+    show : left-1
+  wide :
+    show : wide-2
+  autoclick :
+    tab : tab-teacher-accounts
+
+tab-teacher-accounts :
+  url : byCountry?type=teacher
+  panel : 
+    url : inCountry?type=teacher&country=:id
+
+
 ##############################################################################
 ## Admin / Examiner specific  
 ##############################################################################
 
 m-admin-wb :
-  toggle : dropdown 
   menu : admin-wb
 
 m-admin-schools :
-  toggle : dropdown 
   menu : admin-schools 
 
 lnk-wb-receive :
@@ -325,7 +332,6 @@ lnk-wb-blockdb :
   id : control-panel
 
 m-examiner-wb :
-  toggle : dropdown 
   menu : examiner-wb
 
 tab-new-school :
@@ -376,7 +382,6 @@ lnk-block-* :
 
 m-block-slots :
   menu : blockdb-slots
-  toggle : dropdown
 
 tab-typeset-ongoing :
   url : typeset/ongoing
@@ -404,7 +409,6 @@ lnk-logout :
 
 m-downloads : 
   menu : user-downloads
-  toggle : dropdown
 
 lnk-register :
   toggle : modal
@@ -418,5 +422,4 @@ lnk-register-teacher :
 
 m-notifications :
   menu : notifications
-  toggle : dropdown
 
