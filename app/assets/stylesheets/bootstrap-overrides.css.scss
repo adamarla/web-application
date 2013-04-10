@@ -765,13 +765,14 @@ li.split {
   text-align: center ;
 } 
 
-#our-belief { 
+.link-bar-item { 
   > h1 {
     color: white ;
     font: {
       weight: 300 ;
       family: "Times New Roman", serif ;
     } 
+    margin-top: 20px ;
   } 
 
   > .span3, .span4 {
@@ -795,6 +796,9 @@ li.split {
     color: white ;
     font-weight: 300 ;
   } 
+  
+  height: 400px ;
+
 } 
 
 .spinner {
@@ -851,5 +855,27 @@ li.split {
   font-weight: 300 ;
   h1, h2, h3, h4, h5, h6 {
     color: $orange ; 
+  }
+}
+
+#link-bar {
+  position: fixed ;
+  width: 1024px ;
+  
+  .anka {
+    display: block ;
+    position: relative ;
+    top: -100px ;
+  }
+}
+
+#link-bar-items {
+  margin-top: 80px ;
+  
+  .anka {
+    display: block ;
+    padding-top: 150px ;
+    margin-top: -150px ;
+    visibility: hidden ;
   }
 }

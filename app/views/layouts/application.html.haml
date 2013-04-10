@@ -48,22 +48,122 @@
             .carousel-inner
               .item 
                 = image_tag "landing/slideshow-1.png"
-                .attribution= "Worker designed by Kris Khoury from The Noun Project"
+                -#.attribution= "Worker designed by Kris Khoury from The Noun Project"
               .item 
                 = image_tag "landing/slideshow-2.png"
-                .attribution= "Fountain Pen designed by ProletKult Graphik from The Noun Project"
+                -#.attribution= "Fountain Pen designed by ProletKult Graphik from The Noun Project"
               .item 
                 = image_tag "landing/slideshow-3.png"
-                .attribution= "The Noun Project"
+                -#.attribution= "The Noun Project"
               .item 
                 = image_tag "landing/slideshow-4.png"
-                .attribution= "Worker designed by Kris Khoury from The Noun Project"
+                -#.attribution= "Worker designed by Kris Khoury from The Noun Project"
             %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :prev}
               \&lsaquo;
             %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :next}
               \&rsaquo;
 
-      .row-fluid#our-belief
+      #link-bar.navbar.navbar-inverse
+        .navbar-inner
+          %ul.nav.span8
+            %li
+              %a.smooth-scroll{ :href => '#'}= image_tag "annotations/checkmark.png"
+            %li
+              %a.smooth-scroll{ :href => '#about'}= "About"
+            %li
+              %a.smooth-scroll{ :href => '#who-we-are'}= "Who we are"
+            %li
+              %a.smooth-scroll{ :href => '#contact'}= "Contact Us"
+            %li
+              %a.smooth-scroll{ :href => '#pricing'}= "Pricing"
+
+      #link-bar-items
+        .span.anka{ :id => "about" }
+        .row-fluid.link-bar-item
+          %h1.offset2= "What's all the fuss?" 
+          .span4.offset1
+            %span Teachers know best
+            %p
+              There are a great many ideologies behind what can be done
+              to further the cause of education. For us the answer is
+              clear - If you want to help the student, help the teacher
+              first.
+            %p
+              This is our driving principle and what, we believe, sets us
+              apart from several other well intentioned efforts.
+            
+          .span4.offset1
+            %span It takes a village
+            %p
+              When we talk about helping the teacher, we work on one basic
+              assumption - Teacher's know how to teach. All they need are
+              the time and the resources to do their job well.
+            %p
+              We provide this by automating all the mechanical aspects
+              of grading through use of computer programs combined with
+              crucial bit of imperative human judgement, delivered by one 
+              our caring examiner.  
+      
+        .span.anka{ :id => "who-we-are" }
+        .row-fluid.link-bar-item
+          %h1.offset2= "Who we are" 
+          .span4.offset1
+            %span
+              %a.brand.span4
+                = image_tag "AbhinavAndAkshay.gif"
+
+          .span4.offset1
+            %span Our History
+            %p
+              \In 2008, while grading papers for his Statistics professor,
+              Abhinav Chaturvedi realised that it was an extremely laborious
+              task peppered with simple yet boring manual steps like collation,
+              addition, data-entry etc. It occured to him that if every teacher
+              anywhere in the World has to do this to get a single data-point on
+              student's progress, she probably wouldn't want to do it too often.
+            %p
+              This was the genesis of the Gradians platform. Together with his
+              college roommate Akshay Damarla he set about creating the Gradians
+              Distributed Evaluation Platform.
+  
+        .span.anka{ :id => "contact" }
+        .row-fluid.link-bar-item
+          %h1.offset2= "We'd love to hear from you" 
+          .span4.offset1
+            %span If you are registered
+            %p
+              Write us at help@gradians.com and let us know of your comments,
+              problems or suggestions. Someone from our team will get back to
+              you promptly.
+              
+          .span4.offset1
+            %span otherwise
+            %p
+              abhinav@gradians.com or akshay@gradians.com 
+              for business inquiries, compliments, curiosity etcetera.
+  
+        .span.anka{ :id => "pricing" }
+        .row-fluid.link-bar-item
+          %h1.offset2= "Pricing" 
+          .span4.offset1
+            %span Individual Teachers
+            %p
+              We are working on a pricing plan which will be practical and
+              affordable for the average high school Math teacher. We'd like
+              you to start using it on us, so that we can an idea of how much
+              you like it. In the meantime, tell us that you like it and we'll
+              have some numbers up for you soon.
+              
+          .span4.offset1
+            %span School Boards, Districts, Counties, MOOCs etc.
+            %p
+              Please write to one of us or to help@gradians.com with the 
+              nature of your interest. One of us will get back to you shortly.
+              Whether its a Pilot or a full blown implementation, we are happy
+              to partner with you and enable the Gradians platform to lend 
+              more rigor value to a student's course experience
+
+      -#.row-fluid#our-belief
         %h1.offset2= "Wish someone told us this when we were 17" 
         .span4.offset1
           %span You will make mistakes ...
