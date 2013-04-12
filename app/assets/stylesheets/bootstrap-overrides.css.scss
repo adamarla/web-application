@@ -861,16 +861,11 @@ li.split {
 #link-bar {
   position: fixed ;
   width: 1024px ;
-  
-  .anka {
-    display: block ;
-    position: relative ;
-    top: -100px ;
-  }
+  bottom: -14px ;
 }
 
 #link-bar-items {
-  margin-top: 80px ;
+  margin-top: 160px ;
   
   .anka {
     display: block ;
