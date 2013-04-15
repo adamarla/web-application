@@ -1,12 +1,12 @@
 
 %ul.dropdown-menu.dropdown-inverse#teacher-workbench{ :role => :menu }
-  %li
+  -#%li
     = simple_link :for => "Grade Worksheets", :id => 'lnk-wb-pending', :icon => 'icon-edit'
   %li
     = simple_link :for => "Suggest Question(s)", :id => 'lnk-upload-suggestion', 
     :href => "#m-suggestion-upload", :icon => 'icon-upload'
   %li
-    = simple_link :for => "My Sections", :id => 'lnk-mng-sektions', :icon => 'icon-edit'
+    = simple_link :for => "My Groups", :id => 'lnk-mng-sektions', :icon => 'icon-edit'
   %li
     = simple_link :for => 'Download Scanbot (Windows only)', :icon => 'icon-download',
     :href => "#{server}/Scanbot/Scanbot.application"

@@ -38,7 +38,9 @@ class StudentsController < ApplicationController
     unless code.blank?
       sk = Sektion.where{ uid =~ "#{code}" }.first
       unless sk.nil?
-        sk.students << student unless student.nil?
+        unless sk.students.include?(student)
+            sk.students << student unless student.nil?
+        end
         render :json => { :notify => { :text => "Successfully enrolled in '#{sk.name}'" }}, :status => :ok 
       else
         render :json => { :notify => { :text => "No section with code '#{code}' found" }}, :status => :ok 
