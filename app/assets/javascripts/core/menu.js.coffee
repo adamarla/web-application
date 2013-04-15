@@ -26,7 +26,7 @@ window.menu = {
   update : (json, url) ->
     for menu in $("#toolbox > ul[role='menu']")
       for a in $(menu).find 'a'
-        continue unless a.dataset.ajax is 'disabled'
+        # continue unless a.dataset.ajax is 'disabled'
         updateOn = a.dataset.updateOn
 
         continue unless updateOn?

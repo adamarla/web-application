@@ -67,8 +67,9 @@ window.trigger = {
     menu.close $(link)
 
     # (YAML) Issue any AJAX requests
-    ajax = karo.url.elaborate link
-    karo.ajaxCall ajax if (ajax? and ajax isnt 'disabled')
+    if link.dataset.ajax isnt 'disabled'
+      ajax = karo.url.elaborate link
+      karo.ajaxCall ajax if ajax?
 
     # launch any help tied to this link
     help = link.dataset.launch

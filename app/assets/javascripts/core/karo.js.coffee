@@ -83,6 +83,20 @@ window.karo = {
       ajax = if tab? then tab.dataset.panelUrl else obj.dataset.url
       return ajax unless ajax? # => basically null 
 
+      if obj.dataset.updateOn? # if <a> within a dropdown-menu that has updateOn
+        unless json? # if json != null, then its time to re-evaluate href
+          href = $(obj).attr('href')
+          if href?
+            if href isnt '#'
+              # There is a menu within #toolbox that is updated. And it is this that 
+              # is cloned and attached when 'more...' is clicked. However, to issue 
+              # an AJAX request when an <a> within the *** clone *** is clicked, it 
+              # is imperative to reset the href to '#'
+              $(obj).attr('href', '#')
+              return href
+            else
+              return null
+
       for m in ["prev", "id"]
         if ajax.indexOf ":#{m}" isnt -1 # => :prev / :id present 
           if obj.dataset[m]?
