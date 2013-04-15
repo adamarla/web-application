@@ -96,4 +96,11 @@ class QuestionController < ApplicationController
     @context = params[:context] || "unknown" 
   end
 
+  def like
+    teacher = current_account.loggable
+    qid = params[:id].to_i
+    teacher.favourites.create :question_id => qid
+    render :json => { :notify => { :text => "Question successfully added to your favourites" } }, :status => :ok
+  end
+
 end # of class

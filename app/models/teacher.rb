@@ -171,19 +171,6 @@ class Teacher < ActiveRecord::Base
     @worksheets = Testpaper.where(:id => total).order('created_at DESC')
   end
 
-  def like_question(question_id)
-    m = Favourite.where(:teacher_id => self.id, :question_id => question_id)
-    return unless m.empty? # no double-addition
-    self.favourites.create :question_id => question_id # will also save to the DB
-  end
-
-  def unlike_question(question_id)
-    m = Favourite.where(:teacher_id => self.id, :question_id => question_id)
-    return if m.empty?
-    m = m.first
-    self.favourites.delete m # will also destroy because of the :dependent => :destroy
-  end
-
 #####  PRIVATE ######################
 
   private 

@@ -225,6 +225,10 @@ tab-mng-sektions-1 :
 help-* :
   notouch : true
 
+lnk-like-question : 
+  notouch : true
+  update-on : question/preview
+
 ##############################################################################
 ## Students 
 ##############################################################################

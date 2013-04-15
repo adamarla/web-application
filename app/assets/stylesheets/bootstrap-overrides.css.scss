@@ -314,6 +314,17 @@ $green: #347235 ; // rgb(87,188,32)
     > a { 
       color: $lightgray ;
     }
+
+    > .dropdown-menu { 
+      a { 
+        background-color: transparent ; 
+        border: none ;
+        float: none ;
+        padding: 3px 20px ;
+        border-radius: 0px ;
+        &:hover { color: white ; }
+      } 
+    } 
   } 
 
   .subtext { 

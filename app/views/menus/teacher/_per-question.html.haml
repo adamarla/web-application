@@ -1,0 +1,5 @@
+
+%ul.dropdown-menu.dropdown-inverse#per-question{ :role => :menu }
+  %li
+    = simple_link :for => 'Add to Favourites', :id => 'lnk-like-question', 
+    :icon => 'icon-thumbs-up', :remote => true, :url => "like.json?id=:a"

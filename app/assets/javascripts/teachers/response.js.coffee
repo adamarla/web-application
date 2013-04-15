@@ -86,6 +86,7 @@ jQuery ->
       topic = json.topic
       target = $("##{json.context}-pick-#{topic}")
       key = 'questions'
+      menu = 'per-question'
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = 'icon-plus-sign'
     else if url.match(/quiz\/testpapers/)

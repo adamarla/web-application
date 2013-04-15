@@ -9,3 +9,4 @@ object false
   } 
   node(:caption) { @question.simple_uid }
   node(:context) { @context }
+  node(:a) { @question.id }
