@@ -4,21 +4,26 @@ class TeachersController < ApplicationController
 
   def create
     info = params[:register]
-    country = Country.where{ name =~ "%#{info[:country]}%" }.first unless info[:country].blank?
-    teacher = Teacher.new(:name => info[:name])
-    username = create_username_for teacher, :teacher
-    account = teacher.build_account :email => info[:email], :password => info[:password],
-                                    :password_confirmation => info[:password], :username => username
-                                   
-    account[:country] = country.id unless country.nil?
-    teacher.zip_code = info[:zip].blank? ? nil : info[:zip]
-    if teacher.save 
-      render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
-      Mailbot.welcome_teacher(teacher.account).deliver
-    else
-      render :json => { :errors => { :email => teacher.account.errors[:email], 
-                                     :password => teacher.account.errors[:password] }},
-                                     :status => :bad_request
+
+    if info[:guard].blank? # => human entered registration info
+      country = Country.where{ name =~ "%#{info[:country]}%" }.first unless info[:country].blank?
+      teacher = Teacher.new(:name => info[:name])
+      username = create_username_for teacher, :teacher
+      account = teacher.build_account :email => info[:email], :password => info[:password],
+                                      :password_confirmation => info[:password], :username => username
+                                     
+      account[:country] = country.id unless country.nil?
+      teacher.zip_code = info[:zip].blank? ? nil : info[:zip]
+      if teacher.save 
+        render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
+        Mailbot.welcome_teacher(teacher.account).deliver
+      else
+        render :json => { :errors => { :email => teacher.account.errors[:email], 
+                                       :password => teacher.account.errors[:password] }},
+                                       :status => :bad_request
+      end
+    else # registration info probably entered by a bot
+      render :json => { :notify => { :text => "Bot?" } }, :status => :bad_request
     end
   end 
 

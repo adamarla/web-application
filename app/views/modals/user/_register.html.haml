@@ -16,6 +16,7 @@
         .error.password.hide= "Password should be atleast 6 characters long"
         = f.input :country, :hint => "Country?", :input_html => { :id => 'rg-country' }
         = f.input :zip, :hint => "School's Zip/Pin Code"
+        = f.input :guard, :wrapper_html => { :class => :hide}, :required => false
         %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
     #pane-register-2.tab-pane.push-down
       = simple_form_for :register, :url => register_student_path, 
@@ -28,3 +29,4 @@
         = f.input :code, :hint => "Your teacher must have given you a code for the course. Enter that here"
         .error.sektion.hide= "Code not found! Did you forget the hyphen (-)?"
         %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
+        = f.input :guard, :wrapper_html => { :class => :hide}, :required => false
