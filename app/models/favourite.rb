@@ -10,4 +10,6 @@
 class Favourite < ActiveRecord::Base
   belongs_to :teacher
   belongs_to :question
+
+  validates :question_id, :uniqueness => { :scope => :teacher_id }
 end
