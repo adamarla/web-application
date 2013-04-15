@@ -10,12 +10,6 @@ class Mailbot < ActionMailer::Base
       :body => teacherform[:text], :to => "abhinav@gradians.com"
   end
 
-=begin
-  def grading_done_email(teacher)
-    @account = teacher.account
-    mail :to => @account.email, :subject => "Your assignment has been graded"
-  end 
-=end
   def welcome_student(new_account)
     @account = new_account
     mail :to => @account.email, :subject => "Welcome to Gradians.com"
@@ -26,18 +20,6 @@ class Mailbot < ActionMailer::Base
     mail :to => @account.email, :subject => "Welcome to Gradians.com"
   end
   
-  def welcome_email(new_account)
-    @account = new_account
-    me = @account.loggable
-    if @account.trial
-      t = TrialAccount.where(:teacher_id => me.id).first
-      @password = t.zip_code
-    else
-      @password = me.school.zip_code
-    end
-    mail :to => @account.email, :subject => "Welcome to Gradians.com"
-  end
-
   def grading_done(testpaper)
     @testpaper = testpaper # need a object variable to pass to view
     @quiz = @testpaper.quiz
