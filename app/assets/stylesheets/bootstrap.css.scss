@@ -3524,6 +3524,7 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 
 .tab-content > .tab-pane, .pill-content > .pill-pane {
   display: none;
+  min-height: 500px ;
 }
 
 .tab-content > .active, .pill-content > .active {
@@ -5139,7 +5140,7 @@ a.thumbnail:hover {
   z-index: 1000;
   display: none;
   float: left;
-  min-width: 200px;
+  // min-width: 200px;
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
