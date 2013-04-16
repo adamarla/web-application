@@ -276,8 +276,9 @@ $green: #347235 ; // rgb(87,188,32)
   border-bottom: 1px solid $lightgray ; 
   
   &:hover {
-    // font-weight: 600 ;
-    border-bottom: 2px solid $orange ;
+    > .text { 
+      color: $lightblue ; 
+    }
   } 
   &.selected {
     > .dropdown { > a { color: white ; } }
@@ -291,6 +292,7 @@ $green: #347235 ; // rgb(87,188,32)
   &.disabled{
     color: $lightgray ;
     .subtext { color: $lightgray ; }
+    cursor: no-drop;
   }
   &.red {
     .badge { 
