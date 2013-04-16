@@ -392,7 +392,7 @@ jQuery ->
           karo.tab.enable next if next?
 
     # End of method 
-    return true
+    return (if m? then false else true)
 
   ###############################################
   # Process any :prev or :id in the about-to-be-submitted 
