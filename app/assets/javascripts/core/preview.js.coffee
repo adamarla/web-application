@@ -26,6 +26,14 @@ jQuery ->
         $(a).attr 'href', '#wide-X-carousel'
       obj.appendTo wideX
       return true
+    
+    showControls : (scans) ->
+      carousel = $('#wide-X-carousel')
+      return false if carousel.length is 0
+      hide = if scans.length is 1 then true else false
+      for m in carousel.children('a')
+        if hide then $(m).addClass('hide') else $(m).removeClass('hide')
+      return true
 
     execute : () ->
       obj = $('#wide-X > #wide-X-carousel')
@@ -90,6 +98,7 @@ jQuery ->
         multiRoot = false
 
       scans = json.preview.scans
+      preview.showControls scans
 
       # Relevant only when rendering yardstick examples 
       isMcq = false
