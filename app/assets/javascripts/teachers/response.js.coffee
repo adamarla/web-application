@@ -138,6 +138,8 @@ jQuery ->
       $('#lnk-existing-quiz').click()
     else if url.match(/update\/sektion/)
       target = $('#enrolled-students')
+    else if url.match(/like/)
+      notifier.show 'm-favourited'
     else
       matched = false
 
