@@ -357,11 +357,11 @@ jQuery ->
         if multiOk
           $(this).removeClass 'selected'
           badge.removeClass 'badge-warning'
-          $(this).find("input[type='checkbox']").eq(0).prop 'checked', false
+          $(this).find("input[type='checkbox']").eq(0).prop('checked', false) unless hasButton
       else
         $(this).addClass 'selected'
         badge.addClass 'badge-warning'
-        $(this).find("input[type='checkbox']").eq(0).prop 'checked', true
+        $(this).find("input[type='checkbox']").eq(0).prop('checked', true) unless hasButton
 
         unless multiOk
           # 1. Remove selected from siblings if not multi-select
