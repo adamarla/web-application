@@ -154,9 +154,11 @@ $green: #347235 ; // rgb(87,188,32)
   
   h1,h2,h3,h4,h5,h6 { 
     color: $orange ;
+    text-align: center ;
+    &.bold { font-weight: 600 ; }
   } 
 
-  h1 { font-size: 18px ; }
+  h1 { font-size: 24px ; }
   h2 { font-size: 16px ; }
   h3 { font-size: 14px ; }
   h4 { font-size: 14px ; }
@@ -173,6 +175,12 @@ $green: #347235 ; // rgb(87,188,32)
 
   ul {
     color: white ;
+    > li {
+      font : {
+        size: 11px ;
+        weight: 300 ;
+      }
+    }
   }
 
   form { 

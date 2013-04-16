@@ -129,6 +129,7 @@ jQuery ->
       key = 'sektion'
       $('#m-add-sektion').modal 'hide'
       lesson = 'mng-sektions-milestone-3'
+      notifier.show 'm-new-sektion', json
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
