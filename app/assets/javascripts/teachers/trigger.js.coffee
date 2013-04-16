@@ -60,7 +60,7 @@ jQuery ->
   ###
 
   $('#form-qzb').submit (event) ->
-    root = $(this).find '#qzb-pick-4'
+    root = $(this).find '#qzb-questions'
     sthSelected = false
 
     for m in root.find(".single-line > button > input[type='checkbox']")
