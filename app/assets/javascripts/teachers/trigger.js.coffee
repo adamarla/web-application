@@ -57,5 +57,19 @@ jQuery ->
       $(j).prop('checked', false) for j in $(m).find("input[type='checkbox']")
       $(k).removeClass 'badge-warning' for k in $(m).children('.badge')
     return true
+  ###
+
+  $('#form-qzb').submit (event) ->
+    root = $(this).find '#qzb-pick-4'
+    sthSelected = false
+
+    for m in root.find(".single-line > button > input[type='checkbox']")
+      s = $(m).prop('checked')
+      sthSelected = sthSelected || s
+      break if sthSelected
+
+    return true if sthSelected
+    notifier.show 'm-qzb-nothing-selected'
+    return false
 
 
