@@ -1,7 +1,17 @@
 
 window.menu = {
   close : (m, force = false) ->
-    menu = m.closest(".dropdown-menu[role='menu']").eq(0)
+    if m.is "ul"
+      menu = m
+    else if m.is "a"
+      menu = m.closest("ul[role='menu']").eq(0)
+    else if m.is "li"
+      menu = m.children("ul[role='menu']").eq(0)
+    else menu = null
+
+    return false unless menu?
+
+    # menu = m.closest(".dropdown-menu[role='menu']").eq(0)
     if menu.hasClass 'force-close'
       return false unless force
     toolboxed = menu.parent().attr('id') is 'toolbox'
@@ -12,6 +22,9 @@ window.menu = {
   show : (m) ->
     menu = m.dataset.menu
     return false unless menu?
+
+    open = $(m).siblings("ul[role='menu']").length > 0
+    return false if open # menu already open. Do nothing
 
     # all menus are rendered within #toolbox 
     menuObj = $('#toolbox').find("##{menu}").eq(0)

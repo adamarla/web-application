@@ -309,6 +309,12 @@ jQuery ->
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
     return false if $(this).hasClass 'disabled'
+
+    # close all sibling menus. Menus within .single-line handled by catch all 
+    parent = $(this).parent()
+    if parent.is 'li'
+      for m in parent.siblings('li')
+        menu.close $(m)
     menu.show this
     return true
 
