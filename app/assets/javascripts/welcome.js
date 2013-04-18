@@ -3,3 +3,4 @@
 // in other .js files and require them as needed
 
 //= require_directory ../../../vendor/assets/javascripts/country-selector 
+//= require ../../../vendor/assets/javascripts/modernizr/custom-checks

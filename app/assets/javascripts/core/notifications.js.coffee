@@ -32,7 +32,8 @@ window.notifier = {
           t = $(notifier.current).find('.subtext').eq(0)
           t.text json.notify.subtext
 
-    autoHideIn = notifier.current.dataset.autohide
+    # autoHideIn = notifier.current.dataset.autohide
+    autoHideIn = notifier.current.getAttribute('data-autohide')
 
     if autoHideIn?
       autoHideIn = parseInt(autoHideIn)

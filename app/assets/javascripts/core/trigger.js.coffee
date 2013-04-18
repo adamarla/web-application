@@ -127,6 +127,18 @@ jQuery ->
     interval : 5000
   })
 
+  ###
+    HUGELY IMPORTANT: Detect whether or not client browser supports the HTML5 
+    features we require. If not, then let the user know
+
+    We use an external plugin called Modernizr for doing the checks. Rather 
+    than get the browser name and version - if can be overwritten - its better 
+    to detect the features the browser supports
+  ###
+  if Modernizr?
+    allGood = Modernizr.canvas and Modernizr.canvastext and Modernizr.rgba and Modernizr.svg
+    notifier.show 'm-old-browser' unless allGood
+
 
   #####################################################################
   ## Forms within dropdown menus  
@@ -297,6 +309,12 @@ jQuery ->
   $('.dropdown-toggle').click (event) ->
     event.stopPropagation()
     return false if $(this).hasClass 'disabled'
+
+    # close all sibling menus. Menus within .single-line handled by catch all 
+    parent = $(this).parent()
+    if parent.is 'li'
+      for m in parent.siblings('li')
+        menu.close $(m)
     menu.show this
     return true
 
