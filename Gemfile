@@ -39,6 +39,8 @@ gem 'rabl'
 gem 'savon'
 
 gem 'simple_form'
+gem 'client_side_validations'
+gem 'client_side_validations-simple_form'
 
 gem 'country_select'
 gem 'kaminari' # for pagination

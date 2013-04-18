@@ -7,3 +7,5 @@
 //= require bootstrap 
 //= require_directory ./core
 //= require_directory ../../../vendor/assets/javascripts/joyride
+//= require rails.validations
+//= require rails.validations.simple_form
