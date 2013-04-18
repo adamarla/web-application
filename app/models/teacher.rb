@@ -31,7 +31,7 @@ class Teacher < ActiveRecord::Base
   has_many :favourites, :dependent => :destroy
   has_many :suggestions
 
-  validates :first_name, :presence => true  
+  validates :name, :presence => true  
   validates_associated :account
 
   # after_create :generate_suggestion_form
