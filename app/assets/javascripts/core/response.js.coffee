@@ -37,7 +37,7 @@ jQuery ->
     else if url.match(/register/)
       register = $('#m-register')
       register.modal 'hide'
-      notifier.show 'n-registered'
+      window.location = "/"
     else
       matched = false
 
