@@ -16,10 +16,11 @@ class StudentsController < ApplicationController
       else
         student = Student.new :name => info[:name]
         username = create_username_for student, :student 
-        account = student.build_account :email => info[:email], :password => info[:password],
+        @account = student.build_account :email => info[:email], :password => info[:password],
                                         :password_confirmation => info[:password], :username => username
         if student.save
           enroll_in.students << student
+          sign_in @account
           render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
           Mailbot.welcome_student(student.account).deliver
         else
