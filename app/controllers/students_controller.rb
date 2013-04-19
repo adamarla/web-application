@@ -7,32 +7,23 @@ class StudentsController < ApplicationController
   end
 
   def create 
-    info = params[:register]
+    data = params[:student]
 
-    if info[:guard].blank? # => human entered registration info
-      enroll_in = Sektion.where{ uid =~ info[:code] }.first
-      if enroll_in.nil?
-        render :json => { :errors => { :sektion => "Not found!" } }, :status => :bad_request
-      else
-        student = Student.new :name => info[:name]
-        username = create_username_for student, :student 
-        account = student.build_account :email => info[:email], :password => info[:password],
-                                        :password_confirmation => info[:password], :username => username
-        if student.save
-          enroll_in.students << student
-          render :json => { :notify => { :text => "Registration Successful" }}, :status => :ok
-          Mailbot.welcome_student(student.account).deliver
-        else
-          render :json => { :errors => { :email => student.account.errors[:email], 
-                                         :password => student.account.errors[:password] }},
-                                         :status => :bad_request
-        end # else
-      end # else
+    if data[:guard].blank? # => human entered registration data
+      student = Student.new :name => data[:name]
+      account_details = data[:account]
+      account = student.build_account :email => account_details[:email], 
+                                      :password => account_details[:password],
+                                      :password_confirmation => account_details[:password]
+      if student.save
+        # Mailbot.welcome_student(student.account).deliver
+        sign_in student.account
+        redirect_to student_path
+      end # no reason for else.. if client side validations worked
 
-    else # registration info probably entered by a bot
+    else # registration data probably entered by a bot
       render :json => { :notify => { :text => "Bot?" } }, :status => :bad_request
     end
-
   end # of method 
 
   def enroll 

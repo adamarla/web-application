@@ -185,6 +185,11 @@ $green: #347235 ; // rgb(87,188,32)
   }
 
   form { 
+    label {
+      font-size: 14px ;
+      font-weight: 300 ;
+    }
+
     input:not([type='submit']) {
       background: transparent ; 
       font: { 
@@ -192,8 +197,7 @@ $green: #347235 ; // rgb(87,188,32)
       } 
       color: white ; 
       border: {
-        style: none ;
-        bottom: 1px solid $deep-blue ;
+        style: 1px solid $deep-blue ;
         radius: 0px ;
       }
       padding: 6px ;
@@ -204,6 +208,10 @@ $green: #347235 ; // rgb(87,188,32)
       font-size: 11px ;
       border: none ;
     } 
+
+    .help-inline {
+      margin-top: -15px ;
+    }
 
     p {
       &.help-block { 

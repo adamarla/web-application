@@ -1,32 +1,38 @@
 
-#m-register.modal.fade.hide.slim
+- teacher = Teacher.new 
+- teacher_account = teacher.build_account
+- student = Student.new 
+- student_account = student.build_account
+
+#m-register.modal.hide.slim
   %ul.nav.nav-tabs.always-on
     %li
       = simple_link :for => "Teacher", :id => 'tab-register-1', :href => '#pane-register-1'
     %li
       = simple_link :for => "Student", :id => 'tab-register-2', :href => '#pane-register-2'
   .tab-content.pull-left
+
+    -# Teacher Registration Form
     #pane-register-1.tab-pane.push-down
-      = simple_form_for :register, :url => register_teacher_path, 
-      :remote => true, :defaults => { :label => false }, :html => { :id => 'fm-register-teacher' } do |f|
-        = f.input :name, :hint => "Full name"
-        = f.input :email, :hint => "Your e-mail. Will also be used for logging in"
-        .error.email.hide= "Oops, e-mail address already taken"
-        = f.input :password, :hint => "Password (minimum 6 characters)"
-        .error.password.hide= "Password should be atleast 6 characters long"
-        = f.input :country, :hint => "Country?", :input_html => { :id => 'rg-country' }
-        = f.input :zip, :hint => "School's Zip/Pin Code"
-        = f.input :guard, :wrapper_html => { :class => :hide}, :required => false
+      = simple_form_for teacher, :url => register_teacher_path, :validate => true,
+      :html => { :id => 'fm-register-teacher' }, :defaults => { :required => false } do |f|
+        = f.input :name
+        = f.simple_fields_for teacher_account, :validate => true do |m|
+          = m.input :email
+          = m.input :password
+          = m.input :country, :as => :select, :collection => Country.all
+        = f.input :zip_code, :label => "Your school's Zip / Pin Code" 
+        %input.hide{ :type => :string, :data => { :validate => false }, :name => 'teacher[guard]' } 
         %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
+
+    -# Student Registration Form
     #pane-register-2.tab-pane.push-down
-      = simple_form_for :register, :url => register_student_path, 
-      :remote => true, :defaults => { :label => false }, :html => { :id => 'fm-register-student' } do |f|
-        = f.input :name, :hint => "Full name"
-        = f.input :email, :hint => "Your e-mail. Will also be used for logging in"
-        .error.email.hide= "Oops, e-mail address already taken"
-        = f.input :password, :hint => "Password (minimum 6 characters)"
-        .error.password.hide= "Password should be atleast 6 characters long"
-        = f.input :code, :hint => "Your teacher must have given you a code for the course. Enter that here"
-        .error.sektion.hide= "Code not found! Did you forget the hyphen (-)?"
+      = simple_form_for student, :url => register_student_path, :validate => true,
+      :defaults => { :required => false }, :html => { :id => 'fm-register-student' } do |f|
+        = f.input :name
+        = f.simple_fields_for student_account, :validate => true do |m|
+          = m.input :email
+          = m.input :password
+        -#= f.input :code, :hint => "Your teacher must have given you a code for the course. Enter that here"
+        %input.hide{ :type => :string, :data => { :validate => false }, :name => 'teacher[guard]' } 
         %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
-        = f.input :guard, :wrapper_html => { :class => :hide}, :required => false

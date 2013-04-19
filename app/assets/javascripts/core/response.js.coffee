@@ -30,14 +30,10 @@ jQuery ->
   $('#control-panel').ajaxSuccess (e, xhr, settings) ->
     matched = true
     url = settings.url
-    json = $.parseJSON xhr.responseText
+    # json = if xhr? then $.parseJSON(xhr.responseText) else null
 
     if url.match('account')
       $('#m-edit-account').modal 'hide'
-    else if url.match(/register/)
-      register = $('#m-register')
-      register.modal 'hide'
-      notifier.show 'n-registered'
     else
       matched = false
 

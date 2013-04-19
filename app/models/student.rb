@@ -19,7 +19,6 @@ class Student < ActiveRecord::Base
   has_many :student_rosters, :dependent => :destroy 
   has_many :sektions, :through => :student_rosters
 
-  # belongs_to :sektion
   has_one :account, :as => :loggable, :dependent => :destroy
 
   has_many :graded_responses
@@ -31,8 +30,6 @@ class Student < ActiveRecord::Base
   validates :name, :presence => true
   validates_associated :account
 
-  # after_save  :reset_login_info
-  after_create  :generate_uid
 
   # When should a student be destroyed? My guess, some fixed time after 
   # he/she graduates. But as I haven't quite decided what that time should
@@ -174,30 +171,9 @@ class Student < ActiveRecord::Base
     return ret
   end
 
-  def generate_uid
-    if self.uid.nil?
-      SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generateStudentCode']}"
-      response = SavonClient.request :wsdl, :generateStudentCode do
-        soap.body = { :id => self.id }
-      end
-      manifest = response[:generate_student_code_response][:manifest]
-      unless manifest.nil?
-        root = manifest[:root]
-        self.uid = root.split('/').last 
-        self.save
-      end
-    end
-  end
-
   private 
     def destroyable? 
       return false 
     end 
-
-    def reset_login_info
-      new_prefix = username_prefix_for(self, :student)
-      u = self.account.username.sub(/^\w+\./, "#{new_prefix}.")
-      self.account.update_attributes :username => u
-    end
 
 end # of class 

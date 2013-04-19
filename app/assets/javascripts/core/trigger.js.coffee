@@ -479,3 +479,10 @@ jQuery ->
     karo.tab.enable 'tab-register-1'
     return true
 
+  #####################################################################
+  ## http://stackoverflow.com/questions/13073357/simpleformclientsidevalidationsbootstrap-validation-is-not-occurring
+  #####################################################################
+
+  $('#m-register').on 'shown', () ->
+    $(ClientSideValidations.selectors.forms).validate()
+    return true
