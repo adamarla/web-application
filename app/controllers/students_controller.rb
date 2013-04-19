@@ -16,11 +16,10 @@ class StudentsController < ApplicationController
                                       :password => account_details[:password],
                                       :password_confirmation => account_details[:password]
       if student.save
-        # Mailbot.welcome_student(student.account).deliver
+        Mailbot.welcome_student(student.account).deliver
         sign_in student.account
         redirect_to student_path
       end # no reason for else.. if client side validations worked
-
     else # registration data probably entered by a bot
       render :json => { :notify => { :text => "Bot?" } }, :status => :bad_request
     end
