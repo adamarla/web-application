@@ -92,7 +92,7 @@ class Examiner < ActiveRecord::Base
     
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['receive_scans']}" 
     response = SavonClient.request :wsdl, :receiveScans do
-      soap.body = {}
+      soap.body = "simulation"
     end
 
     # manifest => { :root => ..., :image => [ ... { :id => <qr-code>.jpg } .... ]
@@ -102,13 +102,14 @@ class Examiner < ActiveRecord::Base
       # the same folder. The folder is time-stamped by the time at which receiveScans ran
       parent_folder = manifest[:root]
 
-      qr_codes = manifest[:image].map{ |m| m[:id] }
+      qr_codes = manifest[:image].map{ |m| m[:id] }.select{ |m| m != "SAVON_BUG_SKIP" }
       ws_encr_codes = qr_codes.map{ |m| m[0..6] }.uniq 
       ws_ids = ws_encr_codes.map{ |m| decrypt m }
 
       ws_ids.each_with_index do |wid, j|
         student_ids = AnswerSheet.where(:testpaper_id => wid).map(&:student_id).sort
         scans = qr_codes.select{ |m| m[0..6] == ws_encr_codes[j] } # scans belonging to this worksheet
+
         responses = GradedResponse.in_testpaper(wid)
 
         scans.each do |scan|
@@ -117,25 +118,24 @@ class Examiner < ActiveRecord::Base
           page = scan[10].to_i(36)
 
           responses.of_student(sid).on_page(page).each do |m|
-            # m.update_attribute :scan, "#{parent_folder}/#{scan}"
-            m.update_attribute :scan, scan
+            m.update_attribute :scan, "#{parent_folder}/#{scan}"
+            # m.update_attribute :scan, scan
+            # puts "#{m.id} --> #{parent_folder}/#{scan}"
           end
         end # scans belonging to given worksheet
 
       end # iterating over worksheets 
-
-      self.distribute_scans # the big kahuna
-
+      self.distribute_scans # the big kahuna. Pass 'true' for debug mode
     end # unless 
   end
 
 
   private
     
-    def self.distribute_scans 
+    def self.distribute_scans(debug = false)
       unassigned = GradedResponse.unassigned.with_scan
       ws_ids = unassigned.map(&:testpaper_id).uniq
-      examiners = Examiner.select{ |m| m.account.active }
+      examiners = Examiner.where(:is_admin => true).select{ |m| m.account.active }
       n_examiners = examiners.count
       limit = 20
 
@@ -166,11 +166,16 @@ class Examiner < ActiveRecord::Base
 
           student_ids.each_slice(per_examiner).each_with_index do |ids, index|
             assignee = examiners[index]
-            responses = on_page.of_student ids
+            responses = on_page.select{ |m| ids.include? m.student_id }
             for r in responses
-              r.update_attribute :examiner_id, assignee.id
+              r.update_attribute(:examiner_id, assignee.id) unless debug
             end
-            assignee.update_attribute :n_assigned, responses.count
+
+            if debug
+              puts "#{assignee.name} --> [#{quiz.name}, ##{pg}] --> #{ids.count}"
+            else
+              assignee.update_attribute :n_assigned, responses.count
+            end
           end # of iterating over slices
         end # of iterating over pages
       end # of iterating over worksheets
