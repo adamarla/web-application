@@ -320,5 +320,9 @@ class Quiz < ActiveRecord::Base
     end
   end
 
+  def uid
+    return encrypt(self.id, 7)
+  end
+
 end # of class
 
