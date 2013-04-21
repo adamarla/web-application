@@ -25,7 +25,8 @@ module GeneralQueries
     return per_pg, n_pgs
   end
   
-  def mangle_unmangle(string)
+  def mangle_unmangle(original)
+    string = original.clone
     len = string.length
     last = len - 1
     middle = len / 2
