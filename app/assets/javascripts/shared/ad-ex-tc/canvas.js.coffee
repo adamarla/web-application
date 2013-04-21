@@ -64,16 +64,11 @@ window.canvas = {
     src  = scan.attr 'name'
 
     # Scans for a testpaper are stored together within a folder in locker/ 
-    # And the locker is named "quizId-testpaperId" - which we store as an attribute 
-    # on the parent student object. Note that the code is here for a specific quiz.
-    # And a quiz can be taken only once by a student
-
-    folder = scan.parent().attr 'within' # stored as an attribute in the parent student
 
     image.onload = () ->
       ctx.drawImage(image,15,0)
 
-    image.src = "#{gutenberg.server}/locker/#{folder}/#{src}"
+    image.src = "#{gutenberg.server}/locker/#{src}"
     return true
 
   drawTex : (script, x, y) ->
