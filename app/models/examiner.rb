@@ -175,7 +175,8 @@ class Examiner < ActiveRecord::Base
             if debug
               puts "#{assignee.name} --> [#{quiz.name}, ##{pg}] --> #{ids.count}"
             else
-              assignee.update_attribute :n_assigned, responses.count
+              till_now = assignee.n_assigned
+              assignee.update_attribute :n_assigned, (till_now + response.count) 
             end
           end # of iterating over slices
         end # of iterating over pages
