@@ -125,7 +125,7 @@ class Examiner < ActiveRecord::Base
         end # scans belonging to given worksheet
 
       end # iterating over worksheets 
-      self.distribute_scans # the big kahuna. Pass 'true' for debug mode
+      self.distribute_scans(true) # the big kahuna. Pass 'true' for debug mode
     end # unless 
   end
 
