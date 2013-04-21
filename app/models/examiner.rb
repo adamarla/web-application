@@ -176,7 +176,7 @@ class Examiner < ActiveRecord::Base
               puts "#{assignee.name} --> [#{quiz.name}, ##{pg}] --> #{ids.count}"
             else
               till_now = assignee.n_assigned
-              assignee.update_attribute :n_assigned, (till_now + response.count) 
+              assignee.update_attribute :n_assigned, (till_now + responses.count) 
             end
           end # of iterating over slices
         end # of iterating over pages
