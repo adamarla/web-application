@@ -40,6 +40,7 @@ Webapp::Application.routes.draw do
   match 'typeset/ongoing' => 'examiners#typeset_ongoing', :via => :get
   match 'rotate_scan' => 'examiners#rotate_scan', :via => :get
   match 'restore_scan' => 'examiners#restore_pristine_scan', :via => :get
+  match 'pages/unresolved' => 'examiners#unresolved_scans', :via => :get
 
   # School 
   resource :school, :only => [:show, :create, :update]

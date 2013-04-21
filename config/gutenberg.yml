@@ -7,6 +7,7 @@ operations : &tasks
   generate_suggestion_form : http://gutenberg/blocs/generateSuggestionForm
   generate_student_roster : http://gutenberg/blocs/generateStudentRoster
   rotate_scan : http://gutenberg/blocs/rotateScan
+  fetch_unresolved_scans : http://gutenberg/blocs/fetchUnresolvedScans
 
 development : &non_production_settings
   axis2 : http://localhost:8080/axis2/services/documentMaster

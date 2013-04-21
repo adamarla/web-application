@@ -392,6 +392,17 @@ tab-typeset-ongoing :
   panel :
     url : suggestion/preview.json?id=:id
 
+lnk-wb-resolve :
+  left :
+    show : left-6
+  wide :
+    show : wide-X
+  autoclick : 
+    tab : tab-resolution-pending
+
+tab-resolution-pending :
+  url : pages/unresolved
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################

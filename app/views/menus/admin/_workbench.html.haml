@@ -6,11 +6,13 @@
     = simple_link :for => 'Pending Work', :icon => 'icon-time'
     %ul.dropdown-menu
       %li
-        = simple_link :for => "Grading", :id => 'lnk-wb-pending', 'default-lnk' => true, :icon => 'icon-pencil'
+        = simple_link :for => "Grade Scans", :id => 'lnk-wb-pending', 'default-lnk' => true, :icon => 'icon-pencil'
       %li
-        = simple_link :for => "Tagging", :id => 'lnk-wb-tagging', :icon => 'icon-tag'
+        = simple_link :for => "Tag Questions", :id => 'lnk-wb-tagging', :icon => 'icon-tag'
       %li
-        = simple_link :for => "Suggestion Typesetting", :id => 'lnk-wb-typeset', :icon => 'icon-font'
+        = simple_link :for => "Typeset Suggestions", :id => 'lnk-wb-typeset', :icon => 'icon-font'
+      %li
+        = simple_link :for => "Resolve Scans", :id => 'lnk-wb-resolve', :icon => 'icon-search'
   %li
     = simple_link :for => "Block DB Slots", :id => 'lnk-wb-blockdb', :icon => 'icon-lock'
   %li

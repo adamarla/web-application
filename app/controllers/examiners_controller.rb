@@ -71,4 +71,15 @@ class ExaminersController < ApplicationController
     @ongoing = Question.where(:id => @ongoing.map(&:question_ids).flatten)
   end # of method
 
+  def unresolved_scans
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg[:action][:fetch_unresolved_scans]}" 
+    response = SavonClient.request :wsdl, :fetchUnresolvedScans do
+      soap.body = { 
+        :grader => { :id => current_account.loggable_id },
+        :maxQuantity => 10
+      }
+    end
+    render :json => { :text => :abhinav }, :status => :ok
+  end
+
 end
