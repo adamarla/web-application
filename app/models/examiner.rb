@@ -92,7 +92,8 @@ class Examiner < ActiveRecord::Base
     
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['receive_scans']}" 
     response = SavonClient.request :wsdl, :receiveScans do
-      soap.body = "simulation"
+      # soap.body = "simulation"
+      soap.body = {}
     end
 
     # manifest => { :root => ..., :image => [ ... { :id => <qr-code>.jpg } .... ]
@@ -125,7 +126,7 @@ class Examiner < ActiveRecord::Base
         end # scans belonging to given worksheet
 
       end # iterating over worksheets 
-      self.distribute_scans # the big kahuna. Pass 'true' for debug mode
+      self.distribute_scans(false) # the big kahuna. Pass 'true' for debug mode
     end # unless 
   end
 
@@ -174,7 +175,8 @@ class Examiner < ActiveRecord::Base
             if debug
               puts "#{assignee.name} --> [#{quiz.name}, ##{pg}] --> #{ids.count}"
             else
-              assignee.update_attribute :n_assigned, responses.count
+              till_now = assignee.n_assigned
+              assignee.update_attribute :n_assigned, (till_now + responses.count) 
             end
           end # of iterating over slices
         end # of iterating over pages
