@@ -1,7 +1,6 @@
 
 jQuery ->
 
-###
   $('#new-school > form').isHappy {
     fields: {
       '#school_name': {
@@ -27,7 +26,6 @@ jQuery ->
       }
     }
   }
-###
 
   $('#edit-login-email > form').isHappy {
     fields: {
