@@ -2,8 +2,7 @@
 class RestorePristineScan < Struct.new(:scan_locker_path)
   def perform
     # Reset the graded responses corresponding this scan 
-    scan = scan_locker_path.split('/').last
-    scan = scan.length == 2 ? scan.last : nil 
+    scan = scan_locker_path
     unless scan.blank?
       GradedResponse.where(:scan => scan).each do |m| 
         m.reset
