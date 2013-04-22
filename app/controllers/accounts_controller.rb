@@ -84,7 +84,7 @@ class AccountsController < ApplicationController
     # Generate, then store, the mangled feedback
     ids = params[:checked].keys.map(&:to_i)
     r.fdb ids 
-    scan = "#{r.testpaper.quiz_id}-#{r.testpaper_id}/#{r.scan}"
+    scan = "#{r.scan}"
     Delayed::Job.enqueue AnnotateScan.new(scan, clicks), 
       :priority => 10, :run_at => Time.zone.now unless clicks.empty?
 
