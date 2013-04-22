@@ -24,10 +24,14 @@ jQuery ->
       splitTab = true
       if json.user is 'Student'
         target = '#pane-st-rc-2'
+        ulKlass = "span3 nopurge-ever"
+        contentKlass = "span8"
         writeBoth = false
       else
         target = '#pane-tc-rc-3'
         writeBoth = true
+        ulKlass = "span4 nopurge-ever"
+        contentKlass = "span7"
 
       leftTabs.create target, json, {
         shared : 'fdb-panel',
@@ -35,8 +39,8 @@ jQuery ->
         writeBoth : writeBoth,
         klass : {
           root : "purge-destroy",
-          ul : "span3 nopurge-ever",
-          content : "span8"
+          ul : ulKlass,
+          content : contentKlass
         },
         data : {
           url : "view/fdb.json?id=:id"
