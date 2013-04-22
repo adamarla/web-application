@@ -291,7 +291,7 @@ jQuery ->
     event.stopPropagation()
     curr_student = abacus.current.student
     curr_scan = abacus.current.scan
-    scan_in_locker = "#{curr_student.attr('within')}/#{curr_scan.attr('name')}"
+    scan_in_locker = "#{curr_scan.attr('name')}"
 
     #alert "#{curr_student.attr('name')} --> #{scan_in_locker}"
     next_scan = abacus.current.scan = abacus.next.scan() # not response !!
