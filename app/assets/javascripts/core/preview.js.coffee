@@ -129,7 +129,7 @@ jQuery ->
               full = "#{base}/#{root}/page-#{page}.jpeg"
               alt = "#{root}"
             when 'locker'
-              full = "#{base}/#{root}/#{page}"
+              full = if root isnt 'nothing' then "#{base}/#{root}/#{page}" else "#{base}/#{page}" # backward compatibility
               alt = "pg-#{j+1}"
             else break
 

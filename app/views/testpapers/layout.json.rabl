@@ -14,7 +14,7 @@ object false
   node(:user) { @who }
 
   node(:preview) { 
-    { :id => "", :scans => @gr.with_scan.map(&:scan).uniq.sort }
+    { :id => @root_folder, :scans => @gr.with_scan.map(&:scan).uniq.sort }
   } 
 
   node(:caption) { @ws.quiz.name }

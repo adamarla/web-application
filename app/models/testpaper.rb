@@ -144,4 +144,11 @@ class Testpaper < ActiveRecord::Base
     return "#{qz_name}-#{ts_name}"
   end
 
+  def legacy_record?
+    date = self.created_at.nil? ? Date.today : self.created_at
+    return true if date.year < 2013
+    return true if (date.year == 2013) && (date.month < 4)
+    return false
+  end
+
 end # of class
