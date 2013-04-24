@@ -96,13 +96,9 @@ class Quiz < ActiveRecord::Base
       end
     end # student loop 
 
-    if testpaper.students.empty?
-      return {}
-    else
-      response = (testpaper.save) ? testpaper.compile_tex : {}
-      testpaper.destroy if response[:manifest].blank? 
-      return response
-    end
+    return nil if testpaper.students.empty?
+    testpaper = testpaper.save ? testpaper : nil
+    return testpaper
   end 
 
   def teacher 

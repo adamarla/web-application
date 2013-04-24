@@ -1,8 +1,4 @@
 
 object false
-
-node(:compiled) {
-  @compiled.map { |m| 
-    { :id => m.id, :name => m.name }
-  }
-}
+  node(:quizzes) { @quizzes.map{ |m| { :id => m.id, :name => m.name } } }
+  node(:worksheets) { @ws.map{ |m| { :id => m.id, :name => m.name } } }

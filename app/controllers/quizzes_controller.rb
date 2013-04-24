@@ -9,14 +9,30 @@ class QuizzesController < ApplicationController
     unless quiz.nil?
       publish = params[:publish] == 'yes' 
       teacher = quiz.teacher 
-      students = params[:checked].keys   # we need just the IDs
-      Delayed::Job.enqueue BuildTestpaper.new(quiz, students, publish), :priority => 0, :run_at => Time.zone.now
-      at = Delayed::Job.where('failed_at IS NULL').count
-      render :json => { :notify => { :text => "Worksheet received", 
-                                     :subtext => "PDF will be ready in #{at} minutes" } }, :status => :ok
-    else 
-      render :json => { :notify => { :text => "Oops! No quiz specified",
-                                     :subtext => "Need to know what quiz to make worksheet for" } }, :status => :ok
+      students = Student.where(:id => params[:checked].keys)
+=begin
+      Now, if this quiz is a clone of some other quiz AND this is the 
+      first worksheet being made for it, then its time to seal the name 
+      of this quiz. Hereonafter, editing this quiz would result in a clone
+=end
+      unless quiz.parent_id.nil?
+        unless quiz.testpaper_ids.count > 0
+          name = quiz.name 
+          name = name.sub "(edited)", "(#{Date.today.strftime('%m/%y')})"
+          quiz.update_attribute :name, name
+        end
+      end
+
+      ws = students.blank? ? nil : quiz.assign_to(students, publish)
+      unless ws.nil? # time to compile
+        job = Delayed::Job.enqueue CompileTestpaper.new(ws)
+        ws.update_attribute :job_id, job.id
+        render :json => { :monitor => { :worksheet => ws.id } }, :status => :ok
+      else
+        render :json => { :monitor => { :worksheet => nil } }, :status => :ok
+      end
+    else # no valid quiz specified. Should never happen 
+      render :json => { :monitor => { :worksheet => nil } }, :status => :ok
     end
   end
 

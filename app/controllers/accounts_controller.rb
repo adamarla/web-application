@@ -105,8 +105,11 @@ class AccountsController < ApplicationController
   end
 
   def poll_delayed_job_queue
-    quiz_ids = params[:quizzes].map(&:to_i)
-    @compiled = Quiz.where(:id => quiz_ids).select{ |m| !m.compiling? }
+    quiz_ids = params[:quizzes].blank? ? [] : params[:quizzes].map(&:to_i)
+    ws_ids = params[:worksheets].blank? ? [] : params[:worksheets].map(&:to_i)
+
+    @quizzes = Quiz.where(:id => quiz_ids).select{ |m| !m.compiling? }
+    @ws = Testpaper.where(:id => ws_ids).select{ |m| !m.compiling? }
   end 
 
   def by_country

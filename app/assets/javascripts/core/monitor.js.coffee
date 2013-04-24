@@ -17,7 +17,7 @@ window.monitor = {
   start : () ->
     return false if monitor.ticker?
     monitor.ticker = window.setInterval () -> monitor.ping(),
-    40000
+    30000
     return true
 
   stop : () ->
@@ -32,7 +32,7 @@ window.monitor = {
     return true
 
   ping : () ->
-    $.get 'ping/queue', { quizzes : monitor.quizzes }, (data) -> monitor.update(data),
+    $.get 'ping/queue', { quizzes : monitor.quizzes, worksheets : monitor.worksheets }, (data) -> monitor.update(data),
     'json'
     return true
 
@@ -40,26 +40,26 @@ window.monitor = {
     # Remove IDs from monitor.quizzes
     # We can afford to use an inefficient algo because the arrays 
     # in question will never get too large ( < 5 elements )
+    
+    target = $('#n-quiz-compiled')
+    ul = target.children('ul').eq(0)
+    ul.empty()
 
-    for m in json.compiled
-      if monitor.quizzes.indexOf(m.id) isnt -1
-        remaining = []
-        for j in monitor.quizzes
-          remaining.push(j) if j isnt m.id
-        monitor.quizzes.length = 0  # clear 
-        monitor.quizzes = remaining.slice(0) # copy everything other than just compiled quiz
+    sthCompiled = false
+
+    for type in ['quizzes', 'worksheets']
+      list = json[type]
+      sthCompiled = sthCompiled or (list.length > 0)
+
+      for m in list # m = { :id => ..., :name => ... }
+        at = monitor[type].indexOf m.id
+        if at isnt -1
+          monitor[type].splice(at, 1)
+          $("<li>#{m.name}</li>").appendTo(ul)
 
     monitor.stop() if monitor.isEmpty()
 
     # Launch notifier
-    if json.compiled.length > 0
-      target = $('#n-quiz-compiled')
-      ul = target.children('ul').eq(0)
-      ul.empty()
-
-      for m in json.compiled
-        $("<li>#{m.name}</li>").appendTo ul
-      notifier.show 'n-quiz-compiled'
-
+    notifier.show('n-quiz-compiled') if sthCompiled
     return true
 }
