@@ -305,19 +305,10 @@ class Quiz < ActiveRecord::Base
     # If compilation fails, then the Quiz object itself is destroyed. In which case
     # there is no way this object method can be called
 
-    # This method will also (wrongly) return true for quizzes made before Aug-Sept 2012. 
-    # Back then, the UID used to be a 9-digit number - before we moved to base-36 encoding
+    # job_id = -1 => default initial state
+    #        > 0 => queued => compiling
+    #        = 0 => compilation completed
     return self.job_id > 0
-  end
-
-  def est_minutes_to_compilation?
-    if self.compiling?
-      queued = Delayed::Job.where(:failed_at => nil).order(:priority).order(:created_at).map(&:id)
-      at = queued.index self.job_id
-      return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
-    else
-      return 0
-    end
   end
 
   def uid

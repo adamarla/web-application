@@ -64,4 +64,11 @@ module GeneralQueries
     return number
   end
 
+  def minutes_to_completion(job_id)
+    return 0 if (job_id.blank? || job_id < 1)
+    queued = Delayed::Job.where(:failed_at => nil).order(:priority).order(:created_at).map(&:id)
+    at = queued.index job_id
+    return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
+  end
+
 end

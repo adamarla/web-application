@@ -6,7 +6,7 @@ node(:quizzes) {
     {
       :name => n.name,
       :id => n.id,
-      :tag => (n.compiling? ? "#{n.est_minutes_to_compilation?} min" : "#{n.span?} pg"),
+      :tag => (n.compiling? ? "#{minutes_to_completion(n.job_id)} min" : "#{n.span?} pg"),
       :badge => n.total?
     }
   }
