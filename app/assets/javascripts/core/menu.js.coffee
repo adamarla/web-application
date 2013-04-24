@@ -14,6 +14,9 @@ window.menu = {
     # menu = m.closest(".dropdown-menu[role='menu']").eq(0)
     if menu.hasClass 'force-close'
       return false unless force
+
+    # If doing an auto-click, like when we click a default-link, no menu 
+    # is opened and therefore no menu needs to be closed
     toolboxed = menu.parent().attr('id') is 'toolbox'
     return true if toolboxed
     menu.remove()
