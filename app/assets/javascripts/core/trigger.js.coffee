@@ -166,6 +166,11 @@ jQuery ->
     event.stopImmediatePropagation()
     return false
 
+  #####################################################################
+  ## [control-panel]: Highlight the dropdown-toggle if 
+  ## dropdown-menu > li > a  is clicked
+  #####################################################################
+
 
   #####################################################################
   # Behaviour of button-groups that are within forms
@@ -290,7 +295,21 @@ jQuery ->
   # When an item in a dropdown menu is selected 
   ###############################################
 
-  $('.g-panel, .content, .tab-pane, #toolbox').on 'click', '.dropdown-menu > li > a', (event) ->
+  $(".g-panel:not([id='control-panel']), .content, .tab-pane, #toolbox").on 'click', '.dropdown-menu > li > a', (event) ->
+    return trigger.click this, event
+
+  $('#control-panel ul.nav').on 'click', 'li > a', (event) ->
+    # li > a.dropdown-toggle will be processed by another event handler in this file
+    menu = $(this).closest("ul[role='menu']")[0]
+    toggle = if menu? then $(menu).prev() else $(this)
+
+    # Mark this toggle as selected and all other <a.dropdown-toggle> or even just <a> as unselected
+    toggle.addClass 'selected'
+    parent = toggle.parent() # must be a <li>
+    for m in parent.siblings('li')
+      $(m).children("a").removeClass 'selected'
+
+    # now process the click as normal
     return trigger.click this, event
 
   ###############################################
@@ -312,7 +331,7 @@ jQuery ->
 
     # close all sibling menus. Menus within .single-line handled by catch all 
     parent = $(this).parent()
-    if parent.is 'li'
+    if parent.is 'li' # => within control panel
       for m in parent.siblings('li')
         menu.close $(m)
     menu.show this

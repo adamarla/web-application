@@ -576,6 +576,13 @@ button[data-toggle='button'] {
   .dropdown-toggle {
     &.disabled { color: $lightgray ; }
   }
+
+  a { 
+    &.selected { 
+      border-radius: 6px ;
+      background-color: $deep-blue ;
+    } 
+  }
 } 
 
 #desktop { 
