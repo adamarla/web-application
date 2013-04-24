@@ -10,6 +10,7 @@
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
 #  inboxed     :boolean         default(FALSE)
+#  job_id      :integer         default(-1)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

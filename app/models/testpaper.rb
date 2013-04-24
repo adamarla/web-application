@@ -10,6 +10,7 @@
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
 #  inboxed     :boolean         default(FALSE)
+#  job_id      :integer         default(-1)
 #
 
 include GeneralQueries
@@ -38,6 +39,13 @@ class Testpaper < ActiveRecord::Base
     ret = (self.has_scans? & !self.gradeable?)
     self.update_attribute(:publishable, true) if ret
     return ret
+  end
+
+  def compiling?
+    # job_id = -1 => default initial state
+    #        > 0 => queued => compiling
+    #        = 0 => compilation completed
+    return self.job_id > 0
   end
 
   def compile_tex

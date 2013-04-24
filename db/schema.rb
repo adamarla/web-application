@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130409190717) do
+ActiveRecord::Schema.define(:version => 20130424094853) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -269,6 +269,7 @@ ActiveRecord::Schema.define(:version => 20130409190717) do
     t.boolean  "publishable",                :default => false
     t.boolean  "exclusive",                  :default => true
     t.boolean  "inboxed",                    :default => false
+    t.integer  "job_id",                     :default => -1
   end
 
   create_table "topics", :force => true do |t|

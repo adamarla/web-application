@@ -10,6 +10,7 @@
 #  publishable :boolean         default(FALSE)
 #  exclusive   :boolean         default(TRUE)
 #  inboxed     :boolean         default(FALSE)
+#  job_id      :integer         default(-1)
 #
 
 require 'test_helper'
