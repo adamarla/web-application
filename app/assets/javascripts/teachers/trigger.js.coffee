@@ -69,7 +69,7 @@ jQuery ->
       break if sthSelected
 
     return true if sthSelected
-    notifier.show 'm-qzb-nothing-selected'
+    notifier.show 'n-qzb-no-selection'
     return false
 
 

@@ -1,8 +1,10 @@
 
-#m-new-sektion.modal.fade.slim{ :role => :dialog, :data => { :autohide => 15000 } }
-  %h1.text.bold
-  %h2.subtext
-  %ul
-    %li= "Give the above code to some or all of your students"
-    %li= "Students will log into their accounts and enter this code" 
-    %li= "When they do, they will become part of the group"
+#n-new-sektion.modal.regular.hide.fade.row-fluid{ :data => { :autohide => 15000 } }
+  .span3
+    = image_tag 'notifications/new-sektion.png', :class => 'big-icon'
+  .span8
+    %p.title
+    %p
+      Student can either self-enroll by entering the above code 
+    %p
+      Or, you can pick students and make them part of this new group

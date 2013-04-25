@@ -139,7 +139,7 @@ jQuery ->
   ###
   if Modernizr?
     allGood = Modernizr.canvas and Modernizr.canvastext and Modernizr.rgba and Modernizr.svg
-    notifier.show 'm-old-browser' unless allGood
+    notifier.show 'n-old-browser' unless allGood
 
 
   #####################################################################

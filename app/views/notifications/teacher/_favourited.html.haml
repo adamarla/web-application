@@ -1,4 +1,8 @@
 
-#m-favourited.modal.fade.slim{ :role => :dialog, :data => { :autohide => 2000 } }
-  %h4= "Done!"
-  %p= "Question successfully added to favourites"
+#n-favourited.modal.regular.hide.fade.row-fluid{ :data => { :autohide => 5000 } }
+  .span3
+    = image_tag 'notifications/favourite.png', :class => 'big-icon'
+  .span8
+    %p.title= "Added to favourites"
+    %p
+      Click on the <b>Favourites tab</b> to see just your favourite questions on the selected topics

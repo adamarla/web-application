@@ -1,5 +1,9 @@
 
-#m-qzb-nothing-selected.modal.fade.slim{ :role => :dialog, :data => { :autohide => 4000 } }
-  %h4= "Please select atleast one question"
-  %p
-    Click <i class='icon-plus-sign icon-white'></i> to select questions
+#n-qzb-no-selection.modal.regular.hide.fade.row-fluid{ :data => { :autohide => 7000 } }
+  .span3
+    = image_tag 'notifications/alert.png', :class => 'big-icon'
+  .span8
+    %p.title= "No questions selected!"
+    %p
+      You must select atleast one question to make a quiz. 
+      Click <i class='icon-plus-sign icon-white'></i> to select questions

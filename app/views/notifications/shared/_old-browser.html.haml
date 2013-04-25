@@ -1,15 +1,15 @@
 
-#m-old-browser.modal.fade.wide{ :role => :dialog, :data => { :autohide => 15000 } }
-  %h1.white
-    Old Browser?
-  %p
-    Our site needs browsers to support something called HTML5. Most browsers nowadays already do. 
-    But it would seem yours does not
-  %p
-    Hence, we would recommend you upgrade to <b>either</b> of the following browsers
-  %p
-    %ul
-      %li= "Firefox (version 3.5+)"
-      %li= "Google Chrome"
-      %li= "Internet Explorer (version 9+)"
-      %li= "Safari (version 5.1+)"
+#n-old-browser.modal.regular.hide.fade.row-fluid{ :data => { :autohide => 15000 } }
+  .span3
+    = image_tag 'notifications/old-browser.png', :class => 'big-icon'
+  .span8
+    %p.title= "Old Browser?"
+    %p
+      Our browsers do not support all the features that we require
+    %p
+      And so, we recommend the following
+      %ul
+        %li= "Firefox (version 3.5+)"
+        %li= "Google Chrome"
+        %li= "Internet Explorer (version 9+)"
+        %li= "Safari (version 5.1+)"

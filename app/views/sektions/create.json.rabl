@@ -5,5 +5,5 @@ object false
   }
 
   node(:notify) {
-    { :text => @sk.uid, :subtext => "( #{@sk.name} )" }
+    { :title => @sk.uid }
   }
