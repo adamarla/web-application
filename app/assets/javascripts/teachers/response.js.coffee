@@ -137,8 +137,10 @@ jQuery ->
       lesson = 'qzb-milestone-7'
       monitor.add json
       $('#lnk-existing-quiz').click()
+      notifier.show 'n-queued', json
     else if url.match(/quiz\/assign/)
       monitor.add json
+      notifier.show 'n-queued', json
     else if url.match(/update\/sektion/)
       target = $('#enrolled-students')
     else if url.match(/like/)

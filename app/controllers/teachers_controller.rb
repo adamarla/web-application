@@ -121,7 +121,11 @@ class TeachersController < ApplicationController
     unless status == :bad_request
       job = Delayed::Job.enqueue CompileQuiz.new(quiz)
       quiz.update_attribute :job_id, job.id
-      render :json => { :monitor => { :quiz => quiz.id } }, :status => :ok
+
+      estimate = minutes_to_completion job.id
+      render :json => { :monitor => { :quiz => quiz.id }, 
+                        :notify => { :title => "#{estimate} minute(s)" }},
+                        :status => :ok
     else
       render :json => { :monitor => { :quiz => nil } }, :status => :ok
     end

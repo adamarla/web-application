@@ -27,7 +27,11 @@ class QuizzesController < ApplicationController
       unless ws.nil? # time to compile
         job = Delayed::Job.enqueue CompileTestpaper.new(ws)
         ws.update_attribute :job_id, job.id
-        render :json => { :monitor => { :worksheet => ws.id } }, :status => :ok
+
+        estimate = minutes_to_completion job.id
+        render :json => { :monitor => { :worksheet => ws.id }, 
+                          :notify => { :title => "#{estimate} minute(s)" }},
+                          :status => :ok
       else
         render :json => { :monitor => { :worksheet => nil } }, :status => :ok
       end

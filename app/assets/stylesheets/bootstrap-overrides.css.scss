@@ -15,6 +15,12 @@ $lightblue: lighten($deep-blue, 23%) ;
 $red: #d72323 ; // rgb(215, 35, 35)
 $green: #347235 ; // rgb(87,188,32)
 
+img { 
+  &.big-icon { 
+    padding: 5px ;
+  } 
+}
+
 .push-down { 
   margin-top: 20px ;
 } 
@@ -140,6 +146,7 @@ $green: #347235 ; // rgb(87,188,32)
   padding: 10px ;
   background: rgba(25,25,25,0.8) ; 
   border-radius: 0px ;
+  color: white ;
 
   &.wide { 
     width: 460px ;
@@ -165,6 +172,15 @@ $green: #347235 ; // rgb(87,188,32)
   h4 { font-size: 14px ; }
   h5 { font-size: 14px ; }
   h6 { font-size: 12px ; }
+
+  .title { 
+    font: {
+      size: 18px ;
+      weight: 500 ;
+    }
+    padding-bottom: 8px ;
+    border-bottom: 1px solid $deep-blue ;
+  } 
 
   p {
     color: white ;

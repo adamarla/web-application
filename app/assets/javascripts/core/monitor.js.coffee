@@ -41,25 +41,26 @@ window.monitor = {
     # We can afford to use an inefficient algo because the arrays 
     # in question will never get too large ( < 5 elements )
     
-    target = $('#n-quiz-compiled')
-    ul = target.children('ul').eq(0)
-    ul.empty()
+    target = $('#n-compiled')
+    ul = target.find('ul')
+    $(m).empty() for m in ul
 
     sthCompiled = false
 
     for type in ['quizzes', 'worksheets']
       list = json[type]
       sthCompiled = sthCompiled or (list.length > 0)
+      stub = ul.filter("[class~=#{type}]").eq(0)
 
       for m in list # m = { :id => ..., :name => ... }
         at = monitor[type].indexOf m.id
         if at isnt -1
           monitor[type].splice(at, 1)
-          $("<li>#{m.name}</li>").appendTo(ul)
+          $("<li>#{m.name}</li>").appendTo(stub)
 
     monitor.stop() if monitor.isEmpty()
 
     # Launch notifier
-    notifier.show('n-quiz-compiled') if sthCompiled
+    notifier.show('n-compiled') if sthCompiled
     return true
 }
