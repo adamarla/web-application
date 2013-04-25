@@ -31,12 +31,14 @@ window.trigger = {
 
   click : (link, event = null) ->
     return true if $(link).hasClass 'carousel-control'
-    isTab = link.dataset.toggle is 'tab'
+    toggleType = link.dataset.toggle
+    plainVanilla = if (toggleType is 'tab' or toggleType is 'modal') then false else true
+    isTab = toggleType is 'tab'
 
     if $(link).parent().hasClass 'dropdown-submenu'
       return false unless link.dataset.defaultLnk is 'true'
 
-    event.stopImmediatePropagation() if event? and not isTab
+    event.stopImmediatePropagation() if event? and plainVanilla
     # (YAML) Hide / unhide panels as needed
 
     notouch = if link.dataset.notouch? then (link.dataset.notouch is 'true') else false
