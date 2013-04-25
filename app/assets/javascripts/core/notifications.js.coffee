@@ -4,10 +4,10 @@
   Notifications respond to json - if provided. However the JSON must be of the 
   following form: 
 
-    :notify => { :text => ..., :subtext => ...., :data => ... }
+    :notify => { :title => ..., :msg => ...., :data => ... }
 
-  :text (mandatory)
-  :subtext, :data (optional)
+  :title (mandatory)
+  :msg, :data (optional)
 ###
 
 window.notifier = {
@@ -25,12 +25,11 @@ window.notifier = {
 
     if json?
       if json.notify?
-        if json.notify.text?
-          t = $(notifier.current).find('.text').eq(0)
-          t.text json.notify.text
-        if json.notify.subtext?
-          t = $(notifier.current).find('.subtext').eq(0)
-          t.text json.notify.subtext
+        for type in ['title', 'msg']
+          if json.notify[type]
+            t = $(notifier.current).find("[class~=#{type}]").eq(0)
+            t.text(json.notify[type]) if t.length isnt 0
+
 
     # autoHideIn = notifier.current.dataset.autohide
     autoHideIn = notifier.current.getAttribute('data-autohide')
