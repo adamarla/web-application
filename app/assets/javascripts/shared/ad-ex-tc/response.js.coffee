@@ -67,6 +67,8 @@ jQuery ->
       preview.loadJson json, 'vault'
       if tutorial.active
         tutorial.start 'qzb-milestone-6' if json.context is 'qzb'
+    else if url.match(/rotate_scan/)
+      abacus.next.scan()
     else
       matched = false
 
