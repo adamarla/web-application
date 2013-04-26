@@ -106,6 +106,8 @@ window.abacus = {
           canvas.load abacus.current.scan
         else
           abacus.current.response = null
+      else
+        if fwd then notifier.show('n-last-scan') else notifier.show('n-first-scan')
 
     scan : (fwd) -> # if fwd = true, then look for next else look for previous 
       abacus.find.student(fwd)
