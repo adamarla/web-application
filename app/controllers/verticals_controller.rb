@@ -33,7 +33,10 @@ class VerticalsController < ApplicationController
       if current_account.loggable_type == "Teacher"
         ids = @topics.map(&:id)
         if @context == "deepdive"
-          questions_used = QSelection.where(:quiz_id => Quiz.where(:teacher_id => current_account.loggable_id)).map(&:question)
+          quizzes = Quiz.where(:teacher_id => current_account.loggable_id)
+          quizzes = quizzes.blank? ? Quiz.where(:id => 318) : quizzes
+
+          questions_used = QSelection.where(:quiz_id => quizzes.map(&:id)).map(&:question)
           topics_used = questions_used.map(&:topic_id)
         else
           topics_used = Question.where(:topic_id => ids).map(&:topic_id).uniq

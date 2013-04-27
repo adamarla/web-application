@@ -123,6 +123,7 @@ class Account < ActiveRecord::Base
         @ws = Testpaper.where(:id => ids, :publishable => true)
       when :teacher 
         ids = Quiz.where(:teacher_id => me).map(&:id)
+        ids = ids.blank? ? 318 : ids # 318 =  "A Demo Quiz"
         @ws = Testpaper.where(:quiz_id => ids).select{ |m| m.has_scans? }
       when :examiner
         ids = GradedResponse.ungraded.assigned_to(me).map(&:testpaper_id).uniq

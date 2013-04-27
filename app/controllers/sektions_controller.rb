@@ -49,7 +49,10 @@ class SektionsController < ApplicationController
     head :bad_request if (sektion.nil? || @topic.nil?)
 
     teacher = current_account.loggable
+
     quizzes = Quiz.where(:teacher_id => teacher.id) # all quizzes by teacher
+    quizzes = quizzes.blank? ? Quiz.where(:id => 318) : quizzes # 318 = "A Demo Quiz" 
+
     selections = QSelection.where(:quiz_id => quizzes.map(&:id)).on_topic(@topic.id) # all questions on topic
     responses = GradedResponse.where(:q_selection_id => selections.map(&:id).uniq).graded # all responses to those questions
 
