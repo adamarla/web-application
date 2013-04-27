@@ -43,19 +43,20 @@ class QuizzesController < ApplicationController
   def add_remove_questions
     quiz = Quiz.find params[:id]
     op = params[:op] 
+    @clone = nil
 
     unless quiz.nil?
       question_ids = params[:checked].nil? ? [] : params[:checked].keys.map(&:to_i)
 
       if question_ids.count > 0
-        msg,subtext = (op == "remove") ? quiz.remove_questions(question_ids) : quiz.add_questions(question_ids)
+        @title, @msg = (op == "remove") ? quiz.remove_questions(question_ids) : quiz.add_questions(question_ids)
+        @clone = quiz.clone?
       else
-        msg = quiz.name
-        subtext = (op == "remove") ? "No questions dropped" : "No questions added"
+        @title = "No change"
+        @msg = (op == "remove") ? "No questions dropped" : "No questions added"
       end
-      render :json => { :notify => { :text => msg, :subtext => subtext } }, :status => :ok
-    else # unless 
-      render :json => { :notify => { :text => "Quiz not found" } }, :status => :ok
+    else # should never happen 
+      @title = "Quiz not found"
     end
   end
 

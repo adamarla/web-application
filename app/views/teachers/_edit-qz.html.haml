@@ -11,8 +11,8 @@
 .tab-content
   #pane-editqz-1.tab-pane
     = simple_form_for :checked, :remote => true, 
-      :html => { :id => 'form-editqz-1', :class => 'no-remove', 
-      'data-action' => "#{quiz_edit_path}?id=:id&op=remove", 'data-id' => 'tab-wsb-quizzes' } do |f|
+      :html => { :id => 'form-editqz-1', :class => 'no-remove' , 
+                 :data => { :action => "#{quiz_edit_path}?id=:id&op=remove", :id => 'tab-wsb-quizzes' } } do |f|
 
       .row-fluid.navbar.purge-skip
         %button.btn.btn-inverse.pull-right{ :type => :submit }= "Remove Selected"

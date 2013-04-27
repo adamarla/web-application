@@ -445,8 +445,9 @@ jQuery ->
     action = this.dataset.action
     return true unless action?
 
-    id = this.dataset.id
-    prev = this.dataset.prev
+    id = if this.dataset.id is "null" then null else this.dataset.id
+    prev = if this.dataset.prev is "null" then null else this.dataset.prev
+
     panes = $(this).closest('.tab-content')[0]
     if panes?
       activeTab = $(panes).prev().children('li.active')[0]

@@ -141,6 +141,9 @@ jQuery ->
     else if url.match(/quiz\/assign/)
       monitor.add json
       notifier.show 'n-queued', json
+    else if url.match(/quiz\/edit/)
+      monitor.add json
+      notifier.show 'n-edit-quiz', json
     else if url.match(/update\/sektion/)
       target = $('#enrolled-students')
     else if url.match(/like/)

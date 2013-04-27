@@ -9,7 +9,7 @@ class EditQuiz < Struct.new(:quiz, :question_ids, :add)
     now = add ? (current + question_ids).uniq : (current - question_ids).uniq
     clone.question_ids = now 
     job = Delayed::Job.enqueue CompileQuiz.new(clone), :priority => 0, :run_at => Time.zone.now
-    clone.update_attribute :uid, job.id.to_s
+    clone.update_attribute :job_id, job.id
   end 
 
 end

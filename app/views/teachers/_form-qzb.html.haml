@@ -3,8 +3,9 @@
 - data_id = context == :editqz ? "tab-wsb-quizzes" : nil
 - btn_text = context == :editqz ? "Add Selected" : "Build Quiz"
 
-= simple_form_for :checked, :remote => true, :url => "#{action}",
-  :html => { :id => "form-#{context}", :class => 'no-remove' } do |f|
+= simple_form_for :checked, :remote => true, 
+  :html => { :id => "form-#{context}", :class => 'no-remove', 
+             :data => { :id => data_id, :action => action } } do |f|
 
   .row-fluid.navbar.purge-skip
     - if context == :editqz

@@ -252,17 +252,15 @@ class Quiz < ActiveRecord::Base
   end
 
   def clone
+    # Remember: The only reason a quiz needs to be cloned is if its being edited
     selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
     name = "#{self.name} (edited)"
 
     copy = Quiz.new :name => name, :teacher_id => self.teacher_id, 
                     :question_ids => selections, :num_questions => selections.count, 
                     :parent_id => self.id 
-    status = copy.save ? :ok : :bad_request 
-    if status == :ok
-      job = Delayed::Job.enqueue CompileQuiz.new(copy)
-      copy.update_attribute :uid, job.id.to_s
-    end
+    msg = copy.save ? "The quiz needed to be cloned first and a new version - #{name} - has been created." : nil
+    return msg
   end
 
   def remove_questions(question_ids)
@@ -278,12 +276,13 @@ class Quiz < ActiveRecord::Base
     return false if question_ids.count == 0
 
     clone = self.clone?
-    msg = "#{question_ids.count} question(s) #{add ? 'added' : 'removed'}"
-    subtext = clone.nil? ? "A new version had to be created" : "Quiz edited in place"
+    title = "#{question_ids.count} question(s) #{add ? 'added' : 'removed'}"
+    msg = clone.nil? ? self.clone : ""
 
-    self.clone if clone.nil? # job #1 
-    Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), :priority => 0, :run_at => Time.zone.now # job #2
-    return msg, subtext
+    job = Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), :priority => 0, :run_at => Time.zone.now
+    estimate = minutes_to_completion job.id
+    msg += " PDF will be ready within #{estimate} minute(s)"
+    return title, msg
   end
 
   def latex_safe_name
