@@ -148,6 +148,11 @@ jQuery ->
       target = $('#enrolled-students')
     else if url.match(/like/)
       notifier.show 'n-favourited'
+    else if url.match(/ping\/queue/)
+      list = $('#pane-wsb-quizzes').children()
+      for id in json.enable
+        quiz = list.filter("[marker=#{id}]")[0]
+        $(quiz).removeClass('disabled') if quiz?
     else
       matched = false
 
