@@ -6,10 +6,13 @@ window.monitor = {
   ticker : null,
 
   add : (json) ->
-    if json.monitor.quiz?
-      monitor.quizzes.push json.monitor.quiz
-    if json.monitor.worksheet?
-      monitor.worksheets.push json.monitor.worksheet
+    trackObjs = json.monitor
+    return false unless trackObjs?
+
+    if trackObjs.quiz?
+      monitor.quizzes.push trackObjs.quiz
+    if trackObjs.worksheet?
+      monitor.worksheets.push trackObjs.worksheet
 
     monitor.start() unless monitor.isEmpty()
     return true
