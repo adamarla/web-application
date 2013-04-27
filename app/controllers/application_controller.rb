@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     if current_account
       case current_account.loggable_type
         when "Teacher"
-          is_new = current_account.loggable.quizzes.count < 2
+          is_new = current_account.loggable.quizzes.count < 1
         else 
           is_new = false
       end
