@@ -237,6 +237,23 @@ img {
       }
     }
   }
+
+  textarea { 
+    background: $panel-colour ;
+    border: none ;
+    border-radius: 0px ;
+    font : { 
+      size: 12px ;
+      family: "Trebuchet MS" ;
+    } 
+    color: white ; 
+    line-height: 14px ;
+    padding: { 
+      left: 8px ;
+      right: 8px ;
+      top: 15px ;
+    } 
+  } 
 } 
 
 #lnk-logout{ color: $orange ; }
@@ -818,6 +835,7 @@ li.split {
   text-align: center ;
 } 
 
+/*
 .link-bar-item { 
   > h1 {
     color: white ;
@@ -853,6 +871,7 @@ li.split {
   height: 600px ;
 
 } 
+*/
 
 .spinner {
   position: fixed ;
@@ -911,6 +930,7 @@ li.split {
   }
 }
 
+/*
 #link-bar {
   position: fixed ;
   width: 1024px ;
@@ -927,6 +947,7 @@ li.split {
     visibility: hidden ;
   }
 }
+*/
 
 [class*="ikon-scanbot"] {
   display: inline-block;
@@ -944,3 +965,42 @@ li.split {
 .ikon-scanbot-folder {
   background-image: url("scanbot-folder-icon.png");
 }
+
+#spiel { 
+  > .row-fluid { 
+    margin-bottom: 20px ;
+  } 
+
+  .section { 
+    color: white ; 
+    font : { 
+      size: 30px ;
+      weight: 100 ;
+      family: "Trebuchet MS" ; 
+    } 
+    margin-bottom: 20px ;
+    padding-bottom: 20px ;
+  } 
+
+  .question { 
+    color: $gradians-blue ;
+    font : { 
+      size: 15px ; 
+      weight: 300 ;
+    } 
+  } 
+
+  p {
+    color: white ;
+    font : {
+      size: 14px ;
+      weight: 300 ;
+    } 
+    line-height: 17px ;
+  }
+} 
+
+
+
+.answer { 
+} 

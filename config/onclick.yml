@@ -229,6 +229,10 @@ lnk-like-question :
   notouch : true
   update-on : question/preview
 
+lnk-ask-a-question :
+  toggle : modal 
+  notouch : true
+
 ##############################################################################
 ## Students 
 ##############################################################################

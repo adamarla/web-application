@@ -1,0 +1,10 @@
+
+#m-ask-a-question.modal.fade.regular{ :role => :dialog }
+  .row-fluid
+    .span3
+      = image_tag 'notifications/question.png', :class => 'big-icon'
+    .span8
+      %p.title= "Write question below"
+      = simple_form_for :new, :url => ask_question_path, :remote => true, :defaults => { :label => false } do |f|
+        = f.input :question, :as => :text
+        %button.btn.btn-primary.btn-large.pull-right{ :type => :submit }= "Ask Question"

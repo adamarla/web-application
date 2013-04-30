@@ -124,4 +124,23 @@ class AccountsController < ApplicationController
     @accounts = Account.where(:loggable_type => @type).where(:country => country_id)
   end
 
+  def ask_question
+    unless current_account.nil?
+      unless params[:new][:question].blank?
+        Mailbot.ask_question(current_account, params[:new][:question]).deliver
+        render :json => { :notify => { :title => "Got it!", 
+                                       :msg => 'We will answer your question within 24 hours. Thank you for writing' } }, 
+                                       :status => :ok
+      else
+        render :json => { :notify => { :title => "Blank question?", 
+                                       :msg => 'You seem to have asked nothing' }}, 
+                                       :status => :ok
+      end
+    else
+      render :json => { :notify => { :title => "Missing E-mail", 
+                                     :msg => 'Need an e-mail address to reply to' }}, 
+                                     :status => :ok
+    end
+  end
+
 end

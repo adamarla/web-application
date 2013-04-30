@@ -26,6 +26,7 @@ Webapp::Application.routes.draw do
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', :via => :get
   match 'byCountry' => 'accounts#by_country', :via => :get
   match 'inCountry' => 'accounts#in_country', :via => :get
+  match 'ask/question' => 'accounts#ask_question', :via => :post
 
   # Admin 
   resource :admin, :controller => :admin 

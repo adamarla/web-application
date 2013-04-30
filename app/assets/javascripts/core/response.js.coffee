@@ -34,6 +34,10 @@ jQuery ->
 
     if url.match('account')
       $('#m-edit-account').modal 'hide'
+    else if url.match(/ask\/question/)
+      json = $.parseJSON xhr.responseText
+      $('#m-ask-a-question').modal 'hide'
+      notifier.show 'n-question-received', json
     else
       matched = false
 

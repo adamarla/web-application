@@ -36,4 +36,8 @@ class Mailbot < ActionMailer::Base
     mail :to => t.account.email, :subject => "Your questions have been typeset"
   end
 
+  def ask_question(account, question)
+    mail :subject => "User Query", :body => question, :to => "help@gradians.com", :from => account.email
+  end
+
 end
