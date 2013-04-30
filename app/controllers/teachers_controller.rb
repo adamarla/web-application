@@ -17,7 +17,7 @@ class TeachersController < ApplicationController
                                       :country => (country.nil? ? nil : country.id)
                                      
       if teacher.save 
-        # Mailbot.welcome_teacher(teacher.account).deliver
+        Mailbot.welcome_teacher(teacher.account).deliver
         sign_in teacher.account
         redirect_to teacher_path
       end # no reason for else if client side validations worked
