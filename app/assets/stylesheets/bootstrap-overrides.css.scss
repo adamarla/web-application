@@ -771,6 +771,27 @@ button[data-toggle='button'] {
 
 .hero-unit {
   margin-top: 60px ;
+
+   + .btn { 
+    padding: 19px 30px ;
+    font : {
+      size: 24px ;
+      family: "Trebuchet MS" ;
+      weight: 300 ;
+    } 
+  } 
+} 
+
+.jumbotron { 
+  margin-bottom: 60px ;
+  font : {
+    size: 45px ;
+    family: "Trebuchet MS" ;
+    weight: 200 ;
+  } 
+  color: white ; 
+  padding-bottom: 30px ;
+  border-bottom: 3px solid $orange;
 } 
 
 .tagline {
@@ -974,12 +995,12 @@ li.split {
   .section { 
     color: white ; 
     font : { 
-      size: 30px ;
+      size: 25px ;
       weight: 100 ;
       family: "Trebuchet MS" ; 
     } 
-    margin-bottom: 20px ;
-    padding-bottom: 20px ;
+    margin-bottom: 10px ;
+    padding-bottom: 10px ;
   } 
 
   .question { 
@@ -993,7 +1014,7 @@ li.split {
   p {
     color: white ;
     font : {
-      size: 14px ;
+      size: 12px ;
       weight: 300 ;
     } 
     line-height: 17px ;

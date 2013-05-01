@@ -25,7 +25,6 @@
             .navbar-inner
               %a.brand.span4{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-                .tagline.span6.offset3= "Grades will happen"
               %ul.nav.span8.pull-right
                 -#%li
                   -#%a{ :href => "#"}= "Home"
@@ -44,6 +43,8 @@
 
       .row-fluid
         .hero-unit
+          .row-fluid.jumbotron
+            %p.offset1= "Teach more. Help more. Grade less"
           #how-it-works.carousel.slide
             .carousel-inner
               .item 
@@ -63,143 +64,8 @@
             %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :next}
               \&rsaquo;
 
-      #link-bar.navbar.navbar-inverse
-        .navbar-inner
-          %ul.nav.span8
-            %li
-              %a.smooth-scroll{ :href => '#'}= image_tag "annotations/checkmark.png"
-            %li
-              %a.smooth-scroll{ :href => '#about'}= "About"
-            %li
-              %a.smooth-scroll{ :href => '#who-we-are'}= "Who We Are"
-            %li
-              %a.smooth-scroll{ :href => '#contact'}= "Contact Us"
-            %li
-              %a.smooth-scroll{ :href => '#pricing'}= "Pricing"
-
-      #link-bar-items
-        .span.anka{ :id => "about" }
-        .row-fluid.link-bar-item
-          %h1.offset2= "What's all the fuss?" 
-          .span4.offset1
-            %span Teachers know best
-            %p
-              There are a great many ideologies behind what can be done
-              to further the cause of Education. We don't profess to know
-              all of them, but we do know one thing - if you want to help
-              students, help the teacher first.
-            %p
-              Our governing principle is to keep the Teacher in the driver's 
-              seat. This is what sets us apart from several other well
-              intentioned efforts.
-            
-          .span4.offset1
-            %span It takes a village
-            %p
-              When we talk about helping the teacher, we work on one basic
-              assumption - she knows how to teach. What she could use however
-              is extra time and resources that can help her be more 
-              effective.
-            %p
-              To this end, we've automated various aspects of the time 
-              consuming but important process of gathering feedback on student
-              progress. In doing so, we not only save the teacher time, we 
-              also provide her actionable data and statistics and her students
-              quality feedback. 
-      
-        .span.anka{ :id => "who-we-are" }
-        .row-fluid.link-bar-item
-          %h1.offset2= "Who we are" 
-          .span4.offset1
-            %span Bios
-            %p
-              <b>Abhinav</b> worked as an engineer in the Electronics Design 
-              Automation industry for 6 years before going on to get an 
-              Masters degree in Business from UCLA.</br>
-              He appreciates good design in everyday things and is a talented 
-              Squash player.
-            %p
-              <b>Akshay</b> got a Master's degree in Computer Science from NYU
-              and worked thereafter in the Financial Services industry for over
-              8 years as a Software Engineer.</br>
-              He shares Abhinav's interest in creative and innovative pursuits
-              and racquet sports.
-
-          .span4.offset1
-            %span Our History
-            %p
-              In 2008, while grading papers for his Statistics professor at
-              UCLA, Abhinav Chaturvedi realised that it was an extremely 
-              laborious activity peppered with repetitive steps like collation,
-              addition, data-entry etc. It occured to him that if the professor
-              in question had to do all of this himself, he probably would not
-              do it very often.
-            %p
-              This was the genesis of Gradians.com. Together with his old
-              college roommate Akshay Damarla he set about creating the 
-              Gradians Distributed Evaluation Platform. The platform is the
-              backbone of a unique service that allows any teacher to operate
-              as effectively as a university professor with an army of
-              assistants. 
-  
-        .span.anka{ :id => "contact" }
-        .row-fluid.link-bar-item
-          %h1.offset2= "We'd love to hear from you" 
-          .span4.offset1
-            %span help@gradians.com
-            %p
-              If you are registered for our service plese let us know of your 
-              experience. Your comments and suggestions are invaluable as they
-              are what in the end will get us better. </br>
-              Help us help you!
-              
-          .span4.offset1
-            %span [abhinav or akshay]@gradians.com
-            %p
-              for business inquiries, partnership proposals, compliments, 
-              curiosity, etcetera. Our Inbox is always open.
-  
-        .span.anka{ :id => "pricing" }
-        .row-fluid.link-bar-item
-          %h1.offset2= "Pricing" 
-          .span4.offset1
-            %span Individual Teachers
-            %p
-              We are working on a pricing plan which will be practical and
-              affordable for the average high school Math teacher. In the
-              meantime however, we'd like you to start using the system on 
-              us. So we get an idea of what you like about it and what you
-              don't.
-              
-          .span4.offset1
-            %span School Boards, Districts, Counties, MOOCs etc.
-            %p
-              Please write to us. We are happy to partner with you on a pilot
-              and see if the Gradians platform can lend more rigor and value
-              to a student's course experience
-
-      -#.row-fluid#our-belief
-        %h1.offset2= "Wish someone told us this when we were 17" 
-        .span4.offset1
-          %span You will make mistakes ...
-          %p
-            \... and thats ok! The maths you are learning now is the result of work done by 
-            some truly brilliant minds in the past. So believe us when we say, those brilliant 
-            minds struggled to understand things too. And they made their fair share of mistakes 
-            before discovering what they did
-          %p
-            So, if you are making mistakes - and learning from them - then you are in great company
-            
-        .span4.offset1
-          %span Grades will happen!
-          %p
-            Hence, if you can relax about maths and focus solely on making good mathematical 
-            arguments, then you will arrive at the right answer. You will then not need to see 
-            your grades to know that you have nailed the question
-          %p
-            For that reason, we will show you only our feedback for the work you have done - and 
-            not the numerical score our system assigns. Our sole aim is to provide you with the 
-            kind of feedback you can use to learn, improve and therefore do the best maths you can
+        -#%a.btn.btn-large.btn-primary.offset4.push-down{:href => '#'}= "Learn More"
+        -#= render :partial => 'welcome/spiel'
 
 
     = yield :toolbox
