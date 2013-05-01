@@ -306,7 +306,7 @@ jQuery ->
     toggle = if menu? then $(menu).prev() else $(this)
 
     # Mark this toggle as selected and all other <a.dropdown-toggle> or even just <a> as unselected
-    toggle.addClass 'selected'
+    toggle.addClass('selected') unless $(this).attr('id') is 'lnk-register'
     parent = toggle.parent() # must be a <li>
     for m in parent.siblings('li')
       $(m).children("a").removeClass 'selected'
