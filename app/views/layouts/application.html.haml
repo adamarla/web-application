@@ -26,8 +26,6 @@
               %a.brand.span4{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
               %ul.nav.span8.pull-right
-                -#%li
-                  -#%a{ :href => "#"}= "Home"
                 %li
                   #signin-form
                     %form.form-inline{ :action => session_path(:account), :method => :post }
@@ -37,14 +35,12 @@
                         %button.btn.btn-large.btn-primary{ :type => :submit }= "Sign In"
                 %li.dropdown{ :id => 'register' }
                   = simple_link :for => "Register",  :id => "lnk-register", :href => '#m-register'
-                -#%li
-                  %button.btn.btn-info.dropdown-toggle{ :id => "m-registrations", 
-                  :as => "dropdown", "data-toggle" => "dropdown" , :href => "#" }= "Register"
 
       .row-fluid
         .hero-unit
           .row-fluid.jumbotron
-            %p.offset1= "Teach more. Help more. Grade less"
+            %p.offset2.span8= "Teach more. Help more. Grade less"
+            -#%a.btn.btn-large.btn-primary.pull-left= "Curious?"
           #how-it-works.carousel.slide
             .carousel-inner
               .item 
@@ -63,10 +59,6 @@
               \&lsaquo;
             %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :next}
               \&rsaquo;
-
-        -#%a.btn.btn-large.btn-primary.offset4.push-down{:href => '#'}= "Learn More"
-        -#= render :partial => 'welcome/spiel'
-
 
     = yield :toolbox
 

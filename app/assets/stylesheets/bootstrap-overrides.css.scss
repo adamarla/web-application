@@ -127,6 +127,10 @@ img {
   } 
 } 
 
+#lnk-register { 
+  font-weight: 300 ;
+} 
+
 .orange { 
   color: $orange ;
 } 
@@ -785,13 +789,21 @@ button[data-toggle='button'] {
 .jumbotron { 
   margin-bottom: 60px ;
   font : {
-    size: 45px ;
+    size: 35px ;
     family: "Trebuchet MS" ;
     weight: 200 ;
   } 
   color: white ; 
   padding-bottom: 30px ;
-  border-bottom: 3px solid $orange;
+  border-bottom: 2px solid $orange ; 
+
+  > a { 
+    margin-top: -7px ;
+    padding: { 
+      left: 19px ;
+      right: 19px ;
+    } 
+  } 
 } 
 
 .tagline {
@@ -856,44 +868,6 @@ li.split {
   text-align: center ;
 } 
 
-/*
-.link-bar-item { 
-  > h1 {
-    color: white ;
-    font: {
-      weight: 300 ;
-      family: "Times New Roman", serif ;
-    } 
-    margin-top: 20px ;
-  } 
-
-  > .span3, .span4 {
-    color: $gradians-blue ; 
-    margin-top: 20px ;
-    line-height: 16px ;
-  } 
-
-  span {
-    color: $gradians-blue ;
-    font: {
-      size: 17px ;
-      family: "Times New Roman", serif ;
-      weight: 300 ;
-    }
-  } 
-
-  p { 
-    margin-top: 15px ;
-    font-size: 12px ;
-    color: white ;
-    font-weight: 300 ;
-  } 
-  
-  height: 600px ;
-
-} 
-*/
-
 .spinner {
   position: fixed ;
   top: 9% ;
@@ -922,11 +896,6 @@ li.split {
   }
 } 
 
-#lnk-register { 
-  border-radius: 5px ;
-  background-color: $deep-blue ;
-} 
-
 #register { 
   margin: {
     left: 60px ;
@@ -951,24 +920,6 @@ li.split {
   }
 }
 
-/*
-#link-bar {
-  position: fixed ;
-  width: 1024px ;
-  bottom: -14px ;
-}
-
-#link-bar-items {
-  margin-top: 160px ;
-  
-  .anka {
-    display: block ;
-    padding-top: 150px ;
-    margin-top: -150px ;
-    visibility: hidden ;
-  }
-}
-*/
 
 [class*="ikon-scanbot"] {
   display: inline-block;
@@ -1020,8 +971,6 @@ li.split {
     line-height: 17px ;
   }
 } 
-
-
 
 .answer { 
 } 
