@@ -14,27 +14,9 @@ class WelcomeController < ApplicationController
     end 
   end
   
-  def about_us
-  
-  end
-  
-  def how_it_works
-  
-  end
-  
-  def download
-  
-  end
-
   def countries
     @countries = Country.all
     render :json => @countries
-  end
-
-  def contactus
-    contact_form = params[:contact_form]    
-    Mailbot.suggestion_email(contact_form)
-    render :json => { :status => "done" } 
   end
 
 end

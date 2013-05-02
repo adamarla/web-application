@@ -121,12 +121,7 @@ Webapp::Application.routes.draw do
   match 'ws/unpublish' => 'testpapers#uninbox', :via => :get
 
   # Welcome
-  match 'about_us' => 'welcome#about_us', :via => :get
-  match 'try_us' => 'welcome#try_us', :via => :get
-  match 'download' => 'welcome#download', :via => :get
-  match 'how_it_works' => 'welcome#how_it_works', :via => :get
   match 'welcome/countries' => 'welcome#countries', :via => :get
-  match 'welcome/contactus' => 'welcome#contactus', :via => :post
 
   # Suggestion 
   resource :suggestion, :only => [:create]
