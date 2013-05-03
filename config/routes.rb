@@ -122,6 +122,7 @@ Webapp::Application.routes.draw do
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', :via => :get
+  match 'faq' => 'welcome#faq'
 
   # Suggestion 
   resource :suggestion, :only => [:create]

@@ -39,8 +39,10 @@
       .row-fluid
         .hero-unit
           .row-fluid.jumbotron
-            %p.offset2.span8= "Teach more. Help more. Grade less"
-            -#%a.btn.btn-large.btn-primary.pull-left= "Curious?"
+            %p.offset1.span8= "Teach more. Help more. Grade less"
+            %ul.nav.nav-list.span3
+              %li
+                = simple_link :for => "Frequently Asked Questions", :href => faq_path
           #how-it-works.carousel.slide
             .carousel-inner
               .item 

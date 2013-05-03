@@ -19,4 +19,8 @@ class WelcomeController < ApplicationController
     render :json => @countries
   end
 
+  def faq
+    render :nothing => true, :layout => 'faq' 
+  end
+
 end

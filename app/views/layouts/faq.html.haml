@@ -1,0 +1,37 @@
+
+!!!5
+
+%html{html_attrs}
+  %head 
+    %title= "Gradians.com - FAQs"
+    = stylesheet_link_tag "application" 
+  %body 
+    .container-fluid 
+      .g-panel.row-fluid
+        .span12
+          .navbar.navbar-inverse
+            .navbar-inner
+              %a.brand.span4{ :href => "#"}
+                = image_tag "logo-mit-beta-2.png"
+      .row-fluid
+        .span3{ :id => 'faq-side-panel' }
+
+          -# Teachers 
+          .heading= "Teachers"
+          %ul.nav.nav-list.offset1
+            %li
+              = simple_link :for => "Terms we use", :href => '#faq-terminology'
+            %li
+              = simple_link :for => "Questions on grading", :href => '#faq-grading'
+            %li
+              = simple_link :for => "Questions on scanning", :href => '#faq-scanning'
+
+          -# General 
+          .heading= "General"
+          %ul.nav.nav-list.offset1
+            %li
+              = simple_link :for => "Why we do what we do", :href => '#faq-inspiration'
+        .span7.offset3{ :id => 'faq-content-panel' }
+          = render :partial => 'faq/grading'
+          = render :partial => 'faq/terminology'
+          = render :partial => 'faq/scanning'

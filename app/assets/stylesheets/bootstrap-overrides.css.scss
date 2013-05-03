@@ -784,6 +784,8 @@ button[data-toggle='button'] {
       weight: 300 ;
     } 
   } 
+
+  ul > li > a { text-shadow: none ; }
 } 
 
 .jumbotron { 
@@ -797,11 +799,18 @@ button[data-toggle='button'] {
   padding-bottom: 30px ;
   border-bottom: 2px solid $orange ; 
 
-  > a { 
+  a { 
+    font : { 
+      size: 13px ;
+      weight: 300 ;
+    } 
     margin-top: -7px ;
     padding: { 
       left: 19px ;
       right: 19px ;
+    } 
+    &:hover { 
+      color: white ;
     } 
   } 
 } 
@@ -954,14 +963,6 @@ li.split {
     padding-bottom: 10px ;
   } 
 
-  .question { 
-    color: $gradians-blue ;
-    font : { 
-      size: 15px ; 
-      weight: 300 ;
-    } 
-  } 
-
   p {
     color: white ;
     font : {
@@ -973,4 +974,69 @@ li.split {
 } 
 
 .answer { 
+} 
+
+#faq-side-panel { 
+  // letter-spacing: 0.5px ;
+  position:fixed ;
+
+  padding: {
+    top: 20px ; 
+    bottom: 20px ;
+  } 
+  border: none ; 
+  font-weight: 300 ;
+
+  li {
+    > a { 
+      color: white ; 
+      font: { 
+        size: 12px ;
+      } 
+      padding-left: 0px ;
+      text-transform: lowercase ;
+    }
+  }
+
+  .heading { 
+    color: $orange ; 
+    letter-spacing: 0.8px ;
+    font : { 
+      size: 14px ;
+      family: "Trebuchet MS" ;
+      variant: small-caps ;
+    } 
+    margin: {
+      top: 10px ;
+      bottom: 10px ;
+    }
+    // text-transform: lowercase ;
+  } 
+} 
+
+#faq-content-panel { 
+  color: white ;
+  font: {
+    size: 12px ;
+    weight: 300 ; 
+    family: "Trebuchet MS" ; 
+  } 
+  line-height: 16px ;
+
+  .question {
+    font: {
+      size: 13px ;
+    }
+    color: $orange ;
+  } 
+
+  b {
+    color: $gradians-blue ;
+  } 
+
+  h1 { 
+    padding-bottom: 10px ;
+    border-bottom: 1px solid white ; 
+  } 
+
 } 
