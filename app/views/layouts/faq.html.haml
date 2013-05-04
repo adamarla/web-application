@@ -15,23 +15,25 @@
                 = image_tag "logo-mit-beta-2.png"
       .row-fluid
         .span3{ :id => 'faq-side-panel' }
-
-          -# Teachers 
-          .heading= "Teachers"
+          .heading= "Questions everyone asks"
           %ul.nav.nav-list.offset1
             %li
-              = simple_link :for => "Terms we use", :href => '#faq-terminology'
+              = simple_link :for => "What is a Quiz?", :href => '#faq-terminology'
+            %li
+              = simple_link :for => "What is a Worksheet?", :href => '#faq-terminology'
+            %li
+              = simple_link :for => "What is a Group?", :href => '#faq-terminology'
+              
+          -# Teachers 
+          .heading= "Questions teachers ask"
+          %ul.nav.nav-list.offset1
             %li
               = simple_link :for => "Questions on grading", :href => '#faq-grading'
             %li
               = simple_link :for => "Questions on scanning", :href => '#faq-scanning'
 
           -# General 
-          .heading= "General"
-          %ul.nav.nav-list.offset1
-            %li
-              = simple_link :for => "Why we do what we do", :href => '#faq-inspiration'
         .span7.offset3{ :id => 'faq-content-panel' }
           = render :partial => 'faq/teachers/grading'
-          = render :partial => 'faq/terminology'
           = render :partial => 'faq/teachers/scanning'
+          = render :partial => 'faq/terminology'
