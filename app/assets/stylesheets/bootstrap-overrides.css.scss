@@ -1041,11 +1041,18 @@ li.split {
     .accordion-heading { 
       font : { 
         size: 13px ;
+        weight: 500 ;
       } 
       > a { 
         color: white ; 
         &:hover { text-decoration: none ; }
-        padding: 4px 15px ;
+        padding: {
+          top: 4px ;
+          right: 15px ;
+          bottom: 4px ;
+          left: 0px ;
+        } 
+        outline: 0 ;
       }
     } 
     .accordion-body { 
@@ -1053,8 +1060,8 @@ li.split {
     } 
     .accordion-inner { 
       border: none ;
-      font-size: 12px ;
-      margin-left:6% ;
+      font-size: 11.5px ;
+      margin-left:4% ;
     } 
   } 
 
