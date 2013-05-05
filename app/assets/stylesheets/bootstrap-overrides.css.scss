@@ -1029,6 +1029,7 @@ li.split {
 
   b {
     color: $gradians-blue ;
+    font-weight: 400 ;
   } 
 
   h1 { 
@@ -1040,7 +1041,7 @@ li.split {
     
     .accordion-heading { 
       font : { 
-        size: 13px ;
+        size: 12px ;
         weight: 500 ;
       } 
       > a { 

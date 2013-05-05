@@ -1,45 +1,34 @@
 
 #faq-general.row-fluid
-  %h3.orange= "General"
+  %h3.orange= "Generally"
   .span8
-    .accordion{ :id => 'ftm' }
+    .accordion{ :id => 'gn' }
       .accordion-group
 
         .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-1' }
-            What is a Quiz?
-        .accordion-body.collapse{ :id => 'ftm-1' }
+          %a.accordion-toggle{ :data => { :parent => '#gn', :toggle => 'collapse' }, :href => '#gn-1' }
+            Grading is tedious work. Why are you offering to do it?
+        .accordion-body.collapse{ :id => 'gn-1' }
           .accordion-inner
-            %p
-              A collection of questions - with their solutions. Making a quiz will 
-              usually be the first thing you do
-            %p
-              To make a quiz, you will need to pick questions.
-              Thereafter, you can make worksheets for individual students based on this quiz
 
         .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-2' }
-            What is a worksheet?
-        .accordion-body.collapse{ :id => 'ftm-2' }
+          %a.accordion-toggle{ :data => { :parent => '#gn', :toggle => 'collapse' }, :href => '#gn-2' }
+            What subjects do you cover?
+        .accordion-body.collapse{ :id => 'gn-2' }
           .accordion-inner
             %p
-              Just a like quiz - but with blank space after every question for students 
-              to write their solution in
+              We are starting with Mathematics. And  going forward, we could extend the system  
+              to cover the other sciences - like Physics, Chemistry, Computer Science etc. 
             %p
-              To make a worksheet, you first need to pick a quiz and then the student(s) 
-              you want to give the quiz to. Please note that worksheets are personalized 
-              for every student
+              Social sciences are tricky though. We are not sure whether a History teacher - for example - 
+              would agree with our assessment of her student's work. That is not a problem with 
+              the sciences though because what is scientifically sound in one place is scientifically 
+              sound everywhere else too
 
-        .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-3' }
-            What is a Group?
-        .accordion-body.collapse{ :id => 'ftm-3' }
-          .accordion-inner
-            A collection of students 
 
       -#
         .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-4' }
-        .accordion-body.collapse{ :id => 'ftm-4' }
+          %a.accordion-toggle{ :data => { :parent => '#gn', :toggle => 'collapse' }, :href => '#gn-4' }
+        .accordion-body.collapse{ :id => 'gn-4' }
           .accordion-inner
 

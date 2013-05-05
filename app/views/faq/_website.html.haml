@@ -1,0 +1,82 @@
+
+#faq-website.row-fluid
+  %h3.orange= "Using the website"
+  .span8
+    .accordion{ :id => 'wb' }
+      .accordion-group
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#wb', :toggle => 'collapse' }, :href => '#wb-1' }
+            What is a Quiz?
+        .accordion-body.collapse{ :id => 'wb-1' }
+          .accordion-inner
+            %p
+              A quiz is nothing more than a collection of questions - with their solutions
+            %p
+              To make a quiz, a teacher first selects the topics she wants to cover and then picks 
+              questions on the selected topics. Thereafter, she can use the quiz as a template 
+              to make worksheets for students
+            %p
+              Please note that a quiz is made just once, but worksheets can be made anytime - and 
+              as many times - afterwards. So - for example - you could make a quiz this year 
+              and use it to make worksheets for your current batch of students. And next year 
+              you could use the same quiz to make worksheets for that year's batch
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#wb', :toggle => 'collapse' }, :href => '#wb-2' }
+            What is a Worksheet?
+        .accordion-body.collapse{ :id => 'wb-2' }
+          .accordion-inner
+            %p
+              Just like a quiz - but with blank space after every question for students 
+              to write their solution in and with some student-specific information 
+              encoded on the page
+            %p
+              To make a worksheet, a teacher first selects a quiz from the list of quizzes she 
+              has made uptil now and then selects students she wants to make worksheets for
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#wb', :toggle => 'collapse' }, :href => '#wb-3' }
+            What is a Group?
+        .accordion-body.collapse{ :id => 'wb-3' }
+          .accordion-inner
+            %p
+              A group is simply a collection of students. If you teach in a school or university environment, 
+              then each class or section you teach is what we are calling a group here
+            %p
+              However, you can make groups different from the groups you teach in real world. For example,
+              you could make a group called "Gifted Students" that includes the 4-5 best students from each of the
+              sections you teach in the real world. You might want to do this because you would like to 
+              give these gifted students extra work over and above their regular course work
+            %p
+              Please note that one student can belong to more than group
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#wb', :toggle => 'collapse' }, :href => '#wb-5' }
+            I have made a quiz and it will take a couple of minutes for the PDF to get ready. Why?
+        .accordion-body.collapse{ :id => 'wb-5' }
+          .accordion-inner
+            %p
+              A lot of work is done behind the scenes to make a quiz and it just takes the time 
+              that it needs to take
+            %p
+              So, rather than keep you waiting for the work to finish, we take your request and put it in a queue 
+              where it is processed in the order in which it came. This way, you can be left free 
+              to continue using the website 
+            %p
+              The time your request will take to finish depends on how many requests are before it 
+              in the queue and how much work your request represents. Ordinarily, however, each 
+              request takes 40-60 seconds to process when its turn comes
+            %p
+              The same is true for worksheets too
+              
+
+
+
+      -#
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#wb', :toggle => 'collapse' }, :href => '#wb-1' }
+        .accordion-body.collapse{ :id => 'wb-1' }
+          .accordion-inner
+
+
