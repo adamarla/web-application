@@ -1,0 +1,45 @@
+
+#faq-general.row-fluid
+  %h3.orange= "General"
+  .span8
+    .accordion{ :id => 'ftm' }
+      .accordion-group
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-1' }
+            What is a Quiz?
+        .accordion-body.collapse{ :id => 'ftm-1' }
+          .accordion-inner
+            %p
+              A collection of questions - with their solutions. Making a quiz will 
+              usually be the first thing you do
+            %p
+              To make a quiz, you will need to pick questions.
+              Thereafter, you can make worksheets for individual students based on this quiz
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-2' }
+            What is a worksheet?
+        .accordion-body.collapse{ :id => 'ftm-2' }
+          .accordion-inner
+            %p
+              Just a like quiz - but with blank space after every question for students 
+              to write their solution in
+            %p
+              To make a worksheet, you first need to pick a quiz and then the student(s) 
+              you want to give the quiz to. Please note that worksheets are personalized 
+              for every student
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-3' }
+            What is a Group?
+        .accordion-body.collapse{ :id => 'ftm-3' }
+          .accordion-inner
+            A collection of students 
+
+      -#
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#ftm', :toggle => 'collapse' }, :href => '#ftm-4' }
+        .accordion-body.collapse{ :id => 'ftm-4' }
+          .accordion-inner
+

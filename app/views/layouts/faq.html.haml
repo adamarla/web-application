@@ -5,6 +5,7 @@
   %head 
     %title= "Gradians.com - FAQs"
     = stylesheet_link_tag "application" 
+    = javascript_include_tag "faq"
   %body 
     .container-fluid 
       .g-panel.row-fluid
@@ -14,26 +15,15 @@
               %a.brand.span4{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
       .row-fluid
-        .span3{ :id => 'faq-side-panel' }
-          .heading= "Questions everyone asks"
+        .span2.offset1{ :id => 'faq-side-panel' }
           %ul.nav.nav-list.offset1
             %li
-              = simple_link :for => "What is a Quiz?", :href => '#faq-terminology'
+              = simple_link :for => "General", :href => '#faq-general', :icon => 'icon-chevron-right'
             %li
-              = simple_link :for => "What is a Worksheet?", :href => '#faq-terminology'
+              = simple_link :for => "Grading", :href => '#faq-grading', :icon => 'icon-chevron-right'
             %li
-              = simple_link :for => "What is a Group?", :href => '#faq-terminology'
-              
-          -# Teachers 
-          .heading= "Questions teachers ask"
-          %ul.nav.nav-list.offset1
-            %li
-              = simple_link :for => "Questions on grading", :href => '#faq-grading'
-            %li
-              = simple_link :for => "Questions on scanning", :href => '#faq-scanning'
-
-          -# General 
+              = simple_link :for => "Scanning", :href => '#faq-scanning', :icon => 'icon-chevron-right'
         .span7.offset3{ :id => 'faq-content-panel' }
-          = render :partial => 'faq/teachers/grading'
-          = render :partial => 'faq/teachers/scanning'
-          = render :partial => 'faq/terminology'
+          = render :partial => 'faq/general'
+          = render :partial => 'faq/grading'
+          = render :partial => 'faq/scanning'
