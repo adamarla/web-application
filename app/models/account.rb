@@ -46,17 +46,20 @@ class Account < ActiveRecord::Base
 
   # Geo-coding. Ref: https://github.com/alexreisner/geocoder
   geocoded_by :last_sign_in_ip do |obj, results|
-    puts "[start] #{obj.loggable_type} --> #{obj.loggable_id}"
     geo = results.first
     unless geo.nil?
-      for key in [:city, :state, :country]
-        val = geo.send(key)
+      for key in [:city, :state, :postal_code, :country]
+        val = geo.send(key) 
         next if val.blank? 
+
+        if key == :country
+          country = Country.where{ name =~ val }.first
+          next if country.nil?
+          val = country.id
+        end
         obj[key] = val 
       end
-      puts "[located]"
     end
-    puts "[end] #{obj.loggable_type} --> #{obj.loggable_id}"
   end 
 
   after_validation :geocode, :if => :geocodeable?
