@@ -15,8 +15,9 @@ class TeachersController < ApplicationController
          city = location.city
          state = location.state
          zip = location.postal_code
+         country = location.country
          Mailbot.registration_debug(city, state, zip, country, true).deliver
-         country = Country.where{ name =~ location.country }.first
+         country = Country.where{ name =~ country }.first
          country = country.id unless country.blank?
       else
         city = state = country = zip = nil
