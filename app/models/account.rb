@@ -20,6 +20,9 @@
 #  active                 :boolean         default(TRUE)
 #  username               :string(50)
 #  country                :integer         default(100)
+#  state                  :string(40)
+#  city                   :string(40)
+#  zip_code               :string(10)
 #
 
 class Account < ActiveRecord::Base

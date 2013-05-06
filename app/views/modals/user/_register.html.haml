@@ -20,10 +20,8 @@
         = f.simple_fields_for teacher_account, :validate => true do |m|
           = m.input :email
           = m.input :password
-          = m.input :country, :as => :select, :collection => Country.all
-        = f.input :zip_code, :label => "Your school's Zip / Pin Code" 
         %input.hide{ :type => :string, :data => { :validate => false }, :name => 'teacher[guard]' } 
-        %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
+        %button.btn.btn-large.btn-primary.push-down.pull-right{:type => :submit}= "Register"
 
     -# Student Registration Form
     #pane-register-2.tab-pane.push-down
@@ -35,4 +33,4 @@
           = m.input :password
         -#= f.input :code, :hint => "Your teacher must have given you a code for the course. Enter that here"
         %input.hide{ :type => :string, :data => { :validate => false }, :name => 'teacher[guard]' } 
-        %button.btn.btn-large.btn-primary.push-down.pull-left{:type => :submit}= "Register"
+        %button.btn.btn-large.btn-primary.push-down.pull-right{:type => :submit}= "Register"

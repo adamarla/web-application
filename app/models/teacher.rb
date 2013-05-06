@@ -8,7 +8,6 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer
-#  zip_code   :string(10)
 #
 
 #     __:has_many_____     ___:has_many___  
