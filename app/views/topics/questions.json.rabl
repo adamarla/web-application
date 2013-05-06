@@ -4,7 +4,8 @@ object false
     @questions.map{ |m|
       {
         :name => m.simple_uid,
-        :id => m.id
+        :id => m.id,
+        :klass => m.fav(current_account.loggable)?"fav":""
       }
     }
   }

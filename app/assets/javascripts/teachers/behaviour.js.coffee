@@ -155,6 +155,30 @@ jQuery ->
     return true
 
   ###
+    Toggle 'Questions <-> My Suggestions' for a given selection
+    of questions
+  ###
+  $('#tab-qzb-3').on 'click', (event) ->
+    event.stopPropagation()
+    $('#qzb-questions .row-fluid.single-line.leaf').filter(':visible').each ->
+      if $(this).hasClass('fav') is false
+        $(this).hide()
+    $('#tab-qzb-2').parent().removeClass 'active'
+    $('#tab-qzb-3').parent().addClass 'active'
+    return true
+
+  $('#tab-qzb-2').on 'click', (event) ->
+    event.stopPropagation()
+    if $('#show-selected').is(':checked')
+      $('#qzb-questions .row-fluid.single-line.leaf').each ->
+        $(this).children('.btn.btn.active').parent().show()
+    else
+      $('#qzb-questions .row-fluid.single-line.leaf').show()
+    $('#tab-qzb-3').parent().removeClass 'active'
+    $('#tab-qzb-2').parent().addClass 'active'
+    return true
+
+  ###
     Step 2 of the 'quiz-building' process: topic selection
   ###
   $('#topic-selection-list').on 'click', '.scroll-heading', (event) ->
@@ -185,6 +209,17 @@ jQuery ->
     teacherId = $('#control-panel').attr 'marker'
     form.attr 'action', "course/questions.json?id=#{courseId}&teacher_id=#{teacherId}"
     return true
+
+  ###
+    Before submitting questions toggle for Selected Questions list
+  ###
+  $('#form-qzb :checkbox').click ->
+    $this = $(this)
+    if $this.is(':checked')
+      $('#qzb-questions .btn.btn-mini').parent().hide()
+      $('#qzb-questions .btn.btn-mini.active').parent().show()
+    else 
+      $('#qzb-questions .btn.btn-mini').parent().show()
 
   ###
     Step 4 of the 'quiz-building' process: Submitting the question selection 
