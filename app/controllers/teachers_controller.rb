@@ -15,10 +15,13 @@ class TeachersController < ApplicationController
          city = location.city
          state = location.state
          zip = location.postal_code
+         puts "*** city -> #{city}, state -> #{state}, country -> #{country} ***"
          country = Country.where{ name =~ location.country }.first
          country = country.id unless country.blank?
+
       else
         city = state = country = zip = nil
+        puts " **** no location ****"
       end
 
       account_details = data[:account]
