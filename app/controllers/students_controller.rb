@@ -13,14 +13,14 @@ class StudentsController < ApplicationController
       student = Student.new :name => data[:name]
 
       location = request.location
+      city = state = country = zip = nil
+
       unless location.nil?
          city = location.city
          state = location.state
          zip = location.postal_code
          country = Country.where{ name =~ location.country }.first
          country = country.id unless country.blank?
-      else
-        city = state = country = zip = nil
       end
 
       account_details = data[:account]

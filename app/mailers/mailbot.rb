@@ -40,12 +40,11 @@ class Mailbot < ActionMailer::Base
     mail :subject => "User Query", :body => question, :to => "help@gradians.com", :reply_to => account.email
   end
 
-  def registration_debug(city, state, zip, country, detected)
+  def registration_debug(city, state, zip, country)
     @city = city 
     @state = state
     @zip = zip 
     @country = country
-    @detected = detected
     mail :to => "help@gradians.com", :subject => "registration debug"
   end
 

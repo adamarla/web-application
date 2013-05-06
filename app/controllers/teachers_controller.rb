@@ -11,17 +11,16 @@ class TeachersController < ApplicationController
       teacher = Teacher.new :name => data[:name]
 
       location = request.location
+      city = state = country = zip = nil
+
       unless location.nil?
          city = location.city
          state = location.state
          zip = location.postal_code
          country = location.country
-         Mailbot.registration_debug(city, state, zip, country, true).deliver
+         # Mailbot.registration_debug(city, state, zip, country).deliver
          country = Country.where{ name =~ country }.first
          country = country.id unless country.blank?
-      else
-        city = state = country = zip = nil
-        Mailbot.registration_debug(city, state, zip, country, false).deliver
       end
 
       account_details = data[:account]
