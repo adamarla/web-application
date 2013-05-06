@@ -29,7 +29,7 @@ class TeachersController < ApplicationController
                                       :password_confirmation => account_details[:password],
                                       :city => city,
                                       :state => state, 
-                                      :zip_code => zip,
+                                      :postal_code => zip,
                                       :country => country
                                      
       if teacher.save 

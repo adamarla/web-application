@@ -11,7 +11,7 @@
     #pane-school-general.tab-pane
       = simple_form_for :checked, :remote => true, :defaults => { :label => false, :wrapper => :append }, 
       :html => { :id => 'form-school-general', :class => :smart } do |f| 
-        - [:name, :city, :zip_code, :phone].each do |m|
+        - [:name, :phone].each do |m|
           = f.input m do 
             = f.input_field m
             = content_tag :span, "#{m.to_s.humanize}", :class => "add-on"

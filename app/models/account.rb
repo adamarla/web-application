@@ -22,7 +22,9 @@
 #  country                :integer         default(100)
 #  state                  :string(40)
 #  city                   :string(40)
-#  zip_code               :string(10)
+#  postal_code            :string(10)
+#  latitude               :float
+#  longitude              :float
 #
 
 class Account < ActiveRecord::Base
@@ -41,6 +43,28 @@ class Account < ActiveRecord::Base
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
   belongs_to :loggable, :polymorphic => true
+
+  # Geo-coding. Ref: https://github.com/alexreisner/geocoder
+  geocoded_by :last_sign_in_ip do |obj, results|
+    puts "[start] #{obj.loggable_type} --> #{obj.loggable_id}"
+    geo = results.first
+    unless geo.nil?
+      for key in [:city, :state, :country]
+        val = geo.send(key)
+        next if val.blank? 
+        obj[key] = val 
+      end
+      puts "[located]"
+    end
+    puts "[end] #{obj.loggable_type} --> #{obj.loggable_id}"
+  end 
+
+  after_validation :geocode, :if => :geocodeable?
+
+  def geocodeable?
+    return false if self.last_sign_in_ip.nil?
+    return true
+  end 
 
   def legacy_record?
     year = self.created_at.nil? ? Date.today.year : self.created_at.year
