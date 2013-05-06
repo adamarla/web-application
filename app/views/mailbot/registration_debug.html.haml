@@ -1,8 +1,11 @@
 
-%p
-  Detected the following geo-location information
-  %ul
-    %li= "#{@city}"
-    %li= "#{@state}"
-    %li= "#{@zip}"
-    %li= "#{@country}"
+- if @detected
+  %p
+    Detected the following geo-location information
+    %ul
+      %li= "#{@city}"
+      %li= "#{@state}"
+      %li= "#{@zip}"
+      %li= "#{@country}"
+- else 
+  %h3= "Nothing detected"
