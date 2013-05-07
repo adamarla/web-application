@@ -150,7 +150,7 @@ jQuery ->
         previous = tab.prev 'li'
         section = previous.attr 'marker'
         $.get "sektion/proficiency.json?id=#{section}&topic=#{marker}"
-        
+
 
     return true
 
@@ -160,7 +160,9 @@ jQuery ->
   ###
   $('#tab-qzb-3').on 'click', (event) ->
     event.stopPropagation()
-    $('#qzb-questions .row-fluid.single-line.leaf').filter(':visible').each ->
+    topicSelected =  $('[id^="qzb-pick-"].active')
+    topicSelected.children('[page]').removeClass 'hide'
+    topicSelected.find('.single-line.leaf').filter(':visible').each ->
       if $(this).hasClass('fav') is false
         $(this).hide()
     $('#tab-qzb-2').parent().removeClass 'active'
@@ -169,6 +171,13 @@ jQuery ->
 
   $('#tab-qzb-2').on 'click', (event) ->
     event.stopPropagation()
+    topicSelected =  $('[id^="qzb-pick-"].active')
+    topicSelected.children('[page]').addClass 'hide'
+    if $('#left-paginator > ul > li.active').length is 0
+      pageSelected = 1
+    else
+      pageSelected = $('#left-paginator > ul > li.active > a')[0].text
+    topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
     if $('#show-selected').is(':checked')
       $('#qzb-questions .row-fluid.single-line.leaf').each ->
         $(this).children('.btn.btn.active').parent().show()
@@ -216,10 +225,22 @@ jQuery ->
   $('#form-qzb :checkbox').click ->
     $this = $(this)
     if $this.is(':checked')
+      topicSelected =  $('[id^="qzb-pick-"].active')
+      topicSelected.children('[page]').removeClass 'hide'
       $('#qzb-questions .btn.btn-mini').parent().hide()
       $('#qzb-questions .btn.btn-mini.active').parent().show()
     else 
+      topicSelected =  $('[id^="qzb-pick-"].active')
       $('#qzb-questions .btn.btn-mini').parent().show()
+      if $('#tab-qzb-3').parent().hasClass('active')
+        $('#tab-qzb-3').click()
+      else
+        topicSelected.children('[page]').addClass 'hide'
+        if $('#left-paginator > ul > li.active').length is 0
+          pageSelected = 1
+        else
+          pageSelected = $('#left-paginator > ul > li.active > a')[0].text
+        topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
 
   ###
     Step 4 of the 'quiz-building' process: Submitting the question selection 
