@@ -80,10 +80,12 @@ window.karo = {
 
   url : {
     elaborate : (obj, json = null, tab = null) ->
-      ajax = if tab? then tab.dataset.panelUrl else obj.dataset.url
+      ajax = if tab? then tab.getAttribute('data-panel-url') else obj.getAttribute('data-url')
+
       return ajax unless ajax? # => basically null 
 
-      if obj.dataset.updateOn? # if <a> within a dropdown-menu that has updateOn
+      updateOn = obj.getAttribute 'data-update-on'
+      if updateOn? # if <a> within a dropdown-menu that has updateOn
         unless json? # if json != null, then its time to re-evaluate href
           href = $(obj).attr('href')
           if href?
@@ -99,10 +101,12 @@ window.karo = {
 
       for m in ["prev", "id"]
         if ajax.indexOf ":#{m}" isnt -1 # => :prev / :id present 
-          if obj.dataset[m]?
-            from = $("##{obj.dataset[m]}")
-          else if (tab? and tab.dataset[m]?)
-            from = $("##{tab.dataset[m]}")
+          a = obj.getAttribute "data-#{m}"
+          b = if tab? then tab.getAttribute("data-#{m}") else null
+          if a?
+            from = $("##{a}")
+          else if b?
+            from = $("##{b}")
           else from = $(obj)
 
           marker = from.attr 'marker'

@@ -23,7 +23,8 @@ window.menu = {
     return true
 
   show : (m) ->
-    menu = m.dataset.menu
+    # menu = m.dataset.menu
+    menu = m.getAttribute('data-menu')
     return false unless menu?
 
     open = $(m).siblings("ul[role='menu']").length > 0
@@ -43,7 +44,8 @@ window.menu = {
     for menu in $("#toolbox > ul[role='menu']")
       for a in $(menu).find 'a'
         # continue unless a.dataset.ajax is 'disabled'
-        updateOn = a.dataset.updateOn
+        # updateOn = a.dataset.updateOn
+        updateOn = a.getAttribute('data-update-on')
 
         continue unless updateOn?
         continue unless karo.url.match(url, updateOn)

@@ -17,7 +17,8 @@ window.tutorial = {
         $(last).joyride 'destroy'
         tutorial.current = null
         $(m).removeClass('disabled') for m in $('#control-panel').find('a.dropdown-toggle')
-        tutorial.active = false unless last.dataset.onwards is 'true'
+        # tutorial.active = false unless last.dataset.onwards is 'true'
+        tutorial.active = false unless last.getAttribute('data-onwards') is 'true'
         return true
     },
 
@@ -40,10 +41,11 @@ window.tutorial = {
   deactivateControlPanel : () ->
     obj = $("##{tutorial.current}")[0]
     if tutorial.active
-      if obj.dataset.enable?
+      enableLink = obj.getAttribute('data-enable')
+      if enableLink?
         toggles = $('#control-panel').find('a.dropdown-toggle')
         for m in toggles
-          if $(m).attr('id') isnt obj.dataset.enable then $(m).addClass('disabled') else $(m).removeClass('disabled')
+          if $(m).attr('id') isnt enableLink then $(m).addClass('disabled') else $(m).removeClass('disabled')
     return true
     
 

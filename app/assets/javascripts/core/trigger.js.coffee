@@ -31,24 +31,33 @@ window.trigger = {
 
   click : (link, event = null) ->
     return true if $(link).hasClass 'carousel-control'
-    toggleType = link.dataset.toggle
+    toggleType = link.getAttribute 'data-toggle'
+
     plainVanilla = if (toggleType is 'tab' or toggleType is 'modal') then false else true
     isTab = toggleType is 'tab'
 
     if $(link).parent().hasClass 'dropdown-submenu'
-      return false unless link.dataset.defaultLnk is 'true'
+      isDefault = link.getAttribute 'data-default-lnk'
+      return false unless isDefault is 'true'
 
     event.stopImmediatePropagation() if event? and plainVanilla
     # (YAML) Hide / unhide panels as needed
 
-    notouch = if link.dataset.notouch? then (link.dataset.notouch is 'true') else false
+    # notouch = if link.dataset.notouch? then (link.dataset.notouch is 'true') else false
+    notouch = link.getAttribute('data-notouch')
+    notouch = if notouch? then (notouch is 'true') else false
+
     unless notouch
       for j in ['left', 'right', 'middle', 'wide']
-        if typeof link.dataset[j] is 'string'
-          continue if link.dataset[j] is 'as-is'
+        attr = link.getAttribute("data-#{j}")
+        if typeof attr is 'string'
+          continue if attr is 'as-is'
 
-        attr = "#{j}Show" # x-y in YAML => xY here
-        show = link.dataset[attr] # left-show, right-show etc 
+        # attr = "#{j}Show" # x-y in YAML => xY here
+        # show = link.dataset[attr] # left-show, right-show etc 
+
+        attr = "#{j}-show"
+        show = link.getAttribute("data-#{attr}")
         panel = $("##{j}")
         if not show?
           continue if isTab
@@ -61,7 +70,8 @@ window.trigger = {
     # process tabs here only insofar as hiding/unhiding is concerned
 
     # If there be a tab that needs to be auto-clicked, then do that too
-    tab = link.dataset.autoclickTab
+    # tab = link.dataset.autoclickTab
+    tab = link.getAttribute('data-autoclick-tab')
     karo.tab.enable tab if tab?
 
     # If <a> is within a dropdown-menu, then close the dropdown menu
@@ -69,14 +79,17 @@ window.trigger = {
     menu.close $(link)
 
     # (YAML) Issue any AJAX requests
-    if link.dataset.ajax isnt 'disabled'
+    ajax = link.getAttribute('data-ajax')
+    if ajax isnt 'disabled'
       ajax = karo.url.elaborate link
       karo.ajaxCall ajax if ajax?
 
     # launch any help tied to this link
-    help = link.dataset.launch
+    # help = link.dataset.launch
+    help = link.getAttribute('data-launch')
     if help?
-      autoclick = link.dataset.autoclick
+      # autoclick = link.dataset.autoclick
+      autoclick = link.getAttribute('data-autoclick')
       trigger.click $("##{autoclick}")[0] if autoclick?
 
       if $(link).hasClass 'help-launcher'
@@ -201,11 +214,12 @@ jQuery ->
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
     li = $(this).parent()
 
+    prev = this.getAttribute('data-prev')
     if li.hasClass 'disabled'
       event.stopImmediatePropagation()
       return false
-    else if this.dataset.prev?
-      m = $("##{this.dataset.prev}").parent() # the <li> - not the <a>
+    else if prev?
+      m = $("##{prev}").parent() # the <li> - not the <a>
       if not m.attr('marker')? # no selection made in data-prev
         event.stopImmediatePropagation()
         return false
@@ -266,7 +280,9 @@ jQuery ->
       # launch any help tied to this link. Do this ONLY for tabs that do NOT 
       # result in an ajax call. For tabs that do, tutorials are launched AFTER
       # AJAX response has been received
-      help = this.dataset.launch
+
+      # help = this.dataset.launch
+      help = this.getAttribute('data-launch')
       if help?
         if $(this).hasClass 'help-launcher'
           tutorial.start help
@@ -275,11 +291,18 @@ jQuery ->
 
     # Set base-ajax url on containing panel
     unless ul.hasClass 'lock'
-      panelUrl = this.dataset.panelUrl
-      panel.dataset.url = if panelUrl? then panelUrl else null
+      # panelUrl = this.dataset.panelUrl
+      panelUrl = this.getAttribute('data-panel-url')
+
+      #panel.dataset.url = if panelUrl? then panelUrl else null
+      if panelUrl?
+        panel.setAttribute('data-url', panelUrl)
+      else
+        panel.setAttribute('data-url', null)
 
     # Auto-click any autoclick links - but not tabs 
-    autoLink = this.dataset.autoclickLink
+    # autoLink = this.dataset.autoclickLink
+    autoLink = this.getAttribute('data-autoclick-link')
     $("##{autoLink}").click() if autoLink?
 
     ###
@@ -427,7 +450,8 @@ jQuery ->
         if activeTab?
           # activeTab is a <li> and what we are looking for is in the <a> within it
           a = $(activeTab).children('a')[0]
-          next = a.dataset.autoclickTab
+          # next = a.dataset.autoclickTab
+          next = a.getAttribute('data-autoclick-tab')
           karo.tab.enable next if next?
 
     # End of method 
@@ -442,11 +466,17 @@ jQuery ->
   ###############################################
 
   $('form').submit (event) ->
-    action = this.dataset.action
+    # action = this.dataset.action
+    action = this.getAttribute('data-action')
     return true unless action?
 
-    id = if this.dataset.id is "null" then null else this.dataset.id
-    prev = if this.dataset.prev is "null" then null else this.dataset.prev
+    # id = if this.dataset.id is "null" then null else this.dataset.id
+    id = this.getAttribute('data-id')
+    id = if id is "null" then null else id
+
+    # prev = if this.dataset.prev is "null" then null else this.dataset.prev
+    prev = this.getAttribute('data-prev')
+    prev = if prev is "null" then null else prev
 
     panes = $(this).closest('.tab-content')[0]
     if panes?
@@ -454,13 +484,15 @@ jQuery ->
 
     if id? and id.length > 0
       id = $("##{id}")[0]
-      id = if id.dataset.toggle is 'tab' then $(id).parent() else $(id)
+      toggleType = id.getAttribute('data-toggle')
+      id = if toggleType is 'tab' then $(id).parent() else $(id)
     else if activeTab?
       id = $(activeTab)
 
     if prev? and prev.length > 0
       prev = $("##{prev}")[0]
-      prev = if prev.dataset.toggle is 'tab' then $(prev).parent() else $(prev)
+      toggleType = prev.getAttribute('data-toggle')
+      prev = if toggleType is 'tab' then $(prev).parent() else $(prev)
     else if activeTab?
       prev = $(activeTab).prev()
 
