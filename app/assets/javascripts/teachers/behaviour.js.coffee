@@ -161,7 +161,8 @@ jQuery ->
   $('#tab-qzb-3').on 'click', (event) ->
     event.stopPropagation()
     topicSelected =  $('[id^="qzb-pick-"].active')
-    topicSelected.children('[page]').removeClass 'hide'
+    unless $('#show-selected').is(':checked')
+      topicSelected.children('[page]').removeClass 'hide'
     topicSelected.find('.single-line.leaf').filter(':visible').each ->
       if $(this).hasClass('fav') is false
         $(this).hide()
@@ -172,17 +173,18 @@ jQuery ->
   $('#tab-qzb-2').on 'click', (event) ->
     event.stopPropagation()
     topicSelected =  $('[id^="qzb-pick-"].active')
-    topicSelected.children('[page]').addClass 'hide'
-    if $('#left-paginator > ul > li.active').length is 0
-      pageSelected = 1
-    else
-      pageSelected = $('#left-paginator > ul > li.active > a')[0].text
-    topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
     if $('#show-selected').is(':checked')
-      $('#qzb-questions .row-fluid.single-line.leaf').each ->
-        $(this).children('.btn.btn.active').parent().show()
+      topicSelected.children$('.btn.btn-mini').each ->
+        $(this).parent('.fav').show()
     else
-      $('#qzb-questions .row-fluid.single-line.leaf').show()
+      topicSelected.children('[page]').removeClass 'show'
+      topicSelected.children('[page]').addClass 'hide'
+      if $('#left-paginator > ul > li.active').length is 0
+        pageSelected = 1
+      else
+        pageSelected = $('#left-paginator > ul > li.active > a')[0].text
+      topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
+      topicSelected.find('.single-line.leaf').show()
     $('#tab-qzb-3').parent().removeClass 'active'
     $('#tab-qzb-2').parent().addClass 'active'
     return true
@@ -224,16 +226,15 @@ jQuery ->
   ###
   $('#form-qzb :checkbox').click ->
     $this = $(this)
+    topicSelected =  $('[id^="qzb-pick-"].active')
     if $this.is(':checked')
-      topicSelected =  $('[id^="qzb-pick-"].active')
-      topicSelected.children('[page]').removeClass 'hide'
-      $('#qzb-questions .btn.btn-mini').parent().hide()
-      $('#qzb-questions .btn.btn-mini.active').parent().show()
+      unless $('#tab-qzb-3').parent().hasClass('active')
+        topicSelected.children('[page]').removeClass 'hide'
+      topicSelected.find('.single-line.leaf').filter(':visible').each ->
+        $(this).children('.btn.btn-mini').not('.active').parent().hide()
     else 
-      topicSelected =  $('[id^="qzb-pick-"].active')
-      $('#qzb-questions .btn.btn-mini').parent().show()
       if $('#tab-qzb-3').parent().hasClass('active')
-        $('#tab-qzb-3').click()
+        topicSelected.find('.single-line.leaf.fav').show()
       else
         topicSelected.children('[page]').addClass 'hide'
         if $('#left-paginator > ul > li.active').length is 0
@@ -241,6 +242,7 @@ jQuery ->
         else
           pageSelected = $('#left-paginator > ul > li.active > a')[0].text
         topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
+        topicSelected.find('.single-line.leaf').show()
 
   ###
     Step 4 of the 'quiz-building' process: Submitting the question selection 
