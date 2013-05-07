@@ -395,7 +395,8 @@ jQuery ->
       m = clickedObj
     else if clickedObj.hasClass 'dropdown-toggle'
       m = clickedObj.parent()
-    else if clickedObj.is 'button'
+    else if clickedObj.is('button') or clickedObj.is('i') # issue 61: event.target different on Chrome
+      clickedObj = if clickedObj.is('i') then clickedObj.parent() else clickedObj
       if clickedObj.hasClass('active')
         clickedObj.removeClass 'active'
         clickedObj.children("input[type='checkbox']").eq(0).prop 'checked', false
