@@ -11,10 +11,26 @@ class StudentsController < ApplicationController
 
     if data[:guard].blank? # => human entered registration data
       student = Student.new :name => data[:name]
+
+      location = request.location
+      city = state = country = zip = nil
+
+      unless location.nil?
+         city = location.city
+         state = location.state
+         zip = location.postal_code
+         country = Country.where{ name =~ location.country }.first
+         country = country.id unless country.blank?
+      end
+
       account_details = data[:account]
       account = student.build_account :email => account_details[:email], 
                                       :password => account_details[:password],
-                                      :password_confirmation => account_details[:password]
+                                      :password_confirmation => account_details[:password],
+                                      :city => city,
+                                      :state => state, 
+                                      :postal_code => zip,
+                                      :country => country
       if student.save
         Mailbot.welcome_student(student.account).deliver
         sign_in student.account

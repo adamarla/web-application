@@ -8,7 +8,7 @@ class SchoolsController < ApplicationController
     @school = School.new params[:school] 
     username = create_username_for @school, :school 
     email = email || "#{username}@drona.com"
-    zip = @school.zip_code
+    zip = @school.account.postal_code
 
     @school.build_account :email => email, :username => username, 
                           :password => zip, :password_confirmation => zip

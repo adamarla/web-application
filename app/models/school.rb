@@ -4,12 +4,10 @@
 #
 #  id         :integer         not null, primary key
 #  name       :string(255)
-#  zip_code   :string(15)
 #  phone      :string(20)
 #  created_at :datetime
 #  updated_at :datetime
 #  xls        :string(255)
-#  country_id :integer
 #  uid        :string(10)
 #
 
@@ -18,7 +16,6 @@ class School < ActiveRecord::Base
   has_many :teachers
 
   validates :name, :presence =>true
-  validates :zip_code, :presence => true
   after_create :assign_uid
 
   # Should we allow deletion of schools from the DB ? My view is, don't. 
@@ -61,7 +58,7 @@ class School < ActiveRecord::Base
     else
       student.klass = klass
     end
-    password = self.zip_code
+    password = self.account.postal_code
     account = student.build_account :username => username, :email => email, 
                                     :password => password, :password_confirmation => password
     return student.save

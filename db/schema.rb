@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424094853) do
+ActiveRecord::Schema.define(:version => 20130506164741) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -31,6 +31,11 @@ ActiveRecord::Schema.define(:version => 20130424094853) do
     t.boolean  "active",                                :default => true
     t.string   "username",               :limit => 50
     t.integer  "country",                               :default => 100
+    t.string   "state",                  :limit => 40
+    t.string   "city",                   :limit => 40
+    t.string   "postal_code",            :limit => 10
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
@@ -192,12 +197,10 @@ ActiveRecord::Schema.define(:version => 20130424094853) do
 
   create_table "schools", :force => true do |t|
     t.string   "name"
-    t.string   "zip_code",   :limit => 15
     t.string   "phone",      :limit => 20
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "xls"
-    t.integer  "country_id"
     t.string   "uid",        :limit => 10
   end
 
@@ -258,7 +261,6 @@ ActiveRecord::Schema.define(:version => 20130424094853) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
-    t.string   "zip_code",   :limit => 10
   end
 
   create_table "testpapers", :force => true do |t|

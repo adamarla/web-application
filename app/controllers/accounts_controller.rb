@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, :except => :ask_question
   respond_to :json
 
   def update 

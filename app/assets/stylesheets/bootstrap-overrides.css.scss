@@ -248,10 +248,11 @@ img {
     border-radius: 0px ;
     font : { 
       size: 12px ;
-      family: "Trebuchet MS" ;
+      family: "Tahoma" ; 
+      weight: 300 ;
     } 
     color: white ; 
-    line-height: 14px ;
+    line-height: 15px ;
     padding: { 
       left: 8px ;
       right: 8px ;
@@ -796,7 +797,7 @@ button[data-toggle='button'] {
     weight: 200 ;
   } 
   color: white ; 
-  padding-bottom: 30px ;
+  padding-bottom: 20px ;
   border-bottom: 2px solid $orange ; 
 
   a { 
@@ -899,6 +900,7 @@ li.split {
 }
 
 #m-register {
+  height: 350px ;
   > ul { margin-top: 0px ; }
   > .tab-content {
     min-height: 200px ;
@@ -1041,7 +1043,7 @@ li.split {
     
     .accordion-heading { 
       font : { 
-        size: 12px ;
+        size: 11.5px ;
         weight: 500 ;
       } 
       > a { 

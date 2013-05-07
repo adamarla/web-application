@@ -65,6 +65,7 @@ GEM
     eventmachine (1.0.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    geocoder (1.1.8)
     gyoku (0.4.6)
       builder (>= 2.1.2)
     haml (3.1.7)
@@ -188,6 +189,7 @@ DEPENDENCIES
   dalli
   delayed_job_active_record
   devise (= 2.0.1)
+  geocoder
   haml
   haml-rails
   jquery-rails

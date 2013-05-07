@@ -8,16 +8,32 @@ class TeachersController < ApplicationController
     if data[:guard].blank? # => human entered registration data
       country = data[:country].blank? ? nil : Country.where{ name =~ "%#{data[:country]}%" }.first
 
-      teacher = Teacher.new :name => data[:name], :zip_code => (data[:zip].blank? ? nil : data[:zip])
+      teacher = Teacher.new :name => data[:name]
+
+      location = request.location
+      city = state = country = zip = nil
+
+      unless location.nil?
+         city = location.city
+         state = location.state
+         zip = location.postal_code
+         country = location.country
+         # Mailbot.registration_debug(city, state, zip, country).deliver
+         country = Country.where{ name =~ country }.first
+         country = country.id unless country.blank?
+      end
 
       account_details = data[:account]
       account = teacher.build_account :email => account_details[:email], 
                                       :password => account_details[:password],
                                       :password_confirmation => account_details[:password],
-                                      :country => (country.nil? ? nil : country.id)
+                                      :city => city,
+                                      :state => state, 
+                                      :postal_code => zip,
+                                      :country => country
                                      
       if teacher.save 
-        Mailbot.welcome_teacher(teacher.account).deliver
+        # Mailbot.welcome_teacher(teacher.account).deliver
         sign_in teacher.account
         redirect_to teacher_path
       end # no reason for else if client side validations worked
