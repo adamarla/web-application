@@ -28,7 +28,7 @@ window.line = {
     dropDown = $(toggle).parent()
 
     if menu?
-      toggle.dataset.menu = menu
+      toggle.setAttribute 'data-menu', menu
       dropDown.addClass 'offset1'
       spanLeft -= 3
       mn = true

@@ -15,5 +15,6 @@
   .span2.long-badge
   .text
   .span2.subtext
-  = simple_button :icon => 'icon-plus-sign', :as => :checkbox, :name => 'checked', :class => 'btn-mini', :toggle => :button
+  = simple_button :icon => 'icon-plus-sign', :as => :checkbox, :tooltip => "Select",
+    :name => 'checked', :class => 'btn-mini', :toggle => :button
   = check_box_tag :tbd, :t, false, :class => :hide

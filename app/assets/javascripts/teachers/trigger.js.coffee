@@ -65,6 +65,7 @@ jQuery ->
 
     for m in root.find(".single-line > button > input[type='checkbox']")
       s = $(m).prop('checked')
+      alert "#{s} --> #{typeof s}"
       sthSelected = sthSelected || s
       break if sthSelected
 

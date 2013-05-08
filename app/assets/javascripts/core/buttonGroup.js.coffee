@@ -12,7 +12,8 @@ window.buttonGroup = {
     unclick = button.hasClass 'active'
     if unclick then button.removeClass('active') else button.addClass('active')
 
-    toggle = button.parent()[0].dataset.toggle
+    # toggle = button.parent()[0].dataset.toggle
+    toggle = button.parent()[0].getAttribute('data-toggle')
 
     children = button.children()
 
