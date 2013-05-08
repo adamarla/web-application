@@ -62,23 +62,10 @@ jQuery ->
   $('#form-qzb').submit (event) ->
     root = $(this).find('#qzb-questions').eq(0)
     sthSelected = false
-
-    alert "root not found!" if root.length is 0
-    entries = root.find ('.single-line')
-    alert " # single-lines = #{entries.length}"
-
-    for m in entries
-      checkbox = $(m).find "input"
-      alert "no checkbox" if checkbox.length is 0
-    return false
-    ###
-
-    checkBoxes = root.find ".single-line > button > input"
-    alert checkBoxes.length
+    checkBoxes = root.find ".single-line > .btn > input"
 
     for m in checkBoxes
       s = $(m).prop('checked')
-      alert "#{s} --> #{typeof s}"
       sthSelected = sthSelected || s
       break if sthSelected
 

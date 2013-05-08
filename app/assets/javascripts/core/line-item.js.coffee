@@ -17,11 +17,6 @@ window.line = {
     # type = if json.tag? then '.two-line' else ''
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
-    if obj.find("button > input").length is 0
-      alert("[first]: no button > checkbox")
-    else
-      alert(" found button > checkbox ")
-
     obj.addClass(json.klass) if json.klass?
     elements = obj.children()
 
@@ -47,13 +42,12 @@ window.line = {
         3. long-badge
     ###
     if buttons?
-      alert "[line:write] --> no checkbox" if obj.find("button > input").length is 0
       $(m).remove() for m in obj.children(".subtext")
       $(m).remove() for m in obj.children(".long-badge")
       $(m).remove() for m in obj.children("input[type='checkbox']")
 
       buttonsToKeep = if typeof buttons is 'string' then [buttons] else buttons # turn into an array
-      for m in obj.children('button')
+      for m in obj.children('.btn')
         i = $(m).children().eq(0)
         for k in buttonsToKeep
           if i.hasClass k
@@ -62,7 +56,7 @@ window.line = {
           else
             i.parent().remove()
     else
-      $(m).remove() for m in obj.children('button')
+      $(m).remove() for m in obj.children('.btn')
     
     text = obj.children(".text").eq(0)
 
@@ -107,7 +101,7 @@ window.line = {
     if subtext.length > 0
       # If JSON has :tag 
       if json.tag?
-        $(m).remove() for m in obj.children('button')
+        $(m).remove() for m in obj.children('.btn')
         subtext.text json.tag
         unless mn
           spanLeft -=3
