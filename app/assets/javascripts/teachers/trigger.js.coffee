@@ -63,7 +63,10 @@ jQuery ->
     root = $(this).find '#qzb-questions'
     sthSelected = false
 
-    for m in root.find(".single-line > button > input[type='checkbox']")
+    checkBoxes = root.find ".single-line > button > input[type='checkbox']"
+    alert checkBoxes.length
+
+    for m in checkBoxes
       s = $(m).prop('checked')
       alert "#{s} --> #{typeof s}"
       sthSelected = sthSelected || s
