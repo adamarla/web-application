@@ -12,7 +12,7 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span4{ :href => "#"}
+              %a.brand.span4{ :href => "/"}
                 = image_tag "logo-mit-beta-2.png"
       .row-fluid
         .span3.offset1{ :id => 'faq-side-panel' }
@@ -25,6 +25,8 @@
               = simple_link :for => "On Grading", :href => '#faq-grading', :icon => 'icon-chevron-right'
             %li
               = simple_link :for => "On Scanning", :href => '#faq-scanning', :icon => 'icon-chevron-right'
+            %li
+              = simple_link :for => "Home", :href => '/', :icon => 'icon-home'
         .span7.offset3{ :id => 'faq-content-panel' }
           = render :partial => 'faq/general'
           = render :partial => 'faq/website'
