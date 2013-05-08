@@ -323,7 +323,7 @@ img {
     top: 3px ;
     bottom: 2px ;
   } 
-  min-height: 24px ;
+  min-height: 26px ;
   font-size: 11.5px ; 
   cursor: pointer ; 
   color: white ;
@@ -417,19 +417,18 @@ img {
     text-align: center ;
   } 
 
-  button {
-    &[data-toggle='button'] {
-      background-color: transparent ;
-      &.active {
-        background-color: rgba(0,129,194,0.7) ;
-      }
+  .btn {
+    background: transparent ;
+    &.active {
+      background-color: rgba(0,129,194,0.7) ;
+      border-radius: 5px ;
     }
     > i {
       vertical-align: middle ;
       margin-left: 5% ;
     } 
     box-shadow: none ;
-    padding: 1px 2px 2px 2px ;  
+    padding: 1px 2px 2px 2px ; 
   }
 
 } 
