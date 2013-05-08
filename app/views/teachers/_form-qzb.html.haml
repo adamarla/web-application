@@ -14,4 +14,7 @@
       .input-append.pull-right.span10
         = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"
         %button.btn.btn-inverse{ :type => :submit }= "#{btn_text}"
+        %label{ :id => "show-selected-lbl" }
+          %input{ :id => "show-selected", :type => "checkbox" }
+          Show Selected
   %div.purge-blind{ :id => "#{context}-questions" }
