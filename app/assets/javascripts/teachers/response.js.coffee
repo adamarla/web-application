@@ -198,10 +198,6 @@ jQuery ->
       # Auto-click first line - if needed
       target.children('.single-line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst
 
-    # If user is on favourites tab, then show only the favs
-    if $('#tab-qzb-3').parent().hasClass 'active'
-      $('#tab-qzb-3').click()    
-      
     # If in tutorial mode, then start the next tutorial - if any
     if tutorial.active
       tutorial.start lesson if lesson?

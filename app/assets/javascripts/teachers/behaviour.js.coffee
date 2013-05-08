@@ -163,9 +163,10 @@ jQuery ->
     topicSelected =  $('[id^="qzb-pick-"].active')
     unless $('#show-selected').is(':checked')
       topicSelected.children('[page]').removeClass 'hide'
-    topicSelected.find('.single-line.leaf').filter(':visible').each ->
-      if $(this).hasClass('fav') is false
-        $(this).hide()
+      candidates = $('#qzb-questions').find('.btn.btn-mini').parents('.single-line.leaf')
+    else
+      candidates = $('#qzb-questions').find('.btn.btn-mini.active').parents('.single-line.leaf')
+    candidates.not('.fav').hide()
     $('#tab-qzb-2').parent().removeClass 'active'
     $('#tab-qzb-3').parent().addClass 'active'
     return true
@@ -174,17 +175,16 @@ jQuery ->
     event.stopPropagation()
     topicSelected =  $('[id^="qzb-pick-"].active')
     if $('#show-selected').is(':checked')
-      topicSelected.children$('.btn.btn-mini').each ->
-        $(this).parent('.fav').show()
+      $('#qzb-questions').find('.btn.btn-mini.active').parent().show()
     else
       topicSelected.children('[page]').removeClass 'show'
       topicSelected.children('[page]').addClass 'hide'
-      if $('#left-paginator > ul > li.active').length is 0
+      if $('#left-paginator > ul > li.active').not('.disabled').length is 0
         pageSelected = 1
       else
         pageSelected = $('#left-paginator > ul > li.active > a')[0].text
       topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
-      topicSelected.find('.single-line.leaf').show()
+      $('#qzb-questions').find('.single-line.leaf').show()
     $('#tab-qzb-3').parent().removeClass 'active'
     $('#tab-qzb-2').parent().addClass 'active'
     return true
@@ -230,19 +230,21 @@ jQuery ->
     if $this.is(':checked')
       unless $('#tab-qzb-3').parent().hasClass('active')
         topicSelected.children('[page]').removeClass 'hide'
-      topicSelected.find('.single-line.leaf').filter(':visible').each ->
-        $(this).children('.btn.btn-mini').not('.active').parent().hide()
+        candidates = $('#qzb-questions').find('.single-line.leaf')
+      else  
+        candidates = $('#qzb-questions').find('.single-line.leaf.fav')
+      candidates.children('.btn.btn-mini').not('.active').parent().hide()
     else 
       if $('#tab-qzb-3').parent().hasClass('active')
-        topicSelected.find('.single-line.leaf.fav').show()
+        $('#qzb-questions').find('.single-line.leaf.fav').show()
       else
         topicSelected.children('[page]').addClass 'hide'
-        if $('#left-paginator > ul > li.active').length is 0
+        if $('#left-paginator > ul > li.active').not('.disabled').length is 0
           pageSelected = 1
         else
           pageSelected = $('#left-paginator > ul > li.active > a')[0].text
         topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
-        topicSelected.find('.single-line.leaf').show()
+        $('#qzb-questions').find('.single-line.leaf').show()
 
   ###
     Step 4 of the 'quiz-building' process: Submitting the question selection 
