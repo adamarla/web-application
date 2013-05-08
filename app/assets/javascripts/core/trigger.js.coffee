@@ -396,7 +396,13 @@ jQuery ->
       m = clickedObj
     else if clickedObj.hasClass 'dropdown-toggle'
       m = clickedObj.parent()
-    else if clickedObj.is('button') or clickedObj.is('i') # issue 61: event.target different on Chrome
+    else if clickedObj.hasClass('btn') or clickedObj.is('i') 
+      ### 
+        Above solves two issues
+          61: event.target different on Chrome
+          65: limited nesting within <button> allowed by IE
+      ###
+      
       clickedObj = if clickedObj.is('i') then clickedObj.parent() else clickedObj
       if clickedObj.hasClass('active')
         clickedObj.removeClass 'active'
