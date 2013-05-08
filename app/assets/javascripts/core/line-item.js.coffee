@@ -17,6 +17,11 @@ window.line = {
     # type = if json.tag? then '.two-line' else ''
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
+    if obj.find("button > input").length is 0
+      alert("[first]: no button > checkbox")
+    else
+      alert(" found button > checkbox ")
+
     obj.addClass(json.klass) if json.klass?
     elements = obj.children()
 
