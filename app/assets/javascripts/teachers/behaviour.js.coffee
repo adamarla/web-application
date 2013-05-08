@@ -150,8 +150,43 @@ jQuery ->
         previous = tab.prev 'li'
         section = previous.attr 'marker'
         $.get "sektion/proficiency.json?id=#{section}&topic=#{marker}"
-        
 
+
+    return true
+
+  ###
+    Toggle 'Questions <-> My Suggestions' for a given selection
+    of questions
+  ###
+  $('#tab-qzb-3').on 'click', (event) ->
+    event.stopPropagation()
+    topicSelected =  $('[id^="qzb-pick-"].active')
+    unless $('#show-selected').is(':checked')
+      topicSelected.children('[page]').removeClass 'hide'
+      candidates = $('#qzb-questions').find('.btn.btn-mini').parents('.single-line.leaf')
+    else
+      candidates = $('#qzb-questions').find('.btn.btn-mini.active').parents('.single-line.leaf')
+    candidates.not('.fav').hide()
+    $('#tab-qzb-2').parent().removeClass 'active'
+    $('#tab-qzb-3').parent().addClass 'active'
+    return true
+
+  $('#tab-qzb-2').on 'click', (event) ->
+    event.stopPropagation()
+    topicSelected =  $('[id^="qzb-pick-"].active')
+    if $('#show-selected').is(':checked')
+      $('#qzb-questions').find('.btn.btn-mini.active').parent().show()
+    else
+      topicSelected.children('[page]').removeClass 'show'
+      topicSelected.children('[page]').addClass 'hide'
+      if $('#left-paginator > ul > li.active').not('.disabled').length is 0
+        pageSelected = 1
+      else
+        pageSelected = $('#left-paginator > ul > li.active > a')[0].text
+      topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
+      $('#qzb-questions').find('.single-line.leaf').show()
+    $('#tab-qzb-3').parent().removeClass 'active'
+    $('#tab-qzb-2').parent().addClass 'active'
     return true
 
   ###
@@ -185,6 +220,31 @@ jQuery ->
     teacherId = $('#control-panel').attr 'marker'
     form.attr 'action', "course/questions.json?id=#{courseId}&teacher_id=#{teacherId}"
     return true
+
+  ###
+    Before submitting questions toggle for Selected Questions list
+  ###
+  $('#form-qzb :checkbox').click ->
+    $this = $(this)
+    topicSelected =  $('[id^="qzb-pick-"].active')
+    if $this.is(':checked')
+      unless $('#tab-qzb-3').parent().hasClass('active')
+        topicSelected.children('[page]').removeClass 'hide'
+        candidates = $('#qzb-questions').find('.single-line.leaf')
+      else  
+        candidates = $('#qzb-questions').find('.single-line.leaf.fav')
+      candidates.children('.btn.btn-mini').not('.active').parent().hide()
+    else 
+      if $('#tab-qzb-3').parent().hasClass('active')
+        $('#qzb-questions').find('.single-line.leaf.fav').show()
+      else
+        topicSelected.children('[page]').addClass 'hide'
+        if $('#left-paginator > ul > li.active').not('.disabled').length is 0
+          pageSelected = 1
+        else
+          pageSelected = $('#left-paginator > ul > li.active > a')[0].text
+        topicSelected.children('[page="'+pageSelected+'"]').removeClass 'hide'
+        $('#qzb-questions').find('.single-line.leaf').show()
 
   ###
     Step 4 of the 'quiz-building' process: Submitting the question selection 

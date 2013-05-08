@@ -187,6 +187,10 @@ class Question < ActiveRecord::Base
     return guess.inject(:+).ceil
   end
 
+  def fav(teacher)
+    return teacher.favourites.map(&:question_id).include? self.id
+  end
+
   def edit_tex_layout(length, marks)
     if resize_subparts_list_to length.count
       breaks = page_breaks length
