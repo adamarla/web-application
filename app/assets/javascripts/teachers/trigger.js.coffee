@@ -63,6 +63,16 @@ jQuery ->
     root = $(this).find('#qzb-questions').eq(0)
     sthSelected = false
 
+    alert "root not found!" if root.length is 0
+    entries = root.find ('.single-line')
+    alert "no lines" if entries.length is 0
+
+    for m in entries
+      checkbox = $(m).find "input[type='checkbox']"
+      alert "no checkbox" if checkbox.length is 0
+    return false
+
+    ###
     checkBoxes = root.find ".single-line > button > input[type='checkbox']"
     alert checkBoxes.length
 
