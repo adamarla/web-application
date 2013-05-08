@@ -24,9 +24,10 @@ $panel-colour: lighten(black, 20%) ;
 
 body {
   font: {
-   family: Ubuntu,
-            "Calibri",
-            "Andale Mono",
+   family: Ubuntu, // linux 
+            "Calibri", // windows 
+            "GillSans", // Mac
+            "Futura", // Mac
             "Trebuchet MS",
             "Lucida Grande",
             "Lucida Sans",
