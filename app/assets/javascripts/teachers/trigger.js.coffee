@@ -67,9 +67,8 @@ jQuery ->
     entries = root.find ('.single-line')
     alert "no lines" if entries.length is 0
 
-    ###
     for m in entries
-      checkbox = $(m).find "input[type='checkbox']"
+      checkbox = $(m).find "input"
       alert "no checkbox" if checkbox.length is 0
     return false
     ###
