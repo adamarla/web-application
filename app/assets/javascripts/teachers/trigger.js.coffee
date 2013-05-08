@@ -65,7 +65,7 @@ jQuery ->
 
     alert "root not found!" if root.length is 0
     entries = root.find ('.single-line')
-    alert "no lines" if entries.length is 0
+    alert " # single-lines = #{entries.length}"
 
     for m in entries
       checkbox = $(m).find "input"
