@@ -42,6 +42,7 @@ window.line = {
         3. long-badge
     ###
     if buttons?
+      alert "[line:write] --> no checkbox" if obj.find("button > input").length is 0
       $(m).remove() for m in obj.children(".subtext")
       $(m).remove() for m in obj.children(".long-badge")
       $(m).remove() for m in obj.children("input[type='checkbox']")
