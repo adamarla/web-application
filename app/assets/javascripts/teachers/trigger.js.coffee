@@ -61,16 +61,20 @@ jQuery ->
 
   $('#form-qzb').submit (event) ->
     root = $(this).find('#qzb-questions').eq(0)
-    sthSelected = false
+    isBlank = sthSelected = false
     checkBoxes = root.find ".single-line > .btn > input"
 
     for m in checkBoxes
       s = $(m).prop('checked')
       sthSelected = sthSelected || s
       break if sthSelected
-
-    return true if sthSelected
-    notifier.show 'n-qzb-no-selection'
-    return false
+    
+    if sthSelected
+      name = $(this).find("input[type='text']").eq(0).val()
+      isBlank = if (not name or /^\s*$/.test(name)) then true else false
+      notifier.show 'n-qzb-no-name' if isBlank
+    else
+      notifier.show 'n-qzb-no-selection'
+    return (sthSelected and not isBlank)
 
 
