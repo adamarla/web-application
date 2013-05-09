@@ -47,7 +47,12 @@ img {
 } 
 
 .navbar-inner { 
-  > ul > li > a:not([id='m-account']) { font-size: 14px ; }
+  > ul > li > a:not([id='m-account']) {
+    font : {
+      size: 15px ;
+      weight: 500 ;
+    }
+  }
 } 
 
 .navbar-inner { 
@@ -455,7 +460,7 @@ img {
 .tabs-left, .tabs-right { 
   .nav-tabs { 
     > li {
-      font-size: 11.5px ;
+      font-size: 12px ; 
       > a {
         text-align: left ; 
       }
@@ -650,7 +655,6 @@ button[data-toggle='button'] {
 .tabs-left { 
   > .nav-tabs {
     > li {
-      font-size: 11px ;
       margin-bottom: 5px ;
       &.split {
         margin-bottom: 10px ;
