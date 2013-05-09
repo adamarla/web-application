@@ -29,8 +29,8 @@ window.line = {
 
     if menu?
       toggle.setAttribute 'data-menu', menu
-      dropDown.addClass 'offset1'
-      spanLeft -= 3
+      # dropDown.addClass 'offset1'
+      spanLeft -= 2
       mn = true
     else
       dropDown.remove()
@@ -70,10 +70,15 @@ window.line = {
         lngBdg = true
     else
       b = obj.children('.badge').eq(0)
-      b.text json.badge if b.length isnt 0
-      spanLeft -= (if mn then 1 else 2)
-      b.addClass 'offset1' unless mn
-      b.removeClass 'span1' unless json.badge?
+      
+      if json.badge?
+        b.text json.badge
+        spanLeft -= (if mn then 1 else 2)
+        b.addClass 'offset1' unless mn
+      else if mn # no need for badge. Caret is enough
+        b.remove()
+      else
+        b.removeClass 'span1'
       bdg = true
 
     $(m).remove() for m in obj.children('.badge') if lngBdg

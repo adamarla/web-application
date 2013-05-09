@@ -325,6 +325,11 @@ img {
   color: white ;
   text-transform: lowercase ; 
   border-bottom: 1px solid $lightgray ; 
+
+  .caret { 
+    border-top: 4px solid white ;
+    width: 1px ;
+  } 
   
   &:hover {
     > .text { 
@@ -339,11 +344,13 @@ img {
       background-color: $orange ;
       color: $background ; 
     } 
+    .caret { border-top: 4px solid $orange ; }
   } 
   &.disabled{
     color: $lightgray ;
     .subtext { color: $lightgray ; }
     cursor: no-drop;
+    .caret { border-top: 4px solid $lightgray ; }
   }
   &.red {
     .badge { 
