@@ -23,19 +23,6 @@ $panel-colour: lighten(black, 20%) ;
 
 
 body {
-  font: {
-   family: Ubuntu, // linux 
-            "Calibri", // windows 
-            "GillSans", // Mac
-            "Futura", // Mac
-            "Trebuchet MS",
-            "Lucida Grande",
-            "Lucida Sans",
-            "DejaVu Sans",
-            "Lucida Sans Unicode",
-            sans-serif;
-    size: 12px; 
-  }
   width : 1020px ;
   background-color: $gray ; 
   color: white ; 

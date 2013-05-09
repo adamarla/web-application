@@ -158,8 +158,22 @@ textarea {
 
 body {
   margin: 0;
-  font-family: Ubuntu, 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans', 'DejaVu Sans', 'Lucida Sans Unicode', sans-serif;
-  font-size: 12px;
+  font: {
+   family: Ubuntu, // linux 
+           Calibri, // windows 
+           Candara, // windows 
+           "Gill Sans", // Mac
+           "Gill Sans MT", // Mac
+            Futura, // Mac
+           "Trebuchet MS",
+           "Lucida Grande",
+           "Lucida Sans",
+           "DejaVu Sans",
+           "Lucida Sans Unicode",
+           sans-serif;
+    size: 12px; 
+    weight: 300 ;
+  }
   line-height: 14px;
   color: #333333;
   // background-color: #ffffff;
