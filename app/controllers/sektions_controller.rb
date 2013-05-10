@@ -41,6 +41,14 @@ class SektionsController < ApplicationController
     @sektion = Sektion.find params[:id]
     @students = @sektion.students.order(:first_name)
     @context = params[:context]
+
+    if @contex == 'wsb'
+      ws_ids = Testpaper.where(:quiz_id => params[:quiz]).map(&:id)
+      past_takers = AnswerSheet.where(:testpaper_id => ws_ids).map(&:student_id).uniq
+      @disabled = @students.map(&:id) & past_takers
+    else
+      @disabled = []
+    end
   end 
 
   def proficiency

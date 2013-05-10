@@ -82,9 +82,9 @@ class Quiz < ActiveRecord::Base
     picked_questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
     students.each do |s|
-      taken = AnswerSheet.where(:student_id => s.id).map(&:testpaper_id)
+      # taken = AnswerSheet.where(:student_id => s.id).map(&:testpaper_id)
       # Don't issue the same quiz to the same students
-      next unless (taken & past).blank? 
+      # next unless (taken & past).blank? 
 
       testpaper.students << s # (2) 
       picked_questions.each do |q|
