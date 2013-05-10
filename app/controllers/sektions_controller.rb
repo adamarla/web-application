@@ -42,7 +42,7 @@ class SektionsController < ApplicationController
     @students = @sektion.students.order(:first_name)
     @context = params[:context]
 
-    if @contex == 'wsb'
+    if @context == 'wsb'
       ws_ids = Testpaper.where(:quiz_id => params[:quiz]).map(&:id)
       past_takers = AnswerSheet.where(:testpaper_id => ws_ids).map(&:student_id).uniq
       @disabled = @students.map(&:id) & past_takers
