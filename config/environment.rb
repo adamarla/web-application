@@ -15,3 +15,4 @@ SavonClient = Savon::Client.new do
 end
 
 SavonClient.http.read_timeout = 600 # 10 mins seems good enough to finish most SOAP operations
+PREFAB_SECTION = 58

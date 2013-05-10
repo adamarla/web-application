@@ -33,7 +33,7 @@ class TeachersController < ApplicationController
                                       :country => country
                                      
       if teacher.save 
-        # Mailbot.welcome_teacher(teacher.account).deliver
+        Mailbot.welcome_teacher(teacher.account).deliver
         sign_in teacher.account
         redirect_to teacher_path
       end # no reason for else if client side validations worked
@@ -89,7 +89,7 @@ class TeachersController < ApplicationController
       @sektions = []
     else
       @sektions = teacher.sektions
-      @sektions = Sektion.where(:id => 58) if @sektions.blank?
+      @sektions = Sektion.where(:id => PREFAB_SECTION) if @sektions.blank?
     end
     @context = params[:context]
   end
