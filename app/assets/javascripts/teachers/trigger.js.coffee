@@ -50,15 +50,8 @@ jQuery ->
     return true
 
   ###
-  $('#btn-editqz-nodrop').click (event) ->
-    target = $('#editqz-1')
-    for m in target.children('.single-line')
-      $(m).removeClass 'selected'
-      $(j).prop('checked', false) for j in $(m).find("input[type='checkbox']")
-      $(k).removeClass 'badge-warning' for k in $(m).children('.badge')
-    return true
+    [qzb] : Ensure that atleast one question is selected
   ###
-
   $('#form-qzb').submit (event) ->
     root = $(this).find('#qzb-questions').eq(0)
     isBlank = sthSelected = false
@@ -77,4 +70,20 @@ jQuery ->
       notifier.show 'n-qzb-no-selection'
     return (sthSelected and not isBlank)
 
+  ###
+    [wsb] : Ensure that atleast one student is selected (issue #70) 
+  ###
+  $('#form-wsb-3').submit (event) ->
+    students = $(this).children("[id='wsb-sektions']").eq(0)
+    sthSelected = false
+    checkBoxes = students.find("input[type='checkbox']")
+
+    for m in checkBoxes
+      s = $(m).prop('checked')
+      sthSelected = sthSelected || s
+      break if sthSelected
+    
+    return true if sthSelected
+    notifier.show 'n-wsb-no-selection'
+    return false
 

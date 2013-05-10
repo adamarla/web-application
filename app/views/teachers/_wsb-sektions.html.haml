@@ -13,7 +13,8 @@
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span8{ :id => 'wsb-div-milestone-3' }
     = simple_form_for :checked, :remote => true, 
-    :html => { :class => 'multi-select', 'data-action' => "#{quiz_assign_path}?id=:id", 'data-id' => 'tab-wsb-quizzes'} do |f|
+    :html => { :id => 'form-wsb-3', :class => 'multi-select', 
+    :data => { :action => "#{quiz_assign_path}?id=:id", :id => 'tab-wsb-quizzes'} } do |f|
       .btn-toolbar.purge-skip
         .btn-group
           = simple_button :icon => 'icon-list', :id => 'select-all-for-quiz',
