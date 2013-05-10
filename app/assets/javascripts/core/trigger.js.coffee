@@ -389,7 +389,7 @@ jQuery ->
 
     clickedObj = $(event.target)
     m = null
-    hasButton = $(this).children('button').length > 0
+    hasButton = $(this).children('.btn').length > 0
     # alert clickedObj.attr('class')
 
     if clickedObj.hasClass('dropdown')
