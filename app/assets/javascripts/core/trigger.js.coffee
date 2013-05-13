@@ -122,21 +122,49 @@ jQuery ->
     variables within the JS based on the results the server being accessed returns
   ###
 
-  pinghandler = (response) ->
+  onPing = (response) ->
     if response.deployment is 'production'
       gutenberg.server = gutenberg.serverOptions.remote
     else
       gutenberg.server = gutenberg.serverOptions.local
     if response.new is true
       tutorial.start 'welcome-milestone-1' if response.who is 'Teacher'
+
+    # if logged in user is a teacher, then update her demo info (which demos done, which remain)
+    if response.demo?
+      demo = $('#m-demo')
+      buildable = demo.find "input[type='radio']"
+      
+      for m in buildable
+        $(m).prop('disabled', true)
+        $(m).parent().addClass 'disabled'
+
+      for m in response.demo.build
+        radio = buildable.filter("[value=#{m}]").eq(0)
+        radio.prop 'disabled', false
+        radio.parent().removeClass 'disabled'
+
+      downloadable = demo.find 'a[marker]'
+      for j in response.demo.download
+        a = downloadable.filter("[marker=#{j.id}]").eq(0)
+
+        a.removeClass 'disabled'
+        href = a.attr 'href'
+            
+        # Update the download worksheet PDF link 
+        for key in ['a', 'b', 'c']
+          break unless j[key]? # no :b if no :a, no :c if no :b etc
+          while href.search(":#{key}") isnt -1
+            href = href.replace ":#{key}", j[key]
+        a.attr 'href', href
     return true
     
-  pingargs =
+  pingArgs =
   	url: '/ping'
-  	success: pinghandler
+  	success: onPing
   	async: false
 
-  $.ajax pingargs
+  $.ajax pingArgs
 
   $('#how-it-works').carousel({
     interval : 5000

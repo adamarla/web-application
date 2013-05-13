@@ -28,6 +28,8 @@
     = render :partial => 'modals/user/account'
     = render :partial => 'modals/teacher/suggestion'
     = render :partial => 'modals/teacher/add-sektion'
+    = render :partial => 'modals/teacher/demo-intro'
+    = render :partial => 'modals/teacher/demo'
     = render :partial => 'modals/user/ask-a-question'
   #notifications
     = render :partial => 'notifications/teacher/favourited'
@@ -36,6 +38,7 @@
     = render :partial => 'notifications/teacher/qzb-no-name'
     = render :partial => 'notifications/teacher/new-sektion'
     = render :partial => 'notifications/teacher/queued'
+    = render :partial => 'notifications/teacher/prefabricating'
     = render :partial => 'notifications/teacher/compiled'
     = render :partial => 'notifications/teacher/edit-quiz'
     = render :partial => 'notifications/shared/last-scan'
@@ -105,9 +108,8 @@
                   = simple_link :for => "Misc.", :as => :dropdown, :id => 'm-teacher-workbench'
                 %li.dropdown
                   = simple_link :for => "How to", :as => :dropdown, :id => 'm-howto'
-                -#%li.dropdown
-                  = simple_link :as => :dropdown, 
-                    :id => 'm-notifications', :icon => "icon-white icon-bell"
+                %li.dropdown
+                  = simple_link :for => "Quick Trial", :id => 'lnk-demo', :href => '#m-demo-intro'
                 %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{tc.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid

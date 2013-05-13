@@ -15,4 +15,14 @@ SavonClient = Savon::Client.new do
 end
 
 SavonClient.http.read_timeout = 600 # 10 mins seems good enough to finish most SOAP operations
+
+# Indices of quizzes, sections, whatever that we pre-fabricate for new users
 PREFAB_SECTION = 58
+PREFAB_QUIZ_ALGEBRA = 337
+PREFAB_QUIZ_CALCULUS = 338
+PREFAB_QUIZ_TRIGO = 339
+PREFAB_QUIZ_GEOMETRY = 340
+PREFAB_QUIZ_PROBABILITY = 341
+
+PREFAB_QUIZ_IDS = [*PREFAB_QUIZ_ALGEBRA..PREFAB_QUIZ_PROBABILITY]
+PREFAB_QUIZ_MAP = { :algebra => 337, :calculus => 338, :trigonometry => 339, :probability => 341 }

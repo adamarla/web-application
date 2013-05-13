@@ -24,6 +24,18 @@ img {
 .push-down { 
   margin-top: 20px ;
 } 
+.push-down-30 { 
+  margin-top: 30px ;
+} 
+.push-down-50 { 
+  margin-top: 50px ;
+} 
+
+a { 
+  &.disabled { 
+    color: $lightgray ;
+  } 
+} 
 
 .subtext { 
   color: $orange ;
@@ -163,6 +175,19 @@ img {
   &.regular { 
     max-width: 350px ; 
   }
+
+  &.lateral-slide { 
+    &.fade {
+      left: -25% ;
+      transition: opacity 0.3s linear, left 0.3s ease-out ;
+      -moz-transition: opacity 0.3s linear, left 0.3s ease-out ;
+      width: 100% ;
+      margin-top:-15%;
+    }
+    &.in { 
+      left: 25% ;
+    } 
+  } 
   
   h1,h2,h3,h4,h5,h6 { 
     color: $orange ;
@@ -198,7 +223,7 @@ img {
     color: white ;
     > li {
       font : {
-        size: 11px ;
+        // size: 11px ;
       }
     }
   }
@@ -1067,3 +1092,32 @@ li.split {
 #show-selected-lbl {
   line-height: 24px ;
 }
+
+#m-demo { 
+  button { 
+    margin-top: 7px ;
+  } 
+  line-height: 14px ;
+
+  ul.nav {
+    li > a { 
+      font : { 
+        size: 14px ;
+        weight: 300 ;
+        family: "Ubuntu Condensed" ;
+      }
+      margin-bottom: 10px ;
+    }
+  }
+
+  label.radio { 
+    font : {
+      family : "Ubuntu Condensed" ;
+      weight: 300 ;
+    } 
+    &.disabled {
+      color: $lightgray ;
+    } 
+  } 
+} 
+

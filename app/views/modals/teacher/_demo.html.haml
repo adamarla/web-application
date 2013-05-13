@@ -1,0 +1,70 @@
+
+#m-demo.modal.fade.lateral-slide{ :role => :dialog }
+
+  -# static components
+  .row-fluid
+    -# build
+    .span3.offset1
+      .span3
+        = image_tag 'quick-trial/build.png', :class => 'big-icon'
+      .span8
+        %h1= "Pick a topic"
+        %p
+          \... and we will make a short quiz and a worksheet for you
+        %p
+          Each quiz has 1-2 questions and the resulting worksheet is made 
+          for one fictitious student
+        %p
+          Please allow a couple of minutes for the PDFs to get ready
+
+    -# print
+    .span3
+      .span3
+        = image_tag 'quick-trial/printer.png', :class => 'big-icon'
+      .span8
+        %h1= "Print & Write"
+        %p
+          Download the 1-page worksheet for a topic and print it out 
+        %p
+          Then, pretend to be a student and write something - preferably with a pen -  
+          in the blank space provided after every question
+        %p
+          We recommend you make intentional mistakes so that you can see how we grade
+
+    -# upload
+    .span3
+      .span3
+        = image_tag 'quick-trial/upload.png', :class => 'big-icon'
+      .span8
+        %h1= "Scan & Upload"
+        %p
+          When done writing, put the page in a scanner and scan
+        %p
+          Most - if not all - modern scanners will give you the option of saving the scan 
+          as a document PDF. Select that option. What you will then have is one PDF file 
+          with all scanned pages in it
+        %p
+          Upload that PDF file. That's it!! We now have the worksheet and will grade it shortly. You 
+          will get an e-mail when we are done grading
+          
+
+  -# active components
+  .row-fluid.push-down 
+    .span3.offset1
+      = simple_form_for :prefab, :remote => true, :url => prefab_path, 
+      :defaults => { :label => false }, :html => { :class => 'offset4' } do |f|
+        = f.input :topic,
+                  :collection => PREFAB_QUIZ_MAP.map{ |m| [ m.first.to_s.humanize, m.last ] },
+                  :label_method => :first, 
+                  :value_method => :last, 
+                  :as => :radio_buttons
+        = simple_button :for => 'Make PDF', :type => :submit, :class => 'btn-primary push-down'
+    .span3
+      %ul.nav.offset4
+        - PREFAB_QUIZ_MAP.each do |m|
+          %li
+            = simple_link :for => "#{m.first.to_s.humanize} PDF", 
+            :class => 'disabled', :marker => m.last,
+            :href => "#{Gutenberg['server']}/mint/ws/:a/assignment-:b-:c.pdf"
+    .span3
+

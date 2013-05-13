@@ -155,6 +155,9 @@ jQuery ->
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
+    else if url.match(/prefab/)
+      monitor.add json
+      notifier.show 'n-prefabricating', json
     else
       matched = false
 

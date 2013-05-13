@@ -247,16 +247,29 @@ class Quiz < ActiveRecord::Base
     return clone
   end
 
-  def clone
-    # Remember: The only reason a quiz needs to be cloned is if its being edited
-    selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
-    name = "#{self.name} (edited)"
+  def clone(teacher = nil)
+=begin
+    A quiz is cloned under the following situations 
+      1. if it is being edited but cannot be changed in place (because of existing worksheets)
+      2. a newly registered teacher is doing the quick-trial
 
-    copy = Quiz.new :name => name, :teacher_id => self.teacher_id, 
-                    :question_ids => selections, :num_questions => selections.count, 
-                    :parent_id => self.id 
+      'teacher' != nil => quiz being cloned for a teacher different from the original author
+=end
+    selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
+
+    if teacher.nil?
+      name = "#{self.name} (edited)"
+      author = self.teacher_id
+    else
+      name = self.name
+      author = teacher
+    end
+
+    copy = Quiz.new :name => name, :teacher_id => author, :question_ids => selections,
+                    :num_questions => selections.count, :parent_id => self.id 
+
     msg = copy.save ? "The quiz needed to be cloned first and a new version - #{name} - has been created." : nil
-    return msg
+    return (teacher.nil? ? msg : copy)
   end
 
   def remove_questions(question_ids)

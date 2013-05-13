@@ -115,7 +115,7 @@ window.karo = {
 
       if json?
         for key in ['a', 'b', 'c', 'd', 'e'] # You really shouldnt have > 5 placeholders in a URL
-          break unless json[key]? # no :b if no :a, no :b if no :c etc
+          break unless json[key]? # no :b if no :a, no :c if no :b etc
           while ajax.search(":#{key}") isnt -1
             ajax = ajax.replace ":#{key}", json[key]
       return ajax

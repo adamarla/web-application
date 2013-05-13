@@ -10,17 +10,38 @@ class ApplicationController < ActionController::Base
   end 
 
   def ping
+    json = {} 
+
+    json[:deployment] = Rails.env
     if current_account
       case current_account.loggable_type
         when "Teacher"
           is_new = current_account.loggable.quizzes.count < 1
+          t = current_account.loggable
+
+          # Update info on which demos have been done and which remain
+          cloned = t.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
+          json[:demo] = { 
+            :build => (PREFAB_QUIZ_IDS - cloned.map(&:parent_id)), 
+            :download => cloned.map{ |m|
+              ws = m.testpapers.first
+              ws = ws.nil? ? 1 : ws.id
+              {
+                :id => m.parent_id,
+                :a => encrypt(ws,7),
+                :b => m.id,
+                :c => ws
+              }
+            }
+          }
         else 
           is_new = false
       end
-      render :json => { :deployment => Rails.env, :new => is_new, :who => current_account.loggable_type }
-    else
-      render :json => {:deployment => Rails.env}
+      json[:new] = is_new
+      json[:who] = current_account.loggable_type
     end
+
+    render :json => json, :status => :ok
   end
 
 end

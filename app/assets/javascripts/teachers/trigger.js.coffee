@@ -87,3 +87,13 @@ jQuery ->
     notifier.show 'n-wsb-no-selection'
     return false
 
+  ###
+    Lauch QuickTrial demo on click
+  ###
+  $('#btn-launch-demo').on 'click', (event) ->
+    event.stopImmediatePropagation()
+    m = $(this).closest('.modal').eq(0)
+    m.modal 'hide'
+    $('#m-demo').modal 'show'
+    return true
+
