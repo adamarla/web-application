@@ -157,7 +157,7 @@ jQuery ->
         $(quiz).removeClass('disabled') if quiz?
     else if url.match(/prefab/)
       monitor.add json
-      notifier.show 'n-prefabricating', json
+      # notifier.show 'n-prefabricating', json
     else
       matched = false
 
