@@ -39,5 +39,13 @@ window.demo = {
     return true
 
   update : (json) ->
+    radioBtns = demo.root.find "input[type='radio']"
+
+    for m in json
+      radio = radioBtns.filter("[value=#{m.id}]").eq(0)
+      radio.parent().addClass 'disabled'
+      radio.prop 'disabled', true
+
+    demo.setDownloadUrls json
     return true
 }
