@@ -213,6 +213,7 @@ a {
 
   p {
     color: white ;
+    font-size: 13px ;
   }
 
   .control-label {
@@ -1102,18 +1103,19 @@ li.split {
   ul.nav {
     li > a { 
       font : { 
-        size: 14px ;
+        size: 12px ;
         weight: 300 ;
-        family: "Ubuntu Condensed" ;
       }
-      margin-bottom: 10px ;
+      margin-bottom: 7px ;
+      padding-bottom: 3px ;
+      border-bottom: 1px dotted white ; 
     }
   }
 
   label.radio { 
     font : {
-      family : "Ubuntu Condensed" ;
       weight: 300 ;
+      size: 12px ;
     } 
     &.disabled {
       color: $lightgray ;

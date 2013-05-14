@@ -160,7 +160,6 @@ body {
   margin: 0;
   font: {
    family: Ubuntu, // linux 
-           Calibri, // windows 
            "Gill Sans", // Mac
            "Gill Sans MT", // Mac
             Futura, // Mac
@@ -175,8 +174,8 @@ body {
   }
   line-height: 14px;
   color: #333333;
-  // background-color: #ffffff;
   background-color: $background ; 
+  word-spacing: 1px ;
 }
 
 a {
