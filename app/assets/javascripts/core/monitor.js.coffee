@@ -65,6 +65,6 @@ window.monitor = {
     demo.update json.demo
 
     # Launch notifier
-    notifier.show('n-compiled') if sthCompiled
+    # notifier.show('n-compiled') if sthCompiled
     return true
 }
