@@ -157,11 +157,9 @@ jQuery ->
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
 
-      # update the demo if some of these quizzes are the pre-fab kind
-      demo.update json.demo
     else if url.match(/prefab/)
       monitor.add json
-      # notifier.show 'n-prefabricating', json
+      notifier.show 'n-prefabricating', json
     else
       matched = false
 

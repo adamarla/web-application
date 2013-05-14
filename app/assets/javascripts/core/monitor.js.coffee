@@ -49,12 +49,11 @@ window.monitor = {
     $(m).empty() for m in ul
 
     sthCompiled = false
-
     for type in ['quizzes', 'worksheets']
       list = json[type]
       sthCompiled = sthCompiled or (list.length > 0)
       stub = ul.filter("[class~=#{type}]").eq(0)
-
+      
       for m in list # m = { :id => ..., :name => ... }
         at = monitor[type].indexOf m.id
         if at isnt -1
@@ -62,6 +61,8 @@ window.monitor = {
           $("<li>#{m.name}</li>").appendTo(stub)
 
     monitor.stop() if monitor.isEmpty()
+    # update the demo if some of these quizzes are the pre-fab kind
+    demo.update json.demo
 
     # Launch notifier
     notifier.show('n-compiled') if sthCompiled
