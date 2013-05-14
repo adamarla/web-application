@@ -151,10 +151,14 @@ jQuery ->
       $('#qzb-questions .row-fluid.single-line.leaf.selected').addClass('fav')
       notifier.show 'n-favourited'
     else if url.match(/ping\/queue/)
+      # enable the newly built quizzes 
       list = $('#pane-wsb-quizzes').children()
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
+
+      # update the demo if some of these quizzes are the pre-fab kind
+      demo.update json.demo
     else if url.match(/prefab/)
       monitor.add json
       # notifier.show 'n-prefabricating', json
