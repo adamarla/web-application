@@ -146,6 +146,13 @@ jQuery ->
   })
 
   ###
+    Add and initialize all stopwatches 
+  ###
+  for m in $('.stopwatch')
+    stopWatch.add m
+  stopWatch.initialize()
+
+  ###
     HUGELY IMPORTANT: Detect whether or not client browser supports the HTML5 
     features we require. If not, then let the user know
 
