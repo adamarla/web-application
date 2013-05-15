@@ -66,7 +66,7 @@
             :href => "#{Gutenberg['server']}/mint/ws/:a/assignment-:b-:c.pdf"
     .span3
       %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
-      = simple_form_for :upload, :url => "http://10.10.0.2:8080/ScanUploader/uploadScan", 
+      = simple_form_for :upload, :url => "#{Gutenberg['server']}/ScanUploader/uploadScan", 
       :remote => true, :multipart => true, :html => { :target => 'upload-status', :class => 'offset2' } do |f|
         = f.file_field :scans
         = simple_button :for => "Upload", :type => :submit, :icon => 'icon-upload', :class => 'btn-primary'
