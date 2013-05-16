@@ -36,6 +36,12 @@ window.demo = {
         while href.search(":#{key}") isnt -1
           href = href.replace ":#{key}", j[key]
       a.attr 'href', href
+      
+      # stop any stopwatch 
+      watch = a.siblings('.stopwatch')[0]
+      if watch?
+        $(watch).text "Ready"
+        stopWatch.stop watch
     return true
 
   update : (json) ->

@@ -58,12 +58,13 @@
                   :as => :radio_buttons
         = simple_button :for => 'Make PDF', :type => :submit, :class => 'btn-primary push-down'
     .span3
-      %ul.nav.offset4
+      %ul.nav.offset3
         - PREFAB_QUIZ_MAP.each do |m|
-          %li
+          %li{ :marker => m.last }
             = simple_link :for => "#{m.first.to_s.humanize} PDF", 
-            :class => 'disabled', :marker => m.last,
+            :class => 'span7 disabled', :marker => m.last,
             :href => "#{Gutenberg['server']}/mint/ws/:a/assignment-:b-:c.pdf"
+            .stopwatch.span4
     .span3
       %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
       = simple_form_for :upload, :url => "#{Gutenberg['server']}/ScanUploader/uploadScan", 

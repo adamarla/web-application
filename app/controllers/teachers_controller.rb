@@ -186,7 +186,7 @@ class TeachersController < ApplicationController
         ws.update_attribute :job_id, job.id
         estimate = minutes_to_completion job.id
         render :json => { :monitor => { :quiz => clone.id, :worksheet => ws.id }, 
-                          :notify => { :title => "#{estimate} minute(s)" }},
+                          :timer => { :on => topic, :for => "#{estimate * 60}"} },
                           :status => :ok
       end
     else # no clone. should never happen

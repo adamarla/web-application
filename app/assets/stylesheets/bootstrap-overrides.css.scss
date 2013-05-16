@@ -1101,14 +1101,26 @@ li.split {
   line-height: 14px ;
 
   ul.nav {
-    li > a { 
-      font : { 
-        size: 12px ;
-        weight: 300 ;
+    li {
+      > a { 
+        font : { 
+          size: 12px ;
+          weight: 300 ;
+        }
+        padding: {
+          top: 3px ;
+          bottom: 3px ;
+        }
+        border-bottom: 1px dotted white ; 
       }
-      margin-bottom: 7px ;
-      padding-bottom: 3px ;
-      border-bottom: 1px dotted white ; 
+
+      [class*='span'] { 
+        min-height: 15px ;
+      }
+
+      > .stopwatch { 
+        font: { size: 10px ; weight: 500 ; }
+      }
     }
   }
 

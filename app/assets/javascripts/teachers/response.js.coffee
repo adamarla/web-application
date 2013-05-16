@@ -159,6 +159,9 @@ jQuery ->
 
     else if url.match(/prefab/)
       monitor.add json
+      x = $('#m-demo').find("li[marker=#{json.timer.on}]").eq(0)
+      watch = x.children('.stopwatch')[0]
+      stopWatch.start watch, parseInt(json.timer.for)
       # notifier.show 'n-prefabricating', json
     else
       matched = false
