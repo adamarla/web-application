@@ -117,6 +117,8 @@ window.line = {
       else
         subtext.remove()
 
+    watch = obj.children('.stopwatch')[0]
+    $(watch).remove() unless json.timer?
     # .text is always used
     text.addClass "span#{spanLeft}"
 
