@@ -190,7 +190,6 @@ a {
   
   h1,h2,h3,h4,h5,h6 { 
     color: $orange ;
-    text-align: center ;
     &.bold { font-weight: 600 ; }
   } 
 
@@ -916,6 +915,10 @@ li.split {
 }
 
 #m-suggestion-upload {
+  p {
+    font-size: 12px ;
+  }
+
   li {
    color: white ;
    font-size: 11px ;

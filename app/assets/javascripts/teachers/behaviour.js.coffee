@@ -333,11 +333,14 @@ jQuery ->
   ###
   
   $('#m-suggestion-upload').on 'click', 'button', (event) ->
-    file = $(this).closest('.row-fluid').siblings("input[type='file']")[0]
+    x = $(this).siblings()
+    file = x.filter("[type='file']")[0]
+    warning = x.filter(".subtext")[0]
+
     if $(file).val().length > 0 # => sth. selected
-      $(file).next().addClass 'hide' # => next = plz. select file first msg 
+      $(warning).addClass 'hide' # => next = plz. select file first msg 
     else
-      $(file).next().removeClass 'hide'
+      $(warning).removeClass 'hide'
       event.stopImmediatePropagation()
       return false
     return true

@@ -1,31 +1,41 @@
 
-#m-suggestion-upload.modal.fade.regular{ :role => :dialog }
-  .modal-header
-    %h2= "Upload File with Suggested Question(s)"
-    %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
-  .modal-body
-    = simple_form_for :suggestion, :url => suggestion_path, :remote => true, :multipart => true, 
-    :html => { :target => 'upload-status' } do |f|
-      = f.file_field :uploaded_doc
-      .subtext.hide= "Please select a file first"
+#m-suggestion-upload.modal.fade.wide{ :role => :dialog }
+  .row-fluid
+    .span2
+      = image_tag 'quick-trial/upload.png', :class => 'big-icon'
+    .span9
       .row-fluid
-        .span4
-          %button.btn.btn-large.btn-primary.push-down.pull-left= "Upload"
-        .span8.push-down
-          .subtext= "Accepted formats"
-          .subtext.white
-            PDF, Microsoft Word Document, OpenOffice Document, Images (.jpeg, .gif etc) <b>or</b> Simple Text file
-      %h3
-        By clicking on upload, you acknowledge that
+        %h3= "Select File"
+        %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
+        = simple_form_for :suggestion, :url => suggestion_path, :remote => true, :multipart => true, 
+        :html => { :target => 'upload-status' } do |f|
+          = f.file_field :uploaded_doc
+          = simple_button :for => "Upload", :type => :submit, :class => 'btn-primary'
+          .subtext.hide= "Please select a file first"
+
       .row-fluid
+        %h3= "Accepted Formats"
         .span5
-          .subtext.white
+          %ul
+            %li= "PDF"
+            %li= "Word Document"
+            %li= "GIFF, JPEG etc."
+        .span5.offset1
+          %ul
+            %li= "OpenOffice Document"
+            %li= "Plain text file"
+          
+      .row-fluid
+        %h3= "By clicking on upload you acknowledge that ... "
+        .span5
+          %p
             To the best of your knowledge, you have never uploaded these same questions before
-          .subtext.white 
+          %p
             These are questions you would want to ask your students 
         .span5.offset1
-          .subtext.white
+          %p
             You are ok with other teachers using these questions in 
             their assignments
-          .subtext.white
+          %p
             These are your own questions - and not drawn from copyrighted sources
+
