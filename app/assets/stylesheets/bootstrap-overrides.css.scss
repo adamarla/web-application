@@ -923,6 +923,12 @@ li.split {
    color: white ;
    font-size: 11px ;
   }
+
+  h3 {
+    &.with-border { 
+      border-bottom: 1px solid white ; 
+    }
+  }
 }
 
 #m-register {
