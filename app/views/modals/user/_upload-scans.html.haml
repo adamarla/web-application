@@ -14,9 +14,9 @@
       = image_tag 'quick-trial/upload.png', :class => 'big-icon'
     .span8
       .row-fluid
-        %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
+        %iframe.hide{ :name => 'uploadedScans', :onload => "postUpload('m-upload-scans')" }
         = simple_form_for :upload, :url => "#{Gutenberg['server']}/ScanUploader/uploadScan", 
-        :remote => true, :multipart => true, :html => { :target => 'upload-status'} do |f|
+        :remote => true, :multipart => true, :html => { :target => 'uploadedScans'} do |f|
           .row-fluid
             = f.file_field :scans
             .subtext.hide= "Please select a file first"
@@ -29,9 +29,9 @@
       = image_tag 'quick-trial/upload.png', :class => 'big-icon'
     .span8
       .row-fluid
-        %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
+        %iframe.hide{ :name => 'uploadedSg', :onload => "postUpload('m-upload-sg')" }
         = simple_form_for :suggestion, :url => suggestion_path, :remote => true, :multipart => true, 
-        :html => { :target => 'upload-status' } do |f|
+        :html => { :target => 'uploadedSg' } do |f|
           .row-fluid
             = f.file_field :uploaded_doc
             .subtext.hide= "Please select a file first"
