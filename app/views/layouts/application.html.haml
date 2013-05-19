@@ -10,7 +10,7 @@
 
 %html{html_attrs}
   %head 
-    %title= "Teach more. Help more. Grade less"
+    %title= "Teach more. Help more. Grade less."
     = stylesheet_link_tag "application" 
     = javascript_include_tag "application", "welcome"
     = javascript_include_tag "external" if Rails.env == "production"
@@ -39,7 +39,7 @@
       .row-fluid
         .hero-unit
           .row-fluid.jumbotron
-            %p.offset1.span8= "Teach more. Help more. Grade less"
+            %p.offset1.span8= "Teach more. Help more. Grade less."
             %ul.nav.nav-list.span3
               %li
                 %a{ :href => faq_path, :target => '_blank'}= "Frequently Asked Questions"
