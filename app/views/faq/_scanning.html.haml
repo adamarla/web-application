@@ -32,21 +32,12 @@
             Should I scan in color or black-and-white?
         .accordion-body.collapse{ :id => 'fs-3' }
           .accordion-inner
-            Either is fine. What is more important is that the scans be clear 
-            so that any handwriting on them can be read
-
-        .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#fs', :toggle => 'collapse' }, :href => '#fs-4' }
-            How do I get clear scans?
-        .accordion-body.collapse{ :id => 'fs-4' }
-          .accordion-inner
             %p
-              Most scanners work in two broad modes - one for scanning photographs 
-              and another for scanning documents
+              Either is fine
             %p
-              You should scan pages in document mode - which generally means scanning at a resolution 
-              of 200-300 dpi ( or dots per inch ). Don't bother with scanning as photographs (600 dpi and above).
-              It would be overkill, unnecessary and slow
+              You should ask your scanner to <b>scan in text / document</b> mode and then 
+              <b>save the scans in PDF format</b>. This way, all your scans would be contained 
+              in just one PDF file. You will then upload this PDF file to send 
 
         .accordion-heading
           %a.accordion-toggle{ :data => { :parent => '#fs', :toggle => 'collapse' }, :href => '#fs-5' }
@@ -54,30 +45,39 @@
         .accordion-body.collapse{ :id => 'fs-5' }
           .accordion-inner
             %p
-              No. You only need to store the scans in a particular location on your 
-              computer and we will take it from there
+              No. If after scanning you have saved scans in a PDF file, then
+              %ul
+                %li
+                  Log into your Gradians.com account
+                %li
+                  Click on <b>Misc > Upload Scans</b>
+                %li
+                  Select the PDF file that has the scans
+                %li
+                  Click on <b>Upload</b>
             %p
-              That location is a folder called <b>ScanTray</b>. It is created  
-              by a small application called <b>Scanbot</b> which you will need to download 
-              once - and only once - onto your computer
-            %p
-              See next question on <b>Scanbot</b>
+              Thats it! We now have the scans and our system will sort them and distribute them for grading
 
         .accordion-heading
           %a.accordion-toggle{ :data => { :parent => '#fs', :toggle => 'collapse' }, :href => '#fs-6' }
-            What is Scanbot and why do I need it?
+            Can students scan and upload their own worksheets so that I don't have to?
         .accordion-body.collapse{ :id => 'fs-6' }
           .accordion-inner
             %p
-              The Scanbot is a small, downloadable utility that runs in the background 
-              and takes care of transmitting any new scans from your PC to us 
+              Sure they can. If you think that your students have easy access to a scanner - either at 
+              home or in school - and can use it, then sure - let them do their own scanning and uploading
             %p
-              Once downloaded, Scanbot will create a special folder on your PC's Desktop 
-              called - <b>ScanTray</b>. This is the only folder Scanbot will looks inside - and 
-              nowhere else
-            %p
-              Thereafter, everytime you scan worksheets, you should ask your scanner 
-              to store the scans in this folder
+              The procedure for uploading is the same as it is for teachers, namely
+              %ul
+                %li
+                  Students log into their Gradians.com account
+                %li
+                  Then they click on <b>Misc > Upload Scans</b>
+                %li
+                  They select the PDF file that has their scans
+                %li
+                  And then they click on <b>Upload</b>
+              
 
       -#
         .accordion-heading

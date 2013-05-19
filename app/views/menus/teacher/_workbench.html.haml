@@ -1,19 +1,4 @@
 
 %ul.dropdown-menu.dropdown-inverse#teacher-workbench{ :role => :menu }
-  -#%li
-    = simple_link :for => "Grade Worksheets", :id => 'lnk-wb-pending', :icon => 'icon-edit'
-  %li
-    = simple_link :for => "Suggest Question(s)", :id => 'lnk-upload-suggestion', 
-    :href => "#m-suggestion-upload", :icon => 'icon-upload'
   %li
     = simple_link :for => "My Groups", :id => 'lnk-mng-sektions', :icon => 'icon-edit'
-  %li
-    = simple_link :for => 'Download Scanbot (Windows only)', :icon => 'icon-download',
-    :href => "#{server}/Scanbot/Scanbot.application"
-    %p.footnote
-      You will need this application to send scans to Gradians.com
--#
-  %li
-    = simple_link :for => "Using suggestion form", :id => 'lnk-suggestion-form',
-    :href => "#{server}/front-desk/teachers/#{teacher.school_id}-#{teacher.id}/petty-cash/#{teacher.id}-#{teacher.first_name}.pdf"
-

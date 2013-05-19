@@ -72,10 +72,6 @@ lnk-suggestion-form :
   notouch : true
   ajax : disabled
 
-lnk-upload-suggestion :
-  toggle : modal
-  notouch : true
-
 lnk-new-quiz :
   autoclick : 
     tab : tab-qzb-1
@@ -446,3 +442,6 @@ lnk-register-teacher :
 m-notifications :
   menu : notifications
 
+lnk-upload :
+  notouch : true
+  toggle : modal

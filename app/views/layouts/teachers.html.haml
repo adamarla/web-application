@@ -26,11 +26,11 @@
 - content_for :modals do
   #modals
     = render :partial => 'modals/user/account'
-    = render :partial => 'modals/teacher/suggestion'
     = render :partial => 'modals/teacher/add-sektion'
     = render :partial => 'modals/teacher/demo-intro'
     = render :partial => 'modals/teacher/demo'
     = render :partial => 'modals/user/ask-a-question'
+    = render :partial => 'modals/user/upload-scans'
   #notifications
     = render :partial => 'notifications/teacher/favourited'
     = render :partial => 'notifications/teacher/qzb-no-selection'
@@ -57,8 +57,6 @@
       = render :partial => "tutorials/teacher/publish-ws/#{m}"
     - ['one', 'two', 'three'].each do |m|
       = render :partial => "tutorials/teacher/mng-sektions/#{m}"
-    - ['one'].each do |m|
-      = render :partial => "tutorials/teacher/upload-scans/#{m}"
     - ['one'].each do |m|
       = render :partial => "tutorials/teacher/welcome/#{m}"
     - ['one'].each do |m|
@@ -98,12 +96,14 @@
             .navbar-inner
               %a.brand.span3{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-              %ul.nav.span8.pull-right
+              %ul.nav.span9.pull-right
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
                   = simple_link :for => "Quizzes", :as => :dropdown, :id => 'm-teacher-quizzes'
                 %li.dropdown
                   = simple_link :for => "Report Cards", :as => :dropdown, :id => 'm-report-cards'
+                %li.dropdown
+                  = simple_link :for => "Upload", :id => 'lnk-upload', :href => '#m-upload-what'
                 %li.dropdown
                   = simple_link :for => "Misc.", :as => :dropdown, :id => 'm-teacher-workbench'
                 %li.dropdown
