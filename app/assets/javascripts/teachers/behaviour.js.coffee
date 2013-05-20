@@ -332,19 +332,6 @@ jQuery ->
     Uploading .... 
   ###
   
-  $('#m-upload-scans, #m-upload-sg').on 'click', 'button', (event) ->
-    form = $(this).closest 'form'
-    file = form.find("[type='file']").eq(0)
-    warning = form.find(".subtext").eq(0)
-
-    if file.val().length > 0 # => sth. selected
-      warning.addClass 'hide' # => next = plz. select file first msg 
-    else
-      warning.removeClass 'hide'
-      event.stopImmediatePropagation()
-      return false
-    return true
-
   $('#m-upload-what').on 'click', 'button', (event) ->
     event.stopImmediatePropagation()
     uploadScans = $(this).attr('id') is 'btn-upload-scans'

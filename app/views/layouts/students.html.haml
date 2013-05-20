@@ -14,6 +14,7 @@
 - content_for :modals do
   #modals
     = render :partial => 'modals/user/account'
+    = render :partial => 'modals/user/upload-scans'
     = render :partial => 'modals/student/enroll'
 
 !!!5
@@ -39,6 +40,8 @@
                   = simple_link :for => "Report Cards", :id => 'lnk-st-rc'
                 %li
                   = simple_link :for => "Inbox", :id => 'lnk-st-inbox'
+                %li.dropdown
+                  = simple_link :for => "Upload", :id => 'lnk-upload', :href => '#m-upload-scans'
                 %li.dropdown
                   = simple_link :for => "Enroll", :id => 'lnk-enroll-self', :href => '#m-enroll-self'
                 %li#cp-account-link.dropdown
