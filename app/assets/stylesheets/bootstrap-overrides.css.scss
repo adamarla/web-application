@@ -160,15 +160,13 @@ a {
   color: $gradians-blue ;
 } 
 
-.fine { 
-} 
-
 .modal { 
   line-height: 15px ;
   padding: 10px ;
   background: rgba(25,25,25,0.8) ; 
   border-radius: 0px ;
   color: white ;
+  font-size: 11px ;
 
   &.wide { 
     width: 460px ;
@@ -195,7 +193,9 @@ a {
   } 
   
   h1,h2,h3,h4,h5,h6 { 
-    color: $orange ;
+    &.white { color: white ; }
+    &.orange { color: $orange ; }
+    &.blue { color: $gradians-blue ; }
     &.bold { font-weight: 600 ; }
   } 
 
@@ -217,7 +217,7 @@ a {
 
   p {
     color: white ;
-    font-size: 13px ;
+    font-size: 12px ;
   }
 
   .control-label {

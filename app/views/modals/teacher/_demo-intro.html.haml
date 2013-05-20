@@ -3,7 +3,10 @@
   .span3
     = image_tag 'quick-trial/idea.png', :class => 'big-icon'
   .span8
-    %p.title= "What is it?"   
+    %h1.blue= "Hello, #{current_account.loggable.first_name}!"
+    %p
+      If you are new to Gradians.com, then might we suggest you try 
+      the QuickTrial first
     %ul
       %li
         %p
