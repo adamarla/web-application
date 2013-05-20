@@ -637,7 +637,7 @@ button[data-toggle='button'] {
 #control-panel { 
   position: fixed ;
   top: 0px ;
-  z-index: 1051 ;
+  z-index: 3;
   min-width: 700px ;
   width: 1024px ;
   ul {
@@ -649,8 +649,7 @@ button[data-toggle='button'] {
 
   a { 
     &.selected { 
-      border-radius: 6px ;
-      background-color: $deep-blue ;
+      color: $orange ; 
     } 
   }
 } 
