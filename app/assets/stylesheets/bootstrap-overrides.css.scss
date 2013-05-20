@@ -289,12 +289,11 @@ a {
 } 
 
 #lnk-logout{ color: $orange ; }
-#m-account, #lnk-add-sektion {
+#lnk-add-sektion {
   background: $deep-blue ;
   float: right ;
   margin-top: 5px ;
   height: 12px ;
-  padding: 13px 15px ; 
   border-radius: 4px ;
   color: white ; 
   text-decoration: none ;
@@ -308,7 +307,12 @@ a {
 
 #cp-account-link { 
   float: right ;
-  margin-top: -5px ;
+  #m-account { 
+    font : { 
+      weight: 500 ;
+    }
+  }
+
 } 
 
 .nav { 
