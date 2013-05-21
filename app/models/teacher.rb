@@ -33,9 +33,6 @@ class Teacher < ActiveRecord::Base
   validates :name, :presence => true  
   validates_associated :account
 
-  # after_create :generate_suggestion_form
-  # after_save   :reset_login_info
-
 =begin
   Destroying a teacher should be a very rare event. It probably 
   shouldn't be done even if the teachers leaves the school. But then
@@ -45,7 +42,6 @@ class Teacher < ActiveRecord::Base
   The point is - cross the bridge when it comes 
 =end
 
-  #after_validation :setup_account, :if => :first_time_save?
   #before_destroy :destroyable? 
 
   def students 
@@ -85,44 +81,6 @@ class Teacher < ActiveRecord::Base
     return Question.where(:id => q_ids)
   end
 
-=begin
-  def build_quiz_with (name, question_ids, parent_id = nil)
-    @quiz = Quiz.new :teacher_id => self.id, :question_ids => question_ids, 
-                     :num_questions => question_ids.count, 
-                     :name => name, :parent_id => parent_id
-
-    # Ideally, one should ask for the TeX to be compiled before saving
-    # @quiz into the database. But in this case, we need a quiz-ID and its layout 
-    # before we can go in for TeX compilation. So, we save first and delete if TeX 
-    # compilation fails
-
-    status = @quiz.save ? :ok : :bad_request
-    response = {}
-
-    unless status == :bad_request
-      response = @quiz.compile_tex
-      manifest = response[:manifest]
-      status = manifest.blank? ? :bad_request : :ok
-
-      if status == :bad_request 
-        @quiz.destroy
-      else
-        # The atm-key is the randomized access point to this quiz in mint/
-        uid = Quiz.extract_uid manifest[:root] 
-        span = manifest[:image].class == Array ? manifest[:image].count : 1
-        @quiz.update_attributes :uid => uid, :span => span
-        response = {:atm_key => uid, :name => @quiz.name }
-
-        # Increment n_picked for each of the questions picked for this quiz
-        Question.where(:id => question_ids).each do |m|
-          m.increment_picked_count
-        end 
-      end
-    end
-    return response, status
-  end
-=end
-
   def username?
     self.account.username
   end 
@@ -148,11 +106,6 @@ class Teacher < ActiveRecord::Base
     Sektion.joins(:faculty_rosters).where('faculty_rosters.teacher_id = ?', self.id)
   end 
 
-  def set_subjects(list_of_ids = [])
-    list_of_ids.each_with_index { |a, index| list_of_ids[index] = a.to_i } 
-    self.subjects = Subject.where :id => list_of_ids
-  end
-
   def worksheets
 =begin
     A teacher can access:
@@ -174,16 +127,6 @@ class Teacher < ActiveRecord::Base
 
   private 
     
-    def reset_login_info
-      new_prefix = username_prefix_for self, :teacher
-      u = self.account.username.sub(/^\w+\./, "#{new_prefix}.")
-      self.account.update_attributes :username => u
-    end
-
-    def setup_account 
-      self.build_account
-    end 
-
     def destroyable? 
       return false 
     end 
@@ -191,14 +134,5 @@ class Teacher < ActiveRecord::Base
     def first_time_save? 
       self.new_record? || !self.account
     end 
-
-    def generate_suggestion_form
-      # At any given time, there is at most one copy of suggestion.tex in front-desk/.
-      # Hence, if > 1 requests for generating suggestion form are sent (after_create), then 
-      # each subsequent request will overwrite the suggestion.tex from the previous request.
-      # And therefore, to keep things clean, we have to process each request individually
-      # by placing it in the queue
-      Delayed::Job.enqueue BuildSuggestionForm.new(self), :priority => 5, :run_at => Time.zone.now 
-    end
 
 end # of class 
