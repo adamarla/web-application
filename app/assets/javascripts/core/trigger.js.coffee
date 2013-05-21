@@ -127,11 +127,11 @@ jQuery ->
       gutenberg.server = gutenberg.serverOptions.remote
     else
       gutenberg.server = gutenberg.serverOptions.local
-    if response.new is true
-      tutorial.start 'welcome-milestone-1' if response.who is 'Teacher'
 
     # if logged in user is a teacher, then update her demo info (which demos done, which remain)
-    demo.initialize(response.demo) if response.demo?
+    if response.demo?
+      demo.initialize(response.demo)
+      $('#m-demo-intro').modal('show') if response.new is true
     return true
     
   pingArgs =

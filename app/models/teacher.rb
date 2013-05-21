@@ -123,6 +123,16 @@ class Teacher < ActiveRecord::Base
     @worksheets = Testpaper.where(:id => total).order('created_at DESC')
   end
 
+  def self_made_quizzes
+    qids = Quiz.where(:teacher_id => self.id).map(&:id)
+    self_made = qids - [PREFAB_DEMO_QUIZ] - PREFAB_QUIZ_IDS
+    Quiz.where(:id => self_made)
+  end 
+
+  def new_to_the_site?
+    (self.self_made_quizzes.count < 1)
+  end
+
 #####  PRIVATE ######################
 
   private 

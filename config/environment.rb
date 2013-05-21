@@ -18,6 +18,7 @@ SavonClient.http.read_timeout = 600 # 10 mins seems good enough to finish most S
 
 # Indices of quizzes, sections, whatever that we pre-fabricate for new users
 PREFAB_SECTION = 58
+PREFAB_DEMO_QUIZ = 318
 PREFAB_QUIZ_ALGEBRA = 337
 PREFAB_QUIZ_CALCULUS = 338
 PREFAB_QUIZ_TRIGO = 339
