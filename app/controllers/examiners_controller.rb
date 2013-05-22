@@ -1,6 +1,6 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:receive_scans]
+  before_filter :authenticate_account!, :except => [:distribute_scans, :update_scan_id]
   respond_to :json
 
   def create 
@@ -46,6 +46,11 @@ class ExaminersController < ApplicationController
     render :json => failures, :status => :ok
   end
 
+  def distribute_scans
+    failures = Examiner.distribute_scans(false)
+    render :json => failures, :status => :ok
+  end
+
   def rotate_scan
     scan_in_locker = params[:id]
     Delayed::Job.enqueue RotateScan.new(scan_in_locker), :priority => 5, :run_at => Time.zone.now
@@ -80,6 +85,30 @@ class ExaminersController < ApplicationController
       }
     end
     render :json => { :text => :abhinav }, :status => :ok
+  end
+
+  def update_scan_id
+    status = "not ok"
+    tokens = params[:id].split("/")
+    parent_folder = tokens.first
+    qr_code = tokens.last
+
+    ws_id = decrypt qr_code[0..6]
+    rel_index = decrypt qr_code[7..9]
+    page = qr_code[10].to_i(36)
+    puts "wsid #{ws_id} rel_index #{rel_index} page #{page}"
+    student_id = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort[rel_index]
+    graded_resp = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page).each do |gr|
+      if gr[:scan].nil?
+        puts "updating"
+        gr.update_attribute :scan,"#{parent_folder}/#{qr_code}" 
+        status = "ok"
+      else
+        status = "not ok"
+        break
+      end
+    end
+    render :json => { :status => status }
   end
 
 end

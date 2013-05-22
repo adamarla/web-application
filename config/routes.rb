@@ -35,13 +35,14 @@ Webapp::Application.routes.draw do
   resource :examiner, :except => [:new, :destroy]
   match 'untagged/list' => 'examiners#untagged', :via => :get
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', :via => :get
-  match 'receive/scans' => 'examiners#receive_scans', :via => :get
+  match 'distribute/scans' => 'examiners#distribute_scans', :via => :get
   match 'examiners/list' => 'examiners#list', :via => :get
   match 'typeset/new' => 'examiners#typeset_new', :via => :get
   match 'typeset/ongoing' => 'examiners#typeset_ongoing', :via => :get
   match 'rotate_scan' => 'examiners#rotate_scan', :via => :get
   match 'restore_scan' => 'examiners#restore_pristine_scan', :via => :get
   match 'pages/unresolved' => 'examiners#unresolved_scans', :via => :get
+  match 'update_scan_id' => 'examiners#update_scan_id', :via => :get
 
   # School 
   resource :school, :only => [:show, :create, :update]
