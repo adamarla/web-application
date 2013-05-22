@@ -162,7 +162,7 @@ jQuery ->
       x = $('#m-demo').find("li[marker=#{json.timer.on}]").eq(0)
       watch = x.children('.stopwatch')[0]
       stopWatch.start watch, parseInt(json.timer.for)
-      # notifier.show 'n-prefabricating', json
+      $('#lnk-existing-quiz').click()
     else
       matched = false
 
