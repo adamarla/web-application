@@ -96,7 +96,7 @@ class Sektion < ActiveRecord::Base
 
   def assign_uid
     return if self.teacher_id.nil?
-    uid = "#{self.teacher_id.to_s(36)}-#{Time.now.seconds_since_midnight.to_i.to_s(36)}"
+    uid = "#{self.teacher_id.to_s(36)}#{Time.now.seconds_since_midnight.to_i.to_s(36)}" # 87
     uid = uid.upcase
     self.update_attribute :uid, uid
   end
