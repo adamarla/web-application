@@ -342,7 +342,7 @@ jQuery ->
     toggle = if menu? then $(menu).prev() else $(this)
 
     # Mark this toggle as selected and all other <a.dropdown-toggle> or even just <a> as unselected
-    toggle.addClass('selected') unless $(this).attr('id') is 'lnk-register'
+    toggle.addClass('selected')
     parent = toggle.parent() # must be a <li>
     for m in parent.siblings('li')
       $(m).children("a").removeClass 'selected'
@@ -544,15 +544,6 @@ jQuery ->
      trigger.click m
      return true
 
-
-  #####################################################################
-  ## Auto-click teacher's tab in registration drop down 
-  #####################################################################
-
-  $('#lnk-register').click (event) ->
-    #event.stopImmediatePropagation()
-    karo.tab.enable 'tab-register-1'
-    return true
 
   #####################################################################
   ## http://stackoverflow.com/questions/13073357/simpleformclientsidevalidationsbootstrap-validation-is-not-occurring

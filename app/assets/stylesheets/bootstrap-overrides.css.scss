@@ -939,7 +939,7 @@ li.split {
   }
 } 
 
-#register { 
+#li-about-us { 
   margin: {
     left: 60px ;
     top: 8px ;
@@ -1166,3 +1166,19 @@ li.split {
     > .badge { display: none ; }
   }
 } 
+
+.btn-huge {
+  p {
+    border-bottom: 2px solid ;
+    padding-bottom: 12px ;
+  }
+  margin-top: -22px ;
+  padding: 20px ;
+  font-size: 21.75px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 12px;
+  [class^="icon-"], [class*=" icon-"] {
+    margin-top: 2px;
+  }
+}

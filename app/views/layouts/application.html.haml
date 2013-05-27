@@ -33,16 +33,16 @@
                       .input-append
                         %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-large.btn-primary{ :type => :submit }= "Sign In"
-                %li.dropdown{ :id => 'register' }
-                  = simple_link :for => "Register",  :id => "lnk-register", :href => '#m-register'
+                %li.dropdown{ :id => 'li-about-us' }
+                  = simple_link :for => "About Us",  :href => faq_path
 
       .row-fluid
         .hero-unit
           .row-fluid.jumbotron
-            %p.offset1.span8= "Teach more. Help more. Grade less."
-            %ul.nav.nav-list.span3
-              %li
-                %a{ :href => faq_path, :target => '_blank'}= "Frequently Asked Questions"
+            %p.span8= "Teach more. Help more. Grade less."
+            %button.btn.btn-huge.btn-primary.span4{ :id => 'btn-register' }
+              %p= "Register FREE!"
+              %h4= "(Sign In, take the Quick Trial)"
           #how-it-works.carousel.slide
             .carousel-inner
               .item.active 
