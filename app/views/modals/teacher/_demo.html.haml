@@ -10,11 +10,11 @@
       .span8.offset1
         %h1.orange= "1. Pick a topic"
         %p
-          \... and we will create a short quiz and a worksheet for you
+          Pick from the topics below and we will create a short quiz, pertaining to it, on your behalf
         %p
-          The quiz will have 1-2 questions, and the worksheet is assigned to a fictitious student
+          The quiz will have 1-2 questions, and will be assigned to a fictitious student. 
         %p
-          <b>Note:</b> Please allow a few minutes for the PDFs to be ready 
+          <b>Note:</b> Please allow a few minutes for the student worksheet (PDF) to be ready 
 
     -# print
     .span3
@@ -23,12 +23,12 @@
       .span8
         %h1.orange= "2. Print & Write"
         %p
-          Download a worksheet PDF and print it out
+          Download the student worksheet (PDF) and print it out
         %p
-          Then, write a solution (as a student would, and preferably with a pen) in 
+          Then, write solutions (as a student would, and preferably with a pen) in 
           the space provided after each question
         %p
-          <b>Note:</b> Do make intentional mistakes if you would like to see 
+          <b>Note:</b> Intentionally commit mistakes in the solution if you would like to see 
           a sample of our feedback
 
     -# upload
@@ -43,8 +43,14 @@
           Most - if not all - modern scanners have the option of saving scans as a PDF.
           Select that option, so that you create one PDF file for all scanned pages
         %p
-          Upload that file - and thats it!!
+          Upload that PDF - and that's it! You'll get an email as soon as we are done grading your response!
           
+    -# what is this
+    .span2
+      .span8
+        %button.btn.btn-primary{ :id => "btn-whatisthis"}
+          = image_tag 'notifications/question.png', :class => 'big-icon'
+          %p What is this
 
   -# active components
   .row-fluid.push-down 

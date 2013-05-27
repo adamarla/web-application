@@ -36,6 +36,7 @@ window.demo = {
         while href.search(":#{key}") isnt -1
           href = href.replace ":#{key}", j[key]
       a.attr 'href', href
+      a.attr 'target', "_blank"
       
       # stop any stopwatch 
       watch = a.siblings('.stopwatch')[0]
