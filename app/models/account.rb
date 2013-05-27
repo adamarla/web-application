@@ -69,6 +69,35 @@ class Account < ActiveRecord::Base
     return true
   end 
 
+  def self.merge(a,b)
+    # Merges 'b' into 'a' and then destroys b's loggable object
+    return false if a.loggable_type != b.loggable_type
+
+    merge = []
+    key = nil
+
+    case a.loggable_type
+      when "Student"
+        merge = [AnswerSheet, GradedResponse, StudentRoster]
+        key = :student_id
+    end
+    return false if merge.blank?
+
+    target_id = a.loggable_id
+    source_id = b.loggable_id
+    source_obj = b.loggable
+
+    merge.each do |m|
+      m.where(key => source_id).each do |k|
+        k.update_attribute key, target_id
+      end
+    end
+
+    # puts " **** About to destroy #{source_obj.id} --> #{source_obj.name}"
+    source_obj.destroy
+    return true
+  end
+
   def legacy_record?
     year = self.created_at.nil? ? Date.today.year : self.created_at.year
     return (year < 2013)

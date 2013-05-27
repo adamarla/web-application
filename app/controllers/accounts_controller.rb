@@ -31,6 +31,18 @@ class AccountsController < ApplicationController
     render :json => { :notify => {:text => msg} }, :status => :ok
   end 
 
+  def merge
+    # Merges the passed account into current_account, and then deletes the passed loggable obj
+    target_id = params[:checked].keys.first
+    if target_id.blank?
+      render :json => { :notify => { :title => "No account specified for merging" } }, :status => :ok
+    else
+      source = Account.find target_id
+      merged = Account.merge current_account, source
+      render :json => { :success => merged }, :status => :ok
+    end
+  end
+
   def ws 
     @wks = current_account.ws
     @who = current_account.loggable_type
