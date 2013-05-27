@@ -129,9 +129,12 @@ jQuery ->
       gutenberg.server = gutenberg.serverOptions.local
 
     # if logged in user is a teacher, then update her demo info (which demos done, which remain)
-    if response.demo?
-      demo.initialize(response.demo)
-      $('#m-demo-intro').modal('show') if response.new is true
+    if response.who is 'Teacher'
+      if response.demo?
+        demo.initialize(response.demo)
+        $('#m-demo-intro').modal('show') if response.new is true
+    else if response.who is 'Student'
+      $('#m-enroll-self').modal('show') if response.new is true
     return true
     
   pingArgs =
@@ -390,7 +393,7 @@ jQuery ->
   # When a single line is clicked  
   ###############################################
 
-  $('.content, .tab-pane, .column').on 'click', '.single-line', (event) ->
+  $('.content, .tab-pane, .column, .modal').on 'click', '.single-line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
        .single-line hasnt been selected first 
