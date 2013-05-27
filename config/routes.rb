@@ -27,6 +27,7 @@ Webapp::Application.routes.draw do
   match 'byCountry' => 'accounts#by_country', :via => :get
   match 'inCountry' => 'accounts#in_country', :via => :get
   match 'ask/question' => 'accounts#ask_question', :via => :post
+  match 'merge/accounts' => 'accounts#merge', :via => :post
 
   # Admin 
   resource :admin, :controller => :admin 
@@ -96,6 +97,8 @@ Webapp::Application.routes.draw do
   match 'add/sektion' => 'sektions#create', :via => :post
   match 'update/sektion' => 'sektions#update', :via => :post
   match 'ping/sektion' => 'sektions#ping', :via => :get
+  match 'preview/names' => 'sektions#preview_names', :via => :post
+  match 'enroll/named' => 'sektions#enroll_named_students', :via => :post
 
   # Teacher 
   resource :teacher, :only => [:update, :show]

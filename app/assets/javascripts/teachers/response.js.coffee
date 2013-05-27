@@ -128,9 +128,9 @@ jQuery ->
     else if url.match(/add\/sektion/)
       target = $('#pane-mng-sektions-1')
       key = 'sektion'
-      $('#m-add-sektion').modal 'hide'
       lesson = 'mng-sektions-milestone-3'
-      notifier.show 'n-new-sektion', json
+      $('#new-sk-uid').text json.notify.title #75
+      $('#new-sk-students').attr 'marker', json.notify.id #75
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
@@ -163,6 +163,15 @@ jQuery ->
       watch = x.children('.stopwatch')[0]
       stopWatch.start watch, parseInt(json.timer.for)
       $('#lnk-existing-quiz').click()
+    else if url.match(/preview\/names/)
+      target = $('#new-sk-students')
+      lines.columnify target, json.names
+      for m in target.find '.single-line'
+        $(m).addClass 'disabled'
+        cb = $(m).children("[type='checkbox']").eq(0)
+        cb.prop 'checked', true
+        cb.attr 'value', cb.siblings('.text').eq(0).text()
+      return true
     else
       matched = false
 

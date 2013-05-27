@@ -91,8 +91,8 @@ lnk-wb-pending :
 m-teacher-quizzes :
   menu : teacher-quiz
 
-m-teacher-workbench : 
-  menu : teacher-workbench
+m-tc-sektions :
+  menu : tc-sektions
 
 m-report-cards :
   menu : teacher-rc

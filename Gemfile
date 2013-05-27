@@ -49,6 +49,8 @@ gem 'squeel' # to make active record queries more intuitive
 
 gem 'delayed_job_active_record'
 
+gem 'levenshtein-ffi', :require => 'levenshtein'
+
 group :production do 
   gem 'thin'
 end

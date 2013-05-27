@@ -1,0 +1,38 @@
+
+#m-new-sk-2.modal.fade.lateral-slide{ :role => :dialog }
+
+  -# static components
+  .row-fluid
+    -# build
+    .span3.offset1
+      .span3
+        = image_tag 'notifications/add-user.png', :class => 'big-icon'
+      .span8.offset1
+        %h1.orange= "Copy-Paste names" 
+        %p
+          If you have student names in a document or a spreadsheet, then simply copy 
+          the names (<b>Ctrl+C</b>) and paste them in the box below (<b>Ctrl+V</b>). You 
+          can also type in the box
+        %p
+          Click <b>Preview</b> to see what names were inferred
+        %p.push-down
+          = simple_form_for :add, :url => preview_names_path, :remote => true, :defaults => { :label => false } do |f|
+            = f.input :names, :as => :text, :input_html => { :rows => 10, :cols => 60, :class => 'span11' }
+            = simple_button :for => 'Preview', :type => :submit, :class => 'btn-primary'
+
+    -# print
+    .span7
+      .span2
+        = image_tag 'notifications/preview.png', :class => 'big-icon'
+      .span8
+        %h1.orange= "Check"
+        %p
+          If the list of students below looks good, then click <b>Add to Group</b> 
+        %p
+          = simple_form_for :add, :remote => true, :defaults => { :label => false }, 
+            :html => { :data => { :id => 'new-sk-students', :action => "#{enroll_named_path}?id=:id" } } do |f|
+            #new-sk-students
+              .column.span4
+              .column.span4
+              .column.span4
+            = simple_button :for => "Looks Good", :type => :submit, :class => 'btn-primary btn-large offset4'

@@ -81,4 +81,41 @@ class SektionsController < ApplicationController
     end 
   end # of method
 
+  def preview_names
+    names = params[:add][:names]
+    @lines = names.split("\r\n").select{ |m| !m.blank? }
+  end
+
+  def enroll_named_students
+    sk = params[:id].blank? ? nil : Sektion.find(params[:id])
+
+    unless sk.nil?
+      students = params[:checked].values
+      saved = true
+      new_student_ids = [] 
+
+      for m in students
+        s = Student.new :name => m
+        username = create_username_for s, :student
+        a = s.build_account :email => "#{username}@drona.com", 
+                            :password => "123456", 
+                            :password_confirmation => "123456"
+        if s.save
+          new_student_ids.push s.id
+        else
+          saved = false
+        end
+      end
+      if saved
+        enrolled = sk.student_ids 
+        sk.student_ids = (enrolled + new_student_ids).uniq 
+        render :json => { :notify => { :title => "#{students.count} students added to group" } }, :status => :ok
+      else
+        render :nothing => true, :status => :ok
+      end
+    else # sektion not found!
+      render :json => { :notify => { :title => "Group not found!" } }, :status => :ok
+    end 
+  end
+
 end

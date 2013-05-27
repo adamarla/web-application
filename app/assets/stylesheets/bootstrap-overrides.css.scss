@@ -289,15 +289,6 @@ a {
 } 
 
 #lnk-logout{ color: $orange ; }
-#lnk-add-sektion {
-  background: $deep-blue ;
-  float: right ;
-  margin-top: 5px ;
-  height: 12px ;
-  border-radius: 4px ;
-  color: white ; 
-  text-decoration: none ;
-} 
 
 .g-panel { 
   h3 {
@@ -1159,4 +1150,19 @@ li.split {
     border-bottom: 1px solid white ;
     margin-bottom: 10px ;
   } 
+} 
+
+#new-sk-students, #sk-confirm-identity { 
+  .single-line { 
+    padding: 0px ;
+    > [class*='span'] { min-height: 10px ; }
+    min-height: 15px ;
+    &.disabled { color: white ; }
+  } 
+}
+
+#new-sk-students { 
+  .single-line { 
+    > .badge { display: none ; }
+  }
 } 

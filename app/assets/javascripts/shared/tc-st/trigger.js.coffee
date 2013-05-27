@@ -1,4 +1,10 @@
 
+window.postUpload = (modal) -> # written as onload in modal/teachers/_suggestion.html.haml
+  target = $("##{modal}")
+  target.find("input[type='file']").eq(0).val null
+  target.modal 'hide'
+  return true
+
 jQuery ->
   
   $('#btn-show-solution').click (event) ->

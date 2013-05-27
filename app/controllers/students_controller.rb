@@ -43,23 +43,21 @@ class StudentsController < ApplicationController
 
   def enroll 
     code = params[:enroll][:sektion]
-    sid = params[:id]
-    student = sid.blank? ? current_account.loggable : Student.where(:id => sid).first
+    sk = Sektion.where{ uid =~ "#{code}" }.first
 
-    unless code.blank?
-      sk = Sektion.where{ uid =~ "#{code}" }.first
-      unless sk.nil?
-        unless sk.students.include?(student)
-            sk.students << student unless student.nil?
-        end
-        render :json => { :notify => { :text => "Successfully enrolled in '#{sk.name}'" }}, :status => :ok 
-      else
-        render :json => { :notify => { :text => "No section with code '#{code}' found" }}, :status => :ok 
-      end
+    if sk.nil?
+      render :json => { :notify => { :text => "Group not found!", 
+                        :subtext => "Re-check the code you entered" } }, :status => :ok
     else
-      render :json => { :notify => { :text => "Enrollment failed", :subtext => "No section code provided" }}, :status => :ok
-    end
-  end
+      student = current_account.loggable
+      enrolled = sk.students 
+
+      similar_last_names = enrolled.select{ |m| Levenshtein.distance(m.last_name, student.last_name) < 4 }
+      @candidates = similar_last_names.select{ |m| Levenshtein.distance(m.first_name, student.first_name) < 4 }
+      @candidates = @candidates.select{ |m| !m.account.email_is_real? } 
+    end # else
+
+  end # method
 
   def proficiency
     student = Student.find params[:id]

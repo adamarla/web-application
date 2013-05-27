@@ -88,12 +88,27 @@ jQuery ->
     return false
 
   ###
-    Lauch QuickTrial demo on click
+    Launch QuickTrial demo on click
   ###
   $('#btn-launch-demo').on 'click', (event) ->
     event.stopImmediatePropagation()
     m = $(this).closest('.modal').eq(0)
     m.modal 'hide'
     $('#m-demo').modal 'show'
+    return true
+
+  ###
+    Step 2 of defining a new sektion
+  ###
+
+  $('#m-new-sk-1').on 'click', 'button', (event) ->
+    return false if $(this).hasClass 'disabled'
+    return true if $(this).attr('type') is 'submit'
+
+    parent = $(this).closest '.modal'
+    $(parent).modal 'hide'
+    id = $(this).attr 'id'
+    $('#m-new-sk-2').modal('show') if id is 'btn-add-now'
+    event.stopImmediatePropagation()
     return true
 

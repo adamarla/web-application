@@ -1,5 +1,13 @@
 
-#m-enroll-self.modal.fade.slim{ :role => :dialog }
-  = simple_form_for :enroll, :url => enroll_path, :remote => true, :defaults => { :label => false } do |f|
-    = f.input :sektion, :hint => "Your teacher must have given you a code. Enter that here"
-    %button.btn.btn-primary.btn-large.pull-right{ :type => :submit }= "Enroll"
+#m-enroll-self.modal.fade.regular.row-fluid{ :role => :dialog }
+  .span3
+    = image_tag 'notifications/group.png', :class => 'big-icon'
+  .span8
+    %p.title= "Join a Group"
+    %p
+      You need to if you want to see your graded assignments. Ask your 
+      teacher or instructor for the <b>Group Code</b> and enter it below
+    %p
+      = simple_form_for :enroll, :url => enroll_path, :remote => true, :defaults => { :label => false } do |f|
+        = f.input :sektion, :hint => "Enter Group Code here", :class => 'offset3'
+        %button.btn.btn-primary.btn-large.pull-right{ :type => :submit }= "Enroll"

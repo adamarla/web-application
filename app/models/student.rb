@@ -21,19 +21,14 @@ class Student < ActiveRecord::Base
 
   has_one :account, :as => :loggable, :dependent => :destroy
 
-  has_many :graded_responses
+  has_many :graded_responses, :dependent => :destroy
   has_many :quizzes, :through => :graded_responses
 
-  has_many :answer_sheets
+  has_many :answer_sheets, :dependent => :destroy
   has_many :testpapers, :through => :answer_sheets
 
   validates :name, :presence => true
   validates_associated :account
-
-
-  # When should a student be destroyed? My guess, some fixed time after 
-  # he/she graduates. But as I haven't quite decided what that time should
-  # be, I am temporarily disabling all destruction
 
   before_destroy :destroyable? 
 
@@ -172,8 +167,15 @@ class Student < ActiveRecord::Base
   end
 
   private 
-    def destroyable? 
-      return false 
+    def destroyable?
+      # A student can be destroyed if there is no associated data for it
+      is_empty = true 
+      [AnswerSheet, GradedResponse, StudentRoster].each do |m|
+        is_empty = m.where(:student_id => self.id).empty?
+        break unless is_empty
+      end
+      # puts " ++++ Can be destroyed [#{self.id}]" if is_empty
+      return is_empty
     end 
 
 end # of class 

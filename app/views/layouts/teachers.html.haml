@@ -15,7 +15,7 @@
     = render :partial => 'menus/teacher/per-ws'
     = render :partial => 'menus/teacher/per-question'
     = render :partial => 'menus/teacher/qz-main', :locals => { :teacher => tc, :server => server }
-    = render :partial => 'menus/teacher/workbench', :locals => { :server => server }
+    = render :partial => 'menus/teacher/sektions'
     = render :partial => 'menus/teacher/rc' 
     = render :partial => 'menus/teacher/howto' 
 
@@ -26,7 +26,8 @@
 - content_for :modals do
   #modals
     = render :partial => 'modals/user/account'
-    = render :partial => 'modals/teacher/add-sektion'
+    = render :partial => 'modals/teacher/new-sk-one'
+    = render :partial => 'modals/teacher/new-sk-two'
     = render :partial => 'modals/teacher/demo-intro'
     = render :partial => 'modals/teacher/demo'
     = render :partial => 'modals/user/ask-a-question'
@@ -105,7 +106,7 @@
                 %li.dropdown
                   = simple_link :for => "Upload", :id => 'lnk-upload', :href => '#m-upload-what'
                 %li.dropdown
-                  = simple_link :for => "Groups", :as => :dropdown, :id => 'm-teacher-workbench'
+                  = simple_link :for => "Groups", :as => :dropdown, :id => 'm-tc-sektions'
                 %li.dropdown
                   = simple_link :for => "Help", :as => :dropdown, :id => 'm-howto'
                 %li.dropdown

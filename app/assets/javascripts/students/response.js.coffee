@@ -16,6 +16,7 @@ jQuery ->
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .single-line
+    buttons = null
 
     if url.match(/ws-preview/)
       preview.loadJson json, 'locker'
@@ -29,6 +30,15 @@ jQuery ->
       menu = 'st-inbox'
       clickFirst = true
     else if url.match(/outbox/)
+    else if url.match(/enroll/)
+      $('#m-enroll-self').modal 'hide'
+      if json.block is true
+        $('#m-enrollment-blocked').modal 'show'
+      else
+        target = $('#sk-confirm-identity')
+        karo.empty target
+        key = 'candidates'
+        $('#m-enrollment-confirm').modal 'show'
     else
       matched = false
 
@@ -37,8 +47,10 @@ jQuery ->
     ############################################################
 
     if target? and target.length isnt 0
-      # karo.empty target
-      line.write(target, m[childKey], menu) for m in json[parentKey]
+      writeData = if key? then true else false
+
+      # Render the returned JSON - in columns if so desired
+      lines.columnify target, json[key], menu, buttons if writeData
 
       # Enable / disable paginator as needed 
       if json.last_pg?

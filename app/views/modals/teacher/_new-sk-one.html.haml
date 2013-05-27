@@ -1,0 +1,53 @@
+
+#m-new-sk-1.modal.fade.lateral-slide{ :role => :dialog }
+
+  -# static components
+  .row-fluid
+    -# build
+    .span3.offset1
+      .span3
+        = image_tag 'notifications/new-sektion.png', :class => 'big-icon'
+      .span8.offset1
+        %h1.orange= "1. Give a name" 
+        %p
+          It can be anything - something purely functional - like 11-A, 12-B etc. - or 
+          something descriptive - like 'Gifted Students' or 'Weak in Algebra'
+        %p
+          A student can belong to more than group - but only you will know which 
+          students are in which groups
+        %p.push-down
+          = simple_form_for :new, :url => add_sektion_path, :remote => true, :defaults => { :label => false } do |f|
+            = f.input :sektion, :hint => "Give the new group a name"
+            = simple_button :for => 'Add', :type => :submit, :class => 'btn-primary'
+
+    -# print
+    .span4
+      .span3
+        = image_tag 'notifications/key.png', :class => 'big-icon'
+      .span8
+        %h1.orange= "2. Unique key"
+        %p
+          The cryptic looking text below is a unique key for the group 
+          you just created. <b>Share it with your students</b>
+        %p
+          Your students will need the key if they want to see their 
+          graded answer sheets
+        %p.push-down
+          %h1.white.bold.offset3{ :id => 'new-sk-uid' }= "unique key"
+
+    -# upload
+    .span4
+      .span2
+        = image_tag 'notifications/add-user.png', :class => 'big-icon'
+      .span9
+        %h1.orange= "3. Add Students (optional)"
+        %p
+          If you know the names of the students you want in this group,  
+          then you can add those students now
+        %p
+          However, if you want students to enroll themselves, then give them the code
+          from step (2). When they login into their account and enter it, they will 
+          become part of the group
+        %p.push-down
+          = simple_button :for => "Add now", :id => 'btn-add-now', :class => 'btn-primary'
+          = simple_button :for => "Add later", :id => 'btn-add-later', :class => 'btn-primary pull-right'

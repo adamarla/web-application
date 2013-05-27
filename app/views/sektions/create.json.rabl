@@ -5,5 +5,5 @@ object false
   }
 
   node(:notify) {
-    { :title => @sk.uid }
+    { :title => @sk.uid, :id => @sk.id }
   }

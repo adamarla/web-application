@@ -34,6 +34,9 @@ class ApplicationController < ActionController::Base
               }
             }
           }
+
+        when "Student"
+          is_new = StudentRoster.where(:student_id => current_account.loggable_id).count < 1
         else 
           is_new = false
       end
