@@ -52,9 +52,8 @@ class StudentsController < ApplicationController
       student = current_account.loggable
       enrolled = sk.students 
 
-      similar_last_names = enrolled.select{ |m| Levenshtein.distance(m.last_name, student.last_name) < 4 }
-      @candidates = similar_last_names.select{ |m| Levenshtein.distance(m.first_name, student.first_name) < 4 }
-      @candidates = @candidates.select{ |m| !m.account.email_is_real? } 
+      similarly_named = enrolled.select{ |m| Levenshtein.distance(m.name, student.name) < 5 }
+      @candidates = similarly_named.select{ |m| !m.account.email_is_real? } 
     end # else
 
   end # method
