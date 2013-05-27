@@ -137,6 +137,8 @@ window.lines = {
     # json = array of N objects 
     here = if typeof here is 'string' then $(here) else here
     columns = here.find '.column'
+    $(m).empty() for m in columns
+
     nColumns = columns.length
     perColumn = if nColumns > 0 then ((json.length / nColumns ) + 1) else json.length
 
