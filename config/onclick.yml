@@ -429,10 +429,6 @@ lnk-logout :
 m-downloads : 
   menu : user-downloads
 
-lnk-register :
-  toggle : modal
-  notouch: true
-
 lnk-register-student :
   toggle : modal
 
