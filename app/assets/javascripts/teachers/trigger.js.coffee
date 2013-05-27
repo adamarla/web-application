@@ -97,3 +97,20 @@ jQuery ->
     $('#m-demo').modal 'show'
     return true
 
+  ###
+    Clear Quick Trial file upload form field on submit
+  ###
+  $('#m-demo').submit (event) ->
+    event.stopPropagation()
+    $(this).find('form')[1].reset()
+    return true
+
+  ###
+    Launch Quick Trial explanatory dialog
+  ###
+  $('#btn-whatisthis').on 'click', (event) ->
+    event.stopPropagation()
+    $('#m-demo').modal 'hide'
+    $('#m-demo-intro').modal 'show'
+    return true
+
