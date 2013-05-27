@@ -32,8 +32,13 @@ jQuery ->
     else if url.match(/outbox/)
     else if url.match(/enroll/)
       $('#m-enroll-self').modal 'hide'
-      if json.block is true
-        $('#m-enrollment-blocked').modal 'show'
+
+      if json.exists is false
+        notifier.show 'n-missing-sektion'
+      else if json.enrolled is true
+        notifier.show 'n-enrolled-already'
+      else if json.blocked is true
+        notifier.show 'n-enrollment-blocked'
       else
         target = $('#sk-confirm-identity')
         karo.empty target

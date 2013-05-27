@@ -45,9 +45,14 @@ class StudentsController < ApplicationController
     code = params[:enroll][:sektion]
     sk = Sektion.where{ uid =~ "#{code}" }.first
 
+    @exists = true
+    @enrolled = false
+    @candidates = []
+
     if sk.nil?
-      render :json => { :notify => { :text => "Group not found!", 
-                        :subtext => "Re-check the code you entered" } }, :status => :ok
+      @exists = false
+    elsif sk.student_ids.include? current_account.loggable_id
+      @enrolled = true
     else
       student = current_account.loggable
       enrolled = sk.students 
