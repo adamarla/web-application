@@ -6,7 +6,6 @@
     -# build
     .span3.offset1
       .span3
-        = image_tag 'notifications/new-sektion.png', :class => 'big-icon'
       .span8.offset1
         %h1.orange= "1. Give a name" 
         %p
@@ -22,18 +21,16 @@
 
     -# print
     .span4
-      .span3
-        = image_tag 'notifications/key.png', :class => 'big-icon'
-      .span8
-        %h1.orange= "2. Unique key"
+      .span2
+      .span9
+        %h1.orange= "2. Note Group Code"
         %p
-          The cryptic looking text below is a unique key for the group 
-          you just created. <b>Share it with your students</b>
+          Below is the unique code for the group you just created. <b>Share it with your students</b>          
         %p
-          Your students will need the key if they want to see their 
-          graded answer sheets
+          They will need it if they want to see their graded assignments for the quizzes 
+          you make
         %p.push-down
-          %h1.white.bold.offset3{ :id => 'new-sk-uid' }= "unique key"
+          %h1.white.bold.offset3{ :id => 'new-sk-uid' }= "group code"
 
     -# upload
     .span4

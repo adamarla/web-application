@@ -5,9 +5,7 @@
   .row-fluid
     -# build
     .span3.offset1
-      .span3
-        = image_tag 'notifications/add-user.png', :class => 'big-icon'
-      .span8.offset1
+      .span11
         %h1.orange= "Copy-Paste names" 
         %p
           If you have student names in a document or a spreadsheet, then simply copy 
@@ -22,17 +20,15 @@
 
     -# print
     .span7
-      .span2
-        = image_tag 'notifications/preview.png', :class => 'big-icon'
-      .span8
+      .span11
         %h1.orange= "Check"
         %p
           If the list of students below looks good, then click <b>Add to Group</b> 
         %p
           = simple_form_for :add, :remote => true, :defaults => { :label => false }, 
             :html => { :data => { :id => 'new-sk-students', :action => "#{enroll_named_path}?id=:id" } } do |f|
-            #new-sk-students
+            = simple_button :for => "Add to Group", :type => :submit, :class => 'btn-primary btn-large'
+            #new-sk-students.push-down
               .column.span4
               .column.span4
               .column.span4
-            = simple_button :for => "Looks Good", :type => :submit, :class => 'btn-primary btn-large offset4'
