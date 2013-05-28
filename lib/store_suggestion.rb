@@ -2,7 +2,7 @@ class StoreSuggestion < Struct.new(:teacher_id, :signature, :payload)
 
   def perform
     teacher = Teacher.find teacher_id 
-    suggestion = teacher.suggestions.build :signature => signature
+    suggestion = teacher.suggestions.build 
 
     if suggestion.valid?
       SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['upload_suggestion']}"
@@ -15,7 +15,14 @@ class StoreSuggestion < Struct.new(:teacher_id, :signature, :payload)
         }
       end 
       manifest = response[:upload_suggestion_response][:manifest]
-      suggestion.save unless manifest.nil?
+
+      unless manifest.nil?
+        unless manifest[:root].blank?
+          suggestion[:signature] = manifest[:root]
+          suggestion[:pages] = manifest[:images].count
+          suggestion.save
+        end
+      end
     end
   end # of perform 
 end

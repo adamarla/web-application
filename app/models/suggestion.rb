@@ -63,14 +63,6 @@ class Suggestion < ActiveRecord::Base
     return valid, extension 
   end
 
-  def expand_pages
-    pages = []
-    self.pages.times { |i|
-      pages << "page-#{i+1}"
-    }
-    return pages
-  end
-
   def check_for_completeness
     return true if self.completed 
     untagged = Question.where(:suggestion_id => self.id).untagged 
