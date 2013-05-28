@@ -19,6 +19,7 @@ include GeneralQueries
 class Examiner < ActiveRecord::Base
   has_one :account, :as => :loggable
   has_many :graded_responses
+  has_many :suggestions
 
   # [:all] ~> [:admin]
   # [:disputed] ~> [:student]

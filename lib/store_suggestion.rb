@@ -20,6 +20,9 @@ class StoreSuggestion < Struct.new(:teacher_id, :signature, :payload)
         unless manifest[:root].blank?
           suggestion[:signature] = manifest[:root]
           suggestion[:pages] = manifest[:images].count
+          # assign to an examiner
+          e = Examiner.where(:is_admin => true).sort{ |m,n| m.suggestion_ids.count <=> n.suggestion_ids.count }.first
+          suggestion[:examiner_id] = e.id
           suggestion.save
         end
       end
