@@ -34,15 +34,14 @@
                         %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-large.btn-primary{ :type => :submit }= "Sign In"
                 %li.dropdown{ :id => 'li-about-us' }
-                  = simple_link :for => "About Us",  :href => faq_path
+                  = simple_link :for => "Curious?",  :href => faq_path, :id => 'lnk-faq'
 
       .row-fluid
         .hero-unit
           .row-fluid.jumbotron
-            %p.span8= "Teach more. Help more. Grade less."
-            %button.btn.btn-huge.btn-primary.span4{ :id => 'btn-register' }
-              %p= "Register FREE!"
-              %h4= "(Sign In, take the Quick Trial)"
+            %p.span8.offset1= "Teach more. Help more. Grade less."
+            .span2
+              = simple_button :for => "Register", :id => 'btn-register', :class => 'btn-primary btn-large'
           #how-it-works.carousel.slide
             .carousel-inner
               .item.active 
