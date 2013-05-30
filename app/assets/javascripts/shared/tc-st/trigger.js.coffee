@@ -50,7 +50,7 @@ jQuery ->
   scnUploader = new qq.FineUploaderBasic {
     button : btnScnUpload[0],
     request : {
-      endpoint : "http://10.10.0.16:8080/ScanUploader/uploadScan"
+      endpoint : "http://109.74.201.62:8080/ScanUploader/upload"
     },
 
     callbacks : {
@@ -69,11 +69,11 @@ jQuery ->
         return true
     }
   }
-
   ###
+
   scnUploader = new qq.FileUploaderBasic {
     button : btnScnUpload[0],
-    action : "http://10.10.0.16:8080/ScanUploader/uploadScan",
+    action : "http://10.0.0.12:8080/ScanUploader/upload",
 
     onSubmit : (id, filename) ->
       return clickUploader(btnScnUpload)
