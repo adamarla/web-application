@@ -16,6 +16,12 @@ clickUploader = (btn) ->
   btn.attr 'disabled', true
   return true
 
+updateProgress = (btn, loaded, total) ->
+  pb = btn.find('.progress > .bar').eq(0)
+  done = (loaded / total) * 100
+  pb.css "width", "#{done}%"
+  return true
+
 jQuery ->
   
   $('#btn-show-solution').click (event) ->
@@ -41,18 +47,39 @@ jQuery ->
   btnScnUpload = $('#btn-upload-scans')
   btnSgUpload = $('#btn-upload-sg')
 
+  scnUploader = new qq.FineUploaderBasic {
+    button : btnScnUpload[0],
+    request : {
+      endpoint : "http://10.10.0.16:8080/ScanUploader/uploadScan"
+    },
+
+    callbacks : {
+      onSubmit : (id, filename) ->
+        return clickUploader(btnScnUpload)
+
+      onProgress : (id, fileName, loaded, total) ->
+        return updateProgress(btnScnUpload, loaded, total)
+
+      onComplete : (id, filename, json) ->
+        resetUploader btnScnUpload
+        return true
+
+      onError : (id, filename, xhr) ->
+        resetUploader btnScnUpload
+        return true
+    }
+  }
+
+  ###
   scnUploader = new qq.FileUploaderBasic {
     button : btnScnUpload[0],
-    action : "http://10.10.0.17:8080/ScanUploader/uploadScan",
+    action : "http://10.10.0.16:8080/ScanUploader/uploadScan",
 
     onSubmit : (id, filename) ->
       return clickUploader(btnScnUpload)
 
     onProgress : (id, fileName, loaded, total) ->
-      bar = btnScnUpload.find('.progress > .bar').eq(0)
-      done = (loaded / total) * 100
-      bar.css "width", "#{done}%"
-      return true
+      return updateProgress(btnScnUpload, loaded, total)
 
     onComplete : (id, filename, json) ->
       resetUploader btnScnUpload
@@ -65,23 +92,25 @@ jQuery ->
 
   sgUploader = new qq.FileUploaderBasic {
     button : btnSgUpload[0],
-    action : "http://10.10.0.17:8080/ScanUploader/uploadScan",
+    # action : "http://10.10.0.17:8080/ScanUploader/uploadScan",
+    action : "#{rails.server}/suggestion",
+    params : {
+      id : $('#control-panel').attr('marker')
+    },
 
     onSubmit : (id, filename) ->
       return clickUploader(btnSgUpload)
 
     onProgress : (id, fileName, loaded, total) ->
-      bar = btnSgUpload.find('.progress > .bar').eq(0)
-      done = (loaded / total) * 100
-      bar.css "width", "#{done}%"
-      return true
+      return updateProgress(btnSgUpload, loaded, total)
 
     onComplete : (id, filename, json) ->
-      resetUploader btnSgUploader
+      resetUploader btnSgUpload
       return true
 
     onError : (id, filename, xhr) ->
-      resetUploader btnSgUploader
+      resetUploader btnSgUpload
       return true
   }
+  ###
 

@@ -17,6 +17,14 @@ window.gutenberg = {
   server : null
 }
 
+window.rails = {
+  serverOptions : {
+    local : "http://localhost:3000",
+    remote : "http://www.gradians.com"
+  }
+  server : null
+}
+
 ###
   Define only those bindings here that would apply across all roles.
 
@@ -125,8 +133,10 @@ jQuery ->
   onPing = (response) ->
     if response.deployment is 'production'
       gutenberg.server = gutenberg.serverOptions.remote
+      rails.server = rails.serverOptions.remote
     else
       gutenberg.server = gutenberg.serverOptions.local
+      rails.server = rails.serverOptions.local
 
     # if logged in user is a teacher, then update her demo info (which demos done, which remain)
     if response.who is 'Teacher'
