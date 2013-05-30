@@ -74,7 +74,7 @@ jQuery ->
 
   scnUploader = new qq.FileUploaderBasic {
     button : btnScnUpload[0],
-    action : "http://10.0.0.12:8080/ScanUploader/upload",
+    action : "#{gutenberg.server}/ScanUploader/upload",
 
     onSubmit : (id, filename) ->
       return clickUploader(btnScnUpload)
