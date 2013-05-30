@@ -47,6 +47,7 @@ jQuery ->
   btnScnUpload = $('#btn-upload-scans')
   btnSgUpload = $('#btn-upload-sg')
 
+  ###
   scnUploader = new qq.FineUploaderBasic {
     button : btnScnUpload[0],
     request : {
@@ -90,6 +91,7 @@ jQuery ->
       return true
   }
 
+  ###
   sgUploader = new qq.FileUploaderBasic {
     button : btnSgUpload[0],
     # action : "http://10.10.0.17:8080/ScanUploader/uploadScan",
