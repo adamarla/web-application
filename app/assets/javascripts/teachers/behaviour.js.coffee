@@ -322,18 +322,3 @@ jQuery ->
     $(this).addClass 'selected'
     return true
 
-  ###
-    Uploading .... 
-  ###
-  
-  $('#m-upload-what').on 'click', 'button', (event) ->
-    event.stopImmediatePropagation()
-    uploadScans = $(this).attr('id') is 'btn-upload-scans'
-    parent = $(this).closest('.modal').eq(0)
-    
-    parent.modal 'hide'
-    show = if uploadScans then $('#m-upload-scans') else $('#m-upload-sg')
-    show.modal 'show'
-    return true
-    
-

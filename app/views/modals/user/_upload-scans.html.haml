@@ -4,40 +4,15 @@
   #m-upload-what.modal.fade.wide{ :role => :dialog }
     .row-fluid
       .span3
-        = image_tag 'quick-trial/upload.png', :class => 'big-icon'
+        = image_tag 'quick-trial/upload.png', :class => 'big-icon offset1'
       .span8
         %h2= "What would you like to upload?"
-        = simple_button :for => "Scans for Grading", :class => 'btn-large btn-primary', :id => 'btn-upload-scans'
-        = simple_button :for => "Question(s)", :class => 'btn-large btn-inverse pull-right', :id => 'btn-upload-sg'
-
-  #m-upload-sg.modal.fade.regular{ :role => :dialog }
-    .row-fluid
-      .span3
-        = image_tag 'quick-trial/upload.png', :class => 'big-icon'
-      .span8
-        .row-fluid
-          %iframe.hide{ :name => 'uploadedSg', :onload => "postUpload('m-upload-sg')" }
-          = simple_form_for :suggestion, :url => suggestion_path, :remote => true, :multipart => true, 
-          :html => { :target => 'uploadedSg' } do |f|
-            .row-fluid
-              = f.file_field :uploaded_doc
-              .subtext.hide= "Please select a file first"
-            .row-fluid.push-down
-              = simple_button :for => "Add these Questions", :type => :submit, :class => 'btn-primary btn-large span11'
-
-#m-upload-scans.modal.fade.regular{ :role => :dialog }
-  .row-fluid
-    .span3
-      = image_tag 'quick-trial/upload.png', :class => 'big-icon'
-    .span8
-      .row-fluid
-        %iframe.hide{ :name => 'uploadedScans', :onload => "postUpload('m-upload-scans')" }
-        = simple_form_for :upload, :url => "#{Gutenberg['server']}/ScanUploader/uploadScan", 
-        :remote => true, :multipart => true, :html => { :target => 'uploadedScans'} do |f|
-          .row-fluid
-            = f.file_field :scans
-            .subtext.hide= "Please select a file first"
-          .row-fluid.push-down
-            = simple_button :for => "Send for Grading", :type => :submit, :class => 'btn-primary btn-large span11'
-
+        .btn.btn-inverse.btn-large.upload{:id => 'btn-upload-scans'}
+          Scans for Grading
+          .progress
+            .bar
+        .btn.btn-inverse.btn-large.upload.offset1{:id => 'btn-upload-sg'}
+          Questions
+          .progress
+            .bar
 

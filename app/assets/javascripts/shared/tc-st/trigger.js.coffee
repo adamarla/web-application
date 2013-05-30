@@ -5,6 +5,17 @@ window.postUpload = (modal) -> # written as onload in modal/teachers/_suggestion
   target.modal 'hide'
   return true
 
+resetUploader = (btn) ->
+  btn.attr 'disabled', false
+  pb = btn.find('.progress > .bar').eq(0)
+  pb.css 'width', '0%'
+  return true
+
+clickUploader = (btn) ->
+  return false if btn.attr('disabled')?
+  btn.attr 'disabled', true
+  return true
+
 jQuery ->
   
   $('#btn-show-solution').click (event) ->
@@ -26,21 +37,51 @@ jQuery ->
 
     return true
 
-  ###
-    Uploading ... 
-  ###
-  $('#m-upload-scans, #m-upload-sg').on 'click', 'button', (event) ->
-    form = $(this).closest 'form'
-    file = form.find("[type='file']").eq(0)
-    warning = form.find(".subtext").eq(0)
 
-    if file.val().length > 0 # => sth. selected
-      warning.addClass 'hide' # => next = plz. select file first msg 
-    else
-      warning.removeClass 'hide'
-      event.stopImmediatePropagation()
-      return false
-    return true
+  btnScnUpload = $('#btn-upload-scans')
+  btnSgUpload = $('#btn-upload-sg')
 
+  scnUploader = new qq.FileUploaderBasic {
+    button : btnScnUpload[0],
+    action : "http://10.10.0.17:8080/ScanUploader/uploadScan",
 
+    onSubmit : (id, filename) ->
+      return clickUploader(btnScnUpload)
+
+    onProgress : (id, fileName, loaded, total) ->
+      bar = btnScnUpload.find('.progress > .bar').eq(0)
+      done = (loaded / total) * 100
+      bar.css "width", "#{done}%"
+      return true
+
+    onComplete : (id, filename, json) ->
+      resetUploader btnScnUpload
+      return true
+
+    onError : (id, filename, xhr) ->
+      resetUploader btnScnUpload
+      return true
+  }
+
+  sgUploader = new qq.FileUploaderBasic {
+    button : btnSgUpload[0],
+    action : "http://10.10.0.17:8080/ScanUploader/uploadScan",
+
+    onSubmit : (id, filename) ->
+      return clickUploader(btnSgUpload)
+
+    onProgress : (id, fileName, loaded, total) ->
+      bar = btnSgUpload.find('.progress > .bar').eq(0)
+      done = (loaded / total) * 100
+      bar.css "width", "#{done}%"
+      return true
+
+    onComplete : (id, filename, json) ->
+      resetUploader btnSgUploader
+      return true
+
+    onError : (id, filename, xhr) ->
+      resetUploader btnSgUploader
+      return true
+  }
 

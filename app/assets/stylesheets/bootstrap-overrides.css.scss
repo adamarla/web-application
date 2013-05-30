@@ -914,23 +914,6 @@ li.split {
   margin: 0 auto ;
 }
 
-#m-suggestion-upload {
-  p {
-    font-size: 12px ;
-  }
-
-  li {
-   color: white ;
-   font-size: 11px ;
-  }
-
-  h3 {
-    &.with-border { 
-      border-bottom: 1px solid white ; 
-    }
-  }
-}
-
 #m-register {
   height: 350px ;
   > ul { margin-top: 0px ; }
@@ -1149,6 +1132,17 @@ li.split {
     color: white ;
     border-bottom: 1px solid white ;
     margin-bottom: 10px ;
+  } 
+  .progress { 
+    height: 7px ;
+    min-height: 5px ;
+    margin : {
+      top: 5px ;
+      bottom: 0px ;
+    }
+    > .bar { 
+      border:none ;
+    } 
   } 
 } 
 
