@@ -50,7 +50,7 @@ jQuery ->
   scnUploader = new qq.FineUploaderBasic {
     button : btnScnUpload[0],
     request : {
-      endpoint : "http://109.74.201.62:8080/ScanUploader/upload"
+      endpoint : "#{gutenberg.server}/ScanUploader/upload"
     },
 
     callbacks : {
