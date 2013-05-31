@@ -13,7 +13,6 @@
 
 .tab-content
   #pane-qzb-1.tab-pane
-    -#= render :partial => 'teachers/qzb-topics', :locals => { :teacher => teacher }
     = render :partial => 'teachers/qzb-topics', :locals => { :context => :qzb }
   #pane-qzb-2.tab-pane
     = render :partial => 'teachers/form-qzb', :locals => { :context => :qzb }

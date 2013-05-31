@@ -333,12 +333,16 @@ a {
 } 
 
 .tab-content { 
-  min-height: 500px ;
+  &:not[class~="scroll"] { min-height: 500px ; }
   > form { 
-    // display: none ;
     &.active { display: block ; }
   } 
 }  
+
+.scroll {
+  max-height: 300px ;
+  overflow: auto ;
+}
 
 .single-line {
   padding: {
