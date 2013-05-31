@@ -67,7 +67,7 @@ jQuery ->
       leftTabs.create root, json, {
         klass : {
           ul : "span4",
-          content : "span7",
+          content : "span7 scroll",
           div : "multi-select pagination"
         },
         data : {
