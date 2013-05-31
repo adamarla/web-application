@@ -7,13 +7,16 @@ window.postUpload = (modal) -> # written as onload in modal/teachers/_suggestion
 
 resetUploader = (btn) ->
   btn.attr 'disabled', false
-  pb = btn.find('.progress > .bar').eq(0)
-  pb.css 'width', '0%'
+  pb = btn.find('.progress').eq(0)
+  pb.children().eq(0).css 'width', '0%'
+  pb.addClass 'hide'
   return true
 
 clickUploader = (btn) ->
   return false if btn.attr('disabled')?
   btn.attr 'disabled', true
+  pb = btn.find('.progress').eq(0)
+  pb.removeClass 'hide'
   return true
 
 updateProgress = (btn, loaded, total) ->
