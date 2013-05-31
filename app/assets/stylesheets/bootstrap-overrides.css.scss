@@ -23,7 +23,7 @@ img {
 
 .small-text {
   font : {
-    size: 11px ;
+    size: 10px ;
   }
 }
 
@@ -168,8 +168,12 @@ a {
   color: white ;
   font-size: 11px ;
 
+  &.super-wide { 
+    width: 650px ;
+  } 
   &.wide { 
     width: 460px ;
+    left:50% ;
   } 
 
   &.slim { 
@@ -179,6 +183,12 @@ a {
   &.regular { 
     max-width: 350px ; 
   }
+  &.fade { 
+    &.in {
+      &.super-wide { left: 40% ; }
+      &.wide { left: 50% ; }
+    }
+  } 
 
   &.lateral-slide { 
     &.fade {
@@ -1133,6 +1143,7 @@ li.split {
     border-bottom: 1px solid white ;
     margin-bottom: 10px ;
   } 
+
   .progress { 
     height: 7px ;
     min-height: 5px ;

@@ -1,18 +1,31 @@
 
 
 - if current_account.loggable_type == "Teacher"
-  #m-upload-what.modal.fade.wide{ :role => :dialog }
+  #m-upload-what.modal.fade.super-wide{ :role => :dialog }
     .row-fluid
-      .span3
+      .span2
         = image_tag 'quick-trial/upload.png', :class => 'big-icon offset1'
-      .span8
+      .span9
         %h2= "What would you like to upload?"
         .btn.btn-inverse.btn-large.upload{:id => 'btn-upload-scans'}
           Scans for Grading
+          .small-text.orange= "PDF preferred. JPEG allowed"
           .progress.hide
             .bar
         .btn.btn-inverse.btn-large.upload.offset1{:id => 'btn-upload-sg'}
           Questions
+          .small-text.orange= "Word document, PDF, JPEG, Text file"
           .progress.hide
             .bar
-
+- elsif current_account.loggable_type == "Student"
+  #m-upload-what.modal.fade.regular{ :role => :dialog }
+    .row-fluid
+      .span3
+        = image_tag 'quick-trial/upload.png', :class => 'big-icon offset1'
+      .span8
+        %h2= "Send Scans for Grading"
+        .btn.btn-inverse.btn-large.upload{:id => 'btn-upload-scans'}
+          Select & Upload
+          .small-text.orange= "PDF preferred. JPEG allowed"
+          .progress.hide
+            .bar
