@@ -77,7 +77,7 @@ jQuery ->
 
   scnUploader = new qq.FileUploaderBasic {
     button : btnScnUpload[0],
-    action : "#{gutenberg.server}/ScanUploader/upload",
+    action : "#{gutenberg.server}/Upload/scan",
 
     onSubmit : (id, filename) ->
       return clickUploader(btnScnUpload)
@@ -94,11 +94,9 @@ jQuery ->
       return true
   }
 
-  ###
   sgUploader = new qq.FileUploaderBasic {
     button : btnSgUpload[0],
-    # action : "http://10.10.0.17:8080/ScanUploader/uploadScan",
-    action : "#{rails.server}/suggestion",
+    action : "#{gutenberg.server}/Upload/suggestion",
     params : {
       id : $('#control-panel').attr('marker')
     },
@@ -117,5 +115,4 @@ jQuery ->
       resetUploader btnSgUpload
       return true
   }
-  ###
 
