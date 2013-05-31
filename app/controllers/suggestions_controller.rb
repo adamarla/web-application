@@ -1,29 +1,20 @@
 class SuggestionsController < ApplicationController
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, :except => [:create]
   respond_to :json
 
   def create
-    if current_account && current_account.loggable_type == "Teacher"
-      t = current_account.loggable 
+    t = Teacher.find_by_id(params[:teacher_id])
+    unless t.nil?
       s = t.suggestions.build 
+      s[:signature] = params[:signature]
+      s[:pages] = params[:num_pages].to_i
 
-      p = params[:suggestion][:uploaded_doc]
-      mime = Suggestion.mime_type p
-      allowed, extension = Suggestion.valid_mime_type? mime
-
-      if allowed
-        uploaded_file = File.open(p.tempfile, "r")
-        buffer = File.read uploaded_file 
-        uploaded_file.close 
-        sha_sum = Digest::SHA1.hexdigest(buffer)[0,12] # DB-has 15-character limit for signature
-        payload = Base64.encode64 buffer
-        Delayed::Job.enqueue StoreSuggestion.new(current_account.loggable_id, "#{sha_sum}.#{extension}", payload)
-        render :json => { :notify => :submitted }, :status => :ok
-      else
-        render :json => { :notify => :invalid_file_type }, :status => :ok
-      end
+      e = Examiner.where(:is_admin => true).sort{ |m,n| m.suggestion_ids.count <=> n.suggestion_ids.count }.first
+      s[:examiner_id] = e.id
+      s.save
+      render :json => { :status => :ok }
     else
-      render :json => { :notify => :error }, :status => :ok
+      render :json => { :status => :error }
     end
   end
 
