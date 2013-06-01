@@ -73,7 +73,7 @@
             .stopwatch.span4
     .span3
       %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
-      = simple_form_for :upload, :url => "#{Gutenberg['server']}/ScanUploader/uploadScan", 
+      = simple_form_for :upload, :url => "#{Gutenberg['server']}/Upload/scan", 
       :remote => true, :multipart => true, :html => { :target => 'upload-status', :class => 'offset2' } do |f|
         = f.file_field :scans
         = simple_button :for => "Upload", :type => :submit, :icon => 'icon-upload', :class => 'btn-primary'
