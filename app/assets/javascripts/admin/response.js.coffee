@@ -14,11 +14,7 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .single-line
     buttons = null
 
-    if url.match(/schools\/list/)
-      target = $('#schools')
-      key = 'schools'
-      pgnUrl = "schools/list"
-    else if url.match(/verticals\/list/)
+    if url.match(/verticals\/list/)
       target = $('#pane-mng-topics-1')
       key = 'verticals'
     else if url.match(/vertical\/topics/)

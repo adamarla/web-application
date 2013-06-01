@@ -43,15 +43,6 @@ class SchoolsController < ApplicationController
     render(:json => { :status => "Update failed!" }, :status => status) if status == :bad_request
   end 
 
-  def list 
-    @schools = School.order(:name)
-
-    n = @schools.count 
-    @per_pg, @last_pg = pagination_layout_details n
-    pg = params[:page].nil? ? 1 : params[:page].to_i
-    @schools = @schools.page(pg).per(@per_pg)
-  end 
-
 =begin
   def unassigned_students 
     @students = Student.where(:school_id => params[:id], :sektion_id => nil).order(:first_name)

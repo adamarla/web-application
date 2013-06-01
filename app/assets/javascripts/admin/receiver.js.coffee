@@ -84,8 +84,6 @@ jQuery ->
 
     if url.match(/teachers\/list/)
       coreUtil.interface.displayJson json.teachers, '#teachers-list', 'teacher'
-    else if url.match(/school\/sektions/)
-      coreUtil.interface.displayJson json.sektions, '#studygroups-radiolist', 'sektion'
     else if url.match(/verticals\/list/)
       for here,j in ['#tag-question-topics', '#edit-course-topics', '#define-course-topics']
         scroll.initialize json.verticals, 'vertical', $(here)
@@ -112,11 +110,9 @@ jQuery ->
     if url.match(/teachers\/roster/)
       here = $('#edit-student-klass-mapping').children 'form:first'
       coreUtil.interface.displayJson json.sektions, here, 'sektion', {checkbox:true}
-    else if url.match(/school\/unassigned-students/) or url.match(/sektions\/students/)
+    else if url.match(/sektions\/students/)
       here = $('#student-list').children 'form:first'
       coreUtil.interface.displayJson json.students, here, 'student', {checkbox:true}
-    else if url.match(/school/)
-      coreUtil.forms.loadJson $('#edit-school').children('form:first'), json.school
     else if url.match(/teacher\/specializations/)
       here = $('#teacher-specialization')
       scroll.overlayJson json.subjects, 'subject', here, '.list-item', 'nop', 'check'

@@ -342,16 +342,6 @@ lnk-wb-blockdb :
 m-examiner-wb :
   menu : examiner-wb
 
-tab-new-school :
-
-tab-selected-school :
-
-tab-school-general :
-
-tab-school-faculty :
-
-tab-school-sektions :
-
 lnk-wb-tagging :
   left :
     show : left-3

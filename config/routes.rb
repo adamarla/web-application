@@ -47,7 +47,6 @@ Webapp::Application.routes.draw do
 
   # School 
   resource :school, :only => [:show, :create, :update]
-  match 'schools/list' => 'schools#list', :via => :get 
   match 'upload_student_list' => 'schools#upload_student_list', :via => :post
 
   # Verticals 
