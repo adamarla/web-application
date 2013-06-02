@@ -103,7 +103,6 @@ class ExaminersController < ApplicationController
     ws_id = decrypt qr_code[0..6]
     rel_index = decrypt qr_code[7..9]
     page = qr_code[10].to_i(36)
-    puts "wsid #{ws_id} rel_index #{rel_index} page #{page}"
     student_id = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort[rel_index]
     graded_resp = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page).each do |gr|
       if gr[:scan].nil?
