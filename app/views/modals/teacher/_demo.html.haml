@@ -17,7 +17,7 @@
           <b>Note:</b> Please allow a few minutes for the student worksheet (PDF) to be ready 
 
     -# print
-    .span3
+    .span4
       .span3
         = image_tag 'quick-trial/printer.png', :class => 'big-icon'
       .span8
@@ -32,7 +32,7 @@
           a sample of our feedback
 
     -# upload
-    .span3
+    .span4
       .span3
         = image_tag 'quick-trial/upload.png', :class => 'big-icon'
       .span8
@@ -46,11 +46,11 @@
           Upload that PDF - and that's it! You'll get an email as soon as we are done grading your response!
           
     -# what is this
-    .span2
-      .span8
-        %button.btn.btn-primary{ :id => "btn-whatisthis"}
-          = image_tag 'notifications/question.png', :class => 'big-icon'
-          %p What is this
+      .span2
+        .span8
+          %button.btn.btn-primary{ :id => "btn-whatisthis"}
+            = image_tag 'notifications/question.png', :class => 'big-icon'
+            %p What is this
 
   -# active components
   .row-fluid.push-down 
@@ -63,7 +63,7 @@
                   :value_method => :last, 
                   :as => :radio_buttons
         = simple_button :for => 'Make PDF', :type => :submit, :class => 'btn-primary push-down'
-    .span3
+    .span4
       %ul.nav.offset3
         - PREFAB_QUIZ_MAP.each do |m|
           %li{ :marker => m.last }
@@ -71,10 +71,10 @@
             :class => 'span7 disabled', :marker => m.last,
             :href => "#{Gutenberg['server']}/mint/ws/:a/assignment-:b-:c.pdf"
             .stopwatch.span4
-    .span3
-      %iframe.hide{ :name => 'upload-status', :onload => "postUpload()" }
-      = simple_form_for :upload, :url => "#{Gutenberg['server']}/ScanUploader/uploadScan", 
-      :remote => true, :multipart => true, :html => { :target => 'upload-status', :class => 'offset2' } do |f|
-        = f.file_field :scans
-        = simple_button :for => "Upload", :type => :submit, :icon => 'icon-upload', :class => 'btn-primary'
+    .span4
+      .btn.btn-inverse.btn-large.upload.offset3{:id => 'btn-quick-trial-upload' }
+        Send for Grading
+        .small-text.orange= "PDF preferred. JPEG allowed"
+        .progress.hide
+          .bar
 

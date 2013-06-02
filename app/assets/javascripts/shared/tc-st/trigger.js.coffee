@@ -47,33 +47,13 @@ jQuery ->
     return true
 
 
+  ###
+    Three buttons used for uploading
+  ###
+
   btnScnUpload = $('#btn-upload-scans')
   btnSgUpload = $('#btn-upload-sg')
-
-  ###
-  scnUploader = new qq.FineUploaderBasic {
-    button : btnScnUpload[0],
-    request : {
-      endpoint : "#{gutenberg.server}/ScanUploader/upload"
-    },
-
-    callbacks : {
-      onSubmit : (id, filename) ->
-        return clickUploader(btnScnUpload)
-
-      onProgress : (id, fileName, loaded, total) ->
-        return updateProgress(btnScnUpload, loaded, total)
-
-      onComplete : (id, filename, json) ->
-        resetUploader btnScnUpload
-        return true
-
-      onError : (id, filename, xhr) ->
-        resetUploader btnScnUpload
-        return true
-    }
-  }
-  ###
+  btnQuickTrialUpload = $('#btn-quick-trial-upload')
 
   scnUploader = new qq.FileUploaderBasic {
     button : btnScnUpload[0],
@@ -116,3 +96,21 @@ jQuery ->
       return true
   }
 
+  quickTrialUploader = new qq.FileUploaderBasic {
+    button : btnQuickTrialUpload[0],
+    action : "#{gutenberg.server}/Upload/scan",
+
+    onSubmit : (id, filename) ->
+      return clickUploader(btnQuickTrialUpload)
+
+    onProgress : (id, fileName, loaded, total) ->
+      return updateProgress(btnQuickTrialUpload, loaded, total)
+
+    onComplete : (id, filename, json) ->
+      resetUploader btnQuickTrialUpload
+      return true
+
+    onError : (id, filename, xhr) ->
+      resetUploader btnQuickTrialUpload
+      return true
+  }
