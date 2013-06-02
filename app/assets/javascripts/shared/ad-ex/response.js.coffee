@@ -25,6 +25,10 @@ jQuery ->
       key = 'typeset'
       clickFirst = true
       menu = 'blockdb-slots'
+    else if url.match(/typeset\/ongoing/)
+      target = $('#pane-typeset-ongoing')
+      key = 'typeset'
+      clickFirst = true
     else
       matched = false
 
