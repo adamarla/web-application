@@ -77,14 +77,21 @@ class ExaminersController < ApplicationController
   end # of method
 
   def unresolved_scans
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg[:action][:fetch_unresolved_scans]}" 
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['fetch_unresolved_scans']}" 
     response = SavonClient.request :wsdl, :fetchUnresolvedScans do
       soap.body = { 
         :grader => { :id => current_account.loggable_id },
         :maxQuantity => 10
       }
     end
-    render :json => { :text => :abhinav }, :status => :ok
+    manifest = response[:fetch_unresolved_scans][:manifest]
+    unless manifest.nil?
+      @root = manifest[:root]
+      @scans = manifest[:image].map{ |m| m.id }
+    else
+      @root = nil
+      @scans = []
+    end
   end
 
   def update_scan_id

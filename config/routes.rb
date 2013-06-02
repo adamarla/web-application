@@ -43,6 +43,7 @@ Webapp::Application.routes.draw do
   match 'rotate_scan' => 'examiners#rotate_scan', :via => :get
   match 'restore_scan' => 'examiners#restore_pristine_scan', :via => :get
   match 'pages/unresolved' => 'examiners#unresolved_scans', :via => :get
+  match 'unresolved/preview' => 'examiners#preview_unresolved', :via => :get
   match 'update_scan_id' => 'examiners#update_scan_id', :via => :get
 
   # School 

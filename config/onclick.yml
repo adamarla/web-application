@@ -396,6 +396,8 @@ lnk-wb-resolve :
 
 tab-resolution-pending :
   url : pages/unresolved
+  panel : 
+    url : unresolved/preview?id=:id
 
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
