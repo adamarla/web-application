@@ -87,7 +87,7 @@ class ExaminersController < ApplicationController
     manifest = response[:fetch_unresolved_scans_response][:manifest]
     unless manifest.blank?
       @root = manifest[:root]
-      @scans = manifest[:image].nil? ? [] : manifest[:image].map{ |m| m.id }
+      @scans = manifest[:image].nil? ? [] : manifest[:image].map{ |m| m[:id] }
     else
       @root = nil
       @scans = []
