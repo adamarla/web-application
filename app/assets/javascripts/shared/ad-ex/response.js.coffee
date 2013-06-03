@@ -25,6 +25,18 @@ jQuery ->
       key = 'typeset'
       clickFirst = true
       menu = 'blockdb-slots'
+    else if url.match(/pages\/unresolved/)
+      target = $('#unresolved-scans')
+      key = 'unresolved'
+      clickFirst = true
+    else if url.match(/resolve/)
+      form = $('#form-resolve-scans')
+      $(m).val(null) for m in form.find("input[type='text']")
+      entries = form.find('.single-line')
+      last = entries.filter("[class~='selected']")[0]
+      $(last).remove() if last?
+      entries.eq(0).click()
+      return true
     else
       matched = false
 
