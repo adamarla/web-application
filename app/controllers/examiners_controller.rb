@@ -84,14 +84,18 @@ class ExaminersController < ApplicationController
         :maxQuantity => 10
       }
     end
-    manifest = response[:fetch_unresolved_scans][:manifest]
-    unless manifest.nil?
+    manifest = response[:fetch_unresolved_scans_response][:manifest]
+    unless manifest.blank?
       @root = manifest[:root]
-      @scans = manifest[:image].map{ |m| m.id }
+      @scans = manifest[:image].nil? ? [] : manifest[:image].map{ |m| m[:id] }
     else
       @root = nil
       @scans = []
     end
+  end
+
+  def resolve_scan
+    render :nothing => true, :status => :ok
   end
 
   def update_scan_id
