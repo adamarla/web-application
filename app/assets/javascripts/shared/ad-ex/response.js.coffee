@@ -33,6 +33,8 @@ jQuery ->
       target = $('#unresolved-scans')
       key = 'unresolved'
       clickFirst = true
+    else if url.match(/unresolved\/preview/)
+      preview.loadJson json, 'locker'
     else if url.match(/resolve/)
       form = $('#form-resolve-scans')
       $(m).val(null) for m in form.find("input[type='text']")

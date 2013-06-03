@@ -94,8 +94,28 @@ class ExaminersController < ApplicationController
     end
   end
 
+  def preview_unresolved
+    file = params[:id]
+    render :json => { :preview => { :id => 'unresolved', :scans => [file] } }, :status => :ok
+  end
+
   def resolve_scan
-    render :nothing => true, :status => :ok
+    file = params[:checked].keys.first
+    code = params[:code].values.join
+
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['resolve_scan']}" 
+    if code.blank? # delete the scan 
+      response = SavonClient.request :wsdl, :resolveScan do 
+        soap.body = { :scan => { :id => file } } 
+      end
+      status = :deleted 
+    else
+      response = SavonClient.request :wsdl, :resolveScan do 
+        soap.body = { :scan => { :id => file, :value => code.upcase } } 
+      end
+      status = :renamed
+    end
+    render :json => { :status => status }, :status => :ok
   end
 
   def update_scan_id
