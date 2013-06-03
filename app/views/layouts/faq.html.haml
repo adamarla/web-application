@@ -27,6 +27,10 @@
               = simple_link :for => "On Scanning", :href => '#faq-scanning', :icon => 'icon-chevron-right'
             %li
               = simple_link :for => "Home", :href => '/', :icon => 'icon-home'
+            %li
+              = simple_link :for => "About Us", :href => '#faq-about-us', :icon => 'icon-user-right'
+            %li
+              = simple_link :for => "Contact", :href => '#faq-contact', :icon => 'icon-inbox-right'
         .span7.offset3{ :id => 'faq-content-panel' }
           = render :partial => 'faq/general'
           = render :partial => 'faq/website'
