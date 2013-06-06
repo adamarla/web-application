@@ -156,8 +156,9 @@ jQuery ->
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
-      if json.quizzes.length < 1
-        notifier.show 'n-compiled' # only info on compiled worksheets returned
+
+      if json.worksheets.length > 0
+        notifier.show('n-compiled') if json.quizzes.length < 1 # only info on compiled worksheets returned
 
     else if url.match(/prefab/)
       monitor.add json
