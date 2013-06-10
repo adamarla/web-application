@@ -443,8 +443,11 @@ jQuery ->
       multiOk = if hasButton then false else $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
       activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
       
-      isClicked = $(this).hasClass 'selected'
       badge = $(this).find('.badge').eq(0)
+      otherLines = $(this).siblings('.single-line')
+      onlyChild = otherLines.length is 0
+
+      isClicked = $(this).hasClass 'selected'
 
       if isClicked
         if multiOk
@@ -452,13 +455,13 @@ jQuery ->
           badge.removeClass 'badge-warning'
           $(this).find("input[type='checkbox']").eq(0).prop('checked', false) unless hasButton
       else
-        $(this).addClass 'selected'
+        $(this).addClass('selected') unless onlyChild # [#55]: if only child, then allow subsequent clicks
         badge.addClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop('checked', true) unless hasButton
 
         unless multiOk
           # 1. Remove selected from siblings if not multi-select
-          for k in $(this).siblings('.single-line')
+          for k in otherLines
             $(k).removeClass 'selected'
             $(k).find('.badge').eq(0).removeClass 'badge-warning'
             $(k).find("input[type='checkbox']").eq(0).prop 'checked', false unless hasButton
