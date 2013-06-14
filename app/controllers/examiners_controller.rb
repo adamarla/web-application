@@ -106,12 +106,12 @@ class ExaminersController < ApplicationController
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['resolve_scan']}" 
     if code.blank? # delete the scan 
       response = SavonClient.request :wsdl, :resolveScan do 
-        soap.body = { :scan => { :id => file } } 
+        soap.body = { :id => file } 
       end
       status = :deleted 
     else
       response = SavonClient.request :wsdl, :resolveScan do 
-        soap.body = { :scan => { :id => file, :value => code.upcase } } 
+        soap.body = { :id => file, :value => code.upcase } 
       end
       status = :renamed
     end

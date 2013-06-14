@@ -1,0 +1,39 @@
+
+#faq-about-us.row-fluid
+  %h3.orange= "About Us"
+  .span8
+    .accordion{ :id => 'au' }
+      .accordion-group
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#au', :toggle => 'collapse' }, :href => '#au-2' }
+            Abhinav Chaturvedi
+        .accordion-body.collapse{ :id => 'au-2' }
+          .accordion-inner
+            %p
+              A graduate of Anderson School of Business UCLA, Abhinav first 
+              realized the the need for gradians.com while grading papers for his 
+              statistics  professor. It occurred to him that if this was something 
+              teachers had to do themselves, they could not do it very often. 
+            %p
+              Prior to this Abhinv was a software engineer in the semi-conductor
+              industry. Throughout his life he has cultured an avid interest in
+              Computer Programming. 
+            %p
+              He is also good at racquet sports.
+
+        .accordion-heading
+          %a.accordion-toggle{ :data => { :parent => '#au', :toggle => 'collapse' }, :href => '#au-3' }
+            Akshay Damarla
+        .accordion-body.collapse{ :id => 'au-3' }
+          .accordion-inner
+            %p
+              A graduate from NYU Department of Computer Science Akshay has been
+              involved with Gradians.com from close to its inception. He has worked
+              in the Financial Services industry for over eight years and has an 
+              appreciation for the value data and analysis can provide. In this case 
+              of course the end users being Teachers.
+            %p
+              He shares Abhinav's passion for elegant and useful Software systems 
+              and also for sports.
+
