@@ -7,4 +7,4 @@ object false
     }
   } 
 
-  node(:a) { "0-#{@suggestion.teacher_id}/#{@suggestion.signature}" }
+  node(:a) { "0-#{@suggestion.teacher_id}/#{@suggestion.signature}/page-1.jpeg" }
