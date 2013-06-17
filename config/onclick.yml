@@ -399,6 +399,10 @@ tab-resolution-pending :
   panel : 
     url : unresolved/preview?id=:id
 
+lnk-rotate-sg :
+  notouch : true
+  update-on : suggestion/preview 
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################

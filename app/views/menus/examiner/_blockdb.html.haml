@@ -1,5 +1,7 @@
 
 %ul.dropdown-menu.dropdown-inverse.slim#blockdb-slots{ :role => :menu }
+  %li
+    = simple_link :for => "Rotate", :id => 'lnk-rotate-sg', :icon => 'icon-repeat', :url => "rotate_scan?id=:a"
   %li.nav-header= "Block ..."
   - [*1..10].each do |m|
     %li
