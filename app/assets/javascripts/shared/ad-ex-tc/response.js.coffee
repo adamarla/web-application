@@ -65,8 +65,7 @@ jQuery ->
       $('#wide-wait').addClass 'hide'
       $('#wide-X').removeClass 'hide'
       preview.loadJson json, 'vault'
-      if tutorial.active
-        tutorial.start 'qzb-milestone-6' if json.context is 'qzb'
+      tutorial.start 'qzb-milestone-6' if json.context is 'qzb'
     else if url.match(/rotate_scan/)
       abacus.next.scan()
     else

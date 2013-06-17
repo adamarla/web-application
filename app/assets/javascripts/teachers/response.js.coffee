@@ -80,8 +80,8 @@ jQuery ->
           root : "#{json.context}-div-milestone-5"
         }
       }
-      if tutorial.active
-        tutorial.start lesson if lesson?
+
+      tutorial.start lesson if lesson?
       return true
     else if url.match(/questions\/on/)
       topic = json.topic
@@ -219,7 +219,7 @@ jQuery ->
       target.children('.single-line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst
 
     # If in tutorial mode, then start the next tutorial - if any
-    if tutorial.active
-      tutorial.start lesson if lesson?
+    tutorial.start lesson if lesson?
+
     e.stopPropagation() if matched is true
     return true
