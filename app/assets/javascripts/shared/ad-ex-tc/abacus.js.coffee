@@ -95,6 +95,8 @@ window.abacus = {
   find : {
     student : (fwd) -> # if fwd = true, then look for next, else look for previous
       current = abacus.current.student
+      return null unless current?
+
       result = if fwd then current.next() else current.prev()
 
       if result.length isnt 0

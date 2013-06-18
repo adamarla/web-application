@@ -7,3 +7,7 @@ object false
   node(:notify) {
     { :title => @sk.uid, :id => @sk.id }
   }
+
+  node(:tabs) { 
+    [{ :id => @sk.id, :name => @sk.name }]
+  }

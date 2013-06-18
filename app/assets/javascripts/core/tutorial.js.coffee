@@ -12,13 +12,14 @@ window.tutorial = {
       'scroll' : false,
       'nextButton' : false,
       'timer' : 0,
-      'postRideCallback' : () ->
+      'postRideCallback' : (completed = true) ->
         last = tutorial.root.children('ol').filter("[id=#{tutorial.current}]")[0]
         $(last).joyride 'destroy'
         tutorial.current = null
         $(m).removeClass('disabled') for m in $('#control-panel').find('a.dropdown-toggle')
-        # tutorial.active = false unless last.dataset.onwards is 'true'
-        tutorial.active = false unless last.getAttribute('data-onwards') is 'true'
+
+        goOn = last.getAttribute('data-onwards') is 'true'
+        tutorial.active = goOn and completed
         return true
     },
 
@@ -51,8 +52,8 @@ window.tutorial = {
 
   start : (n = null) ->
     return false unless n?
+    return false unless tutorial.active
 
-    tutorial.active = true
     if tutorial.current is n
       tutorial.deactivateControlPanel()
       $("##{tutorial.current}").joyride('restart')
