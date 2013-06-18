@@ -99,7 +99,6 @@ window.trigger = {
       # autoclick = link.dataset.autoclick
       autoclick = link.getAttribute('data-autoclick')
       trigger.click $("##{autoclick}")[0] if autoclick?
-      tutorial.active = true
       tutorial.start help
 
     return true
