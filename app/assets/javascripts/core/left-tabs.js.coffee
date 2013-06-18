@@ -154,12 +154,18 @@ window.leftTabs = {
     root = if typeof root is 'string' then $(root) else root
     ul = root.children('ul.nav-tabs').eq(0)
 
-    url = options.data.url
+    attributes = options.data
+    url = attributes.url
+    prev = if attributes.prev is "" then null else attributes.prev
     hasId = url.search(":id") isnt -1
 
     for m in json.tabs
       ajax = if hasId then url.replace(":id", m.id) else url
-      html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-url='#{ajax}'>#{m.name}</a></li>"
+      if prev?
+        html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-prev='#{prev}' data-url='#{ajax}'>#{m.name}</a></li>"
+      else
+        html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-url='#{ajax}'>#{m.name}</a></li>"
+
       $(html).prependTo ul
     firstTab = ul.find('li > a').eq(0)
     firstTab.click()

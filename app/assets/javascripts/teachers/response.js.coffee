@@ -104,11 +104,11 @@ jQuery ->
       if json.context is 'list'
         target = $('#pane-mng-sektions-1')
         lesson = 'mng-sektions-milestone-2'
+        clickFirst = true
       else
         target = $('#pane-dive-1')
 
       key = 'sektions'
-      clickFirst = true
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
         target = $("##{json.context}-#{json.vertical}")
@@ -131,6 +131,16 @@ jQuery ->
       lesson = 'mng-sektions-milestone-3'
       $('#new-sk-uid').text json.notify.title #75
       $('#new-sk-students').attr 'marker', json.notify.id #75
+
+      # [102]: Add the new sektion as a left-tab so that teachers can start making 
+      # worksheets without having to reload the site
+      leftTabs.add '#sektions-tab', json, {
+        shared : 'wsb-sektions',
+        data : {
+          url : "sektion/students.json?id=:id&context=wsb&quiz=:prev",
+          prev : "tab-wsb-quizzes"
+        }
+      }
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
