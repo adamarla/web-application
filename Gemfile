@@ -53,6 +53,8 @@ gem 'levenshtein-ffi', :require => 'levenshtein'
 
 group :production do 
   gem 'thin'
+  ruby "1.9.3"
+  gem 'psych'
 end
 
 gem 'dalli' # for caching
