@@ -436,14 +436,15 @@ jQuery ->
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle')[0] else return false
     else # elsewhere on the single-line => select / de-select
       event.stopPropagation()
-      multiOk = if hasButton then false else $(this).parent().hasClass('multi-select') # parent = .content / .tab-pane / form
+
+      parent = $(this).parent()
+      multiOk = if hasButton then false else parent.hasClass('multi-select') # parent = .content / .tab-pane / form
+      reissueAjax = parent.hasClass 'reissue-ajax'
       activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
       
       badge = $(this).find('.badge').eq(0)
       otherLines = $(this).siblings('.single-line')
-      onlyChild = otherLines.length is 0
-
-      isClicked = $(this).hasClass 'selected'
+      isClicked = if reissueAjax then false else $(this).hasClass('selected') # issues 55 and 112
 
       if isClicked
         if multiOk
@@ -451,7 +452,7 @@ jQuery ->
           badge.removeClass 'badge-warning'
           $(this).find("input[type='checkbox']").eq(0).prop('checked', false) unless hasButton
       else
-        $(this).addClass('selected') unless onlyChild # [#55]: if only child, then allow subsequent clicks
+        $(this).addClass('selected')
         badge.addClass 'badge-warning'
         $(this).find("input[type='checkbox']").eq(0).prop('checked', true) unless hasButton
 
