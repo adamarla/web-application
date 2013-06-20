@@ -6,7 +6,6 @@
 
 - content_for :toolbox do 
   #toolbox.hidden 
-    = render :partial => 'examiners/blockDbSlots'
     = render :partial => 'toolbox/line'
     = render :partial => 'toolbox/preview'
     = render :partial => 'menus/user/account'
@@ -65,7 +64,7 @@
           #left-4
             = render :partial => 'toolbox/grd-pending'
           #left-5
-            = render :partial => 'toolbox/typeset-pending'
+            = render :partial => 'examiners/typeset-pending'
           #left-6
             = render :partial => 'examiners/resolution-pending'
 
