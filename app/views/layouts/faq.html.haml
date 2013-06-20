@@ -15,8 +15,12 @@
               %a.brand.span4{ :href => "/"}
                 = image_tag "logo-mit-beta-2.png"
       .row-fluid
-        .span3.offset1{ :id => 'faq-side-panel' }
+        .span3{ :id => 'faq-side-panel' }
           %ul.nav.nav-list.offset1
+            %li
+              = simple_link :for => "Home", :href => '/', :icon => 'icon-home'
+            %li
+              = simple_link :for => "Who we are", :href => '#faq-about-us', :icon => 'icon-chevron-right'
             %li
               = simple_link :for => "Generally", :href => '#faq-general', :icon => 'icon-chevron-right'
             %li
@@ -26,9 +30,11 @@
             %li
               = simple_link :for => "On Scanning", :href => '#faq-scanning', :icon => 'icon-chevron-right'
             %li
-              = simple_link :for => "Home", :href => '/', :icon => 'icon-home'
+              = simple_link :for => "Contact", :href => '#faq-contact', :icon => 'icon-chevron-right'
         .span7.offset3{ :id => 'faq-content-panel' }
+          = render :partial => 'faq/aboutus'
           = render :partial => 'faq/general'
           = render :partial => 'faq/website'
           = render :partial => 'faq/grading'
           = render :partial => 'faq/scanning'
+          = render :partial => 'faq/contactus'
