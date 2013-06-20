@@ -26,9 +26,18 @@ jQuery ->
       clickFirst = true
       menu = 'blockdb-slots'
     else if url.match(/typeset\/ongoing/)
-      target = $('#pane-typeset-ongoing')
-      key = 'typeset'
-      clickFirst = true
+      grp = $('#sg-ongoing').children().eq(0) # accordion-group
+      for m in json.ongoing
+        hdr = $("<div class='accordion-heading'></div>")
+        a = $("<a class='accordion-toggle' href='#sg-#{m.id}'>#{m.name} (#{m.tag} day(s))</a>")
+        a.appendTo hdr
+        a.setAtttribute 'data-parent', '#sg-ongoing'
+        a.setAtttribute 'data-toggle', 'collapse'
+        bd = $("<div class='accordion-body collapse' id='sg-#{m.id}'></div>")
+        $("<div class='accordion-inner'></div>").appendTo bd
+
+        hdr.appendTo grp
+        bd.appendTo grp
     else if url.match(/pages\/unresolved/)
       target = $('#unresolved-scans')
       key = 'unresolved'

@@ -1,13 +1,7 @@
 
-# @ongoing = array of Questions - not Suggestions!
-
 object false
-  node(:typeset) { 
-    @ongoing.map{ |m|
-      {
-        :name => m.suggestion.teacher.name,
-        :id => m.suggestion_id,
-        :tag => m.uid
-      }
+  node(:ongoing) { 
+    @ongoing.map{ |m| 
+      { :name => m.teacher.name, :id => m.id, :tag => (Date.today - m.created_at.to_date).to_i }
     }
   } 
