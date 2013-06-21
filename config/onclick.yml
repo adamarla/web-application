@@ -384,7 +384,7 @@ m-block-slots :
 tab-typeset-ongoing :
   url : typeset/ongoing
   panel :
-    url : suggestion/preview.json?id=:id
+    url : question/preview.json?id=:id
 
 lnk-wb-resolve :
   left :

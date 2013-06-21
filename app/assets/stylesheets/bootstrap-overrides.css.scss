@@ -1193,3 +1193,29 @@ li.split {
     margin-right: 5px ;
   }
 } 
+
+#sg-ongoing { 
+  > .accordion-group { 
+    border: none ;
+  }
+
+  a {
+    font-size : 12px ;
+    color: white ;
+    &:hover { 
+      text-decoration: none ;
+    } 
+  }
+
+  .accordion-toggle { 
+    padding: 8px 15px 4px 15px ;
+    border-bottom: 1px solid $lightgray ; 
+  } 
+
+  .single-line { 
+    max-height: 20px ;
+    min-height: 0px ;
+    font-size: 11px ;
+    font-variant: small-caps ;
+  } 
+}

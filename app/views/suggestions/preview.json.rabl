@@ -8,3 +8,12 @@ object false
   } 
 
   node(:a) { "0-#{@suggestion.teacher_id}/#{@suggestion.signature}/page-1.jpeg" }
+  node(:slots) {
+    @suggestion.questions.map{ |m|
+      {
+        :id => m.id,
+        :name => m.uid,
+        :klass => "#{m.topic_id.nil? ? 'disabled' : nil}" 
+      }
+    }
+  }
