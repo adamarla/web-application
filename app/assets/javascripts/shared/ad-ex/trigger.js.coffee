@@ -9,6 +9,12 @@ window.qtagger = {
     return true
 }
 
+previewSg = (json) ->
+  active = $('#sg-ongoing').find('.in').eq(0)
+  inner = active.children().eq(0)
+  lines.columnify inner, json.slots
+  return true
+
 jQuery ->
   
   $('#pane-vertical-topics').on 'click', '.single-line', (event) ->
@@ -40,4 +46,24 @@ jQuery ->
     form = pane.find('form').eq(0)
     qtagger.enable( $(m),false) for m in form.children('.subpart-tagging')
     form.find('#num-subparts option:first').prop 'selected', true
+    return true
+
+  ###
+    Ongoing suggestion accordion: Opening should load list of slots. 
+    Closing should empty out the .accordion-inner
+  ###
+
+  $('#sg-ongoing').on 'shown', () ->
+    active = $(this).find('.in').eq(0)
+    marker = active.prev().attr('marker')
+    # alert "Showing #{marker}"
+    karo.ajaxCall "suggestion/preview?id=#{marker}", previewSg
+    return true
+
+  $('#sg-ongoing').on 'hide', () ->
+    active = $(this).find('.in').eq(0)
+    marker = active.prev().attr('marker')
+    inner = active.children().eq(0)
+    inner.empty()
+    # alert "Hiding #{marker}"
     return true

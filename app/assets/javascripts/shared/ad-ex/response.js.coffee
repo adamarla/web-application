@@ -27,14 +27,18 @@ jQuery ->
       menu = 'blockdb-slots'
     else if url.match(/typeset\/ongoing/)
       grp = $('#sg-ongoing').children().eq(0) # accordion-group
+      grp.empty() # remove any previous data
+
       for m in json.ongoing
-        hdr = $("<div class='accordion-heading'></div>")
-        a = $("<a class='accordion-toggle' href='#sg-#{m.id}'>#{m.name} (#{m.tag} day(s))</a>")
-        a.appendTo hdr
-        a.setAtttribute 'data-parent', '#sg-ongoing'
-        a.setAtttribute 'data-toggle', 'collapse'
+        hdr = $("<div class='accordion-heading' marker='#{m.id}'></div>")
+        $("<a class='accordion-toggle' href='#sg-#{m.id}'>#{m.name}</a>").appendTo hdr
+        a = hdr.children('a')[0]
+        a.setAttribute 'data-parent', '#sg-ongoing'
+        a.setAttribute 'data-toggle', 'collapse'
         bd = $("<div class='accordion-body collapse' id='sg-#{m.id}'></div>")
-        $("<div class='accordion-inner'></div>").appendTo bd
+
+        inner = $("<div class='accordion-inner'></div>")
+        inner.appendTo bd
 
         hdr.appendTo grp
         bd.appendTo grp
