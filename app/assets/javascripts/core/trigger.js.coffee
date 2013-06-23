@@ -99,6 +99,7 @@ window.trigger = {
       # autoclick = link.dataset.autoclick
       autoclick = link.getAttribute('data-autoclick')
       trigger.click $("##{autoclick}")[0] if autoclick?
+      tutorial.active = true
       tutorial.start help
 
     return true
@@ -302,11 +303,7 @@ jQuery ->
 
       # help = this.dataset.launch
       help = this.getAttribute('data-launch')
-      if help?
-        if $(this).hasClass 'help-launcher'
-          tutorial.start help
-        else if tutorial.active
-          tutorial.start help
+      tutorial.start(help) if help?
 
     # Set base-ajax url on containing panel
     unless ul.hasClass 'lock'
