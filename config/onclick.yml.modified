@@ -1,0 +1,413 @@
+
+##############################################################################
+## Teachers 
+##############################################################################
+
+lnk-edit-account :
+  show : 
+    modal : m-edit-account
+
+lnk-existing-quiz :
+  default : true
+  autoclick :
+    tab : tab-wsb-quizzes
+  show : 
+    left : left-1
+    wide : wide-X
+
+lnk-edit-qz :
+  autoclick :
+    tab : tab-editqz-1
+  show : 
+    left : left-7
+    wide : wide-X
+
+tab-editqz-1 : 
+  url : 
+    me : quiz/questions.json?id=:prev
+    panel : question/preview?id=:id
+  prev : tab-wsb-quizzes
+
+tab-wsb-quizzes :
+  url : 
+    me : quizzes/list
+    panel : quiz/preview?id=:id
+
+lnk-wsb-new :
+  autoclick :
+    tab : tab-wsb-sektions
+
+lnk-wsb-existing :
+  update-on : quiz/preview
+  autoclick :
+    tab : tab-wsb-existing
+
+tab-wsb-existing :
+  url : 
+    me : quiz/testpapers.json?id=:prev
+    panel : testpaper/load?id=:id
+  prev : tab-wsb-quizzes
+
+tab-wsl-quizzes :
+  autoclick :
+    link : lnk-existing-quiz
+
+lnk-ws-download :
+  ajax : disabled
+  update-on : testpaper/load
+
+lnk-download-solution :
+  notouch : true
+  ajax : disabled
+  update-on : quiz/preview pages/pending
+
+lnk-suggestion-form :
+  notouch : true
+  ajax : disabled
+
+lnk-new-quiz :
+  autoclick : 
+    tab : tab-qzb-1
+  show : 
+    left : left-2
+    wide : wide-wait
+
+lnk-wb-pending : 
+  show : 
+    left : left-4
+    wide : wide-grd-canvas
+  autoclick :
+    tab : tab-grd-ws
+
+m-teacher-quizzes :
+  show : 
+    menu : teacher-quiz
+
+m-tc-sektions :
+  show : 
+    menu : tc-sektions
+
+m-report-cards :
+  show : 
+    menu : teacher-rc
+
+m-account :
+  show : 
+    menu : tasks-on-account
+
+m-howto : 
+  show : 
+    menu : howto-guides
+
+tab-ws-performance :
+  url : 
+    me : performance/ws.json?id=:prev 
+    panel : student/performance.json?id=:id&ws=:prev 
+  prev : tab-wsl
+
+tab-grd-ws :
+  url : 
+    me : ws/pending
+  autoclick :
+    tab : tab-grd-page
+
+tab-grd-page :
+  prev : tab-grd-ws
+  url : 
+    me : pages/pending.json?id=:prev
+  autoclick :
+    tab : tab-grd-panel
+
+tab-grd-panel :
+  prev : tab-grd-page
+  id : tab-grd-ws
+  url : 
+    me : gr/pending.json?page=:prev&ws=:id
+
+tab-tc-rc-1 :
+  url : 
+    me : ws/list
+    panel : ws/summary.json?id=:id
+  autoclick :
+    tab : tab-tc-rc-2
+
+tab-tc-rc-2 :
+  show :
+    wide : wide-chart-1
+  url :
+    panel : ws/layout.json?ws=:prev&id=:id
+  autoclick :
+    tab : tab-tc-rc-3
+  prev : tab-tc-rc-1
+
+tab-tc-rc-3 :
+  show : 
+    wide : wide-X
+
+lnk-tc-rc :
+  show : 
+    left : left-5
+    wide : wide-wait
+  autoclick :
+    tab : tab-tc-rc-1
+
+lnk-ws-publish :
+  url : 
+    me : ws/publish.json?id=:id
+  id : tab-wsb-existing
+
+lnk-ws-unpublish :
+  url : 
+    me : ws/unpublish.json?id=:id
+  id : tab-wsb-existing
+
+lnk-rc-deepdive :
+  show : 
+    left : left-6
+    wide : wide-chart-2
+  autoclick :
+    tab : tab-dive-1
+
+tab-dive-1 :
+  url : 
+    me : teacher/sektions?context=deepdive
+    panel : sektion/students.json?id=:id&context=deepdive
+  autoclick : 
+    tab : tab-dive-2
+
+tab-dive-2 :
+  prev : tab-dive-1
+  show : 
+    wide : wide-chart-2
+
+tab-dive-3 : 
+  prev : tab-dive-1
+  url :
+    panel : overall/proficiency.json?id=:id
+  show :
+    wide : wide-chart-3
+
+deepdive-* : 
+  url : 
+    me : vertical/topics?id=:id&context=deepdive
+    panel : sektion/proficiency?of=:prev&in=:id
+  prev : tab-dive-1
+
+lnk-add-sektion :
+  show : 
+    modal : m-new-sk-1
+
+lnk-mng-sektions :
+  show : 
+    left : left-8
+    wide : wide-4
+  autoclick :
+    tab : tab-mng-sektions-1
+
+tab-mng-sektions-1 :
+  url : 
+    me : teacher/sektions?context=list
+    panel : sektion/students?id=:id&context=list
+
+lnk-like-question : 
+  update-on : question/preview
+
+lnk-ask-a-question :
+  show : 
+    modal : m-ask-a-question
+
+lnk-demo :
+  show : 
+    modal : m-demo
+
+##############################################################################
+## Students 
+##############################################################################
+
+lnk-st-rc : 
+  autoclick :
+    tab : tab-st-rc-1
+  show : 
+    left : left-1
+    wide : wide-wait
+  default : true
+
+lnk-st-inbox :
+  autoclick :
+    tab : tab-st-inbox
+  show : 
+    left : left-2
+    wide : wide-wait
+
+tab-st-rc-1 :
+  url : 
+    me : ws/list 
+    panel : ws/layout.json?ws=:id
+  autoclick :
+    tab : tab-st-rc-2
+
+tab-st-rc-2 :
+  prev : tab-st-rc-1
+
+tab-st-inbox :
+  url : 
+    me : inbox.json?id=:prev
+    panel : inbox/echo.json?ws=:id
+  prev : control-panel
+
+tab-st-outbox :
+  url : 
+    me : outbox
+
+lnk-inbox-download :
+  ajax: disabled
+  update-on : inbox/echo
+
+lnk-enroll-self : 
+  show : 
+    modal : m-enroll-self
+
+##############################################################################
+## Admin Only 
+##############################################################################
+
+lnk-admin-console :
+  show : 
+    left : left-1
+    wide : wide-2
+  autoclick :
+    tab : tab-teacher-accounts
+
+tab-teacher-accounts :
+  url : 
+    me : byCountry?type=teacher
+    panel : inCountry?type=teacher&country=:id
+
+
+##############################################################################
+## Admin / Examiner specific  
+##############################################################################
+
+m-admin-wb :
+  show : 
+    menu : admin-wb
+
+m-admin-schools :
+  show : 
+    menu : admin-schools 
+
+lnk-wb-receive :
+  url : 
+    me : receive/scans
+
+lnk-mng-topics : 
+  show : 
+    left : left-2
+  autoclick :
+    tab : tab-mng-topics-1
+
+tab-mng-topics-1 :
+  url : 
+    me : verticals/list
+    panel : vertical/topics?id=:id
+
+lnk-wb-schools :
+  show : 
+    left : left-1
+    wide : wide-1
+  url : 
+    me : schools/list
+
+lnk-wb-blockdb :
+  url : 
+    me : examiner/block_db_slots.json?id=:id
+  id : control-panel
+
+m-examiner-wb :
+  show : 
+    menu : examiner-wb
+
+lnk-wb-tagging :
+  show : 
+    left : left-3
+    wide : wide-X
+  autoclick :
+    tab : tab-tag-pending
+
+tab-tag-pending :
+  url : 
+    me : untagged/list
+    panel : question/preview.json?id=:id
+  autoclick :
+    tab : tab-tag-topic
+
+lnk-wb-typeset :
+  show : 
+    left : left-5
+    wide : wide-X
+  autoclick :
+    tab : tab-typeset-new
+
+tab-typeset-new :
+  url : 
+    me : typeset/new
+    panel : suggestion/preview.json?id=:id
+
+lnk-block-* : 
+  id : tab-typeset-new
+
+m-block-slots :
+  show : 
+    menu : blockdb-slots
+
+tab-typeset-ongoing :
+  url : 
+    me : typeset/ongoing
+    panel : question/preview.json?id=:id
+
+lnk-wb-resolve :
+  show : 
+    left : left-6
+    wide : wide-X
+  autoclick : 
+    tab : tab-resolution-pending
+
+tab-resolution-pending :
+  url : 
+    me : pages/unresolved
+    panel : unresolved/preview?id=:id
+
+lnk-rotate-sg :
+  update-on : suggestion/preview 
+
+##############################################################################
+## Shared between Teachers, Examiners and Admin
+##############################################################################
+
+tab-honest :
+tab-cogent :
+tab-complete :
+tab-other :
+
+##############################################################################
+## Shared between ** all ** roles  
+##############################################################################
+
+lnk-logout :
+
+m-downloads : 
+  show : 
+    menu : user-downloads
+
+lnk-upload :
+  show : 
+    modal : m-upload-what
+
+##############################################################################
+## Landing page  
+##############################################################################
+
+m-about : 
+  show : 
+    menu : abouts 
+
