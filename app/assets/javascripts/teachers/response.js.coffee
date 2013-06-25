@@ -44,15 +44,14 @@ jQuery ->
       if json.context is 'deepdive'
         target = $('#pane-dive-3')
         target.empty()
+        wsDeepdive.students json
       else if json.context is 'list'
         target = $('#enrolled-students')
         karo.empty target
       else
         target = $('#wsb-sektions')
         lesson = 'wsb-milestone-3'
-
       key = "students"
-      wsDeepdive.students json
     else if url.match(/qzb\/echo/)
       if json.context is 'qzb'
         next = 'tab-qzb-2'
