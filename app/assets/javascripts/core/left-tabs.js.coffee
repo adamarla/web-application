@@ -10,8 +10,8 @@
   Optionally, there can also be a key called :filters
     { tabs: [{ ... }, { ... } ... ], filters : [a,b,c] }
 
-  Filters change the data-url of ul > li > a as follows:
-    <a data-url="url?a="true"&b="true"&c="true" ... ></a>
+  Filters change the data-url-self of ul > li > a as follows:
+    <a data-url-self="url?a="true"&b="true"&c="true" ... ></a>
 
   Any other tweaking can be done using the options hash
   'options' is of the form : 
@@ -79,7 +79,7 @@ window.leftTabs = {
 
     # Collect the data-* attributes set on ul > li > a into one string. These are common to all <a>
     data = ""
-    for j in ['prev', 'panel-url']
+    for j in ['prev', 'url-panel']
       data += " data-#{j}='#{options.data[j]}'" if options.data[j]?
 
     url = options.data.url
@@ -88,7 +88,7 @@ window.leftTabs = {
       if filters?
         url = if url.indexOf("?") > -1 then url else (url + "?")
         url += "&filter[#{f}]" for f in filters
-      data += " data-url=#{url}" # -> final url - with filters
+      data += " data-url-self=#{url}" # -> final url - with filters
 
     data += " data-toggle='tab'"
 
@@ -162,9 +162,9 @@ window.leftTabs = {
     for m in json.tabs
       ajax = if hasId then url.replace(":id", m.id) else url
       if prev?
-        html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-prev='#{prev}' data-url='#{ajax}'>#{m.name}</a></li>"
+        html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-prev='#{prev}' data-url-self='#{ajax}'>#{m.name}</a></li>"
       else
-        html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-url='#{ajax}'>#{m.name}</a></li>"
+        html = "<li><a marker=#{m.id} href='##{options.shared}' data-toggle='tab' data-url-self='#{ajax}'>#{m.name}</a></li>"
 
       $(html).prependTo ul
     firstTab = ul.find('li > a').eq(0)

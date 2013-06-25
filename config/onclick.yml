@@ -4,62 +4,55 @@
 ##############################################################################
 
 lnk-edit-account :
-  toggle : modal
-  notouch : true
+  show : 
+    modal : m-edit-account
 
 lnk-existing-quiz :
-  default-lnk : true
+  default : true
   autoclick :
     tab : tab-wsb-quizzes
-  left : 
-    show : left-1
-  wide : 
-    show : wide-X 
+  show : 
+    left : left-1
+    wide : wide-X
 
 lnk-edit-qz :
   autoclick :
     tab : tab-editqz-1
-  left :
-    show : left-7
-  wide :
-    show : wide-X
+  show : 
+    left : left-7
+    wide : wide-X
 
 tab-editqz-1 : 
-  url : quiz/questions.json?id=:prev
-  panel :
-    url : question/preview?id=:id
+  url : 
+    self : quiz/questions.json?id=:prev
+    panel : question/preview?id=:id
   prev : tab-wsb-quizzes
 
 tab-wsb-quizzes :
-  url : quizzes/list
-  panel :
-    url : quiz/preview?id=:id
+  url : 
+    self : quizzes/list
+    panel : quiz/preview?id=:id
 
-tab-wsb-sektions :
-    
 lnk-wsb-new :
-  notouch : true
   autoclick :
     tab : tab-wsb-sektions
 
 lnk-wsb-existing :
-  notouch : true
   update-on : quiz/preview
   autoclick :
     tab : tab-wsb-existing
 
 tab-wsb-existing :
-  url : quiz/testpapers.json?id=:prev
+  url : 
+    self : quiz/testpapers.json?id=:prev
+    panel : testpaper/load?id=:id
   prev : tab-wsb-quizzes
-  panel :
-    url : testpaper/load?id=:id
 
 tab-wsl-quizzes :
   autoclick :
     link : lnk-existing-quiz
 
 lnk-ws-download :
-  notouch : true
   ajax : disabled
   update-on : testpaper/load
 
@@ -75,163 +68,157 @@ lnk-suggestion-form :
 lnk-new-quiz :
   autoclick : 
     tab : tab-qzb-1
-  left :
-    show : left-2
-  wide :
-    show : wide-wait
+  show : 
+    left : left-2
+    wide : wide-wait
 
 lnk-wb-pending : 
-  left :
-    show : left-4
-  wide : 
-    show : wide-grd-canvas
+  show : 
+    left : left-4
+    wide : wide-grd-canvas
   autoclick :
     tab : tab-grd-ws
 
 m-teacher-quizzes :
-  menu : teacher-quiz
+  show : 
+    menu : teacher-quiz
 
 m-tc-sektions :
-  menu : tc-sektions
+  show : 
+    menu : tc-sektions
 
 m-report-cards :
-  menu : teacher-rc
+  show : 
+    menu : teacher-rc
 
 m-account :
-  menu : tasks-on-account
+  show : 
+    menu : tasks-on-account
 
 m-howto : 
-  menu : howto-guides
-
-lnk-howto-1 : &type-notouch
-  notouch : true
-
-lnk-howto-2 : *type-notouch
+  show : 
+    menu : howto-guides
 
 tab-ws-performance :
-  panel : 
-    url : student/performance.json?id=:id&ws=:prev 
-  url : performance/ws.json?id=:prev 
+  url : 
+    self : performance/ws.json?id=:prev 
+    panel : student/performance.json?id=:id&ws=:prev 
   prev : tab-wsl
 
 tab-grd-ws :
-  url : ws/pending
+  url : 
+    self : ws/pending
   autoclick :
     tab : tab-grd-page
 
 tab-grd-page :
   prev : tab-grd-ws
-  url : pages/pending.json?id=:prev
+  url : 
+    self : pages/pending.json?id=:prev
   autoclick :
     tab : tab-grd-panel
 
 tab-grd-panel :
   prev : tab-grd-page
   id : tab-grd-ws
-  url : gr/pending.json?page=:prev&ws=:id
+  url : 
+    self : gr/pending.json?page=:prev&ws=:id
 
 tab-tc-rc-1 :
-  url : ws/list
-  panel :
-    url : ws/summary.json?id=:id
+  url : 
+    self : ws/list
+    panel : ws/summary.json?id=:id
   autoclick :
     tab : tab-tc-rc-2
 
 tab-tc-rc-2 :
-  panel :
-    url : ws/layout.json?ws=:prev&id=:id
-  prev : tab-tc-rc-1
-  wide :
-    show : wide-chart-1
+  show :
+    wide : wide-chart-1
+  url :
+    panel : ws/layout.json?ws=:prev&id=:id
   autoclick :
     tab : tab-tc-rc-3
+  prev : tab-tc-rc-1
 
 tab-tc-rc-3 :
-  wide :
-    show : wide-X
+  show : 
+    wide : wide-X
 
 lnk-tc-rc :
-  left : 
-    show : left-5
-  wide :
-    show : wide-wait
+  show : 
+    left : left-5
+    wide : wide-wait
   autoclick :
     tab : tab-tc-rc-1
 
 lnk-ws-publish :
-  notouch: true
-  url : ws/publish.json?id=:id
+  url : 
+    self : ws/publish.json?id=:id
   id : tab-wsb-existing
 
 lnk-ws-unpublish :
-  notouch: true
-  url : ws/unpublish.json?id=:id
+  url : 
+    self : ws/unpublish.json?id=:id
   id : tab-wsb-existing
 
 lnk-rc-deepdive :
-  left : 
-    show : left-6
-  wide :
-    show : wide-chart-2
+  show : 
+    left : left-6
+    wide : wide-chart-2
   autoclick :
     tab : tab-dive-1
 
 tab-dive-1 :
-  url : teacher/sektions?context=deepdive
-  panel : 
-    url : sektion/students.json?id=:id&context=deepdive
+  url : 
+    self : teacher/sektions?context=deepdive
+    panel : sektion/students.json?id=:id&context=deepdive
   autoclick : 
     tab : tab-dive-2
 
 tab-dive-2 :
   prev : tab-dive-1
-  wide :
-    show : wide-chart-2
+  show : 
+    wide : wide-chart-2
 
 tab-dive-3 : 
   prev : tab-dive-1
-  panel :
-    url : overall/proficiency.json?id=:id
-  wide :
-    show : wide-chart-3
+  url :
+    panel : overall/proficiency.json?id=:id
+  show :
+    wide : wide-chart-3
 
 deepdive-* : 
-  url : vertical/topics?id=:id&context=deepdive
-  panel :
-    url : sektion/proficiency?of=:prev&in=:id
+  url : 
+    self : vertical/topics?id=:id&context=deepdive
+    panel : sektion/proficiency?of=:prev&in=:id
   prev : tab-dive-1
 
 lnk-add-sektion :
-  toggle : modal 
-  notouch : true 
+  show : 
+    modal : m-new-sk-1
 
 lnk-mng-sektions :
-  left : 
-    show : left-8
-  wide :
-    show : wide-4
+  show : 
+    left : left-8
+    wide : wide-4
   autoclick :
     tab : tab-mng-sektions-1
 
 tab-mng-sektions-1 :
-  url : teacher/sektions?context=list
-  panel : 
-    url : sektion/students?id=:id&context=list
-
-help-* :
-  notouch : true
+  url : 
+    self : teacher/sektions?context=list
+    panel : sektion/students?id=:id&context=list
 
 lnk-like-question : 
-  notouch : true
   update-on : question/preview
 
 lnk-ask-a-question :
-  toggle : modal 
-  notouch : true
+  show : 
+    modal : m-ask-a-question
 
 lnk-demo :
-  toggle : modal 
-  notouch : true
+  show : 
+    modal : m-demo
 
 ##############################################################################
 ## Students 
@@ -240,24 +227,22 @@ lnk-demo :
 lnk-st-rc : 
   autoclick :
     tab : tab-st-rc-1
-  left : 
-    show : left-1
-  wide :
-    show : wide-wait
-  default-lnk : true
+  show : 
+    left : left-1
+    wide : wide-wait
+  default : true
 
 lnk-st-inbox :
   autoclick :
     tab : tab-st-inbox
-  left : 
-    show : left-2 
-  wide :
-    show : wide-wait
+  show : 
+    left : left-2
+    wide : wide-wait
 
 tab-st-rc-1 :
-  url : ws/list 
-  panel :
-    url : ws/layout.json?ws=:id
+  url : 
+    self : ws/list 
+    panel : ws/layout.json?ws=:id
   autoclick :
     tab : tab-st-rc-2
 
@@ -265,39 +250,38 @@ tab-st-rc-2 :
   prev : tab-st-rc-1
 
 tab-st-inbox :
-  url : inbox.json?id=:prev
+  url : 
+    self : inbox.json?id=:prev
+    panel : inbox/echo.json?ws=:id
   prev : control-panel
-  panel :
-    url : inbox/echo.json?ws=:id
 
 tab-st-outbox :
-  url : outbox
+  url : 
+    self : outbox
 
 lnk-inbox-download :
-  notouch: true
   ajax: disabled
   update-on : inbox/echo
 
 lnk-enroll-self : 
-  toggle : modal 
-  notouch : true
+  show : 
+    modal : m-enroll-self
 
 ##############################################################################
 ## Admin Only 
 ##############################################################################
 
 lnk-admin-console :
-  left :
-    show : left-1
-  wide :
-    show : wide-2
+  show : 
+    left : left-1
+    wide : wide-2
   autoclick :
     tab : tab-teacher-accounts
 
 tab-teacher-accounts :
-  url : byCountry?type=teacher
-  panel : 
-    url : inCountry?type=teacher&country=:id
+  url : 
+    self : byCountry?type=teacher
+    panel : inCountry?type=teacher&country=:id
 
 
 ##############################################################################
@@ -305,102 +289,95 @@ tab-teacher-accounts :
 ##############################################################################
 
 m-admin-wb :
-  menu : admin-wb
+  show : 
+    menu : admin-wb
 
 m-admin-schools :
-  menu : admin-schools 
+  show : 
+    menu : admin-schools 
 
 lnk-wb-receive :
-  notouch : true 
-  url : receive/scans
+  url : 
+    self : receive/scans
 
 lnk-mng-topics : 
-  left : 
-    show : left-2
+  show : 
+    left : left-2
   autoclick :
     tab : tab-mng-topics-1
 
 tab-mng-topics-1 :
-  url : verticals/list
-  panel :
-    url : vertical/topics?id=:id
-
-tab-mng-topics-2 :
+  url : 
+    self : verticals/list
+    panel : vertical/topics?id=:id
 
 lnk-wb-schools :
-  left :
-    show : left-1
-  wide :
-    show : wide-1
-  url : schools/list
+  show : 
+    left : left-1
+    wide : wide-1
+  url : 
+    self : schools/list
 
 lnk-wb-blockdb :
-  notouch : true
-  url : examiner/block_db_slots.json?id=:id
+  url : 
+    self : examiner/block_db_slots.json?id=:id
   id : control-panel
 
 m-examiner-wb :
-  menu : examiner-wb
+  show : 
+    menu : examiner-wb
 
 lnk-wb-tagging :
-  left :
-    show : left-3
-  wide :
-    show : wide-X
+  show : 
+    left : left-3
+    wide : wide-X
   autoclick :
     tab : tab-tag-pending
 
 tab-tag-pending :
-  url : untagged/list
-  panel :
-    url : question/preview.json?id=:id
+  url : 
+    self : untagged/list
+    panel : question/preview.json?id=:id
   autoclick :
     tab : tab-tag-topic
 
-tab-tag-topic :
-
-tab-tag-misc :
-
 lnk-wb-typeset :
-  left :
-    show : left-5
-  wide :
-    show : wide-X
+  show : 
+    left : left-5
+    wide : wide-X
   autoclick :
     tab : tab-typeset-new
 
 tab-typeset-new :
-  url : typeset/new
-  panel :
-    url : suggestion/preview.json?id=:id
+  url : 
+    self : typeset/new
+    panel : suggestion/preview.json?id=:id
 
 lnk-block-* : 
-  notouch : true
   id : tab-typeset-new
 
 m-block-slots :
-  menu : blockdb-slots
+  show : 
+    menu : blockdb-slots
 
 tab-typeset-ongoing :
-  url : typeset/ongoing
-  panel :
-    url : question/preview.json?id=:id
+  url : 
+    self : typeset/ongoing
+    panel : question/preview.json?id=:id
 
 lnk-wb-resolve :
-  left :
-    show : left-6
-  wide :
-    show : wide-X
+  show : 
+    left : left-6
+    wide : wide-X
   autoclick : 
     tab : tab-resolution-pending
 
 tab-resolution-pending :
-  url : pages/unresolved
-  panel : 
-    url : unresolved/preview?id=:id
+  url : 
+    self : pages/unresolved
+    panel : unresolved/preview?id=:id
 
 lnk-rotate-sg :
-  notouch : true
   update-on : suggestion/preview 
 
 ##############################################################################
@@ -408,11 +385,8 @@ lnk-rotate-sg :
 ##############################################################################
 
 tab-honest :
-
 tab-cogent :
-
 tab-complete :
-
 tab-other :
 
 ##############################################################################
@@ -420,28 +394,20 @@ tab-other :
 ##############################################################################
 
 lnk-logout :
-  notouch : true
 
 m-downloads : 
-  menu : user-downloads
-
-lnk-register-student :
-  toggle : modal
-
-lnk-register-teacher :
-  toggle : modal
-
-m-notifications :
-  menu : notifications
+  show : 
+    menu : user-downloads
 
 lnk-upload :
-  notouch : true
-  toggle : modal
+  show : 
+    modal : m-upload-what
 
 ##############################################################################
 ## Landing page  
 ##############################################################################
 
 m-about : 
-  menu : abouts 
+  show : 
+    menu : abouts 
 

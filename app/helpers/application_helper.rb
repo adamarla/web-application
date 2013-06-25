@@ -1,5 +1,96 @@
 module ApplicationHelper
 
+  def get_onclick_data(id)
+    ret = OnClick[id]
+    return ret unless ret.blank?
+    # Allow keys that are actually reg-exps. Useful when a whole family of similarly named 
+    # keys need to be generated via a for loop in the HAML
+    keys = OnClick.keys
+    matches = keys.map{ |k| /#{k}/.match("#{id}") } # k could be a reg-exp
+    idx = matches.index{ |m| m }
+    ret = idx.nil? ? nil : OnClick[keys[idx]] # first place where reg-ex match passes
+    return ret
+  end 
+
+  def simple_link( options = {} ) 
+    text = options.delete :for 
+    icon = options.delete :icon
+    return false if (text.blank? && icon.blank?) # one or the other has to be there
+
+    data = {}
+    attributes = {}
+
+    # HAML: non data-* attributes
+    [:href, :id, :class, :marker].each do |k|
+      v = options.delete(k)
+      attributes[k] = ( k == :href ) ? (v || '#') : v
+    end
+
+    # YAML: data-* always
+    id = attributes[:id]
+    onclick = id.blank? ? nil : get_onclick_data(id)
+
+    isDropdown = false
+    isTab = id.blank? ? false : !id.match(/^tab-/).nil?
+    isModal = false
+
+    #puts "[tab]: #{id}" if isTab
+
+    unless onclick.nil?
+      onclick.keys.each do |k| # k = show | autoclick | prev | id | url ....
+        spec = onclick[k]
+        spec.is_a?(Hash) ? spec.keys.each { |j| data["#{k}-#{j}"] = spec[j] } : (data[k] = spec)
+        if k == 'show'
+          no_touch = true
+          ['left', 'middle', 'right', 'wide'].each do |v|
+            no_touch &= spec[v].blank?
+            break unless no_touch
+          end 
+          data['no-touch'] = no_touch if no_touch
+
+          isDropdown = !spec['menu'].nil?
+          isModal = !spec['modal'].nil?
+
+          if isDropdown
+            klass = attributes[:class]
+            klass = klass.blank? ? "dropdown-toggle" : "#{klass} dropdown-toggle"
+            attributes[:class] = klass
+          end
+        end # of if ... 
+
+        if (isDropdown || isModal || isTab)
+          data[:toggle] = isTab ? :tab : (isModal ? :modal : :dropdown) 
+        end
+
+      end # of do ... 
+    else # no entry in YAML => no-touch
+      data['no-touch'] = true
+      data[:toggle] = :tab if isTab
+    end # of unless 
+
+    # HAML: Remaining attributes - always data-*
+    options.each do |k,v| 
+      if v.is_a? Hash
+        v.keys.each { |j| data["#{k}-#{j}"] = v[j] }
+      else
+        data[k] = v
+      end
+    end
+    
+    # Generate the HTML 
+    attributes[:data] = data
+    tags = tag_options attributes, true
+
+    if isDropdown
+      html = icon.blank? ? "<a #{tags}> #{text} <span class='caret'></span></a>" :
+                           "<a #{tags}> <i class='#{icon} icon-white'></i> #{text} <span class='caret'></span>"
+    else
+      html = icon.blank? ? "<a #{tags}> #{text} </a>" :
+                           "<a #{tags}> <i class='#{icon} icon-white'></i> #{text} </a>"
+    end
+    return html.html_safe
+  end 
+=begin
   def simple_link( options = {} )
     # Example: simple_link :for => "Download", :data => { :url => 'a/b', :ajax => true, :update_on => 'quizzes/list' }
     text = options.delete :for 
@@ -21,14 +112,6 @@ module ApplicationHelper
       data[:toggle] = :tab unless id.match(/^tab-/).nil?
       data[:toggle] = :dropdown if dropdown
 
-      # Allow keys that are actually reg-exps. Useful when a whole family of similarly named 
-      # keys need to be generated via a for loop in the HAML
-      if onclick.nil?
-        keys = OnClick.keys
-        matches = keys.map{ |k| /#{k}/.match("#{id}") } # k could be a reg-exp
-        idx = matches.index{ |m| m }
-        onclick = idx.nil? ? nil : OnClick[keys[idx]] # first place where reg-ex match passes
-      end
 
       unless onclick.nil?
         first_level_keys = [
@@ -89,6 +172,7 @@ module ApplicationHelper
     return html.html_safe
     # "<a #{attributes}>#{text}</a>".html_safe
   end 
+=end
 
   # Generates a <button> with either an icon, text or both and an optional radio/checkbox
   # Example: simple_button :for => "submit", :icon => 'icon-star', :class => 'btn-warning', :as => :radio, :name => "checked[25]"

@@ -100,19 +100,19 @@
               %ul.nav.span9.pull-right
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
-                  = simple_link :for => "Quizzes", :as => :dropdown, :id => 'm-teacher-quizzes'
+                  = simple_link :for => "Quizzes", :id => 'm-teacher-quizzes'
                 %li.dropdown
-                  = simple_link :for => "Report Cards", :as => :dropdown, :id => 'm-report-cards'
+                  = simple_link :for => "Report Cards", :id => 'm-report-cards'
                 %li.dropdown
                   = simple_link :for => "Upload", :id => 'lnk-upload', :href => '#m-upload-what'
                 %li.dropdown
-                  = simple_link :for => "Groups", :as => :dropdown, :id => 'm-tc-sektions'
+                  = simple_link :for => "Groups", :id => 'm-tc-sektions'
                 %li.dropdown
-                  = simple_link :for => "Help", :as => :dropdown, :id => 'm-howto'
+                  = simple_link :for => "Help", :id => 'm-howto'
                 %li.dropdown
                   = simple_link :for => "QuickTrial", :id => 'lnk-demo', :href => '#m-demo'
                 %li#cp-account-link.dropdown
-                  = simple_link :for => "Hello, #{tc.first_name}", :as => :dropdown, :id => 'm-account'
+                  = simple_link :for => "Hello, #{tc.first_name}", :id => 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
           = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }

@@ -24,7 +24,7 @@ window.menu = {
 
   show : (m) ->
     # menu = m.dataset.menu
-    menu = m.getAttribute('data-menu')
+    menu = m.getAttribute('data-show-menu')
     return false unless menu?
 
     open = $(m).siblings("ul[role='menu']").length > 0

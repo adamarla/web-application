@@ -39,33 +39,30 @@ window.trigger = {
 
   click : (link, event = null) ->
     return true if $(link).hasClass 'carousel-control'
-    toggleType = link.getAttribute 'data-toggle'
+    type = link.getAttribute 'data-toggle'
+    debug = $(link).attr('id') is 'tab-wsb-sektions'
 
-    plainVanilla = if (toggleType is 'tab' or toggleType is 'modal') then false else true
-    isTab = toggleType is 'tab'
+    plainVanilla = if (type is 'tab' or type is 'modal') then false else true
+    isTab = type is 'tab'
 
     if $(link).parent().hasClass 'dropdown-submenu'
-      isDefault = link.getAttribute 'data-default-lnk'
-      return false unless isDefault is 'true'
+      isDefault = if link.getAttribute('data-default')? then true else false
+      return false unless isDefault
 
     event.stopImmediatePropagation() if event? and plainVanilla
     # (YAML) Hide / unhide panels as needed
 
-    # notouch = if link.dataset.notouch? then (link.dataset.notouch is 'true') else false
-    notouch = link.getAttribute('data-notouch')
-    notouch = if notouch? then (notouch is 'true') else false
+    noTouch = link.getAttribute('data-no-touch')
+    noTouch = if noTouch? then (noTouch is 'true') else false
+    alert "[notouch] = #{noTouch}" if debug
 
-    unless notouch
+    unless noTouch
+      alert 'here' if debug
       for j in ['left', 'right', 'middle', 'wide']
-        attr = link.getAttribute("data-#{j}")
-        if typeof attr is 'string'
-          continue if attr is 'as-is'
+        show = link.getAttribute("data-show-#{j}")
+        if typeof show is 'string'
+          continue if show is 'as-is'
 
-        # attr = "#{j}Show" # x-y in YAML => xY here
-        # show = link.dataset[attr] # left-show, right-show etc 
-
-        attr = "#{j}-show"
-        show = link.getAttribute("data-#{attr}")
         panel = $("##{j}")
         if not show?
           continue if isTab
@@ -233,7 +230,10 @@ jQuery ->
 
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
     li = $(this).parent()
+    name = $(this).attr 'id'
+    debug = name is 'tab-wsb-sektions'
 
+    alert '0' if debug
     prev = this.getAttribute('data-prev')
     if li.hasClass 'disabled'
       event.stopImmediatePropagation()
@@ -248,6 +248,9 @@ jQuery ->
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()
+    name = $(this).attr 'id'
+    debug = name is 'tab-wsb-sektions'
+    alert 'on-shown' if debug
 
     # Empty the last-enabled tab's contents - if needed
     prevTab = event.relatedTarget
@@ -288,6 +291,7 @@ jQuery ->
 
     # Issue AJAX request * after * taking care of any :prev or :id in data-url
     ajax = karo.url.elaborate this
+    alert ajax if debug
     if ajax?
       proceed = true
       if karo.checkWhether this, 'nopurge-on-show'
@@ -308,7 +312,7 @@ jQuery ->
     # Set base-ajax url on containing panel
     unless ul.hasClass 'lock'
       # panelUrl = this.dataset.panelUrl
-      panelUrl = this.getAttribute('data-panel-url')
+      panelUrl = this.getAttribute('data-url-panel')
 
       #panel.dataset.url = if panelUrl? then panelUrl else null
       if panelUrl?
@@ -512,15 +516,15 @@ jQuery ->
 
     if id? and id.length > 0
       id = $("##{id}")[0]
-      toggleType = id.getAttribute('data-toggle')
-      id = if toggleType is 'tab' then $(id).parent() else $(id)
+      type = id.getAttribute('data-toggle')
+      id = if type is 'tab' then $(id).parent() else $(id)
     else if activeTab?
       id = $(activeTab)
 
     if prev? and prev.length > 0
       prev = $("##{prev}")[0]
-      toggleType = prev.getAttribute('data-toggle')
-      prev = if toggleType is 'tab' then $(prev).parent() else $(prev)
+      type = prev.getAttribute('data-toggle')
+      prev = if type is 'tab' then $(prev).parent() else $(prev)
     else if activeTab?
       prev = $(activeTab).prev()
 
@@ -547,7 +551,7 @@ jQuery ->
   ## Auto-click the first default link 
   #####################################################################
 
-   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default-lnk='true']")
+   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default]")
      trigger.click m
      return true
 

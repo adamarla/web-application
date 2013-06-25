@@ -21,7 +21,7 @@
       - Vertical.all.each do |m|
         %li{ :marker => "#{m.id}" }
           = simple_link :for => "#{m.name}", :toggle => :tab, 
-          :href => "##{context}-#{m.id}", :url => "vertical/topics.json?id=:id&context=#{context}"
+          :href => "##{context}-#{m.id}", :url => { :self => "vertical/topics.json?id=:id&context=#{context}" }
 
     .tab-content.span7{ :id => "#{context}-div-milestone-4" }
       - Vertical.all.each do |m|
