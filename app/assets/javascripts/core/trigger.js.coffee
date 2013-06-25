@@ -93,13 +93,11 @@ window.trigger = {
       karo.ajaxCall ajax if ajax?
 
     # launch any help tied to this link
-    # help = link.dataset.launch
     help = link.getAttribute('data-launch')
     if help?
-      # autoclick = link.dataset.autoclick
       autoclick = link.getAttribute('data-autoclick')
       trigger.click $("##{autoclick}")[0] if autoclick?
-      tutorial.active = true
+      tutorial.active = true if $(link).hasClass('help-launcher')
       tutorial.start help
 
     return true
