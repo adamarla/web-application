@@ -796,14 +796,15 @@ button[data-toggle='button'] {
 
 
 .jumbotron { 
-  // margin-bottom: 60px ;
+  margin-bottom: 60px ;
   font : {
     size: 35px ;
     family: "Trebuchet MS" ;
     weight: 200 ;
   } 
   color: white ; 
-  padding-bottom: 20px ;
+  padding-bottom: 10px ;
+  // border-bottom: 1px dotted $deep-blue ; 
 
   a { 
     font : { 
@@ -1146,7 +1147,8 @@ li.split {
 } 
 
 #btn-register { 
-  margin-top: -5px ;
+  font-size: 16px ;
+
 }
 
 #lnk-faq { 

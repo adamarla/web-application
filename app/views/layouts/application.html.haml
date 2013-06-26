@@ -26,21 +26,25 @@
             .navbar-inner
               %a.brand.span4{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-              %ul.nav.span8.pull-right
+              %ul.nav.span8
                 %li
-                  #signin-form
+                  #signin-form.offset1.pull-right
                     %form.form-inline{ :action => session_path(:account), :method => :post }
                       %input.input-medium{ :type => :text, :name => "account[login]", :placeholder => "Email"}
                       .input-append
                         %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-large.btn-primary{ :type => :submit }= "Sign In"
+              -#
                 %li.dropdown{ :id => 'li-about-us' }
                   = simple_link :for => "About",  :as => :dropdown, :id => 'm-about'
                   -#= simple_link :for => "About",  :href => faq_path, :id => 'lnk-faq'
 
       .row-fluid{ :id => 'shopfront' }
         .row-fluid.jumbotron
-          %p.offset3= "Teach more. Help more. Grade less."
+          .span7.offset2
+            %p= "Teach more. Help more. Grade less."
+          .span3
+            = simple_link :for => "Register", :id => 'btn-register', :class => 'btn btn-inverse btn-large'
         .row-fluid
           .span9
             .span6.offset1{ :id => 'carousel' }
@@ -90,8 +94,8 @@
                      
           .span3
             .row-fluid
-              = image_tag "landing/finalist.png"
             .row-fluid
+              = image_tag "landing/finalist.png"
 
     = yield :toolbox
 

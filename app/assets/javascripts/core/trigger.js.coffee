@@ -558,3 +558,8 @@ jQuery ->
   $('#m-register').on 'shown', () ->
     $(ClientSideValidations.selectors.forms).validate()
     return true
+  
+  $('#shopfront').on 'click', 'a', (event) ->
+    event.stopImmediatePropagation(event)
+    trigger.click this
+    return true
