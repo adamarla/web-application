@@ -1,4 +1,28 @@
 
+# Sample YAML 
+#
+#  lnk-something : 
+#    show : 
+#      left : 
+#      middle : 
+#      right : 
+#      wide : 
+#      modal : 
+#      menu :
+#      help : 
+#    autoclick : 
+#      tab : 
+#      link :
+#    url : 
+#      self : 
+#      panel :
+#    default : true / false
+#    ajax : disabled / enabled 
+#    prev : 
+#    id : 
+#    update-on : < list of URLs >
+#
+
 ##############################################################################
 ## Teachers 
 ##############################################################################
@@ -36,9 +60,10 @@ tab-wsb-quizzes :
 lnk-wsb-new :
   autoclick :
     tab : tab-wsb-sektions
+  show : 
+    help : wsb-milestone-2
 
 lnk-wsb-existing :
-  update-on : quiz/preview
   autoclick :
     tab : tab-wsb-existing
 
@@ -219,6 +244,34 @@ lnk-ask-a-question :
 lnk-demo :
   show : 
     modal : m-demo
+
+help-make-a-quiz : 
+  show : 
+    help : qzb-milestone-1
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-make-a-ws : 
+  show : 
+    help : wsb-milestone-1
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-edit-qz :
+  show : 
+    help : editqz-milestone-1
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-publish-ws :
+  show : 
+    help : publish-milestone-1 
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-mng-sektions :
+  show : 
+    help : mng-sektions-milestone-1 
 
 ##############################################################################
 ## Students 
@@ -410,4 +463,10 @@ lnk-upload :
 m-about : 
   show : 
     menu : abouts 
+
+btn-register : 
+  show : 
+    modal : m-register
+  autoclick : 
+    tab : tab-register-1
 

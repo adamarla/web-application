@@ -5,16 +5,15 @@
     = simple_link :for => "Topics", :href => '#pane-qzb-1', 
       :id => 'tab-qzb-1', :class => 'nopurge-on-inactive nopurge-on-show'
   %li
-    = simple_link :for => "Questions", :href => '#pane-qzb-2', 
-      :id => 'tab-qzb-2'
+    = simple_link :for => "Questions", :href => '#pane-qzb-2', :id => 'tab-qzb-2'
   %li
-    = simple_link :for => "Favourites", :href => '#', 
-      :id => 'tab-qzb-3'
+    = simple_link :for => "Favourites", :href => '#pane-qzb-3', :id => 'tab-qzb-3'
 
 .tab-content
   #pane-qzb-1.tab-pane
     = render :partial => 'teachers/qzb-topics', :locals => { :context => :qzb }
   #pane-qzb-2.tab-pane
     = render :partial => 'teachers/form-qzb', :locals => { :context => :qzb }
+  #pane-qzb-3.tab-pane
 
     

@@ -30,43 +30,43 @@ module ApplicationHelper
     id = attributes[:id]
     onclick = id.blank? ? nil : get_onclick_data(id)
 
-    isDropdown = false
-    isTab = id.blank? ? false : !id.match(/^tab-/).nil?
-    isModal = false
+    is_dropdown = false
+    is_tab = id.blank? ? false : !id.match(/^tab-/).nil?
+    is_modal = false
+    is_no_touch = true
+    is_help = id.blank? ? false : !id.match(/^help-/).nil? # all <a> within m-howto have IDs starting w/ help-*
 
-    #puts "[tab]: #{id}" if isTab
+    #puts "[tab]: #{id}" if is_tab
 
     unless onclick.nil?
       onclick.keys.each do |k| # k = show | autoclick | prev | id | url ....
         spec = onclick[k]
         spec.is_a?(Hash) ? spec.keys.each { |j| data["#{k}-#{j}"] = spec[j] } : (data[k] = spec)
         if k == 'show'
-          no_touch = true
           ['left', 'middle', 'right', 'wide'].each do |v|
-            no_touch &= spec[v].blank?
-            break unless no_touch
+            is_no_touch &= spec[v].blank?
+            break unless is_no_touch 
           end 
-          data['no-touch'] = no_touch if no_touch
-
-          isDropdown = !spec['menu'].nil?
-          isModal = !spec['modal'].nil?
-
-          if isDropdown
-            klass = attributes[:class]
-            klass = klass.blank? ? "dropdown-toggle" : "#{klass} dropdown-toggle"
-            attributes[:class] = klass
-          end
+          is_dropdown = !spec['menu'].nil?
+          is_modal = !spec['modal'].nil?
         end # of if ... 
 
-        if (isDropdown || isModal || isTab)
-          data[:toggle] = isTab ? :tab : (isModal ? :modal : :dropdown) 
+        if (is_dropdown || is_modal || is_tab)
+          data[:toggle] = is_tab ? :tab : (is_modal ? :modal : :dropdown) 
         end
 
       end # of do ... 
     else # no entry in YAML => no-touch
-      data['no-touch'] = true
-      data[:toggle] = :tab if isTab
+      data[:toggle] = :tab if is_tab
     end # of unless 
+
+    klass = attributes[:class]
+    klass = is_dropdown ? (klass.blank? ? "dropdown-toggle" : "#{klass} dropdown-toggle") : klass
+    klass = is_help ? (klass.blank? ? "help" : "#{klass} help") : klass
+    attributes[:class] = klass
+
+    # Set inferred value for no-touch
+    data['no-touch'] = true if is_no_touch
 
     # HAML: Remaining attributes - always data-*
     options.each do |k,v| 
@@ -81,7 +81,7 @@ module ApplicationHelper
     attributes[:data] = data
     tags = tag_options attributes, true
 
-    if isDropdown
+    if is_dropdown
       html = icon.blank? ? "<a #{tags}> #{text} <span class='caret'></span></a>" :
                            "<a #{tags}> <i class='#{icon} icon-white'></i> #{text} <span class='caret'></span>"
     else
@@ -90,89 +90,6 @@ module ApplicationHelper
     end
     return html.html_safe
   end 
-=begin
-  def simple_link( options = {} )
-    # Example: simple_link :for => "Download", :data => { :url => 'a/b', :ajax => true, :update_on => 'quizzes/list' }
-    text = options.delete :for 
-    dropdown = options.delete :as
-    dropdown = dropdown.blank? ? false : true
-    icon = options.delete(:icon)
-
-    return false if (text.blank? && icon.blank?) # one or the other has to be there
-
-    href = options.delete(:href) || "#" 
-    id = options.delete :id
-    klass = options.delete :class 
-    klass = dropdown ? (klass.blank? ? "dropdown-toggle" : klass + " dropdown-toggle") : klass
-    marker = options.delete :marker
-    data = {}
-
-    unless id.blank?
-      onclick = OnClick[id]
-      data[:toggle] = :tab unless id.match(/^tab-/).nil?
-      data[:toggle] = :dropdown if dropdown
-
-
-      unless onclick.nil?
-        first_level_keys = [
-          :left,
-          :middle, 
-          :right, 
-          :wide, 
-          :ajax,
-          :autoclick,
-          :attach,
-          :toggle, 
-          'default-lnk', 
-          :panel, 
-          :prev, 
-          :id, 
-          :menu, 
-          'update-on', 
-          :url,
-          :notouch
-        ]
-
-        first_level_keys.each do |m|
-          k = options.delete(m) || onclick[m.to_s] # HAML gets preference over YAML
-          # puts " --> #{k} --> #{id}" if m == :ajax
-          unless k.blank?
-            # puts " ******** [#{id}]: #{m} --> #{k}" 
-            if k.is_a? Hash
-              ['show', 'url', 'tab', 'link'].each { |n| data["#{m}-#{n}"] = k[n] unless k[n].blank? } 
-            else
-              data[m] = k
-            end
-          end # of unless 
-        end # of do .. 
-      end # of unless 
-    end # of unless 
-
-    # If not from YAML, then attributes coming exclusively from HAML. Don't ignore those 
-    options.each do |k,v|
-      data[k] = v
-    end
-
-    data = {:id => id, :class => klass, :href => href, :data => data, :marker => marker}
-
-    attributes = tag_options data, true
-    if dropdown
-      if icon.blank?
-        html = "<a #{attributes}>#{text}<span class='caret'></span></a>" 
-      else
-        html = "<a #{attributes}><i class='#{icon}'></i>#{text}<span class='caret'></span></a>" 
-      end
-    else
-      if icon.blank?
-        html = "<a #{attributes}>#{text}</a>" 
-      else
-        html = "<a #{attributes}><i class='#{icon} icon-white'></i> #{text}</a>" 
-      end
-    end
-    return html.html_safe
-    # "<a #{attributes}>#{text}</a>".html_safe
-  end 
-=end
 
   # Generates a <button> with either an icon, text or both and an optional radio/checkbox
   # Example: simple_button :for => "submit", :icon => 'icon-star', :class => 'btn-warning', :as => :radio, :name => "checked[25]"

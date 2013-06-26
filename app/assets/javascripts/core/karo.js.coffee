@@ -64,9 +64,7 @@ window.karo = {
   tab : {
     enable : (obj) ->
       m = if typeof obj is 'string' then $("##{obj}")[0] else obj
-      debug = $(m).attr('id') is 'tab-wsb-sektions'
 
-      alert 'here' if debug
       li = $(m).parent()
       li.removeClass 'disabled'
       li.removeClass 'active' if li.hasClass 'active'
