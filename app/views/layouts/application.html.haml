@@ -38,30 +38,60 @@
                   = simple_link :for => "About",  :as => :dropdown, :id => 'm-about'
                   -#= simple_link :for => "About",  :href => faq_path, :id => 'lnk-faq'
 
-      .row-fluid
-        .hero-unit
-          .row-fluid.jumbotron
-            %p.span8.offset1= "Teach more. Help more. Grade less."
-            .span2
-              = simple_link :for => "Register", :id => 'btn-register', :class => 'btn-primary btn-large'
-          #how-it-works.carousel.slide
-            .carousel-inner
-              .item.active 
-                = image_tag "landing/slideshow-1.png"
-                -#.attribution= "Worker designed by Kris Khoury from The Noun Project"
-              .item 
-                = image_tag "landing/slideshow-2.png"
-                -#.attribution= "Fountain Pen designed by ProletKult Graphik from The Noun Project"
-              .item 
-                = image_tag "landing/slideshow-3.png"
-                -#.attribution= "The Noun Project"
-              .item 
-                = image_tag "landing/slideshow-4.png"
-                -#.attribution= "Worker designed by Kris Khoury from The Noun Project"
-            %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :prev}
-              \&lsaquo;
-            %a.carousel-control{ :href => '#how-it-works', 'data-slide' => :next}
-              \&rsaquo;
+      .row-fluid{ :id => 'shopfront' }
+        .row-fluid.jumbotron
+          %p.offset3= "Teach more. Help more. Grade less."
+        .row-fluid
+          .span9
+            .span6.offset1{ :id => 'carousel' }
+              .carousel.slide{ :id => 'how-it-works' }
+                .carousel-inner
+                  .item.active
+                    = image_tag "landing/worksheet.png"
+                  .item
+                    = image_tag "landing/written.png"
+                  .item
+                    = image_tag "landing/graded.png"
+                  .item
+                    = image_tag "landing/report.png"
+            .span5{ :id => 'steps' }
+              .row-fluid.active
+                .span3
+                  = image_tag "landing/teacher.png", :size => "40x40"
+                .span9
+                  %p
+                    Pick from our database of long-form questions to make worksheets for your students. 
+                  %p.small-text
+                    Our database of questions is open. Which means, you can send us questions too  
+              .row-fluid
+                .span3
+                  = image_tag "quick-trial/write.png", :size => "40x40"
+                .span9
+                  %p
+                    Students do their work as they normally would - with a pen, on paper.
+              .row-fluid
+                .span3
+                  = image_tag "notifications/preview.png", :size => "40x40"
+                .span9
+                  %p  
+                    We take a first look
+                  %p.small-text
+                    And provide our feedback and assessment on each student's work on each question 
+              .row-fluid
+                .span3
+                  = image_tag "landing/teacher.png", :size => "40x40"
+                .span9
+                  %p
+                    Review results. Monitor performance
+                  %p.small-text
+                    All of our feedback on all of the questions answered by all of your 
+                    students is collected into statistics for you to see. The statistics 
+                    will help you identify which students to help with what topics
+                     
+          .span3
+            .row-fluid
+              = image_tag "landing/finalist.png"
+            .row-fluid
 
     = yield :toolbox
 

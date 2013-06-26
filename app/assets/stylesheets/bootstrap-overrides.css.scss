@@ -21,6 +21,32 @@ img {
   } 
 }
 
+#shopfront { 
+  margin-top: 100px ;
+  color: white ;
+
+  #carousel { 
+    padding-top: 5px ;
+  } 
+
+  #steps { 
+    > .row-fluid { 
+      padding-bottom: 8px ;
+      color: $lightgray ;
+      border-bottom: 1px solid $lightgray ;
+      &.active { 
+        color: white ;
+        border-bottom: 4px solid $deep-blue ;
+      }
+    }
+  } 
+
+  .row-fluid { 
+    padding-bottom: 20px ;
+    margin-bottom: 15px ;
+  } 
+} 
+
 .small-text {
   font : {
     size: 10px ;
@@ -768,66 +794,9 @@ button[data-toggle='button'] {
   } 
 }
 
-#how-it-works { 
-  width: 100% ;
-  .attribution {
-    font-size: 10px ;
-    color: $lightgray ;
-    bottom: 0px ;
-  } 
-  .carousel-caption {
-    left: 40%;
-    right: 13%;
-    padding: 10px ;
-    border-radius: 3px 3px 0px 0px ; 
-    bottom: 0px ; 
-    h4 {
-      font:{
-        size: 18px ;
-      }
-      color: $orange ;
-    } 
-
-    p {
-      font-size: 12px ;
-      color: white ; 
-      font-weight: 400 ;
-      line-height: 17px ;
-    } 
-  } 
-
-  .carousel-control[data-slide] {
-    top: 110% ;
-    border: none ;
-    background-color: $gray ;
-  } 
-
-  .carousel-control[data-slide='prev'] {
-    left: 10% ;
-  }
-
-  .carousel-control[data-slide='next'] {
-    left: 90% ;
-  }
-
-}
-
-.hero-unit {
-  margin-top: 60px ;
-
-   + .btn { 
-    padding: 19px 30px ;
-    font : {
-      size: 24px ;
-      family: "Trebuchet MS" ;
-    } 
-  } 
-
-  ul > li > a { text-shadow: none ; }
-} 
 
 .jumbotron { 
-  margin-bottom: 60px ;
+  // margin-bottom: 60px ;
   font : {
     size: 35px ;
     family: "Trebuchet MS" ;
@@ -835,7 +804,6 @@ button[data-toggle='button'] {
   } 
   color: white ; 
   padding-bottom: 20px ;
-  border-bottom: 2px solid $orange ; 
 
   a { 
     font : { 
