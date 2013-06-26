@@ -1,28 +1,4 @@
 
-# Sample YAML 
-#
-#  lnk-something : 
-#    show : 
-#      left : 
-#      middle : 
-#      right : 
-#      wide : 
-#      modal : 
-#      menu :
-#      help : 
-#    autoclick : 
-#      tab : 
-#      link :
-#    url : 
-#      self : 
-#      panel :
-#    default : true / false
-#    ajax : disabled / enabled 
-#    prev : 
-#    id : 
-#    update-on : < list of URLs >
-#
-
 ##############################################################################
 ## Teachers 
 ##############################################################################
@@ -48,28 +24,27 @@ lnk-edit-qz :
 
 tab-editqz-1 : 
   url : 
-    self : quiz/questions.json?id=:prev
+    me : quiz/questions.json?id=:prev
     panel : question/preview?id=:id
   prev : tab-wsb-quizzes
 
 tab-wsb-quizzes :
   url : 
-    self : quizzes/list
+    me : quizzes/list
     panel : quiz/preview?id=:id
 
 lnk-wsb-new :
   autoclick :
     tab : tab-wsb-sektions
-  show : 
-    help : wsb-milestone-2
 
 lnk-wsb-existing :
+  update-on : quiz/preview
   autoclick :
     tab : tab-wsb-existing
 
 tab-wsb-existing :
   url : 
-    self : quiz/testpapers.json?id=:prev
+    me : quiz/testpapers.json?id=:prev
     panel : testpaper/load?id=:id
   prev : tab-wsb-quizzes
 
@@ -126,20 +101,20 @@ m-howto :
 
 tab-ws-performance :
   url : 
-    self : performance/ws.json?id=:prev 
+    me : performance/ws.json?id=:prev 
     panel : student/performance.json?id=:id&ws=:prev 
   prev : tab-wsl
 
 tab-grd-ws :
   url : 
-    self : ws/pending
+    me : ws/pending
   autoclick :
     tab : tab-grd-page
 
 tab-grd-page :
   prev : tab-grd-ws
   url : 
-    self : pages/pending.json?id=:prev
+    me : pages/pending.json?id=:prev
   autoclick :
     tab : tab-grd-panel
 
@@ -147,11 +122,11 @@ tab-grd-panel :
   prev : tab-grd-page
   id : tab-grd-ws
   url : 
-    self : gr/pending.json?page=:prev&ws=:id
+    me : gr/pending.json?page=:prev&ws=:id
 
 tab-tc-rc-1 :
   url : 
-    self : ws/list
+    me : ws/list
     panel : ws/summary.json?id=:id
   autoclick :
     tab : tab-tc-rc-2
@@ -178,12 +153,12 @@ lnk-tc-rc :
 
 lnk-ws-publish :
   url : 
-    self : ws/publish.json?id=:id
+    me : ws/publish.json?id=:id
   id : tab-wsb-existing
 
 lnk-ws-unpublish :
   url : 
-    self : ws/unpublish.json?id=:id
+    me : ws/unpublish.json?id=:id
   id : tab-wsb-existing
 
 lnk-rc-deepdive :
@@ -195,7 +170,7 @@ lnk-rc-deepdive :
 
 tab-dive-1 :
   url : 
-    self : teacher/sektions?context=deepdive
+    me : teacher/sektions?context=deepdive
     panel : sektion/students.json?id=:id&context=deepdive
   autoclick : 
     tab : tab-dive-2
@@ -214,7 +189,7 @@ tab-dive-3 :
 
 deepdive-* : 
   url : 
-    self : vertical/topics?id=:id&context=deepdive
+    me : vertical/topics?id=:id&context=deepdive
     panel : sektion/proficiency?of=:prev&in=:id
   prev : tab-dive-1
 
@@ -231,7 +206,7 @@ lnk-mng-sektions :
 
 tab-mng-sektions-1 :
   url : 
-    self : teacher/sektions?context=list
+    me : teacher/sektions?context=list
     panel : sektion/students?id=:id&context=list
 
 lnk-like-question : 
@@ -244,34 +219,6 @@ lnk-ask-a-question :
 lnk-demo :
   show : 
     modal : m-demo
-
-help-make-a-quiz : 
-  show : 
-    help : qzb-milestone-1
-  autoclick : 
-    link : lnk-existing-quiz
-
-help-make-a-ws : 
-  show : 
-    help : wsb-milestone-1
-  autoclick : 
-    link : lnk-existing-quiz
-
-help-edit-qz :
-  show : 
-    help : editqz-milestone-1
-  autoclick : 
-    link : lnk-existing-quiz
-
-help-publish-ws :
-  show : 
-    help : publish-milestone-1 
-  autoclick : 
-    link : lnk-existing-quiz
-
-help-mng-sektions :
-  show : 
-    help : mng-sektions-milestone-1 
 
 ##############################################################################
 ## Students 
@@ -294,7 +241,7 @@ lnk-st-inbox :
 
 tab-st-rc-1 :
   url : 
-    self : ws/list 
+    me : ws/list 
     panel : ws/layout.json?ws=:id
   autoclick :
     tab : tab-st-rc-2
@@ -304,13 +251,13 @@ tab-st-rc-2 :
 
 tab-st-inbox :
   url : 
-    self : inbox.json?id=:prev
+    me : inbox.json?id=:prev
     panel : inbox/echo.json?ws=:id
   prev : control-panel
 
 tab-st-outbox :
   url : 
-    self : outbox
+    me : outbox
 
 lnk-inbox-download :
   ajax: disabled
@@ -333,7 +280,7 @@ lnk-admin-console :
 
 tab-teacher-accounts :
   url : 
-    self : byCountry?type=teacher
+    me : byCountry?type=teacher
     panel : inCountry?type=teacher&country=:id
 
 
@@ -351,7 +298,7 @@ m-admin-schools :
 
 lnk-wb-receive :
   url : 
-    self : receive/scans
+    me : receive/scans
 
 lnk-mng-topics : 
   show : 
@@ -361,7 +308,7 @@ lnk-mng-topics :
 
 tab-mng-topics-1 :
   url : 
-    self : verticals/list
+    me : verticals/list
     panel : vertical/topics?id=:id
 
 lnk-wb-schools :
@@ -369,11 +316,11 @@ lnk-wb-schools :
     left : left-1
     wide : wide-1
   url : 
-    self : schools/list
+    me : schools/list
 
 lnk-wb-blockdb :
   url : 
-    self : examiner/block_db_slots.json?id=:id
+    me : examiner/block_db_slots.json?id=:id
   id : control-panel
 
 m-examiner-wb :
@@ -389,7 +336,7 @@ lnk-wb-tagging :
 
 tab-tag-pending :
   url : 
-    self : untagged/list
+    me : untagged/list
     panel : question/preview.json?id=:id
   autoclick :
     tab : tab-tag-topic
@@ -403,7 +350,7 @@ lnk-wb-typeset :
 
 tab-typeset-new :
   url : 
-    self : typeset/new
+    me : typeset/new
     panel : suggestion/preview.json?id=:id
 
 lnk-block-* : 
@@ -415,7 +362,7 @@ m-block-slots :
 
 tab-typeset-ongoing :
   url : 
-    self : typeset/ongoing
+    me : typeset/ongoing
     panel : question/preview.json?id=:id
 
 lnk-wb-resolve :
@@ -427,7 +374,7 @@ lnk-wb-resolve :
 
 tab-resolution-pending :
   url : 
-    self : pages/unresolved
+    me : pages/unresolved
     panel : unresolved/preview?id=:id
 
 lnk-rotate-sg :
@@ -463,10 +410,4 @@ lnk-upload :
 m-about : 
   show : 
     menu : abouts 
-
-btn-register : 
-  show : 
-    modal : m-register
-  autoclick : 
-    tab : tab-register-1
 

@@ -39,33 +39,26 @@ window.trigger = {
 
   click : (link, event = null) ->
     return true if $(link).hasClass 'carousel-control'
-    toggleType = link.getAttribute 'data-toggle'
+    type = link.getAttribute 'data-toggle'
 
-    plainVanilla = if (toggleType is 'tab' or toggleType is 'modal') then false else true
-    isTab = toggleType is 'tab'
+    isTab = type is 'tab'
 
     if $(link).parent().hasClass 'dropdown-submenu'
-      isDefault = link.getAttribute 'data-default-lnk'
-      return false unless isDefault is 'true'
+      isDefault = if link.getAttribute('data-default')? then true else false
+      return false unless isDefault
 
-    event.stopImmediatePropagation() if event? and plainVanilla
+    event.stopImmediatePropagation() if event? and isTab
     # (YAML) Hide / unhide panels as needed
 
-    # notouch = if link.dataset.notouch? then (link.dataset.notouch is 'true') else false
-    notouch = link.getAttribute('data-notouch')
-    notouch = if notouch? then (notouch is 'true') else false
+    noTouch = link.getAttribute('data-no-touch')
+    noTouch = if noTouch? then (noTouch is 'true') else false
 
-    unless notouch
+    unless noTouch
       for j in ['left', 'right', 'middle', 'wide']
-        attr = link.getAttribute("data-#{j}")
-        if typeof attr is 'string'
-          continue if attr is 'as-is'
+        show = link.getAttribute("data-show-#{j}")
+        if typeof show is 'string'
+          continue if show is 'as-is'
 
-        # attr = "#{j}Show" # x-y in YAML => xY here
-        # show = link.dataset[attr] # left-show, right-show etc 
-
-        attr = "#{j}-show"
-        show = link.getAttribute("data-#{attr}")
         panel = $("##{j}")
         if not show?
           continue if isTab
@@ -76,6 +69,10 @@ window.trigger = {
 
     return true if isTab
     # process tabs here only insofar as hiding/unhiding is concerned
+
+    # If <a data-show-modal>, then do that 
+    showModal = link.getAttribute 'data-show-modal'
+    $("##{showModal}").modal() if showModal?
 
     # If there be a tab that needs to be auto-clicked, then do that too
     # tab = link.dataset.autoclickTab
@@ -93,11 +90,11 @@ window.trigger = {
       karo.ajaxCall ajax if ajax?
 
     # launch any help tied to this link
-    help = link.getAttribute('data-launch')
+    help = link.getAttribute('data-show-help')
     if help?
       autoclick = link.getAttribute('data-autoclick')
       trigger.click $("##{autoclick}")[0] if autoclick?
-      tutorial.active = true if $(link).hasClass('help-launcher')
+      tutorial.active = true if $(link).hasClass('help')
       tutorial.start help
 
     return true
@@ -213,12 +210,6 @@ jQuery ->
     buttonGroup.click $(this)
     return false # because we don't want to trigger form submission
 
-  $('.g-panel').on 'click', "a[data-toggle='modal']", (event) ->
-    m = $(this).attr 'href'
-    $(m).modal()
-    event.stopImmediatePropagation()
-    return true
-
   $('html').click (event) -> # handles cases other than those handled by bindings below 
     for m in $('.g-panel')
       for p in $(m).find '.dropdown-menu'
@@ -231,6 +222,7 @@ jQuery ->
 
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
     li = $(this).parent()
+    name = $(this).attr 'id'
 
     prev = this.getAttribute('data-prev')
     if li.hasClass 'disabled'
@@ -246,6 +238,7 @@ jQuery ->
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()
+    name = $(this).attr 'id'
 
     # Empty the last-enabled tab's contents - if needed
     prevTab = event.relatedTarget
@@ -300,13 +293,13 @@ jQuery ->
       # AJAX response has been received
 
       # help = this.dataset.launch
-      help = this.getAttribute('data-launch')
+      help = this.getAttribute('data-show-help')
       tutorial.start(help) if help?
 
     # Set base-ajax url on containing panel
     unless ul.hasClass 'lock'
       # panelUrl = this.dataset.panelUrl
-      panelUrl = this.getAttribute('data-panel-url')
+      panelUrl = this.getAttribute('data-url-panel')
 
       #panel.dataset.url = if panelUrl? then panelUrl else null
       if panelUrl?
@@ -356,7 +349,7 @@ jQuery ->
   # <a> is NOT within a dropdown though
   ###############################################
 
-  $('#control-panel').on 'click', 'a', (event) ->
+  $('#control-panel, .hero-unit').on 'click', 'a', (event) ->
     return false if $(this).closest('ul').eq(0).hasClass 'dropdown-menu'
     return trigger.click this, event
 
@@ -510,15 +503,15 @@ jQuery ->
 
     if id? and id.length > 0
       id = $("##{id}")[0]
-      toggleType = id.getAttribute('data-toggle')
-      id = if toggleType is 'tab' then $(id).parent() else $(id)
+      type = id.getAttribute('data-toggle')
+      id = if type is 'tab' then $(id).parent() else $(id)
     else if activeTab?
       id = $(activeTab)
 
     if prev? and prev.length > 0
       prev = $("##{prev}")[0]
-      toggleType = prev.getAttribute('data-toggle')
-      prev = if toggleType is 'tab' then $(prev).parent() else $(prev)
+      type = prev.getAttribute('data-toggle')
+      prev = if type is 'tab' then $(prev).parent() else $(prev)
     else if activeTab?
       prev = $(activeTab).prev()
 
@@ -545,7 +538,7 @@ jQuery ->
   ## Auto-click the first default link 
   #####################################################################
 
-   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default-lnk='true']")
+   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default]")
      trigger.click m
      return true
 

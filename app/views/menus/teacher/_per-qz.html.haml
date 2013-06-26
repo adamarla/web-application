@@ -3,12 +3,9 @@
   %li
     = simple_link :for => "Edit Quiz", :id => 'lnk-edit-qz', :icon => 'icon-edit'
   %li
-    = simple_link :for => "New Worksheet", :id => 'lnk-wsb-new', :launch => 'wsb-milestone-2', :icon => 'icon-plus-sign'
+    = simple_link :for => "New Worksheet", :id => 'lnk-wsb-new', :icon => 'icon-plus-sign'
   %li
     = simple_link :for => "List Worksheets", :id => 'lnk-wsb-existing', :icon => 'icon-list'
   %li
     = simple_link :for => "Download Solution (PDF)", :id => 'lnk-download-solution', 
-    :url => "#{Gutenberg['server']}/mint/quiz/:a/answer-key-:b.pdf", :icon => 'icon-download'
-  -#%li
-    = simple_link :for => 'View Report Cards', :id => 'lnk-rc-ws', :icon => 'icon-list'
-            
+    :url => { :self => "#{Gutenberg['server']}/mint/quiz/:a/answer-key-:b.pdf" }, :icon => 'icon-download' 

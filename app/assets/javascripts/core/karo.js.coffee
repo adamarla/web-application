@@ -64,11 +64,12 @@ window.karo = {
   tab : {
     enable : (obj) ->
       m = if typeof obj is 'string' then $("##{obj}")[0] else obj
+
       li = $(m).parent()
       li.removeClass 'disabled'
       li.removeClass 'active' if li.hasClass 'active'
       $(m).tab 'show'
-      trigger.click m
+      trigger.click(m)
       return true
 
     find : (node) -> # the closest active tab within which - presumably - the node is
@@ -80,7 +81,7 @@ window.karo = {
 
   url : {
     elaborate : (obj, json = null, tab = null) ->
-      ajax = if tab? then tab.getAttribute('data-panel-url') else obj.getAttribute('data-url')
+      ajax = if tab? then tab.getAttribute('data-url-panel') else obj.getAttribute('data-url-self')
 
       return ajax unless ajax? # => basically null 
 

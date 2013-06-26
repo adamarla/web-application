@@ -71,7 +71,7 @@ jQuery ->
         },
         data : {
           url : "questions/on?id=:id&context=#{json.context}",
-          'panel-url' : "question/preview?id=:id&context=#{json.context}"
+          'url-panel' : "question/preview?id=:id&context=#{json.context}"
         },
         id : {
           div : "#{json.context}-pick",
