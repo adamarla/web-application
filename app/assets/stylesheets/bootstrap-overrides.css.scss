@@ -80,6 +80,10 @@ img {
       border-radius: 8px ;
     } 
 
+    &+ img { 
+      max-height: 300px ;
+    } 
+
 
   } 
 } 
