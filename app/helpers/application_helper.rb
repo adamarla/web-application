@@ -29,6 +29,7 @@ module ApplicationHelper
     # YAML: data-* always
     id = attributes[:id]
     onclick = id.blank? ? nil : get_onclick_data(id)
+    # debug = id.blank? ? false : (id == 'lnk-about-us')
 
     is_dropdown = false
     is_tab = id.blank? ? false : !id.match(/^tab-/).nil?
@@ -83,7 +84,7 @@ module ApplicationHelper
 
     if is_dropdown
       html = icon.blank? ? "<a #{tags}> #{text} <span class='caret'></span></a>" :
-                           "<a #{tags}> <i class='#{icon} icon-white'></i> #{text} <span class='caret'></span>"
+                           "<a #{tags}> <i class='#{icon} icon-white'></i> #{text} <span class='caret'></span></a>"
     else
       html = icon.blank? ? "<a #{tags}> #{text} </a>" :
                            "<a #{tags}> <i class='#{icon} icon-white'></i> #{text} </a>"
