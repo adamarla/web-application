@@ -4738,7 +4738,7 @@ a.thumbnail:hover {
 }
 
 .hero-unit {
-  padding: 60px;
+  padding-top: 20px;
   margin-bottom: 30px;
   font-size: 18px;
   font-weight: 200;
@@ -5477,7 +5477,9 @@ a.thumbnail:hover {
   right: 0;
   padding: 15px;
   background: #333333;
-  background: rgba(0, 0, 0, 0.75);
+  // background: rgba(0, 0, 0, 0.75);
+  background: rgba(25,25,25, 0.75);
+  border-radius: 6px ;
   h4, p {
     color: #ffffff;
     line-height: 14px;

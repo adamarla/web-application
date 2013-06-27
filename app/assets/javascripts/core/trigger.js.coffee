@@ -150,13 +150,6 @@ jQuery ->
     interval : 5000
   })
 
-  $('#how-it-works').on 'slid', () ->
-    steps = $('#steps').children('.row-fluid')
-    active = steps.filter('.active').eq(0)
-    next = (steps.index(active) + 1) % 4
-    $(m).removeClass('active') for m in steps
-    steps.eq(next).addClass 'active'
-    return true
 
   ###
     Add and initialize all stopwatches 

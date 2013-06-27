@@ -3,6 +3,7 @@
 -content_for :toolbox do
   #toolbox.hidden 
     = render :partial => 'menus/user/abouts'
+    = render :partial => 'menus/teacher/howto'
   #modals
     = render :partial => 'modals/user/register'
     = render :partial => 'notifications/shared/old-browser'
@@ -27,72 +28,87 @@
               %a.brand.span4{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
               %ul.nav.span8
-                %li
-                  #signin-form.offset1.pull-right
+                %li.pull-right.offset3
+                  #signin-form
                     %form.form-inline{ :action => session_path(:account), :method => :post }
                       %input.input-medium{ :type => :text, :name => "account[login]", :placeholder => "Email"}
                       .input-append
                         %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
                         %button.btn.btn-large.btn-primary{ :type => :submit }= "Sign In"
-              -#
-                %li.dropdown{ :id => 'li-about-us' }
-                  = simple_link :for => "About",  :as => :dropdown, :id => 'm-about'
-                  -#= simple_link :for => "About",  :href => faq_path, :id => 'lnk-faq'
 
-      .row-fluid{ :id => 'shopfront' }
-        .row-fluid.jumbotron
-          .span7.offset2
+      .row-fluid{ :id => 'badge' }
+        .span2
+          = image_tag "landing/finalist.png"
+      .row-fluid.hero-unit{ :id => 'shopfront' }
+        .row-fluid.jumbotron.span9
+          .span8
             %p= "Teach more. Help more. Grade less."
-          .span3
+          .span4
             = simple_link :for => "Register", :id => 'btn-register', :class => 'btn btn-inverse btn-large'
+            = simple_link :for => "Learn More", :icon => 'icon-question-sign', 
+              :class => 'btn btn-large btn-inverse', :href => faq_path 
         .row-fluid
-          .span9
-            .span6.offset1{ :id => 'carousel' }
+          .span11
+            .span11.offset1{ :id => 'carousel' }
               .carousel.slide{ :id => 'how-it-works' }
                 .carousel-inner
-                  .item.active
-                    = image_tag "landing/worksheet.png"
-                  .item
-                    = image_tag "landing/written.png"
-                  .item
-                    = image_tag "landing/graded.png"
-                  .item
-                    = image_tag "landing/report.png"
-            .span5{ :id => 'steps' }
-              .row-fluid.active
-                .span3
-                  = image_tag "landing/teacher.png", :size => "40x40"
-                .span9
-                  %p
-                    Pick from our database of long-form questions to make worksheets for your students. 
-                  %p.small-text
-                    Our database of questions is open. Which means, you can send us questions too  
-              .row-fluid
-                .span3
-                  = image_tag "quick-trial/write.png", :size => "40x40"
-                .span9
-                  %p
-                    Students do their work as they normally would - with a pen, on paper.
-              .row-fluid
-                .span3
-                  = image_tag "notifications/preview.png", :size => "40x40"
-                .span9
-                  %p  
-                    We take a first look
-                  %p.small-text
-                    And provide our feedback and assessment on each student's work on each question 
-              .row-fluid
-                .span3
-                  = image_tag "landing/teacher.png", :size => "40x40"
-                .span9
-                  %p
-                    Review results. Monitor performance
-                  %p.small-text
-                    All of our feedback on all of the questions answered by all of your 
-                    students is collected into statistics for you to see. The statistics 
-                    will help you identify which students to help with what topics
-                     
-          .span3
+                  .item.active{ :id => 'step-1' }
+                    .carousel-caption.span6
+                      .span3
+                        .number= "1"
+                        = image_tag "landing/teacher.png", :size => "40x40"
+                      .span8
+                        %p.title
+                          Make Worksheets
+                        %p
+                          Pick from our database of long-form questions to make worksheets for your students. 
+                          Our database of questions is open. Which means that you can send us questions you 
+                          would like to see and we will include it for you
+                    = image_tag "landing/worksheet.png", :class => 'span6 pull-right'
+
+                  .item{ :id => 'step-2' }
+                    .carousel-caption.span6
+                      .span3
+                        .number= "2"
+                        = image_tag "quick-trial/write.png", :size => "40x40"
+                      .span8
+                        %p.title
+                          Students do their work
+                        %p
+                          \... as they normally do - with a pen, on paper - on their individual worksheets. 
+                        %p
+                          You can use Gradians.com to administer a quiz in class or to give homework. And if 
+                          you want, you can even post assignments into students' Gradians.com account from 
+                          where they can download it before attempting
+                    = image_tag "landing/written.png", :class => 'span6 pull-right'
+
+                  .item{ :id => 'step-3' }
+                    .carousel-caption.span6
+                      .span3
+                        .number= "3"
+                        = image_tag "notifications/preview.png", :size => "40x40"
+                      .span8
+                        %p.title 
+                          We take a first look
+                        %p
+                          And provide our feedback and assessment on each student's work on each question 
+                    = image_tag "landing/graded.png", :class => 'span6 pull-right'
+
+                  .item{ :id => 'step-4' }
+                    .carousel-caption.span6
+                      .span3
+                        .number= "4"
+                        = image_tag "landing/teacher.png", :size => "40x40"
+                      .span8
+                        %p.title
+                          Monitor performance
+                        %p
+                          All of our feedback, on all of the questions answered by all of your 
+                          students is collected into statistics for you to see. The statistics 
+                          will help you identify which students to help with what topics
+                    = image_tag "landing/report.png", :class => 'span6 pull-right'
+        -#             
+          .span2.offset1
             .row-fluid
             .row-fluid
               = image_tag "landing/finalist.png"
