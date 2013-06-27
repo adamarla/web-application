@@ -27,8 +27,8 @@
             .navbar-inner
               %a.brand.span4{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-              %ul.nav.span8
-                %li.pull-right.offset3
+              %ul.nav.span7
+                %li.pull-right.offset2
                   #signin-form
                     %form.form-inline{ :action => session_path(:account), :method => :post }
                       %input.input-medium{ :type => :text, :name => "account[login]", :placeholder => "Email"}
