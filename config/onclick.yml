@@ -98,6 +98,7 @@ lnk-new-quiz :
     wide : wide-wait
 
 lnk-wb-pending : 
+  default : true
   show : 
     left : left-4
     wide : wide-grd-canvas
