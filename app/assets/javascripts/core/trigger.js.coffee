@@ -553,6 +553,6 @@ jQuery ->
     return true
   
   $('#shopfront').on 'click', 'a', (event) ->
-    event.stopImmediatePropagation(event)
+    event.stopImmediatePropagation(event) unless $(this).hasClass('carousel-control')
     trigger.click this
     return true

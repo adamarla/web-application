@@ -39,6 +39,16 @@ img {
     margin-bottom: 15px ;
   } 
 
+  .carousel-control { 
+    top: 60% ; 
+    font-size: 50px ;
+    &.right { 
+      top: 80% ;
+      right: 0px ;
+      left: 15px ;
+    } 
+  } 
+
   .carousel-caption { 
     color: white ;
     top: 0px ;

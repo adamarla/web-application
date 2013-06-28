@@ -108,11 +108,11 @@
                           students is collected into statistics for you to see. The statistics 
                           will help you identify which students to help with what topics
                     = image_tag "landing/report.png", :class => 'offset6'
-        -#             
-          .span2.offset1
-            .row-fluid
-            .row-fluid
-              = image_tag "landing/finalist.png"
+
+                %a.carousel-control.left{ :href => '#how-it-works', :data => { :slide => :prev } }
+                  \&lsaquo;
+                %a.carousel-control.right{ :href => '#how-it-works', :data => { :slide => :next } }
+                  \&rsaquo;
 
     = yield :toolbox
 
