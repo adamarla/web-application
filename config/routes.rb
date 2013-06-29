@@ -47,6 +47,7 @@ Webapp::Application.routes.draw do
   match 'resolve' => 'examiners#resolve_scan', :via => :post
   match 'update_scan_id' => 'examiners#update_scan_id', :via => :get
   match 'update_scan_id' => 'examiners#update_scan_id', :via => :post
+  match 'audit/pending' => 'examiners#audit', :via => :get
 
   # School 
   resource :school, :only => [:show, :create, :update]
@@ -72,6 +73,7 @@ Webapp::Application.routes.draw do
   match 'questions/list' => 'question#list', :via => :get
   match 'question/preview' => 'question#preview', :via => :get
   match 'like' => 'question#like', :via => :get
+  match 'audit' => 'question#audit', :via => :post
 
   # Quiz
   resource :quiz, :only => [:show]

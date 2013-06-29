@@ -25,6 +25,10 @@ class Examiner < ActiveRecord::Base
   # [:disputed] ~> [:student]
   #attr_accessible :disputed
 
+  def self.available
+    select{ |m| m.account.active }.select{ |m| m.is_admin }
+  end
+
   def name 
     return self.last_name.nil? ? self.first_name : "#{self.first_name} #{self.last_name}"
   end 

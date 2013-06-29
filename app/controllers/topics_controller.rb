@@ -32,7 +32,7 @@ class TopicsController < ApplicationController
 
   def questions
     @topic = params[:id].to_i
-    @questions = Question.where(:topic_id => @topic).order(:id) 
+    @questions = Question.on_topic(@topic).available.order(:id)
     n = @questions.count 
 
     @per_pg, @last_pg = pagination_layout_details n

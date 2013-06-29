@@ -56,6 +56,15 @@ jQuery ->
       $(last).remove() if last?
       entries.eq(0).click()
       return true
+    else if url.match(/audit\/pending/)
+      target = $('#pane-audit-review')
+      clickFirst = true
+      key = 'audit'
+    else if url.match(/audit/)
+      auditForm = $('#m-audit-form')
+      $(m).prop 'checked', false for m in auditForm.find("input[type='checkbox']")
+      auditForm.find('textarea').eq(0).val null
+      auditForm.modal 'hide'
     else
       matched = false
 

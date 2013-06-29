@@ -1,0 +1,12 @@
+
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link :for => "Review", :id => 'tab-audit-review', :href => '#pane-audit-review'
+  %li
+    = simple_link :for => "Close these", :id => 'tab-audit-close', :href => '#pane-audit-close'
+
+.tab-content
+  #pane-audit-review.tab-pane
+    .row-fluid.no-remove
+      = simple_link :for => "Audit", :class => 'btn btn-inverse pull-right', :id => 'lnk-audit-form'
+  #pane-audit-close.tab-pane

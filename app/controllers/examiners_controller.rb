@@ -141,4 +141,8 @@ class ExaminersController < ApplicationController
     render :json => { :status => status }
   end
 
+  def audit
+    @questions = Question.where(:auditor => current_account.loggable_id).unaudited.order(:updated_at)
+  end
+
 end

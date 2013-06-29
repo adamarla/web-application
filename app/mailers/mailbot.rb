@@ -48,4 +48,11 @@ class Mailbot < ActionMailer::Base
     mail :to => "help@gradians.com", :subject => "registration debug"
   end
 
+  def send_audit_report(question, author, gating_issues, non_gating_issues, comments)
+    @gating_issues = gating_issues 
+    @non_gating_issues = non_gating_issues 
+    @comments = comments
+    mail :to => author.account.email, :subject => "[Question Audit]: #{question.uid.upcase}"
+  end
+
 end

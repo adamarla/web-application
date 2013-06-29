@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130506164741) do
+ActiveRecord::Schema.define(:version => 20130628074048) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -162,8 +162,9 @@ ActiveRecord::Schema.define(:version => 20130506164741) do
     t.float    "length"
     t.integer  "answer_key_span"
     t.integer  "calculation_aid",               :default => 0
-    t.boolean  "audited",                       :default => false
-    t.integer  "audited_by"
+    t.integer  "auditor"
+    t.datetime "audited_on"
+    t.boolean  "available",                     :default => true
   end
 
   add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"

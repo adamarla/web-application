@@ -17,6 +17,7 @@
 - content_for :modals do
   #modals
     = render :partial => 'modals/user/account'
+    = render :partial => 'modals/examiner/audit'
     = render :partial => 'notifications/shared/last-scan'
     = render :partial => 'notifications/shared/first-scan'
 
@@ -67,6 +68,8 @@
             = render :partial => 'examiners/typeset-pending'
           #left-6
             = render :partial => 'examiners/resolution-pending'
+          #left-7
+            = render :partial => 'examiners/audit'
 
         - if is_admin
           #middle.g-panel.span4

@@ -1,0 +1,14 @@
+
+%h3= "Gating Issues" 
+%ul
+  - @gating_issues.each do |m|
+    %li= "#{m}"
+
+%h3= "Non-gating Issues"
+%ul
+  - @non_gating_issues.each do |m|
+    %li= "#{m}"
+
+%h3= "Comments"
+- unless @comments.blank?
+  %p= "#{@comments}"

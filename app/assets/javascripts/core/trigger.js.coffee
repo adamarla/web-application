@@ -42,12 +42,13 @@ window.trigger = {
     type = link.getAttribute 'data-toggle'
 
     isTab = type is 'tab'
+    isModal = type is 'modal'
 
     if $(link).parent().hasClass 'dropdown-submenu'
       isDefault = if link.getAttribute('data-default')? then true else false
       return false unless isDefault
 
-    event.stopImmediatePropagation() if event? and isTab
+    event.stopImmediatePropagation() if event? and (isTab or isModal)
     # (YAML) Hide / unhide panels as needed
 
     noTouch = link.getAttribute('data-no-touch')
@@ -220,6 +221,8 @@ jQuery ->
   ###############################################
   # When a tab is clicked and shown
   ###############################################
+  $(".g-panel").on 'click', "a[data-toggle='modal']", (event) ->
+    return trigger.click this
 
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
     li = $(this).parent()

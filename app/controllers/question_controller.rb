@@ -41,9 +41,17 @@ class QuestionController < ApplicationController
           calculator = misc[:calculator] == "false" ? 0 : 1 
           level = misc[:level]
 
-          # Update the parent question
+          # [#108]: New question? Remember to send it for auditing by another examiner
+          if question.auditor.nil?
+            auditor = Examiner.available.where{ id != question.examiner_id }.map(&:id).sample(1).first
+          else
+            auditor = question.auditor
+          end
+
           question.update_attributes :topic_id => topic, :difficulty => level, 
-                                     :answer_key_span => span, :calculation_aid => calculator
+                                     :answer_key_span => span, 
+                                     :calculation_aid => calculator,
+                                     :auditor => auditor
 
           # If the question was sent by a teacher, then update the corresponding 
           # suggestion record. Note that > 1 questions might have been sent in the 
@@ -102,5 +110,26 @@ class QuestionController < ApplicationController
     teacher.favourites.create :question_id => qid
     render :json => { :notify => { :text => "Question successfully added to your favourites" } }, :status => :ok
   end
+
+  def audit 
+    @question = Question.find params[:id]
+
+    unless @question.nil?
+      audit_report = params[:audit]
+
+      @gating = audit_report[:gating].select{ |m| !m.blank? }
+      @non_gating = audit_report[:non_gating].select{ |m| !m.blank? }
+      @comments = audit_report[:comments]
+
+      @question.update_attributes :audited_on => Date.today, :available => (@gating.count == 0)
+      @author = Examiner.find @question.examiner_id
+      @author = @author.account.active ? @author : Examiner.available.sample(1).first
+
+      Mailbot.send_audit_report(@question, @author, @gating, @non_gating, @comments).deliver
+      render :json => { :msg => "Audit report sent" }, :status => :ok
+    else
+      render :json => { :msg => "Question not found" }, :status => :ok
+    end
+  end 
 
 end # of class

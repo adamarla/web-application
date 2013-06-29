@@ -15,8 +15,9 @@
 #  length          :float
 #  answer_key_span :integer
 #  calculation_aid :integer         default(0)
-#  audited         :boolean         default(FALSE)
-#  audited_by      :integer
+#  auditor         :integer
+#  audited_on      :datetime
+#  available       :boolean         default(TRUE)
 #
 
 #     __:has_many____      ____:has_many___    ____:has_many__
@@ -66,6 +67,18 @@ class Question < ActiveRecord::Base
 
   def self.on_topic(m)
     where(:topic_id => m)
+  end
+
+  def self.available
+    where(:available => true)
+  end
+
+  def self.audited
+    where{ audited_on != nil }
+  end 
+
+  def self.unaudited
+    where{ audited_on == nil }
   end
 
   def self.broadly_on(m)
