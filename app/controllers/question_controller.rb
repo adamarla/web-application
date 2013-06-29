@@ -122,10 +122,12 @@ class QuestionController < ApplicationController
       @comments = audit_report[:comments]
 
       @question.update_attributes :audited_on => Date.today, :available => (@gating.count == 0)
-      @author = Examiner.find @question.examiner_id
-      @author = @author.account.active ? @author : Examiner.available.sample(1).first
 
-      Mailbot.send_audit_report(@question, @author, @gating, @non_gating, @comments).deliver
+      if (@gating.count > 0 || @non_gating.count > 0 || !@comments.blank?)
+        @author = Examiner.find @question.examiner_id
+        @author = @author.account.active ? @author : Examiner.available.sample(1).first
+        Mailbot.send_audit_report(@question, @author, @gating, @non_gating, @comments).deliver
+      end
       render :json => { :msg => "Audit report sent" }, :status => :ok
     else
       render :json => { :msg => "Question not found" }, :status => :ok
