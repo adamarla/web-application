@@ -62,6 +62,10 @@ jQuery ->
       key = 'audit'
     else if url.match(/audit/)
       auditForm = $('#m-audit-form')
+      entries = $('#pane-audit-review').children('.single-line')
+      current = entries.filter('.selected').eq(0)
+      current.removeClass('selected').addClass('disabled')
+
       $(m).prop 'checked', false for m in auditForm.find("input[type='checkbox']")
       auditForm.find('textarea').eq(0).val null
       auditForm.modal 'hide'
