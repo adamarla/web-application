@@ -1,18 +1,23 @@
 
+- is_teacher = current_account.loggable_type == "Teacher"
+- html = is_teacher ? {} : { :data => { :id => 'tab-audit-review', :action => "#{audit_done_path}?id=:id" } }
+
 #m-audit-form.modal.fade.wide
   .row-fluid
     .span2
       = image_tag 'notifications/microscope.png', :class => 'big-icon'
     .span9
-      = simple_form_for :audit, :remote => true, :defaults => { :label => false, :required => false }, 
-        :html => { :data => { :id => 'tab-audit-review', :action => "#{audit_path}?id=:id" } } do |f|
+      = simple_form_for :audit, :remote => true, 
+        :defaults => { :label => false, :required => false }, :html => html do |f|
         .row-fluid
           .span5
-            %p.heading= "Gating Issues"
+            - unless is_teacher 
+              %p.heading= "Gating Issues"
             = f.input :gating, :as => :check_boxes,
               :collection => ['Incorrect solution', 'Missing rubric', 'Needs explanatory diagram'] 
           .span7
-            %p.heading= "Non-gating Issues"
+            - unless is_teacher
+              %p.heading= "Non-gating Issues"
             = f.input :non_gating, :as => :check_boxes, 
               :collection => ['Wrong spellings', 'Solution too verbose',
                 'Has alternate solutions', 'Add explanatory diagram', 'Should have multiple versions']

@@ -274,6 +274,10 @@ help-mng-sektions :
   show : 
     help : mng-sektions-milestone-1 
 
+lnk-audit-question :
+  show : 
+    modal : m-audit-form
+
 ##############################################################################
 ## Students 
 ##############################################################################

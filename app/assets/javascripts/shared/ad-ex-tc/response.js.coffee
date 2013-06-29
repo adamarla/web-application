@@ -25,6 +25,15 @@ jQuery ->
     else if url.match(/gr\/pending/)
       abacus.initialize json
       grtb.show()
+    else if url.match(/audit\/done/)
+      auditForm = $('#m-audit-form')
+      entries = $('#pane-audit-review').children('.single-line')
+      current = entries.filter('.selected').eq(0)
+      current.removeClass('selected').addClass('disabled')
+
+      $(m).prop 'checked', false for m in auditForm.find("input[type='checkbox']")
+      auditForm.find('textarea').eq(0).val null
+      auditForm.modal 'hide'
     else
       matched = false
 
@@ -65,7 +74,9 @@ jQuery ->
       $('#wide-wait').addClass 'hide'
       $('#wide-X').removeClass 'hide'
       preview.loadJson json, 'vault'
-      tutorial.start 'qzb-milestone-6' if json.context is 'qzb'
+      if json.context is 'qzb' # [#108]: possible only with teachers! 
+        tutorial.start 'qzb-milestone-6'
+        $('#m-audit-form').find('form').eq(0).attr 'action', "/audit/done?id=#{json.a}"
     else if url.match(/rotate_scan/)
       abacus.next.scan()
     else
