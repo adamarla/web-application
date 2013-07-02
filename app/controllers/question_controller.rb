@@ -108,7 +108,7 @@ class QuestionController < ApplicationController
     teacher = current_account.loggable
     qid = params[:id].to_i
     teacher.favourites.create :question_id => qid
-    render :json => { :notify => { :text => "Question successfully added to your favourites" } }, :status => :ok
+    render :json => { :favourite => { :id => qid } }, :status => :ok
   end
 
   def audit 

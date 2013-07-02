@@ -157,7 +157,9 @@ jQuery ->
     else if url.match(/update\/sektion/)
       target = $('#enrolled-students')
     else if url.match(/like/)
-      $('#qzb-questions .row-fluid.single-line.leaf.selected').addClass('fav')
+      pane = $('#qzb-questions').find('.tab-pane.active').eq(0)
+      question = pane.find(".single-line[marker=#{json.favourite.id}]")[0]
+      $(question).addClass 'fav' if question?
       notifier.show 'n-favourited'
     else if url.match(/ping\/queue/)
       # enable the newly built quizzes 
