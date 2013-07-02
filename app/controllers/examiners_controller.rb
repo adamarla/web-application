@@ -142,7 +142,11 @@ class ExaminersController < ApplicationController
   end
 
   def audit
-    @questions = Question.where(:auditor => current_account.loggable_id).unaudited.order(:updated_at)
+    @questions = Question.where(:auditor => current_account.loggable_id).unaudited
+    n = @questions.count
+    @per_pg, @last_pg = pagination_layout_details n
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @questions = @questions.order(:updated_at).page(pg).per(@per_pg)
   end
 
 end
