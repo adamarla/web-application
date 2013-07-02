@@ -10,17 +10,26 @@
       = simple_form_for :audit, :remote => true, 
         :defaults => { :label => false, :required => false }, :html => html do |f|
         .row-fluid
-          .span5
+          .span6
             - unless is_teacher 
               %p.heading= "Gating Issues"
             = f.input :gating, :as => :check_boxes,
-              :collection => ['Incorrect solution', 'Missing rubric', 'Needs explanatory diagram'] 
-          .span7
+              :collection => ['Solution incorrect', 
+              'Rubric missing', 
+              'Requires explanatory diagram',
+              'Question text imprecise'] 
+          .span6
             - unless is_teacher
               %p.heading= "Non-gating Issues"
             = f.input :non_gating, :as => :check_boxes, 
-              :collection => ['Wrong spellings', 'Solution too verbose',
-                'Has alternate solutions', 'Add explanatory diagram', 'Should have multiple versions']
+              :collection => ['Wrong spellings', 
+              'Question text too verbose',
+              'Solution too verbose',
+              'Has alternate solutions', 
+              'Add explanatory diagram', 
+              'Should have multiple versions']
         .row-fluid
           = f.input :comments, :as => :text, :input_html => { :rows => 10, :cols => 60, :class => 'span11' }, :labels => false
           %button.btn.btn-primary.btn-large.pull-left{ :type => :submit }= "Submit"
+          - unless is_teacher
+            %button.btn.btn-inverse.btn-large.pull-right{ :type => :submit, :id => 'btn-audit-allok'}= "All Good"
