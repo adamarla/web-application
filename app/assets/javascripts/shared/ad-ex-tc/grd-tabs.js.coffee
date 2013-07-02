@@ -10,7 +10,6 @@ window.grtb = {
   show : () ->
     return false unless grtb.current?
     grtb.current.removeClass 'disabled'
-
     # disable and reset all * subsequent * tabs 
     for m in grtb.current.nextAll('li')
       $(m).addClass 'disabled'
@@ -18,6 +17,10 @@ window.grtb = {
 
     # Enable the feedback submit button only if on the last tab
     submitBtn = $('#btn-submit-fdb')
+
+    # Ensure that the 'Show Solution' & 'Audit Key' buttons are enabled
+    $(m).prop('disabled', false) for m in submitBtn.siblings()
+
     if grtb.current.next().length isnt 0
       submitBtn.addClass 'disabled'
       submitBtn.prop 'disabled', true
@@ -203,4 +206,22 @@ jQuery ->
     show.removeClass 'hide'
 
     return true
+
+  #####################################################################
+  ## Show audit form if grader sees issues w/ answer key during grading 
+  #####################################################################
+
+  $('#btn-audit-key').click (event) ->
+    event.stopImmediatePropagation()
+    audit = $('#m-audit-form')
+    form = audit.find('form')[0]
+
+    audit.modal 'show'
+    action = form.getAttribute 'data-action'
+    pattern = /gr=[\d]+/
+    result = pattern.exec action
+    action = action.replace result,"gr=#{abacus.current.response.attr('marker')}"
+    form.setAttribute 'data-action', action
+    return false
+
 

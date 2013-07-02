@@ -112,7 +112,9 @@ class QuestionController < ApplicationController
   end
 
   def audit 
-    @question = Question.find params[:id]
+    gr = params[:gr].to_i
+    qid = gr == 0 ? params[:id] : GradedResponse.find(gr).subpart.question_id
+    @question = Question.find qid
 
     unless @question.nil?
       audit_report = params[:audit]

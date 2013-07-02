@@ -4,8 +4,11 @@
 
   .row-fluid.navbar
     .btn-group.pull-right
+
       %button#btn-toggle-answerkey.btn.btn-primary{ :type => :button, 
       'data-toggle' => :button }= "See Solution"
+      %button#btn-audit-key.btn.btn-inverse{ :type => :button}= "Audit Solution" 
+
       %button#btn-submit-fdb.btn.btn-inverse.disabled{ :type => :button, :disabled => :disabled }= "Submit"
 
   .tabbable.tabs-left
