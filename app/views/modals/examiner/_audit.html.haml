@@ -14,17 +14,18 @@
             - unless is_teacher 
               %p.heading= "Gating Issues"
             = f.input :gating, :as => :check_boxes,
-              :collection => ['Solution incorrect', 
+              :collection => ['Incorrect solution', 
+              'Solution hard to follow',
               'Rubric missing', 
-              'Requires explanatory diagram',
+              'Explanatory diagram a must',
               'Question text imprecise'] 
           .span6
             - unless is_teacher
               %p.heading= "Non-gating Issues"
             = f.input :non_gating, :as => :check_boxes, 
-              :collection => ['Wrong spellings', 
-              'Question text too verbose',
-              'Solution too verbose',
+              :collection => ['Incorrect spellings', 
+              'Verbose question',
+              'Verbose solution',
               'Has alternate solutions', 
               'Add explanatory diagram', 
               'Should have multiple versions']
