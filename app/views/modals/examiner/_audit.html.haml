@@ -30,7 +30,7 @@
               'Add explanatory diagram', 
               'Should have multiple versions']
         .row-fluid
-          = f.input :comments, :as => :text, :input_html => { :rows => 10, :cols => 60, :class => 'span11' }, :labels => false
+          = f.input :comments, :as => :text, :input_html => { :rows => 5, :cols => 60, :class => 'span11' }, :labels => false
           %button.btn.btn-primary.btn-large.pull-left{ :type => :submit }= "Submit"
           - unless is_teacher
             %button.btn.btn-inverse.btn-large.pull-right{ :type => :submit, :id => 'btn-audit-allok'}= "All Good"
