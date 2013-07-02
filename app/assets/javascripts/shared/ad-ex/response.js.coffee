@@ -60,6 +60,7 @@ jQuery ->
       target = $('#pane-audit-review')
       clickFirst = true
       key = 'audit'
+      karo.empty target
     else
       matched = false
 
