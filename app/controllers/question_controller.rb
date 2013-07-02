@@ -113,7 +113,10 @@ class QuestionController < ApplicationController
 
   def audit 
     gr = params[:gr].to_i
-    qid = gr == 0 ? params[:id] : GradedResponse.find(gr).subpart.question_id
+    gr = gr == 0 ? nil : GradedResponse.find(gr) 
+    subpart_index = gr.nil? ? nil : [*'A'..'Z'][gr.subpart.index]
+
+    qid = gr.nil? ? params[:id] : gr.subpart.question_id
     @question = Question.find qid
 
     unless @question.nil?
@@ -122,6 +125,8 @@ class QuestionController < ApplicationController
       @gating = audit_report[:gating].select{ |m| !m.blank? }
       @non_gating = audit_report[:non_gating].select{ |m| !m.blank? }
       @comments = audit_report[:comments]
+
+      @comments.prepend("[Part #{subpart_index}]: ") unless subpart_index.nil?
 
       @question.update_attributes :audited_on => Date.today, :available => (@gating.count == 0)
 
