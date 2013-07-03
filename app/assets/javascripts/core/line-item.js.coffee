@@ -76,6 +76,7 @@ window.line = {
         i = icons.filter("[class~=#{k}]")[0]
         continue unless i?
         $(i).removeClass 'hide'
+        remaining -= 1
       $(m).remove() for m in icons.filter(".hide") # remove the unrequired and/or not found
     else
       $(m).remove() for m in icons
