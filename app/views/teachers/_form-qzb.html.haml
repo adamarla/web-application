@@ -11,10 +11,10 @@
     - if context == :editqz
       %button.btn.btn-inverse.pull-right{ :type => :submit, :id => "#{context}-btn-final" }= "#{btn_text}"
     - else
-      .input-append.pull-right.span10
+      .input-append.span10
         = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"
         %button.btn.btn-inverse{ :type => :submit }= "#{btn_text}"
-        %label{ :id => "show-selected-lbl" }
-          %input{ :id => "show-selected", :type => "checkbox" }
-          Show Selected
+      .btn-group
+        = simple_link :icon => 'icon-filter', :id => 'lnk-qzb-filter', :class => 'btn btn-primary'
+        .dropdown-selection.white= "Show All"
   %div.purge-blind{ :id => "#{context}-questions" }

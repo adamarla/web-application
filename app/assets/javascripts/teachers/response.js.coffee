@@ -216,7 +216,9 @@ jQuery ->
             writeData = target.children().length is 0
 
       # Render the returned JSON - in columns if so desired
-      lines.columnify target, json[key], menu, buttons if writeData
+      if writeData
+        lines.columnify target, json[key], menu, buttons
+        sieve.through target
 
       # Disable / hide any .single-line whose marker is in json.[disabled, hide]
       for m in ['disabled', 'hide']

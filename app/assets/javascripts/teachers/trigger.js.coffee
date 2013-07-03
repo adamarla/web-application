@@ -28,21 +28,6 @@ jQuery ->
     event.stopPropagation()
     return someChecked
 
-    ###
-    form = $(this).closest('.tab-content').children('form').eq(0)
-    id = $('#tab-wsb-quizzes').parent().attr 'marker'
-
-    # See teachers/_wsb-sektions
-    publishBtn = $(this).parent().prev().children('#btn-publish-ws').eq(0)
-    publish = publishBtn.hasClass 'active'
-
-    action = if publish then "quiz/assign?id=#{id}&publish=yes" else "quiz/assign?id=#{id}"
-    form.attr 'action', action
-    form.submit()
-    alert '1'
-    return true
-    ###
-
   $('#tab-qzb-topics').on 'shown', (event) ->
     pane = $(this).closest('.nav-tabs').eq(0).next().children('.tab-pane.active').eq(0)
     btnGroup = pane.find('.btn-group').eq(0)
@@ -181,3 +166,31 @@ jQuery ->
     $('#m-demo-intro').modal 'show'
     return true
 
+  ###
+    [qzb]: When a filter is clicked
+  ###
+  $('#form-qzb').on 'click', '#lnk-qzb-fav, #lnk-qzb-selected, #lnk-qzb-showall', (event) ->
+    id = $(this).attr 'id'
+    switch id
+      when 'lnk-qzb-fav'
+        selection = 'Favourites'
+        klass = 'fav'
+      when 'lnk-qzb-selected'
+        selection = 'Selected'
+        klass = 'selected'
+      when 'lnk-qzb-showall'
+        selection = 'Show All'
+        klass = 'none'
+
+    # Step 1: Visual reminder of last filter selected
+    filter = $(this).closest('ul').next()
+    filter.text selection
+
+    # Step 2: Update [filter] attribute on #qzb-questions. The attribute 
+    # is set when filter selection is changed and it determines which 
+    # questions are shown 
+
+    root = $('#qzb-questions')
+    root.attr 'filter', klass
+    sieve.through root
+    return true

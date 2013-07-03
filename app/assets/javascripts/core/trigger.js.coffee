@@ -8,6 +8,20 @@ getMarker = (obj) ->
     return getMarker(a)
   return null
 
+window.sieve = {
+  through : (obj) ->
+    # Given a hierarchy like ... <div [filter]> .... <obj>, this method would 
+    # unhide .single-lines with class=filter within <div [filter]> 
+    root = obj.closest('[filter]')[0]
+    return false unless root?
+    klass = $(root).attr 'filter'
+    lines = $(root).find '.single-line'
+    $(m).removeClass('hide') for m in lines
+
+    if klass? and klass isnt 'none'
+      $(m).addClass('hide') for m in lines.filter(":not([class~=#{klass}])")
+    return true
+}
 
 window.gutenberg = {
   serverOptions : {
@@ -325,6 +339,10 @@ jQuery ->
       firstTab = $(m).find('ul > li > a').eq(0)
       firstTab.click()
 
+    ###
+      Run any filters in the parent hierarchy
+    ###
+    sieve.through $(this)
     return true
 
   ###############################################
