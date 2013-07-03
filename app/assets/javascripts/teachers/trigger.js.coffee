@@ -113,18 +113,18 @@ jQuery ->
     id = $(this).attr 'id'
     switch id
       when 'lnk-qzb-fav'
-        selection = 'Favourites'
+        show = 'Favourites'
         klass = 'fav'
       when 'lnk-qzb-selected'
-        selection = 'Selected'
-        klass = 'selected'
+        show = 'Selected'
+        klass = 'checkbox_checked'
       when 'lnk-qzb-showall'
-        selection = 'Show All'
+        show = 'Show All'
         klass = 'none'
 
     # Step 1: Visual reminder of last filter selected
     filter = $(this).closest('ul').next()
-    filter.text selection
+    filter.text show
 
     # Step 2: Update [filter] attribute on #qzb-questions. The attribute 
     # is set when filter selection is changed and it determines which 

@@ -18,8 +18,15 @@ window.sieve = {
     lines = $(root).find '.single-line'
     $(m).removeClass('hide') for m in lines
 
-    if klass? and klass isnt 'none'
-      $(m).addClass('hide') for m in lines.filter(":not([class~=#{klass}])")
+    switch klass
+      when 'none' then break
+      when 'checkbox_checked'
+        for m in lines
+          checked = $(m).find("input[type='checkbox']").eq(0).prop 'checked'
+          $(m).addClass('hide') unless checked
+      else
+        $(m).addClass('hide') for m in lines.filter(":not([class~=#{klass}])")
+
     return true
 }
 
