@@ -7,15 +7,16 @@
 
 -# A single line entry - with mandatory text and optional subtext 
 .row-fluid.single-line.leaf
-  .dropdown.span1
-    %a.dropdown-toggle{ :href => '#', 'data-toggle' => :dropdown, :up => 2 }
+  .dropdown
+    %a.dropdown-toggle{ :href => '#', :data => { :toggle => :dropdown } } 
       %span.caret
-  .span1.badge
-  .span2.long-badge
+  .badge
   .text
-  .span2.subtext
+  %i.icon-home.icon-white.pull-left.hide
+  %i.icon-time.icon-white.pull-left.hide
+  .subtext
   .stopwatch
   .btn.btn-mini{ :data => { :toggle => :tooltip, :placement => :top, :title => 'Select' } }
     %i.icon-white.icon-plus-sign
-    %input.hide{ :type => :checkbox, :value => :true}
+    %input.hide{ :type => :checkbox, :value => :true, :name => :checked }
   = check_box_tag :tbd, :t, false, :class => :hide

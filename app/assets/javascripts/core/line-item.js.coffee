@@ -6,123 +6,116 @@
 
 window.line = {
   write : (here, json, menu, buttons = null) ->
-    here = if typeof here is 'string' then $(here) else here
+    return false if not json.id? or not json.name?
 
     ###
-      Passed JSON is assumed to have atleast the following keys
-        name: written as the first line 
-        id: set as 'marker' attribute 
-        klass (optional) : Set on the .single-line as a class attribute - if provided
+      Fields in the JSON that change from one .single-line to the next
+        - name (mandatory): set as 'text' 
+        - id (mandatory): set as 'marker'
+        - tag (optional): written extreme right, in orange 
+        - badge (optional): Eg. quiz totals 
+        - klass (optional)
+        - icons (optional)
+
+      Common to all .single-lines rendered from the same JSON 
+        - buttons (optional) 
+        - menu (optional) 
     ###
-    # type = if json.tag? then '.two-line' else ''
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
+    remaining = 12
+
+    # 1. Do the easiest first 
     obj.addClass(json.klass) if json.klass?
-    elements = obj.children()
+    obj.attr 'marker', json.id
+    children = obj.children()
 
-    mn = bdg = lngBdg = sbTxt = false
-    spanLeft = 11
-
-    # Set the menu(string) as an attribute on .dropdown > a - if provided
-    toggle = obj.find('.dropdown-toggle')[0]
-    dropDown = $(toggle).parent()
-
-    if menu?
-      toggle.setAttribute 'data-show-menu', menu
-      # dropDown.addClass 'offset1'
-      spanLeft -= 2
-      mn = true
-    else
-      dropDown.remove()
-    
-    ###
-      If there are buttons, then remove the following to make space 
-        1. .subtext & .long-badge
-        2. any other input[type='checkbox']
-        3. long-badge
-    ###
-    if buttons?
-      $(m).remove() for m in obj.children(".subtext")
-      $(m).remove() for m in obj.children(".long-badge")
-      $(m).remove() for m in obj.children("input[type='checkbox']")
-
-      buttonsToKeep = if typeof buttons is 'string' then [buttons] else buttons # turn into an array
-      for m in obj.children('.btn')
-        i = $(m).children().eq(0)
-        for k in buttonsToKeep
-          if i.hasClass k
-            spanLeft -= 1
-            continue
-          else
-            i.parent().remove()
-    else
-      $(m).remove() for m in obj.children('.btn')
-    
-    text = obj.children(".text").eq(0)
-
-    # If JSON has :badge 
-    if json.long?
-      b = obj.children('.long-badge').eq(0)
-      if b.length isnt 0
-        b.text json.long
-        spanLeft -= (if mn then 1 else 2)
-        b.addClass 'offset1' unless mn
-        lngBdg = true
-    else
-      b = obj.children('.badge').eq(0)
-      
-      if json.badge?
-        b.text json.badge
-        spanLeft -= (if mn then 1 else 2)
-        b.addClass 'offset1' unless mn
-      else if mn # no need for badge. Caret is enough
-        b.remove()
-      else
-        b.removeClass 'span1'
-      bdg = true
-
-    $(m).remove() for m in obj.children('.badge') if lngBdg
-    $(m).remove() for m in obj.children('.long-badge') if bdg
-
-    # Write contents of JSON 
-    text = obj.children(".text").eq(0)
-
+    # Write the main text
+    label = children.filter(".text")
     if json.name.search(/\$.*\$/) isnt -1 # => LaTeX
       jaxified = karo.jaxify json.name
-      text.replaceWith "<div class='tex'><script id='tex-#{json.id}' type='math/tex'>#{jaxified}</script></div>"
+      label.replaceWith "<div class='tex'><script id='tex-#{json.id}' type='math/tex'>#{jaxified}</script></div>"
       # kinda imp. to wrap <script> within some <div>
       j = obj.find('script')[0]
-      text = $(j).parent()
+      label = $(j).parent()
       MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
     else
-      text.text json.name
+      label.text json.name
 
-    obj.attr 'marker', json.id
-    for a in obj.find("input[type='checkbox']") # either an immediate child or one inside a button
-      $(a).attr 'name', "checked[#{json.id}]"
-      $(a).attr 'id', "checked_#{json.id}"
+    # Tag
+    tag = children.filter(".subtext")
+    if json.tag?
+      tag.text json.tag
+      tag.addClass 'span2'
+      remaining -= 2
+    else
+      tag.remove()
 
-    subtext = obj.children(".subtext").eq(0)
-    if subtext.length > 0
-      # If JSON has :tag 
-      if json.tag?
-        $(m).remove() for m in obj.children('.btn')
-        subtext.text json.tag
-        unless mn
-          spanLeft -=3
-          subtext.removeClass 'span2'
-          subtext.addClass 'span3'
+    # Contextual menu
+    m = obj.find("[data-toggle='dropdown']")[0]
+    if menu?
+      m.setAttribute 'data-show-menu', menu
+      $(m).addClass 'span1'
+      children.filter(".badge").eq(0).remove() unless json.badge? # no badge if menu and badge.empty?
+      remaining -= 1
+    else
+      $(m).parent().remove()
+
+    # Badge
+    badge = children.filter(".badge")
+    if json.badge?
+      badge.text json.badge
+      badge.addClass 'span2'
+      remaining -= 2
+
+    # Icons 
+    icons = children.filter "i"
+    if json.icons?
+      j = json.icons.split(' ')
+      for k in j
+        i = icons.filter("[class~=#{k}]")[0]
+        continue unless i?
+        $(i).removeClass 'hide'
+      $(m).remove() for m in icons.filter(".hide") # remove the unrequired and/or not found
+    else
+      $(m).remove() for m in icons
+
+    # Buttons 
+    btns = children.filter(".btn")
+    hiddenChkBox = children.filter("input[type='checkbox']")
+
+    if buttons?
+      hiddenChkBox.remove()
+      j = buttons.split(' ') # each token = class set on an <i> within the .btn
+      for b in btns
+        keep = false
+        i = $(b).children('i').eq(0)
+        for k in j
+          keep = true if i.hasClass(k)
+          break if keep
+        
+        if keep
+          chkBox = $(b).children("input[type='checkbox']").eq(0)
+          name = chkBox.attr 'name'
+          chkBox.attr 'name', "#{name}[#{json.id}]"
+          chkBox.attr 'id', "#{name}_#{json.id}"
         else
-          spanLeft -= 2
-      else
-        subtext.remove()
+          $(b).remove()
+    else
+      $(m).remove() for m in btns
+      hiddenChkBox.attr 'name', "checked[#{json.id}]"
+      hiddenChkBox.attr 'id', "checked_#{json.id}"
 
-    watch = obj.children('.stopwatch')[0]
-    $(watch).remove() unless json.timer?
-    # .text is always used
-    text.addClass "span#{spanLeft}"
+    # Stopwatch 
+    watch = children.filter(".stopwatch")
+    watch.remove() unless json.timer?
 
-    # Append the cloned and edited obj
+    # Whatever span remains, give to 'label'
+    remaining = if remaining > 9 then 9 else remaining
+    label.addClass("span#{remaining}") if remaining > 0
+
+    # Done !!!
+    here = if typeof here is 'string' then $(here) else here
     obj.appendTo here
     return true
 }
