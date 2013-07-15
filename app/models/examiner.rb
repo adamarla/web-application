@@ -53,11 +53,8 @@ class Examiner < ActiveRecord::Base
         soap.body = "#{self.id}"
       end
       manifest = response[:create_question_response][:manifest]
-      unless manifest.nil?
-        root = manifest[:root] 
-        uid = root.split('/').last
-        slots << uid
-      end
+			slots << manifest[:root] unless manifest.nil?
+
       sleep 1.0/2 # sleep for 500ms
     end # of looping
 
