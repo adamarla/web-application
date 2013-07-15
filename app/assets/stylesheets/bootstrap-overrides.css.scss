@@ -114,10 +114,16 @@ img {
   margin-top: 50px ;
 } 
 
-a { 
-  &.disabled { 
-    color: $lightgray ;
-  } 
+.text-center { 
+  text-align: center ;
+} 
+
+.text-right { 
+  text-align: right ;
+} 
+
+.disabled { 
+  color: $lightgray ;
 } 
 
 .subtext { 
@@ -303,7 +309,6 @@ a {
   } 
 
   p {
-    color: white ;
     font-size: 12px ;
   }
 
@@ -411,7 +416,6 @@ a {
       } 
       &.disabled, &[disabled='true'] {
         > a { 
-          color: $lightgray ;
           &:hover { border: 1px dashed white ; }
         }
       } 
@@ -439,7 +443,6 @@ a {
   min-height: 26px ;
   font-size: 11.5px ; 
   cursor: pointer ; 
-  color: white ;
   text-transform: lowercase ; 
   border-bottom: 1px solid $lightgray ; 
 
@@ -464,7 +467,6 @@ a {
     .caret { border-top: 4px solid $orange ; }
   } 
   &.disabled{
-    color: $lightgray ;
     .subtext { color: $lightgray ; }
     cursor: no-drop;
     .caret { border-top: 4px solid $lightgray ; }
@@ -531,12 +533,6 @@ a {
      }
   } 
 
-  .long-badge { 
-    color: $lightgray ;
-    padding: 2px ;
-    text-align: center ;
-  } 
-
   .btn {
     background: transparent ;
     &.active {
@@ -588,7 +584,6 @@ a {
       > a {
         text-align: left ; 
       }
-      &.disabled { color: $lightgray ; }
     }
   } 
 
@@ -728,9 +723,6 @@ button[data-toggle='button'] {
   width: 1024px ;
   ul {
     margin-top: 15px ;
-  }
-  .dropdown-toggle {
-    &.disabled { color: $lightgray ; }
   }
 
   a { 
@@ -1156,9 +1148,6 @@ li.split {
       weight: 300 ;
       size: 12px ;
     } 
-    &.disabled {
-      color: $lightgray ;
-    } 
   } 
 } 
 
@@ -1269,4 +1258,27 @@ li.split {
 .dropdown-selection { 
   font-size: 10px ;
   text-align: center ;
+} 
+
+#m-ws-options {
+  #as-homework, #as-takehome, #as-classwork {
+    padding: 5px 10px ;
+    border-radius: 5px ;
+    &:hover {
+      cursor: pointer ;
+      background-color: $panel-colour ;
+    }
+  } 
+
+  label.radio { 
+    font-size: 12px ;
+  } 
+
+  > .row-fluid {
+    &:first-child { 
+      padding: 2px 5px ;
+      margin-bottom: 15px ;
+      border-bottom: 1px solid $deep-blue ; 
+    }
+  } 
 } 

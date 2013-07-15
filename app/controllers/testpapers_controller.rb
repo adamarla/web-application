@@ -47,7 +47,7 @@ class TestpapersController < ApplicationController
     if ws.nil?
       render :json => { :notify => { :text => "Worksheet not found" } }, :status => :ok
     else 
-      ws.update_attribute :inboxed, true
+      ws.update_attribute :takehome, true
       render :json => { :notify => { 
               :text => "#{ws.quiz.name} published"
             } }, :status => :ok

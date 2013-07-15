@@ -8,9 +8,10 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
-#  exclusive   :boolean         default(TRUE)
-#  inboxed     :boolean         default(FALSE)
+#  takehome    :boolean         default(FALSE)
 #  job_id      :integer         default(-1)
+#  duration    :integer
+#  deadline    :datetime
 #
 
 require 'test_helper'

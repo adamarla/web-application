@@ -8,9 +8,10 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  publishable :boolean         default(FALSE)
-#  exclusive   :boolean         default(TRUE)
-#  inboxed     :boolean         default(FALSE)
+#  takehome    :boolean         default(FALSE)
 #  job_id      :integer         default(-1)
+#  duration    :integer
+#  deadline    :datetime
 #
 
 include GeneralQueries
@@ -21,6 +22,18 @@ class Testpaper < ActiveRecord::Base
   has_many :graded_responses, :dependent => :destroy 
   has_many :answer_sheets, :dependent => :destroy
   has_many :students, :through => :answer_sheets
+
+  def self.takehome
+    where(:takehome => true)
+  end
+
+  def self.timed
+    where{ duration != nil }
+  end
+
+  def self.with_deadline
+    where{ deadline != nil }
+  end
 
   def gradeable?
     return false unless self.has_scans?

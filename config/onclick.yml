@@ -177,6 +177,10 @@ lnk-tc-rc :
   autoclick :
     tab : tab-tc-rc-1
 
+lnk-build-ws :
+  show : 
+    modal : m-ws-options
+
 lnk-ws-publish :
   url : 
     self : ws/publish.json?id=:id

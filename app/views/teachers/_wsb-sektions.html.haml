@@ -13,16 +13,19 @@
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span8{ :id => 'wsb-div-milestone-3' }
-    = simple_form_for :checked, :remote => true, 
+    = simple_form_for :checked, :remote => true, :defaults => { :label => false, :required => false }, 
     :html => { :id => 'form-wsb-3', :class => 'multi-select', 
     :data => { :action => "#{quiz_assign_path}?id=:id", :id => 'tab-wsb-quizzes'} } do |f|
       .btn-toolbar.purge-skip
         .btn-group
           = simple_button :icon => 'icon-list', :id => 'select-all-for-quiz',
             :tooltip => "Select All", :placement => :right
-          -#= simple_button :icon => 'icon-envelope', :id => 'btn-publish-ws', :toggle => :button,
-            :tooltip => "Send PDFs to students", :class => 'btn-primary', :placement => :right
         .btn-group
-          = simple_button :icon => 'icon-wrench', :id => 'build-worksheet', :for => "Make PDF", :type => :submit
+          = simple_link :for => "Make PDF", :icon => 'icon-cog', :id => 'lnk-build-ws', :class => 'btn btn-inverse'
+        .hide.ws-option
+          = f.input :ws_type, :input_html => { :name => :ws_type }
+          = f.input :deadline, :input_html => { :name => :deadline }
+          = f.input :duration, :input_html => { :name => :duration }
+
       #wsb-sektions.tab-pane.multi-select
 

@@ -90,7 +90,7 @@ class StudentsController < ApplicationController
     student = Student.find params[:id]
     @ws = student.nil? ? [] : student.testpapers
     unless @ws.empty?
-      @ws = @ws.where(:inboxed => true)
+      @ws = @ws.where(:takehome => true)
       open = AnswerSheet.where(:student_id => student.id, :testpaper_id => @ws.map(&:id)).select{ |m| m.received? :none }
       @ws = Testpaper.where :id => open.map(&:testpaper_id)
     else

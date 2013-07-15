@@ -19,13 +19,19 @@ jQuery ->
     $(m).click() for m in $('#wsb-sektions').children('.single-line')
     return false
 
-  $('#build-worksheet').click (event) ->
+  #$('#build-worksheet').click (event) ->
+  $('#lnk-build-ws').click (event) ->
     someChecked = false
     for m in $('#wsb-sektions').find("input[type='checkbox']")
       someChecked |= $(m).prop('checked')
       break if someChecked
     
-    event.stopPropagation()
+    unless someChecked
+      event.stopPropagation()
+      notifier.show 'n-wsb-no-selection'
+    else
+      wsTailor.rewind()
+
     return someChecked
 
   $('#tab-qzb-topics').on 'shown', (event) ->
@@ -57,7 +63,6 @@ jQuery ->
 
   ###
     [wsb] : Ensure that atleast one student is selected (issue #70) 
-  ###
   $('#form-wsb-3').submit (event) ->
     students = $(this).children("[id='wsb-sektions']").eq(0)
     sthSelected = false
@@ -71,6 +76,7 @@ jQuery ->
     return true if sthSelected
     notifier.show 'n-wsb-no-selection'
     return false
+  ###
 
   ###
     Launch QuickTrial demo on click
@@ -134,3 +140,4 @@ jQuery ->
     root.attr 'filter', klass
     sieve.through root
     return true
+

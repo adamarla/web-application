@@ -2,7 +2,12 @@
 object false 
   node(:testpapers) {
     @testpapers.map { |m|
-      { :name => "#{m.name}", :tag => "#{m.created_at.to_date.strftime('%b %Y')}", :id => m.id }
+      if m.takehome?
+        icons = m.duration.nil? ? "icon-home" : "icon-home icon-time"
+      else
+        icons = "icon-time"
+      end
+      { :name => "#{m.name}", :tag => "#{m.created_at.to_date.strftime('%b %Y')}", :id => m.id, :icons => icons }
     }
   } 
 
