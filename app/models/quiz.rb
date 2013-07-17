@@ -78,15 +78,16 @@ class Quiz < ActiveRecord::Base
     past = Testpaper.where(:quiz_id => self.id).map(&:id)
     ntests = past.count
     assigned_name = "##{ntests + 1} - #{Date.today.strftime('%B %d, %Y')}" 
-    testpaper = self.testpapers.build :name => assigned_name, :inboxed => publish # (1)
+
+    testpaper = self.testpapers.build name: assigned_name, takehome: publish # (1) 
     picked_questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
     students.each do |s|
       testpaper.students << s # (2) 
       picked_questions.each do |q|
-        subparts = Subpart.where(:question_id => q.question_id).order(:index)
+        subparts = Subpart.where(question_id: q.question_id).order(:index)
         subparts.each do |p|
-          g = GradedResponse.new(:q_selection_id => q.id, :student_id => s.id, :subpart_id => p.id)
+          g = GradedResponse.new(q_selection_id: q.id, student_id: s.id, subpart_id: p.id)
           testpaper.graded_responses << g
         end
       end
