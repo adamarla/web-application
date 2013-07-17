@@ -4,10 +4,10 @@ class QuizzesController < ApplicationController
   respond_to :json
 
   def assign_to
-    quiz = Quiz.where(:id => params[:id]).first 
+    quiz = Quiz.find params[:id]
 
     unless quiz.nil?
-      publish = params[:publish] == 'yes' 
+      publish = params[:ws_type] != 'classroom'
       teacher = quiz.teacher 
       students = Student.where(:id => params[:checked].keys)
 =begin
