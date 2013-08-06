@@ -56,6 +56,8 @@ class Question < ActiveRecord::Base
   has_many :graded_responses
   has_many :subparts, :dependent => :destroy
 
+  has_one :video, as: :watchable
+
   
   def self.author(id)
     where(:examiner_id => id)

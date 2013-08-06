@@ -8,3 +8,4 @@ config/database.yml
 public/assets
 public/uploads/
 *.swp
+latest.dump

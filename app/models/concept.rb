@@ -14,7 +14,7 @@ class Concept < ActiveRecord::Base
   validates :name, presence: true
 
   belongs_to :course
-  has_many :videos 
+  has_many :videos, as: :watchable 
   has_many :quizzes
 
   after_create :push_to_last 
