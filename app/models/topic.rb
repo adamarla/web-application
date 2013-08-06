@@ -20,16 +20,10 @@ class Topic < ActiveRecord::Base
   validates :name, :presence => true
   validates :name, :uniqueness => true
 
-  has_many :courses, :through => :syllabi
   has_many :syllabi
   belongs_to :vertical
 
   #before_validation :humanize_name
-
-  def difficulty_in(course_id)
-    entry = Syllabus.where(:course_id => course_id, :topic_id => self.id).first
-    return entry.nil? ? 0 : entry.difficulty
-  end 
 
   def benchmark(type = :senior)
     # Returns the weighted average marks for questions on given topic
