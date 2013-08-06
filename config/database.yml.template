@@ -1,0 +1,9 @@
+
+development : 
+   adapter : postgresql
+   encoding : unicode
+   database : gradians
+   pool : 5
+   username : dilbert
+   password : shibb0leth
+   host : localhost

@@ -1,0 +1,16 @@
+
+alias production_server="heroku run rails console --app drona" 
+
+# Should be used only by those with access to Heroku
+alias backup_remote_db="heroku pgbackups:capture --expire --app drona"
+
+restore_db() {
+  url=$(heroku pgbackups:url --app drona)
+  curl -o latest.dump $url
+
+  if [ -f ./latest.dump ] ; then 
+    pg_restore --verbose --clean --no-acl --no-owner -h localhost -U dilbert -d gradians latest.dump
+  fi
+}
+
+alias annotate_db="bundle exec annotate -p before"
