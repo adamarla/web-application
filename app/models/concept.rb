@@ -16,4 +16,16 @@ class Concept < ActiveRecord::Base
   belongs_to :course
   has_many :videos 
   has_many :quizzes
+
+  after_create :push_to_last 
+
+  def self.in_course(id)
+    where(course_id: id).order(:index)
+  end
+
+  def push_to_last
+    last = Concept.in_course(self.course_id).where{ index != -1 }.order(:index) 
+    index = last.nil? ? 1 : last.index + 1
+    self.update_attribute :index, index
+  end 
 end
