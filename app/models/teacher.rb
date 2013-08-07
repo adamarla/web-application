@@ -23,15 +23,14 @@ include REXML
 include ApplicationUtil
 
 class Teacher < ActiveRecord::Base
-  has_one :account, :as => :loggable, :dependent => :destroy
 
-  has_many :quizzes, :dependent => :destroy 
-  has_many :sektions, :dependent => :destroy
-
-  has_many :favourites, :dependent => :destroy
+  has_one :account, as: :loggable, dependent: :destroy
+  has_many :quizzes, dependent: :destroy
+  has_many :sektions, dependent: :destroy
+  has_many :favourites, dependent: :destroy 
   has_many :suggestions
 
-  validates :name, :presence => true  
+  validates :name, presence: true
   validates_associated :account
 
 =begin
