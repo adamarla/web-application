@@ -11,40 +11,38 @@ class ApplicationController < ActionController::Base
 
   def ping
     json = {} 
-
     json[:deployment] = Rails.env
-    if current_account
-      case current_account.loggable_type
-        when "Teacher"
-          is_new = current_account.loggable.new_to_the_site?
-          t = current_account.loggable
 
-          # Update info on which demos have been done and which remain
+    user = current_account.nil? ? "unknown" : current_account.loggable_type
+
+    case user
+      when "Student"
+        is_new = StudentRoster.where(:student_id => current_account.loggable_id).count < 1
+      when "Teacher"
+        t = current_account.loggable
+        is_new = t.new_to_the_site?
+        user = t.online ? "Online" : user
+
+        # Demos are available only to external teachers. Our own instructors don't need them
+        unless t.online
           cloned = t.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
-          json[:demo] = { 
-            :build => (PREFAB_QUIZ_IDS - cloned.map(&:parent_id)), 
-            :download => cloned.map{ |m|
+          json[:demo] = {
+            build: (PREFAB_QUIZ_IDS - cloned.map(&:parent_id)),
+            download: cloned.map{ |m| 
               ws = m.testpapers.first
               ws = ws.nil? ? 1 : ws.id
-              {
-                :id => m.parent_id,
-                :a => encrypt(ws,7),
-                :b => m.id,
-                :c => ws
-              }
+              { id: m.parent_id, a: encrypt(ws,7), b: m.id, c: ws }
             }
           }
-
-        when "Student"
-          is_new = StudentRoster.where(:student_id => current_account.loggable_id).count < 1
-        else 
-          is_new = false
-      end
-      json[:new] = is_new
-      json[:who] = current_account.loggable_type
+        end # of unless 
+      else
+        is_new = false
     end
 
+    json[:new] = is_new
+    json[:who] = user
+
     render :json => json, :status => :ok
-  end
+  end # of method
 
 end

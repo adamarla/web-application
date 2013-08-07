@@ -27,44 +27,47 @@
 - content_for :modals do
   #modals
     = render :partial => 'modals/user/account'
-    = render :partial => 'modals/teacher/new-sk-one'
-    = render :partial => 'modals/teacher/new-sk-two'
-    = render :partial => 'modals/teacher/demo-intro'
-    = render :partial => 'modals/teacher/demo'
     = render :partial => 'modals/teacher/ws-options'
-    = render :partial => 'modals/user/ask-a-question'
     = render :partial => 'modals/user/upload-scans'
     = render :partial => 'modals/examiner/audit'
+    - unless tc.online
+      = render :partial => 'modals/user/ask-a-question'
+      = render :partial => 'modals/teacher/demo-intro'
+      = render :partial => 'modals/teacher/demo'
+      = render :partial => 'modals/teacher/new-sk-one'
+      = render :partial => 'modals/teacher/new-sk-two'
   #notifications
     = render :partial => 'notifications/teacher/favourited'
     = render :partial => 'notifications/teacher/qzb-no-selection'
     = render :partial => 'notifications/teacher/wsb-no-selection'
     = render :partial => 'notifications/teacher/qzb-no-name'
-    = render :partial => 'notifications/teacher/new-sektion'
     = render :partial => 'notifications/teacher/queued'
-    = render :partial => 'notifications/teacher/prefabricating'
     = render :partial => 'notifications/teacher/compiled'
     = render :partial => 'notifications/teacher/edit-quiz'
     = render :partial => 'notifications/shared/last-scan'
     = render :partial => 'notifications/shared/first-scan'
     = render :partial => 'notifications/shared/question-received'
+    - unless tc.online
+      = render :partial => 'notifications/teacher/prefabricating'
+      = render :partial => 'notifications/teacher/new-sektion'
 
-- content_for :tutorials do 
-  #tutorials
-    - ['one', 'three', 'five', 'six', 'seven'].each do |m|
-      = render :partial => "tutorials/teacher/qzb/#{m}"
-    - ['one', 'two', 'three'].each do |m|
-      = render :partial => "tutorials/teacher/wsb/#{m}"
-    - ['one', 'two', 'three', 'four', 'five', 'six'].each do |m|
-      = render :partial => "tutorials/teacher/editqz/#{m}"
-    - ['one', 'two'].each do |m|
-      = render :partial => "tutorials/teacher/publish-ws/#{m}"
-    - ['one', 'two', 'three'].each do |m|
-      = render :partial => "tutorials/teacher/mng-sektions/#{m}"
-    - ['one'].each do |m|
-      = render :partial => "tutorials/teacher/welcome/#{m}"
-    - ['one'].each do |m|
-      = render :partial => "tutorials/teacher/send-suggestions/#{m}"
+-unless tc.online
+  - content_for :tutorials do 
+    #tutorials
+      - ['one', 'three', 'five', 'six', 'seven'].each do |m|
+        = render :partial => "tutorials/teacher/qzb/#{m}"
+      - ['one', 'two', 'three'].each do |m|
+        = render :partial => "tutorials/teacher/wsb/#{m}"
+      - ['one', 'two', 'three', 'four', 'five', 'six'].each do |m|
+        = render :partial => "tutorials/teacher/editqz/#{m}"
+      - ['one', 'two'].each do |m|
+        = render :partial => "tutorials/teacher/publish-ws/#{m}"
+      - ['one', 'two', 'three'].each do |m|
+        = render :partial => "tutorials/teacher/mng-sektions/#{m}"
+      - ['one'].each do |m|
+        = render :partial => "tutorials/teacher/welcome/#{m}"
+      - ['one'].each do |m|
+        = render :partial => "tutorials/teacher/send-suggestions/#{m}"
 
 !!!5
 
@@ -108,12 +111,14 @@
                   = simple_link :for => "Report Cards", :id => 'm-report-cards'
                 %li.dropdown
                   = simple_link :for => "Upload", :id => 'lnk-upload'
-                %li.dropdown
-                  = simple_link :for => "Groups", :id => 'm-tc-sektions'
-                %li.dropdown
-                  = simple_link :for => "Help", :id => 'm-howto'
-                %li.dropdown
-                  = simple_link :for => "QuickTrial", :id => 'lnk-demo'
+
+                - unless tc.online
+                  %li.dropdown
+                    = simple_link :for => "Groups", :id => 'm-tc-sektions'
+                  %li.dropdown
+                    = simple_link :for => "Help", :id => 'm-howto'
+                  %li.dropdown
+                    = simple_link :for => "QuickTrial", :id => 'lnk-demo'
                 %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{tc.first_name}", :id => 'm-account'
       #desktop.row-fluid
@@ -160,4 +165,6 @@
 
     = yield :toolbox
     = yield :modals
-    = yield :tutorials
+
+    - unless tc.online 
+      = yield :tutorials
