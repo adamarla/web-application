@@ -5,69 +5,69 @@
 
 -content_for :toolbox do
   #toolbox.hidden 
-    = render :partial => 'teachers/disputed'
-    = render :partial => 'teachers/sektions'
+    = render partial: 'teachers/disputed'
+    = render partial: 'teachers/sektions'
 
-    = render :partial => 'toolbox/line'
-    = render :partial => 'toolbox/preview'
+    = render partial: 'toolbox/line'
+    = render partial: 'toolbox/preview'
 
-    = render :partial => 'menus/teacher/per-qz'
-    = render :partial => 'menus/teacher/per-ws'
-    = render :partial => 'menus/teacher/per-question'
-    = render :partial => 'menus/teacher/qz-main', :locals => { :teacher => tc, :server => server }
-    = render :partial => 'menus/teacher/sektions'
-    = render :partial => 'menus/teacher/rc' 
-    = render :partial => 'menus/teacher/howto' 
-    = render :partial => 'menus/teacher/qzb-filter'
+    = render partial: 'menus/teacher/per-qz'
+    = render partial: 'menus/teacher/per-ws'
+    = render partial: 'menus/teacher/per-question'
+    = render partial: 'menus/teacher/qz-main', locals: { teacher: tc, server: server }
+    = render partial: 'menus/teacher/sektions'
+    = render partial: 'menus/teacher/rc' 
+    = render partial: 'menus/teacher/howto' 
+    = render partial: 'menus/teacher/qzb-filter'
 
-    = render :partial => 'menus/user/account'
-    = render :partial => 'menus/user/notifications'
-    = render :partial => 'toolbox/fdb-panel'
+    = render partial: 'menus/user/account'
+    = render partial: 'menus/user/notifications'
+    = render partial: 'toolbox/fdb-panel'
 
 - content_for :modals do
   #modals
-    = render :partial => 'modals/user/account'
-    = render :partial => 'modals/teacher/ws-options'
-    = render :partial => 'modals/user/upload-scans'
-    = render :partial => 'modals/examiner/audit'
+    = render partial: 'modals/user/account'
+    = render partial: 'modals/teacher/ws-options'
+    = render partial: 'modals/user/upload-scans'
+    = render partial: 'modals/examiner/audit'
     - unless tc.online
-      = render :partial => 'modals/user/ask-a-question'
-      = render :partial => 'modals/teacher/demo-intro'
-      = render :partial => 'modals/teacher/demo'
-      = render :partial => 'modals/teacher/new-sk-one'
-      = render :partial => 'modals/teacher/new-sk-two'
+      = render partial: 'modals/user/ask-a-question'
+      = render partial: 'modals/teacher/demo-intro'
+      = render partial: 'modals/teacher/demo'
+      = render partial: 'modals/teacher/new-sk-one'
+      = render partial: 'modals/teacher/new-sk-two'
   #notifications
-    = render :partial => 'notifications/teacher/favourited'
-    = render :partial => 'notifications/teacher/qzb-no-selection'
-    = render :partial => 'notifications/teacher/wsb-no-selection'
-    = render :partial => 'notifications/teacher/qzb-no-name'
-    = render :partial => 'notifications/teacher/queued'
-    = render :partial => 'notifications/teacher/compiled'
-    = render :partial => 'notifications/teacher/edit-quiz'
-    = render :partial => 'notifications/shared/last-scan'
-    = render :partial => 'notifications/shared/first-scan'
-    = render :partial => 'notifications/shared/question-received'
+    = render partial: 'notifications/teacher/favourited'
+    = render partial: 'notifications/teacher/qzb-no-selection'
+    = render partial: 'notifications/teacher/wsb-no-selection'
+    = render partial: 'notifications/teacher/qzb-no-name'
+    = render partial: 'notifications/teacher/queued'
+    = render partial: 'notifications/teacher/compiled'
+    = render partial: 'notifications/teacher/edit-quiz'
+    = render partial: 'notifications/shared/last-scan'
+    = render partial: 'notifications/shared/first-scan'
+    = render partial: 'notifications/shared/question-received'
     - unless tc.online
-      = render :partial => 'notifications/teacher/prefabricating'
-      = render :partial => 'notifications/teacher/new-sektion'
+      = render partial: 'notifications/teacher/prefabricating'
+      = render partial: 'notifications/teacher/new-sektion'
 
 -unless tc.online
   - content_for :tutorials do 
     #tutorials
       - ['one', 'three', 'five', 'six', 'seven'].each do |m|
-        = render :partial => "tutorials/teacher/qzb/#{m}"
+        = render partial: "tutorials/teacher/qzb/#{m}"
       - ['one', 'two', 'three'].each do |m|
-        = render :partial => "tutorials/teacher/wsb/#{m}"
+        = render partial: "tutorials/teacher/wsb/#{m}"
       - ['one', 'two', 'three', 'four', 'five', 'six'].each do |m|
-        = render :partial => "tutorials/teacher/editqz/#{m}"
+        = render partial: "tutorials/teacher/editqz/#{m}"
       - ['one', 'two'].each do |m|
-        = render :partial => "tutorials/teacher/publish-ws/#{m}"
+        = render partial: "tutorials/teacher/publish-ws/#{m}"
       - ['one', 'two', 'three'].each do |m|
-        = render :partial => "tutorials/teacher/mng-sektions/#{m}"
+        = render partial: "tutorials/teacher/mng-sektions/#{m}"
       - ['one'].each do |m|
-        = render :partial => "tutorials/teacher/welcome/#{m}"
+        = render partial: "tutorials/teacher/welcome/#{m}"
       - ['one'].each do |m|
-        = render :partial => "tutorials/teacher/send-suggestions/#{m}"
+        = render partial: "tutorials/teacher/send-suggestions/#{m}"
 
 !!!5
 
@@ -95,7 +95,7 @@
 
   %body 
     #spinner.spinner
-      = image_tag "loading.gif", :id => 'img-spinner'
+      = image_tag "loading.gif", id: 'img-spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid{ :marker => "#{tc.id}" } 
         .span12
@@ -106,60 +106,60 @@
               %ul.nav.span9.pull-right
                 -# dropdown -> Quiz -> [ new, edit, save ]
                 %li.dropdown
-                  = simple_link :for => "Quizzes", :id => 'm-teacher-quizzes'
+                  = simple_link :for => "Quizzes", id: 'm-teacher-quizzes'
                 %li.dropdown
-                  = simple_link :for => "Report Cards", :id => 'm-report-cards'
+                  = simple_link :for => "Report Cards", id: 'm-report-cards'
                 %li.dropdown
-                  = simple_link :for => "Upload", :id => 'lnk-upload'
+                  = simple_link :for => "Upload", id: 'lnk-upload'
 
                 - unless tc.online
                   %li.dropdown
-                    = simple_link :for => "Groups", :id => 'm-tc-sektions'
+                    = simple_link :for => "Groups", id: 'm-tc-sektions'
                   %li.dropdown
-                    = simple_link :for => "Help", :id => 'm-howto'
+                    = simple_link :for => "Help", id: 'm-howto'
                   %li.dropdown
-                    = simple_link :for => "QuickTrial", :id => 'lnk-demo'
+                    = simple_link :for => "QuickTrial", id: 'lnk-demo'
                 %li#cp-account-link.dropdown
-                  = simple_link :for => "Hello, #{tc.first_name}", :id => 'm-account'
+                  = simple_link :for => "Hello, #{tc.first_name}", id: 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
-          = render :partial => 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
+          = render partial: 'toolbox/paginator', locals: { id: 'left-paginator', url: '#' }
           #left-1
-            = render :partial => 'teachers/wsb', :locals => { :teacher => tc }
+            = render partial: 'teachers/wsb', locals: { teacher: tc }
           #left-2
-            = render :partial => 'teachers/qzb', :locals => { :teacher => tc }
+            = render partial: 'teachers/qzb', locals: { teacher: tc }
           #left-3
           #left-4
-            = render :partial => 'toolbox/grd-pending'
+            = render partial: 'toolbox/grd-pending'
           #left-5
-            = render :partial => 'teachers/rc'
+            = render partial: 'teachers/rc'
           #left-6
-            = render :partial => 'teachers/deepdive', :locals => { :teacher => tc }
+            = render partial: 'teachers/deepdive', locals: { teacher: tc }
           #left-7
-            = render :partial => 'teachers/edit-qz'
+            = render partial: 'teachers/edit-qz'
           #left-8
-            = render :partial => 'teachers/sektions'
+            = render partial: 'teachers/sektions'
         #middle.g-panel.span4
-          = render :partial => 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
+          = render partial: 'toolbox/paginator', locals: { id: 'middle-paginator', url: '#' }
           #middle-X
         #right.g-panel.span4
-          = render :partial => 'toolbox/paginator', :locals => { :id => 'right-paginator', :url => '#' }
+          = render partial: 'toolbox/paginator', locals: { id: 'right-paginator', url: '#' }
           #right-X
         #wide.g-panel.span8
           #wide-X
           #wide-wait
-            = render :partial => 'toolbox/wait'
+            = render partial: 'toolbox/wait'
           #wide-chart-1.offset1
           #wide-chart-2.offset1
           #wide-chart-3.offset1
           #wide-4
-            = render :partial => 'teachers/edit-sektion', :locals => { :teacher => tc }
+            = render partial: 'teachers/edit-sektion', locals: { teacher: tc }
           #wide-grd-canvas
             .row-fluid
-              = render :partial => 'toolbox/grd-toolbar'
+              = render partial: 'toolbox/grd-toolbar'
             .row-fluid
               .span1
-                = render :partial => 'toolbox/grd-toolbar-btns'
+                = render partial: 'toolbox/grd-toolbar-btns'
               .span11
                 %canvas#grading-canvas{ :width => 600, :height => 800 }
 
