@@ -7,6 +7,7 @@
 #  teacher_id :integer
 #  created_at :datetime
 #  updated_at :datetime
+#  price      :decimal(5, 2)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
