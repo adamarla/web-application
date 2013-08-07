@@ -14,6 +14,7 @@
 #  lecture        :boolean         default(FALSE)
 #  watchable_id   :integer
 #  watchable_type :string(20)
+#  description    :text
 #
 
 require 'test_helper'
