@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: concepts
+# Table name: milestones
 #
 #  id         :integer         not null, primary key
 #  name       :string(70)
@@ -10,7 +10,7 @@
 #  updated_at :datetime
 #
 
-class Concept < ActiveRecord::Base
+class Milestone < ActiveRecord::Base
   validates :name, presence: true
 
   belongs_to :course
@@ -24,7 +24,7 @@ class Concept < ActiveRecord::Base
   end
 
   def push_to_last
-    last = Concept.in_course(self.course_id).where{ index != -1 }.order(:index) 
+    last = Milestone.in_course(self.course_id).where{ index != -1 }.order(:index) 
     index = last.nil? ? 1 : last.index + 1
     self.update_attribute :index, index
   end 

@@ -14,5 +14,5 @@ class Course < ActiveRecord::Base
   validates :name, presence: true
   validates :teacher_id, presence: true
 
-  has_many :concepts
+  has_many :milestones
 end
