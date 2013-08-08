@@ -3,7 +3,6 @@
 # Table name: milestones
 #
 #  id         :integer         not null, primary key
-#  name       :string(70)
 #  index      :integer         default(-1)
 #  course_id  :integer
 #  created_at :datetime
@@ -11,8 +10,6 @@
 #
 
 class Milestone < ActiveRecord::Base
-  validates :name, presence: true
-
   belongs_to :course
   has_many :videos, as: :watchable 
   has_many :quizzes
@@ -28,4 +25,9 @@ class Milestone < ActiveRecord::Base
     index = last.nil? ? 1 : last.index + 1
     self.update_attribute :index, index
   end 
+
+  def name
+    return "#{self.course_id}.#{self.index}"
+  end
+
 end

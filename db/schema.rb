@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130808071950) do
+ActiveRecord::Schema.define(:version => 20130808073125) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -145,8 +145,7 @@ ActiveRecord::Schema.define(:version => 20130808071950) do
   end
 
   create_table "milestones", :force => true do |t|
-    t.string   "name",       :limit => 70
-    t.integer  "index",                    :default => -1
+    t.integer  "index",      :default => -1
     t.integer  "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
