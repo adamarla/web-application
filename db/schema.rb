@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130808073125) do
+ActiveRecord::Schema.define(:version => 20130809093842) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -307,17 +307,11 @@ ActiveRecord::Schema.define(:version => 20130808073125) do
 
   create_table "videos", :force => true do |t|
     t.text     "url"
-    t.boolean  "tutorial",                     :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title",          :limit => 70
     t.boolean  "active",                       :default => false
-    t.integer  "index",                        :default => -1
-    t.boolean  "history",                      :default => false
-    t.boolean  "lecture",                      :default => false
     t.integer  "watchable_id"
     t.string   "watchable_type", :limit => 20
-    t.text     "description"
   end
 
 end
