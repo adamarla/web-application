@@ -13,4 +13,7 @@
 class Lesson < ActiveRecord::Base
   has_one :video, as: :watchable
 
+  has_many :lectures
+  has_many :milestones, through: :lectures
+
 end

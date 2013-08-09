@@ -11,8 +11,10 @@
 
 class Milestone < ActiveRecord::Base
   belongs_to :course
-  has_many :videos, as: :watchable 
+
   has_many :quizzes
+  has_many :lectures
+  has_many :lessons, through: :lectures
 
   after_create :push_to_last 
 
