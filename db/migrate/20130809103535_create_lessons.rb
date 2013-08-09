@@ -1,6 +1,6 @@
-class CreateLectures < ActiveRecord::Migration
+class CreateLessons < ActiveRecord::Migration
   def change
-    create_table :lectures do |t|
+    create_table :lessons do |t|
       t.string :title, limit: 70
       t.text :description
       t.boolean :history, default: false
