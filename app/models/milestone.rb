@@ -12,9 +12,14 @@
 class Milestone < ActiveRecord::Base
   belongs_to :course
 
-  has_many :quizzes
+  # Milestone -> Coursework -> Quiz
+  has_many :coursework
+  has_many :quizzes, through: :coursework 
+  
+  # Milestone -> Lecture -> Lesson
   has_many :lectures
   has_many :lessons, through: :lectures
+
 
   after_create :push_to_last 
 
