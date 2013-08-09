@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: lectures
+# Table name: lessons
 #
 #  id          :integer         not null, primary key
 #  title       :string(70)
@@ -10,6 +10,7 @@
 #  updated_at  :datetime        not null
 #
 
-class Lecture < ActiveRecord::Base
-  # attr_accessible :title, :body
+class Lesson < ActiveRecord::Base
+  has_one :video, as: :watchable
+
 end
