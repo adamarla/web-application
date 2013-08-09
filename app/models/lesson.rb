@@ -16,4 +16,7 @@ class Lesson < ActiveRecord::Base
   has_many :lectures
   has_many :milestones, through: :lectures
 
+  validates :title, presence: true
+  validates :description, presence: true
+
 end
