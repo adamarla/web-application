@@ -10,10 +10,6 @@
 #  updated_at   :datetime        not null
 #
 
-require 'test_helper'
-
-class LectureTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+class Lecture < ActiveRecord::Base
+  attr_accessible :index, :lesson_id, :milestone_id
 end
