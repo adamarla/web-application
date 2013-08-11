@@ -32,6 +32,9 @@ Webapp::Application.routes.draw do
   # Admin 
   resource :admin, :controller => :admin 
 
+  # Course
+  resource :course, only: [:create], controller: :course
+
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'untagged/list' => 'examiners#untagged', :via => :get

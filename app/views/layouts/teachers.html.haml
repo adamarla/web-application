@@ -23,6 +23,8 @@
     = render partial: 'menus/user/account'
     = render partial: 'menus/user/notifications'
     = render partial: 'toolbox/fdb-panel'
+    - if tc.online
+      = render partial: 'menus/teacher/courses'
 
 - content_for :modals do
   #modals
@@ -36,6 +38,9 @@
       = render partial: 'modals/teacher/demo'
       = render partial: 'modals/teacher/new-sk-one'
       = render partial: 'modals/teacher/new-sk-two'
+
+    - if tc.online
+      = render partial: 'modals/teacher/add-course'
   #notifications
     = render partial: 'notifications/teacher/favourited'
     = render partial: 'notifications/teacher/qzb-no-selection'
@@ -119,6 +124,11 @@
                     = simple_link for: "Help", id: 'm-howto'
                   %li.dropdown
                     = simple_link for: "QuickTrial", id: 'lnk-demo'
+
+                - if tc.online
+                  %li.dropdown 
+                    = simple_link for: "Courses", id: 'lnk-courses'
+
                 %li#cp-account-link.dropdown
                   = simple_link for: "Hello, #{tc.first_name}", id: 'm-account'
       #desktop.row-fluid

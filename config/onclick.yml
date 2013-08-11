@@ -27,6 +27,14 @@
 ## Teachers 
 ##############################################################################
 
+lnk-courses : 
+  show :
+    menu : m-courses
+
+course-add-new : 
+  show : 
+    modal : m-add-course
+
 lnk-edit-account :
   show : 
     modal : m-edit-account
@@ -285,6 +293,10 @@ lnk-audit-question :
 lnk-qzb-filter : 
   show : 
     menu : qzb-filter
+
+lnk-attach-qz : 
+  show : 
+    modal : m-attach-qz
 
 ##############################################################################
 ## Students 

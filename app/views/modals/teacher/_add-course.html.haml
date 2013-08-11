@@ -1,0 +1,10 @@
+
+#m-add-course.modal.fade.regular{ :role => :dialog }
+  .row-fluid
+    .span3
+    .span8
+      = simple_form_for :course, :url => course_path, :remote => true, :defaults => { :label => false } do |f|
+        = f.input :title, hint: "Title"
+        = f.input :price, as: :numeric, input_html: {value: 20, step:0.5}, hint: "Price (USD)"
+        = simple_button :for => 'Create', :type => :submit, :class => 'btn-primary'
+
