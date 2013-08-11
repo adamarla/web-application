@@ -29,6 +29,7 @@ class Teacher < ActiveRecord::Base
   has_many :sektions, dependent: :destroy
   has_many :favourites, dependent: :destroy 
   has_many :suggestions
+  has_many :courses
 
   validates :name, presence: true
   validates_associated :account

@@ -12,7 +12,7 @@
 
 class Course < ActiveRecord::Base
   validates :name, presence: true
-  validates :teacher_id, presence: true
 
+  belongs_to :teacher
   has_many :milestones
 end
