@@ -170,6 +170,8 @@ jQuery ->
         cb.prop 'checked', true
         cb.attr 'value', cb.siblings('.text').eq(0).text()
       return true
+    else if url.match(/course/)
+      $('#m-add-course').modal 'hide'
     else
       matched = false
 
