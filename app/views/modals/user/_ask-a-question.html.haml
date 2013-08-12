@@ -4,7 +4,7 @@
     .span3
       = image_tag 'notifications/question.png', :class => 'big-icon'
     .span9
-      %p.title= "Write question below"
+      %p.title.underline= "Write question below"
       = simple_form_for :new, :url => ask_question_path, :remote => true, :defaults => { :label => false } do |f|
         - if current_account.nil?
           = f.input :name, :as => :string, :label => 'full name'

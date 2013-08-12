@@ -21,6 +21,18 @@ img {
   } 
 }
 
+.title { 
+  font: {
+    size: 18px ;
+    weight: 500 ;
+  }
+  padding-bottom: 8px ;
+} 
+
+.underline {
+  border-bottom: 1px solid $deep-blue ;
+}
+
 #badge {
   margin-top: 90px ;
   img { z-index: 900 ; }
@@ -299,16 +311,7 @@ img {
   h5 { font-size: 14px ; }
   h6 { font-size: 12px ; }
 
-  .title { 
-    font: {
-      size: 18px ;
-      weight: 500 ;
-    }
-    padding-bottom: 8px ;
-    border-bottom: 1px solid $deep-blue ;
-  } 
-
-  p {
+  p:not([class~='title']) {
     font-size: 12px ;
   }
 
