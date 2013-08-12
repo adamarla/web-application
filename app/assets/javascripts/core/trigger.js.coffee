@@ -283,16 +283,18 @@ jQuery ->
 
 
     ###
-      Do the next two for only * horizontal * tabs - not .tabs-left
+      Do the next two for only * horizontal * tabs - not .tabs-left or .tabs-right
         1. Ensure that atmost 3 tabs are shown - including the just clicked one
         2. disable all subsequent tabs 
 
-      Left-tabs are for special use-cases and therefore one can't make a 
+      Side tabs are for special use-cases and therefore one can't make a 
       blanket call on their behaviour. 
     ###
     ul = $(this).parent().parent() # => ul.nav-tabs
+    tabbable = ul.parent()
+    isSideTab = tabbable.hasClass('tabs-left') || tabbable.hasClass('tabs-right')
 
-    unless ul.parent().hasClass('tabs-left')
+    unless isSideTab 
       li = $(this).parent()
       li.removeClass 'hide'
 
