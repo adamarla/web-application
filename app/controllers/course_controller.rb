@@ -12,4 +12,13 @@ class CourseController < ApplicationController
     end
   end
 
+  def show
+    teacher = current_account.loggable
+    @courses = Course.where(teacher_id: teacher.id).order(:price)
+  end
+
+  def outline
+    render json: { status: :ok }, status: :ok
+  end
+
 end

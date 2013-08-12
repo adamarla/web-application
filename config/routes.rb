@@ -33,7 +33,9 @@ Webapp::Application.routes.draw do
   resource :admin, :controller => :admin 
 
   # Course
-  resource :course, only: [:create], controller: :course
+  match 'course/new' => 'course#create', via: :post
+  match 'course/all' => 'course#show', via: :get
+  match 'course/outline' => 'course#outline', via: :get
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]

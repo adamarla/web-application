@@ -162,16 +162,22 @@
           #wide-chart-1.offset1
           #wide-chart-2.offset1
           #wide-chart-3.offset1
-          #wide-4
-            = render partial: 'teachers/edit-sektion', locals: { teacher: tc }
-          #wide-grd-canvas
-            .row-fluid
-              = render partial: 'toolbox/grd-toolbar'
-            .row-fluid
-              .span1
-                = render partial: 'toolbox/grd-toolbar-btns'
-              .span11
-                %canvas#grading-canvas{ :width => 600, :height => 800 }
+
+          - unless tc.online
+            #wide-4
+              = render partial: 'teachers/edit-sektion', locals: { teacher: tc }
+          - if tc.online
+            #wide-grd-canvas
+              .row-fluid
+                = render partial: 'toolbox/grd-toolbar'
+              .row-fluid
+                .span1
+                  = render partial: 'toolbox/grd-toolbar-btns'
+                .span11
+                  %canvas#grading-canvas{ :width => 600, :height => 800 }
+
+            #wide-5
+              = render partial: 'teachers/edit-course', if: tc.online
 
     = yield :toolbox
     = yield :modals

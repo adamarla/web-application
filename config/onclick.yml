@@ -60,6 +60,13 @@ tab-editqz-1 :
     panel : question/preview?id=:id
   prev : tab-wsb-quizzes
 
+tab-online-courses : 
+  show : 
+    wide : wide-5
+  url :
+    self : course/all
+    panel : course/outline?id=:id
+
 tab-wsb-quizzes :
   url : 
     self : quizzes/list

@@ -170,8 +170,11 @@ jQuery ->
         cb.prop 'checked', true
         cb.attr 'value', cb.siblings('.text').eq(0).text()
       return true
-    else if url.match(/course/)
+    else if url.match(/course\/new/)
       $('#m-add-course').modal 'hide'
+    else if url.match(/course\/all/)
+      target = $('#pane-online-courses')
+      key = 'courses'
     else
       matched = false
 
