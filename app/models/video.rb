@@ -12,7 +12,8 @@
 #
 
 class Video < ActiveRecord::Base
-  validates :url, :presence => true
+  validates :url, presence: true 
+  validates :url, uniqueness: true
 
   belongs_to :watchable, polymorphic: true
 
