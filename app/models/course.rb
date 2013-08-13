@@ -33,7 +33,7 @@ class Course < ActiveRecord::Base
     1. Made by any instructor - and not just the one for the course 
     2. and which are NOT being used in this course
 =end
-    all = Lecture.all.map(&:lesson_id)
+    all = Lesson.all.map(&:id) 
     used = Lecture.where(milestone_id: self.milestone_ids).map(&:lesson_id)
     return Lesson.where(id: (all - used))
   end
