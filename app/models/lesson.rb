@@ -3,7 +3,7 @@
 # Table name: lessons
 #
 #  id          :integer         not null, primary key
-#  title       :string(70)
+#  name        :string(70)
 #  description :text
 #  history     :boolean         default(FALSE)
 #  created_at  :datetime        not null
@@ -16,7 +16,7 @@ class Lesson < ActiveRecord::Base
   has_many :lectures
   has_many :milestones, through: :lectures
 
-  validates :title, presence: true
+  validates :name, presence: true
   validates :description, presence: true
 
 end
