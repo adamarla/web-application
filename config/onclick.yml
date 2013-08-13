@@ -33,7 +33,7 @@ lnk-courses :
 
 course-add-new : 
   show : 
-    modal : m-add-course
+    modal : m-new-course
 
 lnk-edit-account :
   show : 
