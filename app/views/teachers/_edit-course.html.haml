@@ -1,2 +1,15 @@
 
 .row-fluid
+  .span11
+    .title.light.underline= "Lessons and Quizzes"
+    .tabbable.tabs-left{ id: 'course-outline' }
+      %ul.nav.nav-tabs.span2
+        - [*1..3].each do |m|
+          %li
+            = simple_link for: "Milestone #{m}", id: "tab-milestone-#{m}", url: { self: "milestone/load?index=#{m}&course=:prev" }
+        - ['Lessons', 'Quizzes'].each do |m|
+          %li
+            = simple_link for: "Other #{m}", id: "tab-available-#{m}", url: { self: "available/assets?type=#{m}&course=:prev" }
+      .tab-content.span9{ id: 'lessons-and-quizzes' }
+        .column.span6.purge-blind
+        .column.span6.purge-blind

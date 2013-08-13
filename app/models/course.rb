@@ -24,7 +24,7 @@ class Course < ActiveRecord::Base
 =end
     all = Quiz.where(teacher_id: self.teacher_id).map(&:id)
     used = Coursework.where(milestone_id: self.milestone_ids).map(&:quiz_id)
-    return Quiz.where(id: (all - used))
+    return Quiz.where(id: (all - used)).order(:name)
   end
 
   def available_lessons

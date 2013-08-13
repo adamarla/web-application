@@ -175,6 +175,10 @@ jQuery ->
     else if url.match(/course\/all/)
       target = $('#pane-online-courses')
       key = 'courses'
+    else if url.match(/milestone\/load/) || url.match(/available\/assets/)
+      target = $('#lessons-and-quizzes')
+      key = 'assets'
+      buttons = json.buttons
     else
       matched = false
 

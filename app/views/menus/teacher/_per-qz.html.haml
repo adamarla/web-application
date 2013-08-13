@@ -1,11 +1,14 @@
 
+- online_instructor = current_account.loggable.online
+
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
   %li
     = simple_link :for => "Edit Quiz", :id => 'lnk-edit-qz', :icon => 'icon-edit'
-  %li
-    = simple_link :for => "New Worksheet", :id => 'lnk-wsb-new', :icon => 'icon-plus-sign'
-  %li
-    = simple_link :for => "List Worksheets", :id => 'lnk-wsb-existing', :icon => 'icon-list'
+  - unless online_instructor  
+    %li
+      = simple_link :for => "New Worksheet", :id => 'lnk-wsb-new', :icon => 'icon-plus-sign'
+    %li
+      = simple_link :for => "List Worksheets", :id => 'lnk-wsb-existing', :icon => 'icon-list'
   %li
     = simple_link :for => "Download Solution (PDF)", :id => 'lnk-download-solution', 
     :url => { :self => "#{Gutenberg['server']}/mint/quiz/:a/answer-key-:b.pdf" }, :icon => 'icon-download' 

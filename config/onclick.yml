@@ -65,7 +65,12 @@ tab-online-courses :
     wide : wide-5
   url :
     self : course/all
-    panel : course/outline?id=:id
+
+tab-milestone-* : 
+  prev : tab-online-courses
+
+tab-available-* :
+  prev : tab-online-courses
 
 tab-wsb-quizzes :
   url : 
@@ -300,10 +305,6 @@ lnk-audit-question :
 lnk-qzb-filter : 
   show : 
     menu : qzb-filter
-
-lnk-attach-qz : 
-  show : 
-    modal : m-attach-qz
 
 ##############################################################################
 ## Students 
