@@ -126,6 +126,7 @@ Webapp::Application.routes.draw do
   match 'overwrite/marks' => 'teachers#overwrite_marks', via: [:put, :post]
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
   match 'prefab' => 'teachers#prefabricate', via: :post
+  match 'new/lesson' => 'teachers#add_lesson', via: :post
 
   # Testpaper
   match 'ws/summary' => 'testpapers#summary', via: :get

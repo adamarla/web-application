@@ -31,9 +31,13 @@ lnk-courses :
   show :
     menu : m-courses
 
-course-add-new : 
+new-course :
   show : 
     modal : m-new-course
+
+new-lesson : 
+  show : 
+    modal : m-new-lesson
 
 lnk-edit-account :
   show : 

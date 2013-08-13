@@ -20,5 +20,6 @@ class Lesson < ActiveRecord::Base
 
   validates :name, presence: true
   validates :description, presence: true
+  validates_associated :video, as: :watchable
 
 end

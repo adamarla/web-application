@@ -1,0 +1,12 @@
+
+#m-new-lesson.modal.fade.regular{ :role => :dialog }
+  .row-fluid
+    .span3
+      = image_tag 'notifications/camera.png', class: 'big-icon'
+    .span8
+      = simple_form_for :lesson, url: new_lesson_path, remote: true, defaults: { label: false } do |f|
+        = f.input :name, hint: 'Lesson Title'
+        = f.input :description, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, hint: 'A few lines about the lesson'
+        = f.input :type, collection: { regular: :r, history: :h }, selected: :r, hint: 'Type of lesson'
+        = f.input :embed, hint: 'Code returned by SublimeVideo'
+        = simple_button for: 'Create', type: :submit, class: 'btn-primary' 
