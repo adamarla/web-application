@@ -27,6 +27,16 @@ class Milestone < ActiveRecord::Base
     where(course_id: id).order(:index)
   end
 
+  def lessons
+    ids = Lecture.where(milestone_id: self.id).map(&:lesson_id).uniq
+    return Lesson.where(id: ids)
+  end
+
+  def quizzes
+    ids = Coursework.where(milestone_id: self.id).map(&:quiz_id).uniq
+    return Quiz.where(id: ids)
+  end
+
   def push_to_last
     last = Milestone.in_course(self.course_id).where{ index != -1 }.order(:index) 
     index = last.nil? ? 1 : last.index + 1
