@@ -8,9 +8,11 @@
 #  history     :boolean         default(FALSE)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  teacher_id  :integer
 #
 
 class Lesson < ActiveRecord::Base
+  belongs_to :teacher
   has_one :video, as: :watchable
 
   has_many :lectures
