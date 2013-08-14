@@ -3,7 +3,7 @@
 # Table name: videos
 #
 #  id             :integer         not null, primary key
-#  url            :text
+#  html           :text
 #  created_at     :datetime
 #  updated_at     :datetime
 #  active         :boolean         default(FALSE)

@@ -199,7 +199,7 @@ class TeachersController < ApplicationController
     data = params[:lesson]
 
     lesson = teacher.lessons.build(name: data[:name], description: data[:description], history: (data[:type] == "h") )
-    lesson.build_video(url: data[:embed], active: true)
+    lesson.build_video(html: data[:embed], active: true)
 
     if lesson.save
       render json: { status: 'success' }, status: :ok
