@@ -1,4 +1,17 @@
 
+renderTextAndEqnsOn = (obj, text, marker) ->
+  hasTex = false
+  if text.search(/\$.*\$/) isnt -1 # => LaTeX
+    hasTex = true
+    jaxified = karo.jaxify text 
+    parent = obj.parent() 
+    obj.replaceWith "<div class='tex'><script id='tex-#{marker}' type='math/tex'>#{jaxified}</script></div>"
+    # kinda imp. to wrap <script> within some <div>
+    j = parent.find('script')[0]
+    MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
+  else
+    obj.text text
+  return hasTex
 
 ### 
   Single line 
@@ -22,25 +35,25 @@ window.line = {
         - menu (optional) 
     ###
 
+    isVideo = if json.klass? then json.klass.match(/video/)? else false
+
+
     obj = $('#toolbox').children('.single-line').eq(0).clone()
     remaining = 12
 
     # 1. Do the easiest first 
-    obj.addClass(json.klass) if json.klass?
+    if json.klass?
+      obj.addClass json.klass
+
     obj.attr 'marker', json.id
     children = obj.children()
 
     # Write the main text
     label = children.filter(".text")
-    if json.name.search(/\$.*\$/) isnt -1 # => LaTeX
-      jaxified = karo.jaxify json.name
-      label.replaceWith "<div class='tex'><script id='tex-#{json.id}' type='math/tex'>#{jaxified}</script></div>"
-      # kinda imp. to wrap <script> within some <div>
-      j = obj.find('script')[0]
-      label = $(j).parent()
-      MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
-    else
-      label.text json.name
+    hasTex = renderTextAndEqnsOn label, json.name, json.id
+    if hasTex 
+      children = obj.children()
+      label = children.filter('.tex') 
 
     # Tag
     tag = children.filter(".subtext")
@@ -82,7 +95,7 @@ window.line = {
       $(m).remove() for m in icons
 
     # Buttons 
-    btns = children.filter(".btn")
+    btns = children.filter("div[class~='btn']")
     hiddenChkBox = children.filter("input[type='checkbox']")
 
     if buttons?
