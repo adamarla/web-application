@@ -23,6 +23,7 @@
     = render partial: 'menus/user/account'
     = render partial: 'menus/user/notifications'
     = render partial: 'toolbox/fdb-panel'
+    = render partial: 'toolbox/video'
     - if tc.online
       = render partial: 'menus/teacher/courses'
 
@@ -80,6 +81,7 @@
 %html{html_attrs}
   %head 
     = javascript_include_tag "application", "teachers"
+    %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
     %script{ :type => "text/x-mathjax-config" } 
       MathJax.Hub.Config({
       "HTML-CSS" : {
@@ -88,9 +90,11 @@
       styles : {
       ".mrow > .mtext" : {
       "font-family" : "Ubuntu 'Trebuchet MS' sans-serif",
-      "font-weight" : 400,
-      "font-size" : "14px",
-      "text-transform" : "lowercase"
+      "font-weight" : 300,
+      "font-size" : "100%"
+      },
+      ".mo, .mn" : {
+      "font-size" : "70%" 
       }
       }
       });

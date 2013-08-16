@@ -41,7 +41,7 @@ class CourseController < ApplicationController
       available = show_lessons ? course.available_lessons : course.available_quizzes
 
       if show_lessons
-        response = available.map{ |m| { id: m.id, name: m.name, badge: (m.history ? 'H' : 'L'), klass: :video } }
+        response = available.map{ |m| { id: m.id, name: m.name, description: m.description, klass: 'video lesson', video: m.video.sublime_uid } }
       else
         response = available.map{ |m| { id: m.id, name: m.name, badge: m.total? } }
       end

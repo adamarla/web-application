@@ -18,8 +18,28 @@ renderTextAndEqnsOn = (obj, text, marker) ->
 ###
 
 window.line = {
+  writeVideo : (here, json) ->
+    obj = $('#toolbox').children('.video').eq(0).clone()
+
+    # Easiest things first 
+    obj.attr 'marker', json.id
+    obj.addClass(json.klass) if json.klass?
+    
+    p = obj.find('p')
+    renderTextAndEqnsOn p.first(), json.name, "vt-#{json.id}"
+
+    if json.description?
+      renderTextAndEqnsOn p.last(), json.description, "vd-#{json.id}"
+    else
+      p.last().remove()
+
+    obj[0].setAttribute('data-video', json.video) if json.video?
+    obj.appendTo here
+    return true
+
   write : (here, json, menu, buttons = null) ->
     return false if not json.id? or not json.name?
+    here = if typeof here is 'string' then $(here) else here
 
     ###
       Fields in the JSON that change from one .single-line to the next
@@ -36,7 +56,7 @@ window.line = {
     ###
 
     isVideo = if json.klass? then json.klass.match(/video/)? else false
-
+    return line.writeVideo(here,json) if isVideo
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
     remaining = 12
@@ -129,7 +149,6 @@ window.line = {
     label.addClass("span#{remaining}") if remaining > 0
 
     # Done !!!
-    here = if typeof here is 'string' then $(here) else here
     obj.appendTo here
     return true
 }
@@ -148,10 +167,11 @@ window.lines = {
 
     nColumns = columns.length
     perColumn = if nColumns > 0 then ((json.length / nColumns ) + 1) else json.length
+    perColumn = parseInt perColumn
 
     currIndex = 0
     currColumn = if nColumns > 0 then columns.eq(currIndex) else here
-    nAdded = 0
+    nAdded = 1
 
     for m,j in json
       if nAdded > perColumn

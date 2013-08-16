@@ -29,6 +29,11 @@ img {
   padding-bottom: 8px ;
 } 
 
+.description { 
+  font-size: 90% ;
+  padding-top: 4px ;
+}
+
 .underline {
   border-bottom: 1px solid $deep-blue ;
 }
@@ -442,6 +447,30 @@ img {
   overflow: auto ;
 }
 
+#lessons-and-quizzes {
+  min-height: 300px ;
+  padding-top: 15px ;
+}
+
+.video {
+  color: white ;
+  a { 
+    color: white ;
+    text-decoration: none ;
+  }
+
+  font-size: 12px ;
+  cursor: pointer ;
+  padding: {
+    left: 7px ;
+    top: 7px ;
+  }
+  border-radius: 3px ;
+  &.selected, &:hover {
+    background-color: $deep-blue ;
+  }
+}
+
 .single-line {
   padding: {
     top: 3px ;
@@ -450,7 +479,6 @@ img {
   min-height: 26px ;
   font-size: 11.5px ; 
   cursor: pointer ; 
-  text-transform: lowercase ; 
   border-bottom: 1px solid $lightgray ; 
 
   .caret { 
