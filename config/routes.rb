@@ -65,9 +65,7 @@ Webapp::Application.routes.draw do
   match 'vertical/topics' => 'verticals#topics', via: :get
 
   # Videos 
-  resource :video, :only => [:create]
-  match 'howtos' => 'videos#howtos'
-  match 'video/load' => 'videos#load'
+  match 'video/play' => 'videos#play'
 
   # Topic 
   resource :topic, :only => [:create, :update]
