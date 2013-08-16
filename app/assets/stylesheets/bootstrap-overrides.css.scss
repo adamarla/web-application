@@ -465,10 +465,16 @@ img {
     left: 7px ;
     top: 7px ;
   }
-  border-radius: 3px ;
-  &.selected, &:hover {
-    background-color: $deep-blue ;
+
+  &:hover, &.selected {
+    div:nth-child(2) {
+      p:nth-child(1), div:nth-child(1) {
+        border-bottom: 2px solid $deep-blue ;
+        padding-bottom: 3px ;
+      }
+    }
   }
+
 }
 
 .single-line {

@@ -39,8 +39,8 @@ jQuery ->
         sublime.unprepare video.last
         parent = $(video.last).closest('.video').eq(0)
         parent.removeClass('selected')
-        video.last = aTag
 
+      video.last = aTag
       sublime.prepare aTag, (lightbox) ->
         lightbox.open()
       return true
