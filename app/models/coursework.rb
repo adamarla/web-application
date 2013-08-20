@@ -11,4 +11,7 @@
 
 class Coursework < ActiveRecord::Base
   attr_accessible :milestone_id, :quiz_id
+
+  belongs_to :quiz
+  belongs_to :milestone
 end

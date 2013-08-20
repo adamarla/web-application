@@ -44,7 +44,7 @@ class Quiz < ActiveRecord::Base
 
   # Quiz -> Coursework -> Milestone
   has_many :coursework 
-  has_many :milestone, through: :coursework
+  has_many :milestones, through: :coursework
 
   # Validations
   validates :teacher_id, presence: true, numericality: true
