@@ -20,9 +20,6 @@ class Milestone < ActiveRecord::Base
   has_many :lectures
   has_many :lessons, through: :lectures
 
-
-  after_create :push_to_last 
-
   def self.in_course(id)
     where(course_id: id).order(:index)
   end
@@ -36,12 +33,6 @@ class Milestone < ActiveRecord::Base
     ids = Coursework.where(milestone_id: self.id).map(&:quiz_id).uniq
     return Quiz.where(id: ids)
   end
-
-  def push_to_last
-    last = Milestone.in_course(self.course_id).where{ index != -1 }.order(:index) 
-    index = last.nil? ? 1 : last.index + 1
-    self.update_attribute :index, index
-  end 
 
   def name
     return "#{self.course_id}.#{self.index}"
