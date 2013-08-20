@@ -15,6 +15,7 @@ class Course < ActiveRecord::Base
 
   belongs_to :teacher
   has_many :milestones
+  after_create :add_milestones
 
   def available_quizzes
 =begin
@@ -37,5 +38,12 @@ class Course < ActiveRecord::Base
     used = Lecture.where(milestone_id: self.milestone_ids).map(&:lesson_id)
     return Lesson.where(id: (all - used))
   end
+
+  def add_milestones
+    for i in [*1..3]
+      m = self.milestones.create index: i
+    end
+  end
+
 
 end
