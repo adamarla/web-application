@@ -12,4 +12,7 @@
 
 class Lecture < ActiveRecord::Base
   attr_accessible :index, :lesson_id, :milestone_id
+
+  belongs_to :lesson
+  belongs_to :milestone
 end
