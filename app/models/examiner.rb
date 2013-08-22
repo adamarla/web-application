@@ -151,7 +151,12 @@ class Examiner < ActiveRecord::Base
         on_page = in_ws.on_page(pg)
         student_ids = on_page.map(&:student_id).uniq
 
-        multi_part = num_questions > 1 ? false : (Question.find(questions.first).subparts.count > 1)
+        if num_questions == 0
+          multi_part = true
+        else
+          multi_part = num_questions > 1 ? false : (Question.find(questions.first).subparts.count > 1)
+        end
+                     
         if multi_part 
           n_students = student_ids.count 
         else
