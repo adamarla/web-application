@@ -101,8 +101,14 @@ window.trigger = {
     tab = link.getAttribute('data-autoclick-tab')
     karo.tab.enable tab if tab?
 
+    # If <a data-show-video> then
+    showVideo = link.getAttribute 'data-show-video'
+
+    if showVideo is 'true'
+      obj = $(link).closest('.video')[0]
+      video.play obj if obj?
+
     # If <a> is within a dropdown-menu, then close the dropdown menu
-    # d = $(link).closest('.dropdown-menu')
     menu.close $(link)
 
     # (YAML) Issue any AJAX requests
@@ -358,7 +364,7 @@ jQuery ->
   # When an item in a dropdown menu is selected 
   ###############################################
 
-  $(".g-panel:not([id='control-panel']), .content, .tab-pane, #toolbox").on 'click', '.dropdown-menu > li > a', (event) ->
+  $(".g-panel:not([id='control-panel']), #toolbox").on 'click', '.dropdown-menu > li > a', (event) ->
     return trigger.click this, event
 
   $('#control-panel ul.nav').on 'click', 'li > a', (event) ->
@@ -418,7 +424,7 @@ jQuery ->
   # When a single line is clicked  
   ###############################################
 
-  $('.content, .tab-pane, .column, .modal').on 'click', '.single-line', (event) ->
+  $('.content, .tab-pane, .column, .modal').on 'click', '.single-line, .video', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
        .single-line hasnt been selected first 
@@ -442,19 +448,30 @@ jQuery ->
       ###
       
       clickedObj = if clickedObj.is('i') then clickedObj.parent() else clickedObj
+      checkBox = clickedObj.children("input[type='checkbox']")[0] 
+
       if clickedObj.hasClass('active')
         clickedObj.removeClass 'active'
-        clickedObj.children("input[type='checkbox']").eq(0).prop 'checked', false
+        $(checkBox).prop('checked', false) if checkBox?
       else
         clickedObj.addClass 'active'
-        clickedObj.children("input[type='checkbox']").eq(0).prop 'checked', true
+        $(checkBox).prop('checked', true) if checkBox?
       return false
+    else if clickedObj.is 'li > a' # menu-item in contextual menu
+      event.stopImmediatePropagation()
+      return trigger.click event.target 
 
     if m? # => if clicked to see dropdown menu
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle')[0] else return false
     else # elsewhere on the single-line => select / de-select
-      event.stopPropagation()
+      # .video w/ menu => teacher console for attaching or detaching videos to/from courses. 
+      # In this case, do not auto-play videos on click
+      if $(this).hasClass 'video'
+        hasMenu = $(this).children('.dropdown')[0]?
+        return true unless hasMenu
+
+      event.stopPropagation() 
 
       parent = $(this).parent()
       multiOk = if hasButton then false else parent.hasClass('multi-select') # parent = .content / .tab-pane / form
@@ -492,9 +509,10 @@ jQuery ->
 
         # 3. Issue AJAX request - if defined and set on containing panel
         tab = karo.tab.find this
-        tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
-        ajax = karo.url.elaborate this, null, tab
-        karo.ajaxCall ajax if ajax?
+        if tab?
+          tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
+          ajax = karo.url.elaborate this, null, tab
+          karo.ajaxCall ajax if ajax?
 
         # 4. Switch to next-tab - if so specified
         if activeTab?
