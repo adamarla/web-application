@@ -18,24 +18,6 @@ renderTextAndEqnsOn = (obj, text, marker) ->
 ###
 
 window.line = {
-  writeVideo : (here, json) ->
-    obj = $('#toolbox').children('.video').eq(0).clone()
-
-    # Easiest things first 
-    obj.attr 'marker', json.id
-    obj.addClass(json.klass) if json.klass?
-    
-    p = obj.find('p')
-    renderTextAndEqnsOn p.first(), json.name, "vt-#{json.id}"
-
-    if json.description?
-      renderTextAndEqnsOn p.last(), json.description, "vd-#{json.id}"
-    else
-      p.last().remove()
-
-    obj[0].setAttribute('data-video', json.video) if json.video?
-    obj.appendTo here
-    return true
 
   write : (here, json, menu, buttons = null) ->
     return false if not json.id? or not json.name?
@@ -56,7 +38,6 @@ window.line = {
     ###
 
     isVideo = if json.klass? then json.klass.match(/video/)? else false
-    return line.writeVideo(here,json) if isVideo
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
     remaining = 12
@@ -89,15 +70,21 @@ window.line = {
     if menu?
       m.setAttribute 'data-show-menu', menu
       $(m).addClass 'span1'
-      children.filter(".badge").eq(0).remove() unless json.badge? # no badge if menu and badge.empty?
+
+      unless isVideo
+        children.filter(".badge").eq(0).remove() unless json.badge? # no badge if menu and badge.empty?
       remaining -= 1
     else
       $(m).parent().remove()
 
     # Badge
     badge = children.filter(".badge")
-    if json.badge?
-      badge.text json.badge
+    if json.badge? || isVideo
+      if isVideo
+        $("<i class='icon-facetime-video'></i>").appendTo badge
+        obj.attr 'data-video', json.video
+      else
+        badge.text json.badge
       badge.addClass 'span2'
       remaining -= 2
 
@@ -171,7 +158,7 @@ window.lines = {
 
     currIndex = 0
     currColumn = if nColumns > 0 then columns.eq(currIndex) else here
-    nAdded = 1
+    nAdded = 0
 
     for m,j in json
       if nAdded > perColumn

@@ -10,6 +10,7 @@
 #      modal : 
 #      menu :
 #      help : 
+#      video : true / false 
 #    autoclick : 
 #      tab : 
 #      link :
@@ -356,6 +357,14 @@ lnk-inbox-download :
 lnk-enroll-self : 
   show : 
     modal : m-enroll-self
+
+lnk-attach-asset : 
+  show : 
+    modal : mng-assets
+
+lnk-play-video :
+  show : 
+    video : true
 
 ##############################################################################
 ## Admin Only 

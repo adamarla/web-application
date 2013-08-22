@@ -20,8 +20,6 @@
   -# Buttons 
   .btn.btn-mini{ data: { toggle: :tooltip, placement: :top, title: 'Select' } }
     %i.icon-white.icon-plus-sign
-    %input.hide{ :type => :checkbox, :value => :true, :name => :checked }
+    %input.hide{ type: :checkbox, value: :true, name: :checked }
 
-  .btn.btn-mini{ data: { toggle: :tooltip, placement: :top, title: 'Attach to Course' } }
-    %i.icon-white.icon-resize-small
-  = check_box_tag :tbd, :t, false, :class => :hide
+  = check_box_tag :tbd, :t, false, class: :hide 

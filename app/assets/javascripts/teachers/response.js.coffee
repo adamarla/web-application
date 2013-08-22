@@ -178,7 +178,7 @@ jQuery ->
     else if url.match(/milestone\/load/) || url.match(/available\/assets/)
       target = $('#lessons-and-quizzes')
       key = 'assets'
-      buttons = json.buttons
+      menu = 'per-asset'
     else
       matched = false
 

@@ -452,31 +452,6 @@ img {
   padding-top: 15px ;
 }
 
-.video {
-  color: white ;
-  a { 
-    color: white ;
-    text-decoration: none ;
-  }
-
-  font-size: 12px ;
-  cursor: pointer ;
-  padding: {
-    left: 7px ;
-    top: 7px ;
-  }
-
-  &:hover, &.selected {
-    div:nth-child(2) {
-      p:nth-child(1), div:nth-child(1) {
-        border-bottom: 2px solid $deep-blue ;
-        padding-bottom: 3px ;
-      }
-    }
-  }
-
-}
-
 .single-line {
   padding: {
     top: 3px ;

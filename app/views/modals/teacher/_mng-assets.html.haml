@@ -1,0 +1,9 @@
+
+#mng-assets.modal.fade.regular.row-fluid{ role: :dialog }
+  .span3
+  .span8
+    = simple_form_for :course, remote: true, defaults: { label: false } do |f|
+      = f.input :operation, collection: [:attach, :detach], hint: 'Attach or detach?'
+      = f.input :id, collection: current_account.loggable.courses, hint: 'To / from Course?'
+      = f.input :milestone, collection: [*1..3], hint: '... in milestone?' 
+      = simple_button for: 'Done', type: :submit, class: 'btn-primary'

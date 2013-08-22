@@ -22,7 +22,12 @@ class CourseController < ApplicationController
     unless course.nil? 
       milestone = Milestone.where(course_id: course.id).where(index: params[:index]).first
       unless milestone.nil?
-        lessons = milestone.lessons.map{ |m| { id: m.id, name: m.name, badge: (m.history ? 'H' : 'L'), klass: :video } }
+        lessons = milestone.lessons.map{ |m| { 
+          id: m.id, 
+          name: m.name, 
+          klass: 'video lesson', 
+          video: m.video.sublime_uid } }
+
         quizzes = milestone.quizzes.map{ |m| { id: m.id, name: m.name, badge: m.total? } }
       else
         lessons = quizzes = []
@@ -41,13 +46,31 @@ class CourseController < ApplicationController
       available = show_lessons ? course.available_lessons : course.available_quizzes
 
       if show_lessons
-        response = available.map{ |m| { id: m.id, name: m.name, description: m.description, klass: 'video lesson', video: m.video.sublime_uid } }
+        response = available.map{ |m| { 
+          id: m.id, 
+          name: m.name, 
+          klass: 'video lesson', 
+          video: m.video.sublime_uid } }
       else
         response = available.map{ |m| { id: m.id, name: m.name, badge: m.total? } }
       end
-      render json: { assets: response, buttons: 'icon-resize-small' }, status: :ok
+      render json: { assets: response }, status: :ok
     else
       render json: { status: 'failed' }, status: :ok
+    end
+  end
+
+  def attach_detach_asset
+    is_lesson = params[:type] == "Lesson"
+    id = params[:id].to_i
+    course = Course.find params[:course][:id]
+    attach = params[:course][:operation] == "attach"
+
+    unless course.nil?
+      success = attach ? course.attach(id, is_lesson, params[:course][:milestone]) : course.detach(id, is_lesson) 
+      render json: { status: (success ? :success : :failed) }, status: :ok
+    else
+      render json: { status: :failed }, status: :ok
     end
   end
 
