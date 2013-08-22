@@ -179,6 +179,8 @@ jQuery ->
       target = $('#lessons-and-quizzes')
       key = 'assets'
       menu = 'per-asset'
+    else if url.match(/attach_detach_asset/)
+      $('#mng-assets').modal 'hide'
     else
       matched = false
 
