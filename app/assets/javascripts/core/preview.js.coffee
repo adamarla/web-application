@@ -64,6 +64,7 @@ jQuery ->
         when 'vault' then base = "#{server}/vault"
         when 'atm' then base = "#{server}/atm"
         when 'locker' then base = "#{server}/locker"
+        when 'scantray' then base = "#{server}/scantray"
         else base = null
 
       return false if base is null
@@ -130,6 +131,9 @@ jQuery ->
               alt = "#{root}"
             when 'locker'
               full = if root isnt 'nothing' then "#{base}/#{root}/#{page}" else "#{base}/#{page}" # backward compatibility
+              alt = "pg-#{j+1}"
+            when 'scantray'
+              full = "#{base}/#{page}"
               alt = "pg-#{j+1}"
             else break
 
