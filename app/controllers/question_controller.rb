@@ -141,4 +141,8 @@ class QuestionController < ApplicationController
     end
   end 
 
+  def without_video
+    @questions = Question.author(current_account.loggable_id).tagged.order(:topic_id).without_video
+  end
+
 end # of class

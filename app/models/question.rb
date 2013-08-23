@@ -95,6 +95,14 @@ class Question < ActiveRecord::Base
     where('topic_id IS NULL')
   end
 
+  def self.without_video
+    select{ |m| m.video.nil? }
+  end
+
+  def self.with_video
+    select{ |m| !m.video.nil? }
+  end
+
   def self.needs_graphing_calculator
     where(:calculation_aid => 2)
   end

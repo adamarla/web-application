@@ -478,6 +478,18 @@ lnk-wb-audit :
   autoclick : 
     tab : tab-audit-review
 
+lnk-wb-add-videos :
+  show : 
+    left : left-8
+    wide : wide-X
+  autoclick : 
+    tab : tab-video-pending
+
+tab-video-pending : 
+  url : 
+    self : questions/without_video
+    panel : question/preview.json?id=:id
+
 lnk-audit-form : 
   show : 
     modal : m-audit-form

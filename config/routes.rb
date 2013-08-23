@@ -79,6 +79,7 @@ Webapp::Application.routes.draw do
   match 'question/preview' => 'question#preview', via: :get
   match 'like' => 'question#like', via: :get
   match 'audit/done' => 'question#audit', via: :post
+  match 'questions/without_video' => 'question#without_video', via: :get
 
   # Quiz
   resource :quiz, :only => [:show]

@@ -61,6 +61,10 @@ jQuery ->
       clickFirst = true
       key = 'audit'
       karo.empty target
+    else if url.match(/questions\/without_video/)
+      target = $('#pane-video-pending')
+      key = 'unwatchable'
+      clickFirst = true
     else
       matched = false
 
