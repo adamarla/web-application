@@ -1,4 +1,5 @@
 class QuestionController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!, :except => [:insert_new]
   respond_to :json
 
@@ -142,7 +143,13 @@ class QuestionController < ApplicationController
   end 
 
   def without_video
-    @questions = Question.author(current_account.loggable_id).tagged.order(:topic_id).without_video
+    tagged = Question.author(current_account.loggable_id).tagged
+    ids = tagged.map(&:id) - tagged.with_video.map(&:id) 
+    @questions = Question.where(id: ids).order(:topic_id)
+    n = @questions.count
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @per_pg, @last_pg = pagination_layout_details n
+    @questions = @questions.page(pg).per(@per_pg)
   end
 
 end # of class

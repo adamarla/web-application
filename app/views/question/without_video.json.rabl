@@ -7,3 +7,5 @@ object false
         tag: "#{m.topic.vertical.name}" }
     }
   } 
+
+  node(:last_pg) { @last_pg }

@@ -65,6 +65,7 @@ jQuery ->
       target = $('#pane-video-pending')
       key = 'unwatchable'
       clickFirst = true
+      karo.empty target
     else
       matched = false
 
