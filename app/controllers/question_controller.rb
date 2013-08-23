@@ -152,4 +152,16 @@ class QuestionController < ApplicationController
     @questions = @questions.page(pg).per(@per_pg)
   end
 
+  def add_video
+    uid = params[:upload][:uid]
+    question = Question.find params[:id]
+
+    unless question.nil?
+      question.create_video sublime_uid: uid, active: true
+      render json: { status: :great }, status: :ok
+    else
+      render json: { status: :failed }, status: :ok
+    end
+  end
+
 end # of class

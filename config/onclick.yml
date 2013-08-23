@@ -511,6 +511,10 @@ tab-resolution-pending :
 lnk-rotate-sg :
   update-on : suggestion/preview 
 
+btn-upload-video-solution : 
+  show : 
+    modal : m-upload-video-solution
+
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################

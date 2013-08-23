@@ -80,6 +80,7 @@ Webapp::Application.routes.draw do
   match 'like' => 'question#like', via: :get
   match 'audit/done' => 'question#audit', via: :post
   match 'questions/without_video' => 'question#without_video', via: :get
+  match 'question/add_video' => 'question#add_video', via: :post
 
   # Quiz
   resource :quiz, :only => [:show]
