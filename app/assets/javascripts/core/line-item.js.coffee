@@ -60,8 +60,8 @@ window.line = {
     tag = children.filter(".subtext")
     if json.tag?
       tag.text json.tag
-      tag.addClass 'span2'
-      remaining -= 2
+      tag.addClass 'span3'
+      remaining -= 3
     else
       tag.remove()
 
@@ -132,7 +132,7 @@ window.line = {
     watch.remove() unless json.timer?
 
     # Whatever span remains, give to 'label'
-    remaining = if remaining > 9 then 9 else remaining
+    remaining = if remaining > 8 then 8 else remaining
     label.addClass("span#{remaining}") if remaining > 0
 
     # Done !!!
