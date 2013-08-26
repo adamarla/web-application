@@ -49,7 +49,7 @@ class CourseController < ApplicationController
         response = available.map{ |m| { 
           id: m.id, 
           name: m.name, 
-          klass: 'video lesson', 
+          klass: 'lesson', 
           video: m.video.sublime_uid } }
       else
         response = available.map{ |m| { id: m.id, name: m.name, badge: m.total? } }

@@ -424,7 +424,7 @@ jQuery ->
   # When a single line is clicked  
   ###############################################
 
-  $('.content, .tab-pane, .column, .modal').on 'click', '.single-line, .video', (event) ->
+  $('.content, .tab-pane, .column, .modal').on 'click', '.single-line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
        .single-line hasnt been selected first 
@@ -446,7 +446,6 @@ jQuery ->
           61: event.target different on Chrome
           65: limited nesting within <button> allowed by IE
       ###
-      
       clickedObj = if clickedObj.is('i') then clickedObj.parent() else clickedObj
       checkBox = clickedObj.children("input[type='checkbox']")[0] 
 
@@ -456,7 +455,8 @@ jQuery ->
       else
         clickedObj.addClass 'active'
         $(checkBox).prop('checked', true) if checkBox?
-      return false
+
+      return clickedObj.hasClass 'video'
     else if clickedObj.is 'li > a' # menu-item in contextual menu
       event.stopImmediatePropagation()
       return trigger.click event.target 
@@ -465,12 +465,6 @@ jQuery ->
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle')[0] else return false
     else # elsewhere on the single-line => select / de-select
-      # .video w/ menu => teacher console for attaching or detaching videos to/from courses. 
-      # In this case, do not auto-play videos on click
-      if $(this).hasClass 'video'
-        hasMenu = $(this).children('.dropdown')[0]?
-        return true unless hasMenu
-
       event.stopPropagation() 
 
       parent = $(this).parent()

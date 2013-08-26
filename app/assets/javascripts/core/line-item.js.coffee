@@ -37,7 +37,7 @@ window.line = {
         - menu (optional) 
     ###
 
-    isVideo = if json.klass? then json.klass.match(/video/)? else false
+    isVideo = json.video?
 
     obj = $('#toolbox').children('.single-line').eq(0).clone()
     remaining = 12
@@ -82,7 +82,8 @@ window.line = {
     if json.badge? || isVideo
       if isVideo
         $("<i class='icon-facetime-video'></i>").appendTo badge
-        obj.attr 'data-video', json.video
+        badge.addClass 'video'
+        badge.attr 'data-video', json.video
       else
         badge.text json.badge
       badge.addClass 'span2'
