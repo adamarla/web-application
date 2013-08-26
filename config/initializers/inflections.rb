@@ -9,4 +9,5 @@
 #   inflect.uncountable %w( fish sheep )
    inflect.irregular 'syllabus', 'syllabi'
    inflect.irregular 'pending', 'pending'
+   inflect.irregular 'coursework', 'coursework'
  end

@@ -1,4 +1,5 @@
 class QuestionController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!, :except => [:insert_new]
   respond_to :json
 
@@ -140,5 +141,27 @@ class QuestionController < ApplicationController
       render :json => { :msg => "Question not found" }, :status => :ok
     end
   end 
+
+  def without_video
+    tagged = Question.author(current_account.loggable_id).tagged
+    ids = tagged.map(&:id) - tagged.with_video.map(&:id) 
+    @questions = Question.where(id: ids).order(:topic_id)
+    n = @questions.count
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @per_pg, @last_pg = pagination_layout_details n
+    @questions = @questions.page(pg).per(@per_pg)
+  end
+
+  def add_video
+    uid = params[:upload][:uid]
+    question = Question.find params[:id]
+
+    unless question.nil?
+      question.create_video sublime_uid: uid, active: true
+      render json: { status: :great }, status: :ok
+    else
+      render json: { status: :failed }, status: :ok
+    end
+  end
 
 end # of class

@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: coursework
+#
+#  id           :integer         not null, primary key
+#  milestone_id :integer
+#  quiz_id      :integer
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  milestone_id: 1
+  quiz_id: 1
+
+two:
+  milestone_id: 1
+  quiz_id: 1

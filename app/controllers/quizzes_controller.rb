@@ -29,14 +29,12 @@ class QuizzesController < ApplicationController
         ws.update_attribute :job_id, job.id
 
         estimate = minutes_to_completion job.id
-        render :json => { :monitor => { :worksheet => ws.id }, 
-                          :notify => { :title => "#{estimate} minute(s)" }},
-                          :status => :ok
+        render json: { monitor: { worksheet: ws.id }, notify: {title: "#{estimate} minute(s)" }}, status: :ok
       else
-        render :json => { :monitor => { :worksheet => nil } }, :status => :ok
+        render json: { monitor: {worksheet: nil } }, status: :ok
       end
     else # no valid quiz specified. Should never happen 
-      render :json => { :monitor => { :worksheet => nil } }, :status => :ok
+      render json: { monitor: { worksheet: nil } }, status: :ok
     end
   end
 

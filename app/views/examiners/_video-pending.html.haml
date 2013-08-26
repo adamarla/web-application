@@ -1,0 +1,9 @@
+
+%ul.nav.nav-tabs
+  %li
+    = simple_link for: 'Questions w/o Videos', href: '#pane-video-pending', id: 'tab-video-pending'
+
+.tab-content
+  .row-fluid
+    = simple_link for: 'Upload', icon: 'icon-upload', class: 'btn pull-right btn-inverse', id: 'btn-upload-video-solution'
+  #pane-video-pending.tab-pane

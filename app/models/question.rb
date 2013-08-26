@@ -56,6 +56,8 @@ class Question < ActiveRecord::Base
   has_many :graded_responses
   has_many :subparts, :dependent => :destroy
 
+  has_one :video, as: :watchable
+
   
   def self.author(id)
     where(:examiner_id => id)
@@ -91,6 +93,14 @@ class Question < ActiveRecord::Base
 
   def self.untagged
     where('topic_id IS NULL')
+  end
+
+  def self.without_video
+    select{ |m| m.video.nil? }
+  end
+
+  def self.with_video
+    select{ |m| !m.video.nil? }
   end
 
   def self.needs_graphing_calculator
@@ -202,6 +212,15 @@ class Question < ActiveRecord::Base
 
   def fav(teacher)
     return teacher.favourites.map(&:question_id).include? self.id
+  end
+
+  def set_filter_classes(teacher)
+    # Called when list of questions is rendered for a teacher. 
+    # Returns the classes to be set on the .single-line. 
+    # These classes are used to filter questions 
+    klass = self.fav(teacher) ? "fav" : ""
+    klass += (self.video.nil? ? "" : " video")
+    return klass
   end
 
   def edit_tex_layout(length, marks)

@@ -977,36 +977,6 @@ span.unhappyMessage {
   } 
 }
 
-#video-titles {
-  width: 30% ;
-  color: white ;
-
-  > #video-links {
-    margin-top: 30px ;
-    > a {
-      text: {
-        decoration: none ;
-        transform: lowercase ;
-      }
-      color: white ; 
-      font-size: 14px ;
-      width: 95% ;
-      float: right ;
-      padding: 4px 3px 4px 3px ;
-      border-radius: 8px ;
-      background-color: $gradians-blue ;
-      margin-bottom: 16px ;
-      text-align: center ;
-    }
-  }
-}
-
-#embedded-video {
-  width: 65% ;
-  min-height: 700px ;
-  margin-top: -50px ;
-}
-
 #preview-navigation {
   min-height: 50px ;
   width: 90% ;

@@ -1,36 +1,37 @@
 
 - is_teacher = current_account.loggable_type == "Teacher"
-- html = is_teacher ? {} : { :data => { :id => 'tab-audit-review', :action => "#{audit_done_path}?id=:id&gr=0" } }
+- html = is_teacher ? {} : { data: { id: 'tab-audit-review', action: "#{audit_done_path}?id=:id&gr=0" } }
 
 #m-audit-form.modal.fade.wide
   .row-fluid
     .span2
       = image_tag 'notifications/microscope.png', :class => 'big-icon'
     .span9
-      = simple_form_for :audit, :remote => true, 
-        :defaults => { :label => false, :required => false }, :html => html do |f|
+      = simple_form_for :audit, remote: true, defaults: { label: false, required: false }, html: html do |f|
         .row-fluid
           .span6
             - unless is_teacher 
               %p.heading= "Gating Issues"
-            = f.input :gating, :as => :check_boxes,
-              :collection => ['Incorrect solution', 
+            = f.input :gating, as: :check_boxes, 
+              collection: ['Incorrect solution', 
               'Solution hard to follow',
               'Rubric missing', 
               'Explanatory diagram a must',
-              'Question text imprecise'] 
+              'Question text imprecise',
+              'Video solution missing',
+              'Video solution not for this question'] 
           .span6
             - unless is_teacher
               %p.heading= "Non-gating Issues"
-            = f.input :non_gating, :as => :check_boxes, 
-              :collection => ['Incorrect spellings', 
+            = f.input :non_gating, as: :check_boxes, 
+              collection: ['Incorrect spellings', 
               'Verbose question',
               'Verbose solution',
               'Has alternate solutions', 
               'Add explanatory diagram', 
               'Should have multiple versions']
         .row-fluid
-          = f.input :comments, :as => :text, :input_html => { :rows => 5, :cols => 60, :class => 'span11' }, :labels => false
-          %button.btn.btn-primary.btn-large.pull-left{ :type => :submit }= "Submit"
+          = f.input :comments, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, labels: false
+          %button.btn.btn-primary.btn-large.pull-left{ type: :submit }= "Submit"
           - unless is_teacher
-            %button.btn.btn-inverse.btn-large.pull-right{ :type => :submit, :id => 'btn-audit-allok'}= "All Good"
+            %button.btn.btn-inverse.btn-large.pull-right{ type: :submit, id: 'btn-audit-allok' }= "All Good"

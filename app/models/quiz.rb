@@ -38,13 +38,17 @@ include GeneralQueries
 class Quiz < ActiveRecord::Base
   belongs_to :teacher 
 
-  has_many :q_selections, :dependent => :destroy
-  has_many :questions, :through => :q_selections
+  has_many :q_selections, dependent: :destroy
+  has_many :questions, through: :q_selections
+  has_many :testpapers, dependent: :destroy
 
-  has_many :testpapers, :dependent => :destroy
+  # Quiz -> Coursework -> Milestone
+  has_many :coursework 
+  has_many :milestones, through: :coursework
 
-  validates :teacher_id, :presence => true, :numericality => true
-  validates :name, :presence => true
+  # Validations
+  validates :teacher_id, presence: true, numericality: true
+  validates :name, presence: true
   
   #before_validation :set_name, :if => :new_record?
   after_create :lay_it_out
