@@ -214,6 +214,15 @@ class Question < ActiveRecord::Base
     return teacher.favourites.map(&:question_id).include? self.id
   end
 
+  def set_filter_classes(teacher)
+    # Called when list of questions is rendered for a teacher. 
+    # Returns the classes to be set on the .single-line. 
+    # These classes are used to filter questions 
+    klass = self.fav(teacher) ? "fav" : ""
+    klass += (self.video.nil? ? "" : " video")
+    return klass
+  end
+
   def edit_tex_layout(length, marks)
     if resize_subparts_list_to length.count
       breaks = page_breaks length
