@@ -497,6 +497,7 @@ tab-audit-review :
 
 tab-audit-close : 
   url : 
+    self : audit/close
     panel : question/preview.json?id=:id
 
 tab-resolution-pending :
