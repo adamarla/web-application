@@ -55,6 +55,7 @@ Webapp::Application.routes.draw do
   match 'update_scan_id' => 'examiners#update_scan_id', via: :get
   match 'update_scan_id' => 'examiners#update_scan_id', via: :post
   match 'audit/pending' => 'examiners#audit', via: :get
+  match 'audit/close' => 'examiners#audit_closure_required', via: :get
 
   # School 
   resource :school, :only => [:show, :create, :update]
