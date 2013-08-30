@@ -73,6 +73,7 @@ jQuery ->
       karo.empty target
     else if url.match(/question\/add_video/)
       $('#m-upload-video-solution').modal 'hide'
+      target = $('#pane-video-pending')
     else
       matched = false
 
