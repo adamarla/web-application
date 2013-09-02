@@ -12,6 +12,14 @@ window.video = {
       return v
   }
 
+  unload : (obj) ->
+    # Removes any previously added <a> and <video> nodes within $(obj). 
+    # Needed when the same trigger is shared amongst many videos
+
+    return false unless $(obj).hasClass 'video'
+    $(obj).empty()
+    return true
+
   play : (obj) ->
     return false unless $(obj).hasClass 'video'
     uid = obj.getAttribute 'data-video'
