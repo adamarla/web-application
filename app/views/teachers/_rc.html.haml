@@ -15,7 +15,9 @@
   #pane-tc-rc-2.tab-pane.scroll
   #pane-tc-rc-3.tab-pane
     .row-fluid.navbar.purge-skip
-      = content_tag :button, "Show Solution", { :class => 'btn btn-primary btn-large pull-right', 
-                                                :data => { :ws => 'tab-tc-rc-1', :id => 'tab-tc-rc-2', :toggle => :button },
-                                                :id => 'btn-show-solution'}
+      .btn-group.pull-right
+        = simple_button for: 'Read Solution', 
+          id: 'btn-show-solution', toggle: :button
+        = simple_button for: 'View Solution', icon: 'icon-facetime-video', 
+          id: 'btn-video-solution', class: 'video btn-inverse'
 
