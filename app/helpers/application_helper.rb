@@ -115,8 +115,7 @@ module ApplicationHelper
       rel = title = placement = nil
     end
 
-    content_tag :button, :class => "btn #{klass}", :type => type, :id => id, 
-      :rel => rel, :title => title, :data => options do 
+    content_tag :button, class: "btn #{klass}", type: type, id: id, rel: rel, title: title, data: options do 
       render = label.blank? ? "" : label 
       render += (icon.blank? ? "" : content_tag(:i, nil, :class => "icon-white #{icon}") )
       unless as.blank?
