@@ -55,6 +55,20 @@ jQuery ->
       if json.split?
         active = target.parent().prev().children('li.active').eq(0)
         active.children('a.split').eq(0).text json.split
+
+      # Set data-* attributes on the 'Read' and 'See' solution buttons
+      b = target.closest('.tab-pane').find('.navbar').eq(0).find('button')
+
+      btnVideo = b.filter("[id='btn-video-solution']")[0]
+      btnSee = b.filter("[id='btn-show-solution']")[0]
+      btnSee.setAttribute("data-#{m}", json[m]) for m in ['id','ws']
+
+      if json.video?
+        $(btnVideo).removeClass 'disabled'
+        btnVideo.setAttribute 'data-video', json.video
+      else
+        $(btnVideo).addClass 'disabled'
+
       return true
     else
       matched = false

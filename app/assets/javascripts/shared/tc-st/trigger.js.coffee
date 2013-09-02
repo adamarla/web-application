@@ -29,14 +29,10 @@ jQuery ->
   
   $('#btn-show-solution').click (event) ->
     already = $(this).hasClass 'active'
-    #ws = $("##{this.dataset.ws}")
-    ws = $("##{this.getAttribute('data-ws')}")
-    wsId = ws.attr('marker') || ws.parent().attr('marker')
+    wsId = this.getAttribute 'data-ws'
 
     if already
-      # student = $("##{this.dataset.id}")
-      student = $("##{this.getAttribute('data-id')}")
-      id = student.attr('marker') || student.parent().attr('marker')
+      id = this.getAttribute 'data-id'
       $(this).text "See Solution"
       karo.empty $(this).parent().next()
       $.get "ws/layout.json?ws=#{wsId}&id=#{id}"
