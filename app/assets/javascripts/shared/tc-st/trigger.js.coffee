@@ -34,7 +34,7 @@ jQuery ->
     if already
       id = this.getAttribute 'data-id'
       $(this).text "See Solution"
-      karo.empty $(this).parent().next()
+      karo.empty $(this).closest('.navbar').next()
       $.get "ws/layout.json?ws=#{wsId}&id=#{id}"
     else
       $(this).text "Back to Scans"
