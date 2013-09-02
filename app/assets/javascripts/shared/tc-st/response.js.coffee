@@ -66,6 +66,7 @@ jQuery ->
       if json.video?
         $(btnVideo).removeClass 'disabled'
         btnVideo.setAttribute 'data-video', json.video
+        video.unload btnVideo
       else
         $(btnVideo).addClass 'disabled'
 

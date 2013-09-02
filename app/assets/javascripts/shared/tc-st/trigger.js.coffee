@@ -39,9 +39,12 @@ jQuery ->
     else
       $(this).text "Back to Scans"
       $.get "ws/preview.json?id=#{wsId}"
-
     return true
 
+  $('#btn-video-solution').click (event) ->
+    event.stopImmediatePropagation()
+    video.play this
+    return true
 
   ###
     Three buttons used for uploading
