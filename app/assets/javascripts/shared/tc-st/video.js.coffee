@@ -17,7 +17,7 @@ window.video = {
     # Needed when the same trigger is shared amongst many videos
 
     return false unless $(obj).hasClass 'video'
-    $(obj).empty()
+    $(m).remove() for m in $(obj).children('.sublime, video')
     return true
 
   play : (obj) ->
