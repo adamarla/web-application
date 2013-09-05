@@ -514,6 +514,7 @@ btn-upload-video-solution :
 
 lnk-download-pg-1 : 
   update-on: question/preview
+  ajax : disabled
   
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
