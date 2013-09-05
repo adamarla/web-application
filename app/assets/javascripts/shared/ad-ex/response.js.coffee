@@ -71,6 +71,7 @@ jQuery ->
       key = 'unwatchable'
       clickFirst = true
       karo.empty target
+      menu = 'download-pg-1'
     else if url.match(/question\/add_video/)
       $('#m-upload-video-solution').modal 'hide'
       target = $('#pane-video-pending')

@@ -512,6 +512,9 @@ btn-upload-video-solution :
   show : 
     modal : m-upload-video-solution
 
+lnk-download-pg-1 : 
+  update-on: question/preview
+  
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################
