@@ -22,10 +22,11 @@
             :tooltip => "Select All", :placement => :right
         .btn-group
           = simple_link :for => "Make PDF", :icon => 'icon-cog', :id => 'lnk-build-ws', :class => 'btn btn-inverse'
+
         .hide.ws-option
-          = f.input :ws_type, :input_html => { :name => :ws_type }
-          = f.input :deadline, :input_html => { :name => :deadline }
-          = f.input :duration, :input_html => { :name => :duration }
+          = f.input :ws_type, input_html: { name: :ws_type }
+          = f.input :deadline, input_html: { name: :deadline } 
+          = f.input :duration, input_html: { name: :duration } 
 
       #wsb-sektions.tab-pane.multi-select
 
