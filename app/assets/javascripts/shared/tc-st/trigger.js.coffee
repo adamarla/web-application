@@ -30,6 +30,7 @@ jQuery ->
   $('#btn-show-solution').click (event) ->
     already = $(this).hasClass 'active'
     wsId = this.getAttribute 'data-ws'
+    student = this.getAttribute 'data-id'
 
     if already
       id = this.getAttribute 'data-id'
@@ -38,7 +39,7 @@ jQuery ->
       $.get "ws/layout.json?ws=#{wsId}&id=#{id}"
     else
       $(this).text "Back to Scans"
-      $.get "ws/preview.json?id=#{wsId}"
+      $.get "ws/preview.json?id=#{wsId}&student=#{student}"
     return true
 
   $('#btn-video-solution').click (event) ->
