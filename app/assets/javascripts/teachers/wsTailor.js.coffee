@@ -7,6 +7,9 @@ window.wsTailor = {
     unless root?
       wsTailor.root = $('#m-ws-options')
       wsTailor.target = $('#form-wsb-3').find('.ws-option').eq(0)
+
+    # Disable the 'Make PDF' button initially
+    wsTailor.root.find('button').prop 'disabled', true
     return true
 
   rewind : () ->
@@ -56,21 +59,32 @@ jQuery ->
 
   $('#m-ws-options').on 'click', '.ws-option', (event) ->
     event.stopImmediatePropagation()
-    wsTailor.show $(this)
+    # wsTailor.show $(this)
 
     id = $(this).attr 'id'
     target = wsTailor.target.find("input[name]")
     $(m).val(null) for m in target # clear them all out
 
     type = target.filter("[name='ws_type']")
+    isClicked = $(this).hasClass 'selected'
+    btn = $(this).parent().find 'button'
 
     switch id
       when 'as-homework'
-        type.val 'homework'
+        x = if isClicked then null else 'homework'
       when 'as-takehome'
-        type.val 'takehome'
+        x = if isClicked then null else 'takehome'
       when 'as-classwork'
-        type.val 'classwork'
+        x = if isClicked then null else 'classwork'
+
+    type.val x
+    if isClicked
+      $(this).removeClass 'selected'
+      btn.prop 'disabled', true
+    else
+      $(this).addClass 'selected'
+      $(m).removeClass('selected') for m in $(this).siblings()
+      btn.prop 'disabled', false
 
     return true
 
@@ -79,7 +93,7 @@ jQuery ->
     wsTailor.rewind()
     return true
 
-  $('#m-ws-options').on 'click', 'a.submit', (event) ->
+  $('#m-ws-options').on 'click', 'a.submit, button', (event) ->
     event.stopImmediatePropagation()
     wsTailor.root.modal 'hide'
     form = wsTailor.target.closest('form')

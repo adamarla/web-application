@@ -30,7 +30,8 @@ jQuery ->
       event.stopPropagation()
       notifier.show 'n-wsb-no-selection'
     else
-      wsTailor.rewind()
+      # wsTailor.rewind()
+      wsTailor.initialize()
 
     return someChecked
 
