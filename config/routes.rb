@@ -137,6 +137,10 @@ Webapp::Application.routes.draw do
   resource :suggestion, :only => [:create]
   match 'suggestion/block_db_slots' => 'suggestions#block_db_slots', :via => :get
   match 'suggestion/preview' => 'suggestions#preview', :via => :get
+
+  # Token
+  resources :tokens, :only => [:create, :destroy]
+  match 'tokens/verify' => 'tokens#verify', :via => :get
   
   root :to => "welcome#index"
 

@@ -40,6 +40,12 @@ class Mailbot < ActionMailer::Base
     mail :subject => "User Query", :body => question, :to => "help@gradians.com", :reply_to => account.email
   end
 
+  def quiz_assigned(testpaper, student)
+    @student = student
+    @quiz = testpaper.quiz
+    mail :subject => "Quiz #{@quiz.name}", :to => @student.account.real_email
+  end
+
   def registration_debug(city, state, zip, country)
     @city = city 
     @state = state

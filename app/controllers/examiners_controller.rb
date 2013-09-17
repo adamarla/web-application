@@ -120,18 +120,24 @@ class ExaminersController < ApplicationController
 
   def update_scan_id
     status = "not ok"
-    tokens = params[:id].split("/")
-    parent_folder = tokens.first
-    qr_code = tokens.last
 
-    ws_id = decrypt qr_code[0..6]
-    rel_index = decrypt qr_code[7..9]
-    page = qr_code[10].to_i(36)
-    student_id = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort[rel_index]
-    graded_resp = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page).each do |gr|
+    path = params[:path]
+    qr_code = params[:id]
+    graded_resp = []
+
+    if params[:type] == "worksheet"
+      ws_id = decrypt qr_code[0..6]
+      rel_index = decrypt qr_code[7..9]
+      page = qr_code[10].to_i(36)
+      student_id = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort[rel_index]
+      graded_resp = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page)
+    else
+      graded_resp  << GradedResponse.find_by_id(qr_code.to_i)
+    end
+
+    graded_resp.each do |gr|
       if gr[:scan].nil?
-        puts "updating"
-        gr.update_attribute :scan,"#{parent_folder}/#{qr_code}" 
+        gr.update_attribute :scan, path
         status = "ok"
       else
         status = "not ok"

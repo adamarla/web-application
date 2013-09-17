@@ -25,6 +25,7 @@
 #  postal_code            :string(10)
 #  latitude               :float
 #  longitude              :float
+#  authentication_token   :string(255)
 #
 
 require 'test_helper'
