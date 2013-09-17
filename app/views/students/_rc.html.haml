@@ -9,7 +9,8 @@
   #pane-st-rc-1.tab-pane
   #pane-st-rc-2.tab-pane
     .row-fluid.navbar.purge-skip
-      = content_tag :button, "Show Solution", { :class => 'btn btn-primary btn-large pull-right', 
-                                                :data => { :ws => 'tab-st-rc-1', :id => 'control-panel', :toggle => :button },
-                                                :id => 'btn-show-solution'}
-
+      .btn-group.pull-right
+        = simple_button for: 'Read Solution', 
+          id: 'btn-show-solution', toggle: :button
+        = simple_button for: 'View Solution', icon: 'icon-facetime-video', 
+          id: 'btn-video-solution', class: 'video btn-inverse'

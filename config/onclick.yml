@@ -10,6 +10,7 @@
 #      modal : 
 #      menu :
 #      help : 
+#      video : true / false 
 #    autoclick : 
 #      tab : 
 #      link :
@@ -26,6 +27,18 @@
 ##############################################################################
 ## Teachers 
 ##############################################################################
+
+lnk-courses : 
+  show :
+    menu : m-courses
+
+new-course :
+  show : 
+    modal : m-new-course
+
+new-lesson : 
+  show : 
+    modal : m-new-lesson
 
 lnk-edit-account :
   show : 
@@ -51,6 +64,18 @@ tab-editqz-1 :
     self : quiz/questions.json?id=:prev
     panel : question/preview?id=:id
   prev : tab-wsb-quizzes
+
+tab-online-courses : 
+  show : 
+    wide : wide-5
+  url :
+    self : course/all
+
+tab-milestone-* : 
+  prev : tab-online-courses
+
+tab-available-* :
+  prev : tab-online-courses
 
 tab-wsb-quizzes :
   url : 
@@ -333,6 +358,10 @@ lnk-enroll-self :
   show : 
     modal : m-enroll-self
 
+lnk-attach-asset : 
+  show : 
+    modal : mng-assets
+
 ##############################################################################
 ## Admin Only 
 ##############################################################################
@@ -445,6 +474,18 @@ lnk-wb-audit :
   autoclick : 
     tab : tab-audit-review
 
+lnk-wb-add-videos :
+  show : 
+    left : left-8
+    wide : wide-X
+  autoclick : 
+    tab : tab-video-pending
+
+tab-video-pending : 
+  url : 
+    self : questions/without_video
+    panel : question/preview.json?id=:id
+
 lnk-audit-form : 
   show : 
     modal : m-audit-form
@@ -456,6 +497,7 @@ tab-audit-review :
 
 tab-audit-close : 
   url : 
+    self : audit/close
     panel : question/preview.json?id=:id
 
 tab-resolution-pending :
@@ -466,6 +508,14 @@ tab-resolution-pending :
 lnk-rotate-sg :
   update-on : suggestion/preview 
 
+btn-upload-video-solution : 
+  show : 
+    modal : m-upload-video-solution
+
+lnk-download-pg-1 : 
+  update-on: question/preview
+  ajax : disabled
+  
 ##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################

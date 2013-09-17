@@ -3,9 +3,10 @@ object false
   node(:questions) {
     @questions.map{ |m|
       {
-        :name => m.simple_uid,
-        :id => m.id,
-        :klass => m.fav(current_account.loggable)?"fav":""
+        name: m.simple_uid,
+        id: m.id,
+        klass: m.set_filter_classes(current_account.loggable),
+        video: (m.video.nil? ? nil : m.video.sublime_uid)
       }
     }
   }

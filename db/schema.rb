@@ -63,6 +63,21 @@ ActiveRecord::Schema.define(:version => 20130828100144) do
     t.string "alpha_2_code"
   end
 
+  create_table "courses", :force => true do |t|
+    t.string   "name",       :limit => 50
+    t.integer  "teacher_id"
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
+    t.decimal  "price",                    :precision => 5, :scale => 2
+  end
+
+  create_table "coursework", :force => true do |t|
+    t.integer  "milestone_id"
+    t.integer  "quiz_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -136,6 +151,37 @@ ActiveRecord::Schema.define(:version => 20130828100144) do
     t.boolean  "is_mother"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "lectures", :force => true do |t|
+    t.integer  "lesson_id"
+    t.integer  "milestone_id"
+    t.integer  "index",        :default => -1
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  create_table "lessons", :force => true do |t|
+    t.string   "name",        :limit => 70
+    t.text     "description"
+    t.boolean  "history",                   :default => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.integer  "teacher_id"
+  end
+
+  create_table "milestones", :force => true do |t|
+    t.integer  "index",      :default => -1
+    t.integer  "course_id"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  create_table "progressions", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "milestone_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "q_selections", :force => true do |t|
@@ -264,6 +310,7 @@ ActiveRecord::Schema.define(:version => 20130828100144) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
+    t.boolean  "online",                   :default => false
   end
 
   create_table "testpapers", :force => true do |t|
@@ -292,14 +339,13 @@ ActiveRecord::Schema.define(:version => 20130828100144) do
   end
 
   create_table "videos", :force => true do |t|
-    t.text     "url"
-    t.boolean  "restricted",                  :default => true
-    t.boolean  "instructional",               :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title",         :limit => 70
-    t.boolean  "active",                      :default => false
-    t.integer  "index",                       :default => -1
+    t.boolean  "active",                       :default => false
+    t.integer  "watchable_id"
+    t.string   "watchable_type", :limit => 20
+    t.string   "sublime_uid",    :limit => 20
+    t.string   "sublime_title",  :limit => 70
   end
 
 end

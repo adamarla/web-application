@@ -1,0 +1,9 @@
+
+#m-upload-video-solution.modal.fade.regular.row-fluid{ role: :dialog }
+  .span3
+    = image_tag 'quick-trial/upload.png', class: 'big-icon'
+  .span8
+    = simple_form_for :upload, remote: true, defaults: { label: false }, 
+      html: { data: { id: 'tab-video-pending', action: 'question/add_video?id=:id' } } do |f|
+      = f.input :uid, hint: 'SublimeVideo ID'
+      = simple_button for: 'Submit', type: :submit, class: 'btn-primary'

@@ -2,18 +2,25 @@
 #
 # Table name: videos
 #
-#  id            :integer         not null, primary key
-#  url           :text
-#  restricted    :boolean         default(TRUE)
-#  instructional :boolean         default(FALSE)
-#  created_at    :datetime
-#  updated_at    :datetime
-#  title         :string(70)
-#  active        :boolean         default(FALSE)
-#  index         :integer         default(-1)
+#  id             :integer         not null, primary key
+#  created_at     :datetime
+#  updated_at     :datetime
+#  active         :boolean         default(FALSE)
+#  watchable_id   :integer
+#  watchable_type :string(20)
+#  sublime_uid    :string(20)
+#  sublime_title  :string(70)
 #
 
 class Video < ActiveRecord::Base
-  validates :title, :presence => true
-  validates :url, :presence => true
+  validates :sublime_uid, presence: true
+  validates :sublime_uid, uniqueness: true
+
+  belongs_to :watchable, polymorphic: true
+
+  def self.active
+    where active: true
+  end
+
 end
+

@@ -1,0 +1,5 @@
+
+%ul.dropdown-menu.dropdown-inverse.slim{ id: 'download-pg-1', role: :menu }
+  %li
+    = simple_link for: 'Download JPEG', id: 'lnk-download-pg-1',
+      url: { self: "#{Gutenberg['server']}/vault/:b/page-1.jpeg" }

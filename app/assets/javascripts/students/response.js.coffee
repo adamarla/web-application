@@ -51,20 +51,8 @@ jQuery ->
     ## Common actions in response to JSON
     ############################################################
 
-    if target? and target.length isnt 0
-      writeData = if key? then true else false
-
-      # Render the returned JSON - in columns if so desired
-      lines.columnify target, json[key], menu, buttons if writeData
-
-      # Enable / disable paginator as needed 
-      if json.last_pg?
-        pagination.enable pgn, json.last_pg
-        # pagination.url.set pgn, pgnUrl
-
-      # Auto-click first line - if needed
-      target.children('.single-line').eq(0).click() if clickFirst
-      
+    # Render lines in the panel
+    lines.render target, key, json, menu, buttons, clickFirst, pgn, pgnUrl
 
     e.stopPropagation() if matched is true
     return true

@@ -10,3 +10,8 @@ object false
   node(:caption) { @question.simple_uid }
   node(:context) { @context }
   node(:a) { @question.id }
+  node(:b) { @question.uid }
+
+  node(:video, unless: lambda{ |m| @question.video.nil? }) do |m| 
+    @question.video.sublime_uid
+  end

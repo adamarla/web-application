@@ -72,9 +72,18 @@ class Student < ActiveRecord::Base
     # Returns the worksheets that should be shown in a student's outbox
     # Any student worksheet - with scans - but not yet graded ( at all ) 
     # should be in the outbox
-    assigned = self.testpapers.map(&:id) 
-    g = GradedResponse.in_testpaper(assigned).of_student(self.id)
 
+    a = AnswerSheet.where(student_id: self.id).where(graded: false)
+    # The above will include worksheets that have either: 
+    #    1. been partially graded
+    #    2. or, have no scans 
+    # Filter both of these out before returning
+
+    a = a.select{ |m| m.graded?(:none) } # --> (1) --> only those not graded at all
+    ws_ids = a.map(&:testpaper_id)
+    without_scans = GradedResponse.in_testpaper(ws_ids).of_student(self.id).without_scan.map(&:testpaper_id).uniq
+    ungraded_with_scans = ws_ids - without_scans
+    return Testpaper.where(id: ungraded_with_scans)
   end
 
   def pending

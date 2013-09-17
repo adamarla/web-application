@@ -1,18 +1,27 @@
 -# Variable teacher comes from the layout file 
 
-%ul.nav.nav-tabs
+- online_instructor = current_account.loggable.online
+
+%ul.nav.nav-tabs{ :data => {'always-on' => "#{online_instructor}" } } 
   %li
     = simple_link :for => "Quizzes", :href => '#pane-wsb-quizzes', :id => 'tab-wsb-quizzes'
-  %li
-    = simple_link :for => "Worksheets", :href => '#pane-wsb-existing', :id => 'tab-wsb-existing'
-  %li
-    = simple_link :for => "Make New", :href => '#pane-wsb-sektions', :id => 'tab-wsb-sektions', 
-      :class => 'nopurge-ever'
+  - unless online_instructor
+    %li
+      = simple_link :for => "Worksheets", :href => '#pane-wsb-existing', :id => 'tab-wsb-existing'
+    %li
+      = simple_link :for => "Make New", :href => '#pane-wsb-sektions', :id => 'tab-wsb-sektions', 
+        :class => 'nopurge-ever'
+  - if online_instructor
+    %li
+      = simple_link :for => "Courses", :href => "#pane-online-courses", :id => 'tab-online-courses'
 
 .tab-content
   #pane-wsb-quizzes.tab-pane.scroll
-  #pane-wsb-existing.tab-pane.scroll
-  #pane-wsb-sektions.tab-pane.scroll
-    = render :partial => 'teachers/wsb-sektions', :locals => { :teacher => teacher }
+  - unless online_instructor
+    #pane-wsb-existing.tab-pane.scroll
+    #pane-wsb-sektions.tab-pane.scroll
+      = render :partial => 'teachers/wsb-sektions', :locals => { :teacher => teacher }
+  - if online_instructor
+    #pane-online-courses.tab-pane.scroll
 
     

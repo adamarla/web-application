@@ -170,50 +170,22 @@ jQuery ->
         cb.prop 'checked', true
         cb.attr 'value', cb.siblings('.text').eq(0).text()
       return true
+    else if url.match(/course\/new/)
+      $('#m-add-course').modal 'hide'
+    else if url.match(/course\/all/)
+      target = $('#pane-online-courses')
+      key = 'courses'
+    else if url.match(/milestone\/load/) || url.match(/available\/assets/)
+      target = $('#lessons-and-quizzes')
+      key = 'assets'
+      menu = 'per-asset'
+    else if url.match(/attach_detach_asset/)
+      $('#mng-assets').modal 'hide'
     else
       matched = false
 
-    if target? and target.length isnt 0
-      writeData = if key? then true else false
-
-      # Enable / disable paginator as needed 
-      if json.last_pg?
-        pagination.enable pgn, json.last_pg
-
-        ###
-          this next bit of code is done only for teachers and in a very specific 
-          contexts - picking questions to add to a quiz - either when its 
-          first being built or when its being edited subsequently
-
-          the issue is that we would like pagination with multi-select. 
-          with pagination, we can break a long list down into manageable chunks
-          But multi-select requires that we retain any previously loaded data 
-          and selections
-        ###
-        if target.hasClass 'pagination'
-          if json.pg?
-            page = target.children("div[page='#{json.pg}']")
-            $("<div page=#{json.pg} class='multi-select purge-skip'></div>").appendTo target if page.length is 0
-            target = target.children("div[page='#{json.pg}']").eq(0)
-            $(m).addClass 'hide' for m in target.siblings()
-            target.removeClass 'hide'
-            writeData = target.children().length is 0
-
-      # Render the returned JSON - in columns if so desired
-      if writeData
-        lines.columnify target, json[key], menu, buttons
-        sieve.through target
-
-      # Disable / hide any .single-line whose marker is in json.[disabled, hide]
-      for m in ['disabled', 'hide']
-        continue unless json[m]
-        j = target.find('.single-line')
-        for k in json[m]
-          l = j.filter("[marker=#{k}]")[0]
-          $(l).addClass(m) if l?
-
-      # Auto-click first line - if needed
-      target.children('.single-line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst
+    # Render lines in the panel
+    lines.render target, key, json, menu, buttons, clickFirst, pgn, pgnUrl
 
     # If in tutorial mode, then start the next tutorial - if any
     tutorial.start lesson if lesson?

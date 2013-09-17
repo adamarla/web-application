@@ -22,7 +22,17 @@ class TestpapersController < ApplicationController
   end
 
   def preview # the answer-key actually
-    ws = Testpaper.find params[:id].to_i
+    @ws_id = params[:id].to_i
+
+    if params[:student].blank?
+      @relative_index = nil
+    else
+      sid = params[:student].to_i
+      student_ids = AnswerSheet.where(testpaper_id: @ws_id).map(&:student_id).sort
+      @relative_index = student_ids.index sid
+    end
+
+    ws = Testpaper.find @ws_id 
     @quiz = ws.nil? ? nil : Quiz.where(:id => ws.quiz_id).first
   end 
 

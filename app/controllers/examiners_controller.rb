@@ -155,4 +155,8 @@ class ExaminersController < ApplicationController
     @questions = @questions.order(:updated_at).page(pg).per(@per_pg)
   end
 
+  def audit_closure_required 
+    @questions = Question.where(examiner_id: current_account.loggable_id).where(available: false)
+  end 
+
 end

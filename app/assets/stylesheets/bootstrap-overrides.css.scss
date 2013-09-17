@@ -21,6 +21,27 @@ img {
   } 
 }
 
+.title { 
+  font: {
+    size: 18px ;
+    weight: 500 ;
+  }
+  padding-bottom: 8px ;
+} 
+
+.description { 
+  font-size: 90% ;
+  padding-top: 4px ;
+}
+
+.underline {
+  border-bottom: 1px solid $deep-blue ;
+}
+
+.light { 
+  font-weight: 300 ;
+} 
+
 #badge {
   margin-top: 90px ;
   img { z-index: 900 ; }
@@ -299,16 +320,7 @@ img {
   h5 { font-size: 14px ; }
   h6 { font-size: 12px ; }
 
-  .title { 
-    font: {
-      size: 18px ;
-      weight: 500 ;
-    }
-    padding-bottom: 8px ;
-    border-bottom: 1px solid $deep-blue ;
-  } 
-
-  p {
+  p:not([class~='title']) {
     font-size: 12px ;
   }
 
@@ -435,6 +447,11 @@ img {
   overflow: auto ;
 }
 
+#lessons-and-quizzes {
+  min-height: 300px ;
+  padding-top: 15px ;
+}
+
 .single-line {
   padding: {
     top: 3px ;
@@ -443,7 +460,6 @@ img {
   min-height: 26px ;
   font-size: 11.5px ; 
   cursor: pointer ; 
-  text-transform: lowercase ; 
   border-bottom: 1px solid $lightgray ; 
 
   .caret { 
@@ -1260,12 +1276,31 @@ li.split {
 } 
 
 #m-ws-options {
+  button {
+    margin-top: 7px ;
+  }
+
   #as-homework, #as-takehome, #as-classwork {
-    padding: 5px 10px ;
+    padding: { 
+      top: 10px ; 
+    } 
     border-radius: 5px ;
+    img { 
+      padding: 3px ;
+    } 
     &:hover {
       cursor: pointer ;
       background-color: $panel-colour ;
+    }
+    &.selected {
+      img { 
+        border: {
+          radius: 4px ;
+          color: $deep-blue ;
+          style: solid ;
+          width: 2px ;
+        }
+      }
     }
   } 
 

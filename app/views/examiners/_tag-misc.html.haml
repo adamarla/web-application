@@ -23,9 +23,8 @@
       .row-fluid.subpart-tagging
         .span1.offset1.label= "##{k}"
         .span5
-          = f.input :length, :input_html => { :name => "subpart[#{k}][length]" },
-            :collection => {:mcq => 1, 'a few lines' => 4, 'half a page' => 2, 'full page' => 3 },
-            :selected => 2
+          = f.input :length, input_html: { name: "subpart[#{k}][length]" },
+            collection: { mcq: 1, short: 4, half: 2, full: 3 }, selected: 2
         .span3
           = f.input :marks, :input_html => { :name => "subpart[#{k}][marks]" }, 
                     :collection => [*1..6], :selected => 3

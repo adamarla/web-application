@@ -194,4 +194,18 @@ class TeachersController < ApplicationController
     end
   end
 
+  def add_lesson
+    teacher = current_account.loggable
+    data = params[:lesson]
+
+    lesson = teacher.lessons.build(name: data[:name], description: data[:description], history: (data[:type] == "h") )
+    lesson.build_video(sublime_title: data[:name], sublime_uid: data[:uid], active: true)
+
+    if lesson.save
+      render json: { status: 'success' }, status: :ok
+    else
+      render json: { status: 'failed' }, status: :ok
+    end
+  end
+
 end # of class

@@ -120,7 +120,9 @@ jQuery ->
           switch source
             when 'mint'
               suffix = "preview" unless suffix?
-              if root.indexOf("-") isnt -1
+              if root.indexOf("/") isnt -1 # root = a/b/c etc. 
+                full = "#{base}/#{root}/page-#{page}.jpeg"
+              else if root.indexOf("-") isnt -1
                 full = "#{base}/#{root}/#{suffix}/page-#{page}.jpeg"
               else
                 full = "#{base}/quiz/#{root}/preview/page-#{page}.jpeg"

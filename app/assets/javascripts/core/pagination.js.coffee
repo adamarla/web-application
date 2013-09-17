@@ -11,8 +11,11 @@ window.pagination = {
     return true
 
   enable : (pgs, m) ->
-    return false if not pgs.hasClass 'pagination'
+    return false unless pgs.hasClass 'pagination'
+    
     m = if typeof m is 'string' then parseInt(m) else m
+    pgs.removeClass 'hide' if m > 1
+
     ul = pgs.children('ul').eq(0)
     li = ul.children 'li'
     nli = li.length
@@ -22,9 +25,8 @@ window.pagination = {
     return true
 
   disable : (pgs) ->
-    return false if not pgs.hasClass 'pagination'
-    for m in pgs.find('li')
-      $(m).addClass 'disabled'
+    return false unless pgs.hasClass 'pagination'
+    pgs.addClass 'hide'
     return true
   
   url : {

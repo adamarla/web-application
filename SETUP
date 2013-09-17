@@ -1,0 +1,86 @@
+
+The instructions below are for setting up a fresh PC for development.
+There are many moving parts in our system. So, take it slow
+
+Things to install
+------------------
+
+1. Install Ubuntu using installation CD
+2. Install Git from Ubuntu App Store 
+3. sudo apt-get install postgresql
+4. (optional) sudo apt-get install pgadmin3 (GUI for psql)
+5. sudo apt-get install curl (always useful, sometimes required)
+6. \curl -L https://get.rvm.io | bash -s stable --ruby=1.9.3 ( Get RVM and Ruby version >= 1.9.3 )
+
+7. sudo apt-get install libxslt1-dev ( needed for compiling nokogiri gem )
+8. sudo apt-get install libpq-dev ( for installing pg gem )
+
+Create the following aliases ( strictly in ~/.bash_aliases)
+-----------------------------------------------------------
+  alias production_server="heroku run rails console --app drona"
+  alias printing_press=
+  alias backup_remote_db="heroku pgbackups:capture --expire --app drona"
+
+Create SSH keys 
+---------------
+1. ssh-keygen -t rsa 
+   Press Enter for passphrase 
+
+Setting up Git ( needs to be done once only )
+-----------------------------------------------
+1. git config --global user.name "<Your full name>"
+2. git config --global user.email "<Your fill e-mail>"
+3. git config --global credential.helper 'cache --timeout=3600'  
+
+Set up RVM ( to be done once ) 
+-------------------------------
+1. Add the following to your .bashrc 
+    . ~/.rvm/scripts/rvm
+    (in a new terminal): type rvm | head -1 should show 'rvm is a function'
+2. (new terminal) rvm use 1.9.3 --default ( will set Ruby-1.9.3 as default )
+
+Install Gems and Heroku toolbelt
+---------------------------------
+1. cd < local web-application folder > 
+2. gem install bundler --pre 
+3. bundle ( installs gems specified in Gemfile.lock )
+
+TBD for only those developers with permission to access Heroku
+---------------------------------------------------------------
+4. wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh (capital O - not zero. Needs sudo access)
+5. heroku login 
+
+Set up the database 
+-------------------
+Ref: https://help.ubuntu.com/community/PostgreSQL
+
+1. (Change user 'postgres' password)
+   sudo -u postgres psql postgres
+   \password postgres
+   Ctrl + D to exit prompt
+
+2. Create a database ( called gradians ). This is an empty database with no schema
+   sudo -u postgres createdb gradians
+
+3. (Recommended): Create another super-user. Leave user postgres alone for other purposes 
+   sudo -u postgres createuser --superuser dilbert
+   sudo -u postgres psql 
+   \password dilbert ( provide a new password. 'dilbert' and the new password will go in database.yml )
+
+4. Restart DB server 
+   sudo /etc/init.d/postgresql restart
+
+Install TeX
+-----------
+1. Copy the .iso file to your local machine 
+2. sudo mount -t iso9660 -o ro,loop,noauto < path-to-iso > /mnt
+3. cd /mnt 
+4. sudo ./install-tl
+5. (optional) Press C to customize installation
+  5a. Deselect Chinese/Korean/Japanese (biggie)
+  5b. Deselect Humanities
+  5c. Deselect Games 
+  5d. Deselect Cyrillic, Greek, Other European languages etc. 
+6. Press I in the main menu to begin installation 
+7. On completion, edit .bashrc as suggested by TeX installer ( it will let you know what paths to add )
+

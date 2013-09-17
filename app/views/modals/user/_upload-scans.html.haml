@@ -6,13 +6,13 @@
       .span2
         = image_tag 'quick-trial/upload.png', :class => 'big-icon offset1'
       .span9
-        %h2= "What would you like to upload?"
-        .btn.btn-inverse.btn-large.upload{:id => 'btn-upload-scans'}
+        %p.title= "What would you like to upload?"
+        .btn.btn-inverse.btn-large.upload.pull-left{:id => 'btn-upload-scans'}
           Scans for Grading
           .small-text.orange= "PDF preferred. JPEG allowed"
           .progress.hide
             .bar
-        .btn.btn-inverse.btn-large.upload.offset1{:id => 'btn-upload-sg'}
+        .btn.btn-inverse.btn-large.upload.pull-right{:id => 'btn-upload-sg'}
           Questions
           .small-text.orange= "Word document, PDF, JPEG, Text file"
           .progress.hide

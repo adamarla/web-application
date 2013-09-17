@@ -41,6 +41,13 @@ window.karo = {
       if id is child then $(m).removeClass('hide') else $(m).addClass('hide')
     return true
 
+  match : (node, klass) ->
+    # Checks for passed 'klass' as class, attr or data-* attribute on the passed node
+    return true if $(node).hasClass klass
+    return true if $(node).attr(klass) is 'true'
+    return true if node.getAttribute("data-#{klass}") is 'true'
+    return false
+
   checkWhether : (node, klass) ->
     # 'node' could be anything but is generally expected to be ul > li > a in a .nav-tabs. 
     # If either it or the grand-parent <ul> has class = klass, then return true
@@ -48,18 +55,19 @@ window.karo = {
     # do too
 
     nopurge = false
+    matches = karo.match(node, klass)
+    return true if matches
+
     if klass.match(/nopurge/)
       nopurge = true
-      return true if ($(node).hasClass('nopurge-ever') || $(node).attr('nopurge-ever') is 'true')
+      return true if karo.match(node, 'nopurge-ever')
 
-    if ($(node).hasClass(klass) || $(node).attr(klass) is 'true')
-      return true
-
-    ul = $(node).closest('ul.nav-tabs').eq(0)
-    return false if ul.length is 0
+    # If not on node, then check on parent <ul> - if any
+    ul = $(node).closest('ul.nav-tabs')[0]
+    return false if $(ul).length is 0
     if nopurge
-      return true if (ul.hasClass('nopurge-ever') || ul.attr('nopurge-ever') is 'true')
-    return (ul.hasClass(klass) || ul.attr(klass) is 'true')
+      return true if karo.match(ul, 'nopurge-ever')
+    return karo.match(ul, klass)
 
   tab : {
     enable : (obj) ->

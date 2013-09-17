@@ -30,7 +30,8 @@ jQuery ->
       event.stopPropagation()
       notifier.show 'n-wsb-no-selection'
     else
-      wsTailor.rewind()
+      # wsTailor.rewind()
+      wsTailor.initialize()
 
     return someChecked
 
@@ -77,6 +78,19 @@ jQuery ->
     notifier.show 'n-wsb-no-selection'
     return false
   ###
+
+  ###
+    [ course-editing ]: Set id and type of asset to be attached / detached on the to-be submitted form
+  ###
+
+  $('#mng-assets').on 'submit', 'form', (event) ->
+    root = $('#lessons-and-quizzes')
+    selected = root.find '.single-line.selected' 
+    id = selected.attr 'marker'
+    type = if selected.hasClass('video') then 'Lesson' else 'Quiz'
+    action = "attach_detach_asset?id=#{id}&type=#{type}"
+    $(this).attr 'action', action
+    return true
 
   ###
     Launch QuickTrial demo on click
