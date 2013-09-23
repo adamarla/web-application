@@ -83,7 +83,7 @@ class Testpaper < ActiveRecord::Base
     if publish
       if !response[:manifest].blank?
         students.each_with_index do |s,j|
-          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j)
+          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
         end
       end
     end
