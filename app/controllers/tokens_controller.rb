@@ -71,10 +71,11 @@ class TokensController < ApplicationController
       without_scans = GradedResponse.of_student(student[:id]).without_scan
       gradeables = without_scans.map do |gr|
         {
-          :quiz  => gr.testpaper.quiz.name,
-          :id    => gr.testpaper.quiz.id,
-          :scan  => get_scan_id(gr),
-          :name  => gr.subpart.name_if_in?(gr.testpaper.quiz)
+          :id     => gr.id,
+          :quiz   => gr.testpaper.quiz.name,
+          :quizId => gr.testpaper.quiz.id,
+          :scan   => get_scan_id(gr),
+          :name   => gr.subpart.name_if_in?(gr.testpaper.quiz)
         }
       end 
       return {
