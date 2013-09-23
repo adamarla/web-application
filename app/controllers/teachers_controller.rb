@@ -182,7 +182,7 @@ class TeachersController < ApplicationController
       # and assign the just made quiz to him / her 
       ws = clone.assign_to [random_student]
       unless ws.nil?
-        job = Delayed::Job.enqueue CompileTestpaper.new(ws)
+        job = Delayed::Job.enqueue CompileTestpaper.new(ws, false)
         ws.update_attribute :job_id, job.id
         estimate = minutes_to_completion job.id
         render :json => { :monitor => { :quiz => clone.id, :worksheet => ws.id }, 

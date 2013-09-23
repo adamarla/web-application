@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130815091824) do
+ActiveRecord::Schema.define(:version => 20130828100144) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -36,8 +36,10 @@ ActiveRecord::Schema.define(:version => 20130815091824) do
     t.string   "postal_code",            :limit => 10
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "authentication_token"
   end
 
+  add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
 
@@ -64,8 +66,8 @@ ActiveRecord::Schema.define(:version => 20130815091824) do
   create_table "courses", :force => true do |t|
     t.string   "name",       :limit => 50
     t.integer  "teacher_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
     t.decimal  "price",                    :precision => 5, :scale => 2
   end
 
@@ -171,8 +173,8 @@ ActiveRecord::Schema.define(:version => 20130815091824) do
   create_table "milestones", :force => true do |t|
     t.integer  "index",      :default => -1
     t.integer  "course_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "progressions", :force => true do |t|

@@ -7,7 +7,7 @@ class QuizzesController < ApplicationController
     quiz = Quiz.find params[:id]
 
     unless quiz.nil?
-      publish = params[:ws_type] != 'classroom'
+      publish = !(params[:ws_type] == 'classwork')
       teacher = quiz.teacher 
       students = Student.where(:id => params[:checked].keys)
 =begin

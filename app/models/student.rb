@@ -86,6 +86,12 @@ class Student < ActiveRecord::Base
     return Testpaper.where(id: ungraded_with_scans)
   end
 
+  def pending
+    # Any student worksheet - without scans
+    assigned = self.testpapers.map(&:id) 
+    g = GradedResponse.in_testpaper(assigned).of_student(self.id).without_scan
+  end
+
   def teachers
     Teacher.joins(:sektions).where('sektions.id = ?', self.sektion_id)
   end 

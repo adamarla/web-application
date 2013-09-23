@@ -76,24 +76,24 @@ class Testpaper < ActiveRecord::Base
       soap.body = { 
         :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name, :value => encrypt(self.quiz_id, 7) },
         :instance => { :id => self.id, :name => self.name, :value => encrypt(self.id, 7) },
-        :students => names 
+        :students => names,
+        :publish  => self.takehome
       }
     end
-    return response.to_hash[:assign_quiz_response]
-  end #of method
-
-  def compile_individual_tex(student_id)
-
-    student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
-    students = Student.where(:id => student_ids).order(:id)
-
-    names = []
-    students.each_with_index do |s,j|
-      if s[:id] == student_id
-        names.push({ :id => s.id, :name => s.name, :value => encrypt(j,3) })
-        break
+    response = response.to_hash[:assign_quiz_response]
+    if self.takehome
+      if !response[:manifest].blank?
+        students.each_with_index do |s,j|
+          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
+        end
       end
     end
+    return response
+  end #of method
+
+  def process_worksheet(student, index)
+
+    names = [{ :id => student.id, :name => student.name, :value => encrypt(index,3) }]
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['prep_test']}"
     response = SavonClient.request :wsdl, :prepTest do  
@@ -102,6 +102,10 @@ class Testpaper < ActiveRecord::Base
         :instance => { :id => self.id, :name => self.name , :value => encrypt(self.id, 7) },
         :students => names 
       }
+    end
+    email = student.account.real_email
+    if !email.nil?
+      Mailbot.quiz_assigned(self, student).deliver
     end
     return response.to_hash[:prep_test_response]
   end #of method
