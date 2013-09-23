@@ -61,7 +61,7 @@ class Testpaper < ActiveRecord::Base
     return self.job_id > 0
   end
 
-  def compile_tex(publish = false)
+  def compile_tex
     student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
     students = Student.where(:id => student_ids).order(:id)
 
@@ -76,11 +76,12 @@ class Testpaper < ActiveRecord::Base
       soap.body = { 
         :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name, :value => encrypt(self.quiz_id, 7) },
         :instance => { :id => self.id, :name => self.name, :value => encrypt(self.id, 7) },
-        :students => names 
+        :students => names,
+        :publish  => self.takehome
       }
     end
     response = response.to_hash[:assign_quiz_response]
-    if publish
+    if self.takehome
       if !response[:manifest].blank?
         students.each_with_index do |s,j|
           Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
