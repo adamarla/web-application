@@ -254,5 +254,11 @@ class GradedResponse < ActiveRecord::Base
     return Teacher.where(:id => self.testpaper.quiz.teacher_id).first
   end
 
+  def scan_id
+    # QR Code for the page on which this Graded Response appears
+      ws_id = self.testpaper_id
+      student_idx = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort.index(self.student_id)
+      return encrypt(ws_id, 7) + encrypt(student_idx, 3) + self.page?.to_s(36)
+  end
 
 end
