@@ -68,13 +68,13 @@ class TokensController < ApplicationController
 
     def build_json(account)
       student = Student.find_by_id(account.loggable_id)
-      without_scans = GradedResponse.of_student(student[:id]).without_scan
+      without_scans = GradedResponse.of_student(student[:id]).without_scan.sort
       gradeables = without_scans.map do |gr|
         {
           :id     => gr.id,
           :quiz   => gr.testpaper.quiz.name,
           :quizId => gr.testpaper.quiz.id,
-          :scan   => get_scan_id(gr),
+          :scan   => gr.scan_id,
           :name   => gr.subpart.name_if_in?(gr.testpaper.quiz)
         }
       end 
@@ -84,13 +84,6 @@ class TokensController < ApplicationController
         :name  => student.first_name,
         :gradeables => gradeables
       }
-    end
-
-    def get_scan_id(graded_response)
-      ws_id = graded_response[:testpaper_id]
-      student_idx = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort.index(graded_response[:student_id])
-#      student_idx = Hash[AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort.map.with_index.to_a][graded_response[:student_id]]
-      return encrypt(ws_id, 7) + encrypt(student_idx, 3) + graded_response.page?.to_s(36)
     end
 
 end
