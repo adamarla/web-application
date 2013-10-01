@@ -81,11 +81,9 @@ class Testpaper < ActiveRecord::Base
       }
     end
     response = response.to_hash[:assign_quiz_response]
-    if self.takehome
-      if !response[:manifest].blank?
-        students.each_with_index do |s,j|
-          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
-        end
+    if !response[:manifest].blank?
+      students.each_with_index do |s,j|
+        Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
       end
     end
     return response
@@ -109,6 +107,21 @@ class Testpaper < ActiveRecord::Base
     end
     return response.to_hash[:prep_test_response]
   end #of method
+
+  #Only for legacy Testpapers, not needed going forward from Oct1, 2013
+  def compile_solution_tex
+    student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
+    students = Student.where(:id => student_ids).order(:id)
+
+    names = []
+    students.each_with_index do |s,j|
+      names.push({ :id => s.id, :name => s.name, :value => encrypt(j,3) })
+    end
+
+    students.each_with_index do |s,j|
+      Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 6
+    end
+  end
 
   def mean?
     # Returns the average for the class/group that took this testpaper
