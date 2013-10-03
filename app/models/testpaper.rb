@@ -101,9 +101,9 @@ class Testpaper < ActiveRecord::Base
         :students => names 
       }
     end
-    email = student.account.real_email
-    if !email.nil?
-      Mailbot.quiz_assigned(self, student).deliver
+    if self.takehome
+      email = student.account.real_email
+      Mailbot.quiz_assigned(self, student).deliver unless email.nil?
     end
     return response.to_hash[:prep_test_response]
   end #of method
