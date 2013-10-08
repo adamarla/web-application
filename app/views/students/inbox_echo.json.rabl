@@ -1,11 +1,12 @@
 
 object false
-  node(:a) { @student.uid }
+  node(:a) { encrypt(@ws.id,7) }
   node(:b) { @quiz.id }
   node(:c) { @ws.id }
   node(:d) { @student.id }
+  node(:e) { encrypt(@relative_index,3) }
   node(:caption) { @ws.name }
 
   node(:preview) {
-    { :id => "#{@student.uid}/#{@quiz.id}-#{@ws.id}", :scans => [*1..@quiz.span?] }
+    { :id => "ws/#{encrypt(@ws.id,7)}/student/#{encrypt(@relative_index,3)}/#{@images}", :scans => [*1..@quiz.span?] }
   } 

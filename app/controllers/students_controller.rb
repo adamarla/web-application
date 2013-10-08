@@ -102,9 +102,10 @@ class StudentsController < ApplicationController
     @ws = Testpaper.find params[:ws]
     @quiz = @ws.quiz
     @student = current_account.loggable
-    unless @ws.nil? 
-      AnswerSheet.where(:testpaper_id => @ws.id, :student_id => @student.id).first.compile_tex
-    end
+    sid = @student.id.to_i
+    student_ids = AnswerSheet.where(testpaper_id: @ws.id).map(&:student_id).sort
+    @relative_index = student_ids.index sid
+    @images = AnswerSheet.where(testpaper_id: @ws.id, student_id: @student.id).first.graded? ? "preview" : "blanks"
   end
 
   def outbox
