@@ -1,0 +1,9 @@
+
+#m-new-examiner.modal.fade.regular
+  .row-fluid
+    .span2
+    .span9
+      = simple_form_for :examiner, url: examiner_path, remote: true, defaults: { label: false } do |f|
+        = f.input :name, placeholder: 'Full Name'
+        = f.input :email, placeholder: 'user@domain.com'
+        = simple_button for: 'Add', type: :submit
