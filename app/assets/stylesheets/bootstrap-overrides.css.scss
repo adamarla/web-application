@@ -291,6 +291,10 @@ img {
     &.in {
       &.super-wide { left: 40% ; }
       &.wide { left: 50% ; }
+      border: {
+        bottom-left-radius: 26px ;
+        bottom-right-radius: 26px ;
+      }
     }
   } 
 
