@@ -456,7 +456,7 @@ img {
   padding-top: 15px ;
 }
 
-.single-line {
+.line {
   padding: {
     top: 3px ;
     bottom: 2px ;
@@ -608,7 +608,7 @@ img {
   } 
 
   > .tab-content { 
-    .single-line { 
+    .line { 
       min-height: 20px ;
     }
   }
@@ -1191,7 +1191,7 @@ li.split {
 } 
 
 #new-sk-students, #sk-confirm-identity { 
-  .single-line { 
+  .line { 
     padding: 0px ;
     > [class*='span'] { min-height: 10px ; }
     min-height: 15px ;
@@ -1200,7 +1200,7 @@ li.split {
 }
 
 #new-sk-students { 
-  .single-line { 
+  .line { 
     > .badge { display: none ; }
   }
 } 
@@ -1241,7 +1241,7 @@ li.split {
     border-bottom: 1px solid $lightgray ; 
   } 
 
-  .single-line { 
+  .line { 
     max-height: 20px ;
     min-height: 0px ;
     font-size: 11px ;

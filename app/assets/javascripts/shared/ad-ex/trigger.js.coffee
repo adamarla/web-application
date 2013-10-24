@@ -17,7 +17,7 @@ previewSg = (json) ->
 
 jQuery ->
   
-  $('#pane-vertical-topics').on 'click', '.single-line', (event) ->
+  $('#pane-vertical-topics').on 'click', '.line', (event) ->
     # pane-vertical-topics is the the .tab-pane for a left-tab that in 
     # turn is rendered within a regular, horizontal tab
 

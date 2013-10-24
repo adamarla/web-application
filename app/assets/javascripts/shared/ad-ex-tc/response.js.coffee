@@ -8,10 +8,10 @@ jQuery ->
 
     target = null # where to write the returned JSON
     key = null
-    menu = null # ID of contextual menu to attach w/ each .single-line
+    menu = null # ID of contextual menu to attach w/ each .line
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
-    clickFirst = false # whether or not to auto-click the first .single-line
+    clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
     if url.match(/ws\/pending/)
@@ -27,7 +27,7 @@ jQuery ->
       grtb.show()
     else if url.match(/audit\/done/)
       auditForm = $('#m-audit-form')
-      entries = $('#pane-audit-review').children('.single-line')
+      entries = $('#pane-audit-review').children('.line')
       current = entries.filter('.selected').eq(0)
       current.removeClass('selected').addClass('disabled')
 
