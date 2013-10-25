@@ -115,8 +115,8 @@ class ExaminersController < ApplicationController
 
     path = params[:path]
     id = params[:id]
-    graded_resp = []
 
+    graded_resp = []
     if params[:type] == "QR"
       ws_id = decrypt id[0..6]
       rel_index = decrypt id[7..9]
@@ -124,7 +124,9 @@ class ExaminersController < ApplicationController
       student_id = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort[rel_index]
       graded_resp = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page)
     else
-      graded_resp  << GradedResponse.find_by_id(id.to_i)
+      id.split('-').each do |grID|
+        graded_resp  << GradedResponse.find_by_id(grID.to_i)
+      end
     end
 
     graded_resp.each do |gr|
