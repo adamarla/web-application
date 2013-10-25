@@ -12,10 +12,10 @@ jQuery ->
 
     target = null # where to write the returned JSON
     key = null
-    menu = null # ID of contextual menu to attach w/ each .single-line
+    menu = null # ID of contextual menu to attach w/ each .line
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
-    clickFirst = false # whether or not to auto-click the first .single-line
+    clickFirst = false # whether or not to auto-click the first .line
     lesson = null
     buttons = null
 
@@ -142,7 +142,7 @@ jQuery ->
       target = $('#enrolled-students')
     else if url.match(/like/)
       pane = $('#qzb-questions').find('.tab-pane.active').eq(0)
-      question = pane.find(".single-line[marker=#{json.favourite.id}]")[0]
+      question = pane.find(".line[marker=#{json.favourite.id}]")[0]
       $(question).addClass 'fav' if question?
       notifier.show 'n-favourited'
     else if url.match(/ping\/queue/)
@@ -164,7 +164,7 @@ jQuery ->
     else if url.match(/preview\/names/)
       target = $('#new-sk-students')
       lines.columnify target, json.names
-      for m in target.find '.single-line'
+      for m in target.find '.line'
         $(m).addClass 'disabled'
         cb = $(m).children("[type='checkbox']").eq(0)
         cb.prop 'checked', true

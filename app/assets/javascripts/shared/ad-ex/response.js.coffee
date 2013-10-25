@@ -8,10 +8,10 @@ jQuery ->
 
     target = null # where to write the returned JSON
     key = null
-    menu = null # ID of contextual menu to attach w/ each .single-line
+    menu = null # ID of contextual menu to attach w/ each .line
     pgnUrl = null # base-url to be set on the paginator
     pgn = $('#left-paginator')
-    clickFirst = false # whether or not to auto-click the first .single-line
+    clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
     if url.match(/untagged\/list/)
@@ -51,7 +51,7 @@ jQuery ->
     else if url.match(/resolve/)
       form = $('#form-resolve-scans')
       $(m).val(null) for m in form.find("input[type='text']")
-      entries = form.find('.single-line')
+      entries = form.find('.line')
       last = entries.filter("[class~='selected']")[0]
       $(last).remove() if last?
       entries.eq(0).click()

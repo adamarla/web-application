@@ -11,11 +11,11 @@ getMarker = (obj) ->
 window.sieve = {
   through : (obj) ->
     # Given a hierarchy like ... <div [filter]> .... <obj>, this method would 
-    # unhide .single-lines with class=filter within <div [filter]> 
+    # unhide .lines with class=filter within <div [filter]> 
     root = obj.closest('[filter]')[0]
     return false unless root?
     klass = $(root).attr 'filter'
-    lines = $(root).find '.single-line'
+    lines = $(root).find '.line'
     $(m).removeClass('hide') for m in lines
 
     switch klass
@@ -398,7 +398,7 @@ jQuery ->
     event.stopPropagation()
     return false if $(this).hasClass 'disabled'
 
-    # close all sibling menus. Menus within .single-line handled by catch all 
+    # close all sibling menus. Menus within .line handled by catch all 
     parent = $(this).parent()
     if parent.is 'li' # => within control panel
       for m in parent.siblings('li')
@@ -424,10 +424,10 @@ jQuery ->
   # When a single line is clicked  
   ###############################################
 
-  $('.content, .tab-pane, .column, .modal').on 'click', '.single-line', (event) ->
+  $('.content, .tab-pane, .column, .modal').on 'click', '.line', (event) ->
     ###
        Yes, this method does not allow a contextual menu to open if the 
-       .single-line hasnt been selected first 
+       .line hasnt been selected first 
     ###
     return false if $(this).hasClass 'disabled'
 
@@ -464,7 +464,7 @@ jQuery ->
     if m? # => if clicked to see dropdown menu
       event.stopImmediatePropagation()
       if m.parent().hasClass('selected') then menu.show m.find('.dropdown-toggle')[0] else return false
-    else # elsewhere on the single-line => select / de-select
+    else # elsewhere on the line => select / de-select
       event.stopPropagation() 
 
       parent = $(this).parent()
@@ -473,7 +473,7 @@ jQuery ->
       activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
       
       badge = $(this).find('.badge').eq(0)
-      otherLines = $(this).siblings('.single-line')
+      otherLines = $(this).siblings('.line')
       isClicked = if reissueAjax then false else $(this).hasClass('selected') # issues 55 and 112
 
       if isClicked

@@ -7,7 +7,7 @@ jQuery ->
   # Auto-click on the 'quizzes' tab. This will initiate the $.get request to get things started
   # $('#left-1 > ul:first a:first').tab 'show'
 
-  $('#left-quizzes').on 'click', '.single-line', (event) ->
+  $('#left-quizzes').on 'click', '.line', (event) ->
     event.stopPropagation()
     marker = $(this).attr 'marker'
     $.get "quiz/preview.json?id=#{marker}"
@@ -16,7 +16,7 @@ jQuery ->
 
   $('#select-all-for-quiz').click (event) ->
     event.stopPropagation()
-    $(m).click() for m in $('#wsb-sektions').children('.single-line')
+    $(m).click() for m in $('#wsb-sektions').children('.line')
     return false
 
   #$('#build-worksheet').click (event) ->
@@ -47,7 +47,7 @@ jQuery ->
   $('#form-qzb').submit (event) ->
     root = $(this).find('#qzb-questions').eq(0)
     isBlank = sthSelected = false
-    checkBoxes = root.find ".single-line > .btn > input"
+    checkBoxes = root.find ".line > .btn > input"
 
     for m in checkBoxes
       s = $(m).prop('checked')
@@ -85,7 +85,7 @@ jQuery ->
 
   $('#mng-assets').on 'submit', 'form', (event) ->
     root = $('#lessons-and-quizzes')
-    selected = root.find '.single-line.selected' 
+    selected = root.find '.line.selected' 
     id = selected.attr 'marker'
     type = if selected.hasClass('video') then 'Lesson' else 'Quiz'
     action = "attach_detach_asset?id=#{id}&type=#{type}"

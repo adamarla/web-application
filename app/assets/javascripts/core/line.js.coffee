@@ -24,7 +24,7 @@ window.line = {
     here = if typeof here is 'string' then $(here) else here
 
     ###
-      Fields in the JSON that change from one .single-line to the next
+      Fields in the JSON that change from one .line to the next
         - name (mandatory): set as 'text' 
         - id (mandatory): set as 'marker'
         - tag (optional): written extreme right, in orange 
@@ -32,14 +32,14 @@ window.line = {
         - klass (optional)
         - icons (optional)
 
-      Common to all .single-lines rendered from the same JSON 
+      Common to all .lines rendered from the same JSON 
         - buttons (optional) 
         - menu (optional) 
     ###
 
     isVideo = json.video?
 
-    obj = $('#toolbox').children('.single-line').eq(0).clone()
+    obj = $('#toolbox').children('.line').eq(0).clone()
     remaining = 12
 
     # 1. Do the easiest first 
@@ -205,16 +205,16 @@ window.lines = {
       lines.columnify target, json[key], menu, buttons
       sieve.through target
 
-    # Disable / hide any .single-line whose marker is in json.[disabled, hide]
+    # Disable / hide any .line whose marker is in json.[disabled, hide]
     for m in ['disabled', 'hide']
       continue unless json[m]
-      j = target.find('.single-line')
+      j = target.find('.line')
       for k in json[m]
         l = j.filter("[marker=#{k}]")[0]
         $(l).addClass(m) if l?
 
     # Auto-click first line - if needed
-    target.children('.single-line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst
+    target.children('.line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst
     return true
 
 }
