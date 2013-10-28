@@ -26,7 +26,7 @@ class Examiner < ActiveRecord::Base
   #attr_accessible :disputed
 
   def self.available
-    select{ |m| m.account.active }.select{ |m| m.is_admin }
+    select{ |m| m.account.active }
   end
 
   def name 
