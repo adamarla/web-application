@@ -44,15 +44,13 @@ class QuestionController < ApplicationController
 
           # [#108]: New question? Remember to send it for auditing by another examiner
           if question.auditor.nil?
-            auditor = Examiner.available.where{ id != question.examiner_id }.map(&:id).sample(1).first
+            auditor = Examiner.where{ id != question.examiner_id }.available.map(&:id).sample(1).first
           else
             auditor = question.auditor
           end
 
-          question.update_attributes :topic_id => topic, :difficulty => level, 
-                                     :answer_key_span => span, 
-                                     :calculation_aid => calculator,
-                                     :auditor => auditor
+          question.update_attributes topic_id: topic, difficulty: level, answer_key_span: span, 
+                                     calculation_aid: calculator, auditor: auditor
 
           # If the question was sent by a teacher, then update the corresponding 
           # suggestion record. Note that > 1 questions might have been sent in the 
