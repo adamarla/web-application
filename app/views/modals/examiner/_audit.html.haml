@@ -19,7 +19,8 @@
               'Explanatory diagram a must',
               'Question text imprecise',
               'Video solution missing',
-              'Video solution not for this question'] 
+              'Video solution not for this question',
+              'Grammatical errors in question/solution'] 
           .span6
             - unless is_teacher
               %p.heading= "Non-gating Issues"
@@ -29,7 +30,8 @@
               'Verbose solution',
               'Has alternate solutions', 
               'Add explanatory diagram', 
-              'Should have multiple versions']
+              'Should have multiple versions',
+              'Spelling errors in question/solution']
         .row-fluid
           = f.input :comments, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, labels: false
           %button.btn.btn-primary.btn-large.pull-left{ type: :submit }= "Submit"
