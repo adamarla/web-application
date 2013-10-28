@@ -145,6 +145,9 @@ jQuery ->
       question = pane.find(".line[marker=#{json.favourite.id}]")[0]
       $(question).addClass 'fav' if question?
       notifier.show 'n-favourited'
+    else if url.match(/enroll\/named/)
+      $('#m-new-sk-2').modal 'hide'
+      notifier.show 'n-enrolled', json
     else if url.match(/ping\/queue/)
       # enable the newly built quizzes 
       list = $('#pane-wsb-quizzes').children()
