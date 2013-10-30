@@ -129,7 +129,7 @@ jQuery ->
               caption += " ( page #{page} )"
               alt = "##{page}"
             when 'vault'
-              full = "#{base}/#{root}/page-#{page}.jpeg"
+              full = "#{base}/#{root}/0/page-#{page}.jpeg" # Always load version 0 preview
               alt = "#{root}"
             when 'locker'
               full = if root isnt 'nothing' then "#{base}/#{root}/#{page}" else "#{base}/#{page}" # backward compatibility
