@@ -130,7 +130,7 @@ jQuery ->
               alt = "##{page}"
             when 'vault'
               version = parseInt (Math.random()*4) # show a random version
-              full = "#{base}/#{root}/#{version}/page-#{page}.jpeg" # Always load version 0 preview
+              full = "#{base}/#{root}/page-#{page}.jpeg" # Always load version 0 preview
               alt = "#{root}"
             when 'locker'
               full = if root isnt 'nothing' then "#{base}/#{root}/#{page}" else "#{base}/#{page}" # backward compatibility
