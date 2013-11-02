@@ -32,6 +32,8 @@ class Student < ActiveRecord::Base
 
   before_destroy :destroyable? 
 
+  attr_accessor :code
+
   def self.name_begins_with( allowed = [] )
     return if allowed.empty? 
     select{ |m| allowed.include? m.first_name[0] }

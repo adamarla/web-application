@@ -96,6 +96,8 @@ Webapp::Application.routes.draw do
   # Student 
   resource :student, :only => [:update, :show]
   match 'register/student' => 'students#create', via: :post
+  match 'match/student' => 'students#match', via: :post
+  match 'claim/account' => 'students#claim', via: :post
   match 'ws-preview' => 'students#responses', via: :get
   match 'dispute' => 'students#dispute', via: :get
   match 'inbox' => 'students#inbox', via: :get
