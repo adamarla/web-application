@@ -129,7 +129,8 @@ jQuery ->
               caption += " ( page #{page} )"
               alt = "##{page}"
             when 'vault'
-              full = "#{base}/#{root}/page-#{page}.jpeg"
+              version = parseInt (Math.random()*4) # show a random version
+              full = "#{base}/#{root}/page-#{page}.jpeg" # Always load version 0 preview
               alt = "#{root}"
             when 'locker'
               full = if root isnt 'nothing' then "#{base}/#{root}/#{page}" else "#{base}/#{page}" # backward compatibility
