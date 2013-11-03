@@ -1,0 +1,21 @@
+- account = Account.new
+
+#m-enrollment-confirm.modal.fade.regular.row-fluid{ :role => :dialog }
+  .span3
+    = image_tag 'notifications/id-card.png', :class => 'big-icon'
+  .span8
+    %p.title.underline= "Confirm Name"
+    %p
+      Please select your name from the matches found
+    %p
+      = simple_form_for :enroll, :url => claim_account_path, :defaults => { :required => false } do |f|
+        #sk-confirm-identity
+        #reg-fields.push-down.hide
+          %p
+            Now supply these credentials to complete the registration
+          = f.simple_fields_for account, :validate => true do |m|
+            = m.input :email
+            = m.input :password
+          = simple_button :for => "Register", :id => 'btn-enroll-me', 
+          :class => 'btn-primary pull-right', :type => :submit
+
