@@ -385,6 +385,8 @@ tab-teacher-accounts :
 
 lnk-audit-done : 
   update-on: question/preview
+  url : 
+    self : audit/done?id=:a
 
 m-admin-wb :
   show : 
