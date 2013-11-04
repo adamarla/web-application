@@ -56,7 +56,7 @@ jQuery ->
       $(last).remove() if last?
       entries.eq(0).click()
       return true
-    else if url.match(/audit\/pending/)
+    else if url.match(/audit\/review/)
       target = $('#pane-audit-review')
       clickFirst = true
       key = 'audit'
