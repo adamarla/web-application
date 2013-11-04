@@ -79,7 +79,7 @@ Webapp::Application.routes.draw do
   match 'questions/list' => 'question#list', via: :get
   match 'question/preview' => 'question#preview', via: :get
   match 'like' => 'question#like', via: :get
-  match 'audit/done' => 'question#audit', via: :post
+  match 'audit/open' => 'question#audit_open', via: :post
   match 'audit/close' => 'question#audit_close', via: :get
   match 'questions/without_video' => 'question#without_video', via: :get
   match 'question/add_video' => 'question#add_video', via: :post

@@ -1,6 +1,6 @@
 
 - is_teacher = current_account.loggable_type == "Teacher"
-- html = is_teacher ? {} : { data: { id: 'tab-audit-review', action: "#{audit_done_path}?id=:id&gr=0" } }
+- html = is_teacher ? {} : { data: { id: 'tab-audit-todo', action: "#{audit_open_path}?id=:id&gr=0" } }
 
 #m-audit-form.modal.fade.wide
   .row-fluid

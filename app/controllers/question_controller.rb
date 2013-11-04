@@ -110,7 +110,7 @@ class QuestionController < ApplicationController
     render :json => { :favourite => { :id => qid } }, :status => :ok
   end
 
-  def audit 
+  def audit_open
     gr = params[:gr].to_i
     gr = gr == 0 ? nil : GradedResponse.find(gr) 
     subpart_index = gr.nil? ? nil : [*'A'..'Z'][gr.subpart.index]
@@ -134,7 +134,7 @@ class QuestionController < ApplicationController
         @author = @author.account.active ? @author : Examiner.available.sample(1).first
         Mailbot.send_audit_report(@question, @author, @gating, @non_gating, @comments).deliver
       end
-      render :json => { :msg => "Audit report sent" }, :status => :ok
+      render json: { msg: "Audit Report Sent", disabled: [@question.id] }, status: :ok
     else
       render :json => { :msg => "Question not found" }, :status => :ok
     end
