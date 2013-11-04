@@ -142,8 +142,12 @@ class QuestionController < ApplicationController
 
   def audit_close
     @question = Question.find params[:id]
-    @question.update_attribute(:available, true) unless @question.nil?
-    render json: { status: :done }, status: :ok
+    unless @question.nil?
+      @question.update_attribute(:available, true) unless @question.nil?
+      render json: { disabled: [@question.id] }, status: :ok
+    else
+      render json: { status: :done }, status: :ok
+    end
   end
 
   def without_video

@@ -383,10 +383,10 @@ tab-teacher-accounts :
 ## Admin / Examiner specific  
 ##############################################################################
 
-lnk-audit-done : 
+lnk-audit-close : 
   update-on: question/preview
   url : 
-    self : audit/done?id=:a
+    self : audit/close?id=:a
 
 m-admin-wb :
   show : 
