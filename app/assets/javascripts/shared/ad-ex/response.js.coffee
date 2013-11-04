@@ -61,8 +61,8 @@ jQuery ->
       clickFirst = true
       key = 'audit'
       karo.empty target
-    else if url.match(/audit\/close/)
-      target = $('#pane-audit-close')
+    else if url.match(/audit\/todo/)
+      target = $('#pane-audit-todo')
       clickFirst = true
       key = 'audit'
       karo.empty target

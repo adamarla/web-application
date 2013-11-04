@@ -490,14 +490,14 @@ lnk-audit-form :
   show : 
     modal : m-audit-form
 
-tab-audit-review : 
+tab-audit-todo : 
   url : 
-    self : audit/pending
+    self : audit/todo
     panel : question/preview.json?id=:id
 
-tab-audit-close : 
+tab-audit-review : 
   url : 
-    self : audit/close
+    self : audit/review
     panel : question/preview.json?id=:id
 
 tab-resolution-pending :

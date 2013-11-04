@@ -141,15 +141,18 @@ class ExaminersController < ApplicationController
     render :json => { :status => status }
   end
 
-  def audit
+  def audit_todo
+    @questions = Question.where(auditor: current_account.loggable_id).unaudited.order(:updated_at).limit(15)
+=begin
     @questions = Question.where(:auditor => current_account.loggable_id).unaudited
     n = @questions.count
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i
     @questions = @questions.order(:updated_at).page(pg).per(@per_pg)
+=end
   end
 
-  def audit_closure_required 
+  def audit_review
     @questions = Question.where(examiner_id: current_account.loggable_id).where(available: false)
   end 
 

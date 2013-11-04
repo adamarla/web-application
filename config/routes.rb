@@ -54,8 +54,8 @@ Webapp::Application.routes.draw do
   match 'resolve' => 'examiners#resolve_scan', via: :post
   match 'update_scan_id' => 'examiners#update_scan_id', via: :get
   match 'update_scan_id' => 'examiners#update_scan_id', via: :post
-  match 'audit/pending' => 'examiners#audit', via: :get
-  match 'audit/close' => 'examiners#audit_closure_required', via: :get
+  match 'audit/todo' => 'examiners#audit_todo', via: :get
+  match 'audit/review' => 'examiners#audit_review', via: :get
 
   # School 
   resource :school, :only => [:show, :create, :update]
@@ -80,6 +80,7 @@ Webapp::Application.routes.draw do
   match 'question/preview' => 'question#preview', via: :get
   match 'like' => 'question#like', via: :get
   match 'audit/done' => 'question#audit', via: :post
+  match 'audit/close' => 'question#audit_close', via: :get
   match 'questions/without_video' => 'question#without_video', via: :get
   match 'question/add_video' => 'question#add_video', via: :post
 

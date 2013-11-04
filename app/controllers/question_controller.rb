@@ -140,6 +140,12 @@ class QuestionController < ApplicationController
     end
   end 
 
+  def audit_close
+    @question = Question.find params[:id]
+    @question.update_attribute(:available, true) unless @question.nil?
+    render json: { status: :done }, status: :ok
+  end
+
   def without_video
     tagged = Question.author(current_account.loggable_id).tagged
     ids = tagged.map(&:id) - tagged.with_video.map(&:id) 
