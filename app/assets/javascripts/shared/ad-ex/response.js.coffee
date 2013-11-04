@@ -60,6 +60,7 @@ jQuery ->
       target = $('#pane-audit-review')
       clickFirst = true
       key = 'audit'
+      menu = 'm-audit'
       karo.empty target
     else if url.match(/audit\/todo/)
       target = $('#pane-audit-todo')

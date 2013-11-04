@@ -1,0 +1,5 @@
+
+%ul.dropdown-menu.dropdown-inverse.slim{ id: 'm-audit', role: :menu }
+  %li
+    = simple_link for: 'Close', id: 'lnk-audit-done',
+      href: "#{audit_close_path}?id=:a", remote: true

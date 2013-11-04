@@ -383,6 +383,9 @@ tab-teacher-accounts :
 ## Admin / Examiner specific  
 ##############################################################################
 
+lnk-audit-done : 
+  update-on: question/preview
+
 m-admin-wb :
   show : 
     menu : admin-wb
