@@ -8,5 +8,10 @@
 .tab-content
   #pane-audit-todo.tab-pane
     .row-fluid.no-remove
+      .btn-group.pull-left
+        = simple_link for: 'Oldest', class: 'btn btn-inverse', 
+          id: 'lnk-audit-oldest', href: "#{audit_todo_path}?t=oldest", remote: true
+        = simple_link for: 'Newest', class: 'btn btn-inverse', 
+          id: 'lnk-audit-newest', href: "#{audit_todo_path}?t=newest", remote: true
       = simple_link :for => "Audit", :class => 'btn btn-inverse pull-right', :id => 'lnk-audit-form'
   #pane-audit-review.tab-pane

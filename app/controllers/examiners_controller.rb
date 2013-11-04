@@ -142,14 +142,12 @@ class ExaminersController < ApplicationController
   end
 
   def audit_todo
-    @questions = Question.where(auditor: current_account.loggable_id).unaudited.order(:updated_at).limit(15)
-=begin
-    @questions = Question.where(:auditor => current_account.loggable_id).unaudited
-    n = @questions.count
-    @per_pg, @last_pg = pagination_layout_details n
-    pg = params[:page].nil? ? 1 : params[:page].to_i
-    @questions = @questions.order(:updated_at).page(pg).per(@per_pg)
-=end
+    unaudited = Question.where(auditor: current_account.loggable_id).unaudited.order(:updated_at)
+    
+    unless params[:t].blank?
+      unaudited = unaudited.reverse_order if params[:t] == 'newest'
+    end
+    @questions = unaudited.limit 15
   end
 
   def audit_review
