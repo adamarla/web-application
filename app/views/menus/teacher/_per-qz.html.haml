@@ -3,8 +3,6 @@
 
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
   %li
-    = simple_link :for => "Share Quiz", :id => 'lnk-share-quiz', :icon => 'icon-share'
-  %li
     = simple_link :for => "Edit Quiz", :id => 'lnk-edit-qz', :icon => 'icon-edit'
   - unless online_instructor  
     %li
@@ -14,3 +12,5 @@
   %li
     = simple_link :for => "Download Solution (PDF)", :id => 'lnk-download-solution', 
     :url => { :self => "#{Gutenberg['server']}/mint/quiz/:a/answer-key-:b.pdf" }, :icon => 'icon-download' 
+  %li
+    = simple_link :for => "Share Quiz", :id => 'lnk-share-quiz', :icon => 'icon-share'

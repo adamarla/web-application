@@ -44,6 +44,8 @@ jQuery ->
         notifier.show 'n-share-missing-teacher'
       else if json.status is 'error'
         notifier.show 'n-share-error'
+      else if json.status is 'donothing'
+        notifier.show 'n-share-already'
       else 
         notifier.show 'n-share-success'
 

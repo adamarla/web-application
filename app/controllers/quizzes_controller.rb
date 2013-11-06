@@ -46,21 +46,27 @@ class QuizzesController < ApplicationController
       render json: { status: :missing }, status: :ok
     else
       t = account.loggable
-      orig = Quiz.find params[:id]
-      clone = orig.nil? ? nil : orig.clone(t.id)
-      unless clone.nil?
-        job = Delayed::Job.enqueue CompileQuiz.new(clone)
-        clone.update_attribute :job_id, job.id
 
-        estimate = minutes_to_completion job.id
-        Mailbot.quiz_shared(clone, current_account.loggable, t).deliver if account.email_is_real?
-        render :json => { :monitor => { :quiz => clone.id }, 
-                          :notify => { :title => "#{estimate} minute(s)" }},
-                          :status => :ok
-      else
-        clone.destroy
-        render json: { status: :error }, status: :ok
-      end
+      already_shared = !Quiz.where(teacher_id: t.id, parent_id: params[:id]).empty?
+      if already_shared 
+        render json: { status: :donothing }, status: :ok
+      else 
+        orig = Quiz.find params[:id]
+        clone = orig.nil? ? nil : orig.clone(t.id)
+        unless clone.nil?
+          job = Delayed::Job.enqueue CompileQuiz.new(clone)
+          clone.update_attribute :job_id, job.id
+
+          estimate = minutes_to_completion job.id
+          Mailbot.quiz_shared(clone, current_account.loggable, t).deliver if account.email_is_real?
+          render :json => { :monitor => { :quiz => clone.id }, 
+                            :notify => { :title => "#{estimate} minute(s)" }},
+                            :status => :ok
+        else
+          clone.destroy
+          render json: { status: :error }, status: :ok
+        end # unless clone.nil?
+      end # already_shared
     end
   end
 
