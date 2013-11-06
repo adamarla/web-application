@@ -90,7 +90,7 @@ class StudentsController < ApplicationController
       @exists = false
     else
       unmatched = sk.students.select{ |s| !s.account.email_is_real? }
-      @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, student.name) < 5 }
+      @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, student.name) < 3 }
     end # else
 
   end # method
