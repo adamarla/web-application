@@ -61,4 +61,11 @@ class Mailbot < ActionMailer::Base
     mail :to => author.account.email, :subject => "[Question Audit]: #{question.uid.upcase}"
   end
 
+  def quiz_shared(quiz, from, to)
+    @quiz_name = quiz.name
+    @from_name = from.name
+    @to_name = to.first_name
+    mail to: to.account.email, subject: "[Gradians.com]: #{@from_name} has shared a quiz with you"
+  end
+
 end
