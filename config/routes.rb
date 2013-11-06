@@ -93,6 +93,7 @@ Webapp::Application.routes.draw do
   match 'find/schools' => 'schools#find', via: :get
   match 'quiz/questions' => 'quizzes#questions', via: :get
   match 'quiz/edit' => 'quizzes#add_remove_questions', via: [:put, :post]
+  match 'share/quiz' => 'quizzes#share', via: :post
 
   # Student 
   resource :student, :only => [:update, :show]

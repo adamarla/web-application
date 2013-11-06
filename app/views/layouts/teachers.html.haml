@@ -39,6 +39,7 @@
       = render partial: 'modals/teacher/demo'
       = render partial: 'modals/teacher/new-sk-one'
       = render partial: 'modals/teacher/new-sk-two'
+      = render partial: 'modals/teacher/share-quiz'
 
     - if tc.online
       = render partial: 'modals/teacher/new-course'
@@ -59,6 +60,9 @@
     - unless tc.online
       = render partial: 'notifications/teacher/prefabricating'
       = render partial: 'notifications/teacher/new-sektion'
+      = render partial: 'notifications/teacher/share-missing-teacher'
+      = render partial: 'notifications/teacher/share-error'
+      = render partial: 'notifications/teacher/share-success'
 
 -unless tc.online
   - content_for :tutorials do 

@@ -38,6 +38,32 @@ class QuizzesController < ApplicationController
     end
   end
 
+  def share
+    email = params[:share][:email]
+    account = Account.where(email: email).first 
+
+    if account.nil? || account.loggable_type != "Teacher" 
+      render json: { status: :missing }, status: :ok
+    else
+      t = account.loggable
+      orig = Quiz.find params[:id]
+      clone = orig.nil? ? nil : orig.clone(t.id)
+      unless clone.nil?
+        job = Delayed::Job.enqueue CompileQuiz.new(clone)
+        clone.update_attribute :job_id, job.id
+
+        estimate = minutes_to_completion job.id
+        render :json => { :monitor => { :quiz => clone.id }, 
+                          :notify => { :title => "#{estimate} minute(s)" }},
+                          :status => :ok
+      else
+        clone.destroy
+        render json: { status: :error }, status: :ok
+      end
+    end
+  end
+
+
   def add_remove_questions
     quiz = Quiz.find params[:id]
     op = params[:op] 

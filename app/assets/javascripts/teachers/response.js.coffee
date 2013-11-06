@@ -37,6 +37,16 @@ jQuery ->
         target = $('#wsb-sektions')
         lesson = 'wsb-milestone-3'
       key = "students"
+
+    else if url.match(/share\/quiz/)
+      $('#m-share-quiz').modal 'hide'
+      if json.status is 'missing'
+        notifier.show 'n-share-missing-teacher'
+      else if json.status is 'error'
+        notifier.show 'n-share-error'
+      else 
+        notifier.show 'n-share-success'
+
     else if url.match(/qzb\/echo/)
       if json.context is 'qzb'
         next = 'tab-qzb-2'

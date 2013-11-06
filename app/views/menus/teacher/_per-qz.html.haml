@@ -3,6 +3,8 @@
 
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
   %li
+    = simple_link :for => "Share Quiz", :id => 'lnk-share-quiz', :icon => 'icon-share'
+  %li
     = simple_link :for => "Edit Quiz", :id => 'lnk-edit-qz', :icon => 'icon-edit'
   - unless online_instructor  
     %li

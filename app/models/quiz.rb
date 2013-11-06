@@ -270,11 +270,15 @@ class Quiz < ActiveRecord::Base
       author = teacher
     end
 
-    copy = Quiz.new :name => name, :teacher_id => author, :question_ids => selections,
-                    :num_questions => selections.count, :parent_id => self.id 
+    copy = Quiz.new name: name, teacher_id: author, question_ids: selections, 
+                    num_questions: selections.count, parent_id: self.id 
 
-    msg = copy.save ? "The quiz needed to be cloned first and a new version - #{name} - has been created." : nil
-    return (teacher.nil? ? msg : copy)
+    if copy.save 
+      ret = teacher.nil? ? "A new version - #{name} - has been created" : copy 
+    else
+      ret = nil
+    end
+    return ret
   end
 
   def remove_questions(question_ids)
