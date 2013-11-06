@@ -52,7 +52,8 @@ class Student < ActiveRecord::Base
   end 
 
   def name=(name)
-    split = name.split
+    name.gsub! /[\d\.\$\?\(\)\,#]+/,""
+    split = name.strip.split
     last = split.count - 1
     self.first_name = split.first.humanize
 
