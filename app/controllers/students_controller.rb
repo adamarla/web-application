@@ -89,9 +89,8 @@ class StudentsController < ApplicationController
     if sk.nil?
       @exists = false
     else
-      enrolled = sk.students 
-      similarly_named = enrolled.select{ |m| Levenshtein.distance(m.name, student.name) < 5 }
-      @candidates = similarly_named.select{ |m| !m.account.email_is_real? } 
+      unmatched = sk.students.select{ |s| !s.account.email_is_real? }
+      @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, student.name) < 5 }
     end # else
 
   end # method

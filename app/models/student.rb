@@ -39,6 +39,22 @@ class Student < ActiveRecord::Base
     select{ |m| allowed.include? m.first_name[0] }
   end
 
+  def self.min_levenshtein_distance(x,y)
+    # (x,y) -> two names
+    xa = x.split
+    ya = y.split
+    min = -1
+
+    for i in xa 
+      for j in ya
+        dist = Levenshtein.distance(i,j)
+        min = (min != -1) ? (dist < min ? dist : min): dist
+        return min if min == 0
+      end
+    end
+    return min
+  end
+
   def username?
     self.account.username
   end 
