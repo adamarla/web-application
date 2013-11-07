@@ -1,8 +1,7 @@
 jQuery ->
+
   $('input, textarea').placeholder()
 
   $('#sk-confirm-identity').click ->
-
-    $('#reg-fields').removeClass("hide")
-
+    $('#btn-enroll-me').removeAttr "disabled"
     return true

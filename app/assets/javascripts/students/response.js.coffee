@@ -24,12 +24,12 @@ jQuery ->
       preview.loadJson json, 'mint' 
       return true
     else if url.match(/inbox/)
-      target = $('#pane-st-inbox')
-      key = 'inbox'
-      #parentKey = 'inbox'
-      #childKey = 'ws'
-      menu = 'st-inbox'
-      clickFirst = true
+      if json.notify is null 
+        target = $('#pane-st-inbox')
+        key = 'inbox'
+        menu = 'st-inbox'
+        clickFirst = true
+        karo.empty target
     else if url.match(/outbox/)
     else if url.match(/enroll/)
       $('#m-enroll-self').modal 'hide'
