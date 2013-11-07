@@ -6,16 +6,14 @@
   .span8
     %p.title.underline= "Confirm Name"
     %p
-      Please select your name from the matches found
+      Select your name from the list and Register 
     %p
-      = simple_form_for :enroll, :url => claim_account_path, :defaults => { :required => false } do |f|
+      = simple_form_for account, :url => claim_account_path, :validate => true, :html => { :id => 'fm-register-student' }, :defaults => { :required => false } do |f|
         #sk-confirm-identity
-        #reg-fields.push-down.hide
-          %p
-            Now supply these credentials to complete the registration
-          = f.simple_fields_for account, :validate => true do |m|
-            = m.input :email
-            = m.input :password
-          = simple_button :for => "Register", :id => 'btn-enroll-me', 
-          :class => 'btn-primary pull-right', :type => :submit
+        #reg-fields.push-down{ :disabled => true }
+          = f.input :email
+          = f.input :password
+          %button.btn.btn-primary.pull-right{ :id => 'btn-enroll-me', :disabled => "true", :type => :submit}= "Register"
+          -# = simple_button :for => "Register", :id => 'btn-enroll-me', 
+          -# :class => 'btn-primary pull-right', :disabled => true, :type => :submit
 
