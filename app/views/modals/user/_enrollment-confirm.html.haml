@@ -1,19 +1,17 @@
 - account = Account.new
 
 #m-enrollment-confirm.modal.fade.regular.row-fluid{ :role => :dialog }
-  .span3
+  .span2
     = image_tag 'notifications/id-card.png', :class => 'big-icon'
   .span8
     %p.title.underline= "Confirm Name"
     %p
       Select your name from the list and Register 
     %p
-      = simple_form_for account, :url => claim_account_path, :validate => true, :html => { :id => 'fm-register-student' }, :defaults => { :required => false } do |f|
+      = simple_form_for account, :url => claim_account_path, :validate => true,       :defaults => { :required => false } do |f|
         #sk-confirm-identity
         #reg-fields.push-down{ :disabled => true }
           = f.input :email
           = f.input :password
-          %button.btn.btn-primary.pull-right{ :id => 'btn-enroll-me', :disabled => "true", :type => :submit}= "Register"
-          -# = simple_button :for => "Register", :id => 'btn-enroll-me', 
-          -# :class => 'btn-primary pull-right', :disabled => true, :type => :submit
+          %button.btn.btn-large.btn-primary.pull-right{ :id => 'btn-enroll-me', :disabled => true, :type => :submit}= "Register"
 
