@@ -959,11 +959,11 @@ li.split {
   margin: 0 auto ;
 }
 
-#m-register {
-  height: 350px ;
-  > ul { margin-top: 0px ; }
-  > .tab-content {
-    min-height: 200px ;
+#m-register, #m-enrollment-confirm {
+
+  .btn-large {
+    font-size: 16px ;
+    font-weight: 400 ;
   }
 } 
 

@@ -563,6 +563,4 @@ m-about :
 btn-register : 
   show : 
     modal : m-register
-  autoclick : 
-    tab : tab-register-1
 
