@@ -199,8 +199,11 @@ jQuery ->
     else
       $(this).text("Back to Grading")
       show = $('#wide > #wide-X')
-      ws = $('#tab-grd-ws').parent().attr 'marker'
-      $.get "ws/preview.json?id=#{ws}"
+      id = abacus.current.response.attr 'marker'
+      $.get "question/preview?gr=#{id}"
+
+      # ws = $('#tab-grd-ws').parent().attr 'marker'
+      # $.get "ws/preview.json?id=#{ws}"
 
     $(m).addClass 'hide' for m in show.siblings()
     show.removeClass 'hide'
