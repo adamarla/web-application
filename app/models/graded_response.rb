@@ -28,40 +28,40 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :testpaper
   belongs_to :subpart
 
-  validates :q_selection_id, :presence => true
-  validates :student_id, :presence => true
+  validates :q_selection_id, presence: true
+  validates :student_id, presence: true
 
   def self.on_page(page)
     select{ |m| m.page? == page }
   end
 
   def self.in_quiz(id)
-    # Responses to any question in a Quiz
-    where(:q_selection_id => QSelection.where(:quiz_id => id).map(&:id)) 
+    # All responses to questions in a quiz
+    where(q_selection_id: QSelection.where(quiz_id: id).map(&:id))
   end
 
   def self.in_testpaper(id)
-    where(:testpaper_id => id)
+    where(testpaper_id: id)
   end
 
   def self.of_student(id)
-    where(:student_id => id)
+    where(student_id: id)
   end
 
   def self.to_db_question(id)
-    where(:q_selection_id => QSelection.where(:question_id => id).map(&:id))
+    where(q_selection_id: QSelection.where(question_id: id).map(&:id))
   end
 
   def self.to_question(index)
-    where(:q_selection_id => QSelection.where(:index => index).map(&:id))
+    where(q_selection_id: QSelection.where(index: index).map(&:id))
   end
 
   def self.assigned_to(id)
-    where(:examiner_id => id)
+    where(examiner_id: id)
   end
 
   def self.unassigned
-    where(:examiner_id => nil)
+    where(examiner_id: nil)
   end
   
   def self.graded
@@ -69,7 +69,7 @@ class GradedResponse < ActiveRecord::Base
   end 
 
   def self.ungraded
-    where(:feedback => 0)
+    where(feedback: 0)
   end
 
   def self.with_scan
@@ -95,17 +95,17 @@ class GradedResponse < ActiveRecord::Base
 
   def self.disputed
     # Open disputes
-    graded.where(:disputed => true, :closed => false)
+    graded.where(disputed: true, closed: false)
   end
 
   def self.disputable
     # If a graded response has not been disputed X days after it got graded, then it 
     # should be deemed to have been accepted and should no longer be disputable
-    graded.where(:disputed => false, :closed => false)
+    graded.where(disputed: false, closed: false)
   end
 
   def self.closed
-    where(:closed => true)
+    where(closed: true)
   end
 
   def self.annotations( clicks )
@@ -141,7 +141,7 @@ class GradedResponse < ActiveRecord::Base
     return :nodata unless self.feedback
     
     posn = self.feedback & 15 
-    score = Requirement.honest.where(:posn => posn).map(&:weight).first
+    score = Requirement.honest.where(posn: posn).map(&:weight).first
 
     case score
       when 0 then return :red
@@ -153,7 +153,7 @@ class GradedResponse < ActiveRecord::Base
   def colour? 
     return :disabled if (self.scan.nil? or self.feedback == 0)
 
-    honest = Requirement.honest.where(:posn => (self.feedback & 15)).map(&:weight).first
+    honest = Requirement.honest.where(posn: (self.feedback & 15)).map(&:weight).first
     return :red if honest == 0
     frac = (self.system_marks / self.subpart.marks).round(2)
     return :light if frac < 0.3
@@ -175,7 +175,7 @@ class GradedResponse < ActiveRecord::Base
 
     self.reset if self.feedback # over-write previous feedback 
     if self.update_attributes(:feedback => m, :system_marks => earned)
-      ws = Testpaper.where(:id => self.testpaper_id).first
+      ws = Testpaper.where(id: self.testpaper_id).first
 
       if ws.publishable?
         # Time to inform the teacher. You can do this only if teacher has provided 
@@ -197,8 +197,8 @@ class GradedResponse < ActiveRecord::Base
     # corresponding answer sheet 
 
     self.update_attribute :feedback, 0
-    a = AnswerSheet.where(:testpaper_id => self.testpaper_id, :student_id => self.student_id).first
-    a.update_attributes( :marks => nil, :graded => false, :honest => nil ) unless a.nil?
+    a = AnswerSheet.where(testpaper_id: self.testpaper_id, student_id: self.student_id).first
+    a.update_attributes( marks: nil, graded: false, honest: nil) unless a.nil? 
   end 
 
   def index?
@@ -215,8 +215,8 @@ class GradedResponse < ActiveRecord::Base
       page = self.scan[10].to_i(36)
       # quiz, testpaper, student, page = self.scan.split('-').map(&:to_i)
     else
-      start_pg = QSelection.where(:id => self.q_selection_id).select(:start_page).first.start_page
-      offset = Subpart.where(:id => self.subpart_id).select(:relative_page).first.relative_page
+      start_pg = QSelection.where(id: self.q_selection_id).select(:start_page).first.start_page
+      offset = Subpart.where(id: self.subpart_id).select(:relative_page).first.relative_page
       page = start_pg + offset
     end
     self.update_attribute :page, page unless page < 1
@@ -226,7 +226,7 @@ class GradedResponse < ActiveRecord::Base
   def siblings_same_worksheet
     # same student, same worksheet
     ids = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).map(&:id) - [self.id]
-    GradedResponse.where(:id => ids)
+    GradedResponse.where(id: ids)
   end
 
   def siblings_same_page
@@ -239,7 +239,7 @@ class GradedResponse < ActiveRecord::Base
     # same student, same worksheet, same question - perhaps different pages
     db_question_id = self.subpart.question_id 
     ids = self.siblings_same_worksheet.to_db_question(db_question_id).map(&:id) - [self.id]
-    GradedResponse.where(:id => ids)
+    GradedResponse.where(id: ids)
   end
 
   def name?
@@ -251,13 +251,13 @@ class GradedResponse < ActiveRecord::Base
 
   def teacher?
     # Returns the teacher to whose quiz this graded response is
-    return Teacher.where(:id => self.testpaper.quiz.teacher_id).first
+    return Teacher.where(id: self.testpaper.quiz.teacher_id).first
   end
 
   def scan_id
     # QR Code for the page on which this Graded Response appears
       ws_id = self.testpaper_id
-      student_idx = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort.index(self.student_id)
+      student_idx = AnswerSheet.where(testpaper_id: ws_id).map(&:student_id).sort.index(self.student_id)
       return encrypt(ws_id, 7) + encrypt(student_idx, 3) + self.page?.to_s(36)
   end
 
