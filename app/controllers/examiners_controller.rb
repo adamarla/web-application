@@ -88,7 +88,7 @@ class ExaminersController < ApplicationController
 
   def preview_unresolved
     file = params[:id]
-    render json: { preview: { source: :scantray, images: ["unresolved/#{file}"] }, status: :ok
+    render json: { preview: { source: :scantray, images: ["unresolved/#{file}"] }}, status: :ok
   end
 
   def resolve_scan
