@@ -131,15 +131,6 @@ class StudentsController < ApplicationController
     render :json => { :status => :ok }, :status => :ok
   end
 
-  def responses
-    s = current_account.loggable
-    tp = Testpaper.find params[:id]
-
-    r = s.responses params[:id]
-    @scans = r.map(&:scan).uniq.sort
-    @within = "#{tp.quiz_id}-#{tp.id}"
-  end
-
   def inbox
     student = Student.find params[:id]
     @ws = student.nil? ? [] : student.testpapers
@@ -159,7 +150,6 @@ class StudentsController < ApplicationController
     sid = @student.id.to_i
     student_ids = AnswerSheet.where(testpaper_id: @ws.id).map(&:student_id).sort
     @relative_index = student_ids.index sid
-    @images = AnswerSheet.where(testpaper_id: @ws.id, student_id: @student.id).first.graded? ? "preview" : "blanks"
   end
 
   def outbox

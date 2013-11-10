@@ -18,12 +18,7 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
-    if url.match(/ws-preview/)
-      preview.loadJson json, 'locker'
-    else if url.match(/inbox\/echo/)
-      preview.loadJson json, 'mint' 
-      return true
-    else if url.match(/inbox/)
+    if url.match(/inbox/)
       target = $('#pane-st-inbox')
       key = 'inbox'
       #parentKey = 'inbox'

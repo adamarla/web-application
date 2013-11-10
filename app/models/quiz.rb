@@ -102,6 +102,11 @@ class Quiz < ActiveRecord::Base
     return testpaper
   end 
 
+  def preview_images(restricted = false)
+    uid = encrypt(self.id,7)
+    return [*1..self.span?].map{ |pg| "quiz/#{uid}/preview/page-#{pg}.jpeg" }
+  end
+
   def teacher 
     Teacher.find self.teacher_id
   end 

@@ -15,8 +15,8 @@ jQuery ->
     url = settings.url
     json = $.parseJSON xhr.responseText
 
-    if url.match('quiz/preview') or url.match('ws/preview')
-      preview.loadJson json, 'mint'
+    if url.match('quiz/preview') 
+      preview.loadJson json # mint
     else
       matched = false
 

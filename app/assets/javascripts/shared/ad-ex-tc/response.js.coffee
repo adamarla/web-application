@@ -52,12 +52,10 @@ jQuery ->
     url = settings.url
     json = $.parseJSON xhr.responseText
 
-    if url.match(/quiz\/candidate_questions/)
-      preview.loadJson json, 'vault'
-    else if url.match(/question\/preview/)
+    if url.match(/question\/preview/)
       $('#wide-wait').addClass 'hide'
       $('#wide-X').removeClass 'hide'
-      preview.loadJson json, 'vault'
+      preview.loadJson json # vault 
       if json.context is 'qzb' # [#108]: possible only with teachers! 
         tutorial.start 'qzb-milestone-6'
         $('#m-audit-form').find('form').eq(0).attr 'action', "/audit/done?id=#{json.a}"

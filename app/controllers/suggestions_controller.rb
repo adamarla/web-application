@@ -27,7 +27,8 @@ class SuggestionsController < ApplicationController
   end
 
   def preview
-    @suggestion = Suggestion.find params[:id]
+    @sg = Suggestion.find params[:id]
+    @images = @sg.preview_images
   end
 
 end # of class 

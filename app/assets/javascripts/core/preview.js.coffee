@@ -43,8 +43,36 @@ jQuery ->
       obj.carousel { interval:15000 }
       return true
 
-    loadJson : (json, source, suffix = null) ->
+    loadJson : (json) ->
       ###
+        json.preview = {
+          source : [ vault | mint | minthril | scantray | scan-ashtray ],
+          images : [ .... ], #  an N-element array of fully-delineated relative paths to the image
+          captions : [ ..... ] # (optional) one caption per image 
+        }
+
+        This method will create, then append all the required <img> tags based 
+        on what the passed JSON and the current gutenberg.server are
+      ###
+      return false unless json.preview?
+
+      preview.initialize()
+
+      target = $('#wide > #wide-X').find('.carousel-inner').eq(0)
+      server = gutenberg.server 
+
+      for img,i in json.preview.images
+        item = $("<div class=item></div>").appendTo target
+        $("<img src=#{server}/#{json.preview.source}/#{img}</img>").appendTo $(item)
+
+        caption = if json.captions? then json.captions[i] else null
+        $("<div class='carousel-caption top'><h3>#{caption}</h3></div>").appendTo($(item)) if caption?
+
+      preview.execute()
+      return true
+
+    ###
+    loadJson : (json, source, suffix = null) ->
         This method will create the preview in all situations - 
         when viewing candidate question in the 'vault', existing 
         quizzes in the 'mint' or stored response scans in the 'locker/atm'
@@ -57,7 +85,6 @@ jQuery ->
         where 'id' is whatever the preview is for and 'scans' are the list 
         of object-identifiers that need to be picked up. All interpretation 
         is context specific
-      ###
       server = gutenberg.server
       switch source
         when 'mint' then base = "#{server}/mint"
@@ -77,7 +104,6 @@ jQuery ->
 
       return false if roots.length is 0
 
-      ###
         When we didn't have multi-part support, we had questions that could 
         be laid out on one page. We could therefore get away with specifying 
         just the folder name (in vault) for the question when generating previews
@@ -89,7 +115,6 @@ jQuery ->
         need to show multiple questions and we have no choice but to prepare
         for a situation where both 'preview.json.id' and 'preview.json.scans'
         are arrays
-      ###
 
       if roots instanceof Array
         nRoots = roots.length
@@ -152,6 +177,7 @@ jQuery ->
       # Now, call the preview
       preview.execute()
       return true
+    ###
 
     # Returns the index of the currently displayed image, starting with 0
     currIndex : () ->

@@ -9,7 +9,10 @@
 
 object false
   node(:preview) {
-    { :id => @uid, :scans => [*1..@quiz.span?] } 
+    {
+      source: :mint,
+      images: @quiz.preview_images
+    }
   } 
   node(:a) { @uid }
   node(:b) { @quiz.id }

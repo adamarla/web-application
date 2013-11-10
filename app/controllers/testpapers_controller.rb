@@ -21,21 +21,6 @@ class TestpapersController < ApplicationController
     @uid = encrypt(@testpaper.id, 7)
   end
 
-  def preview # the answer-key actually
-    @ws_id = params[:id].to_i
-
-    if params[:student].blank?
-      @relative_index = nil
-    else
-      sid = params[:student].to_i
-      student_ids = AnswerSheet.where(testpaper_id: @ws_id).map(&:student_id).sort
-      @relative_index = student_ids.index sid
-    end
-
-    ws = Testpaper.find @ws_id 
-    @quiz = ws.nil? ? nil : Quiz.where(:id => ws.quiz_id).first
-  end 
-
   def layout
     # Returns ordered list of questions - renderable as .tabs-left
     @ws = Testpaper.find params[:ws]
@@ -45,7 +30,9 @@ class TestpapersController < ApplicationController
     unless @ws.nil?
       @subparts = Subpart.in_quiz @ws.quiz_id
       @gr = GradedResponse.of_student(student_id).in_testpaper @ws.id
-      @root_folder = @ws.legacy_record? ? "#{@ws.quiz_id}-#{@ws.id}" : "nothing"
+      scans = @gr.with_scan.map(&:scan).uniq
+      folder = @ws.legacy_record? ? "#{@ws.quiz_id}-#{@ws.id}" : nil
+      @images = scans.map{ |s| folder.nil? ? s : "#{folder}/#{s}" }
     else
       head :bad_request 
     end
