@@ -21,8 +21,6 @@ jQuery ->
     if url.match(/inbox/)
       target = $('#pane-st-inbox')
       key = 'inbox'
-      #parentKey = 'inbox'
-      #childKey = 'ws'
       menu = 'st-inbox'
       clickFirst = true
     else if url.match(/outbox/)

@@ -49,7 +49,7 @@ class StudentsController < ApplicationController
       account = Account.find target_id
     end
 
-    credentials = params[:enroll]
+    account_details = params[:account]
     location = request.location
     city = state = country = zip = nil
 
@@ -61,7 +61,6 @@ class StudentsController < ApplicationController
        country = country.id unless country.blank?
     end
  
-    account_details = credentials[:account]
     account.update_attributes :email => account_details[:email],
                               :password => account_details[:password],
                               :password_confirmation => account_details[:password],
