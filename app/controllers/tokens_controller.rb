@@ -4,8 +4,8 @@ class TokensController < ApplicationController
   def create
     @account = Account.find_by_email(params[:email].downcase)
     if @account.nil?
-      status = 401
-      json = { :message => "Invalid email" }
+      status = 204 # no content, check in other system
+      json = { :message => "Check in other system" }
     elsif !@account.valid_password?(params[:password])
       status = 404 
       json = { :message => "Invalid password" }
@@ -13,24 +13,22 @@ class TokensController < ApplicationController
       @account.ensure_authentication_token!
       status = 200 
       id = @account[:loggable_id]
+      gradeables = nil
       case @account.loggable_type
         when "Student"
-          json = build_json(@account)
+          name = Student.find_by_id(id)[:first_name]
+          gradeables = build_gradeables(@account)
         when "Teacher"
           name = Teacher.find_by_id(id)[:first_name]
-          json = { 
-            :token => @account.authentication_token, 
-            :email => @account.email,
-            :name  => name
-          }
         when "Examiner"
           name = Examiner.find_by_id(id)[:first_name]
-          json = { 
-            :token => @account.authentication_token, 
-            :email => @account.email,
-            :name  => name
-          }
       end
+      json = { 
+        :token => @account.authentication_token, 
+        :email => @account.email,
+        :name  => name,
+        :gradeables => gradeables
+      }
     end
     render :status => status, :json => json
   end
@@ -59,14 +57,19 @@ class TokensController < ApplicationController
     else 
       student = Student.find_by_id(@account.loggable_id) 
       status = 200
-      json = build_json(@account)
+      json = { 
+        :token => @account.authentication_token, 
+        :email => @account.email,
+        :name  => student.name,
+        :gradeables => build_gradeables(@account)
+      }
     end
     render :status => status, :json => json
   end
 
   private
 
-    def build_json(account)
+    def build_gradeables(account)
       student = Student.find_by_id(account.loggable_id)
       without_scans = GradedResponse.of_student(student[:id]).without_scan.sort
       gradeables = without_scans.map do |gr|
@@ -78,12 +81,7 @@ class TokensController < ApplicationController
           :name   => gr.subpart.name_if_in?(gr.testpaper.quiz)
         }
       end 
-      return {
-        :token => account.authentication_token, 
-        :email => account.email,
-        :name  => student.first_name,
-        :gradeables => gradeables
-      }
+      return gradeables
     end
 
 end
