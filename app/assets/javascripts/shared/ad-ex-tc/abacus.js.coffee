@@ -3,6 +3,8 @@ window.abacus = {
   root : null,
   list : null,
   commentBox : null,
+  controls: null, 
+  nav: null,
 
   current : {
     student : null,
@@ -17,7 +19,7 @@ window.abacus = {
   initialize : (json) ->
 
     # Prep
-    here = abacus.list
+    here = abacus.pending
     here.empty()
 
     # Populate 
@@ -26,7 +28,7 @@ window.abacus = {
     abacus.parse json.responses, here, ['mcq', 'label'], '.scan'
 
     # Initialize 
-    abacus.current.student =  abacus.list.children('.student').eq(0)
+    abacus.current.student =  abacus.pending.children('.student').eq(0)
     abacus.current.scan = abacus.current.student.children('.scan').eq(0)
     abacus.current.response = abacus.current.scan.children('.gr').eq(0)
 
@@ -46,7 +48,7 @@ window.abacus = {
   #############################################################
 
   parse : (json, within, keys = [], parent = null) ->
-    here = abacus.list
+    here = abacus.pending
     # 1. Two keys - marker & class have to be present
     # 2. Another 2 keys - name & parent are highly likely to be present
     # 3. Any other key is case-specific
@@ -75,9 +77,9 @@ window.abacus = {
 
   update : {
     ticker : () ->
-      m = abacus.root.children('#grd-ticker').eq(0)
-      cq = m.children().eq(0)
-      cs = m.children().eq(1)
+      m = abacus.root.find('#grd-ticker').eq(0)
+      cq = m.find('#curr-q').eq(0)
+      cs = m.find('#curr-s').eq(0)
 
       cs.text abacus.current.student.attr('name')
       cq.text abacus.current.response.attr('label')
@@ -182,9 +184,11 @@ window.abacus = {
 jQuery ->
 
   unless abacus.root?
-    abacus.root = $('#grd-toolbar')
-    abacus.list = abacus.root.children('#pending-scans').eq(0)
-    abacus.commentBox = abacus.root.children('#grd-ticker').eq(0).children("input[type='text']").eq(0)
+    abacus.root = $('#wide-grd-canvas')
+    abacus.pending = abacus.root.find('#pending-scans').eq(0)
+    abacus.nav = abacus.root.find('#grd-nav').eq(0) 
+    abacus.controls = abacus.root.find('#grd-controls').eq(0)
+    abacus.commentBox = abacus.root.find('#grd-typeahead').eq(0)
 
   ###
     Shared behaviour 
@@ -195,69 +199,41 @@ jQuery ->
     grtb.keyboard = false
     return true
 
-  $('#btn-prev-ques').click (event) ->
-    event.stopImmediatePropagation()
-    abacus.prev.response()
-    grtb.keyboard = true
-    return true
-  
-  $('#btn-prev-scan').click (event) ->
-    event.stopImmediatePropagation()
-    abacus.prev.scan()
-    grtb.keyboard = true
-    return true
-  
-  $('#btn-next-ques').click (event) ->
-    event.stopImmediatePropagation()
-    abacus.next.response()
-    grtb.keyboard = true
-    return true
-
-  $('#btn-next-scan').click (event) ->
-    event.stopImmediatePropagation()
-    abacus.next.scan()
-    grtb.keyboard = true
-    return true
-
-  $('#btn-ok').click (event) ->
-    #event.stopImmediatePropagation()
-    canvas.mode = 'check'
-    grtb.keyboard = true
-    return true
-
-  $('#btn-cross').click (event) ->
-    # event.stopImmediatePropagation()
-    canvas.mode = 'cross'
-    grtb.keyboard = true
-    return true
-
-  $('#btn-what').click (event) ->
-    # event.stopImmediatePropagation()
-    canvas.mode = 'question'
-    grtb.keyboard = true
-    return true
-
-  $('#btn-write').click (event) ->
-    # event.stopImmediatePropagation()
-    canvas.mode = 'comments'
-    abacus.commentBox.focus()
-    grtb.keyboard = false
-    return true
-
-  $('#btn-undo').click (event) ->
+  abacus.nav.on 'click', 'button', (event) ->
     event.stopImmediatePropagation()
     grtb.keyboard = true
-    canvas.undo()
-    return true
+    id = $(this).attr 'id'
+    switch id 
+      when 'btn-prev-ques' then abacus.prev.response()
+      when 'btn-next-ques' then abacus.next.response()
+      when 'btn-prev-scan' then abacus.prev.scan()
+      when 'btn-next-scan' then abacus.next.scan()
+    return  true
+    
+  abacus.controls.on 'click', 'button', (event) ->
+    grtb.keyboard = true
+    id = $(this).attr 'id'
 
-  $('#btn-fresh-copy').click (event) ->
-    event.stopImmediatePropagation()
-    scan = "#{abacus.current.scan.attr 'name'}"
-    $.get "restore_scan.json?id=#{scan}"
-    return true
-
-  $('#btn-rotate').click (event) ->
-    event.stopImmediatePropagation()
-    scan = "#{abacus.current.scan.attr 'name'}"
-    $.get "rotate_scan.json?id=#{scan}"
+    switch id
+      when 'btn-ok'
+        canvas.mode = 'check'
+      when 'btn-cross'
+        canvas.mode = 'cross'
+      when 'btn-what'
+        canvas.mode = 'question'
+      when 'btn-undo'
+        event.stopImmediatePropagation()
+        canvas.undo()
+      when 'btn-fresh-copy'
+        event.stopImmediatePropagation()
+        scan = "#{abacus.current.scan.attr 'name'}"
+        $.get "restore_scan.json?id=#{scan}"
+      when 'btn-rotate'
+        event.stopImmediatePropagation()
+        scan = "#{abacus.current.scan.attr 'name'}"
+        $.get "rotate_scan.json?id=#{scan}"
+      when 'btn-write'
+        grtb.keyboard = false
+        canvas.mode = 'comments'
+        abacus.commentBox.focus()
     return true

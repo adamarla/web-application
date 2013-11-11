@@ -152,7 +152,7 @@
             = render partial: 'teachers/qzb', locals: { teacher: tc }
           #left-3
           #left-4
-            = render partial: 'toolbox/grd-pending'
+            = render partial: 'shared/grading/pending'
           #left-5
             = render partial: 'teachers/rc'
           #left-6
@@ -180,13 +180,7 @@
               = render partial: 'teachers/edit-sektion', locals: { teacher: tc }
           - if tc.online
             #wide-grd-canvas
-              .row-fluid
-                = render partial: 'toolbox/grd-toolbar'
-              .row-fluid
-                .span1
-                  = render partial: 'toolbox/grd-toolbar-btns'
-                .span11
-                  %canvas#grading-canvas{ :width => 600, :height => 800 }
+              = render partial: 'shared/grading/controls'
 
             #wide-5
               = render partial: 'teachers/edit-course', if: tc.online

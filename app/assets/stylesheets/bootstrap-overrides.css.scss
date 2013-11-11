@@ -5,13 +5,13 @@
 */ 
 
 $gray: #191919 ; // rgb(25,25,25)
-$lightgray: lighten($gray, 30%) ;
+$lightgray: lighten($gray, 30%) ; // rgb(102,102,102)
 $gradians-blue: #6ca7ab ; // rgb(108,167,171)
 $orange:#ffa500 ; // rgb(255,165,0)
-$panel-colour: lighten(black, 17%) ;
+$panel-colour: lighten(black, 17%) ; // rgb(43,43,43)
 $deep-blue: #0081c2 ; // rgb(0,129,194)
-$background: darken($panel-colour, 12%) ;
-$lightblue: lighten($deep-blue, 23%) ;
+$background: darken($panel-colour, 12%) ; // rgb(13,13,13)
+$lightblue: lighten($deep-blue, 23%) ; // rgb(56,188,255) 
 $red: #d72323 ; // rgb(215, 35, 35)
 $green: #347235 ; // rgb(87,188,32)
 
@@ -645,45 +645,35 @@ button[data-toggle='button'] {
   } 
 }
 
-#grd-toolbar { 
-  position: fixed ; 
-
-  > #grd-ticker {
-    background: transparent ;
-    border-radius: 3px ;
-
-    > .add-on, > input { 
-      background-color: rgba(43,43,43,0.9) ;
-      border: none ;
-      padding: { 
-        top: 8px ;
-        bottom: 8px ;
-      } 
-    } 
-    > .add-on { 
-      color: $orange ;
-      text-shadow: none ;
-      font-size: 13px ;
-    }
-    > input {
-      border-radius: 0px ;
-      border-left: 2px solid white ;
-      color: white ;
-      font-size: 10px ;
-      padding-left: 10px ;
-      min-width: 90% ;
-    } 
-  } 
+#grd-controls, #grd-typeahead {
+  position: fixed ;
 }
 
-#grd-toolbar-btns { 
-  position: fixed ;
-  margin-top: 0px ;
+#grd-typeahead {
+  background: transparent ; 
+  color: white ;
+  border: {
+    radius: 0px ;
+    style: none ;
+    bottom: 1px solid $deep-blue ; 
+  }
+  box-shadow: none ;
+}
 
-  > .btn-group-vertical { 
-    vertical-align: top ;
+#grd-ticker { 
+  padding: { 
+    top: 7px ;
+    bottom: 0px ;
   } 
-} 
+  border-radius: 10px ;
+  border: 1px solid $deep-blue ;
+  font-size: 14px ;
+  &.graded {
+    border: none ;
+    background-color: rgba(0,129,194,0.7) ;
+    color: white ;
+  }
+}
 
 .btn-inverse.active { background-color: $deep-blue ; }
 
