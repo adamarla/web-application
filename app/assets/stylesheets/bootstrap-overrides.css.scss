@@ -658,6 +658,11 @@ button[data-toggle='button'] {
     bottom: 1px solid $deep-blue ; 
   }
   box-shadow: none ;
+  margin-top: 8px ;
+  font: { 
+    size: 13px ;
+    weight: 300 ;
+  }
 }
 
 #grd-ticker { 
@@ -665,7 +670,10 @@ button[data-toggle='button'] {
     top: 7px ;
     bottom: 0px ;
   } 
-  border-radius: 10px ;
+  border: {
+    top-left-radius: 10px ;
+    top-right-radius: 10px ;
+  }
   border: 1px solid $deep-blue ;
   font-size: 14px ;
   &.graded {
