@@ -14,7 +14,10 @@ object false
   node(:user) { @who }
 
   node(:preview) { 
-    { :id => @root_folder, :scans => @gr.with_scan.map(&:scan).uniq.sort }
+    {
+      source: :locker,
+      images: @images 
+    }
   } 
 
   node(:caption) { @ws.quiz.name }

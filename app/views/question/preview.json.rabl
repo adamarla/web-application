@@ -4,10 +4,13 @@
 # quizzes/get_candidates
 
 object false
-  node(:preview) {
-    { :id => @question.uid, :scans => [*1..@question.answer_key_span?] } 
-  } 
-  node(:caption) { @question.simple_uid }
+  node(:preview) { 
+    {
+      source: :vault,
+      images: @question.preview_images(current_account.loggable_type == "Teacher")
+    }
+  }
+
   node(:context) { @context }
   node(:a) { @question.id }
   node(:b) { @question.uid }

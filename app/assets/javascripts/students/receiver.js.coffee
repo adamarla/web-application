@@ -19,15 +19,6 @@ jQuery ->
         a = target.children('a').eq(0)
         a.text 'answer key'
         a.attr 'href', "#{gutenberg.server}/atm/#{r.atm}/answer-key/downloads/answer-key.pdf"
-    else if url.match(/student\/responses/)
-      here = $('#my-grades')
-      coreUtil.interface.displayJson json.preview.questions, here, 'question', {button:true}
-      swissKnife.setTickerToggles here, 'show score'
-      swissKnife.setButtonCaption here, 'dispute'
-      reportCard.overview json.preview.questions, here, 'question'
-      preview.loadJson json, 'locker'
-      first = $('#overview').children('.swiss-knife').eq(0)
-      first.trigger 'click' unless first.length is 0
     else
       matched = false
 

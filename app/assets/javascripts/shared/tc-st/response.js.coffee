@@ -19,7 +19,7 @@ jQuery ->
       key = 'wks'
     else if url.match(/ws\/layout/)
       # load student scans 
-      preview.loadJson json, 'locker'
+      preview.loadJson json # locker
       # prep the feedback panel
       splitTab = true
       if json.user is 'Student'

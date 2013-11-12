@@ -2,14 +2,14 @@
 object false
   node(:preview) {
     {
-      :id => "0-#{@suggestion.teacher_id}/#{@suggestion.signature}",
-      :scans => [*1..@suggestion.pages].map{ |m| "page-#{m}.jpeg" }
+      source: :locker,
+      images: @images 
     }
-  } 
+  }
 
-  node(:a) { "0-#{@suggestion.teacher_id}/#{@suggestion.signature}/page-1.jpeg" }
+  node(:a) { "0-#{@sg.teacher_id}/#{@sg.signature}/page-1.jpeg" }
   node(:slots) {
-    @suggestion.questions.map{ |m|
+    @sg.questions.map{ |m|
       {
         :id => m.id,
         :name => m.uid,

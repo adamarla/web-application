@@ -223,6 +223,20 @@ class Question < ActiveRecord::Base
     return klass
   end
 
+  def preview_images(restricted = false)
+    versions = restricted ? [0] : [*0..3]
+    span = self.answer_key_span?
+    uid = self.uid 
+    list = [] 
+
+    for vrn in versions 
+      for pg in [*1..span]
+        list += ["#{uid}/#{vrn}/pg-#{pg}.jpg"]
+      end
+    end
+    return list
+  end
+
   def edit_tex_layout(length, marks)
     if resize_subparts_list_to length.count
       breaks = page_breaks length

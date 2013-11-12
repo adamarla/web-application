@@ -47,7 +47,7 @@ jQuery ->
       key = 'unresolved'
       clickFirst = true
     else if url.match(/unresolved\/preview/)
-      preview.loadJson json, 'scantray'
+      preview.loadJson json  # scantray
     else if url.match(/resolve/)
       form = $('#form-resolve-scans')
       $(m).val(null) for m in form.find("input[type='text']")
@@ -104,7 +104,7 @@ jQuery ->
     json = $.parseJSON xhr.responseText
 
     if url.match(/suggestion\/preview/)
-      preview.loadJson json, 'locker'
+      preview.loadJson json # locker
     else
       matched = false
 

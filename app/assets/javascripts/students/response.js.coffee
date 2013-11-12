@@ -18,20 +18,11 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
-    if url.match(/ws-preview/)
-      preview.loadJson json, 'locker'
-    else if url.match(/inbox\/echo/)
-      preview.loadJson json, 'mint' 
-      return true
-    else if url.match(/inbox/)
-      unless 'notify' of json
-        target = $('#pane-st-inbox')
-        key = 'inbox'
-        menu = 'st-inbox'
-        clickFirst = true
-        karo.empty target
-      else
-        return true
+    if url.match(/inbox/)
+      target = $('#pane-st-inbox')
+      key = 'inbox'
+      menu = 'st-inbox'
+      clickFirst = true
     else if url.match(/outbox/)
     else if url.match(/enroll/)
       $('#m-enroll-self').modal 'hide'

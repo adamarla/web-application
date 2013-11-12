@@ -68,7 +68,7 @@
           #left-3
             = render partial: 'examiners/tag-pending'
           #left-4
-            = render partial: 'toolbox/grd-pending'
+            = render partial: 'shared/grading/pending'
           #left-5
             = render partial: 'examiners/typeset-pending'
           #left-6
@@ -96,12 +96,7 @@
             = render partial: 'toolbox/wait'
           #graph-paper
           #wide-grd-canvas
-            .row-fluid
-              = render partial: 'toolbox/grd-toolbar'
-            .row-fluid
-              .span1
-                = render partial: 'toolbox/grd-toolbar-btns'
-              .span11
-                %canvas#grading-canvas{ :width => 600, :height => 800 }
+            = render partial: 'shared/grading/controls'
+
     = yield :toolbox
     = yield :modals

@@ -100,7 +100,6 @@ Webapp::Application.routes.draw do
   match 'register/student' => 'students#create', via: :post
   match 'match/student' => 'students#match', via: :post
   match 'claim/account' => 'students#claim', via: :post
-  match 'ws-preview' => 'students#responses', via: :get
   match 'dispute' => 'students#dispute', via: :get
   match 'inbox' => 'students#inbox', via: :get
   match 'inbox/echo' => 'students#inbox_echo', via: :get
@@ -137,7 +136,6 @@ Webapp::Application.routes.draw do
   # Testpaper
   match 'ws/summary' => 'testpapers#summary', via: :get
   match 'testpaper/load' => 'testpapers#load', via: :get
-  match 'ws/preview' => 'testpapers#preview', via: :get
   match 'ws/layout' => 'testpapers#layout', via: :get
   match 'ws/publish' => 'testpapers#inbox', via: :get
   match 'ws/unpublish' => 'testpapers#uninbox', via: :get
