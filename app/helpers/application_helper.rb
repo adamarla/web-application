@@ -93,7 +93,16 @@ module ApplicationHelper
   end 
 
   # Generates a <button> with either an icon, text or both and an optional radio/checkbox
-  # Example: simple_button :for => "submit", :icon => 'icon-star', :class => 'btn-warning', :as => :radio, :name => "checked[25]"
+  # Example: 
+  #     simple_button 
+  #          for: :submit, 
+  #          icon: 'icon-star', 
+  #          class: 'btn-warning', 
+  #          as: :radio, 
+  #          name: 'checked[25]', 
+  #          shortcut: 'A',
+  #          tooltip: 'this button does X'
+
   def simple_button( options = {} )
     label = options.delete :for
     icon = options.delete :icon
@@ -107,6 +116,7 @@ module ApplicationHelper
     id = options.delete :id
     tooltip = options.delete(:tooltip) || nil
     type = options.delete(:type) || :button
+    shortcut = options.delete(:shortcut) || nil
 
     unless tooltip.nil?
       rel = :tooltip
@@ -116,7 +126,7 @@ module ApplicationHelper
     end
 
     content_tag :button, class: "btn #{klass}", type: type, id: id, rel: rel, title: title, data: options do 
-      render = label.blank? ? "" : label 
+      render = label.blank? ? "" : (shortcut.blank? ? label : "<span class='kb-shortcut'>#{shortcut}</span>#{label}")
       render += (icon.blank? ? "" : content_tag(:i, nil, :class => "icon-white #{icon}") )
       unless as.blank?
         render += (as == :radio) ? 
