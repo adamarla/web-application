@@ -69,6 +69,10 @@ jQuery ->
       karo.empty target
     else if url.match(/audit\/open/)
       target = $('#pane-audit-todo')
+      form = $('#m-audit-form').find('form').eq(0)
+      $(m).prop('checked', false) for m in form.find("input[type='checkbox']")
+      form.find("textarea").eq(0).val null
+      $('#m-audit-form').modal 'hide'
     else if url.match(/audit\/close/)
       target = $('#pane-audit-review')
     else if url.match(/questions\/without_video/)
