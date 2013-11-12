@@ -68,7 +68,7 @@ jQuery ->
     # alert "Hiding #{marker}"
     return true
 
-  $('btn-audit-allok').on 'click', (event) ->
+  $('#btn-audit-allok').on 'click', (event) ->
     form = $('#m-audit-form').find('form').eq(0)
     $(m).prop('checked', false) for m in form.find("input[type='checkbox']")
     form.find("textarea").eq(0).val null
