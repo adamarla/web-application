@@ -649,20 +649,30 @@ button[data-toggle='button'] {
   position: fixed ;
 }
 
-#grd-typeahead {
-  background: transparent ; 
+#grd-ticker, #grd-typeahead {
+  border: none ;
+  border-radius: 0px ;
   color: white ;
-  border: {
-    radius: 0px ;
-    style: none ;
-    bottom: 1px solid $deep-blue ; 
-  }
+}
+
+#grd-typeahead {
   box-shadow: none ;
-  margin-top: 8px ;
   font: { 
-    size: 13px ;
+    size: 10px ;
     weight: 300 ;
+    family: "Lucida Sans Typewriter", "Lucida Console", "Arial Black", "Droid Dans Mono", monospace ;
   }
+  border: {
+    radius: 5px ;
+  }
+
+  padding: {
+    top: 10px ;
+    bottom: 7px ;
+    left: 10px ;
+  }
+  background: rgba(43,43,43,0.7) ;
+
 }
 
 #grd-ticker { 
@@ -670,16 +680,18 @@ button[data-toggle='button'] {
     top: 7px ;
     bottom: 0px ;
   } 
-  border: {
-    top-left-radius: 10px ;
-    top-right-radius: 10px ;
-  }
-  border: 1px solid $deep-blue ;
   font-size: 14px ;
   &.graded {
     border: none ;
     background-color: rgba(0,129,194,0.7) ;
     color: white ;
+  }
+  border: {
+    top-left-radius: 10px ;
+    bottom-left-radius: 10px ;
+    style: solid ;
+    width: 1px ;
+    color: $deep-blue ;
   }
 }
 
