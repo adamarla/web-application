@@ -13,23 +13,23 @@
     %input{ id: 'grd-typeahead', type: :text, placeholder: 'Write comment - then click on scan' }
 
 .row-fluid
-  .span1{ id: 'grd-controls' }
+  .span2{ id: 'grd-controls' }
     .row-fluid.push-down
       .btn-group.btn-group-vertical{ data: { toggle: 'buttons-radio' } } 
-        = simple_button icon: 'icon-ok', tooltip: 'Right!', id: 'btn-ok'
-        = simple_button icon: 'icon-remove', tooltip: 'Wrong!', id: 'btn-cross'
-        = simple_button icon: 'icon-question-sign', tooltip: 'How?', id: 'btn-what'
+        = simple_button for: 'ick', id: 'btn-ok', shortcut: 'T'
+        = simple_button for: 'Cross', id: 'btn-cross', shortcut: 'X'
+        = simple_button for: 'ow?', id: 'btn-what', shortcut: 'H'
     .row-fluid.push-down
       .btn-group.btn-group-vertical
-        = simple_button icon: 'icon-refresh', tooltip: 'Fresh Copy', id: 'btn-fresh-copy'
-        = simple_button icon: 'icon-text-width', tooltip: 'Add a Comment', id: 'btn-write'
-        = simple_button icon: 'icon-trash', tooltip: 'Undo Last', id: 'btn-undo'
-        = simple_button icon: 'icon-repeat', tooltip: 'Flip Image', id: 'btn-rotate'
+        = simple_button for: 'estore', id: 'btn-fresh-copy', tooltip: 'Restore original scan', shortcut: 'R'
+        = simple_button for: 'rite', tooltip: 'Add a Comment', id: 'btn-write', shortcut: 'W'
+        = simple_button for: 'ndo', tooltip: 'Undo Last', id: 'btn-undo', shortcut: 'U'
+        = simple_button for: 'lip', tooltip: 'Flip Image', id: 'btn-rotate', shortcut: 'F'
     .row-fluid.push-down
       .btn-group.btn-group-vertical{ id: 'grd-nav' }
-        = simple_button icon: 'icon-chevron-up', tooltip: 'Previous Scan', id: 'btn-prev-scan'
-        = simple_button icon: 'icon-chevron-left', tooltip: 'Previous Question', id: 'btn-prev-ques'
-        = simple_button icon: 'icon-chevron-right', tooltip: 'Next Question', id: 'btn-next-ques'
-        = simple_button icon: 'icon-chevron-down', tooltip: 'Next Scan', id: 'btn-next-scan'
-  .span10
+        = simple_button for: 'rev Pg', tooltip: 'Previous Scan', id: 'btn-prev-scan', shortcut: 'P'
+        = simple_button for: 'Prev Q', tooltip: 'Previous Question', id: 'btn-prev-ques', shortcut: 'Y'
+        = simple_button for: 'Next Q', tooltip: 'Next Question', id: 'btn-next-ques', shortcut: 'Z'
+        = simple_button for: 'ext Pg', tooltip: 'Next Scan', id: 'btn-next-scan', shortcut: 'N'
+  .span9
     %canvas{ id: 'grading-canvas', width: 600, height: 800 }

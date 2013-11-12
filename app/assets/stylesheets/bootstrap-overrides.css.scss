@@ -34,6 +34,15 @@ img {
   padding-top: 4px ;
 }
 
+.kb-shortcut {
+  padding: 1px 4px ;
+  border-radius: 5px ;
+  background: $orange ;
+  margin-right: 5% ;
+  color: $panel-colour ;
+  float: left ;
+}
+
 .underline {
   border-bottom: 1px solid $deep-blue ;
 }
