@@ -120,7 +120,7 @@ window.canvas = {
         
         # clear comment-box and get ready for next comment
         abacus.commentBox.val ''
-        abacus.commentBox.focus() # take back focus
+        # abacus.commentBox.focus() # take back focus
     return true
     
   clear: () ->

@@ -156,6 +156,7 @@ jQuery ->
   #####################################################################
 
   $('body').on 'keypress', (event) ->
+    event.stopImmediatePropagation()
     return true unless grtb.keyboard
 
     lp = $('#left').children('#left-4').eq(0)
@@ -169,10 +170,39 @@ jQuery ->
 
     key = event.which
 
-    unless (key < 49 || key > 57)
+    unless (key < 49 || key > 57) # numbers 1-9
       grtb.select( key - 49 )
-    else if key is 115
+    else if key is 115 # S => submit
       grtb.form.submit() if grtb.current.next().length is 0
+    else if (key >= 102 && key <= 122) 
+      buttons = abacus.root.find 'button'
+      switch key 
+        when 102  #F
+          id = 'btn-rotate'
+        when 104  #H
+          id = 'btn-what'
+        when 110  #N
+          id = 'btn-next-scan'
+        when 112  #P
+          id = 'btn-prev-scan'
+        when 114  #R
+          id = 'btn-fresh-copy'
+        when 116  #T
+          id = 'btn-ok' 
+        when 117  #U
+          id = 'btn-undo' 
+        when 119  #W 
+          id = 'btn-write'
+        when 120  #X
+          id = 'btn-cross'
+        when 121  #Y
+          id = 'btn-prev-ques'
+        when 122  #Z
+          id = 'btn-next-ques'
+
+      btn = buttons.filter("[id=#{id}]")[0]
+      $(btn).click() if btn?
+
     return true
 
   #####################################################################

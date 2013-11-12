@@ -199,6 +199,11 @@ jQuery ->
     grtb.keyboard = false
     return true
 
+  abacus.commentBox.focusout (event) ->
+    event.stopPropagation()
+    grtb.keyboard = true
+    return true
+
   abacus.nav.on 'click', 'button', (event) ->
     event.stopImmediatePropagation()
     grtb.keyboard = true
