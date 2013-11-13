@@ -12,11 +12,14 @@
 #  honest       :integer
 #  received     :boolean         default(FALSE)
 #  compiled     :boolean         default(FALSE)
+#  signature    :string(50)
 #
 
 class AnswerSheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :testpaper 
+
+  after_create :create_signature
 
   def self.of_student(id)
     where(:student_id => id)
@@ -155,8 +158,18 @@ class AnswerSheet < ActiveRecord::Base
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
 
-  def q_selections
-    QSelection.where(quiz_id: self.testpaper.quiz_id).order(:index)
+  def signature?
+    return self.signature unless self.signature.blank?
+    self.create_signature
+  end
+
+  def create_signature 
+    if self.signature.nil?
+      n = QSelection.where(quiz_id: self.testpaper.quiz_id).count
+      sig = [*0..n].map{ rand(4) }.join
+      self.update_attribute :signature, sig
+    end
+    return self.signature
   end
 
 end

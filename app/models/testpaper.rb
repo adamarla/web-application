@@ -62,12 +62,13 @@ class Testpaper < ActiveRecord::Base
   end
 
   def compile_tex
-    student_ids = AnswerSheet.where(testpaper_id: self.id).select(:student_id).map(&:student_id)
-    students = Student.where(id: student_ids).order(:id)
+    answer_sheets = AnswerSheet.where(testpaper_id: self.id)
+    students = Student.where(id: answer_sheets.map(&:student_id)).order(:id) 
 
     names = []
     students.each_with_index do |s,j|
-      names.push({ id: s.id, name: s.name, value: encrypt(j,3) })
+      signature = answer_sheets.where(student_id: s.id).map(&:signature?).first
+      names.push({ id: s.id, name: s.name, value: encrypt(j,3), fingerprint: signature })
     end
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
