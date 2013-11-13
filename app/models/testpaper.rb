@@ -19,12 +19,12 @@ include GeneralQueries
 class Testpaper < ActiveRecord::Base
   belongs_to :quiz
 
-  has_many :graded_responses, :dependent => :destroy 
-  has_many :answer_sheets, :dependent => :destroy
-  has_many :students, :through => :answer_sheets
+  has_many :graded_responses, dependent: :destroy
+  has_many :answer_sheets, dependent: :destroy
+  has_many :students, through: :answer_sheets
 
   def self.takehome
-    where(:takehome => true)
+    where(takehome: true)
   end
 
   def self.timed
@@ -62,22 +62,22 @@ class Testpaper < ActiveRecord::Base
   end
 
   def compile_tex
-    student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
-    students = Student.where(:id => student_ids).order(:id)
+    student_ids = AnswerSheet.where(testpaper_id: self.id).select(:student_id).map(&:student_id)
+    students = Student.where(id: student_ids).order(:id)
 
     names = []
     students.each_with_index do |s,j|
-      names.push({ :id => s.id, :name => s.name, :value => encrypt(j,3) })
+      names.push({ id: s.id, name: s.name, value: encrypt(j,3) })
     end
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
 
     response = SavonClient.request :wsdl, :assignQuiz do  
       soap.body = { 
-        :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name, :value => encrypt(self.quiz_id, 7) },
-        :instance => { :id => self.id, :name => self.name, :value => encrypt(self.id, 7) },
-        :students => names,
-        :publish  => self.takehome
+        quiz: { id: self.quiz_id, name: self.quiz.latex_safe_name, value: encrypt(self.quiz_id, 7) },
+        instance: { id: self.id, name: self.name, value: encrypt(self.id, 7) },
+        students: names,
+        publish: self.takehome
       }
     end
     response = response.to_hash[:assign_quiz_response]
@@ -91,14 +91,14 @@ class Testpaper < ActiveRecord::Base
 
   def process_worksheet(student, index)
 
-    names = [{ :id => student.id, :name => student.name, :value => encrypt(index,3) }]
+    names = [{ id: student.id, name: student.name, value: encrypt(index,3) }]
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['prep_test']}"
     response = SavonClient.request :wsdl, :prepTest do  
       soap.body = { 
-        :quiz => { :id => self.quiz_id, :name => self.quiz.latex_safe_name , :value => encrypt(self.quiz_id, 7) },
-        :instance => { :id => self.id, :name => self.name , :value => encrypt(self.id, 7) },
-        :students => names 
+        quiz: { id: self.quiz_id, name: self.quiz.latex_safe_name , value: encrypt(self.quiz_id, 7) },
+        instance: { id: self.id, name: self.name , value: encrypt(self.id, 7) },
+        students: names 
       }
     end
     if self.takehome
@@ -110,12 +110,12 @@ class Testpaper < ActiveRecord::Base
 
   #Only for legacy Testpapers, not needed going forward from Oct1, 2013
   def compile_solution_tex
-    student_ids = AnswerSheet.where(:testpaper_id => self.id).select(:student_id).map(&:student_id)
-    students = Student.where(:id => student_ids).order(:id)
+    student_ids = AnswerSheet.where(testpaper_id: self.id).select(:student_id).map(&:student_id)
+    students = Student.where(id: student_ids).order(:id)
 
     names = []
     students.each_with_index do |s,j|
-      names.push({ :id => s.id, :name => s.name, :value => encrypt(j,3) })
+      names.push({ id: s.id, name: s.name, value: encrypt(j,3) })
     end
 
     students.each_with_index do |s,j|
@@ -130,7 +130,7 @@ class Testpaper < ActiveRecord::Base
     # that this number will change with time before settling to a final value
 
     individual_scores = []
-    AnswerSheet.where(:testpaper_id => self.id).each do |a|
+    AnswerSheet.where(testpaper_id: self.id).each do |a|
       thus_far = a.graded_thus_far?
       next if thus_far == 0
       marks = a.marks? 
@@ -152,22 +152,22 @@ class Testpaper < ActiveRecord::Base
 
   def closed_on?
     # Returns the approximate date when grading for this testpaper / worksheet was finished
-    last = AnswerSheet.where(:testpaper_id => self.id).order(:updated_at).last.updated_at
+    last = AnswerSheet.where(testpaper_id: self.id).order(:updated_at).last.updated_at
   end
 
   def rebuild_testpaper_report_pdf
-    answer_sheets = AnswerSheet.where(:testpaper_id => self.id).map{ |m|
-      { :id => m.student_id, :name => m.student.name, :value => "#{m.marks?}/#{self.quiz.total?}" }
+    answer_sheets = AnswerSheet.where(testpaper_id: self.id).map{ |m|
+      { id: m.student_id, name: m.student.name, value: "#{m.marks?}/#{self.quiz.total?}" }
     }
-    answer_sheets.push({ :id => "", :name => "", :value => ""}) if answer_sheets.count.odd?
+    answer_sheets.push({ id: "", name: "", value: "" }) if answer_sheets.count.odd?
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_quiz_report']}"
     school = self.quiz.teacher.school
     response = SavonClient.request :wsdl, :generateQuizReport do
       soap.body = {
-        :school => { :id => school.id, :name => school.name },
-        :group => { :id => self.id, :name => self.pdf },
-        :members => answer_sheets 
+        school: { id: school.id, name: school.name }, 
+        group: { id: self.id, name: self.pdf },
+        members: answer_sheets
       }
     end # of response 
     return response.to_hash[:generate_quiz_report]
