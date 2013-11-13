@@ -155,4 +155,8 @@ class AnswerSheet < ActiveRecord::Base
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
 
+  def q_selections
+    QSelection.where(quiz_id: self.testpaper.quiz_id).order(:index)
+  end
+
 end
