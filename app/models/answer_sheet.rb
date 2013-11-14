@@ -166,7 +166,7 @@ class AnswerSheet < ActiveRecord::Base
   def create_signature 
     if self.signature.nil?
       n = QSelection.where(quiz_id: self.testpaper.quiz_id).count
-      sig = [*0..n].map{ rand(4) }.join
+      sig = [*1..n].map{ rand(4) }.join
       self.update_attribute :signature, sig
     end
     return self.signature
