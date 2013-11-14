@@ -68,7 +68,7 @@ class Testpaper < ActiveRecord::Base
     names = []
     students.each_with_index do |s,j|
       signature = answer_sheets.where(student_id: s.id).map(&:signature?).first
-      names.push({ id: s.id, name: s.name, value: encrypt(j,3), fingerprint: signature })
+      names.push({ id: s.id, name: s.name, value: encrypt(j,3), signature: signature })
     end
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
