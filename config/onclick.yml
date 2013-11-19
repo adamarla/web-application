@@ -499,6 +499,12 @@ lnk-audit-form :
   show : 
     modal : m-audit-form
 
+lnk-edit-form : 
+  show : 
+    modal : m-edit-form
+  url :
+    self : question/gettex.json?id=:id
+
 tab-audit-todo : 
   url : 
     self : audit/todo

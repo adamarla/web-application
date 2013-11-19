@@ -151,6 +151,17 @@ class QuestionController < ApplicationController
     end
   end
 
+  def edit_open
+    question = Question.find params[:id]
+    uri = URI('http://localhost:8080/vault/#{question.uid}/question.tex')
+    tex = Net::HTTP.get(uri)
+    render json: { tex: tex }, status: :ok
+  end
+
+  def edit_close
+
+  end
+
   def without_video
     tagged = Question.author(current_account.loggable_id).tagged
     ids = tagged.map(&:id) - tagged.with_video.map(&:id) 

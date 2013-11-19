@@ -13,5 +13,7 @@
           id: 'lnk-audit-oldest', href: "#{audit_todo_path}?t=oldest", remote: true
         = simple_link for: 'Newest', class: 'btn btn-inverse', 
           id: 'lnk-audit-newest', href: "#{audit_todo_path}?t=newest", remote: true
-      = simple_link :for => "Audit", :class => 'btn btn-inverse pull-right', :id => 'lnk-audit-form'
+      .btn-group.pull-right
+        = simple_link :for => "Edit", :class => 'btn btn-inverse', :id => 'lnk-edit-form'
+        = simple_link :for => "Audit", :class => 'btn btn-inverse', :id => 'lnk-audit-form'
   #pane-audit-review.tab-pane

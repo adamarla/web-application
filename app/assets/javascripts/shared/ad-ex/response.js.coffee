@@ -84,6 +84,8 @@ jQuery ->
     else if url.match(/question\/add_video/)
       $('#m-upload-video-solution').modal 'hide'
       target = $('#pane-video-pending')
+    else if url.match(/question\/gettex/)
+      $('#m-edit-form #edit_tex').val = json.tex
     else
       matched = false
 
