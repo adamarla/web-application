@@ -135,7 +135,7 @@ class Examiner < ActiveRecord::Base
   def self.distribute_scans(debug = false)
     unassigned = GradedResponse.unassigned.with_scan
     ws_ids = unassigned.map(&:testpaper_id).uniq
-    examiners = Examiner.where(:is_admin => true).select{ |m| m.account.active }
+    examiners = Examiner.select{ |m| m.account.active }
     n_examiners = examiners.count
     limit = 20
 
