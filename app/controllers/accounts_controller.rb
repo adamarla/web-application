@@ -108,7 +108,7 @@ class AccountsController < ApplicationController
     z = overlay.slice(n,3)
 
     while !z.blank?
-      r.comments.create x: z[0], y:z[1], tex: z[2]
+      r.tex_comments.create x: z[0], y:z[1], tex: z[2]
       n += 3
       z = overlay.slice(n,3)
     end
