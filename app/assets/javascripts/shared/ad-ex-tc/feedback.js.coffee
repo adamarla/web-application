@@ -77,6 +77,7 @@ window.fdb = {
 
   detach : () ->
     $(preview.root).detach().appendTo $(fdb.root).parent()
+    preview.clear()
     $(fdb.root).addClass 'hide'
     return true
 
