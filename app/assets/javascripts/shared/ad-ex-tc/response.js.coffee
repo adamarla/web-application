@@ -23,8 +23,8 @@ jQuery ->
       key = 'pages'
       # karo.tab.enable 'tab-grd-page'
     else if url.match(/gr\/pending/)
-      abacus.initialize json
-      grtb.show()
+      fdb.initialize json
+      rubric.show()
     else if url.match(/audit\/done/)
       auditForm = $('#m-audit-form')
       entries = $('#pane-audit-review').children('.line')
@@ -60,7 +60,7 @@ jQuery ->
         tutorial.start 'qzb-milestone-6'
         $('#m-audit-form').find('form').eq(0).attr 'action', "/audit/done?id=#{json.a}"
     else if url.match(/rotate_scan/)
-      abacus.next.scan()
+      fdb.next.scan()
     else
       matched = false
 

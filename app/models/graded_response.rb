@@ -27,6 +27,7 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :q_selection
   belongs_to :testpaper
   belongs_to :subpart
+  has_many :comments
 
   validates :q_selection_id, presence: true
   validates :student_id, presence: true

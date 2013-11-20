@@ -4,7 +4,7 @@ class CreateComments < ActiveRecord::Migration
       t.integer :x
       t.integer :y
       t.text :tex
-      t.integer :examiner_id
+      t.integer :graded_response_id
 
       t.timestamps
     end

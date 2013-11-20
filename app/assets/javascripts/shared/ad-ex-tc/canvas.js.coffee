@@ -31,9 +31,6 @@ window.canvas = {
   initialize: (id) ->
     canvas.object = if typeof id is 'string' then $(id) else id
     
-    $(abacus.commentBox).typeahead {
-      source : canvas.typeahead
-    }
 
     # Canvas context settings
     canvas.ctx = canvas.object[0].getContext('2d')
@@ -55,7 +52,7 @@ window.canvas = {
     
 
   load : (scan) ->
-    # 'scan' is a jQuery object provided by abacus as abacus.current.scan
+    # 'scan' is a jQuery object provided by feedback as fdb.current.scan
 
     # Clear any previously added check marks etc 
     canvas.clear()
@@ -73,14 +70,19 @@ window.canvas = {
 
   drawTex : (script, x, y) ->
     tex = script.prev('span')
-    #tex.attr 'style', "position:relative;font-size:10px;left:#{x}px;top:#{y}px;color:#3f9129;"
-    tex.attr 'style', "position:absolute;left:#{x}px;top:#{y}px;color:#{canvas.colour.green};"
+    xp = (x / 6)
+    yp = (y / 8)
+    tex.attr 'style', "left:#{xp}%;top:#{yp}%;"
     return true
 
   record: (event) ->
     return false unless canvas.mode?
-    x = event.pageX - canvas.object[0].offsetLeft
-    y = event.pageY- canvas.object[0].offsetTop
+
+    p = canvas.object.parent()
+    offset = p.offset()
+
+    x = event.pageX - offset.left
+    y = event.pageY- offset.top
 
     return if x < 0 || y < 0 # click not inside canvas
 
@@ -91,8 +93,9 @@ window.canvas = {
       canvas.ctx.drawImage glyph, x - 7, y - 7
       clicks.push x - 7, y-7
     else
-        comment = $(abacus.commentBox).val()
+        comment = $(fdb.commentBox).val()
         return unless (comment.length and comment.match(/\S/)) # => ignore blank comments
+
 
         comment = karo.sanitize comment
         jaxified = karo.jaxify comment
@@ -113,14 +116,19 @@ window.canvas = {
         id = "tex-fdb-#{index}"
 
         script = $("<script id=#{id} type='math/tex'>#{jaxified}</script>")
-        $(script).appendTo canvas.object.parent()
-        MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [canvas.drawTex, script, event.pageX, event.pageY]
+
+        overlay = canvas.object.siblings().eq(0)
+        $(script).appendTo overlay
+        
+        # $(script).appendTo canvas.object.parent() 
+        # MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [canvas.drawTex, script, event.pageX, event.pageY]
+        MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [canvas.drawTex, script, x,y]
         
         canvas.comments.push x,y,comment
         
         # clear comment-box and get ready for next comment
-        abacus.commentBox.val ''
-        # abacus.commentBox.focus() # take back focus
+        fdb.commentBox.val ''
+        # fdb.commentBox.focus() # take back focus
     return true
     
   clear: () ->

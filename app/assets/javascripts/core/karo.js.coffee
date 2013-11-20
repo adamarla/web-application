@@ -144,8 +144,7 @@ window.karo = {
     # is what will be typeset remotely. Can't have LaTeX barf there
     nDollar = (ret.match(/\$/g) || []).length
 
-    if nDollar % 2 isnt 0 # => odd # of $ => mismatched
-      ret += "$"
+    ret += "$" if nDollar % 2 isnt 0 # => odd number of $ => mismatched $..$ 
     return ret
 
   jaxify : (comment) ->
