@@ -29,6 +29,11 @@ jQuery ->
       $(preview.root).carousel { interval:15000 }
       return true
 
+    clear : () ->
+      return false unless preview.root?
+      $(preview.root).children('.carousel-inner').empty()
+      return true
+
     load : (img, source) ->
       return false unless source?
       img = if typeof img is 'string' then img else img.attr('name')
