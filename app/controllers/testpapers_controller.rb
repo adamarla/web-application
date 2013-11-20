@@ -30,9 +30,6 @@ class TestpapersController < ApplicationController
     unless @ws.nil?
       @subparts = Subpart.in_quiz @ws.quiz_id
       @gr = GradedResponse.of_student(student_id).in_testpaper @ws.id
-      scans = @gr.with_scan.map(&:scan).uniq
-      folder = @ws.legacy_record? ? "#{@ws.quiz_id}-#{@ws.id}" : nil
-      @images = scans.map{ |s| folder.nil? ? s : "#{folder}/#{s}" }
     else
       head :bad_request 
     end

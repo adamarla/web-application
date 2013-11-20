@@ -7,10 +7,7 @@
   #toolbox.hidden 
     = render partial: 'teachers/disputed'
     = render partial: 'teachers/sektions'
-
     = render partial: 'toolbox/line'
-    = render partial: 'toolbox/preview'
-
     = render partial: 'menus/teacher/per-qz'
     = render partial: 'menus/teacher/per-ws'
     = render partial: 'menus/teacher/per-question'
@@ -169,6 +166,8 @@
           #right-X
         #wide.g-panel.span8
           #wide-X
+            = render partial: 'shared/user/preview'
+            = render partial: 'shared/grading/controls'
           #wide-wait
             = render partial: 'toolbox/wait'
           #wide-chart-1.offset1
@@ -178,9 +177,6 @@
           - unless tc.online
             #wide-4
               = render partial: 'teachers/edit-sektion', locals: { teacher: tc }
-          - if tc.online
-            #wide-grd-canvas
-              = render partial: 'shared/grading/controls'
 
             #wide-5
               = render partial: 'teachers/edit-course', if: tc.online

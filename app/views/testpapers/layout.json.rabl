@@ -12,12 +12,4 @@ object false
   } 
 
   node(:user) { @who }
-
-  node(:preview) { 
-    {
-      source: :locker,
-      images: @images 
-    }
-  } 
-
   node(:caption) { @ws.quiz.name }

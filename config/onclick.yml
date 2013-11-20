@@ -126,7 +126,7 @@ lnk-wb-pending :
   default : true
   show : 
     left : left-4
-    wide : wide-grd-canvas
+    wide : wide-X
   autoclick :
     tab : tab-grd-ws
 
