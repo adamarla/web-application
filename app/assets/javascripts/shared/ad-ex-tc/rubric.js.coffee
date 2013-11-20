@@ -138,6 +138,7 @@ jQuery ->
 
     if url.match(/submit\/fdb/)
       fdb.clear()
+      fdb.current.response.addClass 'graded'
       fdb.next.response()
       rubric.rewind()
     else
