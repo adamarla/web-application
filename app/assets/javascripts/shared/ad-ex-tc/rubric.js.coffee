@@ -123,7 +123,7 @@ jQuery ->
     id = fdb.current.response.attr 'marker'
     overlay = fdb.decompile()
     action = "submit/fdb.json?id=#{id}&overlay=#{overlay}"
-    alert action
+    # alert action
     $(this).attr 'action', action
     return true
 
