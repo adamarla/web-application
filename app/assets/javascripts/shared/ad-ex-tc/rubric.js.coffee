@@ -247,6 +247,8 @@ jQuery ->
     result = pattern.exec action
     action = action.replace result,"gr=#{fdb.current.response.attr('marker')}"
     form.setAttribute 'data-action', action
+
+    rubric.keyboard = false # disable keyboard - if auditing during grading
     return false
 
 
