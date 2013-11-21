@@ -154,4 +154,12 @@ class ExaminersController < ApplicationController
     @questions = Question.where(examiner_id: current_account.loggable_id).where(available: false)
   end 
 
+  def reset_graded 
+    g = GradedResponse.find params[:id]
+    unless g.nil?
+      g.reset false # false => non-soft resetting => associated comments also destroyed
+    end
+    render json: { status: :ok }, status: :ok 
+  end 
+
 end

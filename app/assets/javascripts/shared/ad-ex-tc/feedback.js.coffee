@@ -279,6 +279,7 @@ jQuery ->
       when 'btn-fresh-copy'
         event.stopImmediatePropagation()
         fdb.clear()
+        $.get "reset/graded?id=#{fdb.current.response.attr 'marker'}" # will also destroy any associated comments
       when 'btn-rotate'
         event.stopImmediatePropagation()
         scan = "#{fdb.current.scan.attr 'name'}"
