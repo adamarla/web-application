@@ -34,7 +34,7 @@ jQuery ->
       $(preview.root).children('.carousel-inner').empty()
       return true
 
-    load : (img, source) ->
+    load : (img, source, caller = null) ->
       return false unless source?
       img = if typeof img is 'string' then img else img.attr('name')
       return false unless img?
@@ -46,6 +46,7 @@ jQuery ->
       item = $("<div class=item></div>").appendTo target
       $("<img alt='' src=#{server}/#{source}/#{img}>").appendTo $(item)
 
+      alert "preview.execute -> #{caller}" if caller?
       preview.execute()
       return true
 

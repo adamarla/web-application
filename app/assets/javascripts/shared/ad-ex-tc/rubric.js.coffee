@@ -215,16 +215,18 @@ jQuery ->
   #####################################################################
 
   $('#btn-toggle-answerkey').click (event) ->
-    # event.stopPropagation()
+    event.stopPropagation()
     backToGrading = $(this).hasClass('active')
     rubric.keyboard = backToGrading
 
     if backToGrading
       $(this).text("See Solution")
+      $(this).removeClass 'active'
       fdb.attach()
-      preview.load fdb.current.scan.attr('name'), 'locker' 
+      preview.load fdb.current.scan.attr('name'), 'locker'
     else
       $(this).text("Back to Grading")
+      $(this).addClass 'active'
       id = fdb.current.response.attr 'marker'
       fdb.detach()
       $.get "question/preview?gr=#{id}"

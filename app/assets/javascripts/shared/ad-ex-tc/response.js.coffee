@@ -24,6 +24,8 @@ jQuery ->
       # karo.tab.enable 'tab-grd-page'
     else if url.match(/gr\/pending/)
       fdb.initialize json
+      fdb.attach()
+      preview.load fdb.current.scan, 'locker'
       rubric.show()
     else if url.match(/audit\/done/)
       auditForm = $('#m-audit-form')

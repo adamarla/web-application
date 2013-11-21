@@ -39,7 +39,6 @@ window.fdb = {
     }
 
     preview.initialize()
-    fdb.attach()
     return true
 
   add : (comment, event) ->
@@ -68,11 +67,11 @@ window.fdb = {
     p = $(fdb.root).find('#fdb-preview-area').eq(0)
 
     $(preview.root).detach().prependTo p
-    overlay.over $(preview.root) unless overlay.root?
+    preview.clear()
+    overlay.over $(preview.root)
 
     $(fdb.root).removeClass 'hide'
     fdb.update.ticker()
-    preview.load fdb.current.scan, 'locker'
     return true
 
   detach : () ->
