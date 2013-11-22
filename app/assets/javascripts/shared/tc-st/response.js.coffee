@@ -47,6 +47,7 @@ jQuery ->
           url : "view/fdb.json?id=:id"
         }
       }
+      $('#overlay-preview-carousel').removeClass 'hide'
       return true
     else if url.match(/view\/fdb/)
       target = $('#fdb-panel')
@@ -79,6 +80,11 @@ jQuery ->
           overlay.over $(preview.root)
           overlay.loadJson json.comments
       return true
+    else if url.match(/question\/preview/)
+      $('#overlay-preview-carousel').addClass 'hide'
+      $('#wide-wait').addClass 'hide'
+      $('#wide-X').removeClass 'hide'
+      # preview.loadJson json # vault; works without this?
     else
       matched = false
 
@@ -87,24 +93,4 @@ jQuery ->
 
     e.stopPropagation() if matched is true
     return true
-
-  ########################################################
-  #  WIDE PANEL
-  ########################################################
-
-  $('#wide').ajaxComplete (e, xhr, settings) ->
-    matched = true
-    url = settings.url
-    json = $.parseJSON xhr.responseText
-
-    if url.match(/question\/preview/)
-      $('#wide-wait').addClass 'hide'
-      $('#wide-X').removeClass 'hide'
-      preview.loadJson json # vault
-    else
-      matched = false
-
-    e.stopImmediatePropagation() if matched
-    return true
-
 
