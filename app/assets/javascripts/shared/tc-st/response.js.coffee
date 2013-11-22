@@ -16,6 +16,7 @@ jQuery ->
 
     if url.match(/ws\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
+      karo.empty target
       key = 'wks'
     else if url.match(/ws\/layout/)
       # load student scans 
@@ -46,6 +47,7 @@ jQuery ->
           url : "view/fdb.json?id=:id"
         }
       }
+      $('#overlay-preview-carousel').removeClass 'hide'
       return true
     else if url.match(/view\/fdb/)
       target = $('#fdb-panel')
@@ -78,6 +80,11 @@ jQuery ->
           overlay.over $(preview.root)
           overlay.loadJson json.comments
       return true
+    else if url.match(/question\/preview/)
+      $('#overlay-preview-carousel').addClass 'hide'
+      $('#wide-wait').addClass 'hide'
+      $('#wide-X').removeClass 'hide'
+      # preview.loadJson json # vault; works without this?
     else
       matched = false
 
@@ -86,3 +93,4 @@ jQuery ->
 
     e.stopPropagation() if matched is true
     return true
+
