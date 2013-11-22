@@ -21,6 +21,33 @@ img {
   } 
 }
 
+span.MathJax {
+  display: inline-block ;
+  position: absolute ;
+  background: rgba(43,43,43,0.6);
+  color: white ;
+  border:{
+    radius: 5px ;
+  }
+  padding: 5px ;
+}
+
+.carousel:not([id~='how-it-works']), .overlay {
+  position: absolute ; 
+  top: 0px ;
+  left: 0px ;
+  width: 600px ;
+  height: 800px ;
+}
+
+.overlay {
+  z-index: 3 ;
+}
+
+.carousel {
+  z-index: 0 ;
+}
+
 .title { 
   font: {
     size: 18px ;
@@ -578,8 +605,16 @@ img {
 
 } 
 
-#wide-X > #wide-X-carousel { 
-  min-height: 300px ;
+#wide-X {
+  position: relative ;
+  > div { 
+    position: absolute ; 
+    top: 0px ;
+    left: 0px ;
+  }
+}
+
+#preview-carousel { 
   > .carousel-inner { 
     text-align: center ;
   } 
@@ -654,17 +689,33 @@ button[data-toggle='button'] {
   } 
 }
 
-#grd-controls, #grd-typeahead {
-  position: fixed ;
+#fdb-main {
+  position: absolute ; 
+  top: 0px ;
+  left: 0px ;
+
+  > div:not([id~='pending-scans']) {
+    position: absolute ;
+  }
+
+  > #fdb-active-area {
+    top: 50px ;
+  }
 }
 
-#grd-ticker, #grd-typeahead {
+#fdb-controls, #fdb-typeahead {
+  position: fixed ;
+  z-index: 3 ;
+  float: left ;
+}
+
+#fdb-ticker, #fdb-typeahead {
   border: none ;
   border-radius: 0px ;
   color: white ;
 }
 
-#grd-typeahead {
+#fdb-typeahead {
   box-shadow: none ;
   font: { 
     size: 10px ;
@@ -684,7 +735,7 @@ button[data-toggle='button'] {
 
 }
 
-#grd-ticker { 
+#fdb-ticker { 
   padding: { 
     top: 7px ;
     bottom: 0px ;

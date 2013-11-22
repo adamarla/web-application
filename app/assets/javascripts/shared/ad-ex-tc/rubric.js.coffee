@@ -1,6 +1,6 @@
 
 
-window.grtb = {
+window.rubric = {
   root : null,
   ul : null,
   form : null,
@@ -8,12 +8,12 @@ window.grtb = {
   keyboard : false,
 
   show : () ->
-    return false unless grtb.current?
-    grtb.current.removeClass 'disabled'
+    return false unless rubric.current?
+    rubric.current.removeClass 'disabled'
     # disable and reset all * subsequent * tabs 
-    for m in grtb.current.nextAll('li')
+    for m in rubric.current.nextAll('li')
       $(m).addClass 'disabled'
-      grtb.reset $(m)
+      rubric.reset $(m)
 
     # Enable the feedback submit button only if on the last tab
     submitBtn = $('#btn-submit-fdb')
@@ -21,14 +21,14 @@ window.grtb = {
     # Ensure that the 'Show Solution' & 'Audit Key' buttons are enabled
     $(m).prop('disabled', false) for m in submitBtn.siblings()
 
-    if grtb.current.next().length isnt 0
+    if rubric.current.next().length isnt 0
       submitBtn.addClass 'disabled'
       submitBtn.prop 'disabled', true
     else
       submitBtn.removeClass 'disabled'
       submitBtn.prop 'disabled', false
 
-    a = grtb.current.children('a').eq(0)
+    a = rubric.current.children('a').eq(0)
     karo.tab.enable a.attr('id')
     return true
 
@@ -43,13 +43,13 @@ window.grtb = {
     return true
 
   rewind : () ->
-    grtb.current = grtb.ul.children('li').eq(0)
-    grtb.reset grtb.current
-    grtb.show()
+    rubric.current = rubric.ul.children('li').eq(0)
+    rubric.reset rubric.current
+    rubric.show()
     return false
 
   select : (n) -> # n-th .requirement in currently active tab/pane, 0 < n < 10
-    active = grtb.ul.next().children('.active').eq(0)
+    active = rubric.ul.next().children('.active').eq(0)
     target = active.children('.requirement').eq(n)
     return true if target.length is 0
     target.click()
@@ -59,43 +59,40 @@ window.grtb = {
 
 jQuery ->
 
-  # This script file is called only for roles that can grade => roles that 
-  # that can see _grd-abacus. Hence, its safe to assume that #form-feedback is visible
-
-  unless grtb.ul?
-    grtb.ul = $('#form-feedback').find('ul.nav-tabs').eq(0)
-    grtb.current = grtb.ul.children('li').eq(0)
-    grtb.root = grtb.ul.parent()
-    grtb.form = grtb.root.parent()
+  unless rubric.ul?
+    rubric.ul = $('#form-feedback').find('ul.nav-tabs').eq(0)
+    rubric.current = rubric.ul.children('li').eq(0)
+    rubric.root = rubric.ul.parent()
+    rubric.form = rubric.root.parent()
 
   #####################################################################
   ## Enable / disable keyboard shortcuts 
   #####################################################################
 
   $('#tab-grd-ws, #tab-grd-page').on 'shown', (event) ->
-    grtb.keyboard = false
+    rubric.keyboard = false
     return true
 
   $('#tab-grd-panel').on 'shown', (event) ->
-    grtb.keyboard = true
+    rubric.keyboard = true
     return true
 
   #####################################################################
-  ## Behaviour of the Grading Abacus  
+  ## Behaviour of the Grading feedback  
   #####################################################################
 
-  grtb.ul.on 'click', 'li', (event) ->
+  rubric.ul.on 'click', 'li', (event) ->
     event.stopPropagation()
-    return false unless grtb.keyboard # disable mouse-clicks too
+    return false unless rubric.keyboard # disable mouse-clicks too
     return false if $(this).hasClass 'disabled'
 
-    grtb.current = $(this)
-    grtb.show()
+    rubric.current = $(this)
+    rubric.show()
     return false # to prevent screen scrolling up
 
-  grtb.root.on 'click', '.requirement', (event) ->
+  rubric.root.on 'click', '.requirement', (event) ->
     event.stopImmediatePropagation()
-    return false unless grtb.keyboard # disable mouse-clicks too
+    return false unless rubric.keyboard # disable mouse-clicks too
 
     multiOk = $(this).parent().hasClass 'multi-select'
     already = $(this).hasClass 'selected'
@@ -114,22 +111,19 @@ jQuery ->
 
       # Move to the next tab
       unless already
-        grtb.current = grtb.current.next()
-        grtb.show()
+        rubric.current = rubric.current.next()
+        rubric.show()
     return true
 
-  grtb.form.submit (event) ->
-    annotated = false
-    annotated |= (canvas.clicks[m].length isnt 0) for m in ['check', 'cross', 'question']
-    annotated |= (canvas.comments.length isnt 0)
-
-    if not annotated
+  rubric.form.submit (event) ->
+    if not fdb.given.length > 0 
       alert "Add atleast a comment or annotate with a check, cross or question mark"
       return false
 
-    id = abacus.current.response.attr 'marker'
-    clicks = canvas.decompile()
-    action = "submit/fdb.json?id=#{id}&clicks=#{clicks}"
+    id = fdb.current.response.attr 'marker'
+    overlay = fdb.decompile()
+    action = "submit/fdb.json?id=#{id}&overlay=#{overlay}"
+    # alert action
     $(this).attr 'action', action
     return true
 
@@ -138,13 +132,15 @@ jQuery ->
   ## On successful submission of feedback 
   #####################################################################
 
-  grtb.form.ajaxComplete (event, xhr,settings) ->
+  rubric.form.ajaxComplete (event, xhr,settings) ->
     url = settings.url
     matched = true
 
     if url.match(/submit\/fdb/)
-      abacus.next.response()
-      grtb.rewind()
+      fdb.clear()
+      fdb.current.response.addClass 'graded'
+      fdb.next.response()
+      rubric.rewind()
     else
       matched = false
 
@@ -157,25 +153,25 @@ jQuery ->
 
   $('body').on 'keypress', (event) ->
     event.stopImmediatePropagation()
-    return true unless grtb.keyboard
+    return true unless rubric.keyboard
 
     lp = $('#left').children('#left-4').eq(0)
     if lp.hasClass 'hide'
-      grtb.keyboard = false
+      rubric.keyboard = false
       return true
     pane = lp.children().eq(1).children('#pane-grd-panel').eq(0)
     unless pane.hasClass 'active'
-      grtb.keyboard = false
+      rubric.keyboard = false
       return true
 
     key = event.which
 
     unless (key < 49 || key > 57) # numbers 1-9
-      grtb.select( key - 49 )
+      rubric.select( key - 49 )
     else if key is 115 # S => submit
-      grtb.form.submit() if grtb.current.next().length is 0
+      rubric.form.submit() if rubric.current.next().length is 0
     else if (key >= 102 && key <= 122) 
-      buttons = abacus.root.find 'button'
+      buttons = $(fdb.root).find 'button'
       switch key 
         when 102  #F
           id = 'btn-rotate'
@@ -210,7 +206,7 @@ jQuery ->
   #####################################################################
   $('#btn-submit-fdb').click (event) ->
     event.stopPropagation()
-    grtb.form.submit()
+    rubric.form.submit()
     return true
 
 
@@ -219,25 +215,21 @@ jQuery ->
   #####################################################################
 
   $('#btn-toggle-answerkey').click (event) ->
-    # event.stopPropagation()
+    event.stopPropagation()
     backToGrading = $(this).hasClass('active')
-    grtb.keyboard = backToGrading
+    rubric.keyboard = backToGrading
 
     if backToGrading
       $(this).text("See Solution")
-      show = $('#wide > #wide-grd-canvas')
+      $(this).removeClass 'active'
+      fdb.attach()
+      preview.load fdb.current.scan.attr('name'), 'locker'
     else
       $(this).text("Back to Grading")
-      show = $('#wide > #wide-X')
-      id = abacus.current.response.attr 'marker'
+      $(this).addClass 'active'
+      id = fdb.current.response.attr 'marker'
+      fdb.detach()
       $.get "question/preview?gr=#{id}"
-
-      # ws = $('#tab-grd-ws').parent().attr 'marker'
-      # $.get "ws/preview.json?id=#{ws}"
-
-    $(m).addClass 'hide' for m in show.siblings()
-    show.removeClass 'hide'
-
     return true
 
   #####################################################################
@@ -253,8 +245,10 @@ jQuery ->
     action = form.getAttribute 'data-action'
     pattern = /gr=[\d]+/
     result = pattern.exec action
-    action = action.replace result,"gr=#{abacus.current.response.attr('marker')}"
+    action = action.replace result,"gr=#{fdb.current.response.attr('marker')}"
     form.setAttribute 'data-action', action
+
+    rubric.keyboard = false # disable keyboard - if auditing during grading
     return false
 
 

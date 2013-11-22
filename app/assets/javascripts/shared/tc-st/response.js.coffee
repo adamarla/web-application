@@ -51,7 +51,9 @@ jQuery ->
     else if url.match(/view\/fdb/)
       target = $('#fdb-panel')
       $(m).addClass('hide') for m in target.find('.requirement')
-      target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
+
+      if json.fdb?
+        target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
 
       if json.split?
         active = target.parent().prev().children('li.active').eq(0)
@@ -71,6 +73,11 @@ jQuery ->
       else
         $(btnVideo).addClass 'disabled'
 
+      if json.preview? 
+        preview.loadJson json
+        if json.comments?
+          overlay.over $(preview.root)
+          overlay.loadJson json.comments
       return true
     else
       matched = false

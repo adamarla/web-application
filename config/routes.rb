@@ -57,6 +57,9 @@ Webapp::Application.routes.draw do
   match 'audit/todo' => 'examiners#audit_todo', via: :get
   match 'audit/review' => 'examiners#audit_review', via: :get
 
+  # Graded Response 
+  match 'reset/graded' => 'examiners#reset_graded', via: :get
+
   # School 
   resource :school, :only => [:show, :create, :update]
   match 'upload_student_list' => 'schools#upload_student_list', via: :post

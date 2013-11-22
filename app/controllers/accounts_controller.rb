@@ -91,6 +91,9 @@ class AccountsController < ApplicationController
 
   def submit_fdb
     r = GradedResponse.find(params[:id].to_i)
+    ids = params[:checked].keys.map(&:to_i)
+    r.fdb ids
+=begin
     clicks = GradedResponse.annotations params[:clicks]
 
     # Generate, then store, the mangled feedback
@@ -99,21 +102,27 @@ class AccountsController < ApplicationController
     scan = "#{r.scan}"
     Delayed::Job.enqueue AnnotateScan.new(scan, clicks), 
       :priority => 10, :run_at => Time.zone.now unless clicks.empty?
+=end
+    overlay = params[:overlay].split("@d@").select{ |m| !m.blank? }
+    n = 0
+    z = overlay.slice(n,3)
 
+    while !z.blank?
+      r.tex_comments.create x: z[0], y:z[1], tex: z[2]
+      n += 3
+      z = overlay.slice(n,3)
+    end
     render :json => { :status => :ok }, :status => :ok
   end
 
   def view_fdb
     @gr = GradedResponse.find(params[:id])
-    fdb = @gr.feedback
+    @fdb = Requirement.unmangle_feedback @gr.feedback
     @solution_video = @gr.subpart.question.video
 
-    unless (fdb.nil? || fdb == 0) # => none so far 
-      @fdb = Requirement.unmangle_feedback fdb 
-    else
-      head :bad_request 
+    unless (@fdb.nil? || @fdb == 0) # => none so far 
+      @comments = TexComment.where(graded_response_id: @gr.id)
     end
-
   end
 
   def poll_delayed_job_queue
