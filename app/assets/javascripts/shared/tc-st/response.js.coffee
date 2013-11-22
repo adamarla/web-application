@@ -16,6 +16,7 @@ jQuery ->
 
     if url.match(/ws\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
+      karo.empty target
       key = 'wks'
     else if url.match(/ws\/layout/)
       # load student scans 
@@ -86,3 +87,24 @@ jQuery ->
 
     e.stopPropagation() if matched is true
     return true
+
+  ########################################################
+  #  WIDE PANEL
+  ########################################################
+
+  $('#wide').ajaxComplete (e, xhr, settings) ->
+    matched = true
+    url = settings.url
+    json = $.parseJSON xhr.responseText
+
+    if url.match(/question\/preview/)
+      $('#wide-wait').addClass 'hide'
+      $('#wide-X').removeClass 'hide'
+      preview.loadJson json # vault
+    else
+      matched = false
+
+    e.stopImmediatePropagation() if matched
+    return true
+
+
