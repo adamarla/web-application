@@ -84,7 +84,7 @@ jQuery ->
       $('#overlay-preview-carousel').addClass 'hide'
       $('#wide-wait').addClass 'hide'
       $('#wide-X').removeClass 'hide'
-      # preview.loadJson json # vault; works without this?
+      preview.loadJson json # vault; works without this?
     else
       matched = false
 
