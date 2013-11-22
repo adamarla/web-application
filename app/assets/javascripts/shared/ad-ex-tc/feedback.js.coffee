@@ -60,7 +60,8 @@ window.fdb = {
   decompile  : () ->
     ret = "@d@"
     for j in fdb.given 
-      ret += "#{j[k]}@d@" for k in ['x','y','comment']
+      for k in ['x', 'y', 'comment' ]
+        ret += (if k is 'comment' then "#{encodeURIComponent(j[k])}@d@" else "#{j[k]}@d@")
     return ret
 
   attach : () ->
