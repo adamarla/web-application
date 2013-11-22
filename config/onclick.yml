@@ -324,7 +324,7 @@ lnk-st-rc :
     tab : tab-st-rc-1
   show : 
     left : left-1
-    wide : wide-wait
+    wide : wide-X
   default : true
 
 lnk-st-inbox :
