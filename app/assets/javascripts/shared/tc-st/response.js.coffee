@@ -47,6 +47,7 @@ jQuery ->
           url : "view/fdb.json?id=:id"
         }
       }
+      $('#overlay-preview-carousel').removeClass 'hide'
       return true
     else if url.match(/view\/fdb/)
       target = $('#fdb-panel')
@@ -98,6 +99,7 @@ jQuery ->
     json = $.parseJSON xhr.responseText
 
     if url.match(/question\/preview/)
+      $('#overlay-preview-carousel').addClass 'hide'
       $('#wide-wait').addClass 'hide'
       $('#wide-X').removeClass 'hide'
       preview.loadJson json # vault
