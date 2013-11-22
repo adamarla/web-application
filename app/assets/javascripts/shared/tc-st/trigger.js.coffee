@@ -38,8 +38,11 @@ jQuery ->
       karo.empty $(this).closest('.navbar').next()
       $.get "ws/layout.json?ws=#{wsId}&id=#{id}"
     else
+      tabpane = $(this).closest('.tab-pane.active')
+      id = tabpane.find('.split.active').eq(0).attr 'marker'
       $(this).text "Back to Scans"
-      $.get "ws/preview.json?id=#{wsId}&student=#{student}"
+      # $.get "ws/preview.json?id=#{wsId}&student=#{student}"
+      $.get "question/preview?gr=#{id}"
     return true
 
   $('#btn-video-solution').click (event) ->
