@@ -175,20 +175,28 @@ class GradedResponse < ActiveRecord::Base
     earned = (n * marks).round(2)
 
     self.reset if self.feedback # over-write previous feedback 
-    if self.update_attributes(:feedback => m, :system_marks => earned)
-      ws = Testpaper.where(id: self.testpaper_id).first
 
-      if ws.publishable?
-        # Time to inform the teacher. You can do this only if teacher has provided 
-        # an e-mail address. The default we assign will not work
-        teacher = ws.quiz.teacher 
-        Mailbot.grading_done(ws).deliver if teacher.account.email_is_real?
-      end # mail sent 
-
+    if self.update_attributes(feedback: m, system_marks: earned)
       # Increment n_graded count of the grading examiner
       e = Examiner.find self.examiner_id
       n_graded = e.n_graded + 1
       e.update_attribute :n_graded, n_graded
+
+      # Time to send mails 
+      tp = Testpaper.where(id: self.testpaper_id).first
+      ws = AnswerSheet.where(student_id: self.student_id).where(testpaper_id: self.testpaper_id).first
+
+      if tp.publishable? # to the teacher - once all worksheets are graded
+        # Time to inform the teacher. You can do this only if teacher has provided 
+        # an e-mail address. The default we assign will not work
+        teacher = tp.quiz.teacher 
+        Mailbot.grading_done(tp).deliver if teacher.account.email_is_real?
+      end 
+
+      if ws.publishable? # to the student if his/her worksheet has been graded
+        Mailbot.worksheet_graded(ws).deliver if self.student.account.email_is_real? 
+      end
+
     end # of if 
   end
 

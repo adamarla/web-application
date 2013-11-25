@@ -179,8 +179,8 @@ class Account < ActiveRecord::Base
 
     case self.role
       when :student
-        ids = AnswerSheet.where(:student_id => me).map(&:testpaper_id)
-        @ws = Testpaper.where(:id => ids, :publishable => true)
+        ids = AnswerSheet.where(student_id: me).select{ |m| m.publishable? }.map(&:testpaper_id)
+        @ws = Testpaper.where(id: ids)
       when :teacher 
         ids = Quiz.where(:teacher_id => me).map(&:id)
         ids = ids.blank? ? 318 : ids # 318 =  "A Demo Quiz"
