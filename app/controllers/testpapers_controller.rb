@@ -1,6 +1,6 @@
 class TestpapersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, :except => [:update_signature]
   respond_to :json
 
   def summary
@@ -57,6 +57,22 @@ class TestpapersController < ApplicationController
               :text => "#{ws.quiz.name} recalled / un-published"
             } }, :status => :ok
     end
+  end
+
+  # throwaway method
+  def update_signature
+    student_id   = params[:id]
+    testpaper_id = params[:tp_id]
+    signature    = params[:sign]
+
+    quiz = Testpaper.find_by_id(testpaper_id).quiz
+    as = AnswerSheet.of_student(student_id).for_testpaper(testpaper_id).first
+    unless as.nil?
+      if signature.length == quiz.questions.map { |q| q.subparts.count == 0 ? 1 : q.subparts.count }.sum
+        as.update_attribute :signature, signature
+      end
+    end
+    render :json => "A-Ok"
   end
 
 end

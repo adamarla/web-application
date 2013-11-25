@@ -142,6 +142,8 @@ Webapp::Application.routes.draw do
   match 'ws/layout' => 'testpapers#layout', via: :get
   match 'ws/publish' => 'testpapers#inbox', via: :get
   match 'ws/unpublish' => 'testpapers#uninbox', via: :get
+  match 'ws/update_signature' => 'testpapers#update_signature', via: :get
+  match 'ws/update_signature' => 'testpapers#update_signature', via: :post
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get
