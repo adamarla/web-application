@@ -134,6 +134,7 @@ class ExaminersController < ApplicationController
         gr.update_attribute :scan, path
         if gr.testpaper.publishable? # if fresh scans have arrived
           gr.testpaper.update_attribute :publishable, false
+        end
         status = "ok"
       else
         status = "not ok"
