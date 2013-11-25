@@ -132,6 +132,8 @@ class ExaminersController < ApplicationController
     graded_resp.each do |gr|
       if gr[:scan].nil? 
         gr.update_attribute :scan, path
+        if gr.testpaper.publishable? # if fresh scans have arrived
+          gr.testpaper.update_attribute :publishable, false
         status = "ok"
       else
         status = "not ok"
