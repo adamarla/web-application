@@ -68,7 +68,7 @@ class TestpapersController < ApplicationController
     quiz = Testpaper.find_by_id(testpaper_id).quiz
     as = AnswerSheet.of_student(student_id).for_testpaper(testpaper_id).first
     unless as.nil?
-      if signature.length == quiz.questions.map { |q| q.subparts.count == 0 ? 1 : q.subparts.count }.sum
+      if signature.length == quiz.questions.count
         as.update_attribute :signature, signature
       end
     end
