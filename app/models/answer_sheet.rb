@@ -58,7 +58,13 @@ class AnswerSheet < ActiveRecord::Base
   end
 
   def publishable?
-    return self.testpaper.publishable?
+    # A student's answer sheete becomes publishable as soon as the 
+    # last of the graded responses has been graded
+
+    submitted = GradedResponse.of_student(self.student_id).in_testpaper(self.testpaper_id).with_scan
+
+    return false if submitted.count == 0
+    return submitted.ungraded.count == 0
   end
 
   def honest?

@@ -68,4 +68,10 @@ class Mailbot < ActionMailer::Base
     mail to: to.account.email, subject: "[Gradians.com]: #{@from_name} has shared a quiz with you"
   end
 
+  def worksheet_graded(ws)
+    @student = ws.student
+    @quiz = ws.testpaper.quiz
+    mail to: @student.account.email, subject: "[Gradians.com]: Quiz '#{@quiz.name}' has been graded" 
+  end
+
 end
