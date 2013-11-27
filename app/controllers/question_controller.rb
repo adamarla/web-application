@@ -99,8 +99,11 @@ class QuestionController < ApplicationController
   end # of method 
 
   def preview
-    qid = params[:gr].blank? ? params[:id] : GradedResponse.where(id: params[:gr]).map(&:q_selection).map(&:question_id).first
+    g = params[:gr].blank? ? nil : GradedResponse.where(id: params[:gr])
+    qid = g.nil? ? params[:id] : g.map(&:q_selection).map(&:question_id).first
+
     @question = Question.find qid 
+    @version = g.nil? ? "0" : g.first.version
     @context = params[:context] || "unknown" 
   end
 
