@@ -21,6 +21,7 @@
     = render partial: 'menus/user/account'
     = render partial: 'menus/user/notifications'
     = render partial: 'toolbox/fdb-panel'
+    = render partial: 'shared/user/preview'
     - if tc.online
       = render partial: 'menus/teacher/courses'
 
@@ -166,7 +167,6 @@
           #right-X
         #wide.g-panel.span8
           #wide-X
-            = render partial: 'shared/user/preview'
             = render partial: 'shared/grading/controls'
           #wide-wait
             = render partial: 'toolbox/wait'

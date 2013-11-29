@@ -14,6 +14,7 @@
     = render partial: 'menus/examiner/blockdb'
     = render partial: 'menus/examiner/per-pending-video'
     = render partial: 'menus/examiner/per-audit'
+    = render partial: 'shared/user/preview'
   
 - content_for :modals do
   #modals
@@ -91,7 +92,6 @@
             #wide-2
               = render partial: 'admin/accounts-in-country'
           #wide-X
-            = render partial: 'shared/user/preview'
             = render partial: 'shared/grading/controls'
           #wide-wait
             = render partial: 'toolbox/wait'
