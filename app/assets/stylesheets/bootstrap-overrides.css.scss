@@ -612,24 +612,23 @@ span.MathJax {
     top: 0px ;
     left: 0px ;
   }
-}
 
-#preview-carousel { 
-  > .carousel-inner { 
-    text-align: center ;
-  } 
-
-  .item { 
-    > img { display: inline-block ; }
-    > .carousel-caption { 
-      top: 0px ; 
-      color: $orange ;
-      font: {
-        variant: small-caps ;
+  .carousel { 
+    > .carousel-inner { 
+      text-align: center ;
+    } 
+    .item { 
+      > img { display: inline-block ; }
+      > .carousel-caption { 
+        top: 0px ; 
+        color: $orange ;
+        font: {
+          variant: small-caps ;
+        }
       }
     }
   }
-} 
+}
 
 .contextual-menu { 
   &.btn {
