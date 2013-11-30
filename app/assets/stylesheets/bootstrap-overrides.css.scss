@@ -32,16 +32,24 @@ span.MathJax {
   padding: 5px ;
 }
 
-.carousel:not([id~='how-it-works']), .overlay {
+.carousel:not([id~='how-it-works']), .overlay, .shadow {
   position: absolute ; 
   top: 0px ;
   left: 0px ;
   width: 600px ;
+}
+
+.carousel:not([id~='how-it-works']), .overlay {
   height: 800px ;
 }
 
-.overlay {
+.shadow { 
   z-index: 3 ;
+  background: rgba(102,102,102,0.6) ;
+}
+
+.overlay {
+  z-index: 2 ;
 }
 
 .carousel {
@@ -80,7 +88,7 @@ span.MathJax {
 
 #badge {
   margin-top: 90px ;
-  img { z-index: 900 ; }
+  img { z-index: 6 ; }
 }
 
 #shopfront { 
@@ -704,7 +712,7 @@ button[data-toggle='button'] {
 
 #fdb-controls, #fdb-typeahead {
   position: fixed ;
-  z-index: 3 ;
+  z-index: 4 ;
   float: left ;
 }
 
@@ -808,7 +816,7 @@ button[data-toggle='button'] {
 #control-panel { 
   position: fixed ;
   top: 0px ;
-  z-index: 3;
+  z-index: 5;
   min-width: 700px ;
   width: 1024px ;
   ul {
@@ -967,7 +975,7 @@ button[data-toggle='button'] {
 } 
 
 .typeahead.dropdown-menu {
-  z-index: 1051 ;
+  z-index: 6 ;
 }
 
 #m-notifications { 
@@ -1019,7 +1027,7 @@ li.split {
   position: fixed ;
   top: 9% ;
   left: 50% ;
-  z-index: 1234 ;
+  z-index: 6 ;
   width: 24px ;
   height: 26px ;
 }
