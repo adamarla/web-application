@@ -67,6 +67,7 @@ window.fdb = {
 
     preview.create(p)
     overlay.over $(preview.root)
+    shadow.over $(overlay.root)
 
     $(fdb.root).removeClass 'hide'
     fdb.update.ticker()
