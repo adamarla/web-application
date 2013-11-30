@@ -59,6 +59,13 @@ class TestpapersController < ApplicationController
     end
   end
 
+  def report_card
+    testpaper = Testpaper.find_by_id(params[:id])
+    if params[:format] == "csv"
+      send_data testpaper.to_csv, :filename => "#{testpaper.quiz.name}#{testpaper.name}.csv", :disposition => 'attachment'
+    end
+  end
+
   # throwaway method
   def update_signature
     student_id   = params[:id]

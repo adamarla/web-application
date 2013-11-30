@@ -109,6 +109,18 @@ class Testpaper < ActiveRecord::Base
     return response.to_hash[:prep_test_response]
   end #of method
 
+  def to_csv(options = {})
+    csv = []
+    CSV.generate(options) do |csv|
+      csv << ["Name", "Marks"]
+      self.answer_sheets.each do |as|
+        if as.graded?
+          csv << [as.student.name, as.marks]
+        end
+      end
+    end
+  end
+
   #Only for legacy Testpapers, not needed going forward from Oct1, 2013
   def compile_solution_tex
     student_ids = AnswerSheet.where(testpaper_id: self.id).select(:student_id).map(&:student_id)

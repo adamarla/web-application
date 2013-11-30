@@ -1,7 +1,7 @@
 
 
 object false 
-  
+  node(:a) { @ws.id }  
   node(:root) { 
     @students.map{ |s| 
       id = @students.index s

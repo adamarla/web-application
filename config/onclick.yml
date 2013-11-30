@@ -195,6 +195,10 @@ tab-tc-rc-3 :
   show : 
     wide : wide-X
 
+lnk-rc-download :
+  ajax : disabled
+  update-on : ws/summary
+
 lnk-tc-rc :
   show : 
     left : left-5
