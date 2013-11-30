@@ -9,6 +9,7 @@
     = render :partial => 'toolbox/fdb-panel'
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/student/inbox'
+    = render partial: 'shared/user/preview'
 
 - content_for :modals do
   #modals
@@ -80,7 +81,6 @@
           #middle-1
         #wide.g-panel.span8
           #wide-X
-            = render partial: 'shared/user/preview'
           #wide-wait
             = render :partial => 'toolbox/wait'
 

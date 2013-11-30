@@ -37,8 +37,6 @@ window.fdb = {
     $(fdb.commentBox).typeahead {
       source : fdb.history
     }
-
-    preview.initialize()
     return true
 
   add : (comment, event) ->
@@ -67,8 +65,7 @@ window.fdb = {
   attach : () ->
     p = $(fdb.root).find('#fdb-preview-area').eq(0)
 
-    $(preview.root).detach().prependTo p
-    preview.clear()
+    preview.create(p)
     overlay.over $(preview.root)
 
     $(fdb.root).removeClass 'hide'
@@ -76,8 +73,7 @@ window.fdb = {
     return true
 
   detach : () ->
-    $(preview.root).detach().appendTo $(fdb.root).parent()
-    preview.clear()
+    preview.create() # within wide-X
     $(fdb.root).addClass 'hide'
     return true
 

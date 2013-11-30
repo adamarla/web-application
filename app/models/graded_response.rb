@@ -274,4 +274,13 @@ class GradedResponse < ActiveRecord::Base
       return encrypt(ws_id, 7) + encrypt(student_idx, 3) + self.page?.to_s(36)
   end
 
+  def version
+    # Returns the version the student got and for which this is the graded response
+    signature = AnswerSheet.where(student_id: self.student_id, testpaper_id: self.testpaper_id).map(&:signature).first
+    return "0" if signature.blank?
+
+    j = self.q_selection.index - 1 # QSelection.index is 1-indexed - not 0-indexed
+    return signature[j]
+  end
+
 end

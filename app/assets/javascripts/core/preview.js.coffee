@@ -4,17 +4,33 @@ jQuery ->
   window.preview = {
     blockKeyPress: false,
     root: null,
+    template: null,
+    defaultLocation: null,
 
-    initialize : () ->
-      preview.root = $('#preview-carousel')[0] unless preview.root?
+    create : (here) ->
+      preview.defaultLocation = $('#wide-X')[0] unless preview.defaultLocation?
+      preview.template = $('#toolbox > #preview-carousel')[0] unless preview.template?
 
-      # Step 1: Empty previous images
-      $(m).empty() for m in $(preview.root).children('.carousel-inner')
+      here = if here? then (if typeof here is 'string' then $(here) else here) else $(preview.defaultLocation)
 
-      # Step 2: Bind the fwd / back buttons to #preview-carousel
-      $(a).attr('href','#preview-carousel') for a in $(preview.root).children('a')
+      if preview.root? # remove old preview
+        $(preview.root).remove()
+        preview.root = null
+
+      p = $(preview.template).clone().appendTo(here)[0]
+      id = here.attr 'id'
+      id = if id? then "preview-#{id}" else "preview-X"
+      $(p).attr 'id', id
+      preview.root = p
+
+      # Bind the forward and back buttons to the new carousel
+      $(a).attr('href',"##{id}") for a in $(preview.root).children('a')
+
       $(preview.root).removeClass 'hide'
       return true
+      
+    preCheck: () ->
+      if preview.clear() then return true else return preview.create()
 
     execute : () ->
       inner = $(preview.root).children('.carousel-inner').eq(0)
@@ -39,7 +55,7 @@ jQuery ->
       img = if typeof img is 'string' then img else img.attr('name')
       return false unless img?
 
-      preview.initialize()
+      preview.preCheck()
       target = $(preview.root).children('.carousel-inner').eq(0)
       server = gutenberg.server 
 
@@ -63,7 +79,7 @@ jQuery ->
       ###
       return false unless json.preview?
 
-      preview.initialize()
+      preview.preCheck()
 
       target = $(preview.root).children('.carousel-inner').eq(0)
       server = gutenberg.server 
