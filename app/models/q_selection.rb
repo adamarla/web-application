@@ -10,6 +10,7 @@
 #  updated_at  :datetime
 #  index       :integer
 #  end_page    :integer
+#  shadow      :integer
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -37,6 +38,29 @@ class QSelection < ActiveRecord::Base
 
   def self.on_topic(n)
     select{ |m| m.question.topic_id == n }
+  end
+
+  def prev
+    # Returns the QSelection for the last question laid 
+    # out on the same page as this one 
+    p = QSelection.where(quiz_id: self.quiz_id).where(index: self.index - 1).first
+    return (p.nil? ? nil : (p.end_page == self.start_page ? p : nil))
+  end
+
+  def next 
+    # Returns the QSelection for the next question laid 
+    # out on the same page as this one 
+    p = QSelection.where(quiz_id: self.quiz_id).where(index: self.index + 1).first
+    return (p.nil? ? nil : (p.start_page == self.end_page ? p : nil))
+  end
+
+  def shadow?
+    return self.shadow unless self.shadow.nil?
+
+    p = self.prev 
+    ret = p.nil? ? 0 : ( (((p.shadow? / 100) + p.question.length?).modulo(1) * 100).to_i )
+    self.update_attribute :shadow, ret
+    return ret
   end
 
   def siblings(dir, same_page = false)
