@@ -53,10 +53,11 @@ class Subpart < ActiveRecord::Base
     end
   end 
 
-  def siblings(previous = true)
+  def siblings(dir = :previous)
 =begin
     Returns the other previous OR next subparts that make up the parent question
 =end
+    previous = dir == :previous # or :next
     b = Subpart.where(question_id: self.question_id)
     return ( previous ? b.where('index < ?', self.index) : b.where('index > ?', self.index) )
   end

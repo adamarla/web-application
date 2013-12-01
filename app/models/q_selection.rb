@@ -39,7 +39,7 @@ class QSelection < ActiveRecord::Base
     select{ |m| m.question.topic_id == n }
   end
 
-  def siblings(previous = true, same_page = false)
+  def siblings(dir, same_page = false)
 =begin
     Handles all of the following cases 
       1. prior to self - in the whole quiz
@@ -47,6 +47,7 @@ class QSelection < ActiveRecord::Base
       3. after self - in the whole quiz
       4. after self - on the same page
 =end
+    previous = dir == :previous # or :next
     a = QSelection.where(quiz_id: self.quiz_id)
     b = previous ? a.where('index < ?', self.index) : a.where('index > ?', self.index)
     return (same_page ? (previous ? b.where(start_page: self.start_page) : b.where(start_page: self.end_page)) : b) 
