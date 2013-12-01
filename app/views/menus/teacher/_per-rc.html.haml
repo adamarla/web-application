@@ -1,5 +1,0 @@
--# per report card
-%ul.dropdown-menu.dropdown-inverse#per-rc{ :role => :menu }
-  %li
-    = simple_link :for => 'Download', :id => 'lnk-rc-download', :icon => 'icon-download', :remote => true, :url => { :self => "ws/report_card?id=:a&format=csv" }
-    -#= simple_link :for => 'Download Text', :id => 'lnk-rc-download', :icon => 'icon-download', :remote => true, :url => { :self => "ws/report_card?id=:a&format=txt" }

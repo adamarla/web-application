@@ -95,6 +95,7 @@ jQuery ->
       target = $("#pane-tc-rc-2")
       key = "root"
       wsSummary json
+      $('#lnk-rc-download')[0].setAttribute 'href', "ws/report_card?id=#{json.a}&format=csv"
     else if url.match(/teacher\/sektions/)
       if json.context is 'list'
         target = $('#pane-mng-sektions-1')

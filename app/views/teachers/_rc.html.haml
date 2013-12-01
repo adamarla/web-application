@@ -13,6 +13,11 @@
 .tab-content
   #pane-tc-rc-1.tab-pane.scroll.reissue-ajax
   #pane-tc-rc-2.tab-pane.scroll
+    .row-fluid.navbar.purge-skip
+      .pull-right
+        = simple_link for: 'Download', id: 'lnk-rc-download',
+          class: 'btn btn-inverse', 
+          url: { :self => "ws/report_card?id=:a&format=csv" }
   #pane-tc-rc-3.tab-pane
     .row-fluid.navbar.purge-skip
       .btn-group.pull-right
