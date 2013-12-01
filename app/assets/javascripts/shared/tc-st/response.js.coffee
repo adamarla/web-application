@@ -16,7 +16,6 @@ jQuery ->
 
     if url.match(/ws\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
-      menu = if json.user is "Student" then null else "per-rc"
       karo.empty target
       key = 'wks'
     else if url.match(/ws\/layout/)
