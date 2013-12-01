@@ -53,6 +53,14 @@ class Subpart < ActiveRecord::Base
     end
   end 
 
+  def siblings(previous = true)
+=begin
+    Returns the other previous OR next subparts that make up the parent question
+=end
+    b = Subpart.where(question_id: self.question_id)
+    return ( previous ? b.where('index < ?', self.index) : b.where('index > ?', self.index) )
+  end
+
   def self.in_quiz(quiz)
     # Returns the ordered list - by position in the quiz - of subparts in a quiz
 
