@@ -177,6 +177,8 @@ jQuery ->
           id = 'btn-rotate'
         when 104  #H
           id = 'btn-what'
+        when 105 #I
+          id = 'btn-hide-controls'
         when 110  #N
           id = 'btn-next-scan'
         when 112  #P

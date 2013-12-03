@@ -204,10 +204,14 @@ jQuery ->
     rubric.keyboard = true
     id = $(this).attr 'id'
     switch id 
-      when 'btn-prev-ques' then fdb.prev.response()
-      when 'btn-next-ques' then fdb.next.response()
-      when 'btn-prev-scan' then fdb.prev.scan()
-      when 'btn-next-scan' then fdb.next.scan()
+      when 'btn-prev-ques'
+        fdb.prev.response()
+      when 'btn-next-ques'
+        fdb.next.response()
+      when 'btn-prev-scan'
+        fdb.prev.scan()
+      when 'btn-next-scan'
+        fdb.next.scan()
     return  true
     
   fdb.controls.on 'click', 'button', (event) ->
@@ -216,8 +220,8 @@ jQuery ->
     id = $(this).attr 'id'
     fdb.tex = null
 
-    fdbControls = $(this).closest '#fdb-controls'
-    $(m).removeClass('active') for m in fdbControls.find('button')
+    allButtons = fdb.controls.find("button:not([id='btn-hide-controls'])")
+    $(m).removeClass('active') for m in allButtons 
     fdb.mode = null
 
     switch id
@@ -245,7 +249,23 @@ jQuery ->
         fdb.mode = 'comments'
         $(shadow.commentBox).focus()
         $(this).addClass 'active'
-    return true
+      when 'btn-hide-controls'
+        isClicked = $(this).hasClass 'active'
+        btnGroups = $(this).closest('.row-fluid').siblings() 
+        if isClicked 
+          next = 'Hide'
+          $(j).removeClass('hide') for j in btnGroups
+          $(this).removeClass 'active'
+          shadow.unhide()
+        else
+          next = 'Unhide'
+          $(j).addClass('hide') for j in btnGroups 
+          $(this).addClass 'active'
+          shadow.hide()
+        $(this).text next
+        $("<span class='kb-shortcut'>I</span>").prependTo $(this)
+
+    return true # end of method
 
   $(fdb.root).on 'click', (event) ->
     event.stopImmediatePropagation()
