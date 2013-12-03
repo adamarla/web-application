@@ -32,16 +32,88 @@ span.MathJax {
   padding: 5px ;
 }
 
-.carousel:not([id~='how-it-works']), .overlay {
+.carousel:not([id~='how-it-works']), .overlay, .shadow {
   position: absolute ; 
   top: 0px ;
   left: 0px ;
   width: 600px ;
+}
+
+.carousel:not([id~='how-it-works']), .overlay {
   height: 800px ;
 }
 
-.overlay {
+.shadow { 
   z-index: 3 ;
+  background: rgba(43,43,43,0.8) ;
+  border:{
+    top-left-radius: 10px ;
+    top-right-radius: 10px ;
+    style: none ;
+    bottom: solid ;
+    color: $deep-blue ;
+    width: 5px ;
+  }
+
+  .ticker { 
+    bottom: 15px ;
+    right: -20px ;
+    color: white ;
+    > * { 
+      tex-align: center ;
+      padding: { top: 10px ; left: 5px ; bottom: 10px ; right: 10px ; }
+      font-weight: 300 ;
+    }
+    > #ticker-response {
+      font: { size: 14px ; } 
+      border-radius: 7px ;
+      &:not([class~='graded']) {
+        background: transparent ;
+        border: 2px solid $deep-blue ;
+      }
+      &.graded {
+        background-color: $deep-blue ;
+        border: none ;
+      }
+    }
+
+    > #ticker-student {
+      font: { size: 14px ; variant: small-caps ;}
+    }
+  }
+
+  .typeahead, .ticker {
+    position: absolute ;
+  }
+
+  .typeahead { 
+    bottom: 5px ;
+    > input { 
+      color: white ;
+      background: transparent ;
+      box-shadow: none ;
+      padding: {
+        top: 10px ;
+        bottom: 7px ;
+        left: 10px ;
+      }
+      font: { 
+        size: 10px ;
+        family: "Lucida Sans Typewriter", "Lucida Console", "Arial Black", "Droid Dans Mono", monospace ;
+        weight: 500 ;
+      }
+      border: {
+        radius: 0px ;
+        style: dotted ;
+        width: 2px ;
+        color: white ;
+      }
+    }
+  } 
+}
+
+.overlay {
+  z-index: 2 ;
 }
 
 .carousel {
@@ -80,7 +152,7 @@ span.MathJax {
 
 #badge {
   margin-top: 90px ;
-  img { z-index: 900 ; }
+  img { z-index: 6 ; }
 }
 
 #shopfront { 
@@ -303,7 +375,7 @@ span.MathJax {
 .modal { 
   line-height: 15px ;
   padding: 10px ;
-  background: rgba(25,25,25,0.8) ; 
+  background: rgba(25,25,25,0.95) ; 
   border-radius: 0px ;
   color: white ;
   font-size: 11px ;
@@ -703,57 +775,14 @@ button[data-toggle='button'] {
 }
 
 #fdb-controls, #fdb-typeahead {
-  position: fixed ;
-  z-index: 3 ;
+  z-index: 4 ;
   float: left ;
 }
 
-#fdb-ticker, #fdb-typeahead {
-  border: none ;
-  border-radius: 0px ;
-  color: white ;
+#fdb-controls {
+  position: fixed ;
 }
 
-#fdb-typeahead {
-  box-shadow: none ;
-  font: { 
-    size: 10px ;
-    weight: 300 ;
-    family: "Lucida Sans Typewriter", "Lucida Console", "Arial Black", "Droid Dans Mono", monospace ;
-  }
-  border: {
-    radius: 5px ;
-  }
-
-  padding: {
-    top: 10px ;
-    bottom: 7px ;
-    left: 10px ;
-  }
-  background: rgba(43,43,43,0.8) ;
-
-}
-
-#fdb-ticker { 
-  padding: { 
-    top: 7px ;
-    bottom: 0px ;
-  } 
-  &.graded {
-    border: none ;
-    background-color: rgba(0,129,194,0.7) ;
-    color: white ;
-  }
-  border: {
-    top-left-radius: 10px ;
-    top-right-radius: 10px ;
-  }
-  background: rgba(43,43,43,0.4) ; 
-  font: {
-    size: 12px ;
-    weight: normal ;
-  }
-}
 
 .btn-inverse.active { background-color: $deep-blue ; }
 
@@ -808,7 +837,7 @@ button[data-toggle='button'] {
 #control-panel { 
   position: fixed ;
   top: 0px ;
-  z-index: 3;
+  z-index: 5;
   min-width: 700px ;
   width: 1024px ;
   ul {
@@ -967,7 +996,7 @@ button[data-toggle='button'] {
 } 
 
 .typeahead.dropdown-menu {
-  z-index: 1051 ;
+  z-index: 6 ;
 }
 
 #m-notifications { 
@@ -1019,7 +1048,7 @@ li.split {
   position: fixed ;
   top: 9% ;
   left: 50% ;
-  z-index: 1234 ;
+  z-index: 6 ;
   width: 24px ;
   height: 26px ;
 }

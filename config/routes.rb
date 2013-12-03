@@ -19,8 +19,8 @@ Webapp::Application.routes.draw do
   match 'account' => 'accounts#update', via: :post
   match 'ws/list' => 'accounts#ws', via: :get
   match 'ws/pending' => 'accounts#pending_ws', via: :get
-  match 'pages/pending' => 'accounts#pending_pages', via: :get
-  match 'gr/pending' => 'accounts#pending_gr', via: :get
+  match 'grade/pending' => 'accounts#to_be_graded', via: :get
+  match 'scans/pending' => 'accounts#pending_scans', via: :get
   match 'submit/fdb' => 'accounts#submit_fdb', via: [:put, :post]
   match 'view/fdb' => 'accounts#view_fdb', via: :get
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get

@@ -27,7 +27,7 @@ window.overlay = {
     return false if overlay.nComments < 1
 
     overlay.nComments = 0
-    $(overlay.root).empty()
+    $(m).remove() for m in $(overlay.root).children(":not([class~='shadow'])")
     return true
 
   loadJson : (json) ->
@@ -48,6 +48,10 @@ window.overlay = {
         The surest way to ensure consistent behaviour is, therefore, to calculate 
         the offset just when processing the click
       ###
+
+      if $(event.target).hasClass 'shadow'
+        event.stopImmediatePropagation()
+        return true
       offset = $(overlay.ref).offset()
       x = event.pageX - offset.left 
       y = event.pageY - offset.top - 50 # bit of a hack
