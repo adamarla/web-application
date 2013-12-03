@@ -58,7 +58,7 @@ class QSelection < ActiveRecord::Base
     return self.shadow unless self.shadow.nil?
 
     p = self.prev 
-    ret = p.nil? ? 0 : ( (((p.shadow? / 100) + p.question.length?).modulo(1) * 100).to_i )
+    ret = p.nil? ? 0 : ( (((p.shadow? / 100.00) + p.question.length?).modulo(1) * 100).to_i )
     self.update_attribute :shadow, ret
     return ret
   end
