@@ -225,7 +225,7 @@ jQuery ->
       $(this).text("See Solution")
       $(this).removeClass 'active'
       fdb.attach()
-      preview.load fdb.current.scan, 'locker'
+      fdb.update.view(false)
     else
       $(this).text("Back to Grading")
       $(this).addClass 'active'
