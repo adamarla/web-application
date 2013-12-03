@@ -98,9 +98,9 @@ window.fdb = {
         if ref.hasClass('graded') then node.addClass('graded') else node.removeClass('graded')
       return true
 
-    view : () ->
+    view : (clearOverlay = true) ->
       # To be called when fdb.current.scan changes value => switching from one scan to the next
-      overlay.clear()
+      overlay.clear() if clearOverlay is true
       preview.load fdb.current.scan, 'locker'
       fdb.update.ticker()
       shadow.fall $(fdb.current.response).attr('shadow')
