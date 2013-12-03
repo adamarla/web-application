@@ -36,9 +36,21 @@ window.shadow = {
 
   fall: (percent = 8) ->
     return false unless shadow.root?
-    percent = if percent < 8 then 8 else percent
+    percent = parseInt percent
+    percent = if percent <= 8 then 8 else (percent + 10)
     $(shadow.root).css "height", "#{percent}%"
     return true
+
+  hide: () ->
+    return false unless shadow.root?
+    $(shadow.root).addClass 'hide' 
+    return true
+
+  unhide: () ->
+    return false unless shadow.root?
+    $(shadow.root).removeClass 'hide' 
+    return true
+
 }
 
 jQuery ->

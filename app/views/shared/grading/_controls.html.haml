@@ -5,6 +5,9 @@
 
   .row-fluid{ id: 'fdb-active-area' }
     .span2{id: 'fdb-controls' }
+      .row-fluid
+        .btn-group.btn-group-vertical
+          = simple_button for: 'Hide', id: 'btn-hide-controls', shortcut: 'I', class: 'btn-success btn-large'
       .row-fluid.push-down
         .btn-group.btn-group-vertical{ data: { toggle: 'buttons-radio' } } 
           = simple_button for: 'ick', id: 'btn-ok', shortcut: 'T'
