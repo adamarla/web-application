@@ -27,7 +27,7 @@ window.overlay = {
     return false if overlay.nComments < 1
 
     overlay.nComments = 0
-    $(overlay.root).empty()
+    $(m).remove() for m in $(overlay.root).children(":not([class~='shadow'])")
     return true
 
   loadJson : (json) ->

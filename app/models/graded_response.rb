@@ -283,4 +283,11 @@ class GradedResponse < ActiveRecord::Base
     return signature[j]
   end
 
+  def shadow?
+    # Shadow - CSS height% to set on the shadow. 
+    # Area under shadow is greyed out and inactive. Needed during grading
+    ret = (self.q_selection.shadow? + self.subpart.shadow?) % 100
+    return ret
+  end
+
 end

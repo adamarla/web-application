@@ -18,14 +18,12 @@ jQuery ->
       target = $('#pane-grd-ws')
       key = 'wks'
       # menu = 'per-grd-ws'
-    else if url.match(/pages\/pending/)
-      target = $('#pane-grd-page')
-      key = 'pages'
-      # karo.tab.enable 'tab-grd-page'
-    else if url.match(/gr\/pending/)
-      fdb.initialize json
+    else if url.match(/grade\/pending/)
+      target = $('#pane-grd-questions')
+      key = 'questions'
+    else if url.match(/scans\/pending/)
       fdb.attach()
-      preview.load fdb.current.scan, 'locker'
+      fdb.initialize json
       rubric.show()
     else if url.match(/audit\/done/)
       auditForm = $('#m-audit-form')
