@@ -792,15 +792,10 @@ button[data-toggle='button'] {
 
 .requirement { 
   min-height: 35px ; 
-  font-size: 10px ;
-  padding: {
-    top:3px ;
-    bottom: 3px ;
-  }
-  border-bottom: 1px solid $gray ;
+  margin-top: 10px ;
 
-  .bottomline { font-size: 12px ; color: $gradians-blue ; }
-  .text { font-size: 10px ; }
+  .bottomline { color: $lightblue ; }
+  .text { font: { size: 12px ; } } 
 
   .badge { 
     padding: 0px ; 
@@ -812,22 +807,14 @@ button[data-toggle='button'] {
     border-radius: 4px ;
     text-align: center ;
     font: {
-      size: 11px ;
+      size: 12px ;
       weight: 400 ;
     }
     color: $gray ;
   } 
   &.selected { 
-    .badge { 
-      background-color: $orange ;
-    } 
-    .bottomline { 
-      color: $orange ;
-    } 
-  } 
-
-  .text { 
-    color: white ;
+    .badge { background-color: $orange ;} 
+    .bottomline { color: $orange ; } 
   } 
   cursor: pointer; 
 } 
@@ -855,28 +842,25 @@ button[data-toggle='button'] {
 
 #fdb-panel { 
   > .row-fluid { 
-    padding: {
-      top: 8px ;
-      bottom: 10px ;
-    }
-    &:not([class~='navbar']) { border-bottom: 1px solid $lightgray ; }
-  } 
-
-  .requirement { border: none ; text-align: right ; }
-
-  .text {
-    font-size: 10px ;
-    color: $gradians-blue ;
-  } 
-
-  .question { 
-    color: white ;  
     font: { 
-      size: 11px ;
-    } 
-    text-transform: lowercase ;
-  }
-  .bottomline { color: $orange ; font-size: 12px ; }
+      size: 13px ;
+      weight: 300 ;
+    }
+
+    padding: {
+      top: 10px ;
+      bottom: 15px ;
+    }
+    border-bottom: 1px solid $lightgray ;
+
+    .question { 
+      line-height: 14px ;
+      font-weight: 400 ;
+      margin-bottom:8px ;
+    }
+  } 
+
+
   .score { 
     > .maxmarks { font-size: 15px ; color: $orange ; text-align: center ;}
     > .marks { color: white ; font-size: 22px ; text-align: right ; }
