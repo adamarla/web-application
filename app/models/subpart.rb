@@ -62,6 +62,10 @@ class Subpart < ActiveRecord::Base
     return ( previous ? b.where('index < ?', self.index) : b.where('index > ?', self.index) )
   end
 
+  def length?
+    return (self.mcq || self.few_lines ? 0.25 : (self.half_page ? 0.5 : 1))
+  end
+
   def shadow? 
     # Returns the shadow relative to the start of the parent question
     # Has to be used in conjunction with QSelection.shadow? 
