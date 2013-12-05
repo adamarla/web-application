@@ -40,18 +40,14 @@ class QSelection < ActiveRecord::Base
     select{ |m| m.question.topic_id == n }
   end
 
-  def prev
-    # Returns the QSelection for the last question laid 
-    # out on the same page as this one 
-    p = QSelection.where(quiz_id: self.quiz_id).where(index: self.index - 1).first
-    return (p.nil? ? nil : (p.end_page == self.start_page ? p : nil))
+  def prev(same_page = true)
+    # Returns the QSelection for the last question laid out in the quiz before this one
+    return self.siblings(:previous, same_page).last
   end
 
-  def next 
-    # Returns the QSelection for the next question laid 
-    # out on the same page as this one 
-    p = QSelection.where(quiz_id: self.quiz_id).where(index: self.index + 1).first
-    return (p.nil? ? nil : (p.start_page == self.end_page ? p : nil))
+  def next(same_page = true) 
+    # Returns the QSelection for the next question laid out in the quiz
+    return self.siblings(:next, same_page).first
   end
 
   def shadow?
@@ -74,7 +70,8 @@ class QSelection < ActiveRecord::Base
     previous = dir == :previous # or :next
     a = QSelection.where(quiz_id: self.quiz_id)
     b = previous ? a.where('index < ?', self.index) : a.where('index > ?', self.index)
-    return (same_page ? (previous ? b.where(start_page: self.start_page) : b.where(start_page: self.end_page)) : b) 
+    ret =  same_page ? (previous ? b.where(end_page: self.start_page) : b.where(start_page: self.end_page)) : b
+    return ret.order(:index)
   end
 
 end
