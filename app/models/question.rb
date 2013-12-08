@@ -123,6 +123,10 @@ class Question < ActiveRecord::Base
     select{ |m| m.num_parts? == 0 }
   end
 
+  def subparts
+    Subpart.where(question_id: self.id).order(:index)
+  end
+
   def self.order_by_marks
     select{ |m| m.marks? > 0 }.sort{ |m,n| m.marks? <=> n.marks? }
   end
