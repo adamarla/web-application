@@ -185,6 +185,7 @@ class Examiner < ActiveRecord::Base
         end # of iterating over slices
       end # of iterating over pages
     end # of iterating over worksheets
+    return ws_ids    
   end # of method
 
   private
