@@ -165,17 +165,17 @@ class AnswerSheet < ActiveRecord::Base
   end
 
   def signature?
-    return self.signature unless self.signature.blank?
+    return self.signature.split(',') unless self.signature.blank?
     self.create_signature
   end
 
   def create_signature 
     if self.signature.nil?
       n = QSelection.where(quiz_id: self.testpaper.quiz_id).count
-      sig = [*1..n].map{ rand(4) }.join
-      self.update_attribute :signature, sig
+      sig = [*1..n].map{ rand(4) }
+      self.update_attribute :signature, sig.join(',')
     end
-    return self.signature
+    return sig 
   end
 
 end

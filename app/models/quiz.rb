@@ -51,7 +51,6 @@ class Quiz < ActiveRecord::Base
   validates :name, presence: true
   
   #before_validation :set_name, :if => :new_record?
-  after_create :lay_it_out
   after_destroy :shred_pdfs
 
   def total? 
@@ -65,9 +64,8 @@ class Quiz < ActiveRecord::Base
 
   def subparts
     # Returns the ordered list of subparts 
-    q = QSelection.where(:quiz_id => self.id).select('index, question_id').sort{ |m,n| m.index <=> n.index }
-    q = q.map{ |m| Question.find m.question_id }
-    return q.map{ |m| m.subparts.order(:index) }.flatten
+    qsel = QSelection.where(quiz_id: self.id).order(:index)
+    return qsel.map(&:question).map(&:subparts).flatten
   end
 
   def assign_to (students, publish = false) 
@@ -121,59 +119,41 @@ class Quiz < ActiveRecord::Base
 
   def lay_it_out
 =begin
-    Layout in two steps:
-      1. First, layout all the standalone questions. Try to waste as 
-         little space as possible
-      2. Then, layout out the multipart questions. These questions take a 
-         whole number of pages
+    This method defines as much of the layout as can be done reliably
+    and cleanly here. It does *not* calculate shadows as for doing that 
+    one needs to see not just a questions predecessors on a page 
+    but also its successors
 =end
-    questions = Question.where(:id => self.question_ids)
-    standalone = questions.standalone.sort{ |m,n| m.span? <=> n.span? }
-    multipart = questions - standalone
+    questions = self.questions.sort{ |m,n| m.length? <=> n.length } 
+    qsel = QSelection.where(quiz_id: self.id)
+    curr_page = 1
+    space_left = 1
+    page_breaks = [] # stores the 'curr_subparts' after which page-breaks must be inserted
+    curr_subpart = 1 # counter over all subparts of all questions
+    curr_question = 1
 
-    spans = standalone.map(&:span?)
-    start = 0 
-    stop = -1
-    last = spans.length - 1
-    layout = []
+    for j in questions
+      y = qsel.where(question_id: j.id).first
+      y.update_attributes start_page: curr_page, index: curr_question
 
-    # Code below tries to slice 'spans' into chunks where the sum of spans in 
-    # each chunk <= 1. A bit inefficient in terms of iterations but easy to read
-    while (start <= last)
-      [*start..last].each do |i|
-        sum = spans.slice(start..i).inject(:+)
-        stop = i if ( sum == 1 || i == last )
-        stop = i-1 if sum > 1
-        if (stop != -1)
-          layout.push standalone.slice(start..stop).map(&:id)
-          break 
+      sbp = m.subparts.order(:index)
+      for k in sbp
+        required = sbp.span?
+        if space_left < required 
+          page_breaks.push curr_subpart 
+          curr_page += 1
+          space_left = 1
+        else 
+          space_left -= required 
         end
-      end
-      start = stop + 1
-      stop = -1
-    end
+        curr_subpart += 1
+      end # of laying out subparts 
 
-    current_index = 1 
-    layout.each_with_index do |ids, j|
-      QSelection.where(:question_id => ids, :quiz_id => self.id).each_with_index do |s,k|
-        s.update_attributes :start_page => j + 1, :end_page => j + 1, :index => current_index
-        current_index += 1
-      end
-    end # of while 
-    
-    # Now, the multipart questions 
-    spans = multipart.map(&:span?)
-    current_page = layout.length + 1
-    last_standalone = standalone.count
-
-    spans.each_with_index do |span, index|
-      qid = multipart[index].id
-      s = QSelection.where(:question_id => qid, :quiz_id => self.id).first
-      s.update_attributes :start_page => current_page, :end_page => (current_page + span - 1), 
-                          :index => (last_standalone + index + 1)
-      current_page += span
-    end
-  end # lay_it_out
+      y.update_attribute :end_page, curr_page
+      curr_question += 1
+    end # of laying questions
+    return page_breaks
+  end
 
   def layout?(for_wsdl = true)
 =begin
@@ -202,18 +182,20 @@ class Quiz < ActiveRecord::Base
     return layout
   end
 
-  def compile_tex
+  def compile_tex(page_breaks = [])
     teacher = self.teacher 
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 
 
     response = SavonClient.request :wsdl, :buildQuiz do  
-      soap.body = { 
-         :quiz => { :id => self.id, :name => self.latex_safe_name, :value => encrypt(self.id,7) },
-         :teacher => { :id => teacher.id, :name => teacher.name },
-         :page => self.layout?
+      soap.body = {
+        quiz: { id: self.id, name: self.latex_safe_name, value: encrypt(self.id, 7) },
+        teacher: { id: teacher.id, name: teacher.name },
+        questions: QSelection.where(quiz_id: self.id).order(:index).map(&:question).map(&:uid),
+        breaks: page_breaks
       }
      end # of response 
+
      # sample response : {:build_quiz_response=>{:manifest=>{:root=>"/home/gutenberg/bank/mint/15"}}}
      return response.to_hash[:build_quiz_response]
   end # of method
