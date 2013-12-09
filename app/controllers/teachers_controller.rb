@@ -129,21 +129,18 @@ class TeachersController < ApplicationController
 
     name = params[:checked].delete :name
     question_ids = params[:checked].keys.map(&:to_i)
-    quiz = Quiz.new :name => name, :teacher_id => teacher_id, 
-                    :question_ids => question_ids, 
-                    :num_questions => question_ids.count
 
-    status = quiz.save ? :ok : :bad_request
-    unless status == :bad_request
+    quiz = Quiz.new name: name, teacher_id: teacher_id, question_ids: question_ids, num_questions: question_ids.count
+
+    if quiz.save
       job = Delayed::Job.enqueue CompileQuiz.new(quiz)
       quiz.update_attribute :job_id, job.id
 
       estimate = minutes_to_completion job.id
-      render :json => { :monitor => { :quiz => quiz.id }, 
-                        :notify => { :title => "#{estimate} minute(s)" }},
-                        :status => :ok
+      render json: { monitor: { quiz: quiz.id }, 
+                     notify: { title: "#{estimate} minutes(s)" } }, status: :ok
     else
-      render :json => { :monitor => { :quiz => nil } }, :status => :ok
+      render json: { monitor: { quiz: nil } }, status: :ok
     end
   end
 

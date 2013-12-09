@@ -10,6 +10,7 @@
 #  updated_at  :datetime
 #  index       :integer
 #  end_page    :integer
+#  shadow      :integer
 #
 
 require 'test_helper'

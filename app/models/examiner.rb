@@ -132,61 +132,27 @@ class Examiner < ActiveRecord::Base
     end # unless 
   end
 
-  def self.distribute_scans(debug = false)
-    unassigned = GradedResponse.unassigned.with_scan
-    ws_ids = unassigned.map(&:testpaper_id).uniq
-    examiners = Examiner.select{ |m| m.account.active }
+  def self.distribute_scans
+    all = GradedResponse.unassigned.with_scan
+    examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
     n_examiners = examiners.count
-    limit = 20
+    all.map(&:q_selection_id).uniq.each do |q|
+      pending = all.where(q_selection_id: q) # responses to specific question in specific quiz  
+      students = pending.map(&:student_id).uniq
+      limit = (students / n_examiners)
+      limit = limit > 20 ? limit : 20
 
-    ws_ids.each do |ws|
-      quiz = Quiz.find(Testpaper.find(ws).quiz_id)
-      layout = quiz.layout? false
-      in_ws = unassigned.in_testpaper(ws).order(:student_id).order(:page)
+      students.each_slice(limit).each do |j|
+        assignee = examiners.shift # pop from front 
 
-      for page in layout
-        questions = page[:question]
-        num_questions = questions.count 
-        pg = page[:number]
-        on_page = in_ws.on_page(pg)
-        student_ids = on_page.map(&:student_id).uniq
+        work = pending.where(student_id: j)
+        work.map{ |m| m.update_attribute :examiner_id, assignee.id }
+        assignee.update_attribute :n_assigned, (assignee.n_assigned + work.count)
 
-        if num_questions == 0
-          multi_part = true
-        else
-          multi_part = num_questions > 1 ? false : (Question.find(questions.first).subparts.count > 1)
-        end
-
-        if multi_part 
-          n_students = student_ids.count 
-        else
-          n = on_page.count
-          next if n == 0
-          n_students = (n / num_questions) # n % num_questions == 0. If not, then sth. wrong with receiveScan
-        end
-        n_reqd = (n_students / limit) + 1
-        n_reqd = (n_reqd > n_examiners) ? n_examiners : n_reqd 
-        per_examiner = (n_students / n_reqd) + 1
-        examiners = examiners.sort{ |m,n| m.n_assigned <=> n.n_assigned }
-
-        student_ids.each_slice(per_examiner).each_with_index do |ids, index|
-          assignee = examiners[index]
-          responses = on_page.select{ |m| ids.include? m.student_id }
-          for r in responses
-            r.update_attribute(:examiner_id, assignee.id) unless debug
-          end
-
-          if debug
-            puts "#{assignee.name} --> [#{quiz.name}, ##{pg}] --> #{ids.count}"
-          else
-            till_now = assignee.n_assigned
-            assignee.update_attribute :n_assigned, (till_now + responses.count) 
-          end
-        end # of iterating over slices
-      end # of iterating over pages
-    end # of iterating over worksheets
-    return ws_ids    
-  end # of method
+        examiners.push assignee # push to last
+      end # over students
+    end
+  end
 
   private
 

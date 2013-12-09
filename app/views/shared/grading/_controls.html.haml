@@ -3,17 +3,11 @@
 #fdb-main.hide.span11
   .hide{ id: 'pending-scans' }
 
-  .row-fluid{ id: 'fdb-comment' }
-    .span4{ id: 'fdb-ticker' }
-      .span2.offset1
-        #curr-q
-      .span7.offset1
-        #curr-s
-    .span5
-      %input{ id: 'fdb-typeahead', type: :text, placeholder: 'Write comment - then click on scan' }
-
   .row-fluid{ id: 'fdb-active-area' }
     .span2{id: 'fdb-controls' }
+      .row-fluid
+        .btn-group.btn-group-vertical
+          = simple_button for: 'Hide', id: 'btn-hide-controls', shortcut: 'I', class: 'btn-success btn-large'
       .row-fluid.push-down
         .btn-group.btn-group-vertical{ data: { toggle: 'buttons-radio' } } 
           = simple_button for: 'ick', id: 'btn-ok', shortcut: 'T'

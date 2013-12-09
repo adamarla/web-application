@@ -120,7 +120,7 @@ jQuery ->
       alert "Add atleast a comment or annotate with a check, cross or question mark"
       return false
 
-    id = fdb.current.response.attr 'marker'
+    id = $(fdb.current.response).attr 'marker'
     overlay = fdb.decompile()
     action = "submit/fdb.json?id=#{id}&overlay=#{overlay}"
     # alert action
@@ -138,7 +138,7 @@ jQuery ->
 
     if url.match(/submit\/fdb/)
       fdb.clear()
-      fdb.current.response.addClass 'graded'
+      $(fdb.current.response).addClass 'graded'
       fdb.next.response()
       rubric.rewind()
     else
@@ -177,6 +177,8 @@ jQuery ->
           id = 'btn-rotate'
         when 104  #H
           id = 'btn-what'
+        when 105 #I
+          id = 'btn-hide-controls'
         when 110  #N
           id = 'btn-next-scan'
         when 112  #P
@@ -223,11 +225,11 @@ jQuery ->
       $(this).text("See Solution")
       $(this).removeClass 'active'
       fdb.attach()
-      preview.load fdb.current.scan.attr('name'), 'locker'
+      fdb.update.view(false)
     else
       $(this).text("Back to Grading")
       $(this).addClass 'active'
-      id = fdb.current.response.attr 'marker'
+      id = $(fdb.current.response).attr 'marker'
       fdb.detach()
       $.get "question/preview?gr=#{id}"
     return true
@@ -245,7 +247,7 @@ jQuery ->
     action = form.getAttribute 'data-action'
     pattern = /gr=[\d]+/
     result = pattern.exec action
-    action = action.replace result,"gr=#{fdb.current.response.attr('marker')}"
+    action = action.replace result,"gr=#{$(fdb.current.response).attr('marker')}"
     form.setAttribute 'data-action', action
 
     rubric.keyboard = false # disable keyboard - if auditing during grading

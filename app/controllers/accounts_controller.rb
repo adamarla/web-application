@@ -57,19 +57,30 @@ class AccountsController < ApplicationController
     @wks = current_account.pending_ws
   end
 
-  def pending_pages
+  def to_be_graded
     tid = params[:id]
-    who = current_account.loggable_type
-    @gr = nil
-
-    if (who == "Teacher" || who == "Examiner")
-      @gr = GradedResponse.in_testpaper(tid).ungraded.with_scan
-      @gr = ( who == 'Examiner' ) ? @gr.assigned_to(current_account.loggable_id) : @gr 
-    else
-      @gr = []
-    end
-    @pages = @gr.map(&:page).uniq.sort
+    by = current_account.loggable_id
+    @pending = GradedResponse.in_testpaper(tid).with_scan.ungraded.assigned_to(by)
+    sel = @pending.map(&:q_selection_id).uniq
+    @indices = QSelection.where(id: sel).order(:index)
   end
+
+  def pending_scans
+    # Given: The question and the testpaper 
+    # Known: The examiner who needs to grade them
+
+    tp = params[:tp]
+    q = params[:q]
+    eid = current_account.loggable_id
+
+    # { pending: [{ scan: a, student: b, gr: [{ id: 12, name: "Q6.A" }, {id: 13, name: "Q6.B"}]}, { scan: b ... } ] }
+
+    p = GradedResponse.in_testpaper(tp).where(q_selection_id: q).with_scan.ungraded.assigned_to(eid)
+    @pending = p.order(:student_id).order(:subpart_id)
+
+    @students = Student.where(id: @pending.map(&:student_id).uniq)
+    @scans = @pending.map(&:scan).uniq
+  end 
 
   def pending_gr
     @ws_id = params[:ws].to_i
@@ -93,16 +104,6 @@ class AccountsController < ApplicationController
     r = GradedResponse.find(params[:id].to_i)
     ids = params[:checked].keys.map(&:to_i)
     r.fdb ids
-=begin
-    clicks = GradedResponse.annotations params[:clicks]
-
-    # Generate, then store, the mangled feedback
-    ids = params[:checked].keys.map(&:to_i)
-    r.fdb ids 
-    scan = "#{r.scan}"
-    Delayed::Job.enqueue AnnotateScan.new(scan, clicks), 
-      :priority => 10, :run_at => Time.zone.now unless clicks.empty?
-=end
     overlay = params[:overlay].split("@d@").select{ |m| !m.blank? }
     n = 0
     z = overlay.slice(n,3)

@@ -109,7 +109,7 @@ lnk-ws-download :
 lnk-download-solution :
   notouch : true
   ajax : disabled
-  update-on : quiz/preview pages/pending
+  update-on : quiz/preview 
 
 lnk-suggestion-form :
   notouch : true
@@ -160,20 +160,20 @@ tab-grd-ws :
   url : 
     self : ws/pending
   autoclick :
-    tab : tab-grd-page
+    tab : tab-grd-questions
 
-tab-grd-page :
+tab-grd-questions :
   prev : tab-grd-ws
-  url : 
-    self : pages/pending.json?id=:prev
+  url :
+    self : grade/pending?id=:prev
   autoclick :
     tab : tab-grd-panel
 
 tab-grd-panel :
-  prev : tab-grd-page
+  prev : tab-grd-questions
   id : tab-grd-ws
   url : 
-    self : gr/pending.json?page=:prev&ws=:id
+    self : scans/pending.json?q=:prev&tp=:id
 
 tab-tc-rc-1 :
   url : 

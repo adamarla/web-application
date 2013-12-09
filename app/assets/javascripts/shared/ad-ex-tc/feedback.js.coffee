@@ -2,7 +2,6 @@
 window.fdb = {
   root : null,
   list : null,
-  commentBox : null,
   controls: null, 
   nav: null,
   mode: null,
@@ -24,19 +23,25 @@ window.fdb = {
     here = fdb.pending
     here.empty()
 
-    # Parse the JSON and populate new lists
-    fdb.parse json.students, here, ['within']
-    fdb.parse json.scans, here, [], '.student'
-    fdb.parse json.responses, here, ['mcq', 'label'], '.scan'
+    for scan in json.pending 
+      e = "<div" # start a self-closing <div>
+      e += " #{j}=#{scan[j]}" for j in ['marker', 'tag']
+      e += "/>"
 
-    # Set initial values
-    fdb.current.student =  fdb.pending.children('.student').eq(0)
-    fdb.current.scan = fdb.current.student.children('.scan').eq(0)
-    fdb.current.response = fdb.current.scan.children('.gr').eq(0)
+      m = $(e).appendTo here
+      for rsp in scan.gr 
+        f = "<div"
+        f += " #{k}=#{rsp[k]}" for k in ['marker', 'tag', 'shadow']
+        f += "/>"
+        $(f).appendTo m 
 
-    $(fdb.commentBox).typeahead {
-      source : fdb.history
-    }
+    # Set values for fdb.current.*
+
+    c = here.children()[0]
+    fdb.current.student = c 
+    fdb.current.response = $(c).children()[0]
+    fdb.current.scan = $(c).attr 'marker'
+    fdb.update.view()
     return true
 
   add : (comment, event) ->
@@ -67,6 +72,7 @@ window.fdb = {
 
     preview.create(p)
     overlay.over $(preview.root)
+    shadow.over $(overlay.root)
 
     $(fdb.root).removeClass 'hide'
     fdb.update.ticker()
@@ -79,50 +85,27 @@ window.fdb = {
 
 
   #############################################################
-  ## Parse 
-  #############################################################
-
-  parse : (json, within, keys = [], parent = null) ->
-    here = fdb.pending
-    # 1. Two keys - marker & class have to be present
-    # 2. Another 2 keys - name & parent are highly likely to be present
-    # 3. Any other key is case-specific
-    # We therefore append (1) and (2) anyways so that the developer only need specify (3)
-
-    keys = keys.concat ['marker', 'class', 'name', 'parent']
-
-    within = if typeof within is 'string' then $(within) else within
-    for r in json
-      if r instanceof Array then r = r[0]
-      e = "<div" # start a self-closing div, that is <div ... />
-      for k in keys
-        e = "#{e} #{k}=#{r[k]}" if r[k]?
-      e = "#{e}/>" # close the div
-
-      if r.parent? and parent?
-        target = within.find(parent).filter("[marker=#{r.parent}]").eq(0)
-        $(e).appendTo target if target?
-      else
-        $(e).appendTo within
-    return true
-
-  #############################################################
   ## Update Ticker
   #############################################################
 
   update : {
     ticker : () ->
-      m = $(fdb.root).find('#fdb-ticker').eq(0)
-      cq = m.find('#curr-q').eq(0)
-      cs = m.find('#curr-s').eq(0)
-
-      cs.text fdb.current.student.attr('name')
-      cq.text fdb.current.response.attr('label')
-
-      isGraded = fdb.current.response.hasClass('graded')
-      if isGraded then m.addClass('graded') else m.removeClass('graded')
-
+      for m in ['student', 'response']
+        ref = $(fdb.current[m])
+        val = ref.attr 'tag'
+        node = $(shadow.root).find("#ticker-#{m}")
+        node.text val
+        if ref.hasClass('graded') then node.addClass('graded') else node.removeClass('graded')
       return true
+
+    view : (clearOverlay = true) ->
+      # To be called when fdb.current.scan changes value => switching from one scan to the next
+      overlay.clear() if clearOverlay is true
+      preview.load fdb.current.scan, 'locker'
+      fdb.update.ticker()
+      shadow.fall $(fdb.current.response).attr('shadow')
+      return true
+
   }
 
   #############################################################
@@ -134,19 +117,18 @@ window.fdb = {
       current = fdb.current.student
       return null unless current?
 
-      result = if fwd then current.next() else current.prev()
+      tag = $(current).attr 'tag'
+      cnd = if fwd then $(current).nextAll() else $(current).prevAll()
 
-      if result.length isnt 0
-        fdb.current.student = result.eq(0)
-        fdb.current.scan = fdb.current.student.children('.scan').eq(0)
-        if fdb.current.scan?
-          fdb.current.response = fdb.current.scan.children(".gr").eq(0)
-          fdb.update.ticker()
-          preview.load fdb.current.scan, 'locker'
-        else
-          fdb.current.response = null
+      result = cnd.filter(":not([tag=#{tag}])")[0]
+      if result? 
+        fdb.current.student = result
+        fdb.current.response = $(result).children()[0]
+        fdb.current.scan = $(result).attr 'marker'
+        fdb.update.view()
       else
         if fwd then notifier.show('n-last-scan') else notifier.show('n-first-scan')
+      return result
 
     scan : (fwd) -> # if fwd = true, then look for next else look for previous 
       fdb.find.student(fwd)
@@ -154,34 +136,23 @@ window.fdb = {
 
     response : (fwd) -> # if fwd = true, then look for next else look for previous
       c = fdb.current.response
+      result = if fwd then $(c).next()[0] else $(c).prev()[0]
 
-      result = if fwd then c.next() else c.prev()
-      if result.length isnt 0
-        fdb.current.response = result
+      if result?
+        fdb.current.response = result # on the same scan 
         fdb.update.ticker()
-        fdb.clear() # remove any annotations for a previous question on the same scan
-        if result.attr('mcq') is 'false'
-          $(fdb.root).removeAttr('mcq')
-        else
-          $(fdb.root).attr('mcq','true')
-        return result
-
-      ###
-        No next (prev) question? Well, then move onto the first question in the next(prev)scan
-       - which would necessarily be for the next(prev) student because within #list-pending
-       are scans for the *same* page for all students
-      ###
-      
-      student = c.parent().parent()
-      fdb.find.student(fwd)
-      
-      if not fdb.current.student?
-        if fwd then alert "Grading done .." else alert "Back to first .."
+        shadow.fall $(fdb.current.response).attr('shadow') if fdb.current.response?
       else
-        fdb.update.ticker()
+        p = if fwd then $(c).parent().next()[0] else $(c).parent().prev()[0]
+        if p?
+          fdb.current.student = p 
+          fdb.current.response = $(p).children()[0] 
+          fdb.current.scan = $(p).attr 'marker'
+          fdb.update.view()
+        else
+          if fwd then notifier.show('n-last-scan') else notifier.show('n-first-scan')
+      return true
 
-      # student.remove()
-      return fdb.current.response
   } # namespace 'find'
 
   #############################################################
@@ -223,31 +194,24 @@ jQuery ->
     fdb.pending = $(fdb.root).find('#pending-scans').eq(0)
     fdb.nav = $(fdb.root).find('#fdb-nav').eq(0) 
     fdb.controls = $(fdb.root).find('#fdb-controls').eq(0)
-    fdb.commentBox = $(fdb.root).find('#fdb-typeahead').eq(0)
 
   ###
     Shared behaviour 
   ###
-
-  fdb.commentBox.focusin (event) ->
-    event.stopPropagation()
-    rubric.keyboard = false
-    return true
-
-  fdb.commentBox.focusout (event) ->
-    event.stopPropagation()
-    rubric.keyboard = true
-    return true
 
   fdb.nav.on 'click', 'button', (event) ->
     event.stopImmediatePropagation()
     rubric.keyboard = true
     id = $(this).attr 'id'
     switch id 
-      when 'btn-prev-ques' then fdb.prev.response()
-      when 'btn-next-ques' then fdb.next.response()
-      when 'btn-prev-scan' then fdb.prev.scan()
-      when 'btn-next-scan' then fdb.next.scan()
+      when 'btn-prev-ques'
+        fdb.prev.response()
+      when 'btn-next-ques'
+        fdb.next.response()
+      when 'btn-prev-scan'
+        fdb.prev.scan()
+      when 'btn-next-scan'
+        fdb.next.scan()
     return  true
     
   fdb.controls.on 'click', 'button', (event) ->
@@ -256,8 +220,8 @@ jQuery ->
     id = $(this).attr 'id'
     fdb.tex = null
 
-    fdbControls = $(this).closest '#fdb-controls'
-    $(m).removeClass('active') for m in fdbControls.find('button')
+    allButtons = fdb.controls.find("button:not([id='btn-hide-controls'])")
+    $(m).removeClass('active') for m in allButtons 
     fdb.mode = null
 
     switch id
@@ -276,17 +240,32 @@ jQuery ->
       when 'btn-fresh-copy'
         event.stopImmediatePropagation()
         fdb.clear()
-        $.get "reset/graded?id=#{fdb.current.response.attr 'marker'}" # will also destroy any associated comments
+        $.get "reset/graded?id=#{$(fdb.current.response).attr 'marker'}" # will also destroy any associated comments
       when 'btn-rotate'
         event.stopImmediatePropagation()
-        scan = "#{fdb.current.scan.attr 'name'}"
-        $.get "rotate_scan.json?id=#{scan}"
+        $.get "rotate_scan.json?id=#{fdb.current.scan}"
       when 'btn-write'
         rubric.keyboard = false
         fdb.mode = 'comments'
-        fdb.commentBox.focus()
+        $(shadow.commentBox).focus()
         $(this).addClass 'active'
-    return true
+      when 'btn-hide-controls'
+        isClicked = $(this).hasClass 'active'
+        btnGroups = $(this).closest('.row-fluid').siblings() 
+        if isClicked 
+          next = 'Hide'
+          $(j).removeClass('hide') for j in btnGroups
+          $(this).removeClass 'active'
+          shadow.unhide()
+        else
+          next = 'Unhide'
+          $(j).addClass('hide') for j in btnGroups 
+          $(this).addClass 'active'
+          shadow.hide()
+        $(this).text next
+        $("<span class='kb-shortcut'>I</span>").prependTo $(this)
+
+    return true # end of method
 
   $(fdb.root).on 'click', (event) ->
     event.stopImmediatePropagation()
@@ -300,8 +279,8 @@ jQuery ->
       when 'question'
         fdb.add "$?$", event
       when 'comments'
-        c = fdb.commentBox.val()
-        fdb.commentBox.val '' # clear it 
+        c = $(shadow.commentBox).val()
+        $(shadow.commentBox).val '' # clear it 
         unique = true
         for m in fdb.history 
           if m is c
