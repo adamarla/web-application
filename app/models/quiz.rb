@@ -141,7 +141,8 @@ class Quiz < ActiveRecord::Base
       sbp = j.subparts.order(:index)
       for k in sbp
         required = k.length?
-        if space_left < required 
+	fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
+        unless fits  
           page_breaks.push(curr_subpart - 1)
           curr_page += 1
           space_left = 1 - required
