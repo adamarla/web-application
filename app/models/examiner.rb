@@ -136,7 +136,6 @@ class Examiner < ActiveRecord::Base
     all = GradedResponse.unassigned.with_scan
     examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
     n_examiners = examiners.count
-
     all.map(&:q_selection_id).uniq.each do |q|
       pending = all.where(q_selection_id: q) # responses to specific question in specific quiz  
       students = pending.map(&:student_id).uniq

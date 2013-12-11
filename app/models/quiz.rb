@@ -124,11 +124,13 @@ class Quiz < ActiveRecord::Base
     one needs to see not just a questions predecessors on a page 
     but also its successors
 =end
-    questions = self.questions.sort{ |m,n| m.length? <=> n.length } 
+    questions = self.questions.sort{ |m,n| m.length? <=> n.length? } 
     qsel = QSelection.where(quiz_id: self.id)
     curr_page = 1
     space_left = 1
     page_breaks = [] # stores the 'curr_subparts' after which page-breaks must be inserted
+
+    total_subparts = self.subparts.count
     curr_subpart = 1 # counter over all subparts of all questions
     curr_question = 1
 
@@ -136,13 +138,14 @@ class Quiz < ActiveRecord::Base
       y = qsel.where(question_id: j.id).first
       y.update_attributes start_page: curr_page, index: curr_question
 
-      sbp = m.subparts.order(:index)
+      sbp = j.subparts.order(:index)
       for k in sbp
-        required = sbp.span?
-        if space_left < required 
-          page_breaks.push curr_subpart 
+        required = k.length?
+	fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
+        unless fits  
+          page_breaks.push(curr_subpart - 1)
           curr_page += 1
-          space_left = 1
+          space_left = 1 - required
         else 
           space_left -= required 
         end
@@ -191,7 +194,7 @@ class Quiz < ActiveRecord::Base
       soap.body = {
         quiz: { id: self.id, name: self.latex_safe_name, value: encrypt(self.id, 7) },
         teacher: { id: teacher.id, name: teacher.name },
-        questions: QSelection.where(quiz_id: self.id).order(:index).map(&:question).map(&:uid),
+        questions:  QSelection.where(quiz_id: self.id).order(:index).map(&:question).map{ |q| { id: q.uid } },
         breaks: page_breaks
       }
      end # of response 
