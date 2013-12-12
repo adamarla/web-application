@@ -70,68 +70,6 @@ class Examiner < ActiveRecord::Base
     return GradedResponse.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
 
-  def self.distribute_work
-=begin
-  Distribution algorithm
-  -----------------------
-  For each quiz, find the available scans that are as yet unassigned. Note that there
-  is one scan per page AND there can be >1 graded responses per page ( and therefore, scan ) 
-
-  Distribute the scans equally amongst the available examiners. As a result, all 
-  graded responses on the scan will get assigned to the examiner who gets the scan
-
-=end
-    self.distribute_standalone
-    self.distribute_multipart
-    self.distribute_suggestions
-  end
-
-  def self.receive_scans
-=begin
-    QR-Code = [7-characters for worksheet ID] + [3-characters for student] + [1-character for page]
-    All encoding in base-36
-=end
-    
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['receive_scans']}" 
-    response = SavonClient.request :wsdl, :receiveScans do
-      # soap.body = "simulation"
-      soap.body = {}
-    end
-
-    # manifest => { :root => ..., :image => [ ... { :id => <qr-code>.jpg } .... ]
-    manifest = response[:receive_scans_response][:manifest]
-    unless manifest[:image].blank?
-      # All received scans - across potentially different worksheets - are stored within 
-      # the same folder. The folder is time-stamped by the time at which receiveScans ran
-      parent_folder = manifest[:root]
-
-      qr_codes = manifest[:image].map{ |m| m[:id] }.select{ |m| m != "SAVON_BUG_SKIP" }
-      ws_encr_codes = qr_codes.map{ |m| m[0..6] }.uniq 
-      ws_ids = ws_encr_codes.map{ |m| decrypt m }
-
-      ws_ids.each_with_index do |wid, j|
-        student_ids = AnswerSheet.where(:testpaper_id => wid).map(&:student_id).sort
-        scans = qr_codes.select{ |m| m[0..6] == ws_encr_codes[j] } # scans belonging to this worksheet
-
-        responses = GradedResponse.in_testpaper(wid)
-
-        scans.each do |scan|
-          rel_index = decrypt scan[7..9]
-          sid = student_ids[rel_index]
-          page = scan[10].to_i(36)
-
-          responses.of_student(sid).on_page(page).each do |m|
-            m.update_attribute :scan, "#{parent_folder}/#{scan}"
-            # m.update_attribute :scan, scan
-            # puts "#{m.id} --> #{parent_folder}/#{scan}"
-          end
-        end # scans belonging to given worksheet
-
-      end # iterating over worksheets 
-      self.distribute_scans(false) # the big kahuna. Pass 'true' for debug mode
-    end # unless 
-  end
-
   def self.distribute_scans
     all = GradedResponse.unassigned.with_scan
     examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
@@ -153,18 +91,5 @@ class Examiner < ActiveRecord::Base
       end # over students
     end
   end
-
-  private
-
-    def self.distribute_suggestions
-      # last_workset_on is updated ONLY when graded_responses are assigned. So, if you 
-      # aren't grading, then you must typeset some questions 
-      e_ids = Examiner.where(:is_admin => true).order(:last_workset_on).map(&:id)
-      n = e_ids.count
-
-      Suggestion.unassigned.each_with_index do |m, j|
-        m.update_attribute :examiner_id, e_ids[j % n]
-      end
-    end #  of method
 
 end # of class

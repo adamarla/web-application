@@ -11,6 +11,7 @@
 #  index       :integer
 #  end_page    :integer
 #  shadow      :integer
+#  page_breaks :string(10)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -72,6 +73,11 @@ class QSelection < ActiveRecord::Base
     b = previous ? a.where('index < ?', self.index) : a.where('index > ?', self.index)
     ret =  same_page ? (previous ? b.where(end_page: self.start_page) : b.where(start_page: self.end_page)) : b
     return ret.order(:index)
+  end
+
+  def page_breaks?
+    return [] if self.page_breaks.blank?
+    return self.page_breaks.split(',').map(&:to_i)
   end
 
 end

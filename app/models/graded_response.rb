@@ -32,6 +32,8 @@ class GradedResponse < ActiveRecord::Base
   validates :q_selection_id, presence: true
   validates :student_id, presence: true
 
+  after_create :page? # fix it now so that if Quiz layout changes tomorrow, then things still work
+
   def self.on_page(page)
     select{ |m| m.page? == page }
   end
@@ -224,15 +226,11 @@ class GradedResponse < ActiveRecord::Base
   def page?
     return self.page unless self.page.nil? 
 
-    if self.scan
-      page = self.scan[10].to_i(36)
-      # quiz, testpaper, student, page = self.scan.split('-').map(&:to_i)
-    else
-      start_pg = QSelection.where(id: self.q_selection_id).select(:start_page).first.start_page
-      offset = Subpart.where(id: self.subpart_id).select(:relative_page).first.relative_page
-      page = start_pg + offset
-    end
-    self.update_attribute :page, page unless page < 1
+    qsel = self.q_selection
+    intra_q_breaks = qsel.page_breaks?
+    offset = intra_q_breaks.blank? ? 0 : intra_q_breaks.index( intra_q_breaks.select{|m| m < qsel.index}.last )
+    page = qsel.start_page + (offset.nil? ? 0 : offset + 1)
+    self.update_attribute :page, page
     return page
   end
 

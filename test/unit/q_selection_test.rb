@@ -11,6 +11,7 @@
 #  index       :integer
 #  end_page    :integer
 #  shadow      :integer
+#  page_breaks :string(10)
 #
 
 require 'test_helper'

@@ -131,7 +131,7 @@ class Quiz < ActiveRecord::Base
     page_breaks = [] # stores the 'curr_subparts' after which page-breaks must be inserted
 
     total_subparts = self.subparts.count
-    curr_subpart = 1 # counter over all subparts of all questions
+    curr_subpart = 0 # 0-indexed to be in-sync with what \setPageBreaks expects in TeX 
     curr_question = 1
 
     for j in questions
@@ -139,11 +139,15 @@ class Quiz < ActiveRecord::Base
       y.update_attributes start_page: curr_page, index: curr_question
 
       sbp = j.subparts.order(:index)
+      multipart = sbp.count > 1
+      breaks_within_question = []
+
       for k in sbp
         required = k.length?
         fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
         unless fits  
           page_breaks.push(curr_subpart - 1)
+          breaks_within_question.push(k.index - 1) if multipart
           curr_page += 1
           space_left = 1 - required
         else 
@@ -152,8 +156,9 @@ class Quiz < ActiveRecord::Base
         curr_subpart += 1
       end # of laying out subparts 
 
-      y.update_attribute :end_page, curr_page
       curr_question += 1
+      y.update_attribute :end_page, curr_page
+      y.update_attribute(:page_breaks, breaks_within_question.map(&:to_s).join(',')) unless breaks_within_question.blank?
     end # of laying questions
     return page_breaks
   end
@@ -208,21 +213,6 @@ class Quiz < ActiveRecord::Base
     # 'printing-press' asking it to delete PDFs of testpapers generated
     # for this Quiz - both composite & per-student 
     return true
-  end
-
-  # Returns the list of micro-topics touched upon in this Quiz - as an array of indices
-  def micros
-    self.questions.map{|q| q.topic_id}.uniq
-  end
-
-  def pending_questions
-    a = GradedResponse.in_quiz(self.id).ungraded
-  end
-
-  def pending_pages(examiner_id)
-    pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner_id)
-    @pages = pending.map(&:page?).uniq.sort
-    return @pages
   end
 
   def pending_scans(examiner, page)

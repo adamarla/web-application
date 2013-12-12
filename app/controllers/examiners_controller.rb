@@ -33,11 +33,6 @@ class ExaminersController < ApplicationController
     render :json => {:notify => { :text => "6 slots blocked", :subtext => "Do 'git fetch origin/master'"} }, :status => :ok
   end
 
-  def receive_scans
-    failures = Examiner.receive_scans
-    render :json => failures, :status => :ok
-  end
-
   def distribute_scans
     ws_ids = Examiner.distribute_scans(false)
     render :json => ws_ids, :status => :ok
@@ -110,7 +105,7 @@ class ExaminersController < ApplicationController
     render :json => { :status => status }, :status => :ok
   end
 
-  def update_scan_id
+  def receive_single_scan
     status = "not ok"
 
     path = params[:path]

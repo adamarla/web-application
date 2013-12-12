@@ -61,40 +61,18 @@ class QuestionController < ApplicationController
           m.check_for_completeness unless m.nil?
 
           if question.update_subpart_info lengths, marks
-            render :json => { 
-                              :notify => { 
-                                :text => "#{question.uid} tagged" 
-                              } 
-                            }, :status => :ok
+            render json: { notify: { text: "#{question.uid} tagged" } }, status: :ok
           else
-            render :json => { 
-                              :notify => { 
-                                :text => "#{question.uid} subpart info update failed" 
-                              } 
-                            }, :status => :bad_request
+            render json: { notify: { text: "#{question.uid} subpart tagging failed" } }, status: :bad_request
           end
         else # manifest == nil 
-          render :json => { 
-                            :notify => { 
-                              :text => "#{question.uid} TeX tagging failed!" 
-                            } 
-                          }, :status => :bad_request 
+          render json: { notify: { text: "#{question.uid} TeX tagging failed!" } }, status: :bad_request
         end
       else
-        render :json => { 
-                          :notify => { 
-                            :text => "#{question.uid} tagging failed", 
-                            :subtext => "Subpart count is zero" 
-                          } 
-                        }, :status => :ok 
+        render json: { notify: {text: "#{question.uid} Cannot have 0 subparts!" } }, status: :ok
       end # of if nparts > 0
     else
-      render :json => { 
-                        :notify => { 
-                          :text => "Tagging failed", 
-                          :subtext => "Question not in DB" 
-                        } 
-                      }, :status => :bad_request
+      render json: { notify: { text: "Question not found!" } }, status: :bad_request
     end 
   end # of method 
 

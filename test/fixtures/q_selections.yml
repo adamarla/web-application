@@ -11,6 +11,7 @@
 #  index       :integer
 #  end_page    :integer
 #  shadow      :integer
+#  page_breaks :string(10)
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

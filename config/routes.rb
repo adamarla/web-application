@@ -52,7 +52,7 @@ Webapp::Application.routes.draw do
   match 'pages/unresolved' => 'examiners#unresolved_scans', via: :get
   match 'unresolved/preview' => 'examiners#preview_unresolved', via: :get
   match 'resolve' => 'examiners#resolve_scan', via: :post
-  match 'update_scan_id' => 'examiners#update_scan_id', via: :get
+  match 'update_scan_id' => 'examiners#receive_single_scan', via: :get
   match 'update_scan_id' => 'examiners#update_scan_id', via: :post
   match 'audit/todo' => 'examiners#audit_todo', via: :get
   match 'audit/review' => 'examiners#audit_review', via: :get

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131201113844) do
+ActiveRecord::Schema.define(:version => 20131212061629) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20131201113844) do
     t.integer  "index"
     t.integer  "end_page"
     t.integer  "shadow"
+    t.string   "page_breaks", :limit => 10
   end
 
   add_index "q_selections", ["question_id"], :name => "index_q_selections_on_question_id"
