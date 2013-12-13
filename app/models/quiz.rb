@@ -129,6 +129,7 @@ class Quiz < ActiveRecord::Base
     curr_page = 1
     space_left = 1
     page_breaks = [] # stores the 'curr_subparts' after which page-breaks must be inserted
+    version_triggers = []
 
     total_subparts = self.subparts.count
     curr_subpart = 0 # 0-indexed to be in-sync with what \setPageBreaks expects in TeX 
@@ -157,10 +158,11 @@ class Quiz < ActiveRecord::Base
       end # of laying out subparts 
 
       curr_question += 1
+      version_triggers.push(curr_subpart - 1) # the last subpart, now that we are moving to next question
       y.update_attribute :end_page, curr_page
       y.update_attribute(:page_breaks, breaks_within_question.map(&:to_s).join(',')) unless breaks_within_question.blank?
     end # of laying questions
-    return page_breaks
+    return page_breaks, version_triggers
   end
 
   def layout?(for_wsdl = true)
@@ -190,7 +192,7 @@ class Quiz < ActiveRecord::Base
     return layout
   end
 
-  def compile_tex(page_breaks = [])
+  def compile_tex(page_breaks = [], version_triggers = [])
     teacher = self.teacher 
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 
@@ -200,7 +202,8 @@ class Quiz < ActiveRecord::Base
         quiz: { id: self.id, name: self.latex_safe_name, value: encrypt(self.id, 7) },
         teacher: { id: teacher.id, name: teacher.name },
         questions:  QSelection.where(quiz_id: self.id).order(:index).map(&:question).map{ |q| { id: q.uid } },
-        breaks: page_breaks
+        breaks: page_breaks,
+        version_triggers: version_triggers
       }
      end # of response 
 

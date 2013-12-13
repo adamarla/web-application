@@ -5,9 +5,9 @@ class CompileQuiz < Struct.new(:quiz)
     n_questions = question_ids.count 
 
     quiz.update_attributes num_questions: n_questions, total: nil, span: nil
-    page_breaks = quiz.lay_it_out
+    page_breaks, version_triggers = quiz.lay_it_out
 
-    response = quiz.compile_tex page_breaks 
+    response = quiz.compile_tex page_breaks, version_triggers
     manifest = response[:manifest]
     status = manifest.blank? ? :bad_request : :ok
 
