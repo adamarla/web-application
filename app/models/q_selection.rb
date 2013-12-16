@@ -26,7 +26,6 @@ class QSelection < ActiveRecord::Base
   belongs_to :question
 
   has_many :graded_responses, dependent: :destroy
-  has_many :variants, dependent: :destroy
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible 
