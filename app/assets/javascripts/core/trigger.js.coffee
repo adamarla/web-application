@@ -196,7 +196,15 @@ jQuery ->
   ###
   if Modernizr?
     allGood = Modernizr.canvas and Modernizr.canvastext and Modernizr.rgba and Modernizr.svg
-    notifier.show 'n-old-browser' unless allGood
+    # allGood = false
+    unless allGood 
+      signinForm = $('#signin-form')
+      signinBtn = signinForm.find('button').eq(0)
+
+      signinBtn.addClass 'disabled'
+      signinBtn.text 'Old Browser!'
+      signinForm.attr 'onsubmit', 'return false;'
+      notifier.show 'n-old-browser' 
 
 
   #####################################################################

@@ -3860,6 +3860,7 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     }
     > li {
       float: left;
+      &.pull-right { float: right ; }
       > a {
         float: none;
         margin: {
