@@ -228,7 +228,7 @@ class GradedResponse < ActiveRecord::Base
 
     qsel = self.q_selection
     intra_q_breaks = qsel.page_breaks?
-    offset = intra_q_breaks.blank? ? 0 : intra_q_breaks.index( intra_q_breaks.select{|m| m < qsel.index}.last )
+    offset = intra_q_breaks.blank? ? nil : intra_q_breaks.index( intra_q_breaks.select{|m| m < qsel.index}.last ) # nil | 0-indexed
     page = qsel.start_page + (offset.nil? ? 0 : offset + 1)
     self.update_attribute :page, page
     return page
