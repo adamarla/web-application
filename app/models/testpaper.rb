@@ -83,8 +83,10 @@ class Testpaper < ActiveRecord::Base
     end
     response = response.to_hash[:assign_quiz_response]
     if !response[:manifest].blank?
-      students.each_with_index do |s,j|
-        Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
+      if self.takehome
+        students.each_with_index do |s,j|
+          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
+        end
       end
     end
     return response
@@ -112,10 +114,11 @@ class Testpaper < ActiveRecord::Base
   def to_csv(options = {})
     csv = []
     CSV.generate(options) do |csv|
-      csv << ["Name", "Marks"]
-      self.answer_sheets.each do |as|
+      csv << ["Name", "Marks(#{self.quiz.total?} max)"]
+      self.students.order(:first_name).each do |s|
+        as = AnswerSheet.for_testpaper(self.id).of_student(s.id).first
         if as.graded?
-          csv << [as.student.name, as.marks]
+          csv << [s.name, as.marks]
         end
       end
     end
