@@ -117,14 +117,24 @@ class Quiz < ActiveRecord::Base
     return last
   end
 
-  def lay_it_out
+  def lay_it_out(qids = [])
 =begin
     This method defines as much of the layout as can be done reliably
     and cleanly here. It does *not* calculate shadows as for doing that 
     one needs to see not just a questions predecessors on a page 
     but also its successors
+
+    'qids' is an array of question_ids. If its NOT blank, then it means 
+    that the passed questions have to be laid out in the order given 
+    in the array. Do NOT count on there being too many sanity checks on 
+    qids in the code below
+
+    Passing qids is highly NOT recommended. Do this only if you know 
+    what you are doing
 =end
-    questions = self.questions.sort{ |m,n| m.length? <=> n.length? } 
+    questions = qids.blank? ? self.questions.sort{ |m,n| m.length? <=> n.length? } : 
+                              Question.where(id: qids).sort{ |m,n| qids.index(m.id) <=> qids.index(n.id) }
+
     qsel = QSelection.where(quiz_id: self.id)
     curr_page = 1
     space_left = 1
@@ -137,6 +147,7 @@ class Quiz < ActiveRecord::Base
 
     for j in questions
       y = qsel.where(question_id: j.id).first
+      next if y.nil?
       y.update_attributes start_page: curr_page, index: curr_question
 
       sbp = j.subparts.order(:index)
