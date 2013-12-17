@@ -106,37 +106,30 @@ class ExaminersController < ApplicationController
   end
 
   def receive_single_scan
-    status = "not ok"
-
+    ret = true
     path = params[:path]
     id = params[:id]
 
-    graded_resp = []
+    received = []
     if params[:type] == "QR"
       ws_id = decrypt id[0..6]
       rel_index = decrypt id[7..9]
       page = id[10].to_i(36)
       student_id = AnswerSheet.where(testpaper_id: ws_id).map(&:student_id).sort[rel_index]
-      graded_resp = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page)
+      received = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page)
     else
-      id.split('-').each do |grID|
-        graded_resp  << GradedResponse.find_by_id(grID.to_i)
-      end
+      received.push GradedResponse.find(id.split('-').map(&:to_i))
     end
 
-    graded_resp.each do |gr|
-      if gr[:scan].nil? 
-        gr.update_attribute :scan, path
-        if gr.testpaper.publishable? # if fresh scans have arrived
-          gr.testpaper.update_attribute :publishable, false
-        end
-        status = "ok"
-      else
-        status = "not ok"
-        break
-      end
+    # Testpapers corresponding to these scans should be tagged as unpublishable
+    # till such time that the responses are not graded
+    received.map(&:testpaper).uniq.map{ |j| j.update_attribute(:publishable, false) }
+    
+    for m in received 
+      ret &= m.scan.blank? ? m.update_attribute(:scan, path) : false
+      break unless ret
     end
-    render :json => { :status => status }
+    render json: { status: (ret ? 'ok' : 'not ok') }
   end
 
   def audit_todo
