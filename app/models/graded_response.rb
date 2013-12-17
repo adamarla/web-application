@@ -111,33 +111,9 @@ class GradedResponse < ActiveRecord::Base
     where(closed: true)
   end
 
-  def self.annotations( clicks )
-    # This method creates the array of hashes web-service expects from 
-    # what canvas.decompile() returns - via params[:clicks]
-    # 'clicks' is of the form _R_ .... _G_ .... _T_ ...._C_, where R=red, T=turmeric, G=green
-
-    ret = [] # passed to web-service request 
-    # x_correction = 15 # see canvas.drawImage() call in canvas.js
-
-    ['cross', 'check', 'ques', 'comment'].each_with_index do |m,j|
-      pts = clicks.split("_#{m}b_").last.split("#{m}e_").first
-      next if pts.blank?
-
-      unless m == 'comment'
-        pts = pts.split('_').select{ |m| !m.blank? }.map(&:to_i)
-        pts.each_slice(2) do |pt|
-          ret.push({ :x => pt.first, :y => pt.last, :code => j })
-        end
-      else
-        comments = pts.split "@dwr@" # Comes from canvas.js. See note there
-        comments.each_slice(3) do |comment|
-          ret.push({ :x => comment[0].to_i, :y => comment[1].to_i, :code => 3, :text => comment[2]})
-        end
-      end
-    end
-
-    return ret
-  end # of method
+  def self.received_on(date) # Ex: date = '16th Dec 2013'
+    where('scan LIKE ?', "#{Date.parse(date).strftime('%d.%B.%Y')}%")
+  end
 
   def honest?
     return :disabled if self.scan.nil?
