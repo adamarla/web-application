@@ -1,7 +1,8 @@
 
-class CompileQuiz < Struct.new(:quiz)
+class CompileQuiz < Struct.new(:id)
   def perform
-    question_ids = QSelection.where(quiz_id: quiz.id).map(&:question_id)
+    quiz = Quiz.find id
+    question_ids = QSelection.where(quiz_id: id).map(&:question_id)
     n_questions = question_ids.count 
 
     quiz.update_attributes num_questions: n_questions, total: nil, span: nil
@@ -21,8 +22,14 @@ class CompileQuiz < Struct.new(:quiz)
         m.increment_picked_count
       end
     else
-      quiz.destroy
+      raise "[Quiz = #{id}]: TeX compilation failed"
     end
-
   end 
+
+  def failure(job)
+    id = YAML.load(job.handler).id
+    quiz = Quiz.find id
+    quiz.destroy
+  end
+
 end

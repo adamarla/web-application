@@ -54,7 +54,7 @@ class QuizzesController < ApplicationController
         orig = Quiz.find params[:id]
         clone = orig.nil? ? nil : orig.clone(t.id)
         unless clone.nil?
-          job = Delayed::Job.enqueue CompileQuiz.new(clone), priority: 5
+          job = Delayed::Job.enqueue CompileQuiz.new(clone.id), priority: 5
           clone.update_attribute :job_id, job.id
 
           estimate = minutes_to_completion job.id
