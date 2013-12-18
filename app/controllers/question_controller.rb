@@ -114,7 +114,7 @@ class QuestionController < ApplicationController
       if (@gating.count > 0 || @non_gating.count > 0 || !@comments.blank?)
         @author = Examiner.find @question.examiner_id
         @author = @author.account.active ? @author : Examiner.available.sample(1).first
-        Mailbot.send_audit_report(@question, @author, @gating, @non_gating, @comments).deliver
+        Mailbot.delay.send_audit_report(@question, @author, @gating, @non_gating, @comments)
       end
       render json: { msg: "Audit Report Sent", disabled: [@question.id] }, status: :ok
     else
