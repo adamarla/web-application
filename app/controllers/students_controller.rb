@@ -10,7 +10,7 @@ class StudentsController < ApplicationController
     data = params[:student]
 
     if data[:guard].blank? # => human entered registration data
-      student = Student.new :name => data[:name]
+      student = Student.new name: data[:name]
 
       location = request.location
       city = state = country = zip = nil
@@ -24,13 +24,13 @@ class StudentsController < ApplicationController
       end
 
       account_details = data[:account]
-      account = student.build_account :email => account_details[:email], 
-                                      :password => account_details[:password],
-                                      :password_confirmation => account_details[:password],
-                                      :city => city,
-                                      :state => state, 
-                                      :postal_code => zip,
-                                      :country => country
+      account = student.build_account email: account_details[:email], 
+                                      password: account_details[:password],
+                                      password_confirmation: account_details[:password],
+                                      city: city,
+                                      state: state, 
+                                      postal_code: zip,
+                                      country: country
       if student.save
         Mailbot.welcome_student(student.account).deliver
         sign_in student.account
@@ -61,13 +61,13 @@ class StudentsController < ApplicationController
        country = country.id unless country.blank?
     end
  
-    account.update_attributes :email => account_details[:email],
-                              :password => account_details[:password],
-                              :password_confirmation => account_details[:password],
-                              :city => city,
-                              :state => state,
-                              :postal_code => zip,
-                              :country => country 
+    account.update_attributes email: account_details[:email],
+                              password: account_details[:password],
+                              password_confirmation: account_details[:password],
+                              city: city,
+                              state: state,
+                              postal_code: zip,
+                              country: country 
 
     if account.save
       Mailbot.welcome_student(account).deliver
@@ -78,7 +78,7 @@ class StudentsController < ApplicationController
 
   def match
     data = params[:student]
-    student = Student.new :name => data[:name]
+    student = Student.new name: data[:name]
     sk = Sektion.where{ uid =~ "#{data[:code]}" }.first
 
     @exists = true
@@ -134,9 +134,9 @@ class StudentsController < ApplicationController
     student = Student.find params[:id]
     @ws = student.nil? ? [] : student.testpapers
     unless @ws.empty?
-      @ws = @ws.where(:takehome => true)
+      @ws = @ws.where(takehome: true)
       open = AnswerSheet.where(:student_id => student.id, :testpaper_id => @ws.map(&:id)).select{ |m| m.received? :none }
-      @ws = Testpaper.where :id => open.map(&:testpaper_id)
+      @ws = Testpaper.where id: open.map(&:testpaper_id)
     else
       render :json => { :notify => { :text => "No new worksheets" }}, :status => :ok
     end

@@ -9,7 +9,7 @@ class QuizzesController < ApplicationController
     unless quiz.nil?
       publish = !(params[:ws_type] == 'classwork')
       teacher = quiz.teacher 
-      students = Student.where(:id => params[:checked].keys)
+      students = Student.where(id: params[:checked].keys)
 =begin
       Now, if this quiz is a clone of some other quiz AND this is the 
       first worksheet being made for it, then its time to seal the name 
@@ -61,7 +61,7 @@ class QuizzesController < ApplicationController
           Mailbot.quiz_shared(clone, current_account.loggable, t).deliver if account.email_is_real?
           render :json => { :monitor => { :quiz => clone.id }, 
                             :notify => { :title => "#{estimate} minute(s)" }},
-                            :status => :ok
+                            status: :ok
         else
           clone.destroy
           render json: { status: :error }, status: :ok
@@ -95,8 +95,8 @@ class QuizzesController < ApplicationController
     teacher = (current_account.role == :teacher) ? current_account.loggable : nil
 
     unless teacher.nil?
-      @quizzes = Quiz.where(:teacher_id => teacher.id)
-      @quizzes = @quizzes.blank? ? Quiz.where(:id => 318) : @quizzes # 318 = "A Demo Quiz" 
+      @quizzes = Quiz.where(teacher_id: teacher.id)
+      @quizzes = @quizzes.blank? ? Quiz.where(id: 318) : @quizzes # 318 = "A Demo Quiz" 
 
       @disabled = @quizzes.select{ |m| m.compiling? }.map(&:id) 
       n = @quizzes.count 
@@ -114,7 +114,7 @@ class QuizzesController < ApplicationController
   end 
 
   def preview
-    @quiz = Quiz.where(:id => params[:id]).first
+    @quiz = Quiz.where(id: params[:id]).first
     @uid = encrypt(@quiz.id, 7)
     head :bad_request if @quiz.nil?
   end
@@ -131,7 +131,7 @@ class QuizzesController < ApplicationController
   end
 
   def testpapers
-    @testpapers = Testpaper.where(:quiz_id => params[:id])
+    @testpapers = Testpaper.where(quiz_id: params[:id])
     n = @testpapers.count 
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i

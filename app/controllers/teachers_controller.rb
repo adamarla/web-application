@@ -8,7 +8,7 @@ class TeachersController < ApplicationController
     if data[:guard].blank? # => human entered registration data
       country = data[:country].blank? ? nil : Country.where{ name =~ "%#{data[:country]}%" }.first
 
-      teacher = Teacher.new :name => data[:name]
+      teacher = Teacher.new name: data[:name]
 
       location = request.location
       city = state = country = zip = nil
@@ -24,13 +24,13 @@ class TeachersController < ApplicationController
       end
 
       account_details = data[:account]
-      account = teacher.build_account :email => account_details[:email], 
-                                      :password => account_details[:password],
-                                      :password_confirmation => account_details[:password],
-                                      :city => city,
-                                      :state => state, 
-                                      :postal_code => zip,
-                                      :country => country
+      account = teacher.build_account email: account_details[:email], 
+                                      password: account_details[:password],
+                                      password_confirmation: account_details[:password],
+                                      city: city,
+                                      state: state, 
+                                      postal_code: zip,
+                                      country: country
                                      
       if teacher.save 
         Mailbot.welcome_teacher(teacher.account).deliver
@@ -69,9 +69,9 @@ class TeachersController < ApplicationController
       @who_wants_to_know = current_account.role
       case @who_wants_to_know
         when :admin
-          @teachers = Teacher.where(:school_id => params[:id])
+          @teachers = Teacher.where(school_id: params[:id])
         when :school 
-          @teachers = Teacher.where(:school_id => current_account.loggable.id)
+          @teachers = Teacher.where(school_id: current_account.loggable.id)
         when :student 
           @teachers = current_account.loggable.teachers 
         else 
@@ -89,7 +89,7 @@ class TeachersController < ApplicationController
       @sektions = []
     else
       @sektions = teacher.sektions
-      @sektions = Sektion.where(:id => PREFAB_SECTION) if @sektions.blank?
+      @sektions = Sektion.where(id: PREFAB_SECTION) if @sektions.blank?
     end
     @context = params[:context]
   end
@@ -118,7 +118,7 @@ class TeachersController < ApplicationController
 
   def qzb_echo
     tids = params[:checked].keys.map(&:to_i)
-    @topics = Topic.where(:id => tids)
+    @topics = Topic.where(id: tids)
     @filters = params[:filter].blank? ? [] : params[:filter].keys
     @context = params[:context]
   end
@@ -149,13 +149,13 @@ class TeachersController < ApplicationController
     head :bad_request if teacher.nil?
 
     @disputed = GradedResponse.in_quiz(teacher.quiz_ids).disputed
-    quiz_ids = QSelection.where(:id => @disputed.map(&:q_selection_id)).map(&:quiz_id).uniq
-    @quizzes = Quiz.where(:id => quiz_ids)
+    quiz_ids = QSelection.where(id: @disputed.map(&:q_selection_id)).map(&:quiz_id).uniq
+    @quizzes = Quiz.where(id: quiz_ids)
   end
 
   def overwrite_marks
     params[:disputed].each do |id, marks|
-      g = GradedResponse.where(:id => id).first
+      g = GradedResponse.where(id: id).first
       marks = marks.empty? ? nil : marks.to_f.round(2)
       next if marks.nil? || marks < 0 || marks > g.subpart.marks
       g.update_attributes :marks_teacher => marks, :closed => true
@@ -184,7 +184,7 @@ class TeachersController < ApplicationController
         estimate = minutes_to_completion job.id
         render :json => { :monitor => { :quiz => clone.id, :worksheet => ws.id }, 
                           :timer => { :on => topic, :for => "#{estimate * 60}"} },
-                          :status => :ok
+                          status: :ok
       end
     else # no clone. should never happen
       render :nothing => true, :status => :ok

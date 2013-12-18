@@ -88,7 +88,7 @@ class QuestionController < ApplicationController
   def like
     teacher = current_account.loggable
     qid = params[:id].to_i
-    teacher.favourites.create :question_id => qid
+    teacher.favourites.create question_id: qid
     render :json => { :favourite => { :id => qid } }, :status => :ok
   end
 

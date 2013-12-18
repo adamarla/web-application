@@ -85,7 +85,7 @@ class Testpaper < ActiveRecord::Base
     if !response[:manifest].blank?
       if self.takehome
         students.each_with_index do |s,j|
-          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 5
+          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), priority: 5
         end
       end
     end
@@ -135,7 +135,7 @@ class Testpaper < ActiveRecord::Base
     end
 
     students.each_with_index do |s,j|
-      Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), :priority => 6
+      Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), priority: 6
     end
   end
 

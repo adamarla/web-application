@@ -14,10 +14,10 @@ class AccountsController < ApplicationController
     unless details[:password].blank?
       unless details[:password_confirmation].blank?
         passwd_updated |= (current_account.update_attributes(
-            :password => details[:password], 
-            :password_confirmation => details[:password_confirmation]))
+            password: details[:password], 
+            password_confirmation: details[:password_confirmation]))
 
-        sign_in current_account, :bypass => true if passwd_updated 
+        sign_in current_account, bypass: true if passwd_updated 
       end
     end
 
@@ -95,9 +95,9 @@ class AccountsController < ApplicationController
     end
 
     @gr = @gr.sort{ |m,n| m.index? <=> n.index? }
-    @students = Student.where(:id => @gr.map(&:student_id).uniq)
+    @students = Student.where(id: @gr.map(&:student_id).uniq)
     @scans = @gr.map(&:scan).uniq
-    @quiz = Testpaper.where(:id => @ws_id).map(&:quiz_id).first
+    @quiz = Testpaper.where(id: @ws_id).map(&:quiz_id).first
   end
 
   def submit_fdb
@@ -130,15 +130,15 @@ class AccountsController < ApplicationController
     quiz_ids = params[:quizzes].blank? ? [] : params[:quizzes].map(&:to_i)
     ws_ids = params[:worksheets].blank? ? [] : params[:worksheets].map(&:to_i)
 
-    @quizzes = Quiz.where(:id => quiz_ids).select{ |m| !m.compiling? }
-    @ws = Testpaper.where(:id => ws_ids).select{ |m| !m.compiling? }
+    @quizzes = Quiz.where(id: quiz_ids).select{ |m| !m.compiling? }
+    @ws = Testpaper.where(id: ws_ids).select{ |m| !m.compiling? }
     @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
   end 
 
   def by_country
     type = params[:type].humanize
-    @accounts = Account.where(:loggable_type => type)
-    @countries = Country.where(:id => @accounts.map(&:country).uniq)
+    @accounts = Account.where(loggable_type: type)
+    @countries = Country.where(id: @accounts.map(&:country).uniq)
   end
 
   def in_country
@@ -152,17 +152,17 @@ class AccountsController < ApplicationController
       unless params[:new][:question].blank?
         Mailbot.ask_question(current_account, params[:new][:question]).deliver
         render :json => { :notify => { :title => "Got it!", 
-                                       :msg => 'We will answer your question within 24 hours. Thank you for writing' } }, 
-                                       :status => :ok
+                                       msg: 'We will answer your question within 24 hours. Thank you for writing' } }, 
+                                       status: :ok
       else
         render :json => { :notify => { :title => "Blank question?", 
-                                       :msg => 'You seem to have asked nothing' }}, 
-                                       :status => :ok
+                                       msg: 'You seem to have asked nothing' }}, 
+                                       status: :ok
       end
     else
       render :json => { :notify => { :title => "Missing E-mail", 
-                                     :msg => 'Need an e-mail address to reply to' }}, 
-                                     :status => :ok
+                                     msg: 'Need an e-mail address to reply to' }}, 
+                                     status: :ok
     end
   end
 
