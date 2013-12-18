@@ -25,7 +25,7 @@ class QuizzesController < ApplicationController
 
       ws = students.blank? ? nil : quiz.assign_to(students, publish)
       unless ws.nil? # time to compile
-        job = Delayed::Job.enqueue CompileTestpaper.new(ws)
+        job = Delayed::Job.enqueue CompileTestpaper.new(ws), priority: 0
         ws.update_attribute :job_id, job.id
 
         estimate = minutes_to_completion job.id
@@ -54,11 +54,11 @@ class QuizzesController < ApplicationController
         orig = Quiz.find params[:id]
         clone = orig.nil? ? nil : orig.clone(t.id)
         unless clone.nil?
-          job = Delayed::Job.enqueue CompileQuiz.new(clone)
+          job = Delayed::Job.enqueue CompileQuiz.new(clone), priority: 5
           clone.update_attribute :job_id, job.id
 
           estimate = minutes_to_completion job.id
-          Mailbot.delay(priority: 10).quiz_shared(clone, current_account.loggable, t) if account.email_is_real?
+          Mailbot.delay.quiz_shared(clone, current_account.loggable, t) if account.email_is_real?
           render :json => { :monitor => { :quiz => clone.id }, 
                             :notify => { :title => "#{estimate} minute(s)" }},
                             status: :ok

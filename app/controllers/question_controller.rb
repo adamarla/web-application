@@ -115,7 +115,7 @@ class QuestionController < ApplicationController
         @author = Examiner.find @question.examiner_id
         @author = @author.account.active ? @author : Examiner.available.sample(1).first
         
-        Mailbot.delay(priority: 10).send_audit_report(@question, @author, @gating, @non_gating, @comments)
+        Mailbot.delay.send_audit_report(@question, @author, @gating, @non_gating, @comments)
       end
       render json: { msg: "Audit Report Sent", disabled: [@question.id] }, status: :ok
     else

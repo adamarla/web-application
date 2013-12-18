@@ -18,7 +18,7 @@ class TeachersController < ApplicationController
          state = location.state
          zip = location.postal_code
          country = location.country
-         # Mailbot.delay(priority: 10).registration_debug(city, state, zip, country)
+         # Mailbot.delay.registration_debug(city, state, zip, country)
          country = Country.where{ name =~ country }.first
          country = country.id unless country.blank?
       end
@@ -33,7 +33,7 @@ class TeachersController < ApplicationController
                                       country: country
                                      
       if teacher.save 
-        Mailbot.delay(priority: 10).welcome_teacher(teacher.account)
+        Mailbot.delay.welcome_teacher(teacher.account)
         sign_in teacher.account
         redirect_to teacher_path
       end # no reason for else if client side validations worked
@@ -133,7 +133,7 @@ class TeachersController < ApplicationController
     quiz = Quiz.new name: name, teacher_id: teacher_id, question_ids: question_ids, num_questions: question_ids.count
 
     if quiz.save
-      job = Delayed::Job.enqueue CompileQuiz.new(quiz)
+      job = Delayed::Job.enqueue CompileQuiz.new(quiz), priority: 0
       quiz.update_attribute :job_id, job.id
 
       estimate = minutes_to_completion job.id
@@ -169,7 +169,7 @@ class TeachersController < ApplicationController
 
     clone = quiz.clone current_account.loggable_id
     unless clone.nil?
-      job = Delayed::Job.enqueue CompileQuiz.new(clone)
+      job = Delayed::Job.enqueue CompileQuiz.new(clone), priority: 5
       clone.update_attribute :job_id, job.id
 
       # Now, randomly pick a student from the prefabricated section - Gradians.com 
@@ -179,7 +179,7 @@ class TeachersController < ApplicationController
       # and assign the just made quiz to him / her 
       ws = clone.assign_to [random_student]
       unless ws.nil?
-        job = Delayed::Job.enqueue CompileTestpaper.new(ws, false)
+        job = Delayed::Job.enqueue CompileTestpaper.new(ws, false), priority: 5
         ws.update_attribute :job_id, job.id
         estimate = minutes_to_completion job.id
         render :json => { :monitor => { :quiz => clone.id, :worksheet => ws.id }, 

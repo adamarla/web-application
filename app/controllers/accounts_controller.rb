@@ -150,7 +150,7 @@ class AccountsController < ApplicationController
   def ask_question
     unless current_account.nil?
       unless params[:new][:question].blank?
-        Mailbot.delay(priority: 10).ask_question(current_account, params[:new][:question])
+        Mailbot.delay.ask_question(current_account, params[:new][:question])
         render :json => { :notify => { :title => "Got it!", 
                                        msg: 'We will answer your question within 24 hours. Thank you for writing' } }, 
                                        status: :ok

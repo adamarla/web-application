@@ -67,7 +67,7 @@ class Suggestion < ActiveRecord::Base
     return true if self.completed 
     untagged = Question.where(suggestion_id:  self.id).untagged 
     if untagged.count == 0
-      Mailbot.delay(priority: 10).suggestion_typeset(self) if self.update_attribute(:completed, true)
+      Mailbot.delay.suggestion_typeset(self) if self.update_attribute(:completed, true)
     end
     return false
   end
