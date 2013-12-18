@@ -18,7 +18,7 @@ class TeachersController < ApplicationController
          state = location.state
          zip = location.postal_code
          country = location.country
-         # Mailbot.registration_debug(city, state, zip, country).deliver
+         # Mailbot.delay(priority: 10).registration_debug(city, state, zip, country)
          country = Country.where{ name =~ country }.first
          country = country.id unless country.blank?
       end
@@ -33,7 +33,7 @@ class TeachersController < ApplicationController
                                       country: country
                                      
       if teacher.save 
-        Mailbot.welcome_teacher(teacher.account).deliver
+        Mailbot.delay(priority: 10).welcome_teacher(teacher.account)
         sign_in teacher.account
         redirect_to teacher_path
       end # no reason for else if client side validations worked

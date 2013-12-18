@@ -32,7 +32,7 @@ class StudentsController < ApplicationController
                                       postal_code: zip,
                                       country: country
       if student.save
-        Mailbot.welcome_student(student.account).deliver
+        Mailbot.delay(priority: 10).welcome_student(student.account)
         sign_in student.account
         redirect_to student_path
       end # no reason for else.. if client side validations worked
@@ -70,7 +70,7 @@ class StudentsController < ApplicationController
                               country: country 
 
     if account.save
-      Mailbot.welcome_student(account).deliver
+      Mailbot.delay(priority: 10).welcome_student(account)
       sign_in account
       redirect_to student_path
     end # no reason for else.. if client side validations worked

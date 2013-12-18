@@ -106,7 +106,7 @@ class Testpaper < ActiveRecord::Base
     end
     if self.takehome
       email = student.account.real_email
-      Mailbot.quiz_assigned(self, student).deliver unless email.nil?
+      Mailbot.delay(priority: 10).quiz_assigned(self, student) unless email.nil?
     end
     return response.to_hash[:prep_test_response]
   end #of method

@@ -58,7 +58,7 @@ class QuizzesController < ApplicationController
           clone.update_attribute :job_id, job.id
 
           estimate = minutes_to_completion job.id
-          Mailbot.quiz_shared(clone, current_account.loggable, t).deliver if account.email_is_real?
+          Mailbot.delay(priority: 10).quiz_shared(clone, current_account.loggable, t) if account.email_is_real?
           render :json => { :monitor => { :quiz => clone.id }, 
                             :notify => { :title => "#{estimate} minute(s)" }},
                             status: :ok
