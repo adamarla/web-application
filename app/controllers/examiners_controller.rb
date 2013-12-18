@@ -44,14 +44,6 @@ class ExaminersController < ApplicationController
     render :json => { :status => "Sent for rotating"}, :status => :ok
   end
 
-  def restore_pristine_scan
-    scan_in_locker = params[:id]
-    Delayed::Job.enqueue RestorePristineScan.new(scan_in_locker), priority: 5, run_at: Time.zone.now
-    render :json => { :notify => { 
-                      :text => "Restored scan", 
-                      :subtext => "Don't forget to re-grade all questions on the page" }}, :status => :ok
-  end
-
   def typeset_new
     examiner = current_account.loggable
     @new = examiner.nil? ? [] : Suggestion.assigned_to(examiner.id).just_in
