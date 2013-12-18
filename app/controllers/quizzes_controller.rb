@@ -25,7 +25,7 @@ class QuizzesController < ApplicationController
 
       ws = students.blank? ? nil : quiz.assign_to(students, publish)
       unless ws.nil? # time to compile
-        job = Delayed::Job.enqueue CompileTestpaper.new(ws), priority: 0
+        job = Delayed::Job.enqueue CompileTestpaper.new(ws.id), priority: 0
         ws.update_attribute :job_id, job.id
 
         estimate = minutes_to_completion job.id

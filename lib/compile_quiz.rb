@@ -29,7 +29,7 @@ class CompileQuiz < Struct.new(:id)
   def failure(job)
     id = YAML.load(job.handler).id
     quiz = Quiz.find id
-    quiz.destroy
+    quiz.destroy unless quiz.nil?
   end
 
 end
