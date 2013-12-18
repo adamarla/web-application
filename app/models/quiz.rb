@@ -291,7 +291,7 @@ class Quiz < ActiveRecord::Base
     title = "#{question_ids.count} question(s) #{add ? 'added' : 'removed'}"
     msg = clone.nil? ? self.clone : ""
 
-    job = Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), :priority => 0, :run_at => Time.zone.now
+    job = Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), priority: 0, run_at: Time.zone.now
     estimate = minutes_to_completion job.id
     msg += " PDF will be ready within #{estimate} minute(s)"
     return title, msg
