@@ -1,6 +1,6 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:distribute_scans, :update_scan_id]
+  before_filter :authenticate_account!, :except => [:distribute_scans, :receive_single_scan]
   respond_to :json
 
   def create
