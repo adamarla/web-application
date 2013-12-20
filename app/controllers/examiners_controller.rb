@@ -107,7 +107,7 @@ class ExaminersController < ApplicationController
       ws_id = decrypt id[0..6]
       rel_index = decrypt id[7..9]
       page = id[10].to_i(36)
-      student_id = AnswerSheet.where(testpaper_id: ws_id).map(&:student_id).sort[rel_index]
+      student_id = Worksheet.where(testpaper_id: ws_id).map(&:student_id).sort[rel_index]
       received = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page)
     else
       received.push GradedResponse.find(id.split('-').map(&:to_i))

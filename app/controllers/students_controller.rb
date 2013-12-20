@@ -135,7 +135,7 @@ class StudentsController < ApplicationController
     @ws = student.nil? ? [] : student.testpapers
     unless @ws.empty?
       @ws = @ws.where(takehome: true)
-      open = AnswerSheet.where(:student_id => student.id, :testpaper_id => @ws.map(&:id)).select{ |m| m.received? :none }
+      open = Worksheet.where(:student_id => student.id, :testpaper_id => @ws.map(&:id)).select{ |m| m.received? :none }
       @ws = Testpaper.where id: open.map(&:testpaper_id)
     else
       render :json => { :notify => { :text => "No new worksheets" }}, :status => :ok
@@ -147,7 +147,7 @@ class StudentsController < ApplicationController
     @quiz = @ws.quiz
     @student = current_account.loggable
     sid = @student.id.to_i
-    student_ids = AnswerSheet.where(testpaper_id: @ws.id).map(&:student_id).sort
+    student_ids = Worksheet.where(testpaper_id: @ws.id).map(&:student_id).sort
     @relative_index = student_ids.index sid
   end
 

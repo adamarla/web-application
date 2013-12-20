@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131212061629) do
+ActiveRecord::Schema.define(:version => 20131220103420) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -42,22 +42,6 @@ ActiveRecord::Schema.define(:version => 20131212061629) do
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
-
-  create_table "answer_sheets", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "testpaper_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float    "marks"
-    t.boolean  "graded",                     :default => false
-    t.integer  "honest"
-    t.boolean  "received",                   :default => false
-    t.boolean  "compiled",                   :default => false
-    t.string   "signature",    :limit => 50
-  end
-
-  add_index "answer_sheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
-  add_index "answer_sheets", ["testpaper_id"], :name => "index_answer_sheets_on_testpaper_id"
 
   create_table "countries", :force => true do |t|
     t.string "name",         :limit => 50
@@ -359,5 +343,21 @@ ActiveRecord::Schema.define(:version => 20131212061629) do
     t.string   "sublime_uid",    :limit => 20
     t.string   "sublime_title",  :limit => 70
   end
+
+  create_table "worksheets", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "testpaper_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "marks"
+    t.boolean  "graded",                     :default => false
+    t.integer  "honest"
+    t.boolean  "received",                   :default => false
+    t.boolean  "compiled",                   :default => false
+    t.string   "signature",    :limit => 50
+  end
+
+  add_index "worksheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
+  add_index "worksheets", ["testpaper_id"], :name => "index_answer_sheets_on_testpaper_id"
 
 end

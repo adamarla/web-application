@@ -162,7 +162,7 @@ class GradedResponse < ActiveRecord::Base
 
       # Time to send mails 
       tp = Testpaper.where(id: self.testpaper_id).first
-      ws = AnswerSheet.where(student_id: self.student_id).where(testpaper_id: self.testpaper_id).first
+      ws = Worksheet.where(student_id: self.student_id).where(testpaper_id: self.testpaper_id).first
 
       if tp.publishable? # to the teacher - once all worksheets are graded
         # Time to inform the teacher. You can do this only if teacher has provided 
@@ -184,7 +184,7 @@ class GradedResponse < ActiveRecord::Base
     # corresponding answer sheet 
 
     self.update_attribute :feedback, 0
-    a = AnswerSheet.where(testpaper_id: self.testpaper_id, student_id: self.student_id).first
+    a = Worksheet.where(testpaper_id: self.testpaper_id, student_id: self.student_id).first
     a.update_attributes( marks: nil, graded: false, honest: nil) unless a.nil? 
 
     # Soft (default) reset -> does NOT destroy any associated TexComments
@@ -244,13 +244,13 @@ class GradedResponse < ActiveRecord::Base
   def scan_id
     # QR Code for the page on which this Graded Response appears
       ws_id = self.testpaper_id
-      student_idx = AnswerSheet.where(testpaper_id: ws_id).map(&:student_id).sort.index(self.student_id)
+      student_idx = Worksheet.where(testpaper_id: ws_id).map(&:student_id).sort.index(self.student_id)
       return encrypt(ws_id, 7) + encrypt(student_idx, 3) + self.page?.to_s(36)
   end
 
   def version
     # Returns the version the student got and for which this is the graded response
-    signature = AnswerSheet.where(student_id: self.student_id, testpaper_id: self.testpaper_id).map(&:signature).first
+    signature = Worksheet.where(student_id: self.student_id, testpaper_id: self.testpaper_id).map(&:signature).first
     return "0" if signature.blank?
 
     j = self.q_selection.index - 1 # QSelection.index is 1-indexed - not 0-indexed

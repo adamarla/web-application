@@ -62,7 +62,7 @@ class Testpaper < ActiveRecord::Base
   end
 
   def compile_tex
-    answer_sheets = AnswerSheet.where(testpaper_id: self.id)
+    answer_sheets = Worksheet.where(testpaper_id: self.id)
     students = Student.where(id: answer_sheets.map(&:student_id)).order(:id) 
 
     names = []
@@ -116,7 +116,7 @@ class Testpaper < ActiveRecord::Base
     CSV.generate(options) do |csv|
       csv << ["Name", "Marks(#{self.quiz.total?} max)"]
       self.students.order(:first_name).each do |s|
-        as = AnswerSheet.for_testpaper(self.id).of_student(s.id).first
+        as = Worksheet.for_testpaper(self.id).of_student(s.id).first
         if as.graded?
           csv << [s.name, as.marks]
         end
@@ -126,7 +126,7 @@ class Testpaper < ActiveRecord::Base
 
   #Only for legacy Testpapers, not needed going forward from Oct1, 2013
   def compile_solution_tex
-    student_ids = AnswerSheet.where(testpaper_id: self.id).select(:student_id).map(&:student_id)
+    student_ids = Worksheet.where(testpaper_id: self.id).select(:student_id).map(&:student_id)
     students = Student.where(id: student_ids).order(:id)
 
     names = []
@@ -146,7 +146,7 @@ class Testpaper < ActiveRecord::Base
     # that this number will change with time before settling to a final value
 
     individual_scores = []
-    AnswerSheet.where(testpaper_id: self.id).each do |a|
+    Worksheet.where(testpaper_id: self.id).each do |a|
       thus_far = a.graded_thus_far?
       next if thus_far == 0
       marks = a.marks? 
@@ -168,11 +168,11 @@ class Testpaper < ActiveRecord::Base
 
   def closed_on?
     # Returns the approximate date when grading for this testpaper / worksheet was finished
-    last = AnswerSheet.where(testpaper_id: self.id).order(:updated_at).last.updated_at
+    last = Worksheet.where(testpaper_id: self.id).order(:updated_at).last.updated_at
   end
 
   def rebuild_testpaper_report_pdf
-    answer_sheets = AnswerSheet.where(testpaper_id: self.id).map{ |m|
+    answer_sheets = Worksheet.where(testpaper_id: self.id).map{ |m|
       { id: m.student_id, name: m.student.name, value: "#{m.marks?}/#{self.quiz.total?}" }
     }
     answer_sheets.push({ id: "", name: "", value: "" }) if answer_sheets.count.odd?

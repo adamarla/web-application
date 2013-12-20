@@ -79,7 +79,7 @@ class Account < ActiveRecord::Base
 
     case a.loggable_type
       when "Student"
-        merge = [AnswerSheet, GradedResponse, StudentRoster]
+        merge = [Worksheet, GradedResponse, StudentRoster]
         key = :student_id
     end
     return false if merge.blank?
@@ -179,7 +179,7 @@ class Account < ActiveRecord::Base
 
     case self.role
       when :student
-        ids = AnswerSheet.where(student_id: me).select{ |m| m.publishable? }.map(&:testpaper_id)
+        ids = Worksheet.where(student_id: me).select{ |m| m.publishable? }.map(&:testpaper_id)
         @ws = Testpaper.where(id: ids)
       when :teacher 
         ids = Quiz.where(:teacher_id => me).map(&:id)

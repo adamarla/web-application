@@ -81,7 +81,7 @@ class Student < ActiveRecord::Base
 
   def inbox
     # Returns the worksheets that should be shown in a student's inbox
-    assigned = AnswerSheet.where(:student_id => self.id)
+    assigned = Worksheet.where(:student_id => self.id)
     received = assigned.where(:received => true)
     due = assigned.map(&:testpaper_id) - received.map(&:testpaper_id)
     Testpaper.where(:id => due, :inboxed => true) 
@@ -92,7 +92,7 @@ class Student < ActiveRecord::Base
     # Any student worksheet - with scans - but not yet graded ( at all ) 
     # should be in the outbox
 
-    a = AnswerSheet.where(student_id: self.id).where(graded: false)
+    a = Worksheet.where(student_id: self.id).where(graded: false)
     # The above will include worksheets that have either: 
     #    1. been partially graded
     #    2. or, have no scans 
@@ -116,20 +116,20 @@ class Student < ActiveRecord::Base
   end 
 
   def quiz_ids
-    t_ids = AnswerSheet.where(:student_id => self.id).map(&:testpaper_id)
+    t_ids = Worksheet.where(:student_id => self.id).map(&:testpaper_id)
     quiz_ids = Testpaper.where(:id => t_ids).map(&:quiz_id).uniq
     return quiz_ids
   end
 
   def marks_scored_in(testpaper_id)
-    a = AnswerSheet.where(:student_id => self.id, :testpaper_id => testpaper_id).first 
+    a = Worksheet.where(:student_id => self.id, :testpaper_id => testpaper_id).first 
     marks = a.nil? ? 0 : a.marks?
     return marks unless marks == 0
     return (self.absent_for_test?(testpaper_id) ? -1 : marks) 
   end
 
   def honestly_attempted? (ws_id)
-    a = AnswerSheet.where(:student_id => self.id, :testpaper_id => ws_id).first
+    a = Worksheet.where(:student_id => self.id, :testpaper_id => ws_id).first
     return a.nil? ? :disabled : a.honest?
   end
 
@@ -157,7 +157,7 @@ class Student < ActiveRecord::Base
   end 
 
   def absent_for_quiz?(quiz_id)
-    tids = AnswerSheet.where(:student_id => self.id).map(&:testpaper_id)
+    tids = Worksheet.where(:student_id => self.id).map(&:testpaper_id)
     qids = Testpaper.where(:id => tids).map(&:quiz_id)
     took_test = qids.include? quiz_id 
     return true if !took_test
@@ -204,7 +204,7 @@ class Student < ActiveRecord::Base
     def destroyable?
       # A student can be destroyed if there is no associated data for it
       is_empty = true 
-      [AnswerSheet, GradedResponse, StudentRoster].each do |m|
+      [Worksheet, GradedResponse, StudentRoster].each do |m|
         is_empty = m.where(:student_id => self.id).empty?
         break unless is_empty
       end

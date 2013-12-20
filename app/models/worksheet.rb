@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: answer_sheets
+# Table name: worksheets
 #
 #  id           :integer         not null, primary key
 #  student_id   :integer
@@ -15,7 +15,7 @@
 #  signature    :string(50)
 #
 
-class AnswerSheet < ActiveRecord::Base
+class Worksheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :testpaper 
 
