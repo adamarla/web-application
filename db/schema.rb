@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131220103420) do
+ActiveRecord::Schema.define(:version => 20131220130140) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -78,6 +78,14 @@ ActiveRecord::Schema.define(:version => 20131220103420) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "drafts", :force => true do |t|
+    t.string  "layout"
+    t.integer "quiz_id"
+    t.integer "index"
+  end
+
+  add_index "drafts", ["quiz_id"], :name => "index_drafts_on_quiz_id"
 
   create_table "examiners", :force => true do |t|
     t.integer  "disputed",                      :default => 0

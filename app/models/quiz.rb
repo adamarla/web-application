@@ -41,6 +41,7 @@ class Quiz < ActiveRecord::Base
   has_many :q_selections, dependent: :destroy
   has_many :questions, through: :q_selections
   has_many :testpapers, dependent: :destroy
+  has_many :drafts, dependent: :destroy
 
   # Quiz -> Coursework -> Milestone
   has_many :coursework 
