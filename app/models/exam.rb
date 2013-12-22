@@ -20,8 +20,8 @@ class Exam < ActiveRecord::Base
   belongs_to :quiz
 
   has_many :graded_responses, dependent: :destroy
-  has_many :answer_sheets, dependent: :destroy
-  has_many :students, through: :answer_sheets
+  has_many :worksheets, dependent: :destroy
+  has_many :students, through: :worksheets
 
   def self.takehome
     where(takehome: true)
@@ -62,12 +62,12 @@ class Exam < ActiveRecord::Base
   end
 
   def compile_tex
-    answer_sheets = Worksheet.where(exam_id: self.id)
-    students = Student.where(id: answer_sheets.map(&:student_id)).order(:id) 
+    worksheets = Worksheet.where(exam_id: self.id)
+    students = Student.where(id: worksheets.map(&:student_id)).order(:id) 
 
     names = []
     students.each_with_index do |s,j|
-      signature = answer_sheets.where(student_id: s.id).map(&:signature?).first
+      signature = worksheets.where(student_id: s.id).map(&:signature?).first
       names.push({ id: s.id, name: s.name, value: encrypt(j,3), signature: signature })
     end
 
@@ -172,10 +172,10 @@ class Exam < ActiveRecord::Base
   end
 
   def rebuild_exam_report_pdf
-    answer_sheets = Worksheet.where(exam_id: self.id).map{ |m|
+    worksheets = Worksheet.where(exam_id: self.id).map{ |m|
       { id: m.student_id, name: m.student.name, value: "#{m.marks?}/#{self.quiz.total?}" }
     }
-    answer_sheets.push({ id: "", name: "", value: "" }) if answer_sheets.count.odd?
+    worksheets.push({ id: "", name: "", value: "" }) if worksheets.count.odd?
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['generate_quiz_report']}"
     school = self.quiz.teacher.school
@@ -183,7 +183,7 @@ class Exam < ActiveRecord::Base
       soap.body = {
         school: { id: school.id, name: school.name }, 
         group: { id: self.id, name: self.pdf },
-        members: answer_sheets
+        members: worksheets
       }
     end # of response 
     return response.to_hash[:generate_quiz_report]
