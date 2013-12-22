@@ -1,11 +1,11 @@
-class TestpapersController < ApplicationController
+class ExamsController < ApplicationController
   include GeneralQueries
   before_filter :authenticate_account!, :except => [:update_signature]
   respond_to :json
 
   def summary
-    # students who got this testpaper
-    @ws = Testpaper.find params[:id]
+    # students who got this exam
+    @ws = Exam.find params[:id]
     head :bad_request if @ws.nil?
     # @mean = @ws.mean?
     @students = @ws.students.order(:first_name)
@@ -13,30 +13,30 @@ class TestpapersController < ApplicationController
     @honest = @students.map{ |s| s.honestly_attempted? @ws.id }
     @max = @ws.quiz.total?
     @questions = @ws.quiz.subparts # subparts actually - and index ordered 
-    @g_all = GradedResponse.in_testpaper @ws.id
+    @g_all = GradedResponse.in_exam @ws.id
   end
 
   def load 
-    @testpaper = Testpaper.find params[:id]
-    @uid = encrypt(@testpaper.id, 7)
+    @exam = Exam.find params[:id]
+    @uid = encrypt(@exam.id, 7)
   end
 
   def layout
     # Returns ordered list of questions - renderable as .tabs-left
-    @ws = Testpaper.find params[:ws]
+    @ws = Exam.find params[:ws]
     student_id = params[:id].blank? ? current_account.loggable_id : params[:id]
 
     @who = current_account.loggable_type
     unless @ws.nil?
       @subparts = Subpart.in_quiz @ws.quiz_id
-      @gr = GradedResponse.of_student(student_id).in_testpaper @ws.id
+      @gr = GradedResponse.of_student(student_id).in_exam @ws.id
     else
       head :bad_request 
     end
   end
 
   def inbox # as a verb
-    ws = Testpaper.where(:id => params[:id]).first 
+    ws = Exam.where(:id => params[:id]).first 
 
     if ws.nil?
       render :json => { :notify => { :text => "Worksheet not found" } }, :status => :ok
@@ -49,7 +49,7 @@ class TestpapersController < ApplicationController
   end 
 
   def uninbox
-    ws = Testpaper.where(:id => params[:id]).first 
+    ws = Exam.where(:id => params[:id]).first 
     if ws.nil?
       render :json => { :notify => { :text => "Worksheet not found" } }, :status => :ok
     else 
@@ -60,20 +60,20 @@ class TestpapersController < ApplicationController
   end
 
   def report_card
-    testpaper = Testpaper.find_by_id(params[:id])
+    exam = Exam.find_by_id(params[:id])
     if params[:format] == "csv"
-      send_data testpaper.to_csv, :filename => "#{testpaper.quiz.name}#{testpaper.name}.csv", :disposition => 'attachment'
+      send_data exam.to_csv, :filename => "#{exam.quiz.name}#{exam.name}.csv", :disposition => 'attachment'
     end
   end
 
   # throwaway method
   def update_signature
     student_id   = params[:id]
-    testpaper_id = params[:tp_id]
+    exam_id = params[:tp_id]
     signature    = params[:sign]
 
-    quiz = Testpaper.find_by_id(testpaper_id).quiz
-    as = Worksheet.of_student(student_id).for_testpaper(testpaper_id).first
+    quiz = Exam.find_by_id(exam_id).quiz
+    as = Worksheet.of_student(student_id).for_exam(exam_id).first
     unless as.nil?
       if signature.length == quiz.questions.count
         as.update_attribute :signature, signature

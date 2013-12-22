@@ -91,7 +91,7 @@ Webapp::Application.routes.draw do
   match 'quizzes/list' => 'quizzes#list', via: :get
   match 'quiz/preview' => 'quizzes#preview', via: :get
   match 'quiz/assign' => 'quizzes#assign_to', via: [:put, :post]
-  match 'quiz/testpapers' => 'quizzes#testpapers', via: :get
+  match 'quiz/exams' => 'quizzes#exams', via: :get
   match 'find/schools' => 'schools#find', via: :get
   match 'quiz/questions' => 'quizzes#questions', via: :get
   match 'quiz/edit' => 'quizzes#add_remove_questions', via: [:put, :post]
@@ -135,14 +135,14 @@ Webapp::Application.routes.draw do
   match 'prefab' => 'teachers#prefabricate', via: :post
   match 'new/lesson' => 'teachers#add_lesson', via: :post
 
-  # Testpaper
-  match 'ws/summary' => 'testpapers#summary', via: :get
-  match 'testpaper/load' => 'testpapers#load', via: :get
-  match 'ws/layout' => 'testpapers#layout', via: :get
-  match 'ws/publish' => 'testpapers#inbox', via: :get
-  match 'ws/unpublish' => 'testpapers#uninbox', via: :get
-  match 'ws/report_card' => 'testpapers#report_card', via: :get
-  match 'ws/update_signature' => 'testpapers#update_signature', via: :get
+  # Exam
+  match 'ws/summary' => 'exams#summary', via: :get
+  match 'exam/load' => 'exams#load', via: :get
+  match 'ws/layout' => 'exams#layout', via: :get
+  match 'ws/publish' => 'exams#inbox', via: :get
+  match 'ws/unpublish' => 'exams#uninbox', via: :get
+  match 'ws/report_card' => 'exams#report_card', via: :get
+  match 'ws/update_signature' => 'exams#update_signature', via: :get
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get

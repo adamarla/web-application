@@ -10,7 +10,7 @@
 #  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
 #  system_marks   :float
-#  testpaper_id   :integer
+#  exam_id        :integer
 #  scan           :string(40)
 #  subpart_id     :integer
 #  page           :integer

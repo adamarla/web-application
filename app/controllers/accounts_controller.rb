@@ -60,13 +60,13 @@ class AccountsController < ApplicationController
   def to_be_graded
     tid = params[:id]
     by = current_account.loggable_id
-    @pending = GradedResponse.in_testpaper(tid).with_scan.ungraded.assigned_to(by)
+    @pending = GradedResponse.in_exam(tid).with_scan.ungraded.assigned_to(by)
     sel = @pending.map(&:q_selection_id).uniq
     @indices = QSelection.where(id: sel).order(:index)
   end
 
   def pending_scans
-    # Given: The question and the testpaper 
+    # Given: The question and the exam 
     # Known: The examiner who needs to grade them
 
     tp = params[:tp]
@@ -75,7 +75,7 @@ class AccountsController < ApplicationController
 
     # { pending: [{ scan: a, student: b, gr: [{ id: 12, name: "Q6.A" }, {id: 13, name: "Q6.B"}]}, { scan: b ... } ] }
 
-    p = GradedResponse.in_testpaper(tp).where(q_selection_id: q).with_scan.ungraded.assigned_to(eid)
+    p = GradedResponse.in_exam(tp).where(q_selection_id: q).with_scan.ungraded.assigned_to(eid)
     @pending = p.order(:student_id).order(:subpart_id)
 
     @students = Student.where(id: @pending.map(&:student_id).uniq)
@@ -89,7 +89,7 @@ class AccountsController < ApplicationController
     @gr = []
 
     if (who == "Teacher" || who == "Examiner")
-      @gr = GradedResponse.in_testpaper(@ws_id).ungraded.with_scan
+      @gr = GradedResponse.in_exam(@ws_id).ungraded.with_scan
       @gr = ( who == 'Examiner' ) ? @gr.assigned_to(current_account.loggable_id) : @gr 
       @gr = @gr.on_page(page)
     end
@@ -97,7 +97,7 @@ class AccountsController < ApplicationController
     @gr = @gr.sort{ |m,n| m.index? <=> n.index? }
     @students = Student.where(id: @gr.map(&:student_id).uniq)
     @scans = @gr.map(&:scan).uniq
-    @quiz = Testpaper.where(id: @ws_id).map(&:quiz_id).first
+    @quiz = Exam.where(id: @ws_id).map(&:quiz_id).first
   end
 
   def submit_fdb
@@ -131,7 +131,7 @@ class AccountsController < ApplicationController
     ws_ids = params[:worksheets].blank? ? [] : params[:worksheets].map(&:to_i)
 
     @quizzes = Quiz.where(id: quiz_ids).select{ |m| !m.compiling? }
-    @ws = Testpaper.where(id: ws_ids).select{ |m| !m.compiling? }
+    @ws = Exam.where(id: ws_ids).select{ |m| !m.compiling? }
     @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
   end 
 

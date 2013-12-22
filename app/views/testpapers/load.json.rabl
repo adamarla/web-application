@@ -1,5 +1,5 @@
 
 object false
   node(:a) { @uid }
-  node(:b) { @testpaper.id }
-  node(:c) { @testpaper.quiz_id }
+  node(:b) { @exam.id }
+  node(:c) { @exam.quiz_id }

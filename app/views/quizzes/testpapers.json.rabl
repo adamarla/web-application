@@ -1,7 +1,7 @@
 
 object false 
-  node(:testpapers) {
-    @testpapers.map { |m|
+  node(:exams) {
+    @exams.map { |m|
       if m.takehome?
         icons = m.duration.nil? ? "icon-home" : "icon-home icon-time"
       else

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131220103420) do
+ActiveRecord::Schema.define(:version => 20131222082449) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -91,6 +91,18 @@ ActiveRecord::Schema.define(:version => 20131220103420) do
     t.integer  "n_graded",                      :default => 0
   end
 
+  create_table "exams", :force => true do |t|
+    t.integer  "quiz_id"
+    t.string   "name",        :limit => 100
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "publishable",                :default => false
+    t.boolean  "takehome",                   :default => false
+    t.integer  "job_id",                     :default => -1
+    t.integer  "duration"
+    t.datetime "deadline"
+  end
+
   create_table "faculty_rosters", :force => true do |t|
     t.integer  "sektion_id"
     t.integer  "teacher_id"
@@ -111,7 +123,7 @@ ActiveRecord::Schema.define(:version => 20131220103420) do
     t.boolean  "disputed",                     :default => false
     t.integer  "q_selection_id"
     t.float    "system_marks"
-    t.integer  "testpaper_id"
+    t.integer  "exam_id"
     t.string   "scan",           :limit => 40
     t.integer  "subpart_id"
     t.integer  "page"
@@ -120,9 +132,9 @@ ActiveRecord::Schema.define(:version => 20131220103420) do
     t.integer  "feedback",                     :default => 0
   end
 
+  add_index "graded_responses", ["exam_id"], :name => "index_graded_responses_on_testpaper_id"
   add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
   add_index "graded_responses", ["student_id"], :name => "index_graded_responses_on_student_id"
-  add_index "graded_responses", ["testpaper_id"], :name => "index_graded_responses_on_testpaper_id"
 
   create_table "grades", :force => true do |t|
     t.float    "allotment"
@@ -300,18 +312,6 @@ ActiveRecord::Schema.define(:version => 20131220103420) do
     t.boolean  "online",                   :default => false
   end
 
-  create_table "testpapers", :force => true do |t|
-    t.integer  "quiz_id"
-    t.string   "name",        :limit => 100
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "publishable",                :default => false
-    t.boolean  "takehome",                   :default => false
-    t.integer  "job_id",                     :default => -1
-    t.integer  "duration"
-    t.datetime "deadline"
-  end
-
   create_table "tex_comments", :force => true do |t|
     t.integer  "x"
     t.integer  "y"
@@ -346,18 +346,18 @@ ActiveRecord::Schema.define(:version => 20131220103420) do
 
   create_table "worksheets", :force => true do |t|
     t.integer  "student_id"
-    t.integer  "testpaper_id"
+    t.integer  "exam_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "marks"
-    t.boolean  "graded",                     :default => false
+    t.boolean  "graded",                   :default => false
     t.integer  "honest"
-    t.boolean  "received",                   :default => false
-    t.boolean  "compiled",                   :default => false
-    t.string   "signature",    :limit => 50
+    t.boolean  "received",                 :default => false
+    t.boolean  "compiled",                 :default => false
+    t.string   "signature",  :limit => 50
   end
 
+  add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"
   add_index "worksheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
-  add_index "worksheets", ["testpaper_id"], :name => "index_answer_sheets_on_testpaper_id"
 
 end

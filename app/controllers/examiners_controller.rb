@@ -107,15 +107,15 @@ class ExaminersController < ApplicationController
       ws_id = decrypt id[0..6]
       rel_index = decrypt id[7..9]
       page = id[10].to_i(36)
-      student_id = Worksheet.where(testpaper_id: ws_id).map(&:student_id).sort[rel_index]
-      received = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page)
+      student_id = Worksheet.where(exam_id: ws_id).map(&:student_id).sort[rel_index]
+      received = GradedResponse.in_exam(ws_id).of_student(student_id).on_page(page)
     else
       received.push GradedResponse.find(id.split('-').map(&:to_i))
     end
 
-    # Testpapers corresponding to these scans should be tagged as unpublishable
+    # Exams corresponding to these scans should be tagged as unpublishable
     # till such time that the responses are not graded
-    received.map(&:testpaper).uniq.map{ |j| j.update_attribute(:publishable, false) }
+    received.map(&:exam).uniq.map{ |j| j.update_attribute(:publishable, false) }
     
     for m in received 
       ret &= m.scan.blank? ? m.update_attribute(:scan, path) : false

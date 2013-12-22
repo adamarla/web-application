@@ -16,7 +16,7 @@ class QuizzesController < ApplicationController
       of this quiz. Hereonafter, editing this quiz would result in a clone
 =end
       unless quiz.parent_id.nil?
-        unless quiz.testpaper_ids.count > 0
+        unless quiz.exam_ids.count > 0
           name = quiz.name 
           name = name.sub "(edited)", "(#{Date.today.strftime('%m/%y')})"
           quiz.update_attribute :name, name
@@ -25,7 +25,7 @@ class QuizzesController < ApplicationController
 
       ws = students.blank? ? nil : quiz.assign_to(students, publish)
       unless ws.nil? # time to compile
-        job = Delayed::Job.enqueue CompileTestpaper.new(ws.id), priority: 0
+        job = Delayed::Job.enqueue CompileExam.new(ws.id), priority: 0
         ws.update_attribute :job_id, job.id
 
         estimate = minutes_to_completion job.id
@@ -130,12 +130,12 @@ class QuizzesController < ApplicationController
     @students, @pending, @scans = quiz.pending_scans examiner.id, page
   end
 
-  def testpapers
-    @testpapers = Testpaper.where(quiz_id: params[:id])
-    n = @testpapers.count 
+  def exams
+    @exams = Exam.where(quiz_id: params[:id])
+    n = @exams.count 
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i
-    @testpapers = @testpapers.order('created_at DESC').page(pg).per(@per_pg)
+    @exams = @exams.order('created_at DESC').page(pg).per(@per_pg)
   end
 
 end

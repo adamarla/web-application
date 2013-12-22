@@ -40,7 +40,7 @@ class Quiz < ActiveRecord::Base
 
   has_many :q_selections, dependent: :destroy
   has_many :questions, through: :q_selections
-  has_many :testpapers, dependent: :destroy
+  has_many :exams, dependent: :destroy
   has_many :drafts, dependent: :destroy
 
   # Quiz -> Coursework -> Milestone
@@ -73,32 +73,32 @@ class Quiz < ActiveRecord::Base
     # students : an array of selected students from the DB
 
     # Mappings to take care of :
-    #   1. quiz <-> testpaper
-    #   2. student <-> testpaper
-    #   3. graded_response <-> testpaper
+    #   1. quiz <-> exam
+    #   2. student <-> exam
+    #   3. graded_response <-> exam
     #   4. graded_response <-> student
 
-    past = Testpaper.where(:quiz_id => self.id).map(&:id)
+    past = Exam.where(:quiz_id => self.id).map(&:id)
     ntests = past.count
     assigned_name = "##{ntests + 1} - #{Date.today.strftime('%B %d, %Y')}" 
 
-    testpaper = self.testpapers.build name: assigned_name, takehome: publish # (1) 
+    exam = self.exams.build name: assigned_name, takehome: publish # (1) 
     picked_questions = QSelection.where(:quiz_id => self.id).order(:start_page)
 
     students.each do |s|
-      testpaper.students << s # (2) 
+      exam.students << s # (2) 
       picked_questions.each do |q|
         subparts = Subpart.where(question_id: q.question_id).order(:index)
         subparts.each do |p|
           g = GradedResponse.new(q_selection_id: q.id, student_id: s.id, subpart_id: p.id)
-          testpaper.graded_responses << g
+          exam.graded_responses << g
         end
       end
     end # student loop 
 
-    return nil if testpaper.students.empty?
-    testpaper = testpaper.save ? testpaper : nil
-    return testpaper
+    return nil if exam.students.empty?
+    exam = exam.save ? exam : nil
+    return exam
   end 
 
   def preview_images(restricted = false)
@@ -225,7 +225,7 @@ class Quiz < ActiveRecord::Base
 
   def shred_pdfs
     # Going forward, this method would issue a Savon request to the
-    # 'printing-press' asking it to delete PDFs of testpapers generated
+    # 'printing-press' asking it to delete PDFs of exams generated
     # for this Quiz - both composite & per-student 
     return true
   end
@@ -240,10 +240,10 @@ class Quiz < ActiveRecord::Base
   end
 
   def clone?
-    return self if self.testpaper_ids.count == 0
+    return self if self.exam_ids.count == 0
     
     # there should be just one editable clone at a time
-    clone = Quiz.where(:parent_id => self.id).select{ |m| m.testpaper_ids.count == 0 }.first
+    clone = Quiz.where(:parent_id => self.id).select{ |m| m.exam_ids.count == 0 }.first
     return clone
   end
 

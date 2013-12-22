@@ -132,22 +132,22 @@ class StudentsController < ApplicationController
 
   def inbox
     student = Student.find params[:id]
-    @ws = student.nil? ? [] : student.testpapers
+    @ws = student.nil? ? [] : student.exams
     unless @ws.empty?
       @ws = @ws.where(takehome: true)
-      open = Worksheet.where(:student_id => student.id, :testpaper_id => @ws.map(&:id)).select{ |m| m.received? :none }
-      @ws = Testpaper.where id: open.map(&:testpaper_id)
+      open = Worksheet.where(:student_id => student.id, :exam_id => @ws.map(&:id)).select{ |m| m.received? :none }
+      @ws = Exam.where id: open.map(&:exam_id)
     else
       render :json => { :notify => { :text => "No new worksheets" }}, :status => :ok
     end
   end 
 
   def inbox_echo
-    @ws = Testpaper.find params[:ws]
+    @ws = Exam.find params[:ws]
     @quiz = @ws.quiz
     @student = current_account.loggable
     sid = @student.id.to_i
-    student_ids = Worksheet.where(testpaper_id: @ws.id).map(&:student_id).sort
+    student_ids = Worksheet.where(exam_id: @ws.id).map(&:student_id).sort
     @relative_index = student_ids.index sid
   end
 

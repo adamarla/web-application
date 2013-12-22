@@ -85,9 +85,9 @@ jQuery ->
       menu = 'per-question'
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = 'icon-plus-sign'
-    else if url.match(/quiz\/testpapers/)
+    else if url.match(/quiz\/exams/)
       target = $("#pane-wsb-existing")
-      key = "testpapers"
+      key = "exams"
       menu = 'per-ws'
       clickFirst = true
       lesson = 'publish-milestone-2'

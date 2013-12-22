@@ -10,7 +10,7 @@
 #  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
 #  system_marks   :float
-#  testpaper_id   :integer
+#  exam_id        :integer
 #  scan           :string(40)
 #  subpart_id     :integer
 #  page           :integer
@@ -19,13 +19,13 @@
 #  feedback       :integer         default(0)
 #
 
-# Scan ID to send via Savon : scanId = quizId-testpaperId-studentId-page#
+# Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
 
 class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
   belongs_to :q_selection
-  belongs_to :testpaper
+  belongs_to :exam
   belongs_to :subpart
   has_many :tex_comments
 
@@ -43,8 +43,8 @@ class GradedResponse < ActiveRecord::Base
     where(q_selection_id: QSelection.where(quiz_id: id).map(&:id))
   end
 
-  def self.in_testpaper(id)
-    where(testpaper_id: id)
+  def self.in_exam(id)
+    where(exam_id: id)
   end
 
   def self.of_student(id)
@@ -161,8 +161,8 @@ class GradedResponse < ActiveRecord::Base
       e.update_attribute :n_graded, n_graded
 
       # Time to send mails 
-      tp = Testpaper.where(id: self.testpaper_id).first
-      ws = Worksheet.where(student_id: self.student_id).where(testpaper_id: self.testpaper_id).first
+      tp = Exam.where(id: self.exam_id).first
+      ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.exam_id).first
 
       if tp.publishable? # to the teacher - once all worksheets are graded
         # Time to inform the teacher. You can do this only if teacher has provided 
@@ -184,7 +184,7 @@ class GradedResponse < ActiveRecord::Base
     # corresponding answer sheet 
 
     self.update_attribute :feedback, 0
-    a = Worksheet.where(testpaper_id: self.testpaper_id, student_id: self.student_id).first
+    a = Worksheet.where(exam_id: self.exam_id, student_id: self.student_id).first
     a.update_attributes( marks: nil, graded: false, honest: nil) unless a.nil? 
 
     # Soft (default) reset -> does NOT destroy any associated TexComments
@@ -212,7 +212,7 @@ class GradedResponse < ActiveRecord::Base
 
   def siblings_same_worksheet
     # same student, same worksheet
-    ids = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id).map(&:id) - [self.id]
+    ids = GradedResponse.in_exam(self.exam_id).of_student(self.student_id).map(&:id) - [self.id]
     GradedResponse.where(id: ids)
   end
 
@@ -233,24 +233,24 @@ class GradedResponse < ActiveRecord::Base
     # The name of a graded response is a function of the quiz it is in, the
     # index of the parent question in the quiz and the index of the corresponding sub-part 
     # relative to the parent question 
-    return self.subpart.name_if_in? self.testpaper.quiz_id
+    return self.subpart.name_if_in? self.exam.quiz_id
   end
 
   def teacher?
     # Returns the teacher to whose quiz this graded response is
-    return Teacher.where(id: self.testpaper.quiz.teacher_id).first
+    return Teacher.where(id: self.exam.quiz.teacher_id).first
   end
 
   def scan_id
     # QR Code for the page on which this Graded Response appears
-      ws_id = self.testpaper_id
-      student_idx = Worksheet.where(testpaper_id: ws_id).map(&:student_id).sort.index(self.student_id)
+      ws_id = self.exam_id
+      student_idx = Worksheet.where(exam_id: ws_id).map(&:student_id).sort.index(self.student_id)
       return encrypt(ws_id, 7) + encrypt(student_idx, 3) + self.page?.to_s(36)
   end
 
   def version
     # Returns the version the student got and for which this is the graded response
-    signature = Worksheet.where(student_id: self.student_id, testpaper_id: self.testpaper_id).map(&:signature).first
+    signature = Worksheet.where(student_id: self.student_id, exam_id: self.exam_id).map(&:signature).first
     return "0" if signature.blank?
 
     j = self.q_selection.index - 1 # QSelection.index is 1-indexed - not 0-indexed

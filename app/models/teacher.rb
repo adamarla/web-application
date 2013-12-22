@@ -118,12 +118,12 @@ class Teacher < ActiveRecord::Base
              And so, its ok to show them
 =end
     of_colleagues = Quiz.where(:teacher_id => self.colleagues.map(&:id))
-    others = Testpaper.where(:exclusive => false, :quiz_id => of_colleagues.map(&:id)).map(&:id)
+    others = Exam.where(:exclusive => false, :quiz_id => of_colleagues.map(&:id)).map(&:id)
 
-    my_own = Testpaper.where(:quiz_id => Quiz.where(:teacher_id => self.id)).map(&:id)
+    my_own = Exam.where(:quiz_id => Quiz.where(:teacher_id => self.id)).map(&:id)
     total = (others + my_own).uniq
 
-    @worksheets = Testpaper.where(:id => total).order('created_at DESC')
+    @worksheets = Exam.where(:id => total).order('created_at DESC')
   end
 
   def self_made_quizzes

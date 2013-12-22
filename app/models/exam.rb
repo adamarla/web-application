@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: testpapers
+# Table name: exams
 #
 #  id          :integer         not null, primary key
 #  quiz_id     :integer
@@ -16,7 +16,7 @@
 
 include GeneralQueries
 
-class Testpaper < ActiveRecord::Base
+class Exam < ActiveRecord::Base
   belongs_to :quiz
 
   has_many :graded_responses, dependent: :destroy
@@ -37,12 +37,12 @@ class Testpaper < ActiveRecord::Base
 
   def gradeable?
     return false unless self.has_scans?
-    GradedResponse.in_testpaper(self.id).with_scan.ungraded.count > 0
+    GradedResponse.in_exam(self.id).with_scan.ungraded.count > 0
   end
 
   def has_scans?
-    # if false, then worksheet / testpaper is automatically ungradeable
-    ret = GradedResponse.in_testpaper(self.id).with_scan.count > 0
+    # if false, then worksheet / exam is automatically ungradeable
+    ret = GradedResponse.in_exam(self.id).with_scan.count > 0
     return ret
   end
 
@@ -62,7 +62,7 @@ class Testpaper < ActiveRecord::Base
   end
 
   def compile_tex
-    answer_sheets = Worksheet.where(testpaper_id: self.id)
+    answer_sheets = Worksheet.where(exam_id: self.id)
     students = Student.where(id: answer_sheets.map(&:student_id)).order(:id) 
 
     names = []
@@ -116,7 +116,7 @@ class Testpaper < ActiveRecord::Base
     CSV.generate(options) do |csv|
       csv << ["Name", "Marks(#{self.quiz.total?} max)"]
       self.students.order(:first_name).each do |s|
-        as = Worksheet.for_testpaper(self.id).of_student(s.id).first
+        as = Worksheet.for_exam(self.id).of_student(s.id).first
         if as.graded?
           csv << [s.name, as.marks]
         end
@@ -124,9 +124,9 @@ class Testpaper < ActiveRecord::Base
     end
   end
 
-  #Only for legacy Testpapers, not needed going forward from Oct1, 2013
+  #Only for legacy Exams, not needed going forward from Oct1, 2013
   def compile_solution_tex
-    student_ids = Worksheet.where(testpaper_id: self.id).select(:student_id).map(&:student_id)
+    student_ids = Worksheet.where(exam_id: self.id).select(:student_id).map(&:student_id)
     students = Student.where(id: student_ids).order(:id)
 
     names = []
@@ -140,13 +140,13 @@ class Testpaper < ActiveRecord::Base
   end
 
   def mean?
-    # Returns the average for the class/group that took this testpaper
+    # Returns the average for the class/group that took this exam
     # Only graded responses and only those students that have
     # some or all of their answer-sheet graded are considered. Hence, know 
     # that this number will change with time before settling to a final value
 
     individual_scores = []
-    Worksheet.where(testpaper_id: self.id).each do |a|
+    Worksheet.where(exam_id: self.id).each do |a|
       thus_far = a.graded_thus_far?
       next if thus_far == 0
       marks = a.marks? 
@@ -167,12 +167,12 @@ class Testpaper < ActiveRecord::Base
   end
 
   def closed_on?
-    # Returns the approximate date when grading for this testpaper / worksheet was finished
-    last = Worksheet.where(testpaper_id: self.id).order(:updated_at).last.updated_at
+    # Returns the approximate date when grading for this exam / worksheet was finished
+    last = Worksheet.where(exam_id: self.id).order(:updated_at).last.updated_at
   end
 
-  def rebuild_testpaper_report_pdf
-    answer_sheets = Worksheet.where(testpaper_id: self.id).map{ |m|
+  def rebuild_exam_report_pdf
+    answer_sheets = Worksheet.where(exam_id: self.id).map{ |m|
       { id: m.student_id, name: m.student.name, value: "#{m.marks?}/#{self.quiz.total?}" }
     }
     answer_sheets.push({ id: "", name: "", value: "" }) if answer_sheets.count.odd?

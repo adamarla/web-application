@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
           json[:demo] = {
             build: (PREFAB_QUIZ_IDS - cloned.map(&:parent_id)),
             download: cloned.map{ |m| 
-              ws = m.testpapers.first
+              ws = m.exams.first
               ws = ws.nil? ? 1 : ws.id
               { id: m.parent_id, a: encrypt(ws,7), b: m.id, c: ws }
             }

@@ -60,7 +60,7 @@ window.canvas = {
     image = new Image()
     src  = scan.attr 'name'
 
-    # Scans for a testpaper are stored together within a folder in locker/ 
+    # Scans for a exam are stored together within a folder in locker/ 
 
     image.onload = () ->
       ctx.drawImage(image,15,0)

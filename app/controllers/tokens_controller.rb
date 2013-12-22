@@ -75,10 +75,10 @@ class TokensController < ApplicationController
       gradeables = without_scans.map do |gr|
         {
           :id     => gr.id,
-          :quiz   => gr.testpaper.quiz.name,
-          :quizId => gr.testpaper.quiz.id,
+          :quiz   => gr.exam.quiz.name,
+          :quizId => gr.exam.quiz.id,
           :scan   => gr.scan_id,
-          :name   => gr.subpart.name_if_in?(gr.testpaper.quiz)
+          :name   => gr.subpart.name_if_in?(gr.exam.quiz)
         }
       end 
       return gradeables

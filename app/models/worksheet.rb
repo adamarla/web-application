@@ -2,22 +2,22 @@
 #
 # Table name: worksheets
 #
-#  id           :integer         not null, primary key
-#  student_id   :integer
-#  testpaper_id :integer
-#  created_at   :datetime
-#  updated_at   :datetime
-#  marks        :float
-#  graded       :boolean         default(FALSE)
-#  honest       :integer
-#  received     :boolean         default(FALSE)
-#  compiled     :boolean         default(FALSE)
-#  signature    :string(50)
+#  id         :integer         not null, primary key
+#  student_id :integer
+#  exam_id    :integer
+#  created_at :datetime
+#  updated_at :datetime
+#  marks      :float
+#  graded     :boolean         default(FALSE)
+#  honest     :integer
+#  received   :boolean         default(FALSE)
+#  compiled   :boolean         default(FALSE)
+#  signature  :string(50)
 #
 
 class Worksheet < ActiveRecord::Base
   belongs_to :student
-  belongs_to :testpaper 
+  belongs_to :exam 
 
   after_create :create_signature
 
@@ -25,8 +25,8 @@ class Worksheet < ActiveRecord::Base
     where(:student_id => id)
   end
 
-  def self.for_testpaper(id)
-    where(:testpaper_id => id)
+  def self.for_exam(id)
+    where(:exam_id => id)
   end
 
   def received?(extent = :fully) # other options - :none, :partially
@@ -35,7 +35,7 @@ class Worksheet < ActiveRecord::Base
 
     return ( extent == :none ? false : true ) if self.received
 
-    gr = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    gr = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
 
     n_total = gr.count 
     n_with_scan = gr.with_scan.count 
@@ -61,7 +61,7 @@ class Worksheet < ActiveRecord::Base
     # A student's answer sheete becomes publishable as soon as the 
     # last of the graded responses has been graded
 
-    submitted = GradedResponse.of_student(self.student_id).in_testpaper(self.testpaper_id).with_scan
+    submitted = GradedResponse.of_student(self.student_id).in_exam(self.exam_id).with_scan
 
     return false if submitted.count == 0
     return submitted.ungraded.count == 0
@@ -80,7 +80,7 @@ class Worksheet < ActiveRecord::Base
       end
     end
 
-    g = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    g = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
     scans = g.with_scan
 
     return :disabled if scans.count == 0
@@ -120,11 +120,11 @@ class Worksheet < ActiveRecord::Base
     return (extent != :none) if self.graded
 
     ret = false
-    if self.testpaper.publishable
+    if self.exam.publishable
       ret = ( extent == :none ) ? false : true
       self.update_attribute :graded, true unless (extent == :none)
     else
-      gr = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+      gr = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
       case extent
         when :fully 
           ret = gr.count ? (gr.graded.count == gr.count) : false 
@@ -141,7 +141,7 @@ class Worksheet < ActiveRecord::Base
   def marks?
     return self.marks unless self.marks.nil?
 
-    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    responses = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
     marks = responses.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
     self.update_attributes(:marks => marks, :graded => true) if responses.ungraded.count == 0
     return marks.nil? ? 0 : marks.round(2)
@@ -149,17 +149,17 @@ class Worksheet < ActiveRecord::Base
 
   def graded_thus_far?
     # Returns the total (of quiz) graded till now. This number will change as more 
-    # and more of the student's testpaper is graded 
-    return self.testpaper.quiz.total? if self.graded?
+    # and more of the student's exam is graded 
+    return self.exam.quiz.total? if self.graded?
 
-    responses = GradedResponse.in_testpaper(self.testpaper_id).of_student(self.student_id)
+    responses = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
     thus_far = responses.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 
   def graded_thus_far_as_str
     # Returns a string of the form "marks / graded_thus_far" - where marks are whats been earned till now
-    absent = GradedResponse.of_student(self.student_id).in_testpaper(self.testpaper_id).with_scan.count == 0
+    absent = GradedResponse.of_student(self.student_id).in_exam(self.exam_id).with_scan.count == 0
     marks = absent ? -1 : self.marks?
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
@@ -171,7 +171,7 @@ class Worksheet < ActiveRecord::Base
 
   def create_signature 
     if self.signature.nil?
-      n = QSelection.where(quiz_id: self.testpaper.quiz_id).count
+      n = QSelection.where(quiz_id: self.exam.quiz_id).count
       sig = [*1..n].map{ rand(4) }
       self.update_attribute :signature, sig.join(',')
     end

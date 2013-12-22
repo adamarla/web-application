@@ -20,13 +20,13 @@ class Mailbot < ActionMailer::Base
     mail to:  @account.email, subject:  "Welcome to Gradians.com"
   end
   
-  def grading_done(testpaper)
-    @testpaper = testpaper # need a object variable to pass to view
-    @quiz = @testpaper.quiz
-    @mean = @testpaper.mean?
+  def grading_done(exam)
+    @exam = exam # need a object variable to pass to view
+    @quiz = @exam.quiz
+    @mean = @exam.mean?
     @max = @quiz.total?
     teacher = @quiz.teacher
-    mail(to:  teacher.account.email, subject:  "(gradians.com) Testpaper graded") unless teacher.account.email.nil?
+    mail(to:  teacher.account.email, subject:  "(gradians.com) Assignment graded") unless teacher.account.email.nil?
   end
   
   def suggestion_typeset( suggestion )
@@ -40,9 +40,9 @@ class Mailbot < ActionMailer::Base
     mail subject:  "User Query", body:  question, to:  "help@gradians.com", :reply_to => account.email
   end
 
-  def quiz_assigned(testpaper, student)
+  def quiz_assigned(exam, student)
     @student = student
-    @quiz = testpaper.quiz
+    @quiz = exam.quiz
     mail subject:  "Quiz #{@quiz.name}", to:  @student.account.real_email
   end
 
@@ -70,7 +70,7 @@ class Mailbot < ActionMailer::Base
 
   def worksheet_graded(ws)
     @student = ws.student
-    @quiz = ws.testpaper.quiz
+    @quiz = ws.exam.quiz
     mail to: @student.account.email, subject: "[Gradians.com]: Quiz '#{@quiz.name}' has been graded" 
   end
 
