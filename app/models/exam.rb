@@ -144,26 +144,23 @@ class Exam < ActiveRecord::Base
     # Only graded responses and only those students that have
     # some or all of their answer-sheet graded are considered. Hence, know 
     # that this number will change with time before settling to a final value
-
-    individual_scores = []
-    Worksheet.where(exam_id: self.id).each do |a|
-      thus_far = a.graded_thus_far?
-      next if thus_far == 0
-      marks = a.marks? 
-      individual_scores.push marks
-    end
-
-    unless individual_scores.empty?
-      total = individual_scores.inject(:+)
-      mean = (total / individual_scores.count).round(2)
-    else
-      mean = 0
-    end
-    return mean
+    
+    g = GradedResponse.in_exam(self.id).graded
+    return 0 if g.blank?
+    total = g.map(&:system_marks).inject(:+)
+    nsubm = g.map(&:student_id).uniq.count
+    return (total / nsubm).round(2)
   end
 
   def takers
     self.students.order(:first_name)
+  end
+
+  def submitters
+    # Returns list of students who have made some submission for this exam.
+    # Can change as more scans come in
+    ids = GradedResponse.in_exam(self.id).with_scan.map(&:student_id).uniq
+    Student.where(id: ids)
   end
 
   def closed_on?

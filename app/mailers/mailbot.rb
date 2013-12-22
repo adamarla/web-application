@@ -25,6 +25,7 @@ class Mailbot < ActionMailer::Base
     @quiz = @exam.quiz
     @mean = @exam.mean?
     @max = @quiz.total?
+    @submitters = @exam.submitters.count
     teacher = @quiz.teacher
     mail(to:  teacher.account.email, subject:  "(gradians.com) Assignment graded") unless teacher.account.email.nil?
   end
