@@ -77,7 +77,7 @@ class Examiner < ActiveRecord::Base
     all.map(&:q_selection_id).uniq.each do |q|
       pending = all.where(q_selection_id: q) # responses to specific question in specific quiz  
       students = pending.map(&:student_id).uniq
-      limit = (students / n_examiners)
+      limit = (students.count / n_examiners)
       limit = limit > 20 ? limit : 20
 
       students.each_slice(limit).each do |j|

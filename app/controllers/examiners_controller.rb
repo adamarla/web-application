@@ -1,6 +1,6 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:distribute_scans, :update_scan_id]
+  before_filter :authenticate_account!, :except => [:distribute_scans, :receive_single_scan]
   respond_to :json
 
   def create
@@ -66,7 +66,16 @@ class ExaminersController < ApplicationController
     manifest = response[:fetch_unresolved_scans_response][:manifest]
     unless manifest.blank?
       @root = manifest[:root]
-      @scans = manifest[:image].nil? ? [] : manifest[:image].map{ |m| m[:id] }
+      images = manifest[:image]
+      if images.nil?
+        @scans = []
+      else 
+        #http://stackoverflow.com/questions/13463398/issue-with-a-collection-of-response-elements-using-savon
+        unless images.is_a? Array
+          images = Array.new << images
+        end
+        @scans = images.map{ |m| m[:id] }
+      end
     else
       @root = nil
       @scans = []
