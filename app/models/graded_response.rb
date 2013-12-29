@@ -7,15 +7,12 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
-#  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
-#  system_marks   :float
+#  marks          :float
 #  exam_id        :integer
 #  scan           :string(40)
 #  subpart_id     :integer
 #  page           :integer
-#  marks_teacher  :float
-#  closed         :boolean         default(FALSE)
 #  feedback       :integer         default(0)
 #
 
@@ -96,21 +93,6 @@ class GradedResponse < ActiveRecord::Base
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
 
-  def self.disputed
-    # Open disputes
-    graded.where(disputed: true, closed: false)
-  end
-
-  def self.disputable
-    # If a graded response has not been disputed X days after it got graded, then it 
-    # should be deemed to have been accepted and should no longer be disputable
-    graded.where(disputed: false, closed: false)
-  end
-
-  def self.closed
-    where(closed: true)
-  end
-
   def self.received_on(date) # Ex: date = '16th Dec 2013'
     where('scan LIKE ?', "#{Date.parse(date).strftime('%d.%B.%Y')}%")
   end
@@ -134,7 +116,7 @@ class GradedResponse < ActiveRecord::Base
 
     honest = Requirement.honest.where(posn: (self.feedback & 15)).map(&:weight).first
     return :red if honest == 0
-    frac = (self.system_marks / self.subpart.marks).round(2)
+    frac = (self.marks / self.subpart.marks).round(2)
     return :light if frac < 0.3
     return :medium if frac < 0.85
     return :dark if frac < 0.95
@@ -142,7 +124,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def marks?
-    return (self.marks_teacher.nil? ? self.system_marks : self.marks_teacher)
+    return self.marks
   end
 
   def fdb( ids ) 
@@ -154,7 +136,7 @@ class GradedResponse < ActiveRecord::Base
 
     self.reset if self.feedback # over-write previous feedback 
 
-    if self.update_attributes(feedback: m, system_marks: earned)
+    if self.update_attributes(feedback: m, marks: earned)
       # Increment n_graded count of the grading examiner
       e = Examiner.find self.examiner_id
       n_graded = e.n_graded + 1

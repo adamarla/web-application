@@ -3,7 +3,6 @@
 # Table name: examiners
 #
 #  id              :integer         not null, primary key
-#  disputed        :integer         default(0)
 #  created_at      :datetime
 #  updated_at      :datetime
 #  is_admin        :boolean         default(FALSE)
@@ -53,7 +52,7 @@ class Examiner < ActiveRecord::Base
         soap.body = "#{self.id}"
       end
       manifest = response[:create_question_response][:manifest]
-			slots << manifest[:root] unless manifest.nil?
+      slots << manifest[:root] unless manifest.nil?
 
       sleep 1.0/2 # sleep for 500ms
     end # of looping

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131222082449) do
+ActiveRecord::Schema.define(:version => 20131229145956) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -80,7 +80,6 @@ ActiveRecord::Schema.define(:version => 20131222082449) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "examiners", :force => true do |t|
-    t.integer  "disputed",                      :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_admin",                      :default => false
@@ -101,6 +100,7 @@ ActiveRecord::Schema.define(:version => 20131222082449) do
     t.integer  "job_id",                     :default => -1
     t.integer  "duration"
     t.datetime "deadline"
+    t.string   "uid",         :limit => 40
   end
 
   create_table "faculty_rosters", :force => true do |t|
@@ -120,15 +120,12 @@ ActiveRecord::Schema.define(:version => 20131222082449) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.boolean  "disputed",                     :default => false
     t.integer  "q_selection_id"
-    t.float    "system_marks"
+    t.float    "marks"
     t.integer  "exam_id"
     t.string   "scan",           :limit => 40
     t.integer  "subpart_id"
     t.integer  "page"
-    t.float    "marks_teacher"
-    t.boolean  "closed",                       :default => false
     t.integer  "feedback",                     :default => 0
   end
 
@@ -227,6 +224,7 @@ ActiveRecord::Schema.define(:version => 20131222082449) do
     t.integer  "span"
     t.integer  "parent_id"
     t.integer  "job_id",                      :default => -1
+    t.string   "uid",           :limit => 40
   end
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
@@ -355,6 +353,7 @@ ActiveRecord::Schema.define(:version => 20131222082449) do
     t.boolean  "received",                 :default => false
     t.boolean  "compiled",                 :default => false
     t.string   "signature",  :limit => 50
+    t.string   "uid",        :limit => 40
   end
 
   add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"

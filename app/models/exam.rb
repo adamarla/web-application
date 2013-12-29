@@ -12,6 +12,7 @@
 #  job_id      :integer         default(-1)
 #  duration    :integer
 #  deadline    :datetime
+#  uid         :string(40)
 #
 
 include GeneralQueries
@@ -147,7 +148,7 @@ class Exam < ActiveRecord::Base
     
     g = GradedResponse.in_exam(self.id).graded
     return 0 if g.blank?
-    total = g.map(&:system_marks).inject(:+)
+    total = g.map(&:marks).inject(:+)
     nsubm = g.map(&:student_id).uniq.count
     return (total / nsubm).round(2)
   end

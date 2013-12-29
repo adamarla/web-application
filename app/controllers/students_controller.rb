@@ -122,14 +122,6 @@ class StudentsController < ApplicationController
     @json = student.proficiency teacher
   end
 
-  def dispute
-    s_id = current_account.loggable_id
-    response = GradedResponse.where(:id => params[:id], :student_id => s_id)
-    head :bad_request if response.empty?
-    response.first.update_attribute :disputed, true
-    render :json => { :status => :ok }, :status => :ok
-  end
-
   def inbox
     student = Student.find params[:id]
     @ws = student.nil? ? [] : student.exams

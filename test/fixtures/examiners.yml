@@ -3,7 +3,6 @@
 # Table name: examiners
 #
 #  id              :integer         not null, primary key
-#  disputed        :integer         default(0)
 #  created_at      :datetime
 #  updated_at      :datetime
 #  is_admin        :boolean         default(FALSE)

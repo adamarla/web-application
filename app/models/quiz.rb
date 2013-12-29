@@ -13,6 +13,7 @@
 #  span          :integer
 #  parent_id     :integer
 #  job_id        :integer         default(-1)
+#  uid           :string(40)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -41,7 +42,7 @@ class Quiz < ActiveRecord::Base
   has_many :q_selections, dependent: :destroy
   has_many :questions, through: :q_selections
   has_many :exams, dependent: :destroy
-  has_many :drafts, dependent: :destroy
+  has_many :worksheets, dependent: :destroy
 
   # Quiz -> Coursework -> Milestone
   has_many :coursework 

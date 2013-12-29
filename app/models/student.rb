@@ -149,7 +149,7 @@ class Student < ActiveRecord::Base
     [*1..6].each do |marks|
       having = g.select{ |m| m.subpart.marks == marks }
       next if having.count == 0
-      avg = (having.map(&:system_marks).inject(:+) / having.count.to_f).round(2) # avg score on 'k' mark questions
+      avg = (having.map(&:marks).inject(:+) / having.count.to_f).round(2) # avg score on 'k' mark questions
       earned += avg
     end 
     max = Subpart.where(:id => sids).map(&:marks).uniq.inject(:+)
@@ -186,11 +186,11 @@ class Student < ActiveRecord::Base
       marks = on_topic.map(&:subpart).map(&:marks)
       n_attempted = marks.count
       total = marks.inject(:+)
-      scored = on_topic.map(&:system_marks).inject(:+)
+      scored = on_topic.map(&:marks).inject(:+)
 
       # historical average on topic
       all_on_topic = all.on_topic t.id 
-      historical_avg = (all_on_topic.map(&:system_marks).inject(:+) / all_on_topic.count.to_f).round(2)
+      historical_avg = (all_on_topic.map(&:marks).inject(:+) / all_on_topic.count.to_f).round(2)
 
       ret[:proficiency].push({ :id => t.id, :name => t.name, 
                                :score => (scored/total.to_f).round(2),

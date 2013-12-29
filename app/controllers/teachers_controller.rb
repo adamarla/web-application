@@ -144,25 +144,6 @@ class TeachersController < ApplicationController
     end
   end
 
-  def disputed 
-    teacher = Teacher.find params[:id]
-    head :bad_request if teacher.nil?
-
-    @disputed = GradedResponse.in_quiz(teacher.quiz_ids).disputed
-    quiz_ids = QSelection.where(id: @disputed.map(&:q_selection_id)).map(&:quiz_id).uniq
-    @quizzes = Quiz.where(id: quiz_ids)
-  end
-
-  def overwrite_marks
-    params[:disputed].each do |id, marks|
-      g = GradedResponse.where(id: id).first
-      marks = marks.empty? ? nil : marks.to_f.round(2)
-      next if marks.nil? || marks < 0 || marks > g.subpart.marks
-      g.update_attributes :marks_teacher => marks, :closed => true
-    end
-    render :json => { :status => :done }, :status => :ok
-  end
-
   def prefabricate
     topic = params[:prefab][:topic]
     quiz = Quiz.find topic.to_i 

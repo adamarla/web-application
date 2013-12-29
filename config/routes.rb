@@ -102,7 +102,6 @@ Webapp::Application.routes.draw do
   match 'register/student' => 'students#create', via: :post
   match 'match/student' => 'students#match', via: :post
   match 'claim/account' => 'students#claim', via: :post
-  match 'dispute' => 'students#dispute', via: :get
   match 'inbox' => 'students#inbox', via: :get
   match 'inbox/echo' => 'students#inbox_echo', via: :get
   match 'outbox' => 'students#outbox', via: :get
@@ -129,8 +128,6 @@ Webapp::Application.routes.draw do
   match 'teacher/students' => 'teachers#students', via: :get
   match 'teacher/students_with_names' => 'teachers#students_with_names', via: :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', via: :get
-  match 'disputed' => 'teachers#disputed', via: :get
-  match 'overwrite/marks' => 'teachers#overwrite_marks', via: [:put, :post]
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
   match 'prefab' => 'teachers#prefabricate', via: :post
   match 'new/lesson' => 'teachers#add_lesson', via: :post

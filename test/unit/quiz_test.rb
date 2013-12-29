@@ -13,6 +13,7 @@
 #  span          :integer
 #  parent_id     :integer
 #  job_id        :integer         default(-1)
+#  uid           :string(40)
 #
 
 require 'test_helper'
