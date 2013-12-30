@@ -9,11 +9,11 @@
 #  examiner_id    :integer
 #  q_selection_id :integer
 #  marks          :float
-#  exam_id        :integer
 #  scan           :string(40)
 #  subpart_id     :integer
 #  page           :integer
 #  feedback       :integer         default(0)
+#  worksheet_id   :integer
 #
 
 require 'test_helper'

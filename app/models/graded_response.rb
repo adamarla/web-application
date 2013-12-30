@@ -9,11 +9,11 @@
 #  examiner_id    :integer
 #  q_selection_id :integer
 #  marks          :float
-#  exam_id        :integer
 #  scan           :string(40)
 #  subpart_id     :integer
 #  page           :integer
 #  feedback       :integer         default(0)
+#  worksheet_id   :integer
 #
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
@@ -22,7 +22,7 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
   belongs_to :q_selection
-  belongs_to :exam
+  belongs_to :worksheet
   belongs_to :subpart
   has_many :tex_comments
 
@@ -41,7 +41,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def self.in_exam(id)
-    where(exam_id: id)
+    where(worksheet_id: Exam.find(id).worksheet_ids)
   end
 
   def self.of_student(id)

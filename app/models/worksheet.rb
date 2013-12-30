@@ -18,7 +18,7 @@
 
 class Worksheet < ActiveRecord::Base
   belongs_to :student
-  belongs_to :exam 
+  belongs_to :exam  
 
   after_create :create_signature
 
@@ -36,8 +36,7 @@ class Worksheet < ActiveRecord::Base
 
     return ( extent == :none ? false : true ) if self.received
 
-    gr = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
-
+    gr = GradedResponse.where(worksheet_id: self.id)
     n_total = gr.count 
     n_with_scan = gr.with_scan.count 
     self.update_attribute :received, true if (n_with_scan == n_total)
@@ -62,8 +61,7 @@ class Worksheet < ActiveRecord::Base
     # A student's answer sheete becomes publishable as soon as the 
     # last of the graded responses has been graded
 
-    submitted = GradedResponse.of_student(self.student_id).in_exam(self.exam_id).with_scan
-
+    submitted = GradedResponse.where(worksheet_id: self.id).with_scan
     return false if submitted.count == 0
     return submitted.ungraded.count == 0
   end
@@ -81,7 +79,7 @@ class Worksheet < ActiveRecord::Base
       end
     end
 
-    g = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
+    g = GradedResponse.where(worksheet_id: self.id)
     scans = g.with_scan
 
     return :disabled if scans.count == 0
@@ -125,7 +123,7 @@ class Worksheet < ActiveRecord::Base
       ret = ( extent == :none ) ? false : true
       self.update_attribute :graded, true unless (extent == :none)
     else
-      gr = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
+      gr = GradedResponse.where(worksheet_id: self.id)
       case extent
         when :fully 
           ret = gr.count ? (gr.graded.count == gr.count) : false 
@@ -142,9 +140,9 @@ class Worksheet < ActiveRecord::Base
   def marks?
     return self.marks unless self.marks.nil?
 
-    responses = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
-    marks = responses.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
-    self.update_attributes(:marks => marks, :graded => true) if responses.ungraded.count == 0
+    g = GradedResponse.where(worksheet_id: self.id)
+    marks = g.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
+    self.update_attributes(marks: marks, graded: true) if g.ungraded.count == 0
     return marks.nil? ? 0 : marks.round(2)
   end
 
@@ -153,8 +151,8 @@ class Worksheet < ActiveRecord::Base
     # and more of the student's exam is graded 
     return self.exam.quiz.total? if self.graded?
 
-    responses = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
-    thus_far = responses.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
+    g = GradedResponse.where(worksheet_id: self.id)
+    thus_far = g.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 

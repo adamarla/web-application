@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131229145956) do
+ActiveRecord::Schema.define(:version => 20131229180902) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -122,16 +122,16 @@ ActiveRecord::Schema.define(:version => 20131229145956) do
     t.integer  "examiner_id"
     t.integer  "q_selection_id"
     t.float    "marks"
-    t.integer  "exam_id"
     t.string   "scan",           :limit => 40
     t.integer  "subpart_id"
     t.integer  "page"
     t.integer  "feedback",                     :default => 0
+    t.integer  "worksheet_id"
   end
 
-  add_index "graded_responses", ["exam_id"], :name => "index_graded_responses_on_testpaper_id"
   add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
   add_index "graded_responses", ["student_id"], :name => "index_graded_responses_on_student_id"
+  add_index "graded_responses", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
 
   create_table "grades", :force => true do |t|
     t.float    "allotment"
