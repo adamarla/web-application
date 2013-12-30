@@ -11,7 +11,6 @@
 #  graded     :boolean         default(FALSE)
 #  honest     :integer
 #  received   :boolean         default(FALSE)
-#  compiled   :boolean         default(FALSE)
 #  signature  :string(50)
 #  uid        :string(40)
 #

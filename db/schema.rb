@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131229180902) do
+ActiveRecord::Schema.define(:version => 20131230081739) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -351,7 +351,6 @@ ActiveRecord::Schema.define(:version => 20131229180902) do
     t.boolean  "graded",                   :default => false
     t.integer  "honest"
     t.boolean  "received",                 :default => false
-    t.boolean  "compiled",                 :default => false
     t.string   "signature",  :limit => 50
     t.string   "uid",        :limit => 40
   end
