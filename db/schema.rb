@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131230081739) do
+ActiveRecord::Schema.define(:version => 20131230153516) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -353,9 +353,11 @@ ActiveRecord::Schema.define(:version => 20131230081739) do
     t.boolean  "received",                 :default => false
     t.string   "signature",  :limit => 50
     t.string   "uid",        :limit => 40
+    t.integer  "quiz_id"
   end
 
   add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"
+  add_index "worksheets", ["quiz_id"], :name => "index_worksheets_on_quiz_id"
   add_index "worksheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
 
 end

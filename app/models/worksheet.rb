@@ -13,6 +13,7 @@
 #  received   :boolean         default(FALSE)
 #  signature  :string(50)
 #  uid        :string(40)
+#  quiz_id    :integer
 #
 
 class Worksheet < ActiveRecord::Base
@@ -176,4 +177,4 @@ class Worksheet < ActiveRecord::Base
     return sig 
   end
 
-end
+end # of class
