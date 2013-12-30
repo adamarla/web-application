@@ -23,11 +23,19 @@ class Worksheet < ActiveRecord::Base
   after_create :create_signature
 
   def self.of_student(id)
-    where(:student_id => id)
+    where(student_id: id)
   end
 
   def self.for_exam(id)
-    where(:exam_id => id)
+    where(exam_id: id)
+  end
+
+  def self.for_quiz(id)
+    where(quiz_id: id)
+  end 
+
+  def self.online 
+    where(exam_id: nil)
   end
 
   def received?(extent = :fully) # other options - :none, :partially
