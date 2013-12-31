@@ -36,7 +36,7 @@ class Sektion < ActiveRecord::Base
 
   def self.common_to(student_ids)
     ids = Student.where(id: student_ids).map(&:sektion_ids).inject(:&)
-    return ids.blank? ? nil : Sektion.find(ids.last)
+    return ids.blank? ? nil : Sektion.where(id: ids).order(:created_at)
   end
 
   def label 
