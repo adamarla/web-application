@@ -13,14 +13,13 @@
 #  received   :boolean         default(FALSE)
 #  signature  :string(50)
 #  uid        :string(40)
-#  quiz_id    :integer
 #
 
 class Worksheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :exam  
 
-  after_create :create_signature
+  after_create :set_uid, :create_signature
 
   def self.of_student(id)
     where(student_id: id)
@@ -29,10 +28,6 @@ class Worksheet < ActiveRecord::Base
   def self.for_exam(id)
     where(exam_id: id)
   end
-
-  def self.for_quiz(id)
-    where(quiz_id: id)
-  end 
 
   def self.online 
     where(exam_id: nil)
@@ -176,13 +171,19 @@ class Worksheet < ActiveRecord::Base
     self.create_signature
   end
 
-  def create_signature 
-    if self.signature.nil?
-      n = QSelection.where(quiz_id: self.exam.quiz_id).count
-      sig = [*1..n].map{ rand(4) }
-      self.update_attribute :signature, sig.join(',')
-    end
-    return sig 
-  end
+  private 
+      def create_signature 
+        if self.signature.nil?
+          n = QSelection.where(quiz_id: self.exam.quiz_id).count
+          sig = [*1..n].map{ rand(4) }
+          self.update_attribute :signature, sig.join(',')
+        end
+        return sig 
+      end
+
+      def set_uid 
+        uid = "w/#{rand(999)}/#{self.id.to_s(36)}"
+        self.update_attribute :uid, uid
+      end
 
 end # of class
