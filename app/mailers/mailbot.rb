@@ -1,6 +1,5 @@
 class Mailbot < ActionMailer::Base
-  #default from: "from@example.com"
-  default :from => "help@gradians.com" 
+  default from: "mailer-noreply@gradians.com"
   layout 'mailbot'
 
   def curious_email(teacherform)
@@ -41,6 +40,12 @@ class Mailbot < ActionMailer::Base
     mail subject:  "User Query", body:  question, to:  "help@gradians.com", :reply_to => account.email
   end
 
+  def new_grading_work(eid)
+    examiner = Examiner.find eid
+    deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
+    mail subject: "(Grading to-do) Deadline: #{d.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
+  end
+
   def quiz_assigned(exam, student)
     @student = student
     @quiz = exam.quiz
@@ -67,6 +72,12 @@ class Mailbot < ActionMailer::Base
     @from_name = from.name
     @to_name = to.first_name
     mail to: to.account.email, subject: "[Gradians.com]: #{@from_name} has shared a quiz with you"
+  end
+
+  def scans_received(id)
+    @teacher = Teacher.find id
+    @deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
+    mail to: @teacher.account.email, subject: "[Gradians.com]: Scans received for grading"
   end
 
   def worksheet_graded(ws)
