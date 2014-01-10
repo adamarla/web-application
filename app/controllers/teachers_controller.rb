@@ -123,6 +123,7 @@ class TeachersController < ApplicationController
     @context = params[:context]
   end
 
+=begin
   def prefabricate
     topic = params[:prefab][:topic]
     quiz = Quiz.find topic.to_i 
@@ -148,6 +149,7 @@ class TeachersController < ApplicationController
       render :nothing => true, :status => :ok
     end
   end
+=end
 
   def add_lesson
     teacher = current_account.loggable

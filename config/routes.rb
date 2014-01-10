@@ -128,7 +128,6 @@ Webapp::Application.routes.draw do
   match 'teacher/students_with_names' => 'teachers#students_with_names', via: :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', via: :get
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
-  match 'prefab' => 'teachers#prefabricate', via: :post
   match 'new/lesson' => 'teachers#add_lesson', via: :post
 
   # Exam
