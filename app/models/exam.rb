@@ -90,21 +90,6 @@ class Exam < ActiveRecord::Base
     end
   end
 
-  #Only for legacy Exams, not needed going forward from Oct1, 2013
-  def compile_solution_tex
-    student_ids = Worksheet.where(exam_id: self.id).select(:student_id).map(&:student_id)
-    students = Student.where(id: student_ids).order(:id)
-
-    names = []
-    students.each_with_index do |s,j|
-      names.push({ id: s.id, name: s.name, value: encrypt(j,3) })
-    end
-
-    students.each_with_index do |s,j|
-      Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), priority: 6
-    end
-  end
-
   def mean?
     # Returns the average for the class/group that took this exam
     # Only graded responses and only those students that have

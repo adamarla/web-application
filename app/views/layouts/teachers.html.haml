@@ -34,7 +34,7 @@
     - unless tc.online
       = render partial: 'modals/user/ask-a-question'
       = render partial: 'modals/teacher/demo-intro'
-      = render partial: 'modals/teacher/demo'
+      -#= render partial: 'modals/teacher/demo'
       = render partial: 'modals/teacher/new-sk-one'
       = render partial: 'modals/teacher/new-sk-two'
       = render partial: 'modals/teacher/share-quiz'
@@ -132,6 +132,7 @@
                     = simple_link for: "Groups", id: 'm-tc-sektions'
                   %li.dropdown
                     = simple_link for: "Help", id: 'm-howto'
+                -#
                   %li.dropdown
                     = simple_link for: "QuickTrial", id: 'lnk-demo'
 

@@ -63,8 +63,9 @@ window.monitor = {
           $("<li>#{m.name}</li>").appendTo(stub)
 
     monitor.stop() if monitor.isEmpty()
+
     # update the demo if some of these quizzes are the pre-fab kind
-    demo.update json.demo
+    # demo.update json.demo
 
     # Launch notifier
     # notifier.show('n-compiled') if sthCompiled

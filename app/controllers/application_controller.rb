@@ -24,6 +24,7 @@ class ApplicationController < ActionController::Base
         user = t.online ? "Online" : user
 
         # Demos are available only to external teachers. Our own instructors don't need them
+=begin
         unless t.online
           cloned = t.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
           json[:demo] = {
@@ -35,6 +36,7 @@ class ApplicationController < ActionController::Base
             }
           }
         end # of unless 
+=end
       else
         is_new = false
     end
