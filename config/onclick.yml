@@ -106,7 +106,7 @@ lnk-ws-download :
   ajax : disabled
   update-on : exam/load
 
-lnk-download-solution :
+lnk-download-* :
   notouch : true
   ajax : disabled
   update-on : quiz/preview 

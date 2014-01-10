@@ -128,10 +128,10 @@ class AccountsController < ApplicationController
 
   def poll_delayed_job_queue
     quiz_ids = params[:quizzes].blank? ? [] : params[:quizzes].map(&:to_i)
-    ws_ids = params[:worksheets].blank? ? [] : params[:worksheets].map(&:to_i)
+    eids = params[:exams].blank? ? [] : params[:exams].map(&:to_i)
 
     @quizzes = Quiz.where(id: quiz_ids).select{ |m| !m.compiling? }
-    @ws = Exam.where(id: ws_ids).select{ |m| !m.compiling? }
+    @ws = Exam.where(id: eids).select{ |m| !m.compiling? }
     @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
   end 
 

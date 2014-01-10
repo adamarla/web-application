@@ -140,7 +140,7 @@ jQuery ->
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
-    else if url.match(/build_quiz/)
+    else if url.match(/quiz\/build/)
       lesson = 'qzb-milestone-7'
       monitor.add json
       $('#lnk-existing-quiz').click()

@@ -46,10 +46,13 @@ class Mailbot < ActionMailer::Base
     mail subject: "(Grading to-do) Deadline: #{d.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
   end
 
-  def quiz_assigned(exam, student)
-    @student = student
-    @quiz = exam.quiz
-    mail subject:  "Quiz #{@quiz.name}", to:  @student.account.real_email
+  def quiz_assigned(wsid)
+    w = Worksheet.find wsid 
+    @student = w.student
+    unless @student.account.real_email.nil?
+      @quiz = w.exam.quiz
+      mail subject:  "[Gradians.com]: New homework posted to your account", to:  @student.account.real_email
+    end
   end
 
   def registration_debug(city, state, zip, country)
@@ -84,6 +87,13 @@ class Mailbot < ActionMailer::Base
     @student = ws.student
     @quiz = ws.exam.quiz
     mail to: @student.account.email, subject: "[Gradians.com]: Quiz '#{@quiz.name}' has been graded" 
+  end
+
+  def report_mint_error(obj, link)
+    @type = obj.class.name
+    @id = obj.id 
+    @ref = link
+    mail to: "bugs@gradians.com", subject: "[Gradians.com]: Error in Mint"
   end
 
 end

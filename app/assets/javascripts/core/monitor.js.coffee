@@ -1,8 +1,8 @@
 
 window.monitor = {
-  # 'quizzes', 'worksheets' are simply arrays of indices
+  # 'quizzes', 'exams' are simply arrays of indices
   quizzes : [],
-  worksheets : [],
+  exams : [],
   ticker : null,
 
   add : (json) ->
@@ -11,8 +11,8 @@ window.monitor = {
 
     if trackObjs.quiz?
       monitor.quizzes.push trackObjs.quiz
-    if trackObjs.worksheet?
-      monitor.worksheets.push trackObjs.worksheet
+    if trackObjs.exam?
+      monitor.exams.push trackObjs.exam
 
     monitor.start() unless monitor.isEmpty()
     return true
@@ -31,11 +31,11 @@ window.monitor = {
 
   isEmpty : () ->
     return false if monitor.quizzes.length > 0
-    return false if monitor.worksheets.length > 0
+    return false if monitor.exams.length > 0
     return true
 
   ping : () ->
-    $.get 'ping/queue', { quizzes : monitor.quizzes, worksheets : monitor.worksheets }, (data) -> monitor.update(data),
+    $.get 'ping/queue', { quizzes : monitor.quizzes, exams : monitor.exams }, (data) -> monitor.update(data),
     'json'
     return true
 
@@ -49,8 +49,10 @@ window.monitor = {
     $(m).empty() for m in ul
 
     sthCompiled = false
-    for type in ['quizzes', 'worksheets']
+    for type in ['quizzes', 'exams']
       list = json[type]
+      continue unless list?
+
       sthCompiled = sthCompiled or (list.length > 0)
       stub = ul.filter("[class~=#{type}]").eq(0)
       

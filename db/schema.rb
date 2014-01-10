@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131230081739) do
+ActiveRecord::Schema.define(:version => 20140104055204) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -101,6 +101,7 @@ ActiveRecord::Schema.define(:version => 20131230081739) do
     t.integer  "duration"
     t.datetime "deadline"
     t.string   "uid",         :limit => 40
+    t.boolean  "open",                       :default => true
   end
 
   create_table "faculty_rosters", :force => true do |t|
@@ -225,6 +226,7 @@ ActiveRecord::Schema.define(:version => 20131230081739) do
     t.integer  "parent_id"
     t.integer  "job_id",                      :default => -1
     t.string   "uid",           :limit => 40
+    t.string   "version",       :limit => 10
   end
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
@@ -353,6 +355,7 @@ ActiveRecord::Schema.define(:version => 20131230081739) do
     t.boolean  "received",                 :default => false
     t.string   "signature",  :limit => 50
     t.string   "uid",        :limit => 40
+    t.integer  "job_id",                   :default => -1
   end
 
   add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"

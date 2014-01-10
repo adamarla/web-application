@@ -17,8 +17,12 @@ class ExamsController < ApplicationController
   end
 
   def load 
-    @exam = Exam.find params[:id]
-    @uid = encrypt(@exam.id, 7)
+    e = Exam.find params[:id]
+    unless e.nil?
+      render json: { a: e.path? }
+    else # shouldn't happen. But if it does, then show the sample created for the parent quiz
+      render json: { a: "#{e.quiz.path?}/sample" }
+    end
   end
 
   def layout

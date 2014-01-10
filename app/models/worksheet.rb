@@ -13,13 +13,15 @@
 #  received   :boolean         default(FALSE)
 #  signature  :string(50)
 #  uid        :string(40)
+#  job_id     :integer         default(-1)
 #
 
 class Worksheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :exam  
+  has_many :graded_responses, dependent: :destroy
 
-  after_create :set_uid, :create_signature
+  after_create :seal
 
   def self.of_student(id)
     where(student_id: id)
@@ -166,24 +168,69 @@ class Worksheet < ActiveRecord::Base
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
 
-  def signature?
-    return self.signature.split(',') unless self.signature.blank?
-    self.create_signature
+  def path?
+    return "#{self.exam.quiz.uid}/#{self.uid}"
   end
 
-  private 
-      def create_signature 
-        if self.signature.nil?
-          n = QSelection.where(quiz_id: self.exam.quiz_id).count
-          sig = [*1..n].map{ rand(4) }
-          self.update_attribute :signature, sig.join(',')
-        end
-        return sig 
-      end
+  def write 
+    span = self.exam.quiz.span?
+    g = GradedResponse.in_worksheet(self.id) 
+    ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
+    mangled = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
 
-      def set_uid 
-        uid = "w/#{rand(999)}/#{self.id.to_s(36)}"
-        self.update_attribute :uid, uid
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
+    response = SavonClient.request :wsdl, :writeTex do
+      soap.body = { 
+        target: self.path?,
+        mode: 'worksheet',
+        imports: "#{self.exam.quiz.uid}",
+        author: self.student.name, 
+        wFlags: { versions: self.signature, responses: mangled } 
+      }
+      end
+    return response
+  end 
+
+  def compile
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['compile_tex']}" 
+    response = SavonClient.request :wsdl, :compileTex do
+      soap.body = { path: self.path? }
+    end
+    return response
+  end
+
+  def error_out
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['error_out']}" 
+    response = SavonClient.request :wsdl, :errorOut do
+      soap.body = { path: self.path? }
+    end
+    return response[:error_out_response][:manifest]
+  end
+
+  def self.qrcode(ids = [])
+    return "" if ids.blank?
+    ids = ids.sort.reverse
+    min = ids.pop
+    suffix = ids.map{ |i| (i - min).to_s(36) }.join('.')
+    return "#{min.to_s(36)}.#{suffix}"
+  end
+
+  def self.unmangle_qrcode(qrc = nil)
+    return [] if qrc.blank?
+    t = qrc.split('.').reverse
+    base = t.pop.to_i(36)
+    others = t.map{ |i| i.to_i(36) + base } 
+    others.push base 
+    return others
+  end
+
+  public # Change to private after transitioning old quizzes to new mint/ structure 
+      def seal 
+        uid = self.uid.nil? ? "w/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
+        n = QSelection.where(quiz_id: self.exam.quiz_id).count 
+        sig = [*1..n].map{ rand(4) }
+        self.update_attributes uid: uid, signature: sig.join(',')
+        Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
       end
 
 end # of class

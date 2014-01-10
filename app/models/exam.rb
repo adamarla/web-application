@@ -13,6 +13,7 @@
 #  duration    :integer
 #  deadline    :datetime
 #  uid         :string(40)
+#  open        :boolean         default(TRUE)
 #
 
 include GeneralQueries
@@ -23,6 +24,8 @@ class Exam < ActiveRecord::Base
   has_many :graded_responses, dependent: :destroy
   has_many :worksheets, dependent: :destroy
   has_many :students, through: :worksheets
+
+  after_create :seal
 
   def self.takehome
     where(takehome: true)
@@ -35,6 +38,25 @@ class Exam < ActiveRecord::Base
   def self.with_deadline
     where{ deadline != nil }
   end
+
+  def self.for_quiz(id)
+    where(quiz_id: id)
+  end 
+
+  def self.open
+    where(open: true)
+  end 
+
+  def close? 
+    # Should the exam be closed to further students at the time of asking?
+    if self.quiz.teacher.online
+      today = Date.today
+      created = self.created_at
+      return (today.month != created.month && today.year != created.year) 
+    else
+      return false # must be closed explicitly AFTER all students have been added
+    end
+  end 
 
   def gradeable?
     return false unless self.has_scans?
@@ -54,63 +76,6 @@ class Exam < ActiveRecord::Base
     self.update_attribute(:publishable, true) if ret
     return ret
   end
-
-  def compiling?
-    # job_id = -1 => default initial state
-    #        > 0 => queued => compiling
-    #        = 0 => compilation completed
-    return self.job_id > 0
-  end
-
-  def compile_tex
-    worksheets = Worksheet.where(exam_id: self.id)
-    students = Student.where(id: worksheets.map(&:student_id)).order(:id) 
-
-    names = []
-    students.each_with_index do |s,j|
-      signature = worksheets.where(student_id: s.id).map(&:signature?).first
-      names.push({ id: s.id, name: s.name, value: encrypt(j,3), signature: signature })
-    end
-
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['assign_quiz']}"
-
-    response = SavonClient.request :wsdl, :assignQuiz do  
-      soap.body = { 
-        quiz: { id: self.quiz_id, name: self.quiz.latex_safe_name, value: encrypt(self.quiz_id, 7) },
-        instance: { id: self.id, name: self.name, value: encrypt(self.id, 7) },
-        students: names,
-        publish: self.takehome
-      }
-    end
-    response = response.to_hash[:assign_quiz_response]
-    if !response[:manifest].blank?
-      if self.takehome
-        students.each_with_index do |s,j|
-          Delayed::Job.enqueue ProcessWorksheet.new(self, s, j), priority: 5
-        end
-      end
-    end
-    return response
-  end #of method
-
-  def process_worksheet(student, index)
-
-    names = [{ id: student.id, name: student.name, value: encrypt(index,3) }]
-
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['prep_test']}"
-    response = SavonClient.request :wsdl, :prepTest do  
-      soap.body = { 
-        quiz: { id: self.quiz_id, name: self.quiz.latex_safe_name , value: encrypt(self.quiz_id, 7) },
-        instance: { id: self.id, name: self.name , value: encrypt(self.id, 7) },
-        students: names 
-      }
-    end
-    if self.takehome
-      email = student.account.real_email
-      Mailbot.delay.quiz_assigned(self, student) unless email.nil?
-    end
-    return response.to_hash[:prep_test_response]
-  end #of method
 
   def to_csv(options = {})
     csv = []
@@ -202,5 +167,54 @@ class Exam < ActiveRecord::Base
     return true if (date.year == 2013) && (date.month < 4)
     return false
   end
+
+  def path? 
+    return "#{self.quiz.uid}/#{self.uid}"
+  end 
+
+  def write 
+    response = {} 
+    return response if self.takehome 
+
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
+    response = SavonClient.request :wsdl, :writeTex do
+      soap.body = { 
+        target: self.path?,
+        mode: 'exam',
+        imports: Worksheet.where(exam_id: self.id).map(&:path?) 
+      }
+      end
+  end 
+
+  def compile 
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['compile_tex']}" 
+    response = SavonClient.request :wsdl, :compileTex do
+      soap.body = { path: self.path? }
+    end
+    return response
+  end
+
+  def error_out
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['error_out']}" 
+    response = SavonClient.request :wsdl, :errorOut do
+      soap.body = { path: self.path? }
+    end
+    return response[:error_out_response][:manifest]
+  end
+
+  public # Change to private after transitioning old quizzes to new mint/ structure 
+    def seal 
+      uid = self.uid.nil? ? "e/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
+      self.update_attribute :uid, uid
+
+      # Only for exams made by online instructors can we do the following
+      # For those in schools, Quiz.mass_assign_to will set the 'name' 
+      # and 'takehome' flags
+      if self.quiz.teacher.online
+        created = self.created_at
+        name = "#{created.strftime("%B %Y")}"
+        self.update_attributes name: name, takehome: true
+      end
+    end
 
 end # of class

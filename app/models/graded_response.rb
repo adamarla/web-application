@@ -24,7 +24,7 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :q_selection
   belongs_to :worksheet
   belongs_to :subpart
-  has_many :tex_comments
+  has_many :tex_comments, dependent: :destroy
 
   validates :q_selection_id, presence: true
   validates :student_id, presence: true
@@ -46,6 +46,10 @@ class GradedResponse < ActiveRecord::Base
 
   def self.of_student(id)
     where(student_id: id)
+  end
+
+  def self.in_worksheet(id)
+    where(worksheet_id: id)
   end
 
   def self.to_db_question(id)
@@ -143,14 +147,14 @@ class GradedResponse < ActiveRecord::Base
       e.update_attribute :n_graded, n_graded
 
       # Time to send mails 
-      tp = Exam.where(id: self.exam_id).first
-      ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.exam_id).first
+      exam = Exam.where(id: self.worksheet.exam_id).first
+      ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.worksheet.exam_id).first
 
-      if tp.publishable? # to the teacher - once all worksheets are graded
+      if exam.publishable? # to the teacher - once all worksheets are graded
         # Time to inform the teacher. You can do this only if teacher has provided 
         # an e-mail address. The default we assign will not work
-        teacher = tp.quiz.teacher 
-        Mailbot.delay.grading_done(tp) if teacher.account.email_is_real?
+        teacher = exam.quiz.teacher 
+        Mailbot.delay.grading_done(exam) if teacher.account.email_is_real?
       end 
 
       if ws.publishable? # to the student if his/her worksheet has been graded
@@ -166,8 +170,8 @@ class GradedResponse < ActiveRecord::Base
     # corresponding answer sheet 
 
     self.update_attribute :feedback, 0
-    a = Worksheet.where(exam_id: self.exam_id, student_id: self.student_id).first
-    a.update_attributes( marks: nil, graded: false, honest: nil) unless a.nil? 
+    w = self.worksheet
+    w.update_attributes( marks: nil, graded: false, honest: nil) unless w.nil? 
 
     # Soft (default) reset -> does NOT destroy any associated TexComments
     # Hard reset -> also destroys any associated TeXComments
@@ -184,17 +188,19 @@ class GradedResponse < ActiveRecord::Base
   def page?
     return self.page unless self.page.nil? 
 
-    qsel = self.q_selection
-    intra_q_breaks = qsel.page_breaks?
-    offset = intra_q_breaks.blank? ? nil : intra_q_breaks.index( intra_q_breaks.select{|m| m < qsel.index}.last ) # nil | 0-indexed
-    page = qsel.start_page + (offset.nil? ? 0 : offset + 1)
-    self.update_attribute :page, page
+    brks_wthn = self.q_selection.page_breaks? # returns an array of integers!! 
+    rel_sbp_index = self.subpart.index 
+    last_brk_at = brks_wthn.select{ |b| b < rel_sbp_index }.last 
+    offset = last_brk_at.nil? ? 0 : brks_wthn.index(last_brk_at) + 1
+
+    page = self.q_selection.start_page + offset
+    self.update_attribute :page, page 
     return page
   end
 
   def siblings_same_worksheet
     # same student, same worksheet
-    ids = GradedResponse.in_exam(self.exam_id).of_student(self.student_id).map(&:id) - [self.id]
+    ids = GradedResponse.in_worksheet(self.worksheet_id).map(&:id) - [self.id]
     GradedResponse.where(id: ids)
   end
 
@@ -215,24 +221,18 @@ class GradedResponse < ActiveRecord::Base
     # The name of a graded response is a function of the quiz it is in, the
     # index of the parent question in the quiz and the index of the corresponding sub-part 
     # relative to the parent question 
-    return self.subpart.name_if_in? self.exam.quiz_id
+    return self.subpart.name_if_in? self.worksheet.exam.quiz_id
   end
 
   def teacher?
     # Returns the teacher to whose quiz this graded response is
-    return Teacher.where(id: self.exam.quiz.teacher_id).first
-  end
-
-  def scan_id
-    # QR Code for the page on which this Graded Response appears
-      ws_id = self.exam_id
-      student_idx = Worksheet.where(exam_id: ws_id).map(&:student_id).sort.index(self.student_id)
-      return encrypt(ws_id, 7) + encrypt(student_idx, 3) + self.page?.to_s(36)
+    return Teacher.where(id: self.worksheet.exam.quiz.teacher_id).first
   end
 
   def version
     # Returns the version the student got and for which this is the graded response
-    signature = Worksheet.where(student_id: self.student_id, exam_id: self.exam_id).map(&:signature).first
+    signature = self.worksheet.map(&:signature).first
+    signature = Worksheet.where(student_id: self.student_id, exam_id: self.worksheet.exam_id).map(&:signature).first
     return "0" if signature.blank?
 
     j = self.q_selection.index - 1 # QSelection.index is 1-indexed - not 0-indexed

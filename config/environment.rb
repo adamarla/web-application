@@ -27,3 +27,8 @@ PREFAB_QUIZ_PROBABILITY = 341
 
 PREFAB_QUIZ_IDS = [*PREFAB_QUIZ_ALGEBRA..PREFAB_QUIZ_PROBABILITY]
 PREFAB_QUIZ_MAP = { :algebra => 337, :calculus => 338, :trigonometry => 339, :probability => 341 }
+
+# Status codes for Delayed::Jobs 
+JOB_INITIAL_STATE = -1 
+WRITE_TEX_ERROR = -2 
+COMPILE_TEX_ERROR = -3

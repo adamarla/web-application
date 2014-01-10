@@ -51,8 +51,7 @@ Webapp::Application.routes.draw do
   match 'pages/unresolved' => 'examiners#unresolved_scans', via: :get
   match 'unresolved/preview' => 'examiners#preview_unresolved', via: :get
   match 'resolve' => 'examiners#resolve_scan', via: :post
-  match 'update_scan_id' => 'examiners#receive_single_scan', via: :get
-  match 'update_scan_id' => 'examiners#update_scan_id', via: :post
+  match 'update_scan_id' => 'examiners#receive_single_scan', via: :post
   match 'audit/todo' => 'examiners#audit_todo', via: :get
   match 'audit/review' => 'examiners#audit_review', via: :get
 
@@ -90,12 +89,13 @@ Webapp::Application.routes.draw do
   resource :quiz, :only => [:show]
   match 'quizzes/list' => 'quizzes#list', via: :get
   match 'quiz/preview' => 'quizzes#preview', via: :get
-  match 'quiz/assign' => 'quizzes#assign_to', via: [:put, :post]
+  match 'quiz/mass_assign' => 'quizzes#mass_assign_to', via: [:put, :post]
   match 'quiz/exams' => 'quizzes#exams', via: :get
   match 'find/schools' => 'schools#find', via: :get
   match 'quiz/questions' => 'quizzes#questions', via: :get
   match 'quiz/edit' => 'quizzes#add_remove_questions', via: [:put, :post]
   match 'share/quiz' => 'quizzes#share', via: :post
+  match 'quiz/build' => 'quizzes#build', via: [:put, :post]
 
   # Student 
   resource :student, :only => [:update, :show]
@@ -123,7 +123,6 @@ Webapp::Application.routes.draw do
   match 'teachers/list' => 'teachers#list', via: :get
   match 'teacher/sektions' => 'teachers#sektions', via: :get
   match 'teacher/load' => 'teachers#load', via: :get
-  match 'teacher/build_quiz' => 'teachers#build_quiz', via: [:put, :post]
   match 'teacher/ws' => 'teachers#worksheets', via: :get
   match 'teacher/students' => 'teachers#students', via: :get
   match 'teacher/students_with_names' => 'teachers#students_with_names', via: :get

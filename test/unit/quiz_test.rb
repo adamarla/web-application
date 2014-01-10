@@ -14,6 +14,7 @@
 #  parent_id     :integer
 #  job_id        :integer         default(-1)
 #  uid           :string(40)
+#  version       :string(10)
 #
 
 require 'test_helper'
