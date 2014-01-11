@@ -10,7 +10,6 @@
 #  updated_at  :datetime
 #  index       :integer
 #  end_page    :integer
-#  shadow      :integer
 #  page_breaks :string(10)
 #
 

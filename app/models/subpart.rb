@@ -42,22 +42,6 @@ class Subpart < ActiveRecord::Base
     return (self.mcq || self.few_lines ? 0.25 : (self.half_page ? 0.5 : 1))
   end
 
-  def shadow? 
-    # Returns the shadow relative to the start of the parent question
-    # Has to be used in conjunction with QSelection.shadow? 
-    # And unlike QSelection.shadow?, can return a number > 100
-
-    priors = self.siblings :previous
-    return 0 if priors.blank?
-
-    mcqs = priors.select{ |m| m.mcq }.count
-    shorts = priors.select{ |m| m.few_lines }.count
-    halves = priors.select{ |m| m.half_page }.count
-    fulls = priors.select{ |m| m.full_page }.count
-    total = ((mcqs + shorts) * 25 + halves * 50 + fulls * 100)
-    return total
-  end
-
   def self.in_quiz(quiz)
     # Returns the ordered list - by position in the quiz - of subparts in a quiz
 

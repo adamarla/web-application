@@ -15,6 +15,7 @@
 #  job_id        :integer         default(-1)
 #  uid           :string(40)
 #  version       :string(10)
+#  shadows       :string(255)
 #
 
 require 'test_helper'

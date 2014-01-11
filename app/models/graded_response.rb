@@ -101,30 +101,13 @@ class GradedResponse < ActiveRecord::Base
     where('scan LIKE ?', "#{Date.parse(date).strftime('%d.%B.%Y')}%")
   end
 
-  def honest?
-    return :disabled if self.scan.nil?
-    return :nodata unless self.feedback
+  def shadow?
+    quiz = self.worksheet.exam.quiz
+    return 0 if quiz.nil?
     
-    posn = self.feedback & 15 
-    score = Requirement.honest.where(posn: posn).map(&:weight).first
-
-    case score
-      when 0 then return :red
-      when 1,2,3 then return :orange
-      else return :green
-    end
-  end 
-
-  def colour? 
-    return :disabled if (self.scan.nil? or self.feedback == 0)
-
-    honest = Requirement.honest.where(posn: (self.feedback & 15)).map(&:weight).first
-    return :red if honest == 0
-    frac = (self.marks / self.subpart.marks).round(2)
-    return :light if frac < 0.3
-    return :medium if frac < 0.85
-    return :dark if frac < 0.95
-    return :green
+    shadows = quiz.shadows.split(',').map(&:to_i) # as an array of integers
+    idx = quiz.subparts.index self.subpart
+    return shadows[idx]
   end
 
   def marks?
@@ -239,11 +222,30 @@ class GradedResponse < ActiveRecord::Base
     return signature[j]
   end
 
-  def shadow?
-    # Shadow - CSS height% to set on the shadow. 
-    # Area under shadow is greyed out and inactive. Needed during grading
-    ret = (self.q_selection.shadow? + self.subpart.shadow?) % 100
-    return ret
+  def honest?
+    return :disabled if self.scan.nil?
+    return :nodata unless self.feedback
+    
+    posn = self.feedback & 15 
+    score = Requirement.honest.where(posn: posn).map(&:weight).first
+
+    case score
+      when 0 then return :red
+      when 1,2,3 then return :orange
+      else return :green
+    end
+  end 
+
+  def colour? 
+    return :disabled if (self.scan.nil? or self.feedback == 0)
+
+    honest = Requirement.honest.where(posn: (self.feedback & 15)).map(&:weight).first
+    return :red if honest == 0
+    frac = (self.marks / self.subpart.marks).round(2)
+    return :light if frac < 0.3
+    return :medium if frac < 0.85
+    return :dark if frac < 0.95
+    return :green
   end
 
-end
+end # of class

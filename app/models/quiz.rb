@@ -15,6 +15,7 @@
 #  job_id        :integer         default(-1)
 #  uid           :string(40)
 #  version       :string(10)
+#  shadows       :string(255)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -154,6 +155,10 @@ class Quiz < ActiveRecord::Base
     page_breaks = [] # stores the 'curr_subparts' after which page-breaks must be inserted
     version_triggers = []
 
+    # Shadow Calculations
+    sbp_on_curr_page = [] 
+    shadows = nil
+
     abs_sbp_index = 0 # 0-indexed to be in-sync with what \setPageBreaks expects in TeX 
 
     for abs_ques_index in [*1..questions.count]
@@ -172,6 +177,21 @@ class Quiz < ActiveRecord::Base
         required = curr_sbp.length?
         fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
         unless fits  
+          # First, update shadow information for sub-parts that were fitting until now
+          total = sbp_on_curr_page.map(&:length?).inject(:+)
+          spans_last_pg = sbp_on_curr_page.map{ |l| ((l.length? / total) * 100).to_i }
+          shadows_last_pg = [] 
+
+          spans_last_pg.each_with_index do |i,j|
+            shadows_last_pg[j] = j > 0 ? spans_last_pg[0..j-1].inject(:+) : 0 
+          end
+          shadows_last_pg = shadows_last_pg.map(&:to_s).join(',')
+          shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
+
+          # Then, move onto processing this one that did not fit
+          sbp_on_curr_page.clear 
+          sbp_on_curr_page.push curr_sbp
+
           currpg += 1
           space_left = 1 - required
           page_breaks.push(abs_sbp_index - 1)
@@ -180,6 +200,7 @@ class Quiz < ActiveRecord::Base
             brks_wthn.push(rel_sbp_index - 1) unless rel_sbp_index == 0
           end
         else 
+          sbp_on_curr_page.push curr_sbp
           space_left -= required 
         end
 
@@ -192,6 +213,8 @@ class Quiz < ActiveRecord::Base
       curr_qsel.update_attributes page_breaks: pb, end_page: currpg
 
     end # of laying questions
+
+    self.update_attribute :shadows, shadows
     return page_breaks, version_triggers
   end
 
@@ -283,7 +306,7 @@ class Quiz < ActiveRecord::Base
     end
 
     return response unless response[:error].blank? # no error => next step
-    
+
     # And for a sample worksheet that has no reference in the DB 
     zeroes = Array.new(self.num_questions, 0).join(',') 
     qrcs = Array.new(self.span?, 'Sample').join(',') 
