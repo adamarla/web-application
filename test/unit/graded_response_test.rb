@@ -14,6 +14,7 @@
 #  page           :integer
 #  feedback       :integer         default(0)
 #  worksheet_id   :integer
+#  mobile         :boolean         default(FALSE)
 #
 
 require 'test_helper'

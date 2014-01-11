@@ -121,7 +121,7 @@ class ExaminersController < ApplicationController
     # A scan, one received, cannot be overwritten with a subsequently uploaded scan 
     already = g.map(&:scan).select{ |x| !x.nil? }.count > 0
     unless already
-      g.map{ |x| x.update_attribute :scan, path } 
+      g.map{ |x| x.update_attributes scan: path, mobile: mobile } 
 
       # Sometimes, the scans come in batches. And if the new ones come 
       # after the old ones have been graded, then a mail is triggered 

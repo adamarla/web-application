@@ -14,6 +14,7 @@
 #  page           :integer
 #  feedback       :integer         default(0)
 #  worksheet_id   :integer
+#  mobile         :boolean         default(FALSE)
 #
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
@@ -102,6 +103,7 @@ class GradedResponse < ActiveRecord::Base
   end
 
   def shadow?
+    return 0 if self.mobile
     quiz = self.worksheet.exam.quiz
     return 0 if quiz.nil?
     
