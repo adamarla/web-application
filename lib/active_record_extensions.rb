@@ -18,7 +18,7 @@ module ActiveRecordExtensions
     # be escaped with a backslash before typesetting 
     safe = self.name 
     ['#', '$', '&', '^', '%', '\\', '_', '{',  '}', '~'].each do |m|
-      safe = safe.gsub m, "\\#{m}"
+      safe = safe.gsub m, "\\\\#{m}"
     end 
     return safe
   end
