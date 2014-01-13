@@ -347,7 +347,7 @@ tab-st-rc-2 :
 tab-st-inbox :
   url : 
     self : inbox.json?id=:prev
-    panel : inbox/echo.json?ws=:id
+    panel : inbox/echo.json?e=:id
   prev : control-panel
 
 tab-st-outbox :

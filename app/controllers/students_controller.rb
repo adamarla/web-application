@@ -123,24 +123,28 @@ class StudentsController < ApplicationController
   end
 
   def inbox
-    student = Student.find params[:id]
-    @ws = student.nil? ? [] : student.exams
-    unless @ws.empty?
-      @ws = @ws.where(takehome: true)
-      open = Worksheet.where(:student_id => student.id, :exam_id => @ws.map(&:id)).select{ |m| m.received? :none }
-      @ws = Exam.where id: open.map(&:exam_id)
+    sid = params[:id]
+    student = Student.find sid
+    hw = student.nil? ? [] : Worksheet.where(student_id: sid, exam_id: Exam.takehome.map(&:id))
+    open = hw.select{ |h| h.received? :none }
+
+    unless open.blank?
+      @exams = Exam.where(id: open.map(&:exam_id).uniq)
     else
-      render :json => { :notify => { :text => "No new worksheets" }}, :status => :ok
+      render(json: { notify: { text: 'No new worksheets' }}, status: :ok) if @exams.blank?
     end
   end 
 
   def inbox_echo
-    @ws = Exam.find params[:ws]
-    @quiz = @ws.quiz
-    @student = current_account.loggable
-    sid = @student.id.to_i
-    student_ids = Worksheet.where(exam_id: @ws.id).map(&:student_id).sort
-    @relative_index = student_ids.index sid
+    eid = params[:e]
+    sid = current_account.loggable_id
+
+    w = Worksheet.where(student_id: sid, exam_id: eid).first 
+    unless w.nil?
+      render json: { a: "mint/#{w.path?}" }, status: :ok
+    else
+      render json: { status: 'No worksheet found' }, status: :bad_request 
+    end
   end
 
   def outbox
