@@ -378,7 +378,7 @@ class Quiz < ActiveRecord::Base
     return true
   end
 
-  protected
+  public
       def seal
         uid = self.uid.nil? ? "q/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
 

@@ -224,7 +224,7 @@ class Worksheet < ActiveRecord::Base
     return others
   end
 
-  protected 
+  public 
       def seal 
         uid = self.uid.nil? ? "w/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
         n = QSelection.where(quiz_id: self.exam.quiz_id).count 

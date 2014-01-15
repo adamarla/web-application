@@ -187,7 +187,7 @@ class Exam < ActiveRecord::Base
     return response[:error_out_response][:manifest]
   end
 
-  protected 
+  public 
     def seal 
       uid = self.uid.nil? ? "e/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
       self.update_attribute :uid, uid
