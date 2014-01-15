@@ -72,13 +72,13 @@ class TokensController < ApplicationController
     def build_gradeables(account)
       student = Student.find_by_id(account.loggable_id)
       without_scans = GradedResponse.of_student(student[:id]).without_scan.sort
-      gradeables = without_scans.map do |gr|
+      gradeables = without_scans.map do |g|
+        quiz = g.worksheet.exam.quiz
         {
-          :id     => gr.id,
-          :quiz   => gr.exam.quiz.name,
-          :quizId => gr.exam.quiz.id,
-          :scan   => gr.scan_id,
-          :name   => gr.subpart.name_if_in?(gr.exam.quiz)
+          id: g.id, 
+          quiz: quiz.name, 
+          quizId: quiz.id, 
+          name: g.subpart.name_if_in? quiz
         }
       end 
       return gradeables

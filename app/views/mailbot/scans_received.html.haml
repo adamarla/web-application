@@ -1,0 +1,11 @@
+
+%p
+  Dear #{@teacher.first_name},
+%p
+  We have received the new scans you sent today for grading
+%p
+  The scans have been distributed amongst designated graders. And the results 
+  of for the quiz would be ready and available in <b>3 business days</b> - that is -
+  by <b>#{@deadline.strftime("%I:%M%p")}</b> on <b>#{@deadline.strftime("%A, %b %d")}</b>
+%p
+  <b>Gradians Support Team</b>

@@ -185,12 +185,9 @@ class Account < ActiveRecord::Base
         ids = Quiz.where(:teacher_id => me).map(&:id)
         ids = ids.blank? ? 318 : ids # 318 =  "A Demo Quiz"
         @ws = Exam.where(:quiz_id => ids).select{ |m| m.has_scans? }
-      when :examiner
-        ids = GradedResponse.assigned_to(me).with_scan.ungraded.map(&:exam_id).uniq
-        @ws = Exam.where(:id => ids)
-      when :admin
-        # For now, same as an examiner. But it could change tomorrow
-        ids = GradedResponse.assigned_to(me).with_scan.ungraded.map(&:exam_id).uniq
+      when :examiner, :admin
+        g = GradedResponse.assigned_to(me).with_scan.ungraded
+        ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
         @ws = Exam.where(:id => ids)
       else 
         @ws = []

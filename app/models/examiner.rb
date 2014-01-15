@@ -3,7 +3,6 @@
 # Table name: examiners
 #
 #  id              :integer         not null, primary key
-#  disputed        :integer         default(0)
 #  created_at      :datetime
 #  updated_at      :datetime
 #  is_admin        :boolean         default(FALSE)
@@ -53,7 +52,7 @@ class Examiner < ActiveRecord::Base
         soap.body = "#{self.id}"
       end
       manifest = response[:create_question_response][:manifest]
-			slots << manifest[:root] unless manifest.nil?
+      slots << manifest[:root] unless manifest.nil?
 
       sleep 1.0/2 # sleep for 500ms
     end # of looping
@@ -71,17 +70,21 @@ class Examiner < ActiveRecord::Base
   end
 
   def self.distribute_scans
-    all = GradedResponse.unassigned.with_scan
+    pnd = GradedResponse.unassigned.with_scan
+    by = pnd.map(&:worksheet).uniq.map(&:exam).uniq.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.online }
     examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
     n_examiners = examiners.count
-    all.map(&:q_selection_id).uniq.each do |q|
-      pending = all.where(q_selection_id: q) # responses to specific question in specific quiz  
+    used = [] # to track examiners to whom an e-mail must be sent
+
+    pnd.map(&:q_selection_id).uniq.each do |q|
+      pending = pnd.where(q_selection_id: q) # responses to specific question in specific quiz  
       students = pending.map(&:student_id).uniq
       limit = (students.count / n_examiners)
       limit = limit > 20 ? limit : 20
 
       students.each_slice(limit).each do |j|
         assignee = examiners.shift # pop from front 
+        used.push assignee.id
 
         work = pending.where(student_id: j)
         work.map{ |m| m.update_attribute :examiner_id, assignee.id }
@@ -90,6 +93,17 @@ class Examiner < ActiveRecord::Base
         examiners.push assignee # push to last
       end # over students
     end
+
+    # Let the (offline) teacher know that scans have been received
+    for t in by.uniq
+      Mailbot.delay.scans_received(t)
+    end
+    
+    # Let each grader know that he/she has got new scans to grade in their account
+    for id in used.uniq
+      Mailbot.delay.new_grading_work(id)
+    end
+
   end
 
 end # of class

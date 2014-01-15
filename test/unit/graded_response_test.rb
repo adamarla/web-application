@@ -7,16 +7,14 @@
 #  created_at     :datetime
 #  updated_at     :datetime
 #  examiner_id    :integer
-#  disputed       :boolean         default(FALSE)
 #  q_selection_id :integer
-#  system_marks   :float
-#  exam_id        :integer
+#  marks          :float
 #  scan           :string(40)
 #  subpart_id     :integer
 #  page           :integer
-#  marks_teacher  :float
-#  closed         :boolean         default(FALSE)
 #  feedback       :integer         default(0)
+#  worksheet_id   :integer
+#  mobile         :boolean         default(FALSE)
 #
 
 require 'test_helper'

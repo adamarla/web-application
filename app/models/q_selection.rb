@@ -10,7 +10,6 @@
 #  updated_at  :datetime
 #  index       :integer
 #  end_page    :integer
-#  shadow      :integer
 #  page_breaks :string(10)
 #
 
@@ -48,15 +47,6 @@ class QSelection < ActiveRecord::Base
   def next(same_page = true) 
     # Returns the QSelection for the next question laid out in the quiz
     return self.siblings(:next, same_page).first
-  end
-
-  def shadow?
-    return self.shadow unless self.shadow.nil?
-
-    p = self.prev 
-    ret = p.nil? ? 0 : ( (((p.shadow? / 100.00) + p.question.length?).modulo(1) * 100).to_i )
-    self.update_attribute :shadow, ret
-    return ret
   end
 
   def siblings(dir, same_page = false)

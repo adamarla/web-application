@@ -34,6 +34,11 @@ class Sektion < ActiveRecord::Base
     select{ |m| m.student_ids.count > 0 }
   end
 
+  def self.common_to(student_ids)
+    ids = Student.where(id: student_ids).map(&:sektion_ids).inject(:&)
+    return ids.blank? ? nil : Sektion.where(id: ids).order(:created_at)
+  end
+
   def label 
     return self.name
   end 

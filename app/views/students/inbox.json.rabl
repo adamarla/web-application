@@ -1,11 +1,5 @@
 
 object false 
   node(:inbox) {
-    @ws.map { |m|
-      { 
-        :name => m.quiz.name, 
-        :id => m.id,
-        :tag => m.quiz.teacher.name
-      }
-    }
+    @exams.map { |e| { name: e.quiz.name, id: e.id, tag: e.quiz.teacher.name } }
   } 

@@ -73,7 +73,7 @@ class SektionsController < ApplicationController
       unless graded.empty?
         # total = Subpart.where(:id => graded.map(&:subpart_id)).map(&:marks).inject(:+)
         total = graded.map(&:subpart).map(&:marks).inject(:+) # takes care of the case when a question is repeated 
-        scored = graded.map(&:system_marks).inject(:+)
+        scored = graded.map(&:marks).inject(:+)
         {:id => s.id, :score => (scored / total.to_f).round(2)}
       else
         { :id => s.id, :score => -1 }

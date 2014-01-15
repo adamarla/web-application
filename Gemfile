@@ -41,6 +41,7 @@ gem 'country_select'
 gem 'kaminari' # for pagination
 gem 'squeel' # to make active record queries more intuitive 
 
+gem 'business_time'
 gem 'delayed_job_active_record'
 
 gem 'levenshtein-ffi', :require => 'levenshtein'

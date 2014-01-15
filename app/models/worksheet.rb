@@ -11,22 +11,28 @@
 #  graded     :boolean         default(FALSE)
 #  honest     :integer
 #  received   :boolean         default(FALSE)
-#  compiled   :boolean         default(FALSE)
 #  signature  :string(50)
+#  uid        :string(40)
+#  job_id     :integer         default(-1)
 #
 
 class Worksheet < ActiveRecord::Base
   belongs_to :student
-  belongs_to :exam 
+  belongs_to :exam  
+  has_many :graded_responses, dependent: :destroy
 
-  after_create :create_signature
+  after_create :seal
 
   def self.of_student(id)
-    where(:student_id => id)
+    where(student_id: id)
   end
 
   def self.for_exam(id)
-    where(:exam_id => id)
+    where(exam_id: id)
+  end
+
+  def self.online 
+    where(exam_id: nil)
   end
 
   def received?(extent = :fully) # other options - :none, :partially
@@ -35,8 +41,7 @@ class Worksheet < ActiveRecord::Base
 
     return ( extent == :none ? false : true ) if self.received
 
-    gr = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
-
+    gr = GradedResponse.where(worksheet_id: self.id)
     n_total = gr.count 
     n_with_scan = gr.with_scan.count 
     self.update_attribute :received, true if (n_with_scan == n_total)
@@ -61,8 +66,7 @@ class Worksheet < ActiveRecord::Base
     # A student's answer sheete becomes publishable as soon as the 
     # last of the graded responses has been graded
 
-    submitted = GradedResponse.of_student(self.student_id).in_exam(self.exam_id).with_scan
-
+    submitted = GradedResponse.where(worksheet_id: self.id).with_scan
     return false if submitted.count == 0
     return submitted.ungraded.count == 0
   end
@@ -80,7 +84,7 @@ class Worksheet < ActiveRecord::Base
       end
     end
 
-    g = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
+    g = GradedResponse.where(worksheet_id: self.id)
     scans = g.with_scan
 
     return :disabled if scans.count == 0
@@ -124,7 +128,7 @@ class Worksheet < ActiveRecord::Base
       ret = ( extent == :none ) ? false : true
       self.update_attribute :graded, true unless (extent == :none)
     else
-      gr = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
+      gr = GradedResponse.where(worksheet_id: self.id)
       case extent
         when :fully 
           ret = gr.count ? (gr.graded.count == gr.count) : false 
@@ -141,9 +145,9 @@ class Worksheet < ActiveRecord::Base
   def marks?
     return self.marks unless self.marks.nil?
 
-    responses = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
-    marks = responses.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
-    self.update_attributes(:marks => marks, :graded => true) if responses.ungraded.count == 0
+    g = GradedResponse.where(worksheet_id: self.id)
+    marks = g.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
+    self.update_attributes(marks: marks, graded: true) if g.ungraded.count == 0
     return marks.nil? ? 0 : marks.round(2)
   end
 
@@ -152,8 +156,8 @@ class Worksheet < ActiveRecord::Base
     # and more of the student's exam is graded 
     return self.exam.quiz.total? if self.graded?
 
-    responses = GradedResponse.in_exam(self.exam_id).of_student(self.student_id)
-    thus_far = responses.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
+    g = GradedResponse.where(worksheet_id: self.id)
+    thus_far = g.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 
@@ -164,18 +168,69 @@ class Worksheet < ActiveRecord::Base
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
 
-  def signature?
-    return self.signature.split(',') unless self.signature.blank?
-    self.create_signature
+  def path?
+    return "#{self.exam.quiz.uid}/#{self.uid}"
   end
 
-  def create_signature 
-    if self.signature.nil?
-      n = QSelection.where(quiz_id: self.exam.quiz_id).count
-      sig = [*1..n].map{ rand(4) }
-      self.update_attribute :signature, sig.join(',')
+  def write 
+    span = self.exam.quiz.span?
+    g = GradedResponse.in_worksheet(self.id) 
+    ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
+    mangled = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
+
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
+    response = SavonClient.request :wsdl, :writeTex do
+      soap.body = { 
+        target: self.path?,
+        mode: 'worksheet',
+        imports: "#{self.exam.quiz.uid}",
+        author: self.student.name, 
+        wFlags: { versions: self.signature, responses: mangled } 
+      }
+      end
+    return response
+  end 
+
+  def compile
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['compile_tex']}" 
+    response = SavonClient.request :wsdl, :compileTex do
+      soap.body = { path: self.path? }
     end
-    return sig 
+    return response
   end
 
-end
+  def error_out
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['error_out']}" 
+    response = SavonClient.request :wsdl, :errorOut do
+      soap.body = { path: self.path? }
+    end
+    return response[:error_out_response][:manifest]
+  end
+
+  def self.qrcode(ids = [])
+    return "" if ids.blank?
+    ids = ids.sort.reverse
+    min = ids.pop
+    suffix = ids.map{ |i| (i - min).to_s(36) }.join('.')
+    return "#{min.to_s(36)}.#{suffix}"
+  end
+
+  def self.unmangle_qrcode(qrc = nil)
+    return [] if qrc.blank?
+    t = qrc.split('.').reverse
+    base = t.pop.to_i(36)
+    others = t.map{ |i| i.to_i(36) + base } 
+    others.push base 
+    return others
+  end
+
+  public # Change to private after transitioning old quizzes to new mint/ structure 
+      def seal 
+        uid = self.uid.nil? ? "w/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
+        n = QSelection.where(quiz_id: self.exam.quiz_id).count 
+        sig = [*1..n].map{ rand(4) }
+        self.update_attributes uid: uid, signature: sig.join(',')
+        Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
+      end
+
+end # of class

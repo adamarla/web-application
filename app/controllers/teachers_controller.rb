@@ -123,46 +123,7 @@ class TeachersController < ApplicationController
     @context = params[:context]
   end
 
-  def build_quiz 
-    teacher_id = current_account.loggable_type == "Teacher" ? current_account.loggable_id : nil
-    head :bad_request if teacher_id.nil? 
-
-    name = params[:checked].delete :name
-    question_ids = params[:checked].keys.map(&:to_i)
-
-    quiz = Quiz.new name: name, teacher_id: teacher_id, question_ids: question_ids, num_questions: question_ids.count
-
-    if quiz.save
-      job = Delayed::Job.enqueue CompileQuiz.new(quiz.id), priority: 0
-      quiz.update_attribute :job_id, job.id
-
-      estimate = minutes_to_completion job.id
-      render json: { monitor: { quiz: quiz.id }, 
-                     notify: { title: "#{estimate} minutes(s)" } }, status: :ok
-    else
-      render json: { monitor: { quiz: nil } }, status: :ok
-    end
-  end
-
-  def disputed 
-    teacher = Teacher.find params[:id]
-    head :bad_request if teacher.nil?
-
-    @disputed = GradedResponse.in_quiz(teacher.quiz_ids).disputed
-    quiz_ids = QSelection.where(id: @disputed.map(&:q_selection_id)).map(&:quiz_id).uniq
-    @quizzes = Quiz.where(id: quiz_ids)
-  end
-
-  def overwrite_marks
-    params[:disputed].each do |id, marks|
-      g = GradedResponse.where(id: id).first
-      marks = marks.empty? ? nil : marks.to_f.round(2)
-      next if marks.nil? || marks < 0 || marks > g.subpart.marks
-      g.update_attributes :marks_teacher => marks, :closed => true
-    end
-    render :json => { :status => :done }, :status => :ok
-  end
-
+=begin
   def prefabricate
     topic = params[:prefab][:topic]
     quiz = Quiz.find topic.to_i 
@@ -182,14 +143,13 @@ class TeachersController < ApplicationController
         job = Delayed::Job.enqueue CompileExam.new(ws, false), priority: 5
         ws.update_attribute :job_id, job.id
         estimate = minutes_to_completion job.id
-        render :json => { :monitor => { :quiz => clone.id, :worksheet => ws.id }, 
-                          :timer => { :on => topic, :for => "#{estimate * 60}"} },
-                          status: :ok
+        render json: { monitor: { quiz: clone.id, exam: ws.id }, timer: { on: topic, for: "#{estimate * 60}"}}, status: :ok
       end
     else # no clone. should never happen
       render :nothing => true, :status => :ok
     end
   end
+=end
 
   def add_lesson
     teacher = current_account.loggable

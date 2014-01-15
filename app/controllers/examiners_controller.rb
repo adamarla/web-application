@@ -109,28 +109,38 @@ class ExaminersController < ApplicationController
   def receive_single_scan
     ret = true
     path = params[:path]
-    id = params[:id]
+    qrc = params[:id]
+    mobile = params[:type] == "GR" 
+    old_style = mobile ? false : (qrc.length == 11)
 
-    received = []
-    if params[:type] == "QR"
-      ws_id = decrypt id[0..6]
-      rel_index = decrypt id[7..9]
-      page = id[10].to_i(36)
+    if mobile
+      ids = qrc.split('-').map(&:to_i)
+      g = GradedResponse.where(id: ids)
+    elsif old_style # can be, and should be, deprecated by March 2014
+      ws_id = decrypt qrc[0..6]
+      rel_index = decrypt qrc[7..9]
+      page = qrc[10].to_i(36)
       student_id = Worksheet.where(exam_id: ws_id).map(&:student_id).sort[rel_index]
-      received = GradedResponse.in_exam(ws_id).of_student(student_id).on_page(page)
+      g = GradedResponse.in_exam(ws_id).of_student(student_id).on_page(page)
     else
-      received.push GradedResponse.find(id.split('-').map(&:to_i))
+      ids = Worksheet.unmangle_qrcode qrc
+      g = GradedResponse.where(id: ids)
     end
 
-    # Exams corresponding to these scans should be tagged as unpublishable
-    # till such time that the responses are not graded
-    received.map(&:exam).uniq.map{ |j| j.update_attribute(:publishable, false) }
-    
-    for m in received 
-      ret &= m.scan.blank? ? m.update_attribute(:scan, path) : false
-      break unless ret
+    # A scan, one received, cannot be overwritten with a subsequently uploaded scan 
+    already = g.map(&:scan).select{ |x| !x.nil? }.count > 0
+    unless already
+      g.map{ |x| x.update_attributes scan: path, mobile: mobile } 
+
+      # Sometimes, the scans come in batches. And if the new ones come 
+      # after the old ones have been graded, then a mail is triggered 
+      # with each new student's work being graded. To avoid this, we 
+      # simply reset the exam to its initial unpublished state and leave 
+      # it to the grading process to set it back to publishable state
+      exam = g.first.worksheet.exam
+      exam.update_attribute :publishable, false
     end
-    render json: { status: (ret ? 'ok' : 'not ok') }
+    render json: { status: ( already ? 'not ok' : 'ok' ) }
   end
 
   def audit_todo

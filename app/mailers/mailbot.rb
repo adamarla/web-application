@@ -1,6 +1,5 @@
 class Mailbot < ActionMailer::Base
-  #default from: "from@example.com"
-  default :from => "help@gradians.com" 
+  default from: "mailer-noreply@gradians.com"
   layout 'mailbot'
 
   def curious_email(teacherform)
@@ -41,10 +40,19 @@ class Mailbot < ActionMailer::Base
     mail subject:  "User Query", body:  question, to:  "help@gradians.com", :reply_to => account.email
   end
 
-  def quiz_assigned(exam, student)
-    @student = student
-    @quiz = exam.quiz
-    mail subject:  "Quiz #{@quiz.name}", to:  @student.account.real_email
+  def new_grading_work(eid)
+    examiner = Examiner.find eid
+    deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
+    mail subject: "(Grading to-do) Deadline: #{d.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
+  end
+
+  def quiz_assigned(wsid)
+    w = Worksheet.find wsid 
+    @student = w.student
+    unless @student.account.real_email.nil?
+      @quiz = w.exam.quiz
+      mail subject:  "[Gradians.com]: New homework posted to your account", to:  @student.account.real_email
+    end
   end
 
   def registration_debug(city, state, zip, country)
@@ -69,10 +77,23 @@ class Mailbot < ActionMailer::Base
     mail to: to.account.email, subject: "[Gradians.com]: #{@from_name} has shared a quiz with you"
   end
 
+  def scans_received(id)
+    @teacher = Teacher.find id
+    @deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
+    mail to: @teacher.account.email, subject: "[Gradians.com]: Scans received for grading"
+  end
+
   def worksheet_graded(ws)
     @student = ws.student
     @quiz = ws.exam.quiz
     mail to: @student.account.email, subject: "[Gradians.com]: Quiz '#{@quiz.name}' has been graded" 
+  end
+
+  def report_mint_error(obj, link)
+    @type = obj.class.name
+    @id = obj.id 
+    @ref = link
+    mail to: "bugs@gradians.com", subject: "[Gradians.com]: Error in Mint"
   end
 
 end

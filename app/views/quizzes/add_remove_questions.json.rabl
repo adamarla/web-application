@@ -1,9 +1,9 @@
 
 object false 
   node(:notify) { 
-    { :title => @title, :msg => @msg }
+    { title: @title, msg: @msg }
   } 
 
-  node(:monitor, :if => lambda { |m| !@clone.nil? }) {
-    { :quiz => @clone.id }
+  node(:monitor, if: lambda { |m| !@last_child.nil? }) {
+    { quiz: @last_child.id }
   } 
