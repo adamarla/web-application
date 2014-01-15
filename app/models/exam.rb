@@ -187,7 +187,7 @@ class Exam < ActiveRecord::Base
     return response[:error_out_response][:manifest]
   end
 
-  public # Change to private after transitioning old quizzes to new mint/ structure 
+  protected 
     def seal 
       uid = self.uid.nil? ? "e/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
       self.update_attribute :uid, uid

@@ -133,11 +133,6 @@ class Quiz < ActiveRecord::Base
 
   def lay_it_out(qids = [])
 =begin
-    This method defines as much of the layout as can be done reliably
-    and cleanly here. It does *not* calculate shadows as for doing that 
-    one needs to see not just a questions predecessors on a page 
-    but also its successors
-
     'qids' is an array of question_ids. If its NOT blank, then it means 
     that the passed questions have to be laid out in the order given 
     in the array. Do NOT count on there being too many sanity checks on 
@@ -177,15 +172,7 @@ class Quiz < ActiveRecord::Base
         required = curr_sbp.length?
         fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
         unless fits  
-          # First, update shadow information for sub-parts that were fitting until now
-          total = sbp_on_curr_page.map(&:length?).inject(:+)
-          spans_last_pg = sbp_on_curr_page.map{ |l| ((l.length? / total) * 100).to_i }
-          shadows_last_pg = [] 
-
-          spans_last_pg.each_with_index do |i,j|
-            shadows_last_pg[j] = j > 0 ? spans_last_pg[0..j-1].inject(:+) : 0 
-          end
-          shadows_last_pg = shadows_last_pg.map(&:to_s).join(',')
+          shadows_last_pg = self.shadows_if sbp_on_curr_page
           shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
 
           # Then, move onto processing this one that did not fit
@@ -213,6 +200,11 @@ class Quiz < ActiveRecord::Base
       curr_qsel.update_attributes page_breaks: pb, end_page: currpg
 
     end # of laying questions
+
+    unless sbp_on_curr_page.blank?
+      shadows_last_pg = self.shadows_if sbp_on_curr_page
+      shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
+    end
 
     self.update_attribute :shadows, shadows
     return page_breaks, version_triggers
@@ -364,7 +356,29 @@ class Quiz < ActiveRecord::Base
     return (self.parent_id.nil? ? self : Quiz.find(self.parent_id).adam?) 
   end
 
-  public # Change to private after transitioning old quizzes to new mint/ structure 
+  def recompile
+    # Set pages on all responses to nil so that they can be recomputed -
+    # based on the changed layout (problem?) - in the next call to GradedResponse::page?
+    GradedResponse.in_quiz(self.id).each do |g|
+      g.update_attribute :page, nil
+    end
+
+    self.update_attributes span: nil, total: nil
+    self.seal # triggers quiz recompilation
+
+    self.exams.where(takehome: false).each do |e|
+      e.seal if e.uid.nil?
+      e.worksheets.each do |w|
+        w.seal if w.uid.nil?
+        Delayed::Job.enqueue WriteTex.new(w.id, w.class.name)
+      end
+      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
+      Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
+    end
+    return true
+  end
+
+  protected
       def seal
         uid = self.uid.nil? ? "q/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
 
@@ -382,26 +396,16 @@ class Quiz < ActiveRecord::Base
         self.update_attribute :job_id, job.id
       end 
 
-      def recompile
-        # Set pages on all responses to nil so that they can be recomputed -
-        # based on the changed layout (problem?) - in the next call to GradedResponse::page?
-        GradedResponse.in_quiz(self.id).each do |g|
-          g.update_attribute :page, nil
-        end
+      def shadows_if(sbp_on_pg)
+        total = sbp_on_pg.map(&:length?).inject(:+)
+        spans_last_pg = sbp_on_pg.map{ |l| ((l.length? / total) * 100).to_i }
+        shadows_last_pg = [] 
 
-        self.update_attributes span: nil, total: nil
-        self.seal # triggers quiz recompilation
-
-        self.exams.where(takehome: false).each do |e|
-          e.seal if e.uid.nil?
-          e.worksheets.each do |w|
-            w.seal if w.uid.nil?
-            Delayed::Job.enqueue WriteTex.new(w.id, w.class.name)
-          end
-          Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
-          Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
+        spans_last_pg.each_with_index do |i,j|
+          shadows_last_pg[j] = j > 0 ? spans_last_pg[0..j-1].inject(:+) : 0 
         end
-        return true
+        shadows_last_pg = shadows_last_pg.map(&:to_s).join(',')
+        return shadows_last_pg 
       end
 
 end # of class

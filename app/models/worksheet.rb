@@ -224,7 +224,7 @@ class Worksheet < ActiveRecord::Base
     return others
   end
 
-  public # Change to private after transitioning old quizzes to new mint/ structure 
+  protected 
       def seal 
         uid = self.uid.nil? ? "w/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
         n = QSelection.where(quiz_id: self.exam.quiz_id).count 
