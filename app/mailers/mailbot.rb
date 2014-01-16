@@ -93,6 +93,7 @@ class Mailbot < ActionMailer::Base
     @type = obj.class.name
     @id = obj.id 
     @ref = link
+    @during = (obj.job_id == WRITE_TEX_ERROR )? "Writing" : "Compiling"
     mail to: "bugs@gradians.com", subject: "[Gradians.com]: Error in Mint"
   end
 
