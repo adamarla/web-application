@@ -264,12 +264,13 @@ class Quiz < ActiveRecord::Base
   def add_remove_questions(question_ids, add = false)
     return false if question_ids.count == 0
     title = "#{question_ids.count} question(s) #{add ? 'added' : 'removed'}"
-    editable = self.exams.count > 0 ? self.clone  : self
 
-    current = QSelection.where(quiz_id: editable.id).map(&:question_id)
+    current = QSelection.where(quiz_id: self.id).map(&:question_id)
     final = add ? (current + question_ids).uniq : (current - question_ids).uniq
-    editable.question_ids = final 
+    return false if final.blank?
 
+    editable = self.exams.count > 0 ? self.clone  : self
+    editable.question_ids = final 
     editable.recompile # another recompilation
     eta = minutes_to_completion editable.job_id 
     msg = "PDF will be ready within #{eta} minute(s)"
