@@ -267,7 +267,11 @@ class Quiz < ActiveRecord::Base
 
     current = QSelection.where(quiz_id: self.id).map(&:question_id)
     final = add ? (current + question_ids).uniq : (current - question_ids).uniq
-    return false if final.blank?
+    if final.blank?
+      title = "Quiz is empty now" 
+      msg = "No new quiz will be created" 
+      return title, msg
+    end
 
     editable = self.exams.count > 0 ? self.clone  : self
     editable.question_ids = final 
