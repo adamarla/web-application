@@ -2,20 +2,22 @@
 #
 # Table name: quizzes
 #
-#  id            :integer         not null, primary key
-#  teacher_id    :integer
-#  created_at    :datetime
-#  updated_at    :datetime
-#  num_questions :integer
-#  name          :string(70)
-#  subject_id    :integer
-#  total         :integer
-#  span          :integer
-#  parent_id     :integer
-#  job_id        :integer         default(-1)
-#  uid           :string(40)
-#  version       :string(10)
-#  shadows       :string(255)
+#  id                    :integer         not null, primary key
+#  teacher_id            :integer
+#  created_at            :datetime
+#  updated_at            :datetime
+#  num_questions         :integer
+#  name                  :string(70)
+#  subject_id            :integer
+#  total                 :integer
+#  span                  :integer
+#  parent_id             :integer
+#  job_id                :integer         default(-1)
+#  uid                   :string(40)
+#  version               :string(10)
+#  shadows               :string(255)
+#  page_breaks_after     :string(30)
+#  switch_versions_after :string(30)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -131,85 +133,6 @@ class Quiz < ActiveRecord::Base
     return last
   end
 
-  def lay_it_out(qids = [])
-=begin
-    'qids' is an array of question_ids. If its NOT blank, then it means 
-    that the passed questions have to be laid out in the order given 
-    in the array. Do NOT count on there being too many sanity checks on 
-    qids in the code below
-
-    Passing qids is highly NOT recommended. Do this only if you know 
-    what you are doing
-=end
-    questions = qids.blank? ? self.questions.sort{ |m,n| m.length? <=> n.length? } : 
-                              Question.where(id: qids).sort{ |m,n| qids.index(m.id) <=> qids.index(n.id) }
-
-    qsel = QSelection.where(quiz_id: self.id)
-    currpg = 1
-    space_left = 1
-    page_breaks = [] # stores the 'curr_subparts' after which page-breaks must be inserted
-    version_triggers = []
-
-    # Shadow Calculations
-    sbp_on_curr_page = [] 
-    shadows = nil
-
-    abs_sbp_index = 0 # 0-indexed to be in-sync with what \setPageBreaks expects in TeX 
-
-    for abs_ques_index in [*1..questions.count]
-      curr_ques = questions[abs_ques_index - 1]  
-      curr_qsel = qsel.where(question_id: curr_ques.id).first
-      next if curr_qsel.nil?
-      #curr_qsel.update_attributes start_page: currpg, index: abs_ques_index
-
-      sbp = curr_ques.subparts.order(:index)
-      n_sbp = sbp.count 
-      multipart = sbp.count > 1
-      brks_wthn = []
-
-      for rel_sbp_index in [*0...n_sbp]
-        curr_sbp = sbp[rel_sbp_index]
-        required = curr_sbp.length?
-        fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
-        unless fits  
-          shadows_last_pg = self.shadows_if sbp_on_curr_page
-          shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
-
-          # Then, move onto processing this one that did not fit
-          sbp_on_curr_page.clear 
-          sbp_on_curr_page.push curr_sbp
-
-          currpg += 1
-          space_left = 1 - required
-          page_breaks.push(abs_sbp_index - 1)
-          
-          if multipart
-            brks_wthn.push(rel_sbp_index - 1) unless rel_sbp_index == 0
-          end
-        else 
-          sbp_on_curr_page.push curr_sbp
-          space_left -= required 
-        end
-
-        abs_sbp_index += 1
-        curr_qsel.update_attributes(start_page: currpg, index: abs_ques_index) if rel_sbp_index == 0
-      end # of laying out subparts 
-
-      version_triggers.push(abs_sbp_index - 1) # the last subpart, now that we are moving to next question
-      pb = brks_wthn.blank? ? nil : brks_wthn.map(&:to_s).join(',')
-      curr_qsel.update_attributes page_breaks: pb, end_page: currpg
-
-    end # of laying questions
-
-    unless sbp_on_curr_page.blank?
-      shadows_last_pg = self.shadows_if sbp_on_curr_page
-      shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
-    end
-
-    self.update_attribute :shadows, shadows
-    return page_breaks, version_triggers
-  end
-
   def shred_pdfs
     # Going forward, this method would issue a Savon request to the
     # 'printing-press' asking it to delete PDFs of exams generated
@@ -268,14 +191,17 @@ class Quiz < ActiveRecord::Base
     current = QSelection.where(quiz_id: self.id).map(&:question_id)
     final = add ? (current + question_ids).uniq : (current - question_ids).uniq
     if final.blank?
-      title = "Quiz is empty now" 
-      msg = "No new quiz will be created" 
+      title = "Empty quiz not allowed!" 
+      msg = "Going to do nothing. If you want to remove all existing questions, then add some others first" 
       return title, msg
     end
 
     editable = self.exams.count > 0 ? self.clone  : self
-    editable.question_ids = final 
-    editable.recompile # another recompilation
+    if editable == self
+      qids = Question.where(id: final).sort{ |m,n| m.length? <=> n.length? }.map(&:id)
+      editable.recompile(qids) # another recompilation
+    end
+
     eta = minutes_to_completion editable.job_id 
     msg = "PDF will be ready within #{eta} minute(s)"
     return title, msg
@@ -285,11 +211,14 @@ class Quiz < ActiveRecord::Base
     return self.uid
   end
 
-  def write 
+  def laid_out?
+    not_laid_out = self.page_breaks_after.blank? && self.switch_versions_after.blank?
+    return !not_laid_out
+  end
+
+  def write
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
-    pb, vt = self.lay_it_out 
-    pbreaks = pb.join(',')
-    vtriggers = vt.join(',')
+    self.lay_it_out unless self.laid_out?
 
     # Write TeX for the quiz 
     response = SavonClient.request :wsdl, :writeTex do
@@ -298,12 +227,15 @@ class Quiz < ActiveRecord::Base
         mode: 'quiz', 
         imports: QSelection.where(quiz_id: self.id).order(:index).map(&:question).map(&:uid),
         author: self.teacher.name, 
-        qFlags: { title: self.latex_safe_name, pageBreaks: pbreaks, versionTriggers: vtriggers }
-      }
+        qFlags: { 
+                  title: self.latex_safe_name, 
+                  pageBreaks: self.page_breaks_after, 
+                  versionTriggers: self.switch_versions_after 
+                }
+        }
     end
 
     return response unless response[:error].blank? # no error => next step
-
     # And for a sample worksheet that has no reference in the DB 
     zeroes = Array.new(self.num_questions, 0).join(',') 
     qrcs = Array.new(self.span?, 'Sample').join(',') 
@@ -361,30 +293,39 @@ class Quiz < ActiveRecord::Base
     return (self.parent_id.nil? ? self : Quiz.find(self.parent_id).adam?) 
   end
 
-  def recompile
+  def recompile(qids = [])
     # Set pages on all responses to nil so that they can be recomputed -
     # based on the changed layout (problem?) - in the next call to GradedResponse::page?
+
+    proceed = qids.blank? ? (self.laid_out? ? false : true) : true
+    return false unless proceed
+
     GradedResponse.in_quiz(self.id).each do |g|
       g.update_attribute :page, nil
     end
 
     self.update_attributes span: nil, total: nil
-    self.seal # triggers quiz recompilation
+    self.seal qids # triggers quiz recompilation - if needed
 
     self.exams.where(takehome: false).each do |e|
-      e.seal if e.uid.nil?
       e.worksheets.each do |w|
-        w.seal if w.uid.nil?
-        Delayed::Job.enqueue WriteTex.new(w.id, w.class.name)
+        w.uid.nil? ? w.seal : Delayed::Job.enqueue(WriteTex.new(w.id, w.class.name)) 
+        # If quiz layout has changed, then the quiz's skel file would have changed too.
+        # In which case, the worksheets must be re-written using the new skel
       end
+      # And if the skel files of worksheets have changed, then 
+      # exams must be re-written to reflect the new quiz layout 
+      e.seal if e.uid.nil?
       Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
       Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
     end
     return true
   end
 
+#################################################################
+
   public
-      def seal
+      def seal(qids = [])
         uid = self.uid.nil? ? "q/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
 
         if self.name.nil?
@@ -392,10 +333,12 @@ class Quiz < ActiveRecord::Base
           base = self.adam?.name.titleize
           name = (version == "1") ? base : "#{base} (ver. #{version})"
         else 
-          name = self.name 
+          name = self.name.titleize
         end
 
         self.update_attributes uid: uid, name: name
+        self.lay_it_out(qids) unless qids.blank?
+
         Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
         job = Delayed::Job.enqueue CompileTex.new(self.id, self.class.name)
         self.update_attribute :job_id, job.id
@@ -412,6 +355,84 @@ class Quiz < ActiveRecord::Base
         shadows_last_pg = shadows_last_pg.map(&:to_s).join(',')
         return shadows_last_pg 
       end
+
+#################################################################
+
+  protected 
+      def lay_it_out(qids = [])
+        # 'qids' is an array of question_ids. If its NOT blank, then it means 
+        # that the passed questions have to be laid out in the order given 
+        # in the array. Do NOT count on there being too many sanity checks on 
+        # qids in the code below
+
+        # Passing qids is highly NOT recommended. Do this only if you know 
+        # what you are doing
+        
+        questions = qids.blank? ? self.questions.sort{ |m,n| m.length? <=> n.length? } : 
+                                  Question.where(id: qids).sort{ |m,n| qids.index(m.id) <=> qids.index(n.id) }
+        self.question_ids = questions.map(&:id)
+        self.update_attribute :num_questions, questions.count
+
+        # Counters 
+        curr_pg = 1 
+        curr_q = 1
+
+        # Evaluated values
+        space_left = 1
+        shadows = nil
+
+        # Arrays 
+        break_before = [] # subpart objects
+        switch_versions_after = [] # subpart objects
+        sbp_on_curr_page = [] # subpart objects
+        qsel = QSelection.where(quiz_id: self.id)
+
+        for q in questions
+          curr_s = qsel.where(question_id: q.id).first
+          next if curr_s.nil?
+
+          q_index = questions.index(q) + 1 # 1-indexed
+          sb_parts = curr_s.question.subparts 
+          for curr_sbp in sb_parts
+            index = sb_parts.index curr_sbp
+            required = curr_sbp.length?
+            fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
+
+            if fits
+              sbp_on_curr_page.push(curr_sbp)
+              space_left -= required
+            else
+              shadows_last_pg = self.shadows_if(sbp_on_curr_page)
+              shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
+              break_before.push(curr_sbp)
+              # Then, move onto processing this one that did not fit
+              sbp_on_curr_page.clear 
+              sbp_on_curr_page.push(curr_sbp)
+              curr_pg += 1
+              space_left = 1 - required
+            end
+            curr_s.update_attributes(start_page: curr_pg, index: curr_q) if index == 0
+          end # laying out subparts
+
+          curr_q += 1
+          curr_s.update_attributes(end_page: curr_pg)
+          switch_versions_after.push(sb_parts.last)
+
+        end # laying out questions
+
+        # Ensure that shadow information for last laid-out subparts is also captured
+        unless sbp_on_curr_page.blank?
+          shadows_last_pg = self.shadows_if sbp_on_curr_page
+          shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
+        end
+        # Collect page-break and version triggering information
+        all_sbp = self.subparts
+        break_after = break_before.map{ |n| all_sbp.index(n) - 1 }.join(',')
+        version_on = switch_versions_after.map{ |n| all_sbp.index(n) }.join(',')
+        
+        self.update_attributes(shadows: shadows, page_breaks_after: break_after, switch_versions_after: version_on, span: curr_pg)
+      end
+
 
 end # of class
 

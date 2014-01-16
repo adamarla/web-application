@@ -10,7 +10,6 @@
 #  updated_at  :datetime
 #  index       :integer
 #  end_page    :integer
-#  page_breaks :string(10)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -64,9 +63,4 @@ class QSelection < ActiveRecord::Base
     return ret.order(:index)
   end
 
-  def page_breaks?
-    return [] if self.page_breaks.blank?
-    return self.page_breaks.split(',').map(&:to_i)
-  end
-
-end
+end # of class

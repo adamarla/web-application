@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140111212720) do
+ActiveRecord::Schema.define(:version => 20140116130829) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -188,7 +188,6 @@ ActiveRecord::Schema.define(:version => 20140111212720) do
     t.datetime "updated_at"
     t.integer  "index"
     t.integer  "end_page"
-    t.string   "page_breaks", :limit => 10
   end
 
   add_index "q_selections", ["question_id"], :name => "index_q_selections_on_question_id"
@@ -219,15 +218,17 @@ ActiveRecord::Schema.define(:version => 20140111212720) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "num_questions"
-    t.string   "name",          :limit => 70
+    t.string   "name",                  :limit => 70
     t.integer  "subject_id"
     t.integer  "total"
     t.integer  "span"
     t.integer  "parent_id"
-    t.integer  "job_id",                      :default => -1
-    t.string   "uid",           :limit => 40
-    t.string   "version",       :limit => 10
+    t.integer  "job_id",                              :default => -1
+    t.string   "uid",                   :limit => 40
+    t.string   "version",               :limit => 10
     t.string   "shadows"
+    t.string   "page_breaks_after",     :limit => 30
+    t.string   "switch_versions_after", :limit => 30
   end
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"

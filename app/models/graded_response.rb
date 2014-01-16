@@ -173,14 +173,14 @@ class GradedResponse < ActiveRecord::Base
   def page?
     return self.page unless self.page.nil? 
 
-    brks_wthn = self.q_selection.page_breaks? # returns an array of integers!! 
-    rel_sbp_index = self.subpart.index 
-    last_brk_at = brks_wthn.select{ |b| b < rel_sbp_index }.last 
-    offset = last_brk_at.nil? ? 0 : brks_wthn.index(last_brk_at) + 1
-
-    page = self.q_selection.start_page + offset
-    self.update_attribute :page, page 
-    return page
+    quiz = self.worksheet.exam.quiz
+    all_sbp = quiz.subparts
+    posn = all_sbp.index(self.subpart)
+    breaks_after = quiz.page_breaks_after.split(',').map(&:to_i) # an array of indices
+    last_brk_at = breaks_after.select{ |b| b < posn }.last
+    pg = last_brk_at.nil? ? 1 : breaks_after.index(last_brk_at) + 2 
+    self.update_attribute :page, pg
+    return pg
   end
 
   def siblings_same_worksheet
