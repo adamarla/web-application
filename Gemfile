@@ -45,6 +45,8 @@ gem 'delayed_job_active_record'
 
 gem 'levenshtein-ffi', :require => 'levenshtein'
 
+gem 'activemerchant', '~> 1.42.3' # payment gwy
+
 group :production do 
   gem 'thin'
   ruby "1.9.3"
