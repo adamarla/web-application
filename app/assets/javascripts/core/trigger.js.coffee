@@ -159,11 +159,12 @@ jQuery ->
       rails.server = rails.serverOptions.local
 
     # if logged in user is a teacher, then update her demo info (which demos done, which remain)
-    if response.who is 'Teacher'
-      if response.demo?
-        demo.initialize(response.demo)
-        $('#m-demo-intro').modal('show') if response.new is true
-    else if response.who is 'Student'
+#    if response.who is 'Teacher'
+#      if response.demo?
+#        demo.initialize(response.demo)
+#        $('#m-demo-intro').modal('show') if response.new is true
+
+    if response.who is 'Student'
       $('#m-enroll-self').modal('show') if response.new is true
     return true
     
@@ -196,7 +197,15 @@ jQuery ->
   ###
   if Modernizr?
     allGood = Modernizr.canvas and Modernizr.canvastext and Modernizr.rgba and Modernizr.svg
-    notifier.show 'n-old-browser' unless allGood
+    # allGood = false
+    unless allGood 
+      signinForm = $('#signin-form')
+      signinBtn = signinForm.find('button').eq(0)
+
+      signinBtn.addClass 'disabled'
+      signinBtn.text 'Old Browser!'
+      signinForm.attr 'onsubmit', 'return false;'
+      notifier.show 'n-old-browser' 
 
 
   #####################################################################

@@ -6,10 +6,10 @@
 - content_for :toolbox do 
   #toolbox.hidden 
     = render :partial => 'toolbox/line'
-    = render :partial => 'toolbox/preview'
     = render :partial => 'toolbox/fdb-panel'
     = render :partial => 'menus/user/account'
     = render :partial => 'menus/student/inbox'
+    = render partial: 'shared/user/preview'
 
 - content_for :modals do
   #modals
@@ -28,6 +28,23 @@
   %head 
     = javascript_include_tag "application", "students"
     %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
+    %script{ :type => "text/x-mathjax-config" } 
+      MathJax.Hub.Config({
+      "HTML-CSS" : {
+      mtextFontInherit : true
+      },
+      styles : {
+      ".mrow > .mtext" : {
+      "font-family" : "Ubuntu 'Trebuchet MS' sans-serif",
+      "font-weight" : 300,
+      "font-size" : "100%"
+      },
+      ".mo, .mn" : {
+      "font-size" : "70%" 
+      }
+      }
+      });
+    = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = stylesheet_link_tag "application" 
     = csrf_meta_tag
 

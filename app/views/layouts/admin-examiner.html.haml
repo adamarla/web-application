@@ -7,7 +7,6 @@
 - content_for :toolbox do 
   #toolbox.hidden 
     = render partial: 'toolbox/line'
-    = render partial: 'toolbox/preview'
     = render partial: 'menus/user/account'
     = render partial: 'menus/examiner/workbench', locals: { is_admin: is_admin } 
     = render partial: 'menus/user/notifications'
@@ -15,6 +14,8 @@
     = render partial: 'menus/examiner/blockdb'
     = render partial: 'menus/examiner/per-pending-video'
     = render partial: 'menus/examiner/per-audit'
+    = render partial: 'shared/user/preview'
+    = render partial: 'shared/grading/shadow'
   
 - content_for :modals do
   #modals
@@ -93,11 +94,10 @@
             #wide-2
               = render partial: 'admin/accounts-in-country'
           #wide-X
+            = render partial: 'shared/grading/controls'
           #wide-wait
             = render partial: 'toolbox/wait'
           #graph-paper
-          #wide-grd-canvas
-            = render partial: 'shared/grading/controls'
 
     = yield :toolbox
     = yield :modals

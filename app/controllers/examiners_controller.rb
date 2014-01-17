@@ -1,6 +1,6 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:distribute_scans, :update_scan_id]
+  before_filter :authenticate_account!, :except => [:distribute_scans, :receive_single_scan]
   respond_to :json
 
   def create
@@ -33,28 +33,15 @@ class ExaminersController < ApplicationController
     render :json => {:notify => { :text => "6 slots blocked", :subtext => "Do 'git fetch origin/master'"} }, :status => :ok
   end
 
-  def receive_scans
-    failures = Examiner.receive_scans
-    render :json => failures, :status => :ok
-  end
-
   def distribute_scans
-    failures = Examiner.distribute_scans(false)
-    render :json => failures, :status => :ok
+    ws_ids = Examiner.distribute_scans
+    render :json => ws_ids, :status => :ok
   end
 
   def rotate_scan
     scan_in_locker = params[:id]
-    Delayed::Job.enqueue RotateScan.new(scan_in_locker), :priority => 5, :run_at => Time.zone.now
+    Delayed::Job.enqueue RotateScan.new(scan_in_locker), priority: 5, run_at: Time.zone.now
     render :json => { :status => "Sent for rotating"}, :status => :ok
-  end
-
-  def restore_pristine_scan
-    scan_in_locker = params[:id]
-    Delayed::Job.enqueue RestorePristineScan.new(scan_in_locker), :priority => 5, :run_at => Time.zone.now
-    render :json => { :notify => { 
-                      :text => "Restored scan", 
-                      :subtext => "Don't forget to re-grade all questions on the page" }}, :status => :ok
   end
 
   def typeset_new
@@ -79,7 +66,16 @@ class ExaminersController < ApplicationController
     manifest = response[:fetch_unresolved_scans_response][:manifest]
     unless manifest.blank?
       @root = manifest[:root]
-      @scans = manifest[:image].nil? ? [] : manifest[:image].map{ |m| m[:id] }
+      images = manifest[:image]
+      if images.nil?
+        @scans = []
+      else 
+        #http://stackoverflow.com/questions/13463398/issue-with-a-collection-of-response-elements-using-savon
+        unless images.is_a? Array
+          images = Array.new << images
+        end
+        @scans = images.map{ |m| m[:id] }
+      end
     else
       @root = nil
       @scans = []
@@ -88,7 +84,7 @@ class ExaminersController < ApplicationController
 
   def preview_unresolved
     file = params[:id]
-    render json: { preview: { source: :scantray, images: ["unresolved/#{file}"] }}, status: :ok
+    render json: { preview: { source: :scantray, images: ["#{file}"] }}, status: :ok
   end
 
   def resolve_scan
@@ -110,35 +106,41 @@ class ExaminersController < ApplicationController
     render :json => { :status => status }, :status => :ok
   end
 
-  def update_scan_id
-    status = "not ok"
-
+  def receive_single_scan
+    ret = true
     path = params[:path]
-    id = params[:id]
+    qrc = params[:id]
+    mobile = params[:type] == "GR" 
+    old_style = mobile ? false : (qrc.length == 11)
 
-    graded_resp = []
-    if params[:type] == "QR"
-      ws_id = decrypt id[0..6]
-      rel_index = decrypt id[7..9]
-      page = id[10].to_i(36)
-      student_id = AnswerSheet.where(:testpaper_id => ws_id).map(&:student_id).sort[rel_index]
-      graded_resp = GradedResponse.in_testpaper(ws_id).of_student(student_id).on_page(page)
+    if mobile
+      ids = qrc.split('-').map(&:to_i)
+      g = GradedResponse.where(id: ids)
+    elsif old_style # can be, and should be, deprecated by March 2014
+      ws_id = decrypt qrc[0..6]
+      rel_index = decrypt qrc[7..9]
+      page = qrc[10].to_i(36)
+      student_id = Worksheet.where(exam_id: ws_id).map(&:student_id).sort[rel_index]
+      g = GradedResponse.in_exam(ws_id).of_student(student_id).on_page(page)
     else
-      id.split('-').each do |grID|
-        graded_resp  << GradedResponse.find_by_id(grID.to_i)
-      end
+      ids = Worksheet.unmangle_qrcode qrc
+      g = GradedResponse.where(id: ids)
     end
 
-    graded_resp.each do |gr|
-      if gr[:scan].nil? 
-        gr.update_attribute :scan, path
-        status = "ok"
-      else
-        status = "not ok"
-        break
-      end
+    # A scan, one received, cannot be overwritten with a subsequently uploaded scan 
+    already = g.map(&:scan).select{ |x| !x.nil? }.count > 0
+    unless already
+      g.map{ |x| x.update_attributes scan: path, mobile: mobile } 
+
+      # Sometimes, the scans come in batches. And if the new ones come 
+      # after the old ones have been graded, then a mail is triggered 
+      # with each new student's work being graded. To avoid this, we 
+      # simply reset the exam to its initial unpublished state and leave 
+      # it to the grading process to set it back to publishable state
+      exam = g.first.worksheet.exam
+      exam.update_attribute :publishable, false
     end
-    render :json => { :status => status }
+    render json: { status: ( already ? 'not ok' : 'ok' ) }
   end
 
   def audit_todo
@@ -152,6 +154,14 @@ class ExaminersController < ApplicationController
 
   def audit_review
     @questions = Question.where(examiner_id: current_account.loggable_id).where(available: false)
+  end 
+
+  def reset_graded 
+    g = GradedResponse.find params[:id]
+    unless g.nil?
+      g.reset false # false => non-soft resetting => associated comments also destroyed
+    end
+    render json: { status: :ok }, status: :ok 
   end 
 
 end

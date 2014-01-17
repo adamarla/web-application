@@ -5,12 +5,8 @@
 
 -content_for :toolbox do
   #toolbox.hidden 
-    = render partial: 'teachers/disputed'
     = render partial: 'teachers/sektions'
-
     = render partial: 'toolbox/line'
-    = render partial: 'toolbox/preview'
-
     = render partial: 'menus/teacher/per-qz'
     = render partial: 'menus/teacher/per-ws'
     = render partial: 'menus/teacher/per-question'
@@ -24,6 +20,8 @@
     = render partial: 'menus/user/account'
     = render partial: 'menus/user/notifications'
     = render partial: 'toolbox/fdb-panel'
+    = render partial: 'shared/user/preview'
+    = render partial: 'shared/grading/shadow'
     - if tc.online
       = render partial: 'menus/teacher/courses'
 
@@ -36,7 +34,7 @@
     - unless tc.online
       = render partial: 'modals/user/ask-a-question'
       = render partial: 'modals/teacher/demo-intro'
-      = render partial: 'modals/teacher/demo'
+      -#= render partial: 'modals/teacher/demo'
       = render partial: 'modals/teacher/new-sk-one'
       = render partial: 'modals/teacher/new-sk-two'
       = render partial: 'modals/teacher/share-quiz'
@@ -134,6 +132,7 @@
                     = simple_link for: "Groups", id: 'm-tc-sektions'
                   %li.dropdown
                     = simple_link for: "Help", id: 'm-howto'
+                -#
                   %li.dropdown
                     = simple_link for: "QuickTrial", id: 'lnk-demo'
 
@@ -169,6 +168,7 @@
           #right-X
         #wide.g-panel.span8
           #wide-X
+            = render partial: 'shared/grading/controls'
           #wide-wait
             = render partial: 'toolbox/wait'
           #wide-chart-1.offset1
@@ -178,9 +178,6 @@
           - unless tc.online
             #wide-4
               = render partial: 'teachers/edit-sektion', locals: { teacher: tc }
-          - if tc.online
-            #wide-grd-canvas
-              = render partial: 'shared/grading/controls'
 
             #wide-5
               = render partial: 'teachers/edit-course', if: tc.online

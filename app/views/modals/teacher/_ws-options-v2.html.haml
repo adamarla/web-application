@@ -1,30 +1,27 @@
 
 #m-ws-options.modal.fade.wide{ role: :dialog } 
   .row-fluid
-    %h1.span7.offset1= "This assignment is a ..." 
+    %h1.span8.offset1= "Who will do the printing?" 
     .span3
       = simple_button for: 'Make PDF', icon: 'icon-cog'
       
+  .row-fluid.ws-option{ id: 'as-classwork' }
+    .span2.offset1
+      = image_tag 'quick-trial/printer.png'
+    .span7
+      %h2= "I will"
+      %p
+        A single downloadable PDF will be created in your account. You will have to print it out
+        and give to students
+        
+
   .row-fluid.ws-option{ id: 'as-homework' }
     .span2.offset1
       = image_tag "notifications/home.png"
     .span7
-      %h3.light= "Homework"
+      %h2= "Students will"
       %p
-        Each student will get their own PDF in their Gradians.com account.
-        Students will print out their own worksheets and upload scans on completion
-      %p
-        No downloadble PDF will be generated for the teacher
-
-  .row-fluid.ws-option{ id: 'as-classwork' }
-    .span2.offset1
-      = image_tag "notifications/classroom.png"
-    .span7
-      %h3.light= "In-Class Quiz"
-      %p
-        A single downloadable PDF - with worksheets for all students - will 
-        be generated 
-      %p
-        Printing and scanning will have to be done by the teacher 
-      %p 
-        Apt for when all students must do the same assignment at the same time
+        Each student will get a downloadble PDF in their account - which they will 
+        have to print at home or in school. No downloadable PDF 
+        will be created in your account
+        

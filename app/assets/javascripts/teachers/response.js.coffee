@@ -85,9 +85,9 @@ jQuery ->
       menu = 'per-question'
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = 'icon-plus-sign'
-    else if url.match(/quiz\/testpapers/)
+    else if url.match(/quiz\/exams/)
       target = $("#pane-wsb-existing")
-      key = "testpapers"
+      key = "exams"
       menu = 'per-ws'
       clickFirst = true
       lesson = 'publish-milestone-2'
@@ -95,6 +95,7 @@ jQuery ->
       target = $("#pane-tc-rc-2")
       key = "root"
       wsSummary json
+      $('#lnk-rc-download')[0].setAttribute 'href', "ws/report_card?id=#{json.a}&format=csv"
     else if url.match(/teacher\/sektions/)
       if json.context is 'list'
         target = $('#pane-mng-sektions-1')
@@ -139,7 +140,7 @@ jQuery ->
     else if url.match(/ping\/sektion/)
       tab = $('#mng-sektions').find("a[marker=#{json.sektion.id}]")[0]
       karo.tab.enable tab if tab?
-    else if url.match(/build_quiz/)
+    else if url.match(/quiz\/build/)
       lesson = 'qzb-milestone-7'
       monitor.add json
       $('#lnk-existing-quiz').click()

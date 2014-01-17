@@ -7,7 +7,7 @@ object false
   node(:preview) { 
     {
       source: :vault,
-      images: @question.preview_images(current_account.loggable_type == "Teacher")
+      images: @question.preview_images(current_account.loggable_type == "Teacher" || current_account.loggable_type == "Student", @version)
     }
   }
 

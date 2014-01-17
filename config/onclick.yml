@@ -94,8 +94,8 @@ lnk-wsb-existing :
 
 tab-wsb-existing :
   url : 
-    self : quiz/testpapers.json?id=:prev
-    panel : testpaper/load?id=:id
+    self : quiz/exams.json?id=:prev
+    panel : exam/load?id=:id
   prev : tab-wsb-quizzes
 
 tab-wsl-quizzes :
@@ -104,12 +104,12 @@ tab-wsl-quizzes :
 
 lnk-ws-download :
   ajax : disabled
-  update-on : testpaper/load
+  update-on : exam/load
 
-lnk-download-solution :
+lnk-download-* :
   notouch : true
   ajax : disabled
-  update-on : quiz/preview pages/pending
+  update-on : quiz/preview 
 
 lnk-suggestion-form :
   notouch : true
@@ -126,7 +126,7 @@ lnk-wb-pending :
   default : true
   show : 
     left : left-4
-    wide : wide-grd-canvas
+    wide : wide-X
   autoclick :
     tab : tab-grd-ws
 
@@ -160,20 +160,20 @@ tab-grd-ws :
   url : 
     self : ws/pending
   autoclick :
-    tab : tab-grd-page
+    tab : tab-grd-questions
 
-tab-grd-page :
+tab-grd-questions :
   prev : tab-grd-ws
-  url : 
-    self : pages/pending.json?id=:prev
+  url :
+    self : grade/pending?id=:prev
   autoclick :
     tab : tab-grd-panel
 
 tab-grd-panel :
-  prev : tab-grd-page
+  prev : tab-grd-questions
   id : tab-grd-ws
   url : 
-    self : gr/pending.json?page=:prev&ws=:id
+    self : scans/pending.json?q=:prev&tp=:id
 
 tab-tc-rc-1 :
   url : 
@@ -324,7 +324,7 @@ lnk-st-rc :
     tab : tab-st-rc-1
   show : 
     left : left-1
-    wide : wide-wait
+    wide : wide-X
   default : true
 
 lnk-st-inbox :
@@ -347,7 +347,7 @@ tab-st-rc-2 :
 tab-st-inbox :
   url : 
     self : inbox.json?id=:prev
-    panel : inbox/echo.json?ws=:id
+    panel : inbox/echo.json?e=:id
   prev : control-panel
 
 tab-st-outbox :

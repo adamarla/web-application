@@ -3,7 +3,6 @@
 # Table name: examiners
 #
 #  id              :integer         not null, primary key
-#  disputed        :integer         default(0)
 #  created_at      :datetime
 #  updated_at      :datetime
 #  is_admin        :boolean         default(FALSE)
@@ -53,7 +52,7 @@ class Examiner < ActiveRecord::Base
         soap.body = "#{self.id}"
       end
       manifest = response[:create_question_response][:manifest]
-			slots << manifest[:root] unless manifest.nil?
+      slots << manifest[:root] unless manifest.nil?
 
       sleep 1.0/2 # sleep for 500ms
     end # of looping
@@ -70,134 +69,41 @@ class Examiner < ActiveRecord::Base
     return GradedResponse.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
 
-  def self.distribute_work
-=begin
-  Distribution algorithm
-  -----------------------
-  For each quiz, find the available scans that are as yet unassigned. Note that there
-  is one scan per page AND there can be >1 graded responses per page ( and therefore, scan ) 
+  def self.distribute_scans
+    pnd = GradedResponse.unassigned.with_scan
+    by = pnd.map(&:worksheet).uniq.map(&:exam).uniq.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.online }
+    examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
+    n_examiners = examiners.count
+    used = [] # to track examiners to whom an e-mail must be sent
 
-  Distribute the scans equally amongst the available examiners. As a result, all 
-  graded responses on the scan will get assigned to the examiner who gets the scan
+    pnd.map(&:q_selection_id).uniq.each do |q|
+      pending = pnd.where(q_selection_id: q) # responses to specific question in specific quiz  
+      students = pending.map(&:student_id).uniq
+      limit = (students.count / n_examiners)
+      limit = limit > 20 ? limit : 20
 
-=end
-    self.distribute_standalone
-    self.distribute_multipart
-    self.distribute_suggestions
-  end
+      students.each_slice(limit).each do |j|
+        assignee = examiners.shift # pop from front 
+        used.push assignee.id
 
-  def self.receive_scans
-=begin
-    QR-Code = [7-characters for worksheet ID] + [3-characters for student] + [1-character for page]
-    All encoding in base-36
-=end
-    
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['receive_scans']}" 
-    response = SavonClient.request :wsdl, :receiveScans do
-      # soap.body = "simulation"
-      soap.body = {}
+        work = pending.where(student_id: j)
+        work.map{ |m| m.update_attribute :examiner_id, assignee.id }
+        assignee.update_attribute :n_assigned, (assignee.n_assigned + work.count)
+
+        examiners.push assignee # push to last
+      end # over students
     end
 
-    # manifest => { :root => ..., :image => [ ... { :id => <qr-code>.jpg } .... ]
-    manifest = response[:receive_scans_response][:manifest]
-    unless manifest[:image].blank?
-      # All received scans - across potentially different worksheets - are stored within 
-      # the same folder. The folder is time-stamped by the time at which receiveScans ran
-      parent_folder = manifest[:root]
+    # Let the (offline) teacher know that scans have been received
+    for t in by.uniq
+      Mailbot.delay.scans_received(t)
+    end
+    
+    # Let each grader know that he/she has got new scans to grade in their account
+    for id in used.uniq
+      Mailbot.delay.new_grading_work(id)
+    end
 
-      qr_codes = manifest[:image].map{ |m| m[:id] }.select{ |m| m != "SAVON_BUG_SKIP" }
-      ws_encr_codes = qr_codes.map{ |m| m[0..6] }.uniq 
-      ws_ids = ws_encr_codes.map{ |m| decrypt m }
-
-      ws_ids.each_with_index do |wid, j|
-        student_ids = AnswerSheet.where(:testpaper_id => wid).map(&:student_id).sort
-        scans = qr_codes.select{ |m| m[0..6] == ws_encr_codes[j] } # scans belonging to this worksheet
-
-        responses = GradedResponse.in_testpaper(wid)
-
-        scans.each do |scan|
-          rel_index = decrypt scan[7..9]
-          sid = student_ids[rel_index]
-          page = scan[10].to_i(36)
-
-          responses.of_student(sid).on_page(page).each do |m|
-            m.update_attribute :scan, "#{parent_folder}/#{scan}"
-            # m.update_attribute :scan, scan
-            # puts "#{m.id} --> #{parent_folder}/#{scan}"
-          end
-        end # scans belonging to given worksheet
-
-      end # iterating over worksheets 
-      self.distribute_scans(false) # the big kahuna. Pass 'true' for debug mode
-    end # unless 
   end
-
-  def self.distribute_scans(debug = false)
-    unassigned = GradedResponse.unassigned.with_scan
-    ws_ids = unassigned.map(&:testpaper_id).uniq
-    examiners = Examiner.where(:is_admin => true).select{ |m| m.account.active }
-    n_examiners = examiners.count
-    limit = 20
-
-    ws_ids.each do |ws|
-      quiz = Quiz.find(Testpaper.find(ws).quiz_id)
-      layout = quiz.layout? false
-      in_ws = unassigned.in_testpaper(ws).order(:student_id).order(:page)
-
-      for page in layout
-        questions = page[:question]
-        num_questions = questions.count 
-        pg = page[:number]
-        on_page = in_ws.on_page(pg)
-        student_ids = on_page.map(&:student_id).uniq
-
-        if num_questions == 0
-          multi_part = true
-        else
-          multi_part = num_questions > 1 ? false : (Question.find(questions.first).subparts.count > 1)
-        end
-
-        if multi_part 
-          n_students = student_ids.count 
-        else
-          n = on_page.count
-          next if n == 0
-          n_students = (n / num_questions) # n % num_questions == 0. If not, then sth. wrong with receiveScan
-        end
-        n_reqd = (n_students / limit) + 1
-        n_reqd = (n_reqd > n_examiners) ? n_examiners : n_reqd 
-        per_examiner = (n_students / n_reqd) + 1
-        examiners = examiners.sort{ |m,n| m.n_assigned <=> n.n_assigned }
-
-        student_ids.each_slice(per_examiner).each_with_index do |ids, index|
-          assignee = examiners[index]
-          responses = on_page.select{ |m| ids.include? m.student_id }
-          for r in responses
-            r.update_attribute(:examiner_id, assignee.id) unless debug
-          end
-
-          if debug
-            puts "#{assignee.name} --> [#{quiz.name}, ##{pg}] --> #{ids.count}"
-          else
-            till_now = assignee.n_assigned
-            assignee.update_attribute :n_assigned, (till_now + responses.count) 
-          end
-        end # of iterating over slices
-      end # of iterating over pages
-    end # of iterating over worksheets
-  end # of method
-
-  private
-
-    def self.distribute_suggestions
-      # last_workset_on is updated ONLY when graded_responses are assigned. So, if you 
-      # aren't grading, then you must typeset some questions 
-      e_ids = Examiner.where(:is_admin => true).order(:last_workset_on).map(&:id)
-      n = e_ids.count
-
-      Suggestion.unassigned.each_with_index do |m, j|
-        m.update_attribute :examiner_id, e_ids[j % n]
-      end
-    end #  of method
 
 end # of class

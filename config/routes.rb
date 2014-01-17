@@ -19,8 +19,8 @@ Webapp::Application.routes.draw do
   match 'account' => 'accounts#update', via: :post
   match 'ws/list' => 'accounts#ws', via: :get
   match 'ws/pending' => 'accounts#pending_ws', via: :get
-  match 'pages/pending' => 'accounts#pending_pages', via: :get
-  match 'gr/pending' => 'accounts#pending_gr', via: :get
+  match 'grade/pending' => 'accounts#to_be_graded', via: :get
+  match 'scans/pending' => 'accounts#pending_scans', via: :get
   match 'submit/fdb' => 'accounts#submit_fdb', via: [:put, :post]
   match 'view/fdb' => 'accounts#view_fdb', via: :get
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
@@ -48,14 +48,15 @@ Webapp::Application.routes.draw do
   match 'typeset/new' => 'examiners#typeset_new', via: :get
   match 'typeset/ongoing' => 'examiners#typeset_ongoing', via: :get
   match 'rotate_scan' => 'examiners#rotate_scan', via: :get
-  match 'restore_scan' => 'examiners#restore_pristine_scan', via: :get
   match 'pages/unresolved' => 'examiners#unresolved_scans', via: :get
   match 'unresolved/preview' => 'examiners#preview_unresolved', via: :get
   match 'resolve' => 'examiners#resolve_scan', via: :post
-  match 'update_scan_id' => 'examiners#update_scan_id', via: :get
-  match 'update_scan_id' => 'examiners#update_scan_id', via: :post
+  match 'update_scan_id' => 'examiners#receive_single_scan', via: :post
   match 'audit/todo' => 'examiners#audit_todo', via: :get
   match 'audit/review' => 'examiners#audit_review', via: :get
+
+  # Graded Response 
+  match 'reset/graded' => 'examiners#reset_graded', via: :get
 
   # School 
   resource :school, :only => [:show, :create, :update]
@@ -88,19 +89,19 @@ Webapp::Application.routes.draw do
   resource :quiz, :only => [:show]
   match 'quizzes/list' => 'quizzes#list', via: :get
   match 'quiz/preview' => 'quizzes#preview', via: :get
-  match 'quiz/assign' => 'quizzes#assign_to', via: [:put, :post]
-  match 'quiz/testpapers' => 'quizzes#testpapers', via: :get
+  match 'quiz/mass_assign' => 'quizzes#mass_assign_to', via: [:put, :post]
+  match 'quiz/exams' => 'quizzes#exams', via: :get
   match 'find/schools' => 'schools#find', via: :get
   match 'quiz/questions' => 'quizzes#questions', via: :get
   match 'quiz/edit' => 'quizzes#add_remove_questions', via: [:put, :post]
   match 'share/quiz' => 'quizzes#share', via: :post
+  match 'quiz/build' => 'quizzes#build', via: [:put, :post]
 
   # Student 
   resource :student, :only => [:update, :show]
   match 'register/student' => 'students#create', via: :post
   match 'match/student' => 'students#match', via: :post
   match 'claim/account' => 'students#claim', via: :post
-  match 'dispute' => 'students#dispute', via: :get
   match 'inbox' => 'students#inbox', via: :get
   match 'inbox/echo' => 'students#inbox_echo', via: :get
   match 'outbox' => 'students#outbox', via: :get
@@ -122,23 +123,21 @@ Webapp::Application.routes.draw do
   match 'teachers/list' => 'teachers#list', via: :get
   match 'teacher/sektions' => 'teachers#sektions', via: :get
   match 'teacher/load' => 'teachers#load', via: :get
-  match 'teacher/build_quiz' => 'teachers#build_quiz', via: [:put, :post]
   match 'teacher/ws' => 'teachers#worksheets', via: :get
   match 'teacher/students' => 'teachers#students', via: :get
   match 'teacher/students_with_names' => 'teachers#students_with_names', via: :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', via: :get
-  match 'disputed' => 'teachers#disputed', via: :get
-  match 'overwrite/marks' => 'teachers#overwrite_marks', via: [:put, :post]
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
-  match 'prefab' => 'teachers#prefabricate', via: :post
   match 'new/lesson' => 'teachers#add_lesson', via: :post
 
-  # Testpaper
-  match 'ws/summary' => 'testpapers#summary', via: :get
-  match 'testpaper/load' => 'testpapers#load', via: :get
-  match 'ws/layout' => 'testpapers#layout', via: :get
-  match 'ws/publish' => 'testpapers#inbox', via: :get
-  match 'ws/unpublish' => 'testpapers#uninbox', via: :get
+  # Exam
+  match 'ws/summary' => 'exams#summary', via: :get
+  match 'exam/load' => 'exams#load', via: :get
+  match 'ws/layout' => 'exams#layout', via: :get
+  match 'ws/publish' => 'exams#inbox', via: :get
+  match 'ws/unpublish' => 'exams#uninbox', via: :get
+  match 'ws/report_card' => 'exams#report_card', via: :get
+  match 'ws/update_signature' => 'exams#update_signature', via: :get
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get

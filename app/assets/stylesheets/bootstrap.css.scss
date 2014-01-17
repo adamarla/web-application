@@ -614,7 +614,7 @@ a.text-success:hover {
 h1, h2, h3, h4, h5, h6 {
   margin: 7px 0;
   font-family: inherit;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 14px;
   color: inherit;
   text-rendering: optimizelegibility;
@@ -3860,6 +3860,7 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     }
     > li {
       float: left;
+      &.pull-right { float: right ; }
       > a {
         float: none;
         margin: {

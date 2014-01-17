@@ -14,7 +14,6 @@ object false
       images: @quiz.preview_images
     }
   } 
-  node(:a) { @uid }
-  node(:b) { @quiz.id }
+  node(:a) { @quiz.path? }
   node(:caption) { @quiz.name }
 

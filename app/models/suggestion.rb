@@ -15,18 +15,18 @@
 class Suggestion < ActiveRecord::Base
   has_many :questions
   belongs_to :teacher  
-  validates :signature, :uniqueness => true
+  validates :signature, uniqueness: true
 
   def self.unassigned
-    where(:examiner_id => nil)
+    where(examiner_id:  nil)
   end  
 
   def self.assigned_to(id)
-    where(:examiner_id => id)
+    where(examiner_id:  id)
   end
 
   def self.ongoing
-    where(:completed => false).select{ |m| m.question_ids.count > 0 }
+    where(completed:  false).select{ |m| m.question_ids.count > 0 }
   end
 
   def self.just_in
@@ -34,7 +34,7 @@ class Suggestion < ActiveRecord::Base
   end
   
   def self.completed
-    where :completed => true
+    where completed:  true
   end
 
   def self.mime_type(upload_params)
@@ -65,9 +65,9 @@ class Suggestion < ActiveRecord::Base
 
   def check_for_completeness
     return true if self.completed 
-    untagged = Question.where(:suggestion_id => self.id).untagged 
+    untagged = Question.where(suggestion_id:  self.id).untagged 
     if untagged.count == 0
-      Mailbot.suggestion_typeset(self).deliver if self.update_attribute(:completed, true)
+      Mailbot.delay.suggestion_typeset(self) if self.update_attribute(:completed, true)
     end
     return false
   end
@@ -93,7 +93,7 @@ class Suggestion < ActiveRecord::Base
   def preview_images(restricted = false)
     from = self.teacher_id
     sig = self.signature
-    return self.pages.map{ |pg| "0-#{from}/#{sig}/page-#{pg}.jpeg" }
+    return [*1..self.pages].map{ |pg| "0-#{from}/#{sig}/page-#{pg}.jpeg" }
   end
 
 end # of class

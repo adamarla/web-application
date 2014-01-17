@@ -24,8 +24,8 @@ class Student < ActiveRecord::Base
   has_many :graded_responses, :dependent => :destroy
   has_many :quizzes, :through => :graded_responses
 
-  has_many :answer_sheets, :dependent => :destroy
-  has_many :testpapers, :through => :answer_sheets
+  has_many :worksheets, :dependent => :destroy
+  has_many :exams, :through => :worksheets
 
   validates :name, :presence => true
   validates_associated :account
@@ -81,10 +81,10 @@ class Student < ActiveRecord::Base
 
   def inbox
     # Returns the worksheets that should be shown in a student's inbox
-    assigned = AnswerSheet.where(:student_id => self.id)
+    assigned = Worksheet.where(:student_id => self.id)
     received = assigned.where(:received => true)
-    due = assigned.map(&:testpaper_id) - received.map(&:testpaper_id)
-    Testpaper.where(:id => due, :inboxed => true) 
+    due = assigned.map(&:exam_id) - received.map(&:exam_id)
+    Exam.where(:id => due, :inboxed => true) 
   end
 
   def outbox
@@ -92,23 +92,23 @@ class Student < ActiveRecord::Base
     # Any student worksheet - with scans - but not yet graded ( at all ) 
     # should be in the outbox
 
-    a = AnswerSheet.where(student_id: self.id).where(graded: false)
+    a = Worksheet.where(student_id: self.id).where(graded: false)
     # The above will include worksheets that have either: 
     #    1. been partially graded
     #    2. or, have no scans 
     # Filter both of these out before returning
 
     a = a.select{ |m| m.graded?(:none) } # --> (1) --> only those not graded at all
-    ws_ids = a.map(&:testpaper_id)
-    without_scans = GradedResponse.in_testpaper(ws_ids).of_student(self.id).without_scan.map(&:testpaper_id).uniq
+    ws_ids = a.map(&:exam_id)
+    without_scans = GradedResponse.in_exam(ws_ids).of_student(self.id).without_scan.map(&:exam_id).uniq
     ungraded_with_scans = ws_ids - without_scans
-    return Testpaper.where(id: ungraded_with_scans)
+    return Exam.where(id: ungraded_with_scans)
   end
 
   def pending
     # Any student worksheet - without scans
-    assigned = self.testpapers.map(&:id) 
-    g = GradedResponse.in_testpaper(assigned).of_student(self.id).without_scan
+    assigned = self.exams.map(&:id) 
+    g = GradedResponse.in_exam(assigned).of_student(self.id).without_scan
   end
 
   def teachers
@@ -116,25 +116,25 @@ class Student < ActiveRecord::Base
   end 
 
   def quiz_ids
-    t_ids = AnswerSheet.where(:student_id => self.id).map(&:testpaper_id)
-    quiz_ids = Testpaper.where(:id => t_ids).map(&:quiz_id).uniq
+    t_ids = Worksheet.where(:student_id => self.id).map(&:exam_id)
+    quiz_ids = Exam.where(:id => t_ids).map(&:quiz_id).uniq
     return quiz_ids
   end
 
-  def marks_scored_in(testpaper_id)
-    a = AnswerSheet.where(:student_id => self.id, :testpaper_id => testpaper_id).first 
+  def marks_scored_in(exam_id)
+    a = Worksheet.where(:student_id => self.id, :exam_id => exam_id).first 
     marks = a.nil? ? 0 : a.marks?
     return marks unless marks == 0
-    return (self.absent_for_test?(testpaper_id) ? -1 : marks) 
+    return (self.absent_for_test?(exam_id) ? -1 : marks) 
   end
 
   def honestly_attempted? (ws_id)
-    a = AnswerSheet.where(:student_id => self.id, :testpaper_id => ws_id).first
+    a = Worksheet.where(:student_id => self.id, :exam_id => ws_id).first
     return a.nil? ? :disabled : a.honest?
   end
 
-  def responses(testpaper_id)
-    a = GradedResponse.of_student(self.id).in_testpaper(testpaper_id).with_scan
+  def responses(exam_id)
+    a = GradedResponse.of_student(self.id).in_exam(exam_id).with_scan
     return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
   end
 
@@ -149,7 +149,7 @@ class Student < ActiveRecord::Base
     [*1..6].each do |marks|
       having = g.select{ |m| m.subpart.marks == marks }
       next if having.count == 0
-      avg = (having.map(&:system_marks).inject(:+) / having.count.to_f).round(2) # avg score on 'k' mark questions
+      avg = (having.map(&:marks).inject(:+) / having.count.to_f).round(2) # avg score on 'k' mark questions
       earned += avg
     end 
     max = Subpart.where(:id => sids).map(&:marks).uniq.inject(:+)
@@ -157,8 +157,8 @@ class Student < ActiveRecord::Base
   end 
 
   def absent_for_quiz?(quiz_id)
-    tids = AnswerSheet.where(:student_id => self.id).map(&:testpaper_id)
-    qids = Testpaper.where(:id => tids).map(&:quiz_id)
+    tids = Worksheet.where(:student_id => self.id).map(&:exam_id)
+    qids = Exam.where(:id => tids).map(&:quiz_id)
     took_test = qids.include? quiz_id 
     return true if !took_test
 
@@ -166,8 +166,8 @@ class Student < ActiveRecord::Base
     return g.count == 0
   end
 
-  def absent_for_test?(testpaper_id)
-    g = GradedResponse.of_student(self.id).in_testpaper(testpaper_id).with_scan
+  def absent_for_test?(exam_id)
+    g = GradedResponse.of_student(self.id).in_exam(exam_id).with_scan
     return g.count == 0
   end
 
@@ -186,11 +186,11 @@ class Student < ActiveRecord::Base
       marks = on_topic.map(&:subpart).map(&:marks)
       n_attempted = marks.count
       total = marks.inject(:+)
-      scored = on_topic.map(&:system_marks).inject(:+)
+      scored = on_topic.map(&:marks).inject(:+)
 
       # historical average on topic
       all_on_topic = all.on_topic t.id 
-      historical_avg = (all_on_topic.map(&:system_marks).inject(:+) / all_on_topic.count.to_f).round(2)
+      historical_avg = (all_on_topic.map(&:marks).inject(:+) / all_on_topic.count.to_f).round(2)
 
       ret[:proficiency].push({ :id => t.id, :name => t.name, 
                                :score => (scored/total.to_f).round(2),
@@ -204,7 +204,7 @@ class Student < ActiveRecord::Base
     def destroyable?
       # A student can be destroyed if there is no associated data for it
       is_empty = true 
-      [AnswerSheet, GradedResponse, StudentRoster].each do |m|
+      [Worksheet, GradedResponse, StudentRoster].each do |m|
         is_empty = m.where(:student_id => self.id).empty?
         break unless is_empty
       end

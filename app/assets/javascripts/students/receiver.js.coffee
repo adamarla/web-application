@@ -6,13 +6,13 @@ jQuery ->
     url = settings.url
     matched = true
 
-    if url.match(/student\/testpapers/)
+    if url.match(/student\/exams/)
       here = $('#published-worksheets')
-      coreUtil.interface.displayJson json.testpapers, here, 'testpaper', {radio:true, link:true, ticker:false}
+      coreUtil.interface.displayJson json.exams, here, 'exam', {radio:true, link:true, ticker:false}
       
       # Point the <a> to the answer-key
-      for m in json.testpapers
-        r = m.testpaper
+      for m in json.exams
+        r = m.exam
         id = r.id
         target = here.children(".swiss-knife[marker=#{id}]").eq(0)
         continue if target.length is 0

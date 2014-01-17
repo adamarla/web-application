@@ -24,7 +24,6 @@ class QSelection < ActiveRecord::Base
   belongs_to :question
 
   has_many :graded_responses, dependent: :destroy
-  has_many :variants, dependent: :destroy
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible 
@@ -39,4 +38,29 @@ class QSelection < ActiveRecord::Base
     select{ |m| m.question.topic_id == n }
   end
 
-end
+  def prev(same_page = true)
+    # Returns the QSelection for the last question laid out in the quiz before this one
+    return self.siblings(:previous, same_page).last
+  end
+
+  def next(same_page = true) 
+    # Returns the QSelection for the next question laid out in the quiz
+    return self.siblings(:next, same_page).first
+  end
+
+  def siblings(dir, same_page = false)
+=begin
+    Handles all of the following cases 
+      1. prior to self - in the whole quiz
+      2. prior to self - but only on the same page 
+      3. after self - in the whole quiz
+      4. after self - on the same page
+=end
+    previous = dir == :previous # or :next
+    a = QSelection.where(quiz_id: self.quiz_id)
+    b = previous ? a.where('index < ?', self.index) : a.where('index > ?', self.index)
+    ret =  same_page ? (previous ? b.where(end_page: self.start_page) : b.where(start_page: self.end_page)) : b
+    return ret.order(:index)
+  end
+
+end # of class

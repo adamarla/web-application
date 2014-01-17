@@ -61,53 +61,34 @@ class QuestionController < ApplicationController
           m.check_for_completeness unless m.nil?
 
           if question.update_subpart_info lengths, marks
-            render :json => { 
-                              :notify => { 
-                                :text => "#{question.uid} tagged" 
-                              } 
-                            }, :status => :ok
+            render json: { notify: { text: "#{question.uid} tagged" } }, status: :ok
           else
-            render :json => { 
-                              :notify => { 
-                                :text => "#{question.uid} subpart info update failed" 
-                              } 
-                            }, :status => :bad_request
+            render json: { notify: { text: "#{question.uid} subpart tagging failed" } }, status: :bad_request
           end
         else # manifest == nil 
-          render :json => { 
-                            :notify => { 
-                              :text => "#{question.uid} TeX tagging failed!" 
-                            } 
-                          }, :status => :bad_request 
+          render json: { notify: { text: "#{question.uid} TeX tagging failed!" } }, status: :bad_request
         end
       else
-        render :json => { 
-                          :notify => { 
-                            :text => "#{question.uid} tagging failed", 
-                            :subtext => "Subpart count is zero" 
-                          } 
-                        }, :status => :ok 
+        render json: { notify: {text: "#{question.uid} Cannot have 0 subparts!" } }, status: :ok
       end # of if nparts > 0
     else
-      render :json => { 
-                        :notify => { 
-                          :text => "Tagging failed", 
-                          :subtext => "Question not in DB" 
-                        } 
-                      }, :status => :bad_request
+      render json: { notify: { text: "Question not found!" } }, status: :bad_request
     end 
   end # of method 
 
   def preview
-    qid = params[:gr].blank? ? params[:id] : GradedResponse.where(id: params[:gr]).map(&:q_selection).map(&:question_id).first
+    g = params[:gr].blank? ? nil : GradedResponse.where(id: params[:gr])
+    qid = g.nil? ? params[:id] : g.map(&:q_selection).map(&:question_id).first
+
     @question = Question.find qid 
+    @version = g.nil? ? "0" : g.first.version
     @context = params[:context] || "unknown" 
   end
 
   def like
     teacher = current_account.loggable
     qid = params[:id].to_i
-    teacher.favourites.create :question_id => qid
+    teacher.favourites.create question_id: qid
     render :json => { :favourite => { :id => qid } }, :status => :ok
   end
 
@@ -133,7 +114,8 @@ class QuestionController < ApplicationController
       if (@gating.count > 0 || @non_gating.count > 0 || !@comments.blank?)
         @author = Examiner.find @question.examiner_id
         @author = @author.account.active ? @author : Examiner.available.sample(1).first
-        Mailbot.send_audit_report(@question, @author, @gating, @non_gating, @comments).deliver
+        
+        Mailbot.delay.send_audit_report(@question, @author, @gating, @non_gating, @comments)
       end
       render json: { msg: "Audit Report Sent", disabled: [@question.id] }, status: :ok
     else

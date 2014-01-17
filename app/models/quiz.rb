@@ -2,17 +2,22 @@
 #
 # Table name: quizzes
 #
-#  id            :integer         not null, primary key
-#  teacher_id    :integer
-#  created_at    :datetime
-#  updated_at    :datetime
-#  num_questions :integer
-#  name          :string(70)
-#  subject_id    :integer
-#  total         :integer
-#  span          :integer
-#  parent_id     :integer
-#  job_id        :integer         default(-1)
+#  id                    :integer         not null, primary key
+#  teacher_id            :integer
+#  created_at            :datetime
+#  updated_at            :datetime
+#  num_questions         :integer
+#  name                  :string(70)
+#  subject_id            :integer
+#  total                 :integer
+#  span                  :integer
+#  parent_id             :integer
+#  job_id                :integer         default(-1)
+#  uid                   :string(40)
+#  version               :string(10)
+#  shadows               :string(255)
+#  page_breaks_after     :string(30)
+#  switch_versions_after :string(30)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -40,7 +45,7 @@ class Quiz < ActiveRecord::Base
 
   has_many :q_selections, dependent: :destroy
   has_many :questions, through: :q_selections
-  has_many :testpapers, dependent: :destroy
+  has_many :exams, dependent: :destroy
 
   # Quiz -> Coursework -> Milestone
   has_many :coursework 
@@ -48,10 +53,8 @@ class Quiz < ActiveRecord::Base
 
   # Validations
   validates :teacher_id, presence: true, numericality: true
-  validates :name, presence: true
   
-  #before_validation :set_name, :if => :new_record?
-  after_create :lay_it_out
+  after_create :seal
   after_destroy :shred_pdfs
 
   def total? 
@@ -65,46 +68,57 @@ class Quiz < ActiveRecord::Base
 
   def subparts
     # Returns the ordered list of subparts 
-    q = QSelection.where(:quiz_id => self.id).select('index, question_id').sort{ |m,n| m.index <=> n.index }
-    q = q.map{ |m| Question.find m.question_id }
-    return q.map{ |m| m.subparts.order(:index) }.flatten
+    qsel = QSelection.where(quiz_id: self.id).order(:index)
+    return qsel.map(&:question).map(&:subparts).flatten
   end
 
-  def assign_to (students, publish = false) 
-    # students : an array of selected students from the DB
-
-    # Mappings to take care of :
-    #   1. quiz <-> testpaper
-    #   2. student <-> testpaper
-    #   3. graded_response <-> testpaper
-    #   4. graded_response <-> student
-
-    past = Testpaper.where(:quiz_id => self.id).map(&:id)
-    ntests = past.count
-    assigned_name = "##{ntests + 1} - #{Date.today.strftime('%B %d, %Y')}" 
-
-    testpaper = self.testpapers.build name: assigned_name, takehome: publish # (1) 
-    picked_questions = QSelection.where(:quiz_id => self.id).order(:start_page)
-
-    students.each do |s|
-      testpaper.students << s # (2) 
-      picked_questions.each do |q|
-        subparts = Subpart.where(question_id: q.question_id).order(:index)
-        subparts.each do |p|
-          g = GradedResponse.new(q_selection_id: q.id, student_id: s.id, subpart_id: p.id)
-          testpaper.graded_responses << g
-        end
-      end
-    end # student loop 
-
-    return nil if testpaper.students.empty?
-    testpaper = testpaper.save ? testpaper : nil
-    return testpaper
+  def last_open_exam? 
+    open = Exam.for_quiz(self.id).open.order(:created_at)
+    return open.last
   end 
 
+  def assign_to(sid)
+    e = self.last_open_exam?
+    e = self.exams.create if e.nil?
+    w = e.worksheets.build student_id: sid 
+
+    qsel = QSelection.where(quiz_id: self.id).order(:index)
+    qsel.each do |y|
+      sbp = y.question.subparts
+      sbp.each do |s|
+        g = w.graded_responses.build student_id: sid, q_selection_id: y.id, subpart_id: s.id
+        w.graded_responses << g
+      end
+    end
+    if w.save
+      Delayed::Job.enqueue(CompileTex.new(w.id, w.class.name)) if e.takehome
+    end
+  end
+
+  def mass_assign_to(students, publish = false)
+    sk = Sektion.common_to(students.map(&:id)).last
+    name = "#{sk.name} (#{Date.today.strftime('%b %Y')})"
+    e = self.exams.create name: name, takehome: publish
+    for s in students 
+      self.assign_to s.id
+    end 
+
+    # Close this exam for further modifications if school teacher
+    e.update_attribute(:open, false) unless e.quiz.teacher.online
+
+    unless publish 
+      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
+      job = Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
+      e.update_attribute :job_id, job.id
+      return e.id, job.id 
+    else 
+      return nil, nil # no compilation required 
+    end
+  end
+
   def preview_images(restricted = false)
-    uid = encrypt(self.id,7)
-    return [*1..self.span?].map{ |pg| "quiz/#{uid}/preview/page-#{pg}.jpeg" }
+    path = self.path?
+    return [*1..self.span?].map{ |pg| "#{path}/pg-#{pg}.jpg" }
   end
 
   def teacher 
@@ -114,130 +128,16 @@ class Quiz < ActiveRecord::Base
   def span?
     return self.span unless self.span.nil?
 
-    last = QSelection.where(:quiz_id => self.id).order(:index).last.end_page
+    last = QSelection.where(quiz_id: self.id).order(:index).last.end_page
     self.update_attribute :span, last
     return last
   end
 
-  def lay_it_out
-=begin
-    Layout in two steps:
-      1. First, layout all the standalone questions. Try to waste as 
-         little space as possible
-      2. Then, layout out the multipart questions. These questions take a 
-         whole number of pages
-=end
-    questions = Question.where(:id => self.question_ids)
-    standalone = questions.standalone.sort{ |m,n| m.span? <=> n.span? }
-    multipart = questions - standalone
-
-    spans = standalone.map(&:span?)
-    start = 0 
-    stop = -1
-    last = spans.length - 1
-    layout = []
-
-    # Code below tries to slice 'spans' into chunks where the sum of spans in 
-    # each chunk <= 1. A bit inefficient in terms of iterations but easy to read
-    while (start <= last)
-      [*start..last].each do |i|
-        sum = spans.slice(start..i).inject(:+)
-        stop = i if ( sum == 1 || i == last )
-        stop = i-1 if sum > 1
-        if (stop != -1)
-          layout.push standalone.slice(start..stop).map(&:id)
-          break 
-        end
-      end
-      start = stop + 1
-      stop = -1
-    end
-
-    current_index = 1 
-    layout.each_with_index do |ids, j|
-      QSelection.where(:question_id => ids, :quiz_id => self.id).each_with_index do |s,k|
-        s.update_attributes :start_page => j + 1, :end_page => j + 1, :index => current_index
-        current_index += 1
-      end
-    end # of while 
-    
-    # Now, the multipart questions 
-    spans = multipart.map(&:span?)
-    current_page = layout.length + 1
-    last_standalone = standalone.count
-
-    spans.each_with_index do |span, index|
-      qid = multipart[index].id
-      s = QSelection.where(:question_id => qid, :quiz_id => self.id).first
-      s.update_attributes :start_page => current_page, :end_page => (current_page + span - 1), 
-                          :index => (last_standalone + index + 1)
-      current_page += span
-    end
-  end # lay_it_out
-
-  def layout?(for_wsdl = true)
-=begin
-    The structure of the returned hash depends on 'for_wsdl'
-
-    If true, then its [ { :number => page, :question => [ { :id => uid } ... ] } ... ]
-    Otherwise, its [ { :page => page, :question => [ <db-ids> ... ] } ... ]
-
-    The latter form is useful when distributing work
-=end
-
-    selected = QSelection.where(:quiz_id => self.id).order(:start_page)
-    last = selected.last.end_page 
-    layout = [] # return value
-
-    [*1..last].each do |page|
-      q_on_page = selected.where(:start_page => page)
-
-      if for_wsdl 
-        on_page = q_on_page.map{ |m| { :id => m.question.uid } } 
-      else
-        on_page = q_on_page.map(&:question_id)
-      end
-      layout.push( { :number => page, :question => on_page } )
-    end
-    return layout
-  end
-
-  def compile_tex
-    teacher = self.teacher 
-
-    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['build_quiz']}" 
-
-    response = SavonClient.request :wsdl, :buildQuiz do  
-      soap.body = { 
-         :quiz => { :id => self.id, :name => self.latex_safe_name, :value => encrypt(self.id,7) },
-         :teacher => { :id => teacher.id, :name => teacher.name },
-         :page => self.layout?
-      }
-     end # of response 
-     # sample response : {:build_quiz_response=>{:manifest=>{:root=>"/home/gutenberg/bank/mint/15"}}}
-     return response.to_hash[:build_quiz_response]
-  end # of method
-
   def shred_pdfs
     # Going forward, this method would issue a Savon request to the
-    # 'printing-press' asking it to delete PDFs of testpapers generated
+    # 'printing-press' asking it to delete PDFs of exams generated
     # for this Quiz - both composite & per-student 
     return true
-  end
-
-  # Returns the list of micro-topics touched upon in this Quiz - as an array of indices
-  def micros
-    self.questions.map{|q| q.topic_id}.uniq
-  end
-
-  def pending_questions
-    a = GradedResponse.in_quiz(self.id).ungraded
-  end
-
-  def pending_pages(examiner_id)
-    pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner_id)
-    @pages = pending.map(&:page?).uniq.sort
-    return @pages
   end
 
   def pending_scans(examiner, page)
@@ -249,41 +149,31 @@ class Quiz < ActiveRecord::Base
     return @students, @pending, @scans
   end
 
-  def clone?
-    return self if self.testpaper_ids.count == 0
-    
-    # there should be just one editable clone at a time
-    clone = Quiz.where(:parent_id => self.id).select{ |m| m.testpaper_ids.count == 0 }.first
-    return clone
-  end
+  def children?
+    return Quiz.where(parent_id: self.id)
+  end 
 
-  def clone(teacher = nil)
-=begin
-    A quiz is cloned under the following situations 
-      1. if it is being edited but cannot be changed in place (because of existing worksheets)
-      2. a newly registered teacher is doing the quick-trial
+  def clone(tid = nil)
+    # Cloning is done IF: 
+    #   1. A quiz cannot be edited in place because worksheets have been 
+    #      made for it already 
+    #   2. One teacher(self) shares a quiz with another teacher(tid). The clone
+    #      should therefore rightly belong to the assignee 
 
-      'teacher' != nil => quiz being cloned for a teacher different from the original author
-=end
-    selections = QSelection.where(:quiz_id => self.id).map(&:question_id)
+    qids = QSelection.where(quiz_id: self.id).map(&:question_id)
 
-    if teacher.nil?
-      name = "#{self.name} (edited)"
-      author = self.teacher_id
-    else
-      name = self.name
-      author = teacher
+    if tid.nil? # teacher editing her own quiz 
+      t = self.teacher_id 
+      n = nil
+      pid = self.id
+    else # teacher sharing quiz with someone else
+      t = tid 
+      n = self.name
+      pid = nil 
     end
 
-    copy = Quiz.new name: name, teacher_id: author, question_ids: selections, 
-                    num_questions: selections.count, parent_id: self.id 
-
-    if copy.save 
-      ret = teacher.nil? ? "A new version - #{name} - has been created" : copy 
-    else
-      ret = nil
-    end
-    return ret
+    c = Quiz.create teacher_id: t, question_ids: qids, num_questions: qids.count, parent_id: pid, name: n
+    return c
   end
 
   def remove_questions(question_ids)
@@ -294,44 +184,255 @@ class Quiz < ActiveRecord::Base
     return self.add_remove_questions question_ids, true 
   end
 
-
   def add_remove_questions(question_ids, add = false)
     return false if question_ids.count == 0
-
-    clone = self.clone?
     title = "#{question_ids.count} question(s) #{add ? 'added' : 'removed'}"
-    msg = clone.nil? ? self.clone : ""
 
-    job = Delayed::Job.enqueue EditQuiz.new(self, question_ids, add), :priority => 0, :run_at => Time.zone.now
-    estimate = minutes_to_completion job.id
-    msg += " PDF will be ready within #{estimate} minute(s)"
+    current = QSelection.where(quiz_id: self.id).map(&:question_id)
+    final = add ? (current + question_ids).uniq : (current - question_ids).uniq
+    if final.blank?
+      title = "Empty quiz not allowed!" 
+      msg = "Going to do nothing. If you want to remove all existing questions, then add some others first" 
+      return title, msg
+    end
+
+    editable = self.exams.count > 0 ? self.clone  : self
+    if editable == self
+      qids = Question.where(id: final).sort{ |m,n| m.length? <=> n.length? }.map(&:id)
+      editable.recompile(qids) # another recompilation
+    end
+
+    eta = minutes_to_completion editable.job_id 
+    msg = "PDF will be ready within #{eta} minute(s)"
     return title, msg
   end
 
-  def latex_safe_name
-    safe = self.name 
-    # The following 10 characters have special meaning in LaTeX and hence need to 
-    # be escaped with a backslash before typesetting 
-
-    ['#', '$', '&', '^', '%', '\\', '_', '{',  '}', '~'].each do |m|
-      safe = safe.gsub m, "\\#{m}"
-    end 
-    return safe
+  def path?
+    return self.uid
   end
 
-  def compiling?
-    # If compilation fails, then the Quiz object itself is destroyed. In which case
-    # there is no way this object method can be called
-
-    # job_id = -1 => default initial state
-    #        > 0 => queued => compiling
-    #        = 0 => compilation completed
-    return self.job_id > 0
+  def laid_out?
+    not_laid_out = self.page_breaks_after.blank? && self.switch_versions_after.blank?
+    return !not_laid_out
   end
 
-  def uid
-    return encrypt(self.id, 7)
+  def write
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
+    self.lay_it_out unless self.laid_out?
+
+    # Write TeX for the quiz 
+    response = SavonClient.request :wsdl, :writeTex do
+      soap.body = { 
+        target: self.path?, 
+        mode: 'quiz', 
+        imports: QSelection.where(quiz_id: self.id).order(:index).map(&:question).map(&:uid),
+        author: self.teacher.name, 
+        qFlags: { 
+                  title: self.latex_safe_name, 
+                  pageBreaks: self.page_breaks_after, 
+                  versionTriggers: self.switch_versions_after 
+                }
+        }
+    end
+
+    return response unless response[:error].blank? # no error => next step
+    # And for a sample worksheet that has no reference in the DB 
+    zeroes = Array.new(self.num_questions, 0).join(',') 
+    qrcs = Array.new(self.span?, 'Sample').join(',') 
+
+    response = SavonClient.request :wsdl, :writeTex do
+      soap.body = { 
+        target: "#{self.path?}/sample",
+        mode: 'worksheet',
+        imports: self.path?,
+        author: ['Leonhard Euler', 'Karl Gauss', 'Isaac Newton', 'Srinivas Ramanujan', 'Pierre Fermat'].sample,
+        wFlags: { versions: zeroes, responses: qrcs } 
+      }
+    end
+    return response
+  end 
+
+  def compile 
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['compile_tex']}" 
+    response = SavonClient.request :wsdl, :compileTex do
+      soap.body = { path: self.path? }
+    end
+
+    return response unless response[:error].blank?
+    response = SavonClient.request :wsdl, :compileTex do 
+      soap.body = { path: "#{self.path?}/sample" }
+    end
+    return response
   end
+
+  def error_out
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['error_out']}" 
+    response = SavonClient.request :wsdl, :errorOut do
+      soap.body = { path: self.path? }
+    end
+    return response[:error_out_response][:manifest]
+  end
+
+  def version?
+    return self.version unless self.version.nil?
+
+    if self.parent_id.nil?
+      version = "1" 
+    else
+      parent = Quiz.find self.parent_id
+      siblings = Quiz.where(parent_id: self.parent_id).order(:created_at)
+      idx = siblings.index(self) + 1
+      version = "#{parent.version?}.#{idx}"
+    end
+    self.update_attribute :version, version
+    return version
+  end
+
+  def adam?
+    # The first version of the quiz from which this and other versions were made
+    return (self.parent_id.nil? ? self : Quiz.find(self.parent_id).adam?) 
+  end
+
+  def recompile(qids = [])
+    # Set pages on all responses to nil so that they can be recomputed -
+    # based on the changed layout (problem?) - in the next call to GradedResponse::page?
+
+    proceed = qids.blank? ? (self.laid_out? ? false : true) : true
+    return false unless proceed
+
+    GradedResponse.in_quiz(self.id).each do |g|
+      g.update_attribute :page, nil
+    end
+
+    self.update_attributes span: nil, total: nil
+    self.seal qids # triggers quiz recompilation - if needed
+
+    self.exams.where(takehome: false).each do |e|
+      e.worksheets.each do |w|
+        w.uid.nil? ? w.seal : Delayed::Job.enqueue(WriteTex.new(w.id, w.class.name)) 
+        # If quiz layout has changed, then the quiz's skel file would have changed too.
+        # In which case, the worksheets must be re-written using the new skel
+      end
+      # And if the skel files of worksheets have changed, then 
+      # exams must be re-written to reflect the new quiz layout 
+      e.seal if e.uid.nil?
+      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
+      Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
+    end
+    return true
+  end
+
+#################################################################
+
+  public
+      def seal(qids = [])
+        uid = self.uid.nil? ? "q/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
+
+        if self.name.nil?
+          version = self.version?
+          base = self.adam?.name.titleize
+          name = (version == "1") ? base : "#{base} (ver. #{version})"
+        else 
+          name = self.name.titleize
+        end
+
+        self.update_attributes uid: uid, name: name
+        self.lay_it_out(qids) unless qids.blank?
+
+        Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
+        job = Delayed::Job.enqueue CompileTex.new(self.id, self.class.name)
+        self.update_attribute :job_id, job.id
+      end 
+
+      def shadows_if(sbp_on_pg)
+        total = sbp_on_pg.map(&:length?).inject(:+)
+        spans_last_pg = sbp_on_pg.map{ |l| ((l.length? / total) * 100).to_i }
+        shadows_last_pg = [] 
+
+        spans_last_pg.each_with_index do |i,j|
+          shadows_last_pg[j] = j > 0 ? spans_last_pg[0..j-1].inject(:+) : 0 
+        end
+        shadows_last_pg = shadows_last_pg.map(&:to_s).join(',')
+        return shadows_last_pg 
+      end
+
+#################################################################
+
+  protected 
+      def lay_it_out(qids = [])
+        # 'qids' is an array of question_ids. If its NOT blank, then it means 
+        # that the passed questions have to be laid out in the order given 
+        # in the array. Do NOT count on there being too many sanity checks on 
+        # qids in the code below
+
+        # Passing qids is highly NOT recommended. Do this only if you know 
+        # what you are doing
+        
+        questions = qids.blank? ? self.questions.sort{ |m,n| m.length? <=> n.length? } : 
+                                  Question.where(id: qids).sort{ |m,n| qids.index(m.id) <=> qids.index(n.id) }
+        self.question_ids = questions.map(&:id)
+        self.update_attribute :num_questions, questions.count
+
+        # Counters 
+        curr_pg = 1 
+        curr_q = 1
+
+        # Evaluated values
+        space_left = 1
+        shadows = nil
+
+        # Arrays 
+        break_before = [] # subpart objects
+        switch_versions_after = [] # subpart objects
+        sbp_on_curr_page = [] # subpart objects
+        qsel = QSelection.where(quiz_id: self.id)
+
+        for q in questions
+          curr_s = qsel.where(question_id: q.id).first
+          next if curr_s.nil?
+
+          q_index = questions.index(q) + 1 # 1-indexed
+          sb_parts = curr_s.question.subparts 
+          for curr_sbp in sb_parts
+            index = sb_parts.index curr_sbp
+            required = curr_sbp.length?
+            fits = (required <= space_left) || (required == 1 && space_left >= 0.5)
+
+            if fits
+              sbp_on_curr_page.push(curr_sbp)
+              space_left -= required
+            else
+              shadows_last_pg = self.shadows_if(sbp_on_curr_page)
+              shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
+              break_before.push(curr_sbp)
+              # Then, move onto processing this one that did not fit
+              sbp_on_curr_page.clear 
+              sbp_on_curr_page.push(curr_sbp)
+              curr_pg += 1
+              space_left = 1 - required
+            end
+            curr_s.update_attributes(start_page: curr_pg, index: curr_q) if index == 0
+          end # laying out subparts
+
+          curr_q += 1
+          curr_s.update_attributes(end_page: curr_pg)
+          switch_versions_after.push(sb_parts.last)
+
+        end # laying out questions
+
+        # Ensure that shadow information for last laid-out subparts is also captured
+        unless sbp_on_curr_page.blank?
+          shadows_last_pg = self.shadows_if sbp_on_curr_page
+          shadows = shadows.blank? ? shadows_last_pg : "#{shadows},#{shadows_last_pg}"
+        end
+        # Collect page-break and version triggering information
+        all_sbp = self.subparts
+        break_after = break_before.map{ |n| all_sbp.index(n) - 1 }.join(',')
+        version_on = switch_versions_after.map{ |n| all_sbp.index(n) }.join(',')
+        
+        self.update_attributes(shadows: shadows, page_breaks_after: break_after, switch_versions_after: version_on, span: curr_pg)
+      end
+
 
 end # of class
 

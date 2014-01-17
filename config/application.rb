@@ -1,5 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
+require 'csv' # Railscase #362 exporting csv and excel
 require 'rails/all'
 
 # Railscast #282 

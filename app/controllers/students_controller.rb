@@ -10,7 +10,7 @@ class StudentsController < ApplicationController
     data = params[:student]
 
     if data[:guard].blank? # => human entered registration data
-      student = Student.new :name => data[:name]
+      student = Student.new name: data[:name]
 
       location = request.location
       city = state = country = zip = nil
@@ -24,15 +24,15 @@ class StudentsController < ApplicationController
       end
 
       account_details = data[:account]
-      account = student.build_account :email => account_details[:email], 
-                                      :password => account_details[:password],
-                                      :password_confirmation => account_details[:password],
-                                      :city => city,
-                                      :state => state, 
-                                      :postal_code => zip,
-                                      :country => country
+      account = student.build_account email: account_details[:email], 
+                                      password: account_details[:password],
+                                      password_confirmation: account_details[:password],
+                                      city: city,
+                                      state: state, 
+                                      postal_code: zip,
+                                      country: country
       if student.save
-        Mailbot.welcome_student(student.account).deliver
+        Mailbot.delay.welcome_student(student.account)
         sign_in student.account
         redirect_to student_path
       end # no reason for else.. if client side validations worked
@@ -61,16 +61,16 @@ class StudentsController < ApplicationController
        country = country.id unless country.blank?
     end
  
-    account.update_attributes :email => account_details[:email],
-                              :password => account_details[:password],
-                              :password_confirmation => account_details[:password],
-                              :city => city,
-                              :state => state,
-                              :postal_code => zip,
-                              :country => country 
+    account.update_attributes email: account_details[:email],
+                              password: account_details[:password],
+                              password_confirmation: account_details[:password],
+                              city: city,
+                              state: state,
+                              postal_code: zip,
+                              country: country 
 
     if account.save
-      Mailbot.welcome_student(account).deliver
+      Mailbot.delay.welcome_student(account)
       sign_in account
       redirect_to student_path
     end # no reason for else.. if client side validations worked
@@ -78,7 +78,7 @@ class StudentsController < ApplicationController
 
   def match
     data = params[:student]
-    student = Student.new :name => data[:name]
+    student = Student.new name: data[:name]
     sk = Sektion.where{ uid =~ "#{data[:code]}" }.first
 
     @exists = true
@@ -122,33 +122,29 @@ class StudentsController < ApplicationController
     @json = student.proficiency teacher
   end
 
-  def dispute
-    s_id = current_account.loggable_id
-    response = GradedResponse.where(:id => params[:id], :student_id => s_id)
-    head :bad_request if response.empty?
-    response.first.update_attribute :disputed, true
-    render :json => { :status => :ok }, :status => :ok
-  end
-
   def inbox
-    student = Student.find params[:id]
-    @ws = student.nil? ? [] : student.testpapers
-    unless @ws.empty?
-      @ws = @ws.where(:takehome => true)
-      open = AnswerSheet.where(:student_id => student.id, :testpaper_id => @ws.map(&:id)).select{ |m| m.received? :none }
-      @ws = Testpaper.where :id => open.map(&:testpaper_id)
+    sid = params[:id]
+    student = Student.find sid
+    hw = student.nil? ? [] : Worksheet.where(student_id: sid, exam_id: Exam.takehome.map(&:id))
+    open = hw.select{ |h| h.received? :none }
+
+    unless open.blank?
+      @exams = Exam.where(id: open.map(&:exam_id).uniq)
     else
-      render :json => { :notify => { :text => "No new worksheets" }}, :status => :ok
+      render(json: { notify: { text: 'No new worksheets' }}, status: :ok) if @exams.blank?
     end
   end 
 
   def inbox_echo
-    @ws = Testpaper.find params[:ws]
-    @quiz = @ws.quiz
-    @student = current_account.loggable
-    sid = @student.id.to_i
-    student_ids = AnswerSheet.where(testpaper_id: @ws.id).map(&:student_id).sort
-    @relative_index = student_ids.index sid
+    eid = params[:e]
+    sid = current_account.loggable_id
+
+    w = Worksheet.where(student_id: sid, exam_id: eid).first 
+    unless w.nil?
+      render json: { a: "mint/#{w.path?}" }, status: :ok
+    else
+      render json: { status: 'No worksheet found' }, status: :bad_request 
+    end
   end
 
   def outbox

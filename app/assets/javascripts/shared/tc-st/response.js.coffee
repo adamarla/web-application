@@ -16,6 +16,7 @@ jQuery ->
 
     if url.match(/ws\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
+      karo.empty target
       key = 'wks'
     else if url.match(/ws\/layout/)
       # load student scans 
@@ -46,11 +47,14 @@ jQuery ->
           url : "view/fdb.json?id=:id"
         }
       }
+      $('#overlay-preview-carousel').removeClass 'hide'
       return true
     else if url.match(/view\/fdb/)
       target = $('#fdb-panel')
       $(m).addClass('hide') for m in target.find('.requirement')
-      target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
+
+      if json.fdb?
+        target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
 
       if json.split?
         active = target.parent().prev().children('li.active').eq(0)
@@ -70,7 +74,17 @@ jQuery ->
       else
         $(btnVideo).addClass 'disabled'
 
+      if json.preview? 
+        preview.loadJson json
+        if json.comments?
+          overlay.over $(preview.root)
+          overlay.loadJson json.comments
       return true
+    else if url.match(/question\/preview/)
+      $('#overlay-preview-carousel').addClass 'hide'
+      $('#wide-wait').addClass 'hide'
+      $('#wide-X').removeClass 'hide'
+      preview.loadJson json # vault; works without this?
     else
       matched = false
 
@@ -79,3 +93,4 @@ jQuery ->
 
     e.stopPropagation() if matched is true
     return true
+

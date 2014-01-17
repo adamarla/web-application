@@ -123,6 +123,10 @@ class Question < ActiveRecord::Base
     select{ |m| m.num_parts? == 0 }
   end
 
+  def subparts
+    Subpart.where(question_id: self.id).order(:index)
+  end
+
   def self.order_by_marks
     select{ |m| m.marks? > 0 }.sort{ |m,n| m.marks? <=> n.marks? }
   end
@@ -223,8 +227,8 @@ class Question < ActiveRecord::Base
     return klass
   end
 
-  def preview_images(restricted = false)
-    versions = restricted ? [0] : [*0..3]
+  def preview_images(restricted = false, version = 0)
+    versions = restricted ? [version] : [*0..3]
     span = self.answer_key_span?
     uid = self.uid 
     list = [] 
@@ -239,17 +243,11 @@ class Question < ActiveRecord::Base
 
   def edit_tex_layout(length, marks)
     if resize_subparts_list_to length.count
-      breaks = page_breaks length
       length = length.map{ |m| m == 1 || m == 4 ? "mcq" : ( m == 2 ? "halfpage" : "fullpage" ) }
 
       SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['tag_question']}" 
       response = SavonClient.request :wsdl, :tagQuestion do  
-        soap.body = { 
-           :id => self.uid,
-           :marks => marks,
-           :length => length,
-           :breaks => breaks
-        }
+        soap.body = { id: self.uid, marks: marks, length: length }
        end # of response 
 
        # As long as the response does not have an error, we are good
@@ -262,9 +260,7 @@ class Question < ActiveRecord::Base
 
   def update_subpart_info(lengths, marks) 
     # 'lengths' & 'marks' are arrays of equal length sent by the controller
-    subparts = Subpart.where(:question_id => self.id).order(:index)
-    breaks = page_breaks lengths
-    nbreaks = breaks.count
+    subparts = Subpart.where(question_id: self.id).order(:index)
     success = true
 
     subparts.each_with_index do |s,j|
@@ -279,18 +275,14 @@ class Question < ActiveRecord::Base
       end
 
       m = m == 0 ? 3 : m # if no marks are specified, then default to marks = 3
-      offset = breaks.index(breaks.select{ |m| m >= j }.first)
-      offset = nbreaks if offset.nil? # for subparts on the last page
-
-      success &= s.update_attributes(:mcq => mcq, :few_lines => few_lines, :half_page => half, 
-                                     :full_page => full, :marks => m, :relative_page => offset)
+      success &= s.update_attributes mcq: mcq, few_lines: few_lines, half_page: half, full_page: full, marks: m
       break if !success
     end
 
     # force recomputation of question's length and total marks by setting 
     # marks and length to nil. Recomputation will happen the next time 
     # marks? or length? is called 
-    self.update_attributes :length => nil, :marks => nil if success
+    self.update_attributes(length: nil, marks: nil) if success
     return success
   end
 
@@ -300,12 +292,13 @@ class Question < ActiveRecord::Base
   end
 
 =begin
+  ************** LEGACY ONLY 
   The next 2 methods were written when support for subparts was being added.
   They are to be called ONLY from within a migration file and nowhere else.
 
   The first takes us from question -> subpart (up) and the second reverses the process
   and takes us from subpart to question (down)
-=end 
+
   def split_into_subparts 
     return false if self.subparts.length > 0 # if subparts exist, then transition has probably already happened
     return false if self.topic_id.nil? # ignore untagged questions. Subparts will be created during tagging
@@ -325,42 +318,14 @@ class Question < ActiveRecord::Base
                         :full_page => s.full_page, :marks => s.marks,
                         :multi_correct => false, :num_parts => 0
   end
+=end
 
   private 
-    def page_breaks(length)
-      # Returns the 0-indexed array of subpart indices AFTER which a 
-      # \newpage should be inserted
-
-      return [] if self.num_parts? == 0
-      l = length.map{ |m| m == 1 || m == 4 ? 0.25 : ((m == 2) ? 0.5 : 1) }
-      breaks = []
-
-      used = 0
-      last = l.count - 1
-
-      l.each_with_index do |m, index|
-        used += m
-        remaining = 1 - used 
-
-        if index != last
-          next_one = l[index + 1]
-
-          if ((next_one == 1 && remaining < 0.75) ||
-             (next_one == 0.5 && remaining < 0.5) || 
-             (next_one == 0.25 && remaining < 0.25))
-             breaks.push index
-             used = 0
-          end
-        end
-      end # each
-      return breaks 
-    end # of method 
-
     def resize_subparts_list_to( nparts ) # nparts = 0 for a stand-alone question
       # however, internally we create 1 subpart object for even a standalone question
       nparts = (nparts == 0) ? 1 : nparts 
 
-      subparts = Subpart.where(:question_id => self.id)
+      subparts = Subpart.where(question_id: self.id)
       existing = subparts.length
       additional = nparts - existing
       success = true
