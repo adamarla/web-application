@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(:version => 20140116130829) do
     t.boolean  "is_mother"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "balance"
   end
 
   create_table "lectures", :force => true do |t|
