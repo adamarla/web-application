@@ -219,6 +219,7 @@ class GradedResponse < ActiveRecord::Base
     sign = self.worksheet.signature 
     return "0" if sign.blank?
     idx = self.q_selection.index - 1 # QSelections are 1-indexed - not 0-indexed
+    sign = sign.split(',') # by itself, sign is a string
     ret = sign[idx]
     return (ret.blank? ? "0" : ret)
   end
