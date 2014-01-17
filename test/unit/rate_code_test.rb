@@ -1,17 +1,18 @@
 # == Schema Information
 #
-# Table name: cost_codes
+# Table name: rate_codes
 #
 #  id           :integer         not null, primary key
-#  description  :text
-#  subscription :boolean
+#  cost_code_id :integer
+#  value        :integer
+#  currency     :string(3)
 #  created_at   :datetime        not null
 #  updated_at   :datetime        not null
 #
 
 require 'test_helper'
 
-class CostCodeTest < ActiveSupport::TestCase
+class RateCodeTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

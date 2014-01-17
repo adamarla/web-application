@@ -2,15 +2,18 @@
 #
 # Table name: guardians
 #
-#  id         :integer         not null, primary key
-#  is_mother  :boolean
-#  created_at :datetime
-#  updated_at :datetime
+#  id           :integer         not null, primary key
+#  is_mother    :boolean
+#  created_at   :datetime
+#  updated_at   :datetime
+#  balance      :integer
+#  rate_code_id :integer
 #
 
 class Guardian < ActiveRecord::Base
   has_many :students
   has_one :account, :as => :loggable, :dependent => :destroy
+  has_one :rate_code
 
   # [:all] ~> [:admin, :guardian, :teacher, :school]
   #attr_accessible
