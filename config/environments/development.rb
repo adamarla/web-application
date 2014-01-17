@@ -37,5 +37,16 @@ Webapp::Application.configure do
   # 
   # Ref : http://stackoverflow.com/questions/7721502/rails-3-1-remote-requests-submitting-twice
   config.serve_static_assets = false
+
+  # Railscasts #145
+  # Configure sandbox payment gwy
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test 
+    ::GATEWAY = ActiveMerchant::Billing::PaypalGateway.new(
+      :login => "akshay.damarla-facilitator_api1.gmail.com",
+      :password => "1389079775",
+      :signature => "AFcWxV21C7fd0v3bYYYRCpSSRl31Abi7nrcTSTJskutftvk4isuLv9dg"
+    )
+  end
 end
 
