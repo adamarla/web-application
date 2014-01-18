@@ -20,6 +20,8 @@ class Examiner < ActiveRecord::Base
   has_many :graded_responses
   has_many :suggestions
 
+  has_many :apprenticeships, dependent: :destroy
+
   # [:all] ~> [:admin]
   # [:disputed] ~> [:student]
   #attr_accessible :disputed
