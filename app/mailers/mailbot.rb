@@ -43,7 +43,7 @@ class Mailbot < ActionMailer::Base
   def new_grading_work(eid)
     examiner = Examiner.find eid
     deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
-    mail subject: "(Grading to-do) Deadline: #{d.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
+    mail subject: "[Grading To-do] Deadline: #{deadline.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
   end
 
   def quiz_assigned(wsid)
