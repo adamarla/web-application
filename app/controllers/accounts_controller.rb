@@ -43,18 +43,18 @@ class AccountsController < ApplicationController
     end
   end
 
-  def ws 
-    @wks = current_account.ws
+  def exams 
+    @exams = current_account.exams
     @who = current_account.loggable_type
-    @wks = @wks.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse if @who == "Student"
+    @exams = @exams.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse if @who == "Student"
   end
 
   def courses
     @courses = current_account.courses
   end 
 
-  def pending_ws
-    @wks = current_account.pending_ws
+  def pending_exams
+    @exams = current_account.pending_exams
   end
 
   def to_be_graded

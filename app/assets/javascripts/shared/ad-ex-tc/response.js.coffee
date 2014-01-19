@@ -14,10 +14,9 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
-    if url.match(/ws\/pending/)
-      target = $('#pane-grd-ws')
-      key = 'wks'
-      # menu = 'per-grd-ws'
+    if url.match(/exams\/pending/)
+      target = $('#pane-grd-exams')
+      key = 'exams'
     else if url.match(/grade\/pending/)
       target = $('#pane-grd-questions')
       key = 'questions'

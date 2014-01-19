@@ -128,7 +128,7 @@ lnk-wb-pending :
     left : left-4
     wide : wide-X
   autoclick :
-    tab : tab-grd-ws
+    tab : tab-grd-exams
 
 m-teacher-quizzes :
   show : 
@@ -156,14 +156,14 @@ tab-ws-performance :
     panel : student/performance.json?id=:id&ws=:prev 
   prev : tab-wsl
 
-tab-grd-ws :
+tab-grd-exams :
   url : 
-    self : ws/pending
+    self : exams/pending
   autoclick :
     tab : tab-grd-questions
 
 tab-grd-questions :
-  prev : tab-grd-ws
+  prev : tab-grd-exams
   url :
     self : grade/pending?id=:prev
   autoclick :
@@ -171,7 +171,7 @@ tab-grd-questions :
 
 tab-grd-panel :
   prev : tab-grd-questions
-  id : tab-grd-ws
+  id : tab-grd-exams
   url : 
     self : scans/pending.json?q=:prev&tp=:id
 

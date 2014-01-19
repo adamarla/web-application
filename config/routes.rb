@@ -17,8 +17,8 @@ Webapp::Application.routes.draw do
 
   # Account 
   match 'account' => 'accounts#update', via: :post
-  match 'ws/list' => 'accounts#ws', via: :get
-  match 'ws/pending' => 'accounts#pending_ws', via: :get
+  match 'exams/list' => 'accounts#exams', via: :get
+  match 'exams/pending' => 'accounts#pending_exams', via: :get
   match 'grade/pending' => 'accounts#to_be_graded', via: :get
   match 'scans/pending' => 'accounts#pending_scans', via: :get
   match 'submit/fdb' => 'accounts#submit_fdb', via: [:put, :post]
