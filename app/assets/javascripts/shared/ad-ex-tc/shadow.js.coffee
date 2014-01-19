@@ -37,7 +37,7 @@ window.shadow = {
   fall: (percent = 8) ->
     return false unless shadow.root?
     percent = parseInt percent
-    percent = if percent <= 8 then 8 else (percent + 4)
+    percent = if percent <= 8 then 8 else percent
     $(shadow.root).css "height", "#{percent}%"
     return true
 
