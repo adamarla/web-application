@@ -18,7 +18,7 @@ jQuery ->
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
       karo.empty target
       key = 'exams'
-    else if url.match(/ws\/layout/)
+    else if url.match(/exam\/layout/)
       # load student scans 
       preview.loadJson json # locker
       # prep the feedback panel
