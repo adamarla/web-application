@@ -162,7 +162,7 @@ class Exam < ActiveRecord::Base
     # Numbers < 0 => deadline missed 
 
       g = GradedResponse.in_exam(self.id).with_scan.ungraded.order(:updated_at).last
-      d = g.nil? ? 3.business_days.from_now : (g.updated_at + 3.business_days)
+      d = g.nil? ? 3.business_days.from_now : (3.business_days.after g.updated_at)
       self.update_attribute(:deadline, d) 
 
     deadln = self.deadline.nil? ? 0 : (self.deadline.to_date - Date.today).to_i
