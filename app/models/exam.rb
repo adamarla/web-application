@@ -157,6 +157,18 @@ class Exam < ActiveRecord::Base
     return "#{self.quiz.uid}/#{self.uid}"
   end 
 
+  def deadline? 
+    # Returns the ** number of days ** left to finish grading this exam
+    # Numbers < 0 => deadline missed 
+    if self.deadline.nil?
+      g = GradedResponse.in_exam(self.id).with_scan.ungraded.order(:updated_at)
+      self.update_attribute(:deadline, g.last.updated_at) unless g.last.nil?
+    end
+
+    deadln = self.deadline.nil? ? 0 : (self.deadline.to_date - Date.today).to_i
+    return deadln
+  end
+
   def write 
     response = {} 
     return response if self.takehome 

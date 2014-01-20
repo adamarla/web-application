@@ -73,7 +73,9 @@ class Examiner < ActiveRecord::Base
 
   def self.distribute_scans
     pnd = GradedResponse.unassigned.with_scan
-    by = pnd.map(&:worksheet).uniq.map(&:exam).uniq.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.online }
+    exams = pnd.map(&:worksheet).uniq.map(&:exam).uniq 
+    by = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.online }
+
     examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
     n_examiners = examiners.count
     used = [] # to track examiners to whom an e-mail must be sent
@@ -96,6 +98,12 @@ class Examiner < ActiveRecord::Base
       end # over students
     end
 
+    # Update deadline field for each exam for which scans have been distributed 
+    deadline = 3.business_days.from_now
+    for e in exams
+      e.update_attribute :deadline, deadline 
+    end
+
     # Let the (offline) teacher know that scans have been received
     for t in by.uniq
       Mailbot.delay.scans_received(t)
@@ -105,7 +113,6 @@ class Examiner < ActiveRecord::Base
     for id in used.uniq
       Mailbot.delay.new_grading_work(id)
     end
-
   end
 
 end # of class
