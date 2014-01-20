@@ -1,7 +1,7 @@
 
 object false 
-  node(:wks) { 
-    @wks.map{ |m| 
+  node(:exams) { 
+    @exams.map{ |m| 
       { 
         id: m.id, 
         name: m.quiz.name, 

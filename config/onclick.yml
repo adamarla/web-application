@@ -177,8 +177,8 @@ tab-grd-panel :
 
 tab-tc-rc-1 :
   url : 
-    self : ws/list
-    panel : ws/summary.json?id=:id
+    self : exams/list
+    panel : exam/summary.json?id=:id
   autoclick :
     tab : tab-tc-rc-2
 
@@ -186,7 +186,7 @@ tab-tc-rc-2 :
   show :
     wide : wide-chart-1
   url :
-    panel : ws/layout.json?ws=:prev&id=:id
+    panel : exam/layout.json?e=:prev&id=:id
   autoclick :
     tab : tab-tc-rc-3
   prev : tab-tc-rc-1
@@ -336,8 +336,8 @@ lnk-st-inbox :
 
 tab-st-rc-1 :
   url : 
-    self : ws/list 
-    panel : ws/layout.json?ws=:id
+    self : exams/list 
+    panel : exam/layout.json?e=:id
   autoclick :
     tab : tab-st-rc-2
 

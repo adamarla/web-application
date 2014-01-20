@@ -14,10 +14,10 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
-    if url.match(/ws\/list/)
+    if url.match(/exams\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
       karo.empty target
-      key = 'wks'
+      key = 'exams'
     else if url.match(/ws\/layout/)
       # load student scans 
       preview.loadJson json # locker
