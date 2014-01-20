@@ -169,6 +169,13 @@ class Exam < ActiveRecord::Base
     return deadln
   end
 
+  def percent_graded?
+    g = GradedResponse.in_exam(self.id).with_scan
+    return 0 if g.count == 0
+    ret = (( g.graded.count.to_f / g.count )*100).round
+    return ret
+  end
+
   def write 
     response = {} 
     return response if self.takehome 
