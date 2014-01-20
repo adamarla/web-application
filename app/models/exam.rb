@@ -160,10 +160,10 @@ class Exam < ActiveRecord::Base
   def deadline? 
     # Returns the ** number of days ** left to finish grading this exam
     # Numbers < 0 => deadline missed 
-    if self.deadline.nil?
-      g = GradedResponse.in_exam(self.id).with_scan.ungraded.order(:updated_at)
-      self.update_attribute(:deadline, g.last.updated_at) unless g.last.nil?
-    end
+
+      g = GradedResponse.in_exam(self.id).with_scan.ungraded.order(:updated_at).last
+      d = g.nil? ? 3.business_days.from_now : (g.updated_at + 3.business_days)
+      self.update_attribute(:deadline, d) 
 
     deadln = self.deadline.nil? ? 0 : (self.deadline.to_date - Date.today).to_i
     return deadln
