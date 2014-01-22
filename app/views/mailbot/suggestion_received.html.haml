@@ -3,8 +3,8 @@
   Dear #{@teacher.first_name},
 %p
   We have received the questions you sent today for inclusion into the database.
-  And we expect to have them added by #{@deadline.strftime('%I:%M%p GMT')} on 
-  #{@deadline.strftime('%A, %b %d')}.
+  And we expect to have them added within <b>3 business days</b> - that is - by 
+  #{@deadline.strftime('%I:%M%p GMT')} on #{@deadline.strftime('%A, %b %d')}.
 %p
   Please know that we take great care before adding a question into our database. 
   For example, we create <b>multiple versions</b> for every question you send. And as far 
@@ -24,5 +24,6 @@
   you sent the next time you check. 
 %p
   Best regards, 
+%p
   <b>Gradians Support Team</b>
   
