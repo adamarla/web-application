@@ -41,13 +41,13 @@ Webapp::Application.configure do
   #   Ref: http://guides.rubyonrails.org/action_mailer_basics.html
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address => 'smtp.gmail.com',
-    :port => 587, 
-    :domain => 'gradians.com',
-    :user_name => 'help@gradians.com',
-    :password => 'shibb0leth',
-    :authentication => :plain, 
-    :enable_starttls_auto => true
+    address: 'smtp.gmail.com',
+    port: 587, 
+    domain: 'gradians.com',
+    user_name: 'mailer-noreply@gradians.com',
+    password: 'shibb0leth',
+    authentication: :plain, 
+    enable_starttls_auto: true
   }
 
   # Enable threaded mode
