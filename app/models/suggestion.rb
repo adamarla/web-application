@@ -15,8 +15,9 @@
 class Suggestion < ActiveRecord::Base
   has_many :questions
   belongs_to :teacher  
-  validates :signature, uniqueness: true
+  belongs_to :examiner
 
+  validates :signature, uniqueness: true
   after_create :inform_examiner
   after_create :inform_teacher, if: Proc.new{ |sg| sg.teacher.account.email_is_real? } 
 
