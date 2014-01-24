@@ -1,0 +1,29 @@
+
+%p
+  Dear #{@teacher.first_name},
+%p
+  We have received the questions you sent today for inclusion into the database.
+  And we expect to have them added within <b>3 business days</b> - that is - by 
+  #{@deadline.strftime('%I:%M%p GMT')} on #{@deadline.strftime('%A, %b %d')}.
+%p
+  Please know that we take great care before adding a question into our database. 
+  For example, we create <b>multiple versions</b> for every question you send. And as far 
+  as possible, <b>we try to ensure</b> that each new question brings with it <b>new insights</b>
+  for the student.
+%p
+  Our aim is to keep the noise as low as possible in our question bank. And therefore, if we feel that 
+  some of the questions you sent today are 
+  %ul
+    %li
+      Similar to the ones we already have <b>or that</b>
+    %li
+      They do not offer any new insights
+  then we may decide against typesetting them. 
+%p
+  We just thought you should know how we work lest you fail to find the exact questions 
+  you sent the next time you check. 
+%p
+  Best regards, 
+%p
+  <b>Gradians Support Team</b>
+  

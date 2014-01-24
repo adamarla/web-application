@@ -5,15 +5,15 @@ class ExamsController < ApplicationController
 
   def summary
     # students who got this exam
-    @ws = Exam.find params[:id]
-    head :bad_request if @ws.nil?
-    # @mean = @ws.mean?
-    @students = @ws.students.order(:first_name)
-    @totals = @students.map{ |s| s.marks_scored_in @ws.id }
-    @honest = @students.map{ |s| s.honestly_attempted? @ws.id }
-    @max = @ws.quiz.total?
-    @questions = @ws.quiz.subparts # subparts actually - and index ordered 
-    @g_all = GradedResponse.in_exam @ws.id
+    @exam = Exam.find params[:id]
+    head :bad_request if @exam.nil?
+    # @mean = @exam.mean?
+    @students = @exam.students.order(:first_name)
+    @totals = @students.map{ |s| s.marks_scored_in @exam.id }
+    @honest = @students.map{ |s| s.honestly_attempted? @exam.id }
+    @max = @exam.quiz.total?
+    @questions = @exam.quiz.subparts # subparts actually - and index ordered 
+    @g_all = GradedResponse.in_exam @exam.id
   end
 
   def load 
@@ -27,13 +27,13 @@ class ExamsController < ApplicationController
 
   def layout
     # Returns ordered list of questions - renderable as .tabs-left
-    @ws = Exam.find params[:ws]
+    @exam = Exam.find params[:e]
     student_id = params[:id].blank? ? current_account.loggable_id : params[:id]
 
     @who = current_account.loggable_type
-    unless @ws.nil?
-      @subparts = Subpart.in_quiz @ws.quiz_id
-      @gr = GradedResponse.of_student(student_id).in_exam @ws.id
+    unless @exam.nil?
+      @subparts = Subpart.in_quiz @exam.quiz_id
+      @gr = GradedResponse.of_student(student_id).in_exam @exam.id
     else
       head :bad_request 
     end

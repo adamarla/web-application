@@ -91,7 +91,7 @@ jQuery ->
       menu = 'per-ws'
       clickFirst = true
       lesson = 'publish-milestone-2'
-    else if url.match(/ws\/summary/)
+    else if url.match(/exam\/summary/)
       target = $("#pane-tc-rc-2")
       key = "root"
       wsSummary json

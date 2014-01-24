@@ -17,8 +17,8 @@ Webapp::Application.routes.draw do
 
   # Account 
   match 'account' => 'accounts#update', via: :post
-  match 'ws/list' => 'accounts#ws', via: :get
-  match 'ws/pending' => 'accounts#pending_ws', via: :get
+  match 'exams/list' => 'accounts#exams', via: :get
+  match 'exams/pending' => 'accounts#pending_exams', via: :get
   match 'grade/pending' => 'accounts#to_be_graded', via: :get
   match 'scans/pending' => 'accounts#pending_scans', via: :get
   match 'submit/fdb' => 'accounts#submit_fdb', via: [:put, :post]
@@ -132,9 +132,9 @@ Webapp::Application.routes.draw do
   match 'new/lesson' => 'teachers#add_lesson', via: :post
 
   # Exam
-  match 'ws/summary' => 'exams#summary', via: :get
+  match 'exam/summary' => 'exams#summary', via: :get
   match 'exam/load' => 'exams#load', via: :get
-  match 'ws/layout' => 'exams#layout', via: :get
+  match 'exam/layout' => 'exams#layout', via: :get
   match 'ws/publish' => 'exams#inbox', via: :get
   match 'ws/unpublish' => 'exams#uninbox', via: :get
   match 'ws/report_card' => 'exams#report_card', via: :get

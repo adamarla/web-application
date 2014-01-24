@@ -54,16 +54,6 @@ ActiveRecord::Schema.define(:version => 20140118100250) do
     t.datetime "updated_at",                    :null => false
   end
 
-  create_table "aggr_teacher_topics", :force => true do |t|
-    t.integer  "teacher_id"
-    t.integer  "topic_id"
-    t.float    "benchmark"
-    t.float    "average"
-    t.integer  "attempts"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
   create_table "apprenticeships", :force => true do |t|
     t.integer  "examiner_id"
     t.integer  "teacher_id"

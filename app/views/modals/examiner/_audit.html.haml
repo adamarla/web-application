@@ -10,8 +10,7 @@
       = simple_form_for :audit, remote: true, defaults: { label: false, required: false }, html: html do |f|
         .row-fluid
           .span6
-            - unless is_teacher 
-              %p.heading= "Gating Issues"
+            %p.heading= "Gating Issues"
             = f.input :gating, as: :check_boxes, 
               collection: ['Incorrect solution', 
               'Solution hard to follow',
@@ -22,13 +21,13 @@
               'Video solution not for this question',
               'Grammatical errors in question/solution'] 
           .span6
-            - unless is_teacher
-              %p.heading= "Non-gating Issues"
+            %p.heading= "Non-gating Issues"
             = f.input :non_gating, as: :check_boxes, 
               collection: ['Incorrect spellings', 
               'Verbose question',
               'Verbose solution',
               'Has alternate solutions', 
+              'Rewrite as a multipart',
               'Add explanatory diagram', 
               'Should have multiple versions',
               'Spelling errors in question/solution']

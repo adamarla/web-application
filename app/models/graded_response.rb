@@ -216,12 +216,12 @@ class GradedResponse < ActiveRecord::Base
 
   def version
     # Returns the version the student got and for which this is the graded response
-    signature = self.worksheet.map(&:signature).first
-    signature = Worksheet.where(student_id: self.student_id, exam_id: self.worksheet.exam_id).map(&:signature).first
-    return "0" if signature.blank?
-
-    j = self.q_selection.index - 1 # QSelection.index is 1-indexed - not 0-indexed
-    return signature[j]
+    sign = self.worksheet.signature 
+    return "0" if sign.blank?
+    idx = self.q_selection.index - 1 # QSelections are 1-indexed - not 0-indexed
+    sign = sign.split(',') # by itself, sign is a string
+    ret = sign[idx]
+    return (ret.blank? ? "0" : ret)
   end
 
   def honest?
