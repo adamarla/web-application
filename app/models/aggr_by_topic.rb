@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: aggr_teacher_topics
+# Table name: aggr_by_topics
 #
 #  id              :integer         not null, primary key
 #  aggregator_id   :integer
@@ -15,25 +15,24 @@
 
 class AggrByTopic < ActiveRecord::Base
 
-  has_one :topic
-  has_one :aggregator, :polymorphic => true
+  has_one    :topic
+
+  # An aggregate is for a teacher as of now (01/24/14) but can be 
+  # for a student, a school or even a geography in future
+  belongs_to :aggregator, :polymorphic => true
 
   def self.for_teacher(teacher_id)
-    AggrByTopic.where(aggregator_id: teacher_id, :aggregator_type: "teacher")
+    where(aggregator_id: teacher_id, aggregator_type: "teacher")
   end
 
-  def self.on_topic(topic_id)
-    AggrByTopic.where(topic_id: topic_id)
+  def self.for_topic(topic_id)
+    where(topic_id: topic_id)
   end
   
-  def self.build_for_teacher(teacher_id)
-    grs=[]
-    Teacher.find(teacher_id).quizzes.each do |q|
-      grs+=GradedResponse.in_quiz(q).graded
-    end
-
+  def self.build(graded_responses)
     vals = {}
-    grs.each do |gr|
+    graded_responses.each do |gr|
+      next if gr.feedback == 0 # make sure it is in fact a "graded" response
       q_selection = gr.q_selection
       teacher_id  = q_selection.quiz.teacher_id
       topic_id    = q_selection.question.topic_id
@@ -54,12 +53,15 @@ class AggrByTopic < ActiveRecord::Base
       benchmark = (val[:out_of]/val[:count].to_f).round(2)
       average = (val[:marks]/val[:count].to_f).round(2)
       count = val[:count]
-      att = AggrByTopic.new aggregator_id: teacher_id.to_i,
-                            aggregator_type: "teacher",
-                            topic_id: topic_id.to_i,
-                            benchmark: benchmark,
-                            average: average,
-                            attempts: count
+      att = AggrByTopic.for_teacher(teacher_id).for_topic(topic_id).first
+      if att.nil?
+        att = AggrByTopic.new aggregator_id: teacher_id.to_i,
+                              aggregator_type: "teacher",
+                              topic_id: topic_id.to_i
+      end
+      att[:benchmark] = benchmark
+      att[:average] = average
+      att[:attempts] = count
       att.save
     end
   end

@@ -43,6 +43,17 @@ ActiveRecord::Schema.define(:version => 20140118100250) do
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
 
+  create_table "aggr_by_topics", :force => true do |t|
+    t.integer  "topic_id"
+    t.integer  "aggregator_id"
+    t.string   "aggregator_type", :limit => 20
+    t.float    "benchmark"
+    t.float    "average"
+    t.integer  "attempts"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
   create_table "aggr_teacher_topics", :force => true do |t|
     t.integer  "teacher_id"
     t.integer  "topic_id"

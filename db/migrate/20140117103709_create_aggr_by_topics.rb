@@ -1,6 +1,6 @@
-class CreateAggrTeacherTopics < ActiveRecord::Migration
+class CreateAggrByTopics < ActiveRecord::Migration
   def change
-    create_table :aggr_teacher_topics do |t|
+    create_table :aggr_by_topics do |t|
       t.integer :topic_id
       t.integer :aggregator_id
       t.string  :aggregator_type, limit: 20
