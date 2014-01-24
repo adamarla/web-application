@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140116130829) do
+ActiveRecord::Schema.define(:version => 20140118100250) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -42,6 +42,33 @@ ActiveRecord::Schema.define(:version => 20140116130829) do
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"
   add_index "accounts", ["email"], :name => "index_accounts_on_email", :unique => true
   add_index "accounts", ["reset_password_token"], :name => "index_accounts_on_reset_password_token", :unique => true
+
+  create_table "aggr_teacher_topics", :force => true do |t|
+    t.integer  "teacher_id"
+    t.integer  "topic_id"
+    t.float    "benchmark"
+    t.float    "average"
+    t.integer  "attempts"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "apprenticeships", :force => true do |t|
+    t.integer  "examiner_id"
+    t.integer  "teacher_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "apprenticeships", ["examiner_id"], :name => "index_apprenticeships_on_examiner_id"
+  add_index "apprenticeships", ["teacher_id"], :name => "index_apprenticeships_on_teacher_id"
+
+  create_table "cost_codes", :force => true do |t|
+    t.text     "description"
+    t.boolean  "subscription"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "countries", :force => true do |t|
     t.string "name",         :limit => 50
@@ -147,7 +174,6 @@ ActiveRecord::Schema.define(:version => 20140116130829) do
     t.boolean  "is_mother"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "balance"
   end
 
   create_table "lectures", :force => true do |t|
@@ -234,6 +260,14 @@ ActiveRecord::Schema.define(:version => 20140116130829) do
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
   add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
+
+  create_table "rate_codes", :force => true do |t|
+    t.integer  "cost_code_id"
+    t.integer  "value"
+    t.string   "currency",     :limit => 3
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
 
   create_table "requirements", :force => true do |t|
     t.string  "text",       :limit => 100
