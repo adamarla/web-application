@@ -1,0 +1,33 @@
+# == Schema Information
+#
+# Table name: aggr_teacher_topics
+#
+#  id              :integer         not null, primary key
+#  aggregator_id   :integer
+#  aggregator_type :string(20)
+#  topic_id        :integer
+#  benchmark       :float
+#  average         :float
+#  attempts        :integer
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  aggregator_id: 1
+  aggregator_type: "teacher"
+  topic_id: 1
+  benchmark: 1
+  average: 1.5
+  attempted: 1
+
+two:
+  aggregator_id: 2
+  aggregator_type: "teacher"
+  topic_id: 1
+  benchmark: 1
+  average: 1.5
+  attempted: 1
+

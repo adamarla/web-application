@@ -1,6 +1,6 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:distribute_scans, :receive_single_scan]
+  before_filter :authenticate_account!, :except => [:distribute_scans, :receive_single_scan, :aggregate]
   respond_to :json
 
   def create
@@ -163,5 +163,11 @@ class ExaminersController < ApplicationController
     end
     render json: { status: :ok }, status: :ok 
   end 
+
+  def aggregate
+    # Right now it aggregates by teacher_id, can do by others in future - 01/24/14
+    AggrByTopic.build(GradedResponse.graded)
+    render json: { status: :ok}
+  end
 
 end
