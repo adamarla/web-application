@@ -7,15 +7,42 @@ class SektionsController < ApplicationController
   end
 
   def create 
-    sektion = params[:new][:sektion]
-    unless sektion.blank?
-      teacher = current_account.loggable
-      @sk = teacher.sektions.build :name => sektion
-      unless @sk.save
-        render :json => { :notify => { :text => @sk.errors[:name] } }, :status => :bad_request
+    p = params[:new]
+
+    start_mnth = p['smonth(2i)'].to_i # the 2i bit is due to simple_form 
+    duration = p[:duration].to_i
+    renew = p[:renew] == "2" ? false : true
+
+    today = Date.today 
+
+    # 'year' should be such that 'today' either (descending order of preference)
+    #    1. already lies in the specified time range 
+    #    2. will soon lie in the specified range 
+    # 'today' should NOT lie outside the range when the sektion is created
+
+    start_date = Date.civil(today.year, start_mnth, 1)
+    end_date = (start_date + duration.months).yesterday
+
+    if start_date > today # try same month in previous year
+      a = Date.civil(today.year - 1, start_mnth, 1)
+      b = (a + duration.months).yesterday
+      if b > today
+        start_date = a 
+        end_date = b
       end
-    else
-      render :json => { :notify => { :text => "No name for sektion" } }, :status => :bad_request
+    elsif end_date < today # start sektion in next year
+      start_date = Date.civil(today.year + 1, start_mnth, 1)
+      end_date = (start_date + duration.months).yesterday
+    end
+
+    # current_account.loggable should be / would be a teacher. 
+    # If not, then its an unexpected - and big - problem
+    @sk = current_account.loggable.sektions.build name: p[:name],
+                                                 start_date: start_date,
+                                                 end_date: end_date,
+                                                 auto_renew: renew
+    unless @sk.save
+      render json: { notify: { text: @sk.errors[:name] } }, status: :ok
     end
   end 
 

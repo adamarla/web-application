@@ -1,5 +1,5 @@
 
-- my_sektions = teacher.sektions 
+- my_sektions = teacher.sektions.order(:end_date).select{ |m| m.active? }
 - my_sektions = my_sektions.blank? ? Sektion.where(id: 58) : my_sektions
 
 -# Left-side tabs - one per section
@@ -7,7 +7,7 @@
   %ul.nav.nav-tabs.span3{ id: 'wsb-ul-milestone-2' }
     - my_sektions.each_with_index do |m,j|
       %li
-        = simple_link for: "#{m.label}", toggle: :tab, marker: "#{m.id}", href: "#wsb-sektions", 
+        = simple_link for: "#{m.name?}", toggle: :tab, marker: "#{m.id}", href: "#wsb-sektions", 
         url: { self: "sektion/students.json?id=#{m.id}&context=wsb&quiz=:prev" }, prev: 'tab-wsb-quizzes'
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>

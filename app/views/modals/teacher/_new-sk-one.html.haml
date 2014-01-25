@@ -1,50 +1,23 @@
 
-#m-new-sk-1.modal.fade.lateral-slide{ :role => :dialog }
-
-  -# static components
-  .row-fluid
-    -# build
-    .span3.offset1
-      .span3
-      .span8.offset1
-        %h1.orange= "1. Give a name" 
-        %p
-          It can be anything - something purely functional - like 11-A, 12-B etc. - or 
-          something descriptive - like 'Gifted Students' or 'Weak in Algebra'
-        %p
-          A student can belong to more than group - but only you will know which 
-          students are in which groups
-        %p.push-down
-          = simple_form_for :new, :url => add_sektion_path, :remote => true, :defaults => { :label => false } do |f|
-            = f.input :sektion, :hint => "Give the new group a name"
-            = simple_button :for => 'Add', :type => :submit, :class => 'btn-primary'
-
-    -# print
-    .span4
-      .span2
-      .span9
-        %h1.orange= "2. Note Group Code"
-        %p
-          Below is the unique code for the group you just created. <b>Share it with your students</b>          
-        %p
-          They will need it if they want to see their graded assignments for the quizzes 
-          you make
-        %p.push-down
-          %h1.white.bold.offset3{ :id => 'new-sk-uid' }= "group code"
-
-    -# upload
-    .span4
-      .span2
-        = image_tag 'notifications/add-user.png', :class => 'big-icon'
-      .span9
-        %h1.orange= "3. Add Students (optional)"
-        %p
-          If you know the names of the students you want in this group,  
-          then you can add those students now
-        %p
-          However, if you want students to enroll themselves, then give them the code
-          from step (2). When they login into their account and enter it, they will 
-          become part of the group
-        %p.push-down
-          = simple_button :for => "Add now", :id => 'btn-add-now', :class => 'btn-primary'
-          = simple_button :for => "Add later", :id => 'btn-add-later', :class => 'btn-primary pull-right'
+#m-new-sk-1.modal.fade.wide{ role: :dialog }
+  .row-fluid{ id: :step_1 }
+    .span2.offset1
+      = image_tag 'notifications/group.png', class: 'big-icon'
+    .span8
+      %p
+        = simple_form_for :new, url: add_sektion_path, remote: true, defaults: { label: false }  do |f|
+          = f.input :name, placeholder: 'Give the section a name' 
+          .row-fluid
+            .span4
+              %h6.white= "Session starts in" 
+              = f.input :smonth, as: :date, order: [:month]
+            .span4
+              %h6.white= "Lasts for"
+              = f.input :duration, as: :select, selected: 12,
+                collection: [*1..12].map{ |m| [m, "#{m} month(s)"] }, value_method: :first, label_method: :last
+            .span4
+              %h6.white= "Auto-renews?"
+              = f.input :renew, as: :select, selected: 1,
+                collection: [[1,'Yes'], [2,'No']], value_method: :first, label_method: :last
+          .row-fluid
+            = f.button :submit, class: 'pull-right btn-large btn-primary', value: 'Create' 

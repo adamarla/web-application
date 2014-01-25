@@ -88,7 +88,7 @@ class TeachersController < ApplicationController
     if teacher.nil?
       @sektions = []
     else
-      @sektions = teacher.sektions
+      @sektions = teacher.sektions.order(:end_date).order(:name)
       @sektions = Sektion.where(id: PREFAB_SECTION) if @sektions.blank?
     end
     @context = params[:context]
