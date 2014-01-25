@@ -147,6 +147,7 @@ class Sektion < ActiveRecord::Base
       def seal 
         uid = "#{self.teacher_id.to_s(36)}#{rand(99999).to_s(20)}".upcase
         self.update_attributes uid: uid, name: self.name.titleize
-        # Trigger a mail to the (non-online) teacher
+        # Let the teacher know  
+        Mailbot.delay.new_sektion(self) unless self.teacher.online
       end 
 end

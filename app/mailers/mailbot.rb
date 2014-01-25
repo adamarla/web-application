@@ -109,4 +109,14 @@ class Mailbot < ActionMailer::Base
     mail to: "bugs@gradians.com", subject: "[Gradians.com]: Error in Mint"
   end
 
+  def new_sektion(sk)
+    @t = sk.teacher
+    @start = sk.start_date.strftime("%B %d, %Y") 
+    @end = sk.end_date.strftime("%B %d, %Y")
+    @renew = sk.renew ? "Yes" : "No"
+    @code = sk.uid
+    @name = sk.name
+    mail to: sk.teacher.account.email, subject: "[Gradians.com]: New section - #{@name} - created"
+  end
+
 end
