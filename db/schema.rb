@@ -64,13 +64,6 @@ ActiveRecord::Schema.define(:version => 20140123095144) do
   add_index "apprenticeships", ["examiner_id"], :name => "index_apprenticeships_on_examiner_id"
   add_index "apprenticeships", ["teacher_id"], :name => "index_apprenticeships_on_teacher_id"
 
-  create_table "cost_codes", :force => true do |t|
-    t.text     "description"
-    t.boolean  "subscription"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
   create_table "countries", :force => true do |t|
     t.string "name",         :limit => 50
     t.string "alpha_2_code"
@@ -261,14 +254,6 @@ ActiveRecord::Schema.define(:version => 20140123095144) do
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
   add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
-
-  create_table "rate_codes", :force => true do |t|
-    t.integer  "cost_code_id"
-    t.integer  "value"
-    t.string   "currency",     :limit => 3
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
 
   create_table "requirements", :force => true do |t|
     t.string  "text",       :limit => 100
