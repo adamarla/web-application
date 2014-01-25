@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
   def exams 
     @exams = current_account.exams
     @who = current_account.loggable_type
-    @exams = @exams.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse if @who == "Student"
+    @exams = @exams.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse
   end
 
   def courses
