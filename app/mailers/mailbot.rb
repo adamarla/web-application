@@ -113,7 +113,7 @@ class Mailbot < ActionMailer::Base
     @t = sk.teacher
     @start = sk.start_date.strftime("%B %d, %Y") 
     @end = sk.end_date.strftime("%B %d, %Y")
-    @renew = sk.renew ? "Yes" : "No"
+    @renew = sk.auto_renew ? "Yes" : "No"
     @code = sk.uid
     @name = sk.name
     mail to: sk.teacher.account.email, subject: "[Gradians.com]: New section - #{@name} - created"
