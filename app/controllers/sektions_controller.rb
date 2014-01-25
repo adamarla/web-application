@@ -1,5 +1,5 @@
 class SektionsController < ApplicationController
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, except: [:monthly_audit]
   respond_to :json 
 
   def ping
@@ -20,8 +20,10 @@ class SektionsController < ApplicationController
     #    2. will soon lie in the specified range 
     # 'today' should NOT lie outside the range when the sektion is created
 
-    start_date = Date.civil(today.year, start_mnth, 1)
-    end_date = (start_date + duration.months).yesterday
+    # start_date = Date.civil(today.year, start_mnth, 1)
+    # end_date = (start_date + duration.months).yesterday
+    start_date = today 
+    end_date = today.tomorrow
 
     if start_date > today # try same month in previous year
       a = Date.civil(today.year - 1, start_mnth, 1)
@@ -45,6 +47,11 @@ class SektionsController < ApplicationController
       render json: { notify: { text: @sk.errors[:name] } }, status: :ok
     end
   end 
+
+  def monthly_audit
+    Sektion.monthly_audit
+    render json: { status: :audited }, status: :ok
+  end
 
   def update 
     sektion = Sektion.find params[:id]

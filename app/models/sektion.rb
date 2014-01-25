@@ -32,18 +32,24 @@ class Sektion < ActiveRecord::Base
     return ids.blank? ? nil : Sektion.where(id: ids).order(:created_at)
   end
 
-  def self.graduating_today 
-    where(end_date: Date.today)
-  end
-
   def self.destroyable
     # Sektions that can be - and should be - destroyed
     select{ |m| !m.active? && m.student_ids.count == 0 }
   end
 
-  def self.graduated
-    # (adjective)
-    select{ |m| m.graduated? } 
+  def self.monthly_audit
+    # Called via a cron curl request on the 1st of every month 
+    # Activates / deactivates sektions as needed 
+    # The cron-job should be set for no earlier than 5:30AM IST 
+    today = Date.today
+    freshman = Sektion.where(start_date: today)
+    graduates = Sektion.where(end_date: today.yesterday)
+
+    freshman.map{ |m| m.update_attribute(:active, true) }
+    for g in graduates
+      g.update_attribute :active, false
+      g.graduate if g.auto_renew
+    end
   end
 
   def name?
@@ -58,33 +64,20 @@ class Sektion < ActiveRecord::Base
       active = false
     else
       today = Date.today
-      active = (self.start_date < today && self.end_date > today)
+      active = (self.start_date <= today && self.end_date > today)
     end
     self.update_attribute :active, active 
     return active
   end
 
-  def graduated?
-    # (adjective)
-    return false if self.active?
-    return (self.student_ids.count > 0)
+  def future?
+    return false if self.start_date.nil?
+    return (self.start_date > Date.today)
   end
 
   def lifetime_in_days
     return 0 if (self.start_date.nil? || self.end_date.nil?)
     return (self.end_date- self.start_date).to_i
-  end
-
-  def graduate
-    # (verb): Create a new sektion with the same lifetime as self
-    return false unless self.auto_renew
-
-    lifetime = self.lifetime_in_days 
-    today = Date.today 
-    expiry = today + lifetime.days 
-    t = self.teacher 
-    neu = t.sektions.create name: self.name, start_date: today, end_date: expiry, active: true
-    self.update_attribute :active, false # close the graduating sektion
   end
 
   def taught_by? (teacher) 
@@ -142,12 +135,26 @@ class Sektion < ActiveRecord::Base
      return response.to_hash[:generate_student_roster]
   end
 
+  def graduate
+    # (verb): Create a new sektion with the same lifetime as self
+    return false unless self.auto_renew
+    return false if (self.start_date.nil? || self.end_date.nil?)
+    return false if (self.future? || self.active?) 
 
-  public 
+    lifetime = self.lifetime_in_days 
+    start = Date.today.beginning_of_month 
+    expiry = (start + lifetime.days).end_of_month 
+    t = self.teacher 
+    neu = t.sektions.create name: self.name, start_date: start, end_date: expiry
+    self.update_attribute :active, false # close the graduating sektion
+  end
+
+  private 
       def seal 
         uid = "#{self.teacher_id.to_s(36)}#{rand(99999).to_s(20)}".upcase
         self.update_attributes uid: uid, name: self.name.titleize
         # Let the teacher know  
         Mailbot.delay.new_sektion(self) unless self.teacher.online
       end 
+
 end

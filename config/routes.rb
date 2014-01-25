@@ -117,6 +117,7 @@ Webapp::Application.routes.draw do
   match 'ping/sektion' => 'sektions#ping', via: :get
   match 'preview/names' => 'sektions#preview_names', via: :post
   match 'enroll/named' => 'sektions#enroll_named_students', via: :post
+  match 'sektions/monthly_audit' => 'sektions#monthly_audit', via: :get
 
   # Teacher 
   resource :teacher, :only => [:update, :show]
