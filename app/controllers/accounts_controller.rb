@@ -122,7 +122,8 @@ class AccountsController < ApplicationController
     @solution_video = @gr.subpart.question.video
 
     unless (@fdb.nil? || @fdb == 0) # => none so far 
-      @comments = TexComment.where(graded_response_id: @gr.id)
+      siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
+      @comments = TexComment.where(graded_response_id: siblings) 
     end
   end
 
