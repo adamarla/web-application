@@ -123,9 +123,6 @@ jQuery ->
       key = 'questions'
       lesson = 'editqz-milestone-2'
     else if url.match(/add\/sektion/)
-      target = $('#pane-mng-sektions-1')
-      key = 'sektion'
-      menu = 'per-sektion'
       lesson = 'mng-sektions-milestone-3'
       $('#m-new-sk-1').modal 'hide'
       $('#lnk-mng-sektions').trigger 'click'
