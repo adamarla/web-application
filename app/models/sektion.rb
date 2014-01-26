@@ -52,11 +52,6 @@ class Sektion < ActiveRecord::Base
     end
   end
 
-  def name?
-    return self.name if (self.start_date.nil? || self.end_date.nil?)
-    return "#{self.name} (#{self.start_date.strftime('%b\'%y')}-#{self.end_date.strftime('%b\'%y')})"
-  end
-
   def active?
     # (adjective)
     return self.active unless self.active.nil?
@@ -78,6 +73,11 @@ class Sektion < ActiveRecord::Base
   def lifetime_in_days
     return 0 if (self.start_date.nil? || self.end_date.nil?)
     return (self.end_date- self.start_date).to_i
+  end
+
+  def active_period?
+    return "" if ( self.start_date.nil? || self.end_date.nil? )
+    return "#{self.start_date.strftime('%b\'%y')}-#{self.end_date.strftime('%b\'%y')}"
   end
 
   def taught_by? (teacher) 
