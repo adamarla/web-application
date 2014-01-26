@@ -135,19 +135,22 @@ class Sektion < ActiveRecord::Base
      return response.to_hash[:generate_student_roster]
   end
 
-  def graduate
-    # (verb): Create a new sektion with the same lifetime as self
-    return false unless self.auto_renew
-    return false if (self.start_date.nil? || self.end_date.nil?)
-    return false if (self.future? || self.active?) 
+  public 
+      def graduate
+        # (verb): Create a new sektion with the same lifetime as self
+        t = self.teacher 
 
-    lifetime = self.lifetime_in_days 
-    start = Date.today.beginning_of_month 
-    expiry = (start + lifetime.days).end_of_month 
-    t = self.teacher 
-    neu = t.sektions.create name: self.name, start_date: start, end_date: expiry
-    self.update_attribute :active, false # close the graduating sektion
-  end
+        return false unless t.account.active
+        return false unless self.auto_renew
+        return false if (self.start_date.nil? || self.end_date.nil?)
+        return false if (self.future? || self.active?) 
+
+        lifetime = self.lifetime_in_days 
+        start = Date.today.beginning_of_month 
+        expiry = (start + lifetime.days).end_of_month 
+        neu = t.sektions.create name: self.name, start_date: start, end_date: expiry
+        self.update_attribute :active, false # close the graduating sektion
+      end
 
   private 
       def seal 
