@@ -133,7 +133,7 @@ class AccountsController < ApplicationController
 
     @quizzes = Quiz.where(id: quiz_ids).select{ |m| !m.compiling? }
     @ws = Exam.where(id: eids).select{ |m| !m.compiling? }
-    @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
+    # @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
   end 
 
   def by_country
