@@ -1,15 +1,25 @@
 
 module ActiveRecordExtensions
+  
+  # Delayed::Jobs are tried 3 times before finally failing.
+  # After each try though, the job_id could be one of the following 
+  # 
+  # job_id = -1 => default initial state
+  #        = -2 => write TeX error 
+  #        = -3 => compile TeX error 
+  #        = 0 => compilation completed
+  #        > 0 => queued => compiling
+
   def compiling? 
     return false unless self.respond_to? :job_id
-    # If compilation fails, then the calling object itself is destroyed. In which case
-    # there is no way this method can be called. Otherwise,
-    # job_id = -1 => default initial state
-    #        > 0 => queued => compiling
-    #        = 0 => compilation completed
-    #        < -1 => some error
+    return false if self.errored_out?
     return self.job_id > 0
   end 
+
+  def errored_out?
+    return false unless self.respond_to? :job_id
+    return self.job_id < -1
+  end
 
   def latex_safe_name 
     return nil unless self.respond_to? :name
