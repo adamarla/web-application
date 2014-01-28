@@ -65,7 +65,7 @@ jQuery ->
 
       btnVideo = b.filter("[id='btn-video-solution']")[0]
       btnSee = b.filter("[id='btn-show-solution']")[0]
-      btnSee.setAttribute("data-#{m}", json[m]) for m in ['id','ws']
+      btnSee.setAttribute("data-#{m}", json[m]) for m in ['id','e']
 
       if json.video?
         $(btnVideo).removeClass 'disabled'
