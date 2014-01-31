@@ -3,9 +3,9 @@
 # Table name: aggr_by_topics
 #
 #  id              :integer         not null, primary key
+#  topic_id        :integer
 #  aggregator_id   :integer
 #  aggregator_type :string(20)
-#  topic_id        :integer
 #  benchmark       :float
 #  average         :float
 #  attempts        :integer

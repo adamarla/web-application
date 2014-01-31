@@ -2,12 +2,10 @@
 #
 # Table name: guardians
 #
-#  id           :integer         not null, primary key
-#  is_mother    :boolean
-#  created_at   :datetime
-#  updated_at   :datetime
-#  balance      :integer
-#  rate_code_id :integer
+#  id         :integer         not null, primary key
+#  is_mother  :boolean
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 class Guardian < ActiveRecord::Base
