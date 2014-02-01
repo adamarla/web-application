@@ -15,7 +15,11 @@
 class Suggestion < ActiveRecord::Base
   has_many :questions
   belongs_to :teacher  
+  belongs_to :examiner
+
   validates :signature, uniqueness: true
+  after_create :inform_examiner
+  after_create :inform_teacher, if: Proc.new{ |sg| sg.teacher.account.email_is_real? } 
 
   def self.unassigned
     where(examiner_id:  nil)
@@ -94,6 +98,14 @@ class Suggestion < ActiveRecord::Base
     from = self.teacher_id
     sig = self.signature
     return [*1..self.pages].map{ |pg| "0-#{from}/#{sig}/page-#{pg}.jpeg" }
+  end
+
+  def inform_examiner
+    Mailbot.delay.new_suggestion(self)
+  end
+
+  def inform_teacher
+    Mailbot.delay.suggestion_received(self)
   end
 
 end # of class

@@ -172,30 +172,27 @@ class Student < ActiveRecord::Base
   end
 
   def proficiency(teacher_id)
-    all = GradedResponse.in_quiz(Quiz.where(:teacher_id => teacher_id).map(&:id)).graded
-
-    of_student = all.of_student self.id
-
-    topics = of_student.map(&:q_selection).map(&:question).map(&:topic).map(&:id).uniq
+    of_student = GradedResponse.of_student(self.id).graded
+    aggr = AggrByTopic.for_teacher teacher_id
+    topics = aggr.map(&:topic_id).uniq
     topics = Topic.where(:id => topics).sort{ |m,n| m.name <=> n.name }
     ret = { :proficiency => [ {:name => "Example", :score => 0.43, :benchmark => 3.5, :historical_avg => 2.5 } ] }
 
     topics.each do |t|
       # student-specific
       on_topic = of_student.on_topic t.id
+      next if on_topic.count == 0
       marks = on_topic.map(&:subpart).map(&:marks)
       n_attempted = marks.count
       total = marks.inject(:+)
       scored = on_topic.map(&:marks).inject(:+)
 
       # historical average on topic
-      all_on_topic = all.on_topic t.id 
-      historical_avg = (all_on_topic.map(&:marks).inject(:+) / all_on_topic.count.to_f).round(2)
-
+      agg = aggr.for_topic(t.id).first
       ret[:proficiency].push({ :id => t.id, :name => t.name, 
                                :score => (scored/total.to_f).round(2),
-                               :benchmark => (total/n_attempted.to_f).round(2),
-                               :historical_avg => historical_avg })
+                               :benchmark => agg.benchmark.round(2),
+                               :historical_avg => agg.average.round(2) })
     end
     return ret
   end

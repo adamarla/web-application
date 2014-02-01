@@ -14,11 +14,11 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
-    if url.match(/ws\/list/)
+    if url.match(/exams\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
       karo.empty target
-      key = 'wks'
-    else if url.match(/ws\/layout/)
+      key = 'exams'
+    else if url.match(/exam\/layout/)
       # load student scans 
       preview.loadJson json # locker
       # prep the feedback panel
@@ -65,7 +65,7 @@ jQuery ->
 
       btnVideo = b.filter("[id='btn-video-solution']")[0]
       btnSee = b.filter("[id='btn-show-solution']")[0]
-      btnSee.setAttribute("data-#{m}", json[m]) for m in ['id','ws']
+      btnSee.setAttribute("data-#{m}", json[m]) for m in ['id','e']
 
       if json.video?
         $(btnVideo).removeClass 'disabled'

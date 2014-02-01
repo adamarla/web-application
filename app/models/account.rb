@@ -169,30 +169,30 @@ class Account < ActiveRecord::Base
     return (self.email_is_real? ? self.email : nil)
   end
 
-  def ws
+  def exams
     # Returns list of * all * worksheets that make sense for the given account type
     # Filter minimally here. You might want to process the returned list differently 
     # someplace else
 
-    @ws = nil
+    @exams = nil
     me = self.loggable_id 
 
     case self.role
       when :student
         ids = Worksheet.where(student_id: me).select{ |m| m.publishable? }.map(&:exam_id)
-        @ws = Exam.where(id: ids)
+        @exams = Exam.where(id: ids)
       when :teacher 
         ids = Quiz.where(:teacher_id => me).map(&:id)
         ids = ids.blank? ? 318 : ids # 318 =  "A Demo Quiz"
-        @ws = Exam.where(:quiz_id => ids).select{ |m| m.has_scans? }
+        @exams = Exam.where(:quiz_id => ids).select{ |m| m.has_scans? }
       when :examiner, :admin
         g = GradedResponse.assigned_to(me).with_scan.ungraded
         ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
-        @ws = Exam.where(:id => ids)
+        @exams = Exam.where(:id => ids)
       else 
-        @ws = []
+        @exams = []
     end
-    return @ws
+    return @exams
   end
 
   def courses
@@ -209,18 +209,18 @@ class Account < ActiveRecord::Base
     return @courses
   end 
 
-  def pending_ws
-    @ws = nil
+  def pending_exams
+    @exams = nil
     case self.role 
       when :teacher 
         ids = Quiz.where(:teacher_id => self.loggable_id).map(&:id)
-        @ws = Exam.where(:quiz_id => ids).select{ |m| !m.publishable? }
+        @exams = Exam.where(:quiz_id => ids).select{ |m| !m.publishable? }
       when :student 
-        @ws = []
+        @exams = []
       else 
-        @ws = self.ws
+        @exams = self.exams
     end
-    return @ws
+    return @exams
   end
 
   protected 

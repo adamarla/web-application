@@ -3,9 +3,15 @@ business_time:
   end_of_workday: 6:00 pm
   holidays:
     - Jan 01, 2010
-    - August 15th, 2014
-    - October 2nd, 2014
     - January 26th, 2014
+    - March 17th, 2014 # holi
+    - April 8th, 2014 # ram navami
+    - April 18th, 2014 # good friday
+    - May 14th, 2014 # buddha purnima
+    - August 15th, 2014
+    - August 18th, 2014 # janmashthami
+    - October 2nd, 2014
+    - October 23rd, 2014 # diwali
     - December 25th, 2010
   work_week:
     - mon

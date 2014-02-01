@@ -3,18 +3,17 @@ class SuggestionsController < ApplicationController
   respond_to :json
 
   def create
-    t = Teacher.find_by_id(params[:teacher_id])
-    unless t.nil?
-      s = t.suggestions.build 
-      s[:signature] = params[:signature]
-      s[:pages] = params[:num_pages].to_i
-
-      e = Examiner.where(:is_admin => true).sort{ |m,n| m.suggestion_ids.count <=> n.suggestion_ids.count }.first
-      s[:examiner_id] = e.id
-      s.save
-      render :json => { :status => :ok }
+    tid = params[:teacher_id]
+    teacher = tid.blank? ? nil : Teacher.find(tid)
+    
+    unless teacher.nil?
+      assignee = Examiner.select{ |e| e.account.active }.sort{ |a,b| a.suggestion_ids.count <=> b.suggestion_ids.count }.first 
+      sg = teacher.suggestions.create signature: params[:signature],
+                                      pages: params[:num_pages].to_i,
+                                      examiner_id: assignee.id
+      render json: { status: :assigned }, status: (sg.nil? ? :bad_request : :ok)
     else
-      render :json => { :status => :error }
+      render json: { status: :error }, status: :bad_request
     end
   end
 

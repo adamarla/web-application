@@ -877,7 +877,6 @@ button[data-toggle='button'] {
         > a {
           min-height: 20px ;
           background: transparent ;
-          border: 0.5px dotted white ;
 
           > div { 
             border-radius: 4px ;
@@ -895,13 +894,14 @@ button[data-toggle='button'] {
         } 
       }
 
-      &[colour='green'] { .pull-right { background: $green ; } }
-      &[colour='orange'] { .pull-right { background: $orange ; } }
-      &[colour='red'] { .pull-right { background: $red ; } }
+      &[colour='green'] { .pull-right { background: rgba(87,188,32,0.5) ; } }
+      &[colour='orange'] { .pull-right { background: rgba(255,165,0,0.7) ; } }
+      &[colour='red'] { .pull-right { background: rgba(215,35,35,0.7) ; } }
 
       &[colour][class~='active'] {
         > a { 
-          border: 2px solid white ; 
+          background-color: rgba(43,43,43,0.75) ;
+          border: none ;
           > .pull-left { font-weight: 500 ; font-size: 12px ; }
         } 
       }

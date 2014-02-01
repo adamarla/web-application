@@ -1,14 +1,14 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Worksheets", :id => 'tab-grd-ws', :href => "#pane-grd-ws"
+    = simple_link :for => 'Exams', :id => 'tab-grd-exams', :href => "#pane-grd-exams"
   %li
     = simple_link for: "Questions", id: 'tab-grd-questions', href: '#pane-grd-questions'
   %li
     = simple_link for: 'Grade', id: 'tab-grd-panel', href: '#pane-grd-panel', class: 'nopurge-ever'
 
 .tab-content
-  #pane-grd-ws.tab-pane
+  #pane-grd-exams.tab-pane
   #pane-grd-questions.tab-pane
   #pane-grd-panel.tab-pane.static
     = render partial: 'shared/grading/rubric'

@@ -43,18 +43,18 @@ class AccountsController < ApplicationController
     end
   end
 
-  def ws 
-    @wks = current_account.ws
+  def exams 
+    @exams = current_account.exams
     @who = current_account.loggable_type
-    @wks = @wks.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse if @who == "Student"
+    @exams = @exams.sort{ |m,n| m.closed_on? <=> n.closed_on? }.reverse
   end
 
   def courses
     @courses = current_account.courses
   end 
 
-  def pending_ws
-    @wks = current_account.pending_ws
+  def pending_exams
+    @exams = current_account.pending_exams
   end
 
   def to_be_graded
@@ -122,7 +122,8 @@ class AccountsController < ApplicationController
     @solution_video = @gr.subpart.question.video
 
     unless (@fdb.nil? || @fdb == 0) # => none so far 
-      @comments = TexComment.where(graded_response_id: @gr.id)
+      siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
+      @comments = TexComment.where(graded_response_id: siblings) 
     end
   end
 
@@ -132,7 +133,7 @@ class AccountsController < ApplicationController
 
     @quizzes = Quiz.where(id: quiz_ids).select{ |m| !m.compiling? }
     @ws = Exam.where(id: eids).select{ |m| !m.compiling? }
-    @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
+    # @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
   end 
 
   def by_country

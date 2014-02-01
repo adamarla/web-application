@@ -2,12 +2,12 @@
 
 object false
   node(:sektions) {
-    deepdiving = (@context == 'deepdive')
+    # deepdiving = (@context == 'deepdive')
     @sektions.map{ |sk|
-      {
-        :id => sk.id,
-        :name => sk.label,
-        :tag => "#{deepdiving ? "#{sk.students.count} student(s)" : "#{sk.uid}" }"
+      { id: sk.id, 
+        name: sk.name, 
+        badge: sk.students.count,
+        tag: sk.active_period? 
       }
     }
   }

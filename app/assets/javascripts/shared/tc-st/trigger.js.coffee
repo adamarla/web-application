@@ -29,19 +29,20 @@ jQuery ->
   
   $('#btn-show-solution').click (event) ->
     already = $(this).hasClass 'active'
-    wsId = this.getAttribute 'data-ws'
+    e = this.getAttribute 'data-e'
     student = this.getAttribute 'data-id'
 
     if already
       id = this.getAttribute 'data-id'
       $(this).text "See Solution"
       karo.empty $(this).closest('.navbar').next()
-      $.get "ws/layout.json?ws=#{wsId}&id=#{id}"
+      $(overlay.root).removeClass('hide') if overlay.root?
+      $.get "exam/layout.json?e=#{e}&id=#{id}"
     else
       tabpane = $(this).closest('.tab-pane.active')
       id = tabpane.find('.split.active').eq(0).attr 'marker'
       $(this).text "Back to Scans"
-      # $.get "ws/preview.json?id=#{wsId}&student=#{student}"
+      $(overlay.root).addClass('hide') if overlay.root?
       $.get "question/preview?gr=#{id}"
     return true
 

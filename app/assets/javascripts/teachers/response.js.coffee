@@ -91,7 +91,7 @@ jQuery ->
       menu = 'per-ws'
       clickFirst = true
       lesson = 'publish-milestone-2'
-    else if url.match(/ws\/summary/)
+    else if url.match(/exam\/summary/)
       target = $("#pane-tc-rc-2")
       key = "root"
       wsSummary json
@@ -100,6 +100,7 @@ jQuery ->
       if json.context is 'list'
         target = $('#pane-mng-sektions-1')
         lesson = 'mng-sektions-milestone-2'
+        menu = 'per-sektion'
         clickFirst = true
       else
         target = $('#pane-dive-1')
@@ -122,11 +123,9 @@ jQuery ->
       key = 'questions'
       lesson = 'editqz-milestone-2'
     else if url.match(/add\/sektion/)
-      target = $('#pane-mng-sektions-1')
-      key = 'sektion'
       lesson = 'mng-sektions-milestone-3'
-      $('#new-sk-uid').text json.notify.title #75
-      $('#new-sk-students').attr 'marker', json.notify.id #75
+      $('#m-new-sk-1').modal 'hide'
+      $('#lnk-mng-sektions').trigger 'click'
 
       # [102]: Add the new sektion as a left-tab so that teachers can start making 
       # worksheets without having to reload the site

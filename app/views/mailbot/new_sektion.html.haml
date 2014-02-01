@@ -1,0 +1,28 @@
+
+%p
+  Dear #{@t.first_name},
+%p
+  A new section - with details as given below - has been created for you. 
+%p
+  %ul
+    %li= "Name: #{@name}"
+    %li
+      <b>Code: #{@code}</b>
+    %li= "Valid From: #{@start}"
+    %li= "Valid Till: #{@end}"
+    %li= "Renews Automatically: #{@renew}"
+%p
+  <b>Give the code to your students</b>. They will need this code 
+  to become part of this section. And they will enter it either
+  %ul
+    %li
+      When they register on Gradians.com for the first time
+    %li
+      Or, having registered, they click on <b>Enroll</b> in the student console
+%p
+  If this section renews automatically, then on #{@end}, a new section for the 
+  next session will be created automatically
+%p
+  Best regards, 
+%p
+  <b>Gradians Support Team</b>

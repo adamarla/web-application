@@ -29,6 +29,18 @@ class Mailbot < ActionMailer::Base
     mail(to:  teacher.account.email, subject:  "(gradians.com) Assignment graded") unless teacher.account.email.nil?
   end
   
+  def new_suggestion(sg)
+    @sg = sg 
+    deadline = 3.business_days.from_now.in_time_zone('Kolkata') 
+    mail to: @sg.examiner.account.email, subject: "[Typesetting Deadline]: #{deadline.strftime('%I:%M%p on %A, %b %d')}"
+  end 
+
+  def suggestion_received(sg)
+    @deadline = 3.business_days.from_now # report in GMT to external parties
+    @teacher = sg.teacher
+    mail to: @teacher.account.email, subject: "[Gradians.com]: We have received your questions"
+  end
+
   def suggestion_typeset( suggestion )
     t = Teacher.where(:id => suggestion.teacher_id).first 
     @name = t.first_name 
@@ -43,7 +55,7 @@ class Mailbot < ActionMailer::Base
   def new_grading_work(eid)
     examiner = Examiner.find eid
     deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
-    mail subject: "(Grading to-do) Deadline: #{d.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
+    mail subject: "[Grading Deadline]:  #{deadline.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
   end
 
   def quiz_assigned(wsid)
@@ -79,7 +91,7 @@ class Mailbot < ActionMailer::Base
 
   def scans_received(id)
     @teacher = Teacher.find id
-    @deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
+    @deadline = 3.business_days.from_now # in GMT to external parties
     mail to: @teacher.account.email, subject: "[Gradians.com]: Scans received for grading"
   end
 
@@ -95,6 +107,16 @@ class Mailbot < ActionMailer::Base
     @ref = link
     @during = (obj.job_id == WRITE_TEX_ERROR )? "Writing" : "Compiling"
     mail to: "bugs@gradians.com", subject: "[Gradians.com]: Error in Mint"
+  end
+
+  def new_sektion(sk)
+    @t = sk.teacher
+    @start = sk.start_date.strftime("%B %d, %Y") 
+    @end = sk.end_date.strftime("%B %d, %Y")
+    @renew = sk.auto_renew ? "Yes" : "No"
+    @code = sk.uid
+    @name = sk.name
+    mail to: sk.teacher.account.email, subject: "[Gradians.com]: New section - #{@name} - created"
   end
 
 end
