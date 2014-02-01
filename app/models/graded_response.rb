@@ -25,7 +25,7 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :q_selection
   belongs_to :worksheet
   belongs_to :subpart
-  has_many :tex_comments, dependent: :destroy
+  has_many :remarks, dependent: :destroy
 
   validates :q_selection_id, presence: true
   validates :student_id, presence: true
@@ -158,9 +158,9 @@ class GradedResponse < ActiveRecord::Base
     w = self.worksheet
     w.update_attributes( marks: nil, graded: false, honest: nil) unless w.nil? 
 
-    # Soft (default) reset -> does NOT destroy any associated TexComments
-    # Hard reset -> also destroys any associated TeXComments
-    self.tex_comments.map(&:destroy) unless soft
+    # Soft (default) reset -> does NOT destroy any associated Remarks
+    # Hard reset -> also destroys any associated Remarks
+    self.remarks.map(&:destroy) unless soft
   end 
 
   def index?

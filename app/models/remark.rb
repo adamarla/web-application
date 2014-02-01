@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: tex_comments
+# Table name: remarks
 #
 #  id                 :integer         not null, primary key
 #  x                  :integer
@@ -11,7 +11,7 @@
 #  updated_at         :datetime        not null
 #
 
-class TexComment < ActiveRecord::Base
+class Remark < ActiveRecord::Base
   # attr_accessible :graded_response_id, :tex, :x, :y
   belongs_to :graded_response
 

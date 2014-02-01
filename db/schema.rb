@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140123095144) do
+ActiveRecord::Schema.define(:version => 20140201062815) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -255,6 +255,15 @@ ActiveRecord::Schema.define(:version => 20140123095144) do
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
   add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
 
+  create_table "remarks", :force => true do |t|
+    t.integer  "x"
+    t.integer  "y"
+    t.text     "tex"
+    t.integer  "graded_response_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
   create_table "requirements", :force => true do |t|
     t.string  "text",       :limit => 100
     t.string  "bottomline", :limit => 20
@@ -337,15 +346,6 @@ ActiveRecord::Schema.define(:version => 20140123095144) do
     t.datetime "updated_at"
     t.integer  "school_id"
     t.boolean  "online",                   :default => false
-  end
-
-  create_table "tex_comments", :force => true do |t|
-    t.integer  "x"
-    t.integer  "y"
-    t.text     "tex"
-    t.integer  "graded_response_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
   end
 
   create_table "topics", :force => true do |t|

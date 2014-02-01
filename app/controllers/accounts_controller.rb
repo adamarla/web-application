@@ -109,7 +109,7 @@ class AccountsController < ApplicationController
     z = overlay.slice(n,3)
 
     while !z.blank?
-      r.tex_comments.create x: z[0], y:z[1], tex: z[2]
+      r.remarks.create x: z[0], y:z[1], tex: z[2]
       n += 3
       z = overlay.slice(n,3)
     end
@@ -123,7 +123,7 @@ class AccountsController < ApplicationController
 
     unless (@fdb.nil? || @fdb == 0) # => none so far 
       siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
-      @comments = TexComment.where(graded_response_id: siblings) 
+      @comments = Remark.where(graded_response_id: siblings) 
     end
   end
 
