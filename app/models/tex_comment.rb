@@ -14,4 +14,5 @@
 class TexComment < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :examiner
+  has_many :remarks
 end
