@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140201062815) do
+ActiveRecord::Schema.define(:version => 20140201124339) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -346,6 +346,15 @@ ActiveRecord::Schema.define(:version => 20140201062815) do
     t.datetime "updated_at"
     t.integer  "school_id"
     t.boolean  "online",                   :default => false
+  end
+
+  create_table "tex_comments", :force => true do |t|
+    t.text     "text"
+    t.integer  "n_used_self",   :default => 0
+    t.integer  "n_used_others", :default => 0
+    t.integer  "examiner_id"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   create_table "topics", :force => true do |t|
