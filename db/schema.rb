@@ -351,11 +351,10 @@ ActiveRecord::Schema.define(:version => 20140201130533) do
 
   create_table "tex_comments", :force => true do |t|
     t.text     "text"
-    t.integer  "n_used_self",   :default => 0
-    t.integer  "n_used_others", :default => 0
     t.integer  "examiner_id"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.boolean  "trivial"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "topics", :force => true do |t|
