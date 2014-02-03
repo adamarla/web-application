@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140201130533) do
+ActiveRecord::Schema.define(:version => 20140203073446) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -258,7 +258,6 @@ ActiveRecord::Schema.define(:version => 20140201130533) do
   create_table "remarks", :force => true do |t|
     t.integer  "x"
     t.integer  "y"
-    t.text     "tex"
     t.integer  "graded_response_id"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false

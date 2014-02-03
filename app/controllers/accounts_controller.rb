@@ -109,7 +109,13 @@ class AccountsController < ApplicationController
     z = overlay.slice(n,3)
 
     while !z.blank?
-      r.remarks.create x: z[0], y:z[1], tex: z[2]
+      tx = TexComment.where(text: z[2]).first
+      if tx.nil?
+        tx = TexComment.new examiner_id: current_account.loggable_id, text: z[2]
+        tx.save
+      end
+
+      rmrk = tx.remarks.create x: z[0], y: z[1], graded_response_id: r.id
       n += 3
       z = overlay.slice(n,3)
     end

@@ -5,7 +5,6 @@
 #  id                 :integer         not null, primary key
 #  x                  :integer
 #  y                  :integer
-#  tex                :text
 #  graded_response_id :integer
 #  created_at         :datetime        not null
 #  updated_at         :datetime        not null
