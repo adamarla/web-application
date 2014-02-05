@@ -7,6 +7,7 @@ window.fdb = {
   mode: null,
   given: new Array(),
   history: new Array(),
+  ticker : null,
 
   current : {
     student : null,
@@ -37,9 +38,7 @@ window.fdb = {
 
     # Load historical comments 
     fdb.history.length = 0
-    for m in json.comments 
-      m = karo.unjaxify m
-      fdb.history.push m
+    fdb.update.history json
 
     # Set values for fdb.current.*
     c = here.children()[0]
@@ -81,16 +80,32 @@ window.fdb = {
 
     $(fdb.root).removeClass 'hide'
     fdb.update.ticker()
+
+    unless fdb.ticker?
+      fdb.ticker = window.setInterval () -> fdb.ping(), 
+      300000 # 5 min 
     return true
 
   detach : () ->
     preview.create() # within wide-X
     $(fdb.root).addClass 'hide'
+
+    if fdb.ticker?
+      window.clearInterval fdb.ticker  
+      fdb.ticker = null
+    return true
+
+  ping : () ->
+    r = fdb.current.response
+    if r?
+      gid = $(r).attr('marker')
+      $.get 'germane/comments', { g: gid }, (data) -> fdb.update.history(data), 
+      'json'
     return true
 
 
   #############################################################
-  ## Update Ticker
+  ## Update Methods 
   #############################################################
 
   update : {
@@ -109,6 +124,17 @@ window.fdb = {
       preview.load fdb.current.scan, 'locker'
       fdb.update.ticker()
       shadow.fall $(fdb.current.response).attr('shadow')
+      return true
+
+    history : (json) ->
+      # The returned JSON has just the non-trivial comments - the only type we want 
+      # to keep. Hence, with every periodic update, any trivial comments written 
+      # in the last 5 min will be lost. And that's ok
+
+      fdb.history.length = 0
+      for a in json.comments 
+        b = karo.unjaxify a
+        fdb.history.push b
       return true
 
   }

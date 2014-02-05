@@ -58,6 +58,7 @@ Webapp::Application.routes.draw do
   # Graded Response 
   match 'reset/graded' => 'examiners#reset_graded', via: :get
   match 'aggregate' => 'examiners#aggregate', via: :get
+  match 'germane/comments' => 'examiners#germane_comments', via: :get
 
   # School 
   resource :school, :only => [:show, :create, :update]

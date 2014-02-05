@@ -164,6 +164,15 @@ class ExaminersController < ApplicationController
     render json: { status: :ok }, status: :ok 
   end 
 
+  def germane_comments
+    g = GradedResponse.find params[:g]
+    unless g.nil?
+      @comments = g.q_selection.germane_comments
+    else
+      render json: { comments: [] }, status: :ok
+    end
+  end
+
   def aggregate
     # Right now it aggregates by teacher_id, can do by others in future - 01/24/14
     AggrByTopic.build(GradedResponse.graded)

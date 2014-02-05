@@ -17,9 +17,11 @@ jQuery ->
     if url.match(/exams\/pending/)
       target = $('#pane-grd-exams')
       key = 'exams'
+      fdb.detach()
     else if url.match(/grade\/pending/)
       target = $('#pane-grd-questions')
       key = 'questions'
+      fdb.detach()
     else if url.match(/scans\/pending/)
       fdb.attach()
       fdb.initialize json
