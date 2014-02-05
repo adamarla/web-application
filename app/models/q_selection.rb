@@ -63,4 +63,11 @@ class QSelection < ActiveRecord::Base
     return ret.order(:index)
   end
 
+  def germane_comments
+    siblings = QSelection.where(question_id: self.question_id).map(&:id).uniq
+    allgr = GradedResponse.where(q_selection_id: siblings).graded.map(&:id).uniq
+    remarks = Remark.where(graded_response_id: allgr)
+    return TexComment.where(id: remarks.map(&:tex_comment_id).uniq).select{ |m| !m.trivial? }
+  end
+
 end # of class
