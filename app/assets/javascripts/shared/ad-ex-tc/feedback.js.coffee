@@ -35,8 +35,13 @@ window.fdb = {
         f += "/>"
         $(f).appendTo m 
 
-    # Set values for fdb.current.*
+    # Load historical comments 
+    fdb.history.length = 0
+    for m in json.comments 
+      m = karo.unjaxify m
+      fdb.history.push m
 
+    # Set values for fdb.current.*
     c = here.children()[0]
     fdb.current.student = c 
     fdb.current.response = $(c).children()[0]

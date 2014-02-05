@@ -149,14 +149,11 @@ window.karo = {
 
   jaxify : (comment) ->
     ###
-      The comment entered in the comment box is assumed to be more of regular 
-      text with bits of inline-TeX thrown in ( enclosed between $..$ that is)
+      Takes a TeX comment that a grader enters (something like this )
+        Why shouldn't it be $\binom{5}{2}$?
 
-      But MathJax expects TeX that is more of TeX with bits of regular 
-      text thrown in (enclosed between \text{...})
-
-      This method does that conversion from the user assumes and enters 
-      to what MathJax assumes and renders
+      and converts it to what MathJax expects and what is eventually stored in the DB (something like this )
+        \text{ Why shouldn't it be }\binom{5}{2}\text{ ?}
     ###
 
     text = true
@@ -180,6 +177,21 @@ window.karo = {
           z += m
     z += "}" if text
     return z
-    
+
+  unjaxify: (comment) ->
+    # Reverses what karo.jaxify does 
+    c = decodeURIComponent comment
+    textRegExp = /\\text{.*?}/g
+
+    while((arr = textRegExp.exec(c)) != null)
+      text = arr[0].replace /^\\text{/, ""
+      text = text.replace /}$/, ""
+      text = text.trim()
+
+      if arr.index is 0 # comment started with \text{ .... }
+        c = c.replace arr[0], "#{text}$" 
+      else
+        c = c.replace arr[0], "$#{text}$"
+    return c
 
 }

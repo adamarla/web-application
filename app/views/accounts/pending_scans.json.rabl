@@ -19,3 +19,7 @@ node(:pending) {
     }
   }
 }
+
+node(:comments){
+  @comments.map(&:text)
+}

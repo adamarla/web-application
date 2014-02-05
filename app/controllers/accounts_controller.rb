@@ -75,6 +75,12 @@ class AccountsController < ApplicationController
 
     # { pending: [{ scan: a, student: b, gr: [{ id: 12, name: "Q6.A" }, {id: 13, name: "Q6.B"}]}, { scan: b ... } ] }
 
+    qid = QSelection.where(id: q).map(&:question_id).first
+    allqsl = QSelection.where(question_id: qid).map(&:id).uniq
+    allg = GradedResponse.where(q_selection_id: allqsl).where(examiner_id: current_account.loggable_id).graded.map(&:id).uniq
+    remarks = Remark.where(graded_response_id: allg)
+    @comments = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).select{ |m| !m.trivial? }
+
     p = GradedResponse.in_exam(tp).where(q_selection_id: q).with_scan.ungraded.assigned_to(eid)
     @pending = p.order(:student_id).order(:subpart_id)
 
