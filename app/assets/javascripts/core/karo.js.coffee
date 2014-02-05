@@ -158,24 +158,29 @@ window.karo = {
 
     text = true
     latex = false
-    z = "\\text{"
+    buf = ""
+    z = ""
 
     for m in comment
       if text
         if m is '$' # opening $
           text = false
           latex = true
-          z += " }"
+          z += "\\text{ #{buf} }" unless buf.length is 0
+          buf = ""
         else
-          z += m
+          buf += m
       else if latex
         if m is '$' # => closing $
           text = true
           latex = false
-          z += "\\text{ "
+          z += buf unless buf.length is 0
+          buf = ""
         else
-          z += m
-    z += "}" if text
+          buf += m
+
+    if buf.length isnt 0
+      if text then z += "\\text{ #{buf} }" else z += buf
     return z
 
   unjaxify: (comment) ->
