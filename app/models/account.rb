@@ -44,6 +44,7 @@ class Account < ActiveRecord::Base
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
   belongs_to :loggable, :polymorphic => true
+  has_many :transactions
 
   # Geo-coding. Ref: https://github.com/alexreisner/geocoder
   geocoded_by :last_sign_in_ip do |obj, results|

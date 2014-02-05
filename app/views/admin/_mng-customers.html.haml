@@ -1,0 +1,16 @@
+
+%ul.nav.nav-tabs 
+  %li
+    = simple_link :for => "Customers", :href => '#pane-customers', :id => 'tab-customers'
+  %li
+    = simple_link :for => "Contracts", :href => '#pane-contracts', :id => 'tab-contracts'
+  %li
+    = simple_link :for => "Make New", :href => '#pane-new-contract', :id => 'tab-new-contract', 
+      :class => 'nopurge-ever'
+
+.tab-content
+  #pane-customers.tab-pane.scroll
+  #pane-contracts.tab-pane.scroll
+  #pane-new-contract.tab-pane.scroll
+    = render :partial => 'admin/form-ctrct-new'
+

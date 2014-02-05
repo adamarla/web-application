@@ -28,6 +28,17 @@ jQuery ->
       target = $('#accounts-in-country')
       key = 'accounts'
       karo.empty target
+    else if url.match(/school\/create/)
+      $('#m-cust-create-form').modal 'hide' 
+    else if url.match(/schools\/list/)
+      target = $('#pane-customers')
+      key = 'schools'
+      menu = "per-customer"
+      karo.empty target 
+    else if url.match(/school/)
+      school = json.school
+      $('#customer-overview #cust-name').text school.name
+      $('#customer-overview #cust-detail').text "#{school.city} #{school.phone}"
     else
       matched = false
 

@@ -386,6 +386,39 @@ tab-teacher-accounts :
     self : byCountry?type=teacher
     panel : inCountry?type=teacher&country=:id
 
+m-admin-cust :
+  show : 
+    menu : admin-cust
+
+lnk-cust-create :
+  show :
+    modal : m-cust-create-form
+
+lnk-cust-list :
+  show :
+    left : left-9
+  autoclick :
+    tab : tab-customers
+
+tab-customers :
+  show :
+    wide : wide-3
+  url : 
+    self : schools/list
+    panel : school?id=:id
+
+lnk-new-contract :
+  show :
+    modal : m-new-contract-form
+
+lnk-show-contracts :
+  autoclick :
+    tab : tab-contracts
+
+tab-contracts :
+  url :
+    self : contracts/list?id=:id
+
 
 ##############################################################################
 ## Admin / Examiner specific  

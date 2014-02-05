@@ -1,11 +1,16 @@
 
-# Output Example : 
-#  {"schools":[{"school":{"name":"AFBBS"}},{"school":{"name":"DPS"}}]
-
 object false 
-  node(:schools) { 
-    @schools.map{ |m| 
-      { :school => { :id => m.id, :name => m.name, :tag => m.city } }
+
+node(:schools) { 
+  @schools.map{ |m| 
+    {
+      :id => m.id, 
+      :name => m.name, 
+      :tag => (m.account.nil? ? "unknown" : (m.account.city.nil? ? "unknown" : m.account.city)), 
+      :badge => m.contracts.count
     }
   }
-  node(:last_pg) { @last_pg }
+}
+
+node(:last_pg) { @last_pg }
+

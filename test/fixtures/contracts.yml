@@ -1,0 +1,37 @@
+# == Schema Information
+#
+# Table name: contracts
+#
+#  id                 :integer         not null, primary key
+#  school_id          :integer
+#  start_date         :date
+#  duration           :integer
+#  bill_cycle         :integer
+#  start_day_of_month :integer
+#  rate_code_id       :integer
+#  created_at         :datetime        not null
+#  updated_at         :datetime        not null
+#  grade_level        :integer
+#  num_students       :integer
+#  subject_id         :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  school_id: 1
+  start_date: 2014-02-01
+  duration: 1
+  bill_cycle: 1
+  start_day_of_month: 1
+  school: 
+  rate_code_id: 1
+
+two:
+  school_id: 1
+  start_date: 2014-02-01
+  duration: 1
+  bill_cycle: 1
+  start_day_of_month: 1
+  school: 
+  rate_code_id: 1

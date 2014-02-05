@@ -32,6 +32,13 @@ Webapp::Application.routes.draw do
   # Admin 
   resource :admin, :controller => :admin 
 
+  # Contract
+  resource :contract, :only => [:show, :create, :update]
+  match 'contract/renew' => 'contracts#renew', via: :post
+  match 'contracts/list' => 'contracts#list', via: :get
+  match 'contract/complete' => 'contracts#complete', via: :get
+  match 'contract/cancel' => 'contracts#cancel', via: :get
+
   # Course
   match 'course/new' => 'course#create', via: :post
   match 'course/all' => 'course#show', via: :get
@@ -61,6 +68,7 @@ Webapp::Application.routes.draw do
 
   # School 
   resource :school, :only => [:show, :create, :update]
+  match 'schools/list' => 'schools#list', via: :get
   match 'upload_student_list' => 'schools#upload_student_list', via: :post
 
   # Verticals 

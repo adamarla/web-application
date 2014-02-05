@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140123095144) do
+ActiveRecord::Schema.define(:version => 20140205112130) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -73,6 +73,22 @@ ActiveRecord::Schema.define(:version => 20140123095144) do
 
   add_index "apprenticeships", ["examiner_id"], :name => "index_apprenticeships_on_examiner_id"
   add_index "apprenticeships", ["teacher_id"], :name => "index_apprenticeships_on_teacher_id"
+
+  create_table "contracts", :force => true do |t|
+    t.integer  "school_id"
+    t.date     "start_date"
+    t.integer  "duration"
+    t.integer  "bill_cycle"
+    t.integer  "start_day_of_month"
+    t.integer  "rate_code_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "grade_level"
+    t.integer  "num_students"
+    t.integer  "subject_id"
+  end
+
+  add_index "contracts", ["school_id"], :name => "index_contracts_on_school_id"
 
   create_table "cost_codes", :force => true do |t|
     t.text     "description"
@@ -381,6 +397,19 @@ ActiveRecord::Schema.define(:version => 20140123095144) do
     t.datetime "updated_at"
     t.integer  "vertical_id"
   end
+
+  create_table "transactions", :force => true do |t|
+    t.integer  "account_id"
+    t.integer  "quantity"
+    t.integer  "rate_code_id"
+    t.integer  "reference_id"
+    t.string   "reference_type", :limit => 20
+    t.string   "memo"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "transactions", ["account_id"], :name => "index_transactions_on_account_id"
 
   create_table "verticals", :force => true do |t|
     t.string   "name",       :limit => 30

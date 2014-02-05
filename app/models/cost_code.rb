@@ -9,6 +9,10 @@
 #  updated_at   :datetime        not null
 #
 
+# A Cost Code represents the nature of product/service being purchased 
+# e.g. Assessment Platform (Service) or Course Credit for purchasing 
+# courses (Product) etc.
+
 class CostCode < ActiveRecord::Base
-  attr_accessible :description, :subscription
+
 end

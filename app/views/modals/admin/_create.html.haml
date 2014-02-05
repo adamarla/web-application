@@ -1,0 +1,17 @@
+
+- school = School.new 
+
+#m-cust-create-form.modal.regular.fade.row-fluid
+  .span2
+    = image_tag 'notifications/add-user.png', :class => 'big-icon offset1'
+  .span8
+    #pane-register
+      %p.title= "School Registration"
+      = simple_form_for school, :url => school_path, :validate => true, :remote => true, 
+      :defaults => { :required => false }, :html => { :id => 'fm-create-school' } do |f|
+        = f.input :name
+        = f.input :phone
+        = f.input :email
+        %input.hide{ :type => :string, :data => { :validate => false }, :name => 'teacher[guard]' } 
+        %button.btn.btn-large.btn-primary.push-down.pull-right{:type => :submit}= "Create"
+

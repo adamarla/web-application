@@ -14,6 +14,7 @@
 class School < ActiveRecord::Base
   has_one :account, :as => :loggable
   has_many :teachers
+  has_many :contracts
 
   validates :name, :presence =>true
   after_create :assign_uid
@@ -25,6 +26,8 @@ class School < ActiveRecord::Base
   # - which can be hacked - de-fang the operation in the model itself. 
 
   before_destroy :destroyable? 
+
+  attr_accessor :email
 
   def activate(state)
     # activates/deactivates a school's account and also of anyone - students
