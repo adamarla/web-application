@@ -107,7 +107,9 @@ class GradedResponse < ActiveRecord::Base
     quiz = self.worksheet.exam.quiz
     return 0 if quiz.nil?
     
-    shadows = quiz.shadows.split(',').map(&:to_i) # as an array of integers
+    curtain = quiz.shadows
+    shadows = curtain.blank? ? [] : curtain.split(',').map(&:to_i) # as an array of integers
+    return 0 if shadows.empty?
     idx = quiz.subparts.index self.subpart
     return shadows[idx]
   end
