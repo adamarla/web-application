@@ -77,7 +77,7 @@ class AccountsController < ApplicationController
 
     qid = QSelection.where(id: q).map(&:question_id).first
     allqsl = QSelection.where(question_id: qid).map(&:id).uniq
-    allg = GradedResponse.where(q_selection_id: allqsl).where(examiner_id: current_account.loggable_id).graded.map(&:id).uniq
+    allg = GradedResponse.where(q_selection_id: allqsl).graded.map(&:id).uniq
     remarks = Remark.where(graded_response_id: allg)
     @comments = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).select{ |m| !m.trivial? }
 
