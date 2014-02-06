@@ -30,10 +30,4 @@ class WriteTex < Struct.new(:id, :type)
     end
   end
 
-  def success(job)
-    h = YAML.load(job.handler)
-    obj = h.type.constantize.where(id: h.id).first
-    obj.update_attribute :job_id, 0
-  end
-
 end 
