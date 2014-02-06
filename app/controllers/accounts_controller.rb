@@ -139,8 +139,8 @@ class AccountsController < ApplicationController
     quiz_ids = params[:quizzes].blank? ? [] : params[:quizzes].map(&:to_i)
     eids = params[:exams].blank? ? [] : params[:exams].map(&:to_i)
 
-    @quizzes = Quiz.where(id: quiz_ids).select{ |m| !m.compiling? }
-    @ws = Exam.where(id: eids).select{ |m| !m.compiling? }
+    @quizzes = Quiz.where(id: quiz_ids).select{ |m| m.compiled? } 
+    @ws = Exam.where(id: eids).select{ |m| m.compiled? }
     # @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
   end 
 

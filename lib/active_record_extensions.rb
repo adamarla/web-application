@@ -12,9 +12,13 @@ module ActiveRecordExtensions
 
   def compiling? 
     return false unless self.respond_to? :job_id
-    return false if self.errored_out?
     return self.job_id > 0
   end 
+
+  def compiled?
+    return false unless self.respond_to? :job_id
+    return self.job_id == 0
+  end
 
   def errored_out?
     return false unless self.respond_to? :job_id
