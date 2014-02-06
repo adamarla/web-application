@@ -16,8 +16,8 @@
 #  uid                   :string(40)
 #  version               :string(10)
 #  shadows               :string(255)
-#  page_breaks_after     :string(30)
-#  switch_versions_after :string(30)
+#  page_breaks_after     :string(100)
+#  switch_versions_after :string(100)
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
