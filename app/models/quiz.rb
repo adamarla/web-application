@@ -325,6 +325,11 @@ class Quiz < ActiveRecord::Base
     return true
   end
 
+  def download_pdf?
+    return nil unless self.compiled?
+    return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
+  end
+
 #################################################################
 
   public

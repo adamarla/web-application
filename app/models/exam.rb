@@ -208,6 +208,12 @@ class Exam < ActiveRecord::Base
     return response[:error_out_response][:manifest]
   end
 
+  def download_pdf?
+    return nil unless self.compiled?
+    return nil if self.takehome
+    return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
+  end
+
   public 
     def seal 
       uid = self.uid.nil? ? "e/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
