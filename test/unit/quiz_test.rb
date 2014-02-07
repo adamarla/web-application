@@ -16,8 +16,8 @@
 #  uid                   :string(40)
 #  version               :string(10)
 #  shadows               :string(255)
-#  page_breaks_after     :string(100)
-#  switch_versions_after :string(100)
+#  page_breaks_after     :string(255)
+#  switch_versions_after :string(255)
 #
 
 require 'test_helper'

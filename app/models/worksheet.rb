@@ -11,7 +11,7 @@
 #  graded     :boolean         default(FALSE)
 #  honest     :integer
 #  received   :boolean         default(FALSE)
-#  signature  :string(50)
+#  signature  :string(255)
 #  uid        :string(40)
 #  job_id     :integer         default(-1)
 #
