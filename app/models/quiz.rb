@@ -16,8 +16,8 @@
 #  uid                   :string(40)
 #  version               :string(10)
 #  shadows               :string(255)
-#  page_breaks_after     :string(100)
-#  switch_versions_after :string(100)
+#  page_breaks_after     :string(255)
+#  switch_versions_after :string(255)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -133,6 +133,10 @@ class Quiz < ActiveRecord::Base
     return last
   end
 
+  def pages?
+    return self.span?
+  end
+
   def shred_pdfs
     # Going forward, this method would issue a Savon request to the
     # 'printing-press' asking it to delete PDFs of exams generated
@@ -218,7 +222,6 @@ class Quiz < ActiveRecord::Base
 
   def write
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
-    self.lay_it_out unless self.laid_out?
 
     # Write TeX for the quiz 
     response = SavonClient.request :wsdl, :writeTex do
@@ -337,7 +340,7 @@ class Quiz < ActiveRecord::Base
         end
 
         self.update_attributes uid: uid, name: name
-        self.lay_it_out(qids) unless qids.blank?
+        self.lay_it_out(qids) 
 
         Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
         job = Delayed::Job.enqueue CompileTex.new(self.id, self.class.name)

@@ -66,9 +66,21 @@ module GeneralQueries
 
   def minutes_to_completion(job_id)
     return 0 if (job_id.blank? || job_id < 1)
-    queued = Delayed::Job.where(:failed_at => nil).order(:priority).order(:created_at).map(&:id)
-    at = queued.index job_id
-    return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
+    priors = Delayed::Job.where(failed_at: nil).order(:priority).order(:created_at)
+    at = priors.map(&:id).index job_id
+
+    estimate = priors[0..at].map{ |j| job_minutes_reqd(j) }.inject(:+).ceil 
+    return estimate
+    # return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
+  end
+
+  def job_minutes_reqd(job)
+    node = YAML.load job.handler
+    return 0.3 unless node.class.name == "CompileTex"
+
+    return 1 unless node.type == "Quiz"
+    quiz = node.type.constantize.find node.id
+    return (quiz.pages? / 3.0).ceil # assuming JPEG creation at the rate of 3 pages / minute
   end
 
 end
