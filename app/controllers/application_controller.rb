@@ -10,20 +10,35 @@ class ApplicationController < ActionController::Base
   end 
 
   def ping
-    json = {} 
-    json[:deployment] = Rails.env
-
-    user = current_account.nil? ? "unknown" : current_account.loggable_type
-
-    case user
+    @dep = Rails.env
+    @who = current_account.nil? ? nil : current_account.loggable_type
+    @q = nil
+    @e = nil
+    
+    case @who
       when "Student"
-        is_new = StudentRoster.where(:student_id => current_account.loggable_id).count < 1
+        @newbie = StudentRoster.where(:student_id => current_account.loggable_id).count < 1
       when "Teacher"
         t = current_account.loggable
-        is_new = t.new_to_the_site?
-        user = t.online ? "Online" : user
+        @newbie = t.new_to_the_site?
 
-        # Demos are available only to external teachers. Our own instructors don't need them
+        if t.online 
+          @who = "Online"
+        else
+          # Draw attention to quizzes and exams made today
+          @q = Quiz.where(teacher_id: t.id).select{ |q| q.compiling? || q.created_at.to_date == Date.today }
+          @e = Exam.where(takehome: false).select{ |e| e.quiz.teacher_id == t.id }.select{ |e| e.compiling? || e.created_at.to_date == Date.today }
+        end
+      else
+        @newbie = false
+    end
+  end # of method
+
+end
+
+
+
+# Demos are available only to external teachers. Our own instructors don't need them
 =begin
         unless t.online
           cloned = t.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
@@ -37,14 +52,3 @@ class ApplicationController < ActionController::Base
           }
         end # of unless 
 =end
-      else
-        is_new = false
-    end
-
-    json[:new] = is_new
-    json[:who] = user
-
-    render :json => json, :status => :ok
-  end # of method
-
-end

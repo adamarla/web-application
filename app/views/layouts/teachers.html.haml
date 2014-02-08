@@ -7,6 +7,7 @@
   #toolbox.hidden 
     = render partial: 'teachers/sektions'
     = render partial: 'toolbox/line'
+    = render partial: 'menus/teacher/bell'
     = render partial: 'menus/teacher/per-qz'
     = render partial: 'menus/teacher/per-ws'
     = render partial: 'menus/teacher/per-question'
@@ -111,7 +112,7 @@
 
   %body 
     #spinner.spinner
-      = image_tag "loading.gif", id: 'img-spinner'
+      = image_tag "loading.gif", id: 'img-spinner', size: '50x50'
     .container-fluid 
       #control-panel.g-panel.row-fluid{ :marker => "#{tc.id}" } 
         .span12
@@ -141,6 +142,8 @@
                   %li.dropdown 
                     = simple_link for: "Courses", id: 'lnk-courses'
 
+                %li.dropdown
+                  = simple_link icon: 'icon-bell', id: 'lnk-bell'
                 %li#cp-account-link.dropdown
                   = simple_link for: "Hello, #{tc.first_name}", id: 'm-account'
       #desktop.row-fluid

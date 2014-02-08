@@ -28,6 +28,10 @@
 ## Teachers 
 ##############################################################################
 
+lnk-bell :
+  show :
+    menu : m-bell
+
 lnk-courses : 
   show :
     menu : m-courses

@@ -11,7 +11,7 @@ class QuizzesController < ApplicationController
 
     quiz = t.quizzes.create(name: name, question_ids: qids, num_questions: qids.count)
     eta = minutes_to_completion quiz.job_id
-    render json: { monitor: { quiz: quiz.id }, notify: { title: "#{eta} minutes(s)" } }, status: :ok
+    render json: { monitor: { quiz: [quiz.id] }, notify: { title: "#{eta} minutes(s)" } }, status: :ok
   end
 
   def mass_assign_to
@@ -25,7 +25,7 @@ class QuizzesController < ApplicationController
       eid, job_id = students.blank? ? nil : quiz.mass_assign_to(students, publish)
       unless job_id.nil? 
         eta = minutes_to_completion job_id
-        render json: { monitor: { exam: eid }, notify: { title: "#{eta} minute(s)" }}, status: :ok
+        render json: { monitor: { exam: [eid] }, notify: { title: "#{eta} minute(s)" }}, status: :ok
       else # should happen because the quiz IS being published - and no other reason
         render json: { msg: :publish }, status: :ok
       end 

@@ -166,10 +166,6 @@ jQuery ->
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
-
-      if json.worksheets.length > 0
-        notifier.show('n-compiled') if json.quizzes.length < 1 # only info on compiled worksheets returned
-
     else if url.match(/prefab/)
       monitor.add json
       x = $('#m-demo').find("li[marker=#{json.timer.on}]").eq(0)
@@ -196,6 +192,8 @@ jQuery ->
       menu = 'per-asset'
     else if url.match(/attach_detach_asset/)
       $('#mng-assets').modal 'hide'
+    else if url.match(/quiz\/mass_assign/)
+      monitor.add json
     else
       matched = false
 

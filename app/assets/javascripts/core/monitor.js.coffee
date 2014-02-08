@@ -5,14 +5,46 @@ window.monitor = {
   exams : [],
   ticker : null,
 
-  add : (json) ->
-    trackObjs = json.monitor
-    return false unless trackObjs?
+  bell : {
+    obj : null, 
+    ticker : null,
+    nPings : 0,
 
-    if trackObjs.quiz?
-      monitor.quizzes.push trackObjs.quiz
-    if trackObjs.exam?
-      monitor.exams.push trackObjs.exam
+    start : () ->
+      return false if monitor.bell.ticker?
+      monitor.bell.obj = $('#lnk-bell')[0] unless monitor.bell.obj?  
+      monitor.bell.ticker = window.setInterval () -> monitor.bell.ping(),
+      1000
+      return true
+
+    stop : () ->
+      if monitor.bell.ticker?
+        window.clearInterval monitor.bell.ticker
+        monitor.bell.ticker = null
+      $(monitor.bell.obj).removeClass('on')
+      monitor.bell.nPings = 0
+      return true
+
+    ping : () ->
+      b = $(monitor.bell.obj)
+      if b.hasClass('on')
+        b.removeClass('on') 
+        monitor.bell.nPings += 1
+      else 
+        b.addClass('on') 
+      monitor.bell.stop() if monitor.bell.nPings > 7
+      return true
+  }
+
+  add : (json) ->
+    list = json.monitor
+    return false unless list?
+
+    # Both list.quiz and list.exam are arrays 
+    if list.quiz? 
+      monitor.quizzes.push(i) for i in list.quiz if list.quiz.length > 0
+    if list.exam?
+      monitor.exams.push(i) for i in list.exam if list.exam.length > 0
 
     monitor.start() unless monitor.isEmpty()
     return true
@@ -20,7 +52,7 @@ window.monitor = {
   start : () ->
     return false if monitor.ticker?
     monitor.ticker = window.setInterval () -> monitor.ping(),
-    15000
+    30000
     return true
 
   stop : () ->
@@ -35,39 +67,26 @@ window.monitor = {
     return true
 
   ping : () ->
-    $.get 'ping/queue', { quizzes : monitor.quizzes, exams : monitor.exams }, (data) -> monitor.update(data),
+    $.get 'ping/queue', { 'quizzes[]' : monitor.quizzes, 'exams[]' : monitor.exams }, (data) -> monitor.update(data),
     'json'
     return true
 
   update : (json) ->
-    # Remove IDs from monitor.quizzes
-    # We can afford to use an inefficient algo because the arrays 
-    # in question will never get too large ( < 5 elements )
-    
-    target = $('#n-compiled')
-    ul = target.find('ul')
-    $(m).empty() for m in ul
-
-    sthCompiled = false
+    mn = $('#m-bell')
     for type in ['quizzes', 'exams']
-      list = json[type]
-      continue unless list?
+      continue unless json[type]?
 
-      sthCompiled = sthCompiled or (list.length > 0)
-      stub = ul.filter("[class~=#{type}]").eq(0)
-      
-      for m in list # m = { :id => ..., :name => ... }
-        at = monitor[type].indexOf m.id
+      for j in json[type]
+        at = monitor[type].indexOf j.id
+        # alert "#{monitor[type]} --> #{at}"
         if at isnt -1
-          monitor[type].splice(at, 1)
-          $("<li>#{m.name}</li>").appendTo(stub)
+          monitor[type].splice(at, 1) # remove the id for further monitoring
+          monitor.bell.start()
+          # Add download path to $('#m-bell')
+          html = $("<li><a href='#{j.path}'>#{j.name}</a></li>")
+          html.appendTo mn
 
     monitor.stop() if monitor.isEmpty()
-
-    # update the demo if some of these quizzes are the pre-fab kind
-    # demo.update json.demo
-
-    # Launch notifier
-    # notifier.show('n-compiled') if sthCompiled
     return true
-}
+
+} # of file 

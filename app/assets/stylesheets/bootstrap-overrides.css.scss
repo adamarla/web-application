@@ -362,6 +362,15 @@ span.MathJax {
 #lnk-register { 
 } 
 
+#lnk-bell {
+  padding: 10px ; 
+  border-radius: 5px ;
+  margin-top: -1px ;
+  &.on {
+    background-color: $deep-blue ;
+  }
+}
+
 .orange { 
   color: $orange ;
 } 

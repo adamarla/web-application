@@ -151,6 +151,10 @@ jQuery ->
   ###
 
   onPing = (response) ->
+    # Start monitoring progress of any pending Delayed::Jobs
+    monitor.add response
+
+    # Set server 
     if response.deployment is 'production'
       gutenberg.server = gutenberg.serverOptions.remote
       rails.server = rails.serverOptions.remote
