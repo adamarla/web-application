@@ -4,6 +4,7 @@ window.monitor = {
   quizzes : [],
   exams : [],
   ticker : null,
+  immediate : false, 
 
   bell : {
     obj : null, 
@@ -36,7 +37,7 @@ window.monitor = {
       return true
   }
 
-  add : (json) ->
+  add : (json, immediate = false) ->
     list = json.monitor
     return false unless list?
 
@@ -46,13 +47,18 @@ window.monitor = {
     if list.exam?
       monitor.exams.push(i) for i in list.exam if list.exam.length > 0
 
-    monitor.start() unless monitor.isEmpty()
+    monitor.start(immediate) unless monitor.isEmpty()
     return true
 
-  start : () ->
+  start : (immediate = false) ->
     return false if monitor.ticker?
-    monitor.ticker = window.setInterval () -> monitor.ping(),
-    30000
+
+    monitor.immediate = immediate
+    unless monitor.immediate 
+      monitor.ticker = window.setInterval () -> monitor.ping(),
+      30000
+    else
+      monitor.ticker = window.setTimeout(monitor.ping, 1000)
     return true
 
   stop : () ->
@@ -66,9 +72,13 @@ window.monitor = {
     return false if monitor.exams.length > 0
     return true
 
-  ping : () ->
+  ping : (immediate = false) ->
     $.get 'ping/queue', { 'quizzes[]' : monitor.quizzes, 'exams[]' : monitor.exams }, (data) -> monitor.update(data),
     'json'
+    if monitor.immediate
+      window.clearTimeout monitor.ticker
+      monitor.ticker = null
+      monitor.start() unless monitor.isEmpty() # revert to polling every 30 seconds
     return true
 
   update : (json) ->

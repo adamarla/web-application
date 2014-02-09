@@ -152,7 +152,7 @@ jQuery ->
 
   onPing = (response) ->
     # Start monitoring progress of any pending Delayed::Jobs
-    monitor.add response
+    monitor.add response, true
 
     # Set server 
     if response.deployment is 'production'
