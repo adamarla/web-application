@@ -65,7 +65,7 @@ class QuizzesController < ApplicationController
 
       if question_ids.count > 0
         @title, @msg = (op == "remove") ? quiz.remove_questions(question_ids) : quiz.add_questions(question_ids)
-        @last_child = quiz.children?.order(:created_at).last
+        @last_child = quiz.exam_ids.count > 0 ? quiz.children?.order(:created_at).last : self
       else
         @title = "No change"
         @msg = (op == "remove") ? "No questions dropped" : "No questions added"
