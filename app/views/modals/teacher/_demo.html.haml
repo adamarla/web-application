@@ -1,5 +1,5 @@
 
-#m-demo.modal.fade.lateral-slide{ :role => :dialog }
+#m-demo.modal.fade.lateral-slide{ role: :dialog } 
 
   -# static components
   .row-fluid
@@ -18,7 +18,7 @@
     -# print
     .span4
       .span3
-        = image_tag 'quick-trial/printer.png', :class => 'big-icon'
+        = image_tag 'quick-trial/printer.png', class: 'big-icon'
       .span8
         %h1.orange= "2. Print & Write"
         %p
@@ -33,7 +33,7 @@
     -# upload
     .span4
       .span3
-        = image_tag 'quick-trial/upload.png', :class => 'big-icon'
+        = image_tag 'quick-trial/upload.png', class: 'big-icon'
       .span8
         %h1.orange= "3. Scan & Upload"
         %p
@@ -50,26 +50,26 @@
       .span2
         .span8
           %button.btn.btn-primary{ :id => "btn-whatisthis"}
-            = image_tag 'notifications/question.png', :class => 'big-icon'
+            = image_tag 'notifications/question.png', class: 'big-icon'
             %p What is this
 
   -# active components
   .row-fluid.push-down 
     .span3.offset1
-      = simple_form_for :prefab, :remote => true, :url => prefab_path, 
-      :defaults => { :label => false }, :html => { :class => 'offset4' } do |f|
-        = f.input :topic,
-                  :collection => PREFAB_QUIZ_MAP.map{ |m| [ m.first.to_s.humanize, m.last ] },
-                  :label_method => :first, 
-                  :value_method => :last, 
-                  :as => :radio_buttons
-        = simple_button :for => 'Make PDF', :type => :submit, :class => 'btn-primary push-down'
+      = simple_form_for :prefab, remote: true, url: prefab_path, 
+      :defaults => { label: false }, html: { class: 'offset4' } do |f|
+        = f.input :topic, wrapper_html: {id: 'open-demos' },
+                  collection: PREFAB_QUIZ_MAP.map{ |m| [ m.first.to_s.humanize, m.last ] },
+                  label_method: :first, 
+                  value_method: :last, 
+                  as: :radio_buttons
+        = simple_button for: 'Make PDF', type: :submit, class: 'btn-primary push-down'
     .span4
       %ul.nav.offset3
         - PREFAB_QUIZ_MAP.each do |m|
-          %li{ :marker => m.last }
-            = simple_link :for => "#{m.first.to_s.humanize} PDF", 
-            :class => 'span7 disabled', :marker => m.last,
+          %li{ marker: m.last }
+            = simple_link for: "#{m.first.to_s.humanize} PDF", 
+            class: 'span7 disabled', marker: m.last,
             :href => "#{Gutenberg['server']}/mint/ws/:a/assignment-:b-:c.pdf"
             .stopwatch.span4
     .span4

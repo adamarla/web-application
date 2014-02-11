@@ -26,7 +26,7 @@ PREFAB_QUIZ_GEOMETRY = 340
 PREFAB_QUIZ_PROBABILITY = 341
 
 PREFAB_QUIZ_IDS = [*PREFAB_QUIZ_ALGEBRA..PREFAB_QUIZ_PROBABILITY]
-PREFAB_QUIZ_MAP = { :algebra => 337, :calculus => 338, :trigonometry => 339, :probability => 341 }
+PREFAB_QUIZ_MAP = { algebra: 337, calculus: 338, trigonometry: 339, probability: 341 }
 
 # Status codes for Delayed::Jobs 
 JOB_INITIAL_STATE = -1 

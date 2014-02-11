@@ -10,6 +10,6 @@ object false
   
   node(:enable) { @q.map(&:id) }
 
-  # node(:demo) { 
-  #   @demo.map { |m| { :id => m.quiz.parent_id, :a => encrypt(m.id, 7), :b => m.quiz_id, :c => m.id } }
-  # } 
+  # node(:demo) {
+  #  @demos.map{ |m| { id: m.parent_id, path: m.download_pdf? } }
+  #}

@@ -26,8 +26,10 @@ class ApplicationController < ActionController::Base
           @who = "Online"
         else
           # Draw attention to quizzes and exams made today
-          @q = Quiz.where(teacher_id: t.id).select{ |q| q.compiling? || q.created_at.to_date == Date.today }
+          quizzes = Quiz.where(teacher_id: t.id)
+          @q = quizzes.select{ |q| q.compiling? || q.created_at.to_date == Date.today }
           @e = Exam.where(takehome: false).select{ |e| e.quiz.teacher_id == t.id }.select{ |e| e.compiling? || e.created_at.to_date == Date.today }
+          # @demos = quizzes.where(parent_id: PREFAB_QUIZ_IDS).where('uid IS NOT ?', nil).select{ |m| m.compiled? } 
         end
       else
         @newbie = false

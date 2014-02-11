@@ -123,33 +123,17 @@ class TeachersController < ApplicationController
     @context = params[:context]
   end
 
-=begin
   def prefabricate
     topic = params[:prefab][:topic]
-    quiz = Quiz.find topic.to_i 
-
+    quiz = Quiz.find topic.to_i
     clone = quiz.clone current_account.loggable_id
     unless clone.nil?
-      job = Delayed::Job.enqueue CompileQuiz.new(clone.id), priority: 5
-      clone.update_attribute :job_id, job.id
-
-      # Now, randomly pick a student from the prefabricated section - Gradians.com 
-      sk = Sektion.find PREFAB_SECTION
-      random_student = sk.students.order(:created_at)[ [*2..10].sample ] # first 2 students are the founders
-
-      # and assign the just made quiz to him / her 
-      ws = clone.assign_to [random_student]
-      unless ws.nil?
-        job = Delayed::Job.enqueue CompileExam.new(ws, false), priority: 5
-        ws.update_attribute :job_id, job.id
-        estimate = minutes_to_completion job.id
-        render json: { monitor: { quiz: clone.id, exam: ws.id }, timer: { on: topic, for: "#{estimate * 60}"}}, status: :ok
-      end
-    else # no clone. should never happen
-      render :nothing => true, :status => :ok
+      estimate = minutes_to_completion clone.job_id
+      render json: { monitor: { quiz: clone.id }, timer: { on: topic, for: "#{estimate * 60}"}}, status: :ok
+    else
+      render nothing: true, status: :ok
     end
-  end
-=end
+  end 
 
   def add_lesson
     teacher = current_account.loggable

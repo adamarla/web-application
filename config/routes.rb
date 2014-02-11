@@ -132,6 +132,7 @@ Webapp::Application.routes.draw do
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', via: :get
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
   match 'new/lesson' => 'teachers#add_lesson', via: :post
+  # match 'prefab' => 'teachers#prefabricate', via: [:put, :post]
 
   # Exam
   match 'exam/summary' => 'exams#summary', via: :get

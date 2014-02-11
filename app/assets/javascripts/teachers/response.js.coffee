@@ -166,6 +166,7 @@ jQuery ->
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
+      # demo.update json
     else if url.match(/prefab/)
       monitor.add json
       x = $('#m-demo').find("li[marker=#{json.timer.on}]").eq(0)

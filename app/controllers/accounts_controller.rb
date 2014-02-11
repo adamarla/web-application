@@ -141,6 +141,7 @@ class AccountsController < ApplicationController
 
     @q = Quiz.where(id: quiz_ids).select{ |m| m.compiled? } 
     @e = Exam.where(id: eids, takehome: false).select{ |m| m.compiled? }
+    # @demos = Quiz.where(teacher_id: current_account.loggable_id, parent_id: PREFAB_QUIZ_IDS).where('uid IS NOT ?', nil).select{ |m| m.compiled? }
   end 
 
   def by_country

@@ -163,10 +163,9 @@ jQuery ->
       rails.server = rails.serverOptions.local
 
     # if logged in user is a teacher, then update her demo info (which demos done, which remain)
-#    if response.who is 'Teacher'
-#      if response.demo?
-#        demo.initialize(response.demo)
-#        $('#m-demo-intro').modal('show') if response.new is true
+    # if response.who is 'Teacher'
+    #  demo.initialize(response.demos)
+    #  $('#m-demo-intro').modal('show') if response.new is true
 
     if response.who is 'Student'
       $('#m-enroll-self').modal('show') if response.new is true
