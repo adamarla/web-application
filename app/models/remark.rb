@@ -9,6 +9,8 @@
 #  created_at         :datetime        not null
 #  updated_at         :datetime        not null
 #  tex_comment_id     :integer
+#  examiner_id        :integer
+#  live               :boolean         default(TRUE)
 #
 
 class Remark < ActiveRecord::Base

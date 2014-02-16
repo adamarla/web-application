@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140207075619) do
+ActiveRecord::Schema.define(:version => 20140213063246) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -259,10 +259,14 @@ ActiveRecord::Schema.define(:version => 20140207075619) do
     t.integer  "x"
     t.integer  "y"
     t.integer  "graded_response_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.integer  "tex_comment_id"
+    t.integer  "examiner_id"
+    t.boolean  "live",               :default => true
   end
+
+  add_index "remarks", ["examiner_id"], :name => "index_remarks_on_examiner_id"
 
   create_table "requirements", :force => true do |t|
     t.string  "text",       :limit => 100
