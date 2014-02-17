@@ -11,6 +11,7 @@
 #  last_workset_on :datetime
 #  n_assigned      :integer         default(0)
 #  n_graded        :integer         default(0)
+#  live            :boolean         default(FALSE)
 #
 
 require 'test_helper'

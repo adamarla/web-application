@@ -11,26 +11,28 @@ class ApplicationController < ActionController::Base
 
   def ping
     @dep = Rails.env
-    @who = current_account.nil? ? nil : current_account.loggable_type
+    obj = current_account.nil? ? nil : current_account.loggable 
+    @who = obj.nil? ? nil : obj.class.name
     @q = nil
     @e = nil
     
     case @who
       when "Student"
-        @newbie = StudentRoster.where(:student_id => current_account.loggable_id).count < 1
+        @newbie = StudentRoster.where(student_id: obj.id).count < 1
       when "Teacher"
-        t = current_account.loggable
-        @newbie = t.new_to_the_site?
+        @newbie = obj.new_to_the_site?
 
-        if t.online 
+        if obj.online 
           @who = "Online"
         else
           # Draw attention to quizzes and exams made today
-          quizzes = Quiz.where(teacher_id: t.id)
+          quizzes = Quiz.where(teacher_id: obj.id)
           @q = quizzes.select{ |q| q.compiling? || q.created_at.to_date == Date.today }
-          @e = Exam.where(takehome: false).select{ |e| e.quiz.teacher_id == t.id }.select{ |e| e.compiling? || e.created_at.to_date == Date.today }
+          @e = Exam.where(takehome: false).select{ |e| e.quiz.teacher_id == obj.id }.select{ |e| e.compiling? || e.created_at.to_date == Date.today }
           # @demos = quizzes.where(parent_id: PREFAB_QUIZ_IDS).where('uid IS NOT ?', nil).select{ |m| m.compiled? } 
         end
+      when "Examiner"
+        @newbie = !obj.live? 
       else
         @newbie = false
     end
@@ -42,8 +44,8 @@ end
 
 # Demos are available only to external teachers. Our own instructors don't need them
 =begin
-        unless t.online
-          cloned = t.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
+        unless obj.online
+          cloned = obj.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
           json[:demo] = {
             build: (PREFAB_QUIZ_IDS - cloned.map(&:parent_id)),
             download: cloned.map{ |m| 

@@ -11,6 +11,7 @@
 #  last_workset_on :datetime
 #  n_assigned      :integer         default(0)
 #  n_graded        :integer         default(0)
+#  live            :boolean         default(FALSE)
 #
 
 include GeneralQueries
@@ -113,6 +114,12 @@ class Examiner < ActiveRecord::Base
     for id in used.uniq
       Mailbot.delay.new_grading_work(id)
     end
+  end
+
+  def live?
+    return true if self.live
+    self.update_attribute(:live, true) if self.is_admin
+    return false 
   end
 
 end # of class

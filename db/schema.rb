@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140213063246) do
+ActiveRecord::Schema.define(:version => 20140217073118) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(:version => 20140213063246) do
     t.datetime "last_workset_on"
     t.integer  "n_assigned",                    :default => 0
     t.integer  "n_graded",                      :default => 0
+    t.boolean  "live",                          :default => false
   end
 
   create_table "exams", :force => true do |t|
