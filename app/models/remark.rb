@@ -18,4 +18,16 @@ class Remark < ActiveRecord::Base
   belongs_to :graded_response
   belongs_to :tex_comment
 
+  def self.by(id)
+    where(examiner_id: id)
+  end
+
+  def self.live
+    where(live: true)
+  end
+
+  def self.sandboxed
+    where(live: false)
+  end
+
 end
