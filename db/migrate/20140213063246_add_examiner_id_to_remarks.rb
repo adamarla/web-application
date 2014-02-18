@@ -15,5 +15,7 @@ class AddExaminerIdToRemarks < ActiveRecord::Migration
   end
 
   def down
+    remove_column :remarks, :examiner_id
+    remove_column :remarks, :live
   end
 end
