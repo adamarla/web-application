@@ -54,6 +54,8 @@ Webapp::Application.routes.draw do
   match 'update_scan_id' => 'examiners#receive_single_scan', via: :post
   match 'audit/todo' => 'examiners#audit_todo', via: :get
   match 'audit/review' => 'examiners#audit_review', via: :get
+  match 'examiner/apprentices' => 'examiners#apprentices', via: :get
+  match 'load/samples' => 'examiners#load_samples', via: :get
 
   # Graded Response 
   match 'reset/graded' => 'examiners#reset_graded', via: :get

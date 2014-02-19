@@ -1,0 +1,20 @@
+
+#m-audit-apprentice.modal.fade.wide
+  .row-fluid
+    .span2
+      = image_tag 'notifications/microscope.png', :class => 'big-icon'
+    .span9
+      = simple_form_for :audit, remote: true, defaults: { label: false, required: false } do |f|
+        .row-fluid
+          .span6
+            %p.heading= "Gating Issues"
+            = f.input :gating, as: :check_boxes, 
+              collection: ['Used less than polite language']
+          .span6
+            %p.heading= "Non-gating Issues"
+            = f.input :non_gating, as: :check_boxes, 
+              collection: []
+        .row-fluid
+          = f.input :comments, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, labels: false
+          %button.btn.btn-primary.btn-large.pull-left{ type: :submit }= "Submit"
+          %button.btn.btn-inverse.btn-large.pull-right{ type: :submit, id: 'btn-audit-allok' }= "All Good"

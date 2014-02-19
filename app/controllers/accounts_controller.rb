@@ -55,30 +55,45 @@ class AccountsController < ApplicationController
 
   def pending_exams
     @exams = current_account.pending_exams
+    @sandboxed = !current_account.live?
   end
 
   def to_be_graded
-    tid = params[:id]
-    by = current_account.loggable_id
-    @pending = GradedResponse.in_exam(tid).with_scan.ungraded.assigned_to(by)
-    sel = @pending.map(&:q_selection_id).uniq
-    @indices = QSelection.where(id: sel).order(:index)
+    @sandboxed = !current_account.live?
+    eid = params[:id]
+    
+    if @sandboxed 
+      # Only publishable exams are considered for sandboxing. 
+      # And for a given exam, pick 5 random samples of each question
+      qid = Exam.find(eid).quiz
+      @indices = QSelection.where(quiz_id: qid).order(:index)
+    else 
+      by = current_account.loggable_id
+      @pending = GradedResponse.in_exam(eid).with_scan.ungraded.assigned_to(by)
+      sel = @pending.map(&:q_selection_id).uniq
+      @indices = QSelection.where(id: sel).order(:index)
+    end
   end
 
   def pending_scans
     # Given: The question and the exam 
     # Known: The examiner who needs to grade them
 
-    tp = params[:tp]
+    eid = params[:tp]
     q = params[:q]
-    eid = current_account.loggable_id
+    exid = current_account.loggable_id
+    @sandboxed = !current_account.live?
 
     # { pending: [{ scan: a, student: b, gr: [{ id: 12, name: "Q6.A" }, {id: 13, name: "Q6.B"}]}, { scan: b ... } ] }
 
     qsel = QSelection.find q
     @comments = qsel.germane_comments 
 
-    p = GradedResponse.in_exam(tp).where(q_selection_id: q).with_scan.ungraded.assigned_to(eid)
+    if @sandboxed
+      p = GradedResponse.in_exam(eid).where(q_selection_id: q).limit(5)
+    else
+      p = GradedResponse.in_exam(eid).where(q_selection_id: q).with_scan.ungraded.assigned_to(exid)
+    end
     @pending = p.order(:student_id).order(:subpart_id)
     @students = Student.where(id: @pending.map(&:student_id).uniq)
     @scans = @pending.map(&:scan).uniq
@@ -103,9 +118,14 @@ class AccountsController < ApplicationController
   end
 
   def submit_fdb
-    r = GradedResponse.find(params[:id].to_i)
+    sandboxed = !current_account.live?
+    gid = params[:id].to_i
+
+    db_obj = sandboxed ? current_account.loggable.doodles.build(graded_response_id: gid) : GradedResponse.find(gid)
     ids = params[:checked].keys.map(&:to_i)
-    r.fdb ids
+
+    db_obj.fdb(ids) # will either update GradedResponse obj or add a new Doodle
+
     overlay = params[:overlay].split("@d@").select{ |m| !m.blank? }
     n = 0
     z = overlay.slice(n,3)
@@ -117,21 +137,36 @@ class AccountsController < ApplicationController
         tx.save
       end
 
-      rmrk = tx.remarks.create x: z[0], y: z[1], graded_response_id: r.id
+      rmrk = tx.remarks.create x: z[0], y: z[1], graded_response_id: gid 
+      rmrk.update_attributes(doodle_id: db_obj.id) if sandboxed
+
       n += 3
       z = overlay.slice(n,3)
     end
-    render :json => { :status => :ok }, :status => :ok
+    render json: { status: :ok }, status: :ok
   end
 
   def view_fdb
-    @gr = GradedResponse.find(params[:id])
-    @fdb = Requirement.unmangle_feedback @gr.feedback
+    gid = params[:id].to_i
+    @gr = GradedResponse.find gid
+    sandboxed = params[:sandbox]
+
+    if sandboxed 
+      doodle = Doodle.where(examiner_id: params[:a], graded_response_id: gid).first
+      @fdb = Requirement.unmangle_feedback doodle.feedback
+    else
+      @fdb = Requirement.unmangle_feedback @gr.feedback
+    end
+
     @solution_video = @gr.subpart.question.video
 
     unless (@fdb.nil? || @fdb == 0) # => none so far 
-      siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
-      @comments = Remark.where(graded_response_id: siblings) 
+      if sandboxed 
+        @comments = Remark.where(doodle_id: doodle.id)
+      else 
+        siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
+        @comments = Remark.where(graded_response_id: siblings) 
+      end 
     end
   end
 

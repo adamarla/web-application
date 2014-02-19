@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140217073118) do
+ActiveRecord::Schema.define(:version => 20140219114420) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -55,14 +55,14 @@ ActiveRecord::Schema.define(:version => 20140217073118) do
   end
 
   create_table "apprenticeships", :force => true do |t|
-    t.integer  "examiner_id"
-    t.integer  "teacher_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "mentee_id"
+    t.integer  "mentor_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
-  add_index "apprenticeships", ["examiner_id"], :name => "index_apprenticeships_on_examiner_id"
-  add_index "apprenticeships", ["teacher_id"], :name => "index_apprenticeships_on_teacher_id"
+  add_index "apprenticeships", ["mentee_id"], :name => "index_apprenticeships_on_mentee_id"
+  add_index "apprenticeships", ["mentor_id"], :name => "index_apprenticeships_on_mentor_id"
 
   create_table "countries", :force => true do |t|
     t.string "name",         :limit => 50
@@ -99,6 +99,16 @@ ActiveRecord::Schema.define(:version => 20140217073118) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "doodles", :force => true do |t|
+    t.integer  "examiner_id"
+    t.integer  "feedback",           :default => 0
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.integer  "graded_response_id"
+  end
+
+  add_index "doodles", ["examiner_id"], :name => "index_doodles_on_examiner_id"
 
   create_table "examiners", :force => true do |t|
     t.datetime "created_at"
@@ -260,14 +270,11 @@ ActiveRecord::Schema.define(:version => 20140217073118) do
     t.integer  "x"
     t.integer  "y"
     t.integer  "graded_response_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.integer  "tex_comment_id"
-    t.integer  "examiner_id"
-    t.boolean  "live",               :default => true
+    t.integer  "doodle_id"
   end
-
-  add_index "remarks", ["examiner_id"], :name => "index_remarks_on_examiner_id"
 
   create_table "requirements", :force => true do |t|
     t.string  "text",       :limit => 100

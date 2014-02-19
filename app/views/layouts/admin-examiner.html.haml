@@ -16,14 +16,17 @@
     = render partial: 'menus/examiner/per-audit'
     = render partial: 'shared/user/preview'
     = render partial: 'shared/grading/shadow'
+    = render partial: 'toolbox/fdb-panel'
   
 - content_for :modals do
   #modals
     = render partial: 'modals/user/account'
     = render partial: 'modals/examiner/audit'
     = render partial: 'modals/examiner/upload-video-solution'
+    = render partial: 'modals/examiner/audit-apprentice'
     = render partial: 'notifications/shared/last-scan'
     = render partial: 'notifications/shared/first-scan'
+    = render partial: 'notifications/shared/sandbox'
     - if is_admin
       = render partial: 'modals/examiner/new-examiner'
 
@@ -78,6 +81,8 @@
             = render partial: 'examiners/audit'
           #left-8
             = render partial: 'examiners/video-pending'
+          #left-9
+            = render partial: 'examiners/apprentices'
 
         - if is_admin
           #middle.g-panel.span4

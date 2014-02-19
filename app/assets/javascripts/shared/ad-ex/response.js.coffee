@@ -85,6 +85,9 @@ jQuery ->
     else if url.match(/question\/add_video/)
       $('#m-upload-video-solution').modal 'hide'
       target = $('#pane-video-pending')
+    else if url.match(/examiner\/apprentices/)
+      target = $('#pane-apprentices')
+      key = 'apprentices'
     else
       matched = false
 

@@ -20,8 +20,9 @@ class Examiner < ActiveRecord::Base
   has_one :account, as: :loggable
   has_many :graded_responses
   has_many :suggestions
+  has_many :doodles, dependent: :destroy
 
-  has_many :apprenticeships, dependent: :destroy
+  after_create :assign_mentor
 
   # [:all] ~> [:admin]
   # [:disputed] ~> [:student]
@@ -121,5 +122,12 @@ class Examiner < ActiveRecord::Base
     self.update_attribute(:live, true) if self.is_admin
     return false 
   end
+
+  private 
+      def assign_mentor 
+        mentor = Examiner.where(live: true).order(:id).sample(1).first # randomly pick one
+        a = Apprenticeship.new mentor_id: mentor.account.id, mentee_id: self.account.id
+        return a.save
+      end 
 
 end # of class

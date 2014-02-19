@@ -26,6 +26,7 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :worksheet
   belongs_to :subpart
   has_many :remarks, dependent: :destroy
+  has_many :doodles, dependent: :destroy
 
   validates :q_selection_id, presence: true
   validates :student_id, presence: true

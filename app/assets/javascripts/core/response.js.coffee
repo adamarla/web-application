@@ -17,21 +17,35 @@ jQuery ->
 
     if url.match('quiz/preview') 
       preview.loadJson json # mint
-    else if url.match(/exam\/layout/)
+    else if url.match(/exam\/layout/) or url.match(/load\/samples/)
       # load student scans 
       preview.loadJson json # locker
       # prep the feedback panel
       splitTab = true
+
+      if json.sandbox?
+        sandbox = json.sandbox
+        apprentice = json.apprentice 
+        karo.tab.enable 'tab-samples'
+      else 
+        sandbox = false 
+        apprentice = null 
+
       if json.user is 'Student'
         target = '#pane-st-rc-2'
         ulKlass = "span3 nopurge-ever"
         contentKlass = "span8"
         writeBoth = false
-      else
+      else if json.user is 'Teacher'
         target = '#pane-tc-rc-3'
         writeBoth = true
         ulKlass = "span4 nopurge-ever"
         contentKlass = "span7"
+      else 
+        target = '#pane-samples'
+        writeBoth = false 
+        ulKlass = 'span3 nopurge-ever'
+        contentKlass = 'span8'
 
       leftTabs.create target, json, {
         shared : 'fdb-panel',
@@ -43,7 +57,7 @@ jQuery ->
           content : contentKlass
         },
         data : {
-          url : "view/fdb.json?id=:id"
+          url : "view/fdb.json?id=:id&sandbox=#{sandbox}&a=#{apprentice}"
         }
       }
       $('#overlay-preview-carousel').removeClass 'hide'

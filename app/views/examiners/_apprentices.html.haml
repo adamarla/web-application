@@ -1,0 +1,18 @@
+
+%ul.nav.nav-tabs
+  %li
+    = simple_link for: 'Apprentices', href: '#pane-apprentices', id: 'tab-apprentices', icon: 'icon-user'
+  %li
+    = simple_link for: 'Samples', href: '#pane-samples', id: 'tab-samples'
+
+.tab-content
+  #pane-apprentices.tab-pane
+  #pane-samples.tab-pane
+    .row-fluid.navbar.purge-skip
+      = simple_link for: 'Audit Apprentice', id: 'lnk-audit-apprentice', class: 'btn btn-inverse pull-left'
+      .btn-group.pull-right
+        = simple_button for: 'Read Solution', 
+          id: 'btn-show-solution', toggle: :button
+        = simple_button for: 'View Solution', icon: 'icon-facetime-video', 
+          id: 'btn-video-solution', class: 'video btn-inverse'
+

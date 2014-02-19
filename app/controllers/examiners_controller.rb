@@ -23,6 +23,29 @@ class ExaminersController < ApplicationController
     @examiners = Examiner.order(:last_name)
   end 
 
+  def apprentices 
+    type = params[:type]
+
+    if type.blank? 
+      live = false 
+      dead = true 
+      any = false 
+    else 
+      live = type == 'live' 
+      dead = type == 'dead' 
+      any = type == 'any'
+    end 
+
+    @apprentices = current_account.loggable.apprentices  # should be all Examiners only
+    @apprentices = live ? @apprentices.select{ |a| a.live } : ( dead ? @apprentices.select{ |a| !a.live } : @apprentices )
+  end 
+
+  def load_samples
+    @apprentice = params[:id].to_i
+    doodles = Doodle.where(examiner_id: @apprentice)
+    @gids = doodles.map(&:graded_response_id).uniq 
+  end
+
   def untagged
     @questions = Question.author(current_account.loggable_id).untagged
   end

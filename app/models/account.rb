@@ -63,12 +63,16 @@ class Account < ActiveRecord::Base
     end
   end 
 
-  after_validation :geocode, :if => :geocodeable?
+  after_validation :geocode, if: :geocodeable? 
 
   def geocodeable?
     return false if self.last_sign_in_ip.nil?
     return true
   end 
+
+  def live?
+    return (self.loggable_type == 'Examiner' ? self.loggable.live? : true)
+  end
 
   def self.merge(a,b)
     # Merges 'b' into 'a' and then destroys b's loggable object
@@ -186,9 +190,15 @@ class Account < ActiveRecord::Base
         ids = ids.blank? ? 318 : ids # 318 =  "A Demo Quiz"
         @exams = Exam.where(:quiz_id => ids).select{ |m| m.has_scans? }
       when :examiner, :admin
-        g = GradedResponse.assigned_to(me).with_scan.ungraded
-        ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
-        @exams = Exam.where(:id => ids)
+        sandbox = !self.live?
+        if sandbox 
+          e = Exam.select{ |j| j.publishable? }.sample(5)
+          ids = e.map(&:id)
+        else
+          g = GradedResponse.assigned_to(me).with_scan.ungraded
+          ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
+        end
+        @exams = Exam.where(id: ids)
       else 
         @exams = []
     end
