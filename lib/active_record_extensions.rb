@@ -37,4 +37,18 @@ module ActiveRecordExtensions
     return safe
   end
 
+  def activate
+    # self = anything other than an Account object
+    return false unless self.respond_to? :account
+    return self.account.update_attribute :active, true
+  end
+
+  def deactivate
+    # self = anything other than an Account object
+    return false unless self.respond_to? :account
+    self.account.update_attribute :active, false
+    is_admin = (self.respond_to?(:is_admin) ? self.is_admin : nil) 
+    return (is_admin.nil? ? true : (is_admin ? true : self.update_attribute(:live, false))) 
+  end
+
 end
