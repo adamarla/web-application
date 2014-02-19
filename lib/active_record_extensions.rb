@@ -51,4 +51,16 @@ module ActiveRecordExtensions
     return (is_admin.nil? ? true : (is_admin ? true : self.update_attribute(:live, false))) 
   end
 
+  def apprentices
+    return [] unless self.respond_to? :account
+    ids = Apprenticeship.where(mentor_id: self.account.id).map(&:mentee_id)
+    return Account.where(id: ids).map(&:loggable)
+  end 
+
+  def mentors 
+    return [] unless self.respond_to? :account
+    ids = Apprenticeship.where(mentee_id: self.account.id).map(&:mentor_id)
+    return Account.where(id: ids).map(&:loggable)
+  end 
+
 end
