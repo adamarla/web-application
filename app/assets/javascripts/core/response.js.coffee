@@ -17,6 +17,68 @@ jQuery ->
 
     if url.match('quiz/preview') 
       preview.loadJson json # mint
+    else if url.match(/exam\/layout/)
+      # load student scans 
+      preview.loadJson json # locker
+      # prep the feedback panel
+      splitTab = true
+      if json.user is 'Student'
+        target = '#pane-st-rc-2'
+        ulKlass = "span3 nopurge-ever"
+        contentKlass = "span8"
+        writeBoth = false
+      else
+        target = '#pane-tc-rc-3'
+        writeBoth = true
+        ulKlass = "span4 nopurge-ever"
+        contentKlass = "span7"
+
+      leftTabs.create target, json, {
+        shared : 'fdb-panel',
+        split : splitTab,
+        writeBoth : writeBoth,
+        klass : {
+          root : "purge-destroy",
+          ul : ulKlass,
+          content : contentKlass
+        },
+        data : {
+          url : "view/fdb.json?id=:id"
+        }
+      }
+      $('#overlay-preview-carousel').removeClass 'hide'
+      return true
+    else if url.match(/view\/fdb/)
+      target = $('#fdb-panel')
+      $(m).addClass('hide') for m in target.find('.requirement')
+
+      if json.fdb?
+        target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
+
+      if json.split?
+        active = target.parent().prev().children('li.active').eq(0)
+        active.children('a.split').eq(0).text json.split
+
+      # Set data-* attributes on the 'Read' and 'See' solution buttons
+      b = target.closest('.tab-pane').find('.navbar').eq(0).find('button')
+
+      btnVideo = b.filter("[id='btn-video-solution']")[0]
+      btnSee = b.filter("[id='btn-show-solution']")[0]
+      btnSee.setAttribute("data-#{m}", json[m]) for m in ['id','e']
+
+      if json.video?
+        $(btnVideo).removeClass 'disabled'
+        btnVideo.setAttribute 'data-video', json.video
+        video.unload btnVideo
+      else
+        $(btnVideo).addClass 'disabled'
+
+      if json.preview? 
+        preview.loadJson json
+        if json.comments?
+          overlay.over $(preview.root)
+          overlay.loadJson json.comments
+      return true
     else
       matched = false
 
