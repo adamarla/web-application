@@ -192,7 +192,8 @@ class Account < ActiveRecord::Base
       when :examiner, :admin
         sandbox = !self.live?
         if sandbox 
-          e = Exam.select{ |j| j.publishable? }.sample(5)
+          # For sandbox, we consider exams created on or after OCtober 1st, 2013
+          e = Exam.where('id > ?', 342).select{ |j| j.publishable? }.sample(5)
           ids = e.map(&:id)
         else
           g = GradedResponse.assigned_to(me).with_scan.ungraded
