@@ -88,13 +88,10 @@ class AccountsController < ApplicationController
 
     qsel = QSelection.find q
     @comments = qsel.germane_comments 
-    candidates = GradedResponse.in_exam(eid).where(q_selection_id: q).with_scan
 
-    if @sandboxed
-      p = candidates.limit(5) 
-    else
-      p = candidates.ungraded.assigned_to(exid)
-    end
+    candidates = GradedResponse.in_exam(eid).where(q_selection_id: q).with_scan
+    p = @sandboxed ? candidates.limit(5) : candidates.ungraded.assigned_to(exid)
+
     @pending = p.order(:student_id).order(:subpart_id)
     @students = Student.where(id: @pending.map(&:student_id).uniq)
     @scans = @pending.map(&:scan).uniq
