@@ -231,6 +231,10 @@ span.MathJax {
   }
 }
 
+.input-micro {
+  width: 30px ;
+}
+
 .push-down { 
   margin-top: 20px ;
 } 
@@ -359,9 +363,6 @@ span.MathJax {
   } 
 } 
 
-#lnk-register { 
-} 
-
 .orange { 
   color: $orange ;
 } 
@@ -452,7 +453,7 @@ span.MathJax {
       font-size: 14px ;
     }
 
-    input:not([type='submit']) {
+    select, input:not([type='submit']) {
       background: transparent ; 
       font: { 
         size: 15px ;
@@ -1288,7 +1289,6 @@ li.split {
 
 #btn-register { 
   font-size: 16px ;
-
 }
 
 #lnk-faq { 
@@ -1401,3 +1401,37 @@ li.split {
     }
   } 
 } 
+
+
+#m-buy-credits {
+
+  select {
+    width: auto ;
+    height: 32px ;
+
+    // for some reason Chrome was not inherting the background color
+    // https://productforums.google.com/forum/#!topic/chrome/-BM8_C_lqC4
+    option {
+      background: rgba(25,25,25,0.95) ;
+    }
+  }
+
+  #total-amt {
+    text-align: center ;
+    border: thin dashed ;
+  }
+
+  #purchase_payment_type {
+//    width: 206px ;  
+  }
+  
+  #img-payment-icons {
+    margin-bottom: 12px ;
+  }
+
+  #headline {
+    margin-bottom: -7px ;
+  }
+
+}
+

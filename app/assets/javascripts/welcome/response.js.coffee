@@ -4,7 +4,7 @@
 ############################################################################
 
 jQuery ->
-  $('#m-register').ajaxSuccess (e,xhr,settings) ->
+  $('#m-register, #m-buy-credits').ajaxSuccess (e,xhr,settings) ->
     json = $.parseJSON xhr.responseText
     url = settings.url
     matched = true
@@ -32,6 +32,15 @@ jQuery ->
         karo.empty target
         key = 'candidates'
         $('#m-enrollment-confirm').modal 'show'
+    else if url.match(/buy\/credits/)
+      if json.status is 'ok'
+        $('#m-buy-credits').modal 'hide'
+        notifier.show 'n-purchase-complete'
+        $('#balance').text "Your balance now is #{json.text}"
+      else
+        alertbox = $('#m-buy-credits #message')
+        alertbox.text json.text[0]
+        alertbox.removeClass 'hide'
     else
       matched = false
 

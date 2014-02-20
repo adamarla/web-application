@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140205112130) do
+ActiveRecord::Schema.define(:version => 20140218092407) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -117,6 +117,17 @@ ActiveRecord::Schema.define(:version => 20140205112130) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "customers", :force => true do |t|
+    t.integer  "account_id"
+    t.integer  "credit_balance"
+    t.integer  "cash_balance"
+    t.string   "currency",       :limit => 3
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
+  add_index "customers", ["account_id"], :name => "index_customers_on_account_id"
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -201,8 +212,8 @@ ActiveRecord::Schema.define(:version => 20140205112130) do
     t.boolean  "is_mother"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "balance"
-    t.integer  "rate_code_id"
+    t.string   "first_name", :limit => 30
+    t.string   "last_name",  :limit => 30
   end
 
   create_table "lectures", :force => true do |t|
@@ -228,6 +239,24 @@ ActiveRecord::Schema.define(:version => 20140205112130) do
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end
+
+  create_table "payments", :force => true do |t|
+    t.integer  "transaction_id"
+    t.string   "ip_address",       :limit => 16
+    t.string   "first_name",       :limit => 30
+    t.string   "last_name",        :limit => 30
+    t.string   "payment_type",     :limit => 30
+    t.integer  "cash_value"
+    t.string   "currency"
+    t.integer  "credits"
+    t.boolean  "success"
+    t.string   "response_message"
+    t.string   "response_params"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "payments", ["transaction_id"], :name => "index_payments_on_transaction_id"
 
   create_table "progressions", :force => true do |t|
     t.integer  "student_id"
@@ -399,17 +428,18 @@ ActiveRecord::Schema.define(:version => 20140205112130) do
   end
 
   create_table "transactions", :force => true do |t|
+    t.integer  "customer_id"
     t.integer  "account_id"
     t.integer  "quantity"
     t.integer  "rate_code_id"
     t.integer  "reference_id"
-    t.string   "reference_type", :limit => 20
+    t.integer  "reference_type"
     t.string   "memo"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
-  add_index "transactions", ["account_id"], :name => "index_transactions_on_account_id"
+  add_index "transactions", ["customer_id"], :name => "index_transactions_on_customer_id"
 
   create_table "verticals", :force => true do |t|
     t.string   "name",       :limit => 30

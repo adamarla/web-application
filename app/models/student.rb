@@ -79,6 +79,11 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def customer
+    return self.guardian.account.customer unless self.guardian.nil?
+    return self.account.customer
+  end
+
   def inbox
     # Returns the worksheets that should be shown in a student's inbox
     assigned = Worksheet.where(:student_id => self.id)
@@ -195,6 +200,21 @@ class Student < ActiveRecord::Base
                                :historical_avg => agg.average.round(2) })
     end
     return ret
+  end
+
+  def purchase(course)
+    guardian = self.guardian
+    unless guardian.balance >= course.price
+      message = "Not enough moolah, go ask mommee to put more cash"
+    else
+      t = self.account.transactions.new quantity: course.price,
+                                    rate_code_id: self.guardian.rate_code_id,
+                                    reference_id: course.id,
+                                    reference_type: "Course"
+      if t.save
+        guardian.update_attribute :balance, (guardian.balance -= course.price)
+      end 
+    end
   end
 
   private 

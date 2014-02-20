@@ -1,22 +1,19 @@
 # == Schema Information
 #
-# Table name: transactions
+# Table name: customers
 #
 #  id             :integer         not null, primary key
-#  customer_id    :integer
 #  account_id     :integer
-#  quantity       :integer
-#  rate_code_id   :integer
-#  reference_id   :integer
-#  reference_type :integer
-#  memo           :string(255)
+#  credit_balance :integer
+#  cash_balance   :integer
+#  currency       :string(3)
 #  created_at     :datetime        not null
 #  updated_at     :datetime        not null
 #
 
 require 'test_helper'
 
-class TransactionTest < ActiveSupport::TestCase
+class CustomerTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

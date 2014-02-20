@@ -573,6 +573,19 @@ lnk-add-examiner :
     modal : m-new-examiner
   
 ##############################################################################
+## Admin / Examiner specific  
+##############################################################################
+
+lnk-buy-credits :
+  show :
+    modal : m-buy-credits
+
+m-guardian-options :
+  show : 
+    menu : guardian-options
+
+
+##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################
 

@@ -74,4 +74,20 @@ class CourseController < ApplicationController
     end
   end
 
+  def buy
+    unless current_account.loggable_type == "Student"
+      student = current_account.loggable
+      course = Course.find params[:id]
+      message = student.purchase(course)
+    else
+      message = "You need to be a student to purchase a course"
+    end
+  
+    if message.nil? 
+      render json: { status: :success, message: "Your purchase of #{course.name} concluded successfully" }
+    else
+      render json: { status: :error, message: message }
+    end 
+  end
+
 end

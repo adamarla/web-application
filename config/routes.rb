@@ -45,6 +45,7 @@ Webapp::Application.routes.draw do
   match 'milestone/load' => 'course#load_milestone', via: :get
   match 'available/assets' => 'course#available_assets', via: :get
   match 'attach_detach_asset' => 'course#attach_detach_asset', via: :post
+  match 'buy' => 'course#buy', via: :get
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
@@ -65,6 +66,16 @@ Webapp::Application.routes.draw do
   # Graded Response 
   match 'reset/graded' => 'examiners#reset_graded', via: :get
   match 'aggregate' => 'examiners#aggregate', via: :get
+
+  # Guardian
+  resource :guardian, :only => [:show]
+  match 'register/guardian' => 'guardians#create', via: :post
+  match 'guardian/add_student' => 'guardians#add_student', via: :get
+  match 'guardian/students' => 'guardians#students', via: :get
+
+  # Payment
+  match 'buy/credits' => 'payments#credit_purchase', via: :post
+  match 'apply/payment' => 'payments#bill_payment', via: :post
 
   # School 
   resource :school, :only => [:show, :create, :update]

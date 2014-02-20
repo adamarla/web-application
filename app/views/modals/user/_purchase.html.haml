@@ -1,0 +1,50 @@
+
+- payment = Payment.new
+- guardian = current_account.loggable
+
+#m-buy-credits.modal.fade.wide{ role: :dialog }
+  .row-fluid
+    .span6
+      %h1#headline.title= "Purchase Grade-its"
+      .small Grade-its get you supervised exercises on gradians.com
+    .span6
+      = image_tag "landing/paypal-cards.jpg", :id => "img-payment-icons"
+    = simple_form_for payment, :url => buy_credits_path, :validate => true, :remote => true, :html => { :id => 'fm-buy-credits' }, :defaults => { :required => true, :label => false } do |f|
+      .row-fluid
+        .span6
+          %h3 Select Grade-Its and Currency
+          .row-fluid
+            .span7
+              = f.select :credits, [["20 Grade-Its", "20"], ["40 Credits", "40"], ["60 Credits", "60"], ["80 Credits", "80"], ["100 Credits", "100"]]
+            .span5
+              = f.select :currency, [["@ $2", "USD"], ["@ ₹50", "INR"]]
+          %h3 Credit Card
+          .control-group.required
+            .controls
+              = f.select :payment_type, [["Visa", "visa"], ["MasterCard", "master"],["Discover","discover"],["American Express","american_express"]]
+          = f.input :card_number, :placeholder => "Card Number", :input_html => { :maxlength => 16 }
+          .row-fluid
+            .span8
+              = f.date_select :expiration, :discard_day => true, :start_year => Date.today.year, :end_year => (Date.today.year+10), :use_two_digit_numbers => true, :order => [:month, :year], :date_separator => "/ ", :label => "Expires"
+            .span4.pull-right
+              = f.input :card_verification, :placeholder => "CVV", :input_html => { :maxlength => 3, :class => "input-micro" }
+          .row-fluid
+            .span6
+              = f.input :first_name, :placeholder => "First Name", :input_html => { :maxlength => 30 , :class => "input-small" }
+            .span6
+              = f.input :last_name, :placeholder => "Last Name", :input_html => { :maxlength => 30 , :class => "input-small" }
+          = f.input :email, :placeholder => "Card holder's email", :input_html => { :maxlength => 35 }
+        .span6
+          %h3 Amount Payable
+          = f.input :cash_value, :readonly => true, :input_html => { :id => "total-amt" }
+          %h3 Billing Address
+          = f.input :country, :priority => ["India", "United States", "United Kingdom"]
+          = f.input :address1, :placeholder => "Address Line 1"
+          = f.input :city, :placeholder => "City"
+          = f.input :state, :placeholder => "State / Province"
+          = f.input :zip, :placeholder => "Postal Code (ZIP/PIN)"
+      .row-fluid
+        #message.alert.alert-error.hide
+        %button.btn.btn-inverse.btn-large.push-down.pull-left{ :type => :reset, :id => 'btn-reset' }= "Clear Form"
+        %button.btn.btn-primary.btn-large.push-down.pull-right{ :type => :submit, :id => 'btn-submit' }= "Buy Credits"
+
