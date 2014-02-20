@@ -22,6 +22,7 @@ class Examiner < ActiveRecord::Base
   has_many :suggestions
   has_many :doodles, dependent: :destroy
 
+  validates_associated :account
   after_create :assign_mentor
 
   # [:all] ~> [:admin]

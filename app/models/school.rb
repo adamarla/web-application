@@ -12,10 +12,12 @@
 #
 
 class School < ActiveRecord::Base
-  has_one :account, :as => :loggable
+  has_one :account, as: :loggable 
   has_many :teachers
 
-  validates :name, :presence =>true
+  validates :name, presence: true 
+  validates_associated :account 
+
   after_create :assign_uid
 
   # Should we allow deletion of schools from the DB ? My view is, don't. 
