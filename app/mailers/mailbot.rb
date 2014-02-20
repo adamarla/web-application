@@ -119,4 +119,12 @@ class Mailbot < ActionMailer::Base
     mail to: sk.teacher.account.email, subject: "[Gradians.com]: New section - #{@name} - created"
   end
 
+  def inform_apprentice(a,bottomline, gating, nongating, comments)
+    @a = a 
+    @gating = gating 
+    @nongating = nongating 
+    @comments = comments
+    mail to: @a.account.email, subject: "[Gradians.com]: #{bottomline}"
+  end 
+
 end

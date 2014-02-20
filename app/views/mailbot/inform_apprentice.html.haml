@@ -1,0 +1,24 @@
+
+%p
+  Dear #{@a.first_name},
+%p
+  Your mentor has reviewed samples of your grading and has the following feedback for you. 
+
+%h3= "Gating Issues" 
+%ul
+  - @gating.each do |m|
+    %li= "#{m}"
+
+%h3= "Non-gating Issues"
+%ul
+  - @nongating.each do |m|
+    %li= "#{m}"
+
+%h3= "Comments"
+- unless @comments.blank?
+  %p= "#{@comments}"
+
+%p
+  If your mentor has asked to see more samples of your grading work, then log back in and you 
+  will be presented with more student work to grade. Only when your mentor is satisfied can 
+  we allow you to grade new student work. Otherwise, you are good to go!

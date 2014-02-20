@@ -22,6 +22,7 @@ Webapp::Application.routes.draw do
   match 'grade/pending' => 'accounts#to_be_graded', via: :get
   match 'scans/pending' => 'accounts#pending_scans', via: :get
   match 'submit/fdb' => 'accounts#submit_fdb', via: [:put, :post]
+  match 'close/apprentice/audit' => 'accounts#audit_apprentice', via: [:put, :post]
   match 'view/fdb' => 'accounts#view_fdb', via: :get
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
   match 'byCountry' => 'accounts#by_country', via: :get

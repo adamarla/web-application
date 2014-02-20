@@ -26,11 +26,16 @@ jQuery ->
       fdb.attach()
       fdb.initialize json
       rubric.show()
-    else if url.match(/audit\/done/)
-      auditForm = $('#m-audit-form')
-      entries = $('#pane-audit-review').children('.line')
-      current = entries.filter('.selected').eq(0)
-      current.removeClass('selected').addClass('disabled')
+    else if url.match(/audit\/done/) or url.match(/close\/apprentice\/audit/)
+      isQuestion = if url.match(/audit\/done/)? then true else false
+
+      if isQuestion
+        auditForm = $('#m-audit-form')
+        entries = $('#pane-audit-review').children('.line')
+        current = entries.filter('.selected').eq(0)
+        current.removeClass('selected').addClass('disabled')
+      else
+        auditForm = $('#m-audit-apprentice')
 
       $(m).prop 'checked', false for m in auditForm.find("input[type='checkbox']")
       auditForm.find('textarea').eq(0).val null

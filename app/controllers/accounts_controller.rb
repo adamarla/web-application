@@ -210,4 +210,25 @@ class AccountsController < ApplicationController
     end
   end
 
+  def audit_apprentice
+    @apprentice = Examiner.find params[:id]
+
+    unless @apprentice.nil?
+      audit = params[:audit]
+      @gating = audit[:gating].select{ |m| !m.blank? }
+      @nongating = audit[:non_gating].select{ |m| !m.blank? }
+      @comment = audit[:comments]
+
+      if @gating.count > 0 
+        @apprentice.update_attribute(:live, false)
+        @bottomline = "Mentor needs to see more grading samples"
+      else 
+        @apprentice.update_attribute(:live, true)
+        @bottomline = "You are now live and will receive real grading work"
+      end 
+      Mailbot.delay.inform_apprentice(@apprentice, @bottomline, @gating, @nongating, @comments)
+    end
+    render json: { status: :ok }, status: :ok
+  end
+
 end
