@@ -15,12 +15,11 @@ window.notifier = {
   current : null,
 
   show : (obj, json = null) ->
-    # show only one notification at a time. If the notification auto-hides, then 
-    # it would persist for only 3 seconds. Unlikely that the user would do anything
-    # in that time that could spawn another notification. Unless, of course the user
-    # is an idiot / child and presses the same button again and again 
+    # Show only one notification at a time. If the notification auto-hides, then 
+    # it would persist for only 3 seconds. Otherwise, let the new notification 
+    # take precedence over any old notification
 
-    return true if notifier.current?
+    notifier.hide() if notifier.current?
     notifier.current = if typeof obj is 'string' then $("##{obj}")[0] else obj
 
     if json?
