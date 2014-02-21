@@ -46,6 +46,17 @@ window.fdb = {
     fdb.current.response = $(c).children()[0]
     fdb.current.scan = $(c).attr 'marker'
     fdb.update.view()
+
+    # Customize grading panel if in sandbox mode
+    buttons = fdb.controls.find 'button'
+    if json.sandbox 
+      for btn in ['btn-fresh-copy', 'btn-rotate']
+        b = buttons.filter("[id=#{btn}]").eq(0)
+        b.addClass 'disabled'
+      notifier.show 'n-sandbox-tips'
+    else
+      $(b).removeClass('disabled') for b in buttons
+      
     return true
 
   add : (comment, event) ->
@@ -247,6 +258,8 @@ jQuery ->
     
   fdb.controls.on 'click', 'button', (event) ->
     event.stopImmediatePropagation()
+    return false if $(this).hasClass 'disabled'
+
     rubric.keyboard = true
     id = $(this).attr 'id'
     fdb.tex = null
