@@ -147,7 +147,7 @@ class AccountsController < ApplicationController
   def view_fdb
     gid = params[:id].to_i
     @gr = GradedResponse.find gid
-    sandboxed = params[:sandbox]
+    sandboxed = params[:sandbox] == "true" 
 
     if sandboxed 
       doodle = Doodle.where(examiner_id: params[:a], graded_response_id: gid).first
