@@ -30,7 +30,7 @@ class Examiner < ActiveRecord::Base
   #attr_accessible :disputed
 
   def self.available
-    select{ |m| m.account.active }
+    select{ |m| !m.account.nil? && m.live? }
   end
 
   def name 
@@ -120,8 +120,9 @@ class Examiner < ActiveRecord::Base
 
   def live?
     return true if self.live
-    self.update_attribute(:live, true) if self.is_admin
-    return false 
+    is_live = self.is_admin ? true : false
+    self.update_attribute(:live, true) if is_live
+    return is_live 
   end
 
   private 
