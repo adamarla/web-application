@@ -80,12 +80,19 @@ class Examiner < ActiveRecord::Base
     exams = pnd.map(&:worksheet).uniq.map(&:exam).uniq 
     by = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.online }
 
-    examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
-    n_examiners = examiners.count
+    # examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
+    # n_examiners = examiners.count
     used = [] # to track examiners to whom an e-mail must be sent
 
     pnd.map(&:q_selection_id).uniq.each do |q|
       pending = pnd.where(q_selection_id: q) # responses to specific question in specific quiz  
+
+      # If the teacher has her own TAs, then assign pending responses to them only
+      teacher = QSelection.find(q).quiz.teacher 
+      examiners = ( teacher.online ? [] : teacher.apprentices.order(:n_assigned) )
+      examiners = Examiner.available.where(mentor_is_teacher: false).order(:n_assigned) if examiners.blank?
+      n_examiners = examiners.count 
+
       students = pending.map(&:student_id).uniq
       limit = (students.count / n_examiners)
       limit = limit > 20 ? limit : 20
