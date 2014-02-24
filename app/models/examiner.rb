@@ -2,16 +2,18 @@
 #
 # Table name: examiners
 #
-#  id              :integer         not null, primary key
-#  created_at      :datetime
-#  updated_at      :datetime
-#  is_admin        :boolean         default(FALSE)
-#  first_name      :string(30)
-#  last_name       :string(30)
-#  last_workset_on :datetime
-#  n_assigned      :integer         default(0)
-#  n_graded        :integer         default(0)
-#  live            :boolean         default(FALSE)
+#  id                :integer         not null, primary key
+#  created_at        :datetime
+#  updated_at        :datetime
+#  is_admin          :boolean         default(FALSE)
+#  first_name        :string(30)
+#  last_name         :string(30)
+#  last_workset_on   :datetime
+#  n_assigned        :integer         default(0)
+#  n_graded          :integer         default(0)
+#  live              :boolean         default(FALSE)
+#  mentor_id         :integer
+#  mentor_is_teacher :boolean         default(FALSE)
 #
 
 include GeneralQueries
@@ -23,7 +25,6 @@ class Examiner < ActiveRecord::Base
   has_many :doodles, dependent: :destroy
 
   validates_associated :account
-  after_create :assign_mentor
 
   # [:all] ~> [:admin]
   # [:disputed] ~> [:student]
@@ -124,12 +125,5 @@ class Examiner < ActiveRecord::Base
     self.update_attribute(:live, true) if is_live
     return is_live 
   end
-
-  private 
-      def assign_mentor 
-        mentor = Examiner.where(live: true).order(:id).sample(1).first # randomly pick one
-        a = Apprenticeship.new mentor_id: mentor.account.id, mentee_id: self.account.id
-        return a.save
-      end 
 
 end # of class

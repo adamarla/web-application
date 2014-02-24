@@ -1418,3 +1418,14 @@ li.split {
     }
   } 
 } 
+
+#fm-new-examiners {
+  > .row-fluid { 
+    input { 
+      padding: 3px ; 
+      font-size: 12px ;
+      border: none ; 
+      border-bottom: 1px solid white ;
+    }
+  }
+}

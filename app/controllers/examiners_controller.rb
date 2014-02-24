@@ -5,10 +5,19 @@ class ExaminersController < ApplicationController
 
   def create
     p = params[:examiner]
+    is_teacher = current_account.nil? ? false : (current_account.loggable_type == 'Teacher')
+    all_good = true
 
-    e = Examiner.new name: p[:name]
-    a = e.build_account email: p[:email], password: '123456', password_confirmation: '123456'
-    if e.save
+    p.keys.each do |k| 
+      d = p[k]
+      next if ( d["name"].blank? || d["email"].blank? )
+      mentor = is_teacher ? current_account.loggable_id : Examiner.where(mentor_is_teacher: false).select{ |e| e.live? }.sample(1).first.id
+      e = Examiner.new(name: d[:name], live: is_teacher, mentor_id: mentor, mentor_is_teacher: is_teacher)
+      a = e.build_account(email: d[:email], password: '123456', password_confirmation: '123456')
+      all_good &= e.save
+    end 
+
+    if all_good 
       render json: { status: 'Success' }, status: :ok
     else
       render json: { status: 'Failed' }, status: :ok
@@ -37,7 +46,7 @@ class ExaminersController < ApplicationController
     end 
 
     @apprentices = current_account.loggable.apprentices  # should be all Examiners only
-    @apprentices = live ? @apprentices.select{ |a| a.live } : ( dead ? @apprentices.select{ |a| !a.live } : @apprentices )
+    @apprentices = live ? @apprentices.select{ |a| a.live? } : ( dead ? @apprentices.select{ |a| !a.live? } : @apprentices )
   end 
 
   def load_samples

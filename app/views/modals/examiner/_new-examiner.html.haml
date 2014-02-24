@@ -1,9 +1,15 @@
 
-#m-new-examiner.modal.fade.regular
+#m-new-examiner.modal.fade.wide
   .row-fluid
     .span2
+      = image_tag 'notifications/add-user.png'
     .span9
-      = simple_form_for :examiner, url: examiner_path, remote: true, defaults: { label: false } do |f|
-        = f.input :name, placeholder: 'Full Name'
-        = f.input :email, placeholder: 'user@domain.com'
-        = simple_button for: 'Add', type: :submit
+      = simple_form_for :examiner, url: examiner_path, remote: true, 
+      defaults: { label: false }, html: { id: 'fm-new-examiners' } do |f|
+        - [*1..4].each do |i| 
+          .row-fluid 
+            .span5
+              = f.input_field :name, placeholder: "Examiner ##{i}", name: "examiner[#{i}][name]"
+            .span5
+              = f.input_field :email, placeholder: 'user@domain.com', name: "examiner[#{i}][email]"
+        = simple_button for: 'Add', type: :submit, class: 'btn-large btn-inverse pull-right'

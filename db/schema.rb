@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140219114420) do
+ActiveRecord::Schema.define(:version => 20140224074013) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -53,16 +53,6 @@ ActiveRecord::Schema.define(:version => 20140219114420) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
-
-  create_table "apprenticeships", :force => true do |t|
-    t.integer  "mentee_id"
-    t.integer  "mentor_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "apprenticeships", ["mentee_id"], :name => "index_apprenticeships_on_mentee_id"
-  add_index "apprenticeships", ["mentor_id"], :name => "index_apprenticeships_on_mentor_id"
 
   create_table "countries", :force => true do |t|
     t.string "name",         :limit => 50
@@ -113,14 +103,18 @@ ActiveRecord::Schema.define(:version => 20140219114420) do
   create_table "examiners", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_admin",                      :default => false
-    t.string   "first_name",      :limit => 30
-    t.string   "last_name",       :limit => 30
+    t.boolean  "is_admin",                        :default => false
+    t.string   "first_name",        :limit => 30
+    t.string   "last_name",         :limit => 30
     t.datetime "last_workset_on"
-    t.integer  "n_assigned",                    :default => 0
-    t.integer  "n_graded",                      :default => 0
-    t.boolean  "live",                          :default => false
+    t.integer  "n_assigned",                      :default => 0
+    t.integer  "n_graded",                        :default => 0
+    t.boolean  "live",                            :default => false
+    t.integer  "mentor_id"
+    t.boolean  "mentor_is_teacher",               :default => false
   end
+
+  add_index "examiners", ["mentor_id"], :name => "index_examiners_on_mentor_id"
 
   create_table "exams", :force => true do |t|
     t.integer  "quiz_id"

@@ -53,14 +53,13 @@ module ActiveRecordExtensions
 
   def apprentices
     return [] unless self.respond_to? :account
-    ids = Apprenticeship.where(mentor_id: self.account.id).map(&:mentee_id)
-    return Account.where(id: ids).map(&:loggable)
+    is_teacher = self.account.loggable_type == 'Teacher'
+    return Examiner.where(mentor_id: self.id, mentor_is_teacher: is_teacher)
   end 
 
-  def mentors 
+  def mentor 
     return [] unless self.respond_to? :account
-    ids = Apprenticeship.where(mentee_id: self.account.id).map(&:mentor_id)
-    return Account.where(id: ids).map(&:loggable)
+    return self.mentor_is_teacher ? Teacher.where(id: self.mentor_id) : Examiner.where(id: self.mentor_id)
   end 
 
 end
