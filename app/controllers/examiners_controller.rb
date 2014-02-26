@@ -18,7 +18,7 @@ class ExaminersController < ApplicationController
     p.keys.each do |k| 
       d = p[k]
       next if ( d["name"].blank? || d["email"].blank? )
-      mentor = is_teacher ? current_account.loggable_id : Examiner.can_mentor.select{ |e| e.live? }.sample(1).first.id
+      mentor = is_teacher ? current_account.loggable_id : Examiner.experienced.select{ |e| e.live? }.sample(1).first.id
       e = Examiner.new(name: d[:name], live: is_teacher, mentor_id: mentor, mentor_is_teacher: is_teacher, internal: is_admin)
       a = e.build_account(email: d[:email], password: '123456', password_confirmation: '123456')
       all_good &= e.save

@@ -43,7 +43,7 @@ class Examiner < ActiveRecord::Base
     where(mentor_is_teacher: true, mentor_id: id)
   end
 
-  def self.can_mentor
+  def self.experienced
     where('(internal = ? AND n_graded > ?) OR (internal = ? AND n_graded > ?)', true, 1000, false, 2000)
   end
 
