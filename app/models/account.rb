@@ -64,6 +64,7 @@ class Account < ActiveRecord::Base
   end 
 
   after_validation :geocode, if: :geocodeable? 
+  after_create :send_email
 
   def geocodeable?
     return false if self.last_sign_in_ip.nil?
@@ -235,12 +236,16 @@ class Account < ActiveRecord::Base
   end
 
   protected 
+      # Overriding Devise's default email-required validation. 
+      # Ref : https://github.com/plataformatec/devise/pull/545
 
-    # Overriding Devise's default email-required validation. 
-    # Ref : https://github.com/plataformatec/devise/pull/545
+      def email_required?
+        false
+      end 
 
-    def email_required?
-      false
-    end 
+  private
+      def send_email
+        Mailbot.delay.welcome(self) if email_is_real?
+      end
 
 end # of class 

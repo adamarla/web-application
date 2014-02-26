@@ -9,6 +9,14 @@ class Mailbot < ActionMailer::Base
       body:  teacherform[:text], to:  "abhinav@gradians.com"
   end
 
+  def welcome(a)
+    @obj = a.loggable
+    @type = a.loggable_type
+    @self_registered = (@type != 'Examiner') ? true : !@obj.mentor_is_teacher 
+    @a = a
+    mail to: a.email, subject: 'Welcome to Gradians.com'
+  end
+
   def welcome_student(new_account)
     @account = new_account
     mail to:  @account.email, subject:  "Welcome to Gradians.com"
