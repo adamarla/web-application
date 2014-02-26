@@ -33,7 +33,6 @@ class TeachersController < ApplicationController
                                       country: country
                                      
       if teacher.save 
-        # Mailbot.delay.welcome_teacher(teacher.account)
         sign_in teacher.account
         redirect_to teacher_path
       end # no reason for else if client side validations worked

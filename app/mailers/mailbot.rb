@@ -17,16 +17,6 @@ class Mailbot < ActionMailer::Base
     mail to: a.email, subject: 'Welcome to Gradians.com'
   end
 
-  def welcome_student(new_account)
-    @account = new_account
-    mail to:  @account.email, subject:  "Welcome to Gradians.com"
-  end
-
-  def welcome_teacher(new_account)
-    @account = new_account
-    mail to:  @account.email, subject:  "Welcome to Gradians.com"
-  end
-  
   def grading_done(exam)
     @exam = exam # need a object variable to pass to view
     @quiz = @exam.quiz
