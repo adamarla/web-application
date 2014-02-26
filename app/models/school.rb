@@ -61,8 +61,7 @@ class School < ActiveRecord::Base
       student.klass = klass
     end
     password = self.account.postal_code
-    account = student.build_account :username => username, :email => email, 
-                                    :password => password, :password_confirmation => password
+    account = student.build_account username: username, email: email, password: password, password_confirmation: password
     return student.save
   end
 

@@ -22,7 +22,7 @@ class SuggestionsController < ApplicationController
     suggestion = params[:sid].to_i
 
     Delayed::Job.enqueue BlockDbSlots.new(n,suggestion), priority: 0, run_at: Time.zone.now 
-    render :json => { :notify => { :text => "#{n} slots blocked" } }, :status => :ok
+    render json: { notify: { text: "#{n} slots blocked" } }, status: :ok
   end
 
   def preview

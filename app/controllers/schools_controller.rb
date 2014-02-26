@@ -10,9 +10,7 @@ class SchoolsController < ApplicationController
     email = email || "#{username}@drona.com"
     zip = @school.account.postal_code
 
-    @school.build_account :email => email, :username => username, 
-                          :password => zip, :password_confirmation => zip
-
+    @school.build_account email: email, username: username, password: zip, password_confirmation: zip
     @school.save ? respond_with(@school) : head(:bad_request) 
   end 
 
@@ -39,8 +37,8 @@ class SchoolsController < ApplicationController
       status = :bad_request 
     end 
 
-    render(:json => { :status => "Done" }, :status => status) if status == :ok
-    render(:json => { :status => "Update failed!" }, :status => status) if status == :bad_request
+    render(json: { status: "Done" }, status: status) if status == :ok
+    render(json: { status: "Update failed!" }, status: status) if status == :bad_request
   end 
 
 =begin
@@ -58,9 +56,9 @@ class SchoolsController < ApplicationController
       @school.xls = params[:excel][:xls]
       @school.save
       sektion.save # trigger student_roster_pdf generation
-      render :json => { :status => :uploaded }, :status => :ok
+      render json: { status: :uploaded }, status: :ok
     else
-      render :json => { :status => :failed }, :status => :bad_request
+      render json: { status: :failed }, status: :bad_request
     end
   end
 

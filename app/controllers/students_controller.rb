@@ -3,7 +3,7 @@ class StudentsController < ApplicationController
   respond_to :json
 
   def show
-    render :nothing => true, :layout => 'students'
+    render nothing: true, layout: 'students'
   end
 
   def create 
@@ -37,14 +37,14 @@ class StudentsController < ApplicationController
         redirect_to student_path
       end # no reason for else.. if client side validations worked
     else # registration data probably entered by a bot
-      render :json => { :notify => { :text => "Bot?" } }, :status => :bad_request
+      render json: { notify: { text: "Bot?" } }, status: :bad_request
     end
   end # of method 
 
   def claim
     target_id = params[:checked].keys.first
     if target_id.blank?
-      render :json => { :notify => { :title => "No account specified for merging" } }, :status => :ok
+      render json: { notify: { title: "No account specified for merging" } }, status: :ok
     else
       account = Account.find target_id
     end

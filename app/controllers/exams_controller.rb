@@ -43,23 +43,23 @@ class ExamsController < ApplicationController
     ws = Exam.where(:id => params[:id]).first 
 
     if ws.nil?
-      render :json => { :notify => { :text => "Worksheet not found" } }, :status => :ok
+      render json: { notify: { text: "Worksheet not found" } }, status: :ok
     else 
       ws.update_attribute :takehome, true
-      render :json => { :notify => { 
-              :text => "#{ws.quiz.name} published"
-            } }, :status => :ok
+      render json: { notify: { 
+              text: "#{ws.quiz.name} published"
+            } }, status: :ok
     end
   end 
 
   def uninbox
     ws = Exam.where(:id => params[:id]).first 
     if ws.nil?
-      render :json => { :notify => { :text => "Worksheet not found" } }, :status => :ok
+      render json: { notify: { text: "Worksheet not found" } }, status: :ok
     else 
-      render :json => { :notify => { 
-              :text => "#{ws.quiz.name} recalled / un-published"
-            } }, :status => :ok
+      render json: { notify: { 
+              text: "#{ws.quiz.name} recalled / un-published"
+            } }, status: :ok
     end
   end
 
@@ -83,7 +83,7 @@ class ExamsController < ApplicationController
         as.update_attribute :signature, signature
       end
     end
-    render :json => "A-Ok"
+    render json: "A-Ok"
   end
 
 end

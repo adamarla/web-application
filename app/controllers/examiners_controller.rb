@@ -32,7 +32,7 @@ class ExaminersController < ApplicationController
   end
 
   def show
-    render :nothing => true, :layout => 'admin-examiner'
+    render nothing: true, layout: 'admin-examiner'
   end
 
   def list 
@@ -69,18 +69,18 @@ class ExaminersController < ApplicationController
   def block_db_slots
     examiner = Examiner.find params[:id]
     slots = examiner.block_db_slots
-    render :json => {:notify => { :text => "6 slots blocked", :subtext => "Do 'git fetch origin/master'"} }, :status => :ok
+    render json: {notify: { text: "6 slots blocked", :subtext => "Do 'git fetch origin/master'"} }, status: :ok
   end
 
   def distribute_scans
     ws_ids = Examiner.distribute_scans
-    render :json => ws_ids, :status => :ok
+    render json: ws_ids, status: :ok
   end
 
   def rotate_scan
     scan_in_locker = params[:id]
     Delayed::Job.enqueue RotateScan.new(scan_in_locker), priority: 5, run_at: Time.zone.now
-    render :json => { :status => "Sent for rotating"}, :status => :ok
+    render json: { status: "Sent for rotating"}, status: :ok
   end
 
   def typeset_new
@@ -142,7 +142,7 @@ class ExaminersController < ApplicationController
       end
       status = :renamed
     end
-    render :json => { :status => status }, :status => :ok
+    render json: { status: status }, status: :ok
   end
 
   def receive_single_scan

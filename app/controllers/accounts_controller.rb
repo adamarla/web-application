@@ -28,18 +28,18 @@ class AccountsController < ApplicationController
     else
       msg = "Nothing updated"
     end
-    render :json => { :notify => {:text => msg} }, :status => :ok
+    render json: { notify: {text: msg} }, status: :ok
   end 
 
   def merge
     # Merges the passed account into current_account, and then deletes the passed loggable obj
     target_id = params[:checked].keys.first
     if target_id.blank?
-      render :json => { :notify => { :title => "No account specified for merging" } }, :status => :ok
+      render json: { notify: { title: "No account specified for merging" } }, status: :ok
     else
       source = Account.find target_id
       merged = Account.merge current_account, source
-      render :json => { :success => merged }, :status => :ok
+      render json: { success: merged }, status: :ok
     end
   end
 
@@ -193,16 +193,16 @@ class AccountsController < ApplicationController
     unless current_account.nil?
       unless params[:new][:question].blank?
         Mailbot.delay.ask_question(current_account, params[:new][:question])
-        render :json => { :notify => { :title => "Got it!", 
+        render json: { notify: { title: "Got it!", 
                                        msg: 'We will answer your question within 24 hours. Thank you for writing' } }, 
                                        status: :ok
       else
-        render :json => { :notify => { :title => "Blank question?", 
+        render json: { notify: { title: "Blank question?", 
                                        msg: 'You seem to have asked nothing' }}, 
                                        status: :ok
       end
     else
-      render :json => { :notify => { :title => "Missing E-mail", 
+      render json: { notify: { title: "Missing E-mail", 
                                      msg: 'Need an e-mail address to reply to' }}, 
                                      status: :ok
     end

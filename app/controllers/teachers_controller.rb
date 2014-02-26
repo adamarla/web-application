@@ -38,12 +38,12 @@ class TeachersController < ApplicationController
         redirect_to teacher_path
       end # no reason for else if client side validations worked
     else # registration data probably entered by a bot
-      render :json => { :notify => { :text => "Bot?" } }, :status => :bad_request
+      render json: { notify: { text: "Bot?" } }, status: :bad_request
     end
   end 
 
   def show 
-    render :nothing => true, :layout => 'teachers'
+    render nothing: true, layout: 'teachers'
   end 
 
   def load

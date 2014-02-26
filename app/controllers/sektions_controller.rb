@@ -61,11 +61,11 @@ class SektionsController < ApplicationController
       retain = student_ids - @removed
       sektion.student_ids = retain
     else
-      render :json => { 
-        :notify => { 
-          :text => "Update failed", 
-          :subtext => "Cannot update someone else's section" 
-        } }, :status => :ok
+      render json: { 
+        notify: { 
+          text: "Update failed", 
+          subtext: "Cannot update someone else's section" 
+        } }, status: :ok
     end
   end 
 
@@ -141,12 +141,12 @@ class SektionsController < ApplicationController
       if saved
         enrolled = sk.student_ids 
         sk.student_ids = (enrolled + new_student_ids).uniq 
-        render :json => { :notify => { :title => "#{students.count} students added to group" } }, :status => :ok
+        render json: { notify: { title: "#{students.count} students added to group" } }, status: :ok
       else
-        render :nothing => true, :status => :ok
+        render nothing: true, status: :ok
       end
     else # sektion not found!
-      render :json => { :notify => { :title => "Group not found!" } }, :status => :ok
+      render json: { notify: { title: "Group not found!" } }, status: :ok
     end 
   end
 

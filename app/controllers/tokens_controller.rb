@@ -30,7 +30,7 @@ class TokensController < ApplicationController
         :gradeables => gradeables
       }
     end
-    render :status => status, :json => json
+    render status: status, json: json
   end
 
   def destroy
@@ -43,7 +43,7 @@ class TokensController < ApplicationController
       status = 200 
       json = { :token => params[:id] }
     end
-    render :status => status, :json => json
+    render status: status, json: json
   end
 
   def verify
@@ -64,7 +64,7 @@ class TokensController < ApplicationController
         :gradeables => build_gradeables(@account)
       }
     end
-    render :status => status, :json => json
+    render status: status, json: json
   end
 
   private

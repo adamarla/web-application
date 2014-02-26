@@ -89,7 +89,7 @@ class QuestionController < ApplicationController
     teacher = current_account.loggable
     qid = params[:id].to_i
     teacher.favourites.create question_id: qid
-    render :json => { :favourite => { :id => qid } }, :status => :ok
+    render json: { :favourite => { :id => qid } }, status: :ok
   end
 
   def audit_open
@@ -119,7 +119,7 @@ class QuestionController < ApplicationController
       end
       render json: { msg: "Audit Report Sent", disabled: [@question.id] }, status: :ok
     else
-      render :json => { :msg => "Question not found" }, :status => :ok
+      render json: { :msg => "Question not found" }, status: :ok
     end
   end 
 

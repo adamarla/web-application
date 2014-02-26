@@ -16,11 +16,11 @@ class WelcomeController < ApplicationController
   
   def countries
     @countries = Country.all
-    render :json => @countries
+    render json: @countries
   end
 
   def faq
-    render :nothing => true, :layout => 'faq' 
+    render nothing: true, layout: 'faq' 
   end
 
 end
