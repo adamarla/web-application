@@ -14,6 +14,7 @@
 #  live              :boolean         default(FALSE)
 #  mentor_id         :integer
 #  mentor_is_teacher :boolean         default(FALSE)
+#  internal          :boolean         default(FALSE)
 #
 
 include GeneralQueries
@@ -32,6 +33,18 @@ class Examiner < ActiveRecord::Base
 
   def self.available
     select{ |m| !m.account.nil? && m.live? }
+  end
+
+  def self.internal 
+    where(internal: true)
+  end 
+
+  def self.teaching_assistant_to(id)
+    where(mentor_is_teacher: true, mentor_id: id)
+  end
+
+  def self.can_mentor
+    where('(internal = ? AND n_graded > ?) OR (internal = ? AND n_graded > ?)', true, 1000, false, 2000)
   end
 
   def name 

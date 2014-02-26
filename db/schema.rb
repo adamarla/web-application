@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140224074013) do
+ActiveRecord::Schema.define(:version => 20140225182723) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20140224074013) do
     t.boolean  "live",                            :default => false
     t.integer  "mentor_id"
     t.boolean  "mentor_is_teacher",               :default => false
+    t.boolean  "internal",                        :default => false
   end
 
   add_index "examiners", ["mentor_id"], :name => "index_examiners_on_mentor_id"

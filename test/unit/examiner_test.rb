@@ -14,6 +14,7 @@
 #  live              :boolean         default(FALSE)
 #  mentor_id         :integer
 #  mentor_is_teacher :boolean         default(FALSE)
+#  internal          :boolean         default(FALSE)
 #
 
 require 'test_helper'

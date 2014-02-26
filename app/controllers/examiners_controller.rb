@@ -5,14 +5,21 @@ class ExaminersController < ApplicationController
 
   def create
     p = params[:examiner]
-    is_teacher = current_account.nil? ? false : (current_account.loggable_type == 'Teacher')
+
+    unless current_account.nil?
+      is_teacher = current_account.loggable_type == 'Teacher'
+      is_admin = is_teacher ? false : (current_account.loggable.respond_to?(:is_admin) ? current_account.loggable.is_admin : false)
+    else
+      is_teacher = false 
+      is_admin = false
+    end
     all_good = true
 
     p.keys.each do |k| 
       d = p[k]
       next if ( d["name"].blank? || d["email"].blank? )
-      mentor = is_teacher ? current_account.loggable_id : Examiner.where(mentor_is_teacher: false).select{ |e| e.live? }.sample(1).first.id
-      e = Examiner.new(name: d[:name], live: is_teacher, mentor_id: mentor, mentor_is_teacher: is_teacher)
+      mentor = is_teacher ? current_account.loggable_id : Examiner.can_mentor.select{ |e| e.live? }.sample(1).first.id
+      e = Examiner.new(name: d[:name], live: is_teacher, mentor_id: mentor, mentor_is_teacher: is_teacher, internal: is_admin)
       a = e.build_account(email: d[:email], password: '123456', password_confirmation: '123456')
       all_good &= e.save
     end 
