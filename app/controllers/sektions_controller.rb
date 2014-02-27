@@ -122,28 +122,22 @@ class SektionsController < ApplicationController
     sk = params[:id].blank? ? nil : Sektion.find(params[:id])
 
     unless sk.nil?
-      students = params[:checked].values
-      saved = true
+      students = params[:checked].values.map(&:strip).map(&:titleize)
       new_student_ids = [] 
 
       for m in students
-        s = Student.new :name => m
-        username = create_username_for s, :student
-        a = s.build_account :email => "#{username}@drona.com", 
-                            :password => "123456", 
-                            :password_confirmation => "123456"
-        if s.save
-          new_student_ids.push s.id
-        else
-          saved = false
-        end
+        s = Student.new name: m
+        username = username_for s, :student
+        a = s.build_account email: "#{username}@drona.com", password: '123456', password_confirmation: '123456'
+        new_student_ids.push(s.id) if s.save
       end
-      if saved
+
+      unless new_student_ids.blank?
         enrolled = sk.student_ids 
         sk.student_ids = (enrolled + new_student_ids).uniq 
         render json: { notify: { title: "#{students.count} students added to group" } }, status: :ok
       else
-        render nothing: true, status: :ok
+        render json: { notify: { title: "No students added to group" } }, status: :ok
       end
     else # sektion not found!
       render json: { notify: { title: "Group not found!" } }, status: :ok

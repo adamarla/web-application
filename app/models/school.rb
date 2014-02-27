@@ -50,7 +50,7 @@ class School < ActiveRecord::Base
   def enroll(name, email = nil, klass = nil, sektion = nil)
     return false if name.blank?
     student = self.students.build :name => name
-    username = create_username_for student, :student
+    username = username_for student, :student
     return false if username.blank?
 
     email = "#{username}@drona.com" if email.blank?

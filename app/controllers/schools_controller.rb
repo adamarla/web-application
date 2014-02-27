@@ -6,7 +6,7 @@ class SchoolsController < ApplicationController
   def create 
     email = params[:school].delete :email # email is part of Account model 
     @school = School.new params[:school] 
-    username = create_username_for @school, :school 
+    username = username_for @school, :school 
     email = email || "#{username}@drona.com"
     zip = @school.account.postal_code
 
