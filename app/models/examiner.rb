@@ -103,7 +103,9 @@ class Examiner < ActiveRecord::Base
       # If the teacher has her own TAs, then assign pending responses to them only
       teacher = QSelection.find(q).quiz.teacher 
       examiners = ( teacher.online ? [] : teacher.apprentices.order(:n_assigned) )
-      examiners = Examiner.available.where(mentor_is_teacher: false).order(:n_assigned) if examiners.blank?
+      if examiners.blank? 
+        examiners = Examiner.where(mentor_is_teacher: false).order(:n_assigned).available
+      end 
       n_examiners = examiners.count 
 
       students = pending.map(&:student_id).uniq
