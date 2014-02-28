@@ -118,8 +118,7 @@ class Examiner < ActiveRecord::Base
 
         work = pending.where(student_id: j)
         work.map{ |m| m.update_attribute :examiner_id, assignee.id }
-        assignee.update_attribute :n_assigned, (assignee.n_assigned + work.count)
-
+        assignee.update_attribute :n_assigned, (assignee.n_assigned + work.size)
         examiners.push assignee # push to last
       end # over students
     end
