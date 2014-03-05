@@ -120,12 +120,19 @@ jQuery ->
       alert "Add atleast a comment or annotate with a check, cross or question mark"
       return false
 
-    id = $(fdb.current.response).attr 'marker'
-    overlay = fdb.decompile()
-    action = "submit/fdb.json?id=#{id}&overlay=#{overlay}"
-    # alert action
-    $(this).attr 'action', action
-    return true
+    unless sandbox.enabled 
+      id = $(fdb.current.response).attr 'marker'
+      overlay = fdb.decompile()
+      action = "submit/fdb.json?id=#{id}&overlay=#{overlay}"
+      # alert action
+      $(this).attr 'action', action
+    else 
+      fdb.clear()
+      $(fdb.current.response).addClass 'graded'
+      fdb.next.response()
+      rubric.rewind()
+      
+    return !sandbox.enabled
 
 
   #####################################################################
