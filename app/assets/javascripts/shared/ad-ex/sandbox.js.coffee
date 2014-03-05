@@ -17,6 +17,7 @@ jQuery ->
       $(this).text 'Sandbox On' 
       $(this).addClass 'active'
       sandbox.enabled = true
+      notifier.show 'n-sandbox-tips'
     return true
 
 
