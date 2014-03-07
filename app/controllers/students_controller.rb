@@ -41,14 +41,18 @@ class StudentsController < ApplicationController
   end # of method 
 
   def claim
-    target_id = params[:checked].keys.first
-    if target_id.blank?
+    # Before execution gets here, client side validation would have ensured that 
+    #    1. aid != nil 
+    #    2. No account with email that the user has now specified exists from before
+
+    aid = params[:checked].keys.first
+    if aid.blank? # client side validation should ensure this never happens
       render json: { notify: { title: "No account specified for merging" } }, status: :ok
     else
-      account = Account.find target_id
+      account = Account.find aid
     end
 
-    account_details = params[:account]
+    uinp = params[:account]
     location = request.location
     city = state = country = zip = nil
 
@@ -60,15 +64,11 @@ class StudentsController < ApplicationController
        country = country.id unless country.blank?
     end
  
-    account.update_attributes email: account_details[:email],
-                              password: account_details[:password],
-                              password_confirmation: account_details[:password],
-                              city: city,
-                              state: state,
-                              postal_code: zip,
-                              country: country 
+    updated = account.update_attributes email: uinp[:email],
+                              password: uinp[:password], password_confirmation: uinp[:password],
+                              city: city, state: state, postal_code: zip, country: country 
 
-    if account.save
+    if updated 
       Mailbot.delay.welcome(account)
       sign_in account
       redirect_to student_path
