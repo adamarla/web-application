@@ -17,8 +17,8 @@ module GeneralQueries
     required and the # of records per page - given the total # of entries
     Return values (in order): # of entries per page, # reqd pages (max 8)
 =end
-    default_per_pg = 25
-    max_pages = 6 
+    default_per_pg = 45 
+    max_pages = 10
 
     per_pg = (n_entries / default_per_pg.to_f).ceil > max_pages ? (n_entries / max_pages.to_f).ceil : default_per_pg 
     n_pgs = (n_entries / per_pg.to_f).ceil

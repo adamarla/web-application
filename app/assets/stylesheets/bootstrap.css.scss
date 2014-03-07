@@ -4189,7 +4189,7 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 }
 
 .pagination {
-  margin: 14px 0;
+  margin: 0px 0px 20px 0px ; 
   ul {
     display: inline-block;
     *display: inline;
@@ -4208,13 +4208,14 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
         display: inline;
         > {
           a, span {
-            float: left;
-            padding: 4px 12px;
-            line-height: 14px;
+            // float: left;
+            padding: 4px 8px;
+            // line-height: 14px;
+            font-size: 11px ;
             text-decoration: none;
             // background-color: #ffffff;
             background-color: $deep-blue ;
-            border: 1px solid #dddddd;
+            // border: 1px solid #dddddd;
             border-left-width: 0;
             color: white ;
           }

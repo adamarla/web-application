@@ -93,9 +93,11 @@ jQuery ->
       lesson = 'publish-milestone-2'
     else if url.match(/exam\/summary/)
       target = $("#pane-tc-rc-2")
+      karo.empty target
       key = "root"
       wsSummary json
       $('#lnk-rc-download')[0].setAttribute 'href', "ws/report_card?id=#{json.a}&format=csv"
+      pgnUrl = url 
     else if url.match(/teacher\/sektions/)
       if json.context is 'list'
         target = $('#pane-mng-sektions-1')

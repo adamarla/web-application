@@ -26,3 +26,5 @@ object false
       }
     }
   } 
+
+  node(:last_pg) { @last_pg }

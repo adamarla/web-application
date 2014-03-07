@@ -9,6 +9,12 @@ class ExamsController < ApplicationController
     head :bad_request if @exam.nil?
     # @mean = @exam.mean?
     @students = @exam.students.order(:first_name)
+
+    n = @students.count 
+    @per_pg, @last_pg = pagination_layout_details n
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @students = @students.page(pg).per(@per_pg)
+
     @totals = @students.map{ |s| s.marks_scored_in @exam.id }
     @honest = @students.map{ |s| s.honestly_attempted? @exam.id }
     @max = @exam.quiz.total?
