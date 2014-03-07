@@ -179,6 +179,12 @@ jQuery ->
       rubric.form.submit() if rubric.current.next().length is 0
     else 
       switch key 
+        when 98 # B
+          id = 'btn-blank'
+        when 99 # C 
+          id = 'btn-cheated'
+        when 112 # P 
+          id = 'btn-perfect'
         when 102  #F
           id = 'btn-rotate'
         when 104  #H

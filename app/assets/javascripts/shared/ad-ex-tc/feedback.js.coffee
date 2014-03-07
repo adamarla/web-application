@@ -293,6 +293,24 @@ jQuery ->
         fdb.mode = 'comments'
         $(shadow.commentBox).focus()
         $(this).addClass 'active'
+      when 'btn-perfect'
+        event.stopImmediatePropagation()
+        rubric.rewind()
+        rubric.select(3)
+        rubric.select(4)
+        rubric.select(5)
+      when 'btn-blank'
+        event.stopImmediatePropagation()
+        rubric.rewind()
+        rubric.select(0)
+        rubric.select(0)
+        rubric.select(0)
+      when 'btn-cheated'
+        event.stopImmediatePropagation()
+        rubric.rewind()
+        rubric.select(1)
+        rubric.select(0)
+        rubric.select(0)
       when 'btn-hide-controls'
         isClicked = $(this).hasClass 'active'
         btnGroups = $(this).closest('.row-fluid').siblings() 

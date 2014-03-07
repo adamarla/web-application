@@ -9,10 +9,13 @@
         .btn-group.btn-group-vertical
           = simple_button for: 'Hide', id: 'btn-hide-controls', shortcut: 'I', class: 'btn-success btn-large'
       .row-fluid.push-down
-        .btn-group.btn-group-vertical{ data: { toggle: 'buttons-radio' } } 
-          = simple_button for: 'ick', id: 'btn-ok', shortcut: 'T'
-          = simple_button for: 'Cross', id: 'btn-cross', shortcut: 'X'
-          = simple_button for: 'ow?', id: 'btn-what', shortcut: 'H'
+        .btn-group.btn-group-vertical
+          -#= simple_button for: 'ick', id: 'btn-ok', shortcut: 'T'
+          -#= simple_button for: 'Cross', id: 'btn-cross', shortcut: 'X'
+          -#= simple_button for: 'ow?', id: 'btn-what', shortcut: 'H'
+          = simple_button for: 'erfect', id: 'btn-perfect', shortcut: 'P'
+          = simple_button for: 'lank!', id: 'btn-blank', shortcut: 'B'
+          = simple_button for: 'heated!', id: 'btn-cheated', shortcut: 'C'
       .row-fluid.push-down
         .btn-group.btn-group-vertical
           = simple_button for: 'estore', id: 'btn-fresh-copy', tooltip: 'Restore original scan', shortcut: 'R'
