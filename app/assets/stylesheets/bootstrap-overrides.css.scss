@@ -98,15 +98,10 @@ span.btn-shortcut {
       color: white ;
       background: transparent ;
       box-shadow: none ;
-      padding: {
-        top: 10px ;
-        bottom: 7px ;
-        left: 10px ;
-      }
+      min-height: 30px ;
       font: { 
-        size: 10px ;
+        size: 11px ;
         family: "Lucida Sans Typewriter", "Lucida Console", "Arial Black", "Droid Dans Mono", monospace ;
-        weight: 500 ;
       }
       border: {
         radius: 0px ;

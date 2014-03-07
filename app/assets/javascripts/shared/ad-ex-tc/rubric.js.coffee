@@ -177,8 +177,7 @@ jQuery ->
       rubric.select( key - 49 )
     else if key is 115 # S => submit
       rubric.form.submit() if rubric.current.next().length is 0
-    else if (key >= 102 && key <= 122) 
-      buttons = $(fdb.root).find 'button'
+    else 
       switch key 
         when 102  #F
           id = 'btn-rotate'
@@ -186,9 +185,9 @@ jQuery ->
           id = 'btn-what'
         when 105 #I
           id = 'btn-hide-controls'
-        when 110  #N
+        when 93  # ]
           id = 'btn-next-scan'
-        when 112  #P
+        when 91  # [
           id = 'btn-prev-scan'
         when 114  #R
           id = 'btn-fresh-copy'
@@ -200,13 +199,17 @@ jQuery ->
           id = 'btn-write'
         when 120  #X
           id = 'btn-cross'
-        when 121  #Y
+        when 44  # < 
           id = 'btn-prev-ques'
-        when 122  #Z
+        when 46  # >
           id = 'btn-next-ques'
+        else 
+          id = nil
 
-      btn = buttons.filter("[id=#{id}]")[0]
-      $(btn).click() if btn?
+      if id?
+        buttons = $(fdb.root).find 'button'
+        btn = buttons.filter("[id=#{id}]")[0]
+        $(btn).click() if btn?
 
     return true
 
