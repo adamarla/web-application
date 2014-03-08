@@ -178,6 +178,7 @@ jQuery ->
     else if key is 115 # S => submit
       rubric.form.submit() if rubric.current.next().length is 0
     else 
+      # alert key
       switch key 
         when 98 # B
           id = 'btn-blank'
