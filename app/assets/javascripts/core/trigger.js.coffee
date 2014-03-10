@@ -334,7 +334,7 @@ jQuery ->
       proceed = true
       if karo.checkWhether this, 'nopurge-on-show'
         z = $($(this).attr('href'))
-        proceed = z.hasClass('static') || (z.children().length is 0)
+        proceed = z.hasClass('static') || (z.children().filter(":not([class~='purge-skip'])").length is 0)
       if proceed
         karo.ajaxCall ajax
         pagination.url.set pgn, ajax
