@@ -15,6 +15,7 @@
 #  feedback       :integer         default(0)
 #  worksheet_id   :integer
 #  mobile         :boolean         default(FALSE)
+#  disputed       :boolean         default(FALSE)
 #
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
