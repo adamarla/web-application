@@ -8,12 +8,13 @@
   #toolbox.hidden 
     = render partial: 'toolbox/line'
     = render partial: 'menus/user/account'
-    = render partial: 'menus/examiner/workbench', locals: { is_admin: is_admin } 
+    = render partial: 'menus/examiner/workbench', locals: { me: user, admin: is_admin } 
     = render partial: 'menus/user/notifications'
     = render partial: 'examiners/annotation-marks'
     = render partial: 'menus/examiner/blockdb'
     = render partial: 'menus/examiner/per-pending-video'
     = render partial: 'menus/examiner/per-audit'
+    = render partial: 'menus/examiner/per-dispute'
     = render partial: 'shared/user/preview'
     = render partial: 'shared/grading/shadow'
     = render partial: 'toolbox/fdb-panel'
@@ -87,6 +88,8 @@
             = render partial: 'examiners/video-pending'
           #left-9
             = render partial: 'examiners/apprentices'
+          #left-10
+            = render partial: 'examiners/disputes'
 
         - if is_admin
           #middle.g-panel.span4

@@ -41,6 +41,8 @@ jQuery ->
         karo.empty target
         key = 'candidates'
         $('#m-enrollment-confirm').modal 'show'
+    else if url.match(/dispute/)
+      $('#mdl-dispute').modal 'hide'
     else
       matched = false
 

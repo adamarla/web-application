@@ -157,6 +157,11 @@ class AccountsController < ApplicationController
     end
 
     @solution_video = @gr.subpart.question.video
+    if current_account.loggable_type == 'Student' 
+      @regrade = { name: @gr.name?, disable: @gr.disputed }
+    else
+      @regrade = nil
+    end 
 
     unless (@fdb.nil? || @fdb == 0) # => none so far 
       if sandboxed 

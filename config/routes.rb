@@ -58,6 +58,11 @@ Webapp::Application.routes.draw do
   match 'examiner/apprentices' => 'examiners#apprentices', via: :get
   match 'load/samples' => 'examiners#load_samples', via: :get
 
+  match 'disputes' => 'examiners#disputed', via: :get
+  match 'load/dispute' => 'examiners#load_dispute', via: :get
+  match 'dispute/reject' => 'examiners#reject_dispute', via: :get
+  match 'dispute/accept' => 'examiners#accept_dispute', via: :get
+
   # Graded Response 
   match 'reset/graded' => 'examiners#reset_graded', via: :get
   match 'aggregate' => 'examiners#aggregate', via: :get
@@ -112,6 +117,7 @@ Webapp::Application.routes.draw do
   match 'outbox' => 'students#outbox', via: :get
   match 'overall/proficiency' => 'students#proficiency', via: :get
   match 'enroll' => 'students#enroll', via: :post
+  match 'dispute' => 'students#dispute', via: :get
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get

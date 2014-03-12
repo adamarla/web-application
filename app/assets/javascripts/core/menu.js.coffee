@@ -43,28 +43,20 @@ window.menu = {
   update : (json, url) ->
     for menu in $("#toolbox > ul[role='menu']")
       for a in $(menu).find 'a'
-        # continue unless a.dataset.ajax is 'disabled'
-        # updateOn = a.dataset.updateOn
-        updateOn = a.getAttribute('data-update-on')
-
-        continue unless updateOn?
-        continue unless karo.url.match(url, updateOn)
-
-        href = karo.url.elaborate a, json
-        continue unless href?
-        $(a).attr 'href', href
+        karo.url.updateOnAjax a, url, json 
     return true
 }
 
 jQuery ->
 
-  # Update any non-ajax URLs in #toolbox-menus. These menus would cloned and 
-  # re-attached later - by which time their href's should be in order 
+  # Update hrefs of <a> that have data-update-on 
+  # Most of these <a> are within menus. But some could be outside also 
 
   $('body').ajaxSuccess (e,xhr,settings) ->
     url = settings.url
     json = $.parseJSON xhr.responseText
 
     menu.update json, url
+    karo.url.updateOnAjax(a, url, json) for a in $('#modals').find('a')
     return true
 

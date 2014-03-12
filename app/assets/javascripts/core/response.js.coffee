@@ -69,6 +69,16 @@ jQuery ->
         active = target.parent().prev().children('li.active').eq(0)
         active.children('a.split').eq(0).text json.split
 
+      if json.regrade? # => only returned for students
+        regradeBtn = $('#pane-st-rc-2').find('a').filter("[id='lnk-regrade-request']")[0]
+        if regradeBtn
+          if json.regrade.disable 
+            $(regradeBtn).text('Disputed once')
+            $(regradeBtn).addClass 'disabled'
+          else 
+            $(regradeBtn).text("Regrade #{json.regrade.name}") 
+            $(regradeBtn).removeClass 'disabled'
+
       # Set data-* attributes on the 'Read' and 'See' solution buttons
       b = target.closest('.tab-pane').find('.navbar').eq(0).find('button')
 

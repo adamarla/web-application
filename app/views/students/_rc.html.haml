@@ -9,6 +9,7 @@
   #pane-st-rc-1.tab-pane
   #pane-st-rc-2.tab-pane
     .row-fluid.navbar.purge-skip
+      = simple_link for: 'Regrade', id: 'lnk-regrade-request', class: 'btn btn-inverse', remote: true
       .btn-group.pull-right
         = simple_button for: 'Read Solution', 
           id: 'btn-show-solution', toggle: :button

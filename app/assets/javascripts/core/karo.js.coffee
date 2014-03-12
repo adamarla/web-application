@@ -88,6 +88,19 @@ window.karo = {
   }
 
   url : {
+    updateOnAjax : (a, url, json) ->
+      # continue unless a.dataset.ajax is 'disabled'
+      # updateOn = a.dataset.updateOn
+      updateOn = a.getAttribute('data-update-on')
+
+      return false unless updateOn?
+      return false unless karo.url.match(url, updateOn)
+
+      href = karo.url.elaborate a, json
+      return false unless href?
+      $(a).attr 'href', href
+      return true
+
     elaborate : (obj, json = null, tab = null) ->
       ajax = if tab? then tab.getAttribute('data-url-panel') else obj.getAttribute('data-url-self')
 

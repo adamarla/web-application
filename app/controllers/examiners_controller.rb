@@ -218,4 +218,33 @@ class ExaminersController < ApplicationController
     render json: { status: :ok}
   end
 
+  def load_dispute 
+    @g = GradedResponse.find params[:id]
+    @comments = @g.nil? ? nil : Remark.where(graded_response_id: @g.id)
+  end 
+
+  def disputed 
+    @g = GradedResponse.assigned_to(current_account.loggable_id).with_scan.unresolved
+  end 
+
+  def reject_dispute
+    g = GradedResponse.find params[:id]
+    unless g.nil?
+      g.update_attribute :resolved, true
+      render json: { disabled: g.id }, status: :ok
+    else
+      render json: { status: :ok }, status: :ok
+    end 
+  end 
+
+  def accept_dispute
+    g = GradedResponse.find params[:id]
+    unless g.nil?
+      g.reset false
+      render json: { disabled: g.id }, status: :ok
+    else
+      render json: { status: :ok }, status: :ok
+    end 
+  end 
+
 end

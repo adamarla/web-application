@@ -149,4 +149,10 @@ class StudentsController < ApplicationController
   def outbox
   end
 
+  def dispute 
+    g = GradedResponse.find params[:id]
+    g.update_attribute(:disputed, true) unless g.nil?
+    render json: { status: :ok }, status: :ok
+  end 
+
 end

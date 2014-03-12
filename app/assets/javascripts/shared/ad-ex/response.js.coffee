@@ -88,6 +88,18 @@ jQuery ->
     else if url.match(/examiner\/apprentices/)
       target = $('#pane-apprentices')
       key = 'apprentices'
+    else if url.match(/disputes/)
+      key = 'disputes'
+      clickFirst = true
+      target = $('#pane-disputes')
+      menu = 'm-dispute'
+    else if url.match(/load\/dispute/)
+      preview.loadJson json
+      if json.comments?
+        overlay.over $(preview.root)
+        overlay.loadJson json.comments
+    else if url.match(/(accept|reject)\/dispute/)
+      target = $('#pane-disputes')
     else
       matched = false
 

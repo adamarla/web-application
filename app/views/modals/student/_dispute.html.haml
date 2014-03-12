@@ -1,0 +1,18 @@
+
+#mdl-dispute.modal.fade.regular.row-fluid{ role: :dialog } 
+  .span3
+    = image_tag 'notifications/alert.png', class: 'big-icon' 
+  .span8
+    %p.title.underline
+      Question sent for a re-look
+    %p
+      You have chosen to contest the grader's original assessment 
+    %p
+      The grader could stick with their original assessment or could decide to regrade 
+      your solution
+    %p
+      Should the grader decide to re-grade, know that your new (and final)  grade could be 
+      higher, lower or the same as before
+    .row-fluid 
+      = simple_link for: 'Cancel', class: 'btn btn-large btn-inverse pull-left', id: 'lnk-cancel-dispute'
+      = simple_link for: 'I understand', class: 'btn btn-large btn-primary pull-right', id: 'lnk-dispute', remote: true

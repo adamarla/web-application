@@ -16,6 +16,7 @@
 #  worksheet_id   :integer
 #  mobile         :boolean         default(FALSE)
 #  disputed       :boolean         default(FALSE)
+#  resolved       :boolean         default(FALSE)
 #
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
@@ -104,6 +105,18 @@ class GradedResponse < ActiveRecord::Base
     where('scan LIKE ?', "#{Date.parse(date).strftime('%d.%B.%Y')}%")
   end
 
+  def self.disputed 
+    where(disputed: true)
+  end 
+
+  def self.resolved 
+    where(disputed: true, resolved: true)
+  end 
+
+  def self.unresolved
+    where(disputed: true, resolved: false)
+  end 
+
   def shadow?
     return 0 if self.mobile
     quiz = self.worksheet.exam.quiz
@@ -130,24 +143,28 @@ class GradedResponse < ActiveRecord::Base
     self.reset if self.feedback # over-write previous feedback 
 
     if self.update_attributes(feedback: m, marks: earned)
-      # Increment n_graded count of the grading examiner
-      e = Examiner.find self.examiner_id
-      n_graded = e.n_graded + 1
-      e.update_attribute :n_graded, n_graded
+      unless self.disputed
+        # Increment n_graded count of the grading examiner
+        e = Examiner.find self.examiner_id
+        n_graded = e.n_graded + 1
+        e.update_attribute :n_graded, n_graded
 
-      # Time to send mails 
-      exam = Exam.where(id: self.worksheet.exam_id).first
-      ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.worksheet.exam_id).first
+        # Time to send mails 
+        exam = Exam.where(id: self.worksheet.exam_id).first
+        ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.worksheet.exam_id).first
 
-      if exam.publishable? # to the teacher - once all worksheets are graded
-        # Time to inform the teacher. You can do this only if teacher has provided 
-        # an e-mail address. The default we assign will not work
-        teacher = exam.quiz.teacher 
-        Mailbot.delay.grading_done(exam) if teacher.account.email_is_real?
-      end 
+        if exam.publishable? # to the teacher - once all worksheets are graded
+          # Time to inform the teacher. You can do this only if teacher has provided 
+          # an e-mail address. The default we assign will not work
+          teacher = exam.quiz.teacher 
+          Mailbot.delay.grading_done(exam) if teacher.account.email_is_real?
+        end 
 
-      if ws.publishable? # to the student if his/her worksheet has been graded
-        Mailbot.delay.worksheet_graded(ws) if self.student.account.email_is_real? 
+        if ws.publishable? # to the student if his/her worksheet has been graded
+          Mailbot.delay.worksheet_graded(ws) if self.student.account.email_is_real? 
+        end
+      else # previously graded, but disputed now 
+        self.update_attribute(:resolved, true)
       end
 
     end # of if 

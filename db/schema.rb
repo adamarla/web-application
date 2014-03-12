@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140312055032) do
+ActiveRecord::Schema.define(:version => 20140312072349) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(:version => 20140312055032) do
     t.integer  "worksheet_id"
     t.boolean  "mobile",                       :default => false
     t.boolean  "disputed",                     :default => false
+    t.boolean  "resolved",                     :default => false
   end
 
   add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"

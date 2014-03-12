@@ -16,6 +16,7 @@
 #  worksheet_id   :integer
 #  mobile         :boolean         default(FALSE)
 #  disputed       :boolean         default(FALSE)
+#  resolved       :boolean         default(FALSE)
 #
 
 require 'test_helper'

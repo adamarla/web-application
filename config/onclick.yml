@@ -328,6 +328,11 @@ lnk-sk-add-std :
 ## Students 
 ##############################################################################
 
+lnk-dispute: 
+  update-on: view/fdb
+  url:
+    self: dispute?id=:a
+
 lnk-st-rc : 
   autoclick :
     tab : tab-st-rc-1
@@ -395,6 +400,28 @@ tab-teacher-accounts :
 ##############################################################################
 ## Admin / Examiner specific  
 ##############################################################################
+
+lnk-wb-disputes :
+  show : 
+    left : left-10
+    wide: wide-X
+  autoclick :
+    tab : tab-disputes
+
+tab-disputes : 
+  url :
+    self : disputes
+    panel : load/dispute?id=:id
+
+lnk-reject-dispute :
+  url: 
+    self : dispute/reject?id=:a
+  update-on: load/dispute
+
+lnk-accept-dispute :
+  url: 
+    self : dispute/accept?id=:a
+  update-on: load/dispute
 
 lnk-audit-close : 
   update-on: question/preview
