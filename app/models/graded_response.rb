@@ -247,8 +247,6 @@ class GradedResponse < ActiveRecord::Base
 
   def honest?
     return :disabled if self.scan.nil?
-    return :nodata unless self.feedback
-    
     posn = self.feedback & 15 
     score = Requirement.honest.where(posn: posn).map(&:weight).first
 

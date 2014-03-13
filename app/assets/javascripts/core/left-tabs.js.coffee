@@ -123,7 +123,8 @@ window.leftTabs = {
         if options.split
           aHtml += "<div class='pull-left'>#{m.name}</div>"
           if options.writeBoth
-            aHtml += "<div class='pull-right'>#{m.split}</div></a>"
+            splitText = if m.split? then m.split else 'TBD'
+            aHtml += "<div class='pull-right'>#{splitText}</div></a>"
           else
             aHtml += "<div class='pull-right'></div></a>"
           a = $(aHtml)
