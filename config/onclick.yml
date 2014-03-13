@@ -271,6 +271,8 @@ tab-mng-sektions-1 :
 
 lnk-like-question : 
   update-on : question/preview
+  url :
+    self : like?id=:a
 
 lnk-ask-a-question :
   show : 

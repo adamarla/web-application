@@ -93,7 +93,7 @@ class QuestionController < ApplicationController
   end
 
   def audit_open
-    gr = params[:gr].to_i
+    gr = params[:gr].to_i # gr = 0 if params[:gr] == nil
     gr = gr == 0 ? nil : GradedResponse.find(gr) 
     subpart_index = gr.nil? ? nil : [*'A'..'Z'][gr.subpart.index]
 
