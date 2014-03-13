@@ -249,15 +249,14 @@ class ExaminersController < ApplicationController
 
   def daily_digest  
     g = GradedResponse.with_scan
-
-    ungraded = params[:ug] == true ? g.ungraded : g.where(examiner_id: -1) # ug = ungraded
-    disputes = params[:d] == true ? g.unresolved : g.where(examiner_id: -1)  # d = disputes 
+    ug = g.ungraded # ug = ungraded 
+    d = g.unresolved # d = disputes 
     e = Examiner.available
 
     for j in e
       next unless j.account.email_is_real?
-      a = ungraded.where(examiner_id: j.id).count > 0
-      b = disputes.where(examiner_id: j.id).count > 0
+      a = ug.where(examiner_id: j.id).count > 0
+      b = d.where(examiner_id: j.id).count > 0
       if a || b 
         j.mail_daily_digest a,b
       end 
