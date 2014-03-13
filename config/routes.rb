@@ -63,6 +63,8 @@ Webapp::Application.routes.draw do
   match 'dispute/reject' => 'examiners#reject_dispute', via: :get
   match 'dispute/accept' => 'examiners#accept_dispute', via: :get
 
+  match 'mail/digest' => 'examiners#daily_digest', via: :get
+
   # Graded Response 
   match 'reset/graded' => 'examiners#reset_graded', via: :get
   match 'aggregate' => 'examiners#aggregate', via: :get

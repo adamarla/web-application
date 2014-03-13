@@ -147,4 +147,11 @@ class Examiner < ActiveRecord::Base
     return is_live 
   end
 
+  def mail_daily_digest(tbd_grading, tbd_disputes)
+    x = tbd_grading ? 'Yes' : 'No'
+    y = tbd_disputes ? 'Yes' : 'No' 
+    name = self.first_name
+    Mailbot.delay.daily_digest name, self.account.email, x, y
+  end
+
 end # of class

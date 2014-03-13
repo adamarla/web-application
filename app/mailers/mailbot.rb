@@ -125,4 +125,11 @@ class Mailbot < ActionMailer::Base
     mail to: @a.account.email, subject: "[Gradians.com]: #{bottomline}"
   end 
 
+  def daily_digest(name, email, tbd_grading, tbd_disputes)
+    @name = name 
+    @tbd_g = tbd_grading 
+    @tbd_d = tbd_disputes
+    mail to: email, subject: "[Gradians.com] - Pending work as of #{Date.today.strftime('%B %d, %Y')}"
+  end
+
 end

@@ -1,6 +1,6 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:distribute_scans, :receive_single_scan, :aggregate]
+  before_filter :authenticate_account!, except: [:distribute_scans, :receive_single_scan, :aggregate, :daily_digest]
   respond_to :json
 
   def create
@@ -245,6 +245,24 @@ class ExaminersController < ApplicationController
     else
       render json: { status: :ok }, status: :ok
     end 
+  end 
+
+  def daily_digest  
+    g = GradedResponse.with_scan
+
+    ungraded = params[:ug] == true ? g.ungraded : g.where(examiner_id: -1) # ug = ungraded
+    disputes = params[:d] == true ? g.unresolved : g.where(examiner_id: -1)  # d = disputes 
+    e = Examiner.available
+
+    for j in e
+      next unless j.account.email_is_real?
+      a = ungraded.where(examiner_id: j.id).count > 0
+      b = disputes.where(examiner_id: j.id).count > 0
+      if a || b 
+        j.mail_daily_digest a,b
+      end 
+    end
+    render json: { status: :ok }, status: :ok
   end 
 
 end
