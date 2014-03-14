@@ -70,14 +70,17 @@ jQuery ->
         active.children('a.split').eq(0).text json.split
 
       if json.regrade? # => only returned for students
-        regradeBtn = $('#pane-st-rc-2').find('a').filter("[id='lnk-regrade-request']")[0]
+        # we need to the next line to correctly submit the dispute form
+        $('#tab-st-rc-2').parent().attr 'marker', json.a # json.a = graded-response-id
+
+        regradeBtn = $('#pane-st-rc-2').find('button').filter("[id='btn-regrade']")[0]
         if regradeBtn
           if json.regrade.disable 
             $(regradeBtn).text('Disputed once')
-            $(regradeBtn).addClass 'disabled'
+            $(regradeBtn).prop 'disabled', true
           else 
             $(regradeBtn).text("Regrade #{json.regrade.name}") 
-            $(regradeBtn).removeClass 'disabled'
+            $(regradeBtn).prop 'disabled', false
 
       # Set data-* attributes on the 'Read' and 'See' solution buttons
       b = target.closest('.tab-pane').find('.navbar').eq(0).find('button')

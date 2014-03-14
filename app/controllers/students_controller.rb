@@ -151,7 +151,14 @@ class StudentsController < ApplicationController
 
   def dispute 
     g = GradedResponse.find params[:id]
-    g.update_attribute(:disputed, true) unless g.nil?
+    unless g.nil?
+      reason = params[:dispute][:reason]
+      d = reason.blank? ? nil : current_account.loggable.disputes.build(graded_response_id: g.id, text: reason)
+      unless d.nil?
+        d.save
+        g.update_attribute(:disputed, true) 
+      end
+    end
     render json: { status: :ok }, status: :ok
   end 
 

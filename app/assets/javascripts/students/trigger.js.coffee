@@ -4,12 +4,18 @@
 ############################################################################
 
 jQuery ->
-  $('#lnk-regrade-request').click (event) ->
+  $('#btn-regrade').click (event) ->
     event.stopImmediatePropagation() 
-    $('#mdl-dispute').modal 'show'
+    $('#m-dispute-1').modal 'show'
     return true
 
-  $('#lnk-cancel-dispute').click (event) ->
+  $('#btn-cancel-dispute').click (event) ->
     event.stopImmediatePropagation() 
-    $('#mdl-dispute').modal 'hide'
+    $('#m-dispute-1').modal 'hide'
+    return false
+
+  $('#btn-dispute-next').click (event) ->
+    event.stopImmediatePropagation()
+    $('#m-dispute-1').modal 'hide'
+    $('#m-dispute-2').modal 'show'
     return false

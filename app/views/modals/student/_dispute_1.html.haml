@@ -1,5 +1,5 @@
 
-#mdl-dispute.modal.fade.regular.row-fluid{ role: :dialog } 
+#m-dispute-1.modal.fade.regular.row-fluid{ role: :dialog } 
   .span3
     = image_tag 'notifications/alert.png', class: 'big-icon' 
   .span8
@@ -14,5 +14,5 @@
       Should the grader decide to re-grade, know that your new - and final - grade could be 
       lower, higher or the same as before
     .row-fluid 
-      = simple_link for: 'Cancel', class: 'btn btn-large btn-inverse pull-left', id: 'lnk-cancel-dispute'
-      = simple_link for: 'I understand', class: 'btn btn-large btn-primary pull-right', id: 'lnk-dispute', remote: true
+      = simple_button for: 'Cancel', id: 'btn-cancel-dispute', class: 'btn-inverse pull-left'
+      = simple_button for: 'I understand', id: 'btn-dispute-next', class: 'btn-primary pull-right'

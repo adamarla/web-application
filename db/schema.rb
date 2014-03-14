@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140312072349) do
+ActiveRecord::Schema.define(:version => 20140314092954) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -89,6 +89,16 @@ ActiveRecord::Schema.define(:version => 20140312072349) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "disputes", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "graded_response_id"
+    t.text     "text"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "disputes", ["student_id"], :name => "index_disputes_on_student_id"
 
   create_table "doodles", :force => true do |t|
     t.integer  "examiner_id"

@@ -42,7 +42,9 @@ jQuery ->
         key = 'candidates'
         $('#m-enrollment-confirm').modal 'show'
     else if url.match(/dispute/)
-      $('#mdl-dispute').modal 'hide'
+      m = $('#m-dispute-2')
+      m.find('textarea').val null
+      m.modal 'hide'
     else
       matched = false
 

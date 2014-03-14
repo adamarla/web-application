@@ -62,6 +62,7 @@ Webapp::Application.routes.draw do
   match 'load/dispute' => 'examiners#load_dispute', via: :get
   match 'dispute/reject' => 'examiners#reject_dispute', via: :get
   match 'dispute/accept' => 'examiners#accept_dispute', via: :get
+  match 'dispute/reason' => 'examiners#load_dispute_reason', via: :get
 
   match 'mail/digest' => 'examiners#daily_digest', via: :get
 
@@ -119,7 +120,7 @@ Webapp::Application.routes.draw do
   match 'outbox' => 'students#outbox', via: :get
   match 'overall/proficiency' => 'students#proficiency', via: :get
   match 'enroll' => 'students#enroll', via: :post
-  match 'dispute' => 'students#dispute', via: :get
+  match 'dispute' => 'students#dispute', via: [:put, :post] 
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get

@@ -16,18 +16,19 @@ include ApplicationUtil
 class Student < ActiveRecord::Base
   belongs_to :guardian
 
-  has_many :student_rosters, :dependent => :destroy 
-  has_many :sektions, :through => :student_rosters
+  has_many :student_rosters, dependent: :destroy 
+  has_many :sektions, through: :student_rosters
 
-  has_one :account, :as => :loggable, :dependent => :destroy
+  has_one :account, as: :loggable, dependent: :destroy
 
-  has_many :graded_responses, :dependent => :destroy
-  has_many :quizzes, :through => :graded_responses
+  has_many :graded_responses, dependent: :destroy
+  has_many :quizzes, through: :graded_responses
 
-  has_many :worksheets, :dependent => :destroy
-  has_many :exams, :through => :worksheets
+  has_many :worksheets, dependent: :destroy
+  has_many :exams, through: :worksheets
+  has_many :disputes, dependent: :destroy
 
-  validates :name, :presence => true
+  validates :name, presence: true
   validates_associated :account
 
   before_destroy :destroyable? 
@@ -122,10 +123,18 @@ class Student < ActiveRecord::Base
   end
 
   def marks_scored_in(exam_id)
-    a = Worksheet.where(:student_id => self.id, :exam_id => exam_id).first 
-    marks = a.nil? ? 0 : a.marks?
-    return marks unless marks == 0
-    return (self.absent_for_test?(exam_id) ? -1 : marks) 
+    w = Worksheet.where(student_id: self.id, exam_id: exam_id).first
+    g = w.nil? ? [] : GradedResponse.where(worksheet_id: w.id)
+
+    return 0 if g.blank?
+    return -1 if g.with_scan.count == 0 # absent perhaps?
+
+    if g.ungraded.count > 0
+      marks = g.graded.map(&:marks).inject(:+)
+    else
+      marks = w.marks?
+    end
+    return (marks.nil? ? 0 : marks)
   end
 
   def honestly_attempted? (ws_id)

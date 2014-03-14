@@ -100,6 +100,8 @@ jQuery ->
         overlay.loadJson json.comments
     else if url.match(/(accept|reject)\/dispute/)
       target = $('#pane-disputes')
+    else if url.match(/dispute\/reason/)
+      notifier.show 'n-dispute-reason', json
     else
       matched = false
 
