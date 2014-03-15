@@ -163,7 +163,7 @@ window.karo = {
   isPlainTextCheck : (comment) ->
     # Either a string is plain text - that is, no LaTeX - or it has LaTeX
     # The passed 'comment' is jaxified and comes from the DB 
-    z = comment.replace(/\\text{.*?}/, "")
+    z = comment.replace(/\\text{\s+.*?\s+}/, "")
     return z.length == 0 # if nothing remains after removing all \text{ ... }, then its plain text 
 
   jaxify : (comment) ->
