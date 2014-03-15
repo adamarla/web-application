@@ -153,7 +153,12 @@ class StudentsController < ApplicationController
     g = GradedResponse.find params[:id]
     unless g.nil?
       reason = params[:dispute][:reason]
-      d = reason.blank? ? nil : current_account.loggable.disputes.build(graded_response_id: g.id, text: reason)
+      unless reason.blank?
+        reason.gsub! "\r\n", " " # remove carriage returns
+        d = current_account.loggable.disputes.build(graded_response_id: g.id, text: reason)
+      else
+        d = nil
+      end 
       unless d.nil?
         d.save
         g.update_attribute(:disputed, true) 
