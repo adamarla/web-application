@@ -266,7 +266,7 @@ class ExaminersController < ApplicationController
 
   def load_dispute_reason
     d = Dispute.where(graded_response_id: params[:id]).first
-    reason = (d.nil? || d.text.blank?) ? 'No reason provided' : d.text
+    reason = (d.nil? || d.text.blank?) ? "\\text{ No reason provided}" : d.text
     render json: { notify: { msg: reason } }, status: :ok
   end
 
