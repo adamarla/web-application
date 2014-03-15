@@ -17,3 +17,4 @@
 class CostCode < ActiveRecord::Base
 
 end
+

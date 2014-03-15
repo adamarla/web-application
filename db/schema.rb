@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140218092407) do
+ActiveRecord::Schema.define(:version => 20140313094130) do
+
+  create_table "accounting_docs", :force => true do |t|
+    t.integer  "doc_type"
+    t.integer  "customer_id"
+    t.date     "doc_date"
+    t.boolean  "open",        :default => true
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "accounting_docs", ["customer_id"], :name => "index_accounting_docs_on_customer_id"
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -75,20 +86,20 @@ ActiveRecord::Schema.define(:version => 20140218092407) do
   add_index "apprenticeships", ["teacher_id"], :name => "index_apprenticeships_on_teacher_id"
 
   create_table "contracts", :force => true do |t|
-    t.integer  "school_id"
+    t.integer  "customer_id"
     t.date     "start_date"
     t.integer  "duration"
     t.integer  "bill_cycle"
-    t.integer  "start_day_of_month"
+    t.integer  "bill_day_of_month"
     t.integer  "rate_code_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-    t.integer  "grade_level"
     t.integer  "num_students"
     t.integer  "subject_id"
+    t.string   "title",             :limit => 30
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
-  add_index "contracts", ["school_id"], :name => "index_contracts_on_school_id"
+  add_index "contracts", ["customer_id"], :name => "index_contracts_on_customer_id"
 
   create_table "cost_codes", :force => true do |t|
     t.text     "description"
@@ -119,11 +130,11 @@ ActiveRecord::Schema.define(:version => 20140218092407) do
 
   create_table "customers", :force => true do |t|
     t.integer  "account_id"
-    t.integer  "credit_balance"
-    t.integer  "cash_balance"
+    t.integer  "credit_balance",              :default => 0
+    t.integer  "cash_balance",                :default => 0
     t.string   "currency",       :limit => 3
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
   end
 
   add_index "customers", ["account_id"], :name => "index_customers_on_account_id"
@@ -216,6 +227,14 @@ ActiveRecord::Schema.define(:version => 20140218092407) do
     t.string   "last_name",  :limit => 30
   end
 
+  create_table "invoices", :force => true do |t|
+    t.date     "date"
+    t.boolean  "open",        :default => true
+    t.integer  "customer_id"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
   create_table "lectures", :force => true do |t|
     t.integer  "lesson_id"
     t.integer  "milestone_id"
@@ -241,22 +260,19 @@ ActiveRecord::Schema.define(:version => 20140218092407) do
   end
 
   create_table "payments", :force => true do |t|
-    t.integer  "transaction_id"
+    t.integer  "invoice_id"
     t.string   "ip_address",       :limit => 16
-    t.string   "first_name",       :limit => 30
-    t.string   "last_name",        :limit => 30
-    t.string   "payment_type",     :limit => 30
+    t.string   "name",             :limit => 60
+    t.string   "source",           :limit => 30
     t.integer  "cash_value"
-    t.string   "currency"
+    t.string   "currency",         :limit => 3
     t.integer  "credits"
     t.boolean  "success"
     t.string   "response_message"
-    t.string   "response_params"
+    t.text     "response_params"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
   end
-
-  add_index "payments", ["transaction_id"], :name => "index_payments_on_transaction_id"
 
   create_table "progressions", :force => true do |t|
     t.integer  "student_id"
@@ -428,18 +444,18 @@ ActiveRecord::Schema.define(:version => 20140218092407) do
   end
 
   create_table "transactions", :force => true do |t|
-    t.integer  "customer_id"
+    t.integer  "accounting_doc_id"
     t.integer  "account_id"
     t.integer  "quantity"
     t.integer  "rate_code_id"
     t.integer  "reference_id"
     t.integer  "reference_type"
-    t.string   "memo"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
-  add_index "transactions", ["customer_id"], :name => "index_transactions_on_customer_id"
+  add_index "transactions", ["accounting_doc_id"], :name => "index_transactions_on_accounting_doc_id"
+  add_index "transactions", ["reference_id"], :name => "index_transactions_on_reference_id"
 
   create_table "verticals", :force => true do |t|
     t.string   "name",       :limit => 30

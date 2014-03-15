@@ -30,6 +30,7 @@ jQuery ->
     event.preventDefault() 
     $('#fm-buy-credits')[0].reset()
     recalc_amount()
+    $('#m-buy-credits #message').addClass 'hide'
 
   $('#m-buy-credits').on 'shown', ->
     recalc_amount()

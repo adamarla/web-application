@@ -3,17 +3,16 @@
 # Table name: payments
 #
 #  id               :integer         not null, primary key
-#  transaction_id   :integer
+#  invoice_id       :integer
 #  ip_address       :string(16)
-#  first_name       :string(30)
-#  last_name        :string(30)
-#  payment_type     :string(30)
+#  name             :string(60)
+#  source           :string(30)
 #  cash_value       :integer
-#  currency         :string(255)
+#  currency         :string(3)
 #  credits          :integer
 #  success          :boolean
 #  response_message :string(255)
-#  response_params  :string(255)
+#  response_params  :text
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
 #

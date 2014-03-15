@@ -67,8 +67,12 @@ class School < ActiveRecord::Base
     return student.save
   end
 
+  def customer
+    return self.account.customer
+  end
+
   def assign_uid
-    uid = "#{self.id.to_s(36)}-#{Time.now.seconds_since_midnight.to_i.to_s(36)}"
+    uid = "#{self.id.to_s(36)}#{rand(99999).to_s(20)}"
     uid = uid.upcase
     self.update_attribute :uid, uid
   end

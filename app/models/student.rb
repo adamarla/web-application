@@ -202,19 +202,19 @@ class Student < ActiveRecord::Base
     return ret
   end
 
+  def can_afford?(course)
+    self.customer.credit_balance >= course.price
+  end
+
   def purchase(course)
-    guardian = self.guardian
-    unless guardian.balance >= course.price
-      message = "Not enough moolah, go ask mommee to put more cash"
-    else
-      t = self.account.transactions.new quantity: course.price,
-                                    rate_code_id: self.guardian.rate_code_id,
-                                    reference_id: course.id,
-                                    reference_type: "Course"
-      if t.save
-        guardian.update_attribute :balance, (guardian.balance -= course.price)
-      end 
-    end
+    customer = self.customer
+    return unless self.can_afford?
+
+    code = RateCode.for_course_credit(customer.currency)
+    course_buy = Transaction.new_course_buy(self, course, code, self.account)
+    credit_note = customer.credit_note
+    credit_note.transactions << course_buy
+    customer.update_attribute :credit_balance, (customer.credit_balance -= course.price)
   end
 
   private 

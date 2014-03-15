@@ -9,66 +9,87 @@ class PaymentsController < ApplicationController
       month: p.delete("expiration(2i)")
     }
     p.delete("expiration(3i)")
+    p[:cash_value] = p[:cash_value][1..-1] # drop the $ or ₹ prefix
 
     payment = Payment.new p
     payment.ip_address = request.remote_ip
     payment.expiration = expiration
 
-    if payment.save
-      response = payment.execute
-      if response.success?
-        guardian.add_subtract_credit(credits, response.params["transaction_id"])
+    unless payment.save
+      error_text = payment.errors[:base]
+    else
+      payment.execute 
+      unless payment.success?
+        error_text = "Uh-oh, problem - #{payment.response_message}"
+      end
+    end
 
-        customer = current_account.loggable.customer
-        if customer.nil?
-          if current_account.loggable_type == "Student"
-            student = current_account.loggable
-            if student.first_name == payment.first_name and 
-               student.last_name == payment.last_name
-              # student's own credit card  
-              account = student.account
-            else
-              # assume she is using guardian's credit card
-              guardian = student.build_guardian first_name: p[:first_name],
-                                                last_name: p[:last_name]
+    unless error_text.nil?
+      render :json => {
+        :text => error_text, 
+        :status => :ok 
+      }
+    else
+      customer = current_account.loggable.customer
+      if customer.nil?
+        case current_account.loggable_type
+        when "Student"
+          student = current_account.loggable
+          if student.name == payment.name  
+            # student's own credit card  
+            account = student.account
+          else
+            # assume she is using a guardian's credit card
+            if student.guardian.nil?
+              guardian = student.build_guardian name: p[:name]
               student.save
               # create an account for guardian
               pwd = Guardian.initial_pwd(student.first_name)
-              country_id = Country.find_by_name(p[:country]).first
+              country = Country.where{ name =~ p[:country] }.first
               account = guardian.build_account email: payment.email,
                                                password: pwd,
                                                password_confirmation: pwd,
                                                city: p[:city],
                                                state: p[:state],
                                                zip: p[:zip],
-                                               country: country_id
-              guardian.save
+                                               country: country.id
+              unless guardian.save
+                error_text = guardian.errors[:base]
+                # guardian.errors.each{ |attr,msg| puts "#{attr} - #{msg}" }
+              end
+            else
+              account = student.guardian.account
             end
-          else # guardian
-            guardian = current_account.loggable
-            account = guardian.account 
-          end            
-          customer = account.build_customer currency: p[:currency]
-          account.save
+          end
+        when "Guardian"
+          guardian = current_account.loggable
+          account = guardian.account 
+        end            
+        customer = account.build_customer currency: p[:currency]
+        unless account.save
+          error_text = account.errors[:base]
+          # account.errors.each{ |attr,msg| puts "#{attr} - #{msg}" }
         end
-        customer.apply_payment(payment)
-        render :json => {
-          :text => "#{customer.credit_balance} Gradians Credits", 
-          :status => :ok 
-        }
-      else
-        render :json => { 
-          :text => "Problem Executing Payment", 
-          :status => :error 
-        }
       end
-    else
-      render :json => { 
-        :text => payment.errors[:base], 
-        :status => :error
+
+      if customer.credit_note.nil?
+        customer.accounting_docs << AccountingDoc.new_credit_note
+      end
+      credit_note = customer.credit_note
+      customer.apply_payment(payment, credit_note, current_account)
+      Mailbot.delay.payment_received(customer, payment)
+      render :json => {
+        :text => "#{customer.balance}", 
+        :status => :ok 
       }
     end
-
+  rescue => e
+    puts e.message
+    puts e.backtrace
+    render :json => { 
+      :text => "Good golly, a problem! Not to worry, we'll look into it and your card will not be charged!",
+      :status => :error 
+    }
   end
 
   def bill_payment

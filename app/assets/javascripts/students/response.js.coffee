@@ -22,10 +22,11 @@ jQuery ->
     if url.match(/inbox\/echo/)
       # only because /inbox/echo also matches /inbox
     else if url.match(/inbox/)
-      target = $('#pane-st-inbox')
-      karo.empty target
-      key = 'inbox'
-      menu = 'st-inbox'
+      unless json.notify
+        target = $('#pane-st-inbox')
+        karo.empty target
+        key = 'inbox'
+        menu = 'st-inbox'
     else if url.match(/outbox/)
     else if url.match(/enroll/)
       $('#m-enroll-self').modal 'hide'

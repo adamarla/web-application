@@ -1421,8 +1421,12 @@ li.split {
     border: thin dashed ;
   }
 
-  #purchase_payment_type {
-//    width: 206px ;  
+  #payment_type {
+    width: 206px ;  
+  }
+  
+  #payment_card_verification {
+    width: 42px ;  
   }
   
   #img-payment-icons {

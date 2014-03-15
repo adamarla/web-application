@@ -4,15 +4,18 @@ class SchoolsController < ApplicationController
   respond_to :json 
 
   def create 
-    email = params[:school].delete :email # email is part of Account model 
+    email = params[:school].delete :email # email -> Account model 
+    currency = params[:school].delete :currency # currency -> Customer model
     @school = School.new params[:school] 
     username = create_username_for @school, :school 
     email = email || "#{username}@drona.com"
 
     @school.build_account :email => email, :username => username, 
                           :password => "gradians", :password_confirmation => "gradians"
-
-    @school.save ? respond_with(@school) : head(:bad_request) 
+    if @school.save
+      @school.account.build_customer currency: currency
+    end
+    @school.account.save ? respond_with(@school) : head(:bad_request) 
   end 
 
   def show 

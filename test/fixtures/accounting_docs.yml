@@ -1,0 +1,26 @@
+# == Schema Information
+#
+# Table name: accounting_docs
+#
+#  id          :integer         not null, primary key
+#  doc_type    :integer
+#  customer_id :integer
+#  doc_date    :date
+#  open        :boolean
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  doc_type: 1
+  doc_date: 2014-03-13
+  open: false
+  customer: 
+
+two:
+  doc_type: 1
+  doc_date: 2014-03-13
+  open: false
+  customer: 

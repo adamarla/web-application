@@ -23,6 +23,7 @@
     = render partial: 'notifications/student/enrollment-blocked'
     = render partial: 'notifications/student/enrolled-already'
     = render partial: 'notifications/student/sektion-not-found'
+    = render partial: 'notifications/shared/purchase-completed'
 
 !!!5
 
@@ -62,8 +63,6 @@
                 = image_tag "logo-mit-beta-2.png"
               %ul.nav.span8.pull-right
                 %li
-                  = simple_link :for => "Buy Grade-its", :id => 'lnk-buy-credits'
-                %li
                   = simple_link :for => "Report Cards", :id => 'lnk-st-rc'
                 %li
                   = simple_link :for => "Inbox", :id => 'lnk-st-inbox'
@@ -71,6 +70,8 @@
                   = simple_link :for => "Upload", :id => 'lnk-upload'
                 %li.dropdown
                   = simple_link :for => "Enroll", :id => 'lnk-enroll-self'
+                %li
+                  = simple_link :for => "Buy", :id => 'lnk-buy-credits'
                 %li#cp-account-link.dropdown
                   = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
       #desktop.row-fluid

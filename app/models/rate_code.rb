@@ -19,14 +19,16 @@
 
 class RateCode < ActiveRecord::Base
 
-  has_one :cost_code
-
   def self.for_course_credit(currency)
-    RateCode.where(cost_code_id: 3, currency: currency).first 
+    RateCode.where(cost_code_id: CC_COURSE_CREDIT, currency: currency).first 
   end
 
   def self.for_supervisory_access(currency)
-    RateCode.where(cost_code_id: 6, currency: currency).first 
+    RateCode.where(cost_code_id: CC_SUPERVISORY_ACCESS, currency: currency).first 
+  end
+
+  def cost_code
+    CostCode.find(self.cost_code_id)
   end
 
 end
