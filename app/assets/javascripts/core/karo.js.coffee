@@ -160,6 +160,12 @@ window.karo = {
     ret += "$" if nDollar % 2 isnt 0 # => odd number of $ => mismatched $..$ 
     return ret
 
+  isPlainTextCheck : (comment) ->
+    # Either a string is plain text - that is, no LaTeX - or it has LaTeX
+    # The passed 'comment' is jaxified and comes from the DB 
+    z = comment.replace(/\\text{.*?}/, "").trim
+    return z.length == 0 # if nothing remains after removing all \text{ ... }, then its plain text 
+
   jaxify : (comment) ->
     ###
       Takes a TeX comment that a grader enters (something like this )

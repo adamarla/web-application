@@ -25,9 +25,18 @@ window.notifier = {
     if json?
       if json.notify?
         for type in ['title', 'msg']
-          if json.notify[type]
+          textToRender = json.notify[type]
+          if textToRender?
             t = $(notifier.current).find("[class~=#{type}]").eq(0)
-            t.text(json.notify[type]) if t.length isnt 0
+            if t.length isnt 0 
+              if karo.isPlainTextCheck textToRender
+                t.empty() # clear any old TeX comments
+                id = "tex-notice-#{parseInt(Math.random() * 1000)}"
+                script = $("<script id=#{id} type='math/tex'>#{textToRender}</script>")
+                $(script).appendTo t
+                MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"]
+              else
+                t.text textToRender
 
 
     # autoHideIn = notifier.current.dataset.autohide
