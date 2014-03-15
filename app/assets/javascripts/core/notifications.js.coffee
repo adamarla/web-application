@@ -30,13 +30,14 @@ window.notifier = {
             t = $(notifier.current).find("[class~=#{type}]").eq(0)
             if t.length isnt 0 
               if karo.isPlainTextCheck textToRender
+                textToRender = karo.unjaxify textToRender
+                t.text textToRender
+              else
                 t.empty() # clear any old TeX comments
                 id = "tex-notice-#{parseInt(Math.random() * 1000)}"
                 script = $("<script id=#{id} type='math/tex'>#{textToRender}</script>")
                 $(script).appendTo t
                 MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"]
-              else
-                t.text textToRender
 
 
     # autoHideIn = notifier.current.dataset.autohide
