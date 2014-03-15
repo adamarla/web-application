@@ -154,8 +154,8 @@ class StudentsController < ApplicationController
     unless g.nil?
       reason = params[:dispute][:reason]
       unless reason.blank?
-        reason.gsub! "\r\n", " " # remove carriage returns
-        d = current_account.loggable.disputes.build(graded_response_id: g.id, text: reason)
+        r = reason.gsub("\r\n", " ") # remove carriage returns
+        d = current_account.loggable.disputes.build(graded_response_id: g.id, text: r)
       else
         d = nil
       end 
