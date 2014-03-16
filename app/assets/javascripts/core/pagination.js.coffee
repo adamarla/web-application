@@ -2,7 +2,7 @@
 window.pagination = {
   initialize : (links, nEnabled) ->
     # 'links' = <div class='pagination'>
-    return false if nEnabled > 8
+    return false if nEnabled > 10
     
     ul = $(links).children().eq(0)
     $(m).addClass 'disabled' for m in ul.children('li')
