@@ -43,7 +43,7 @@ window.notifier = {
     # autoHideIn = notifier.current.dataset.autohide
     autoHideIn = notifier.current.getAttribute('data-autohide')
 
-    if autoHideIn?
+    if autoHideIn? and autoHideIn isnt 'never'
       autoHideIn = parseInt(autoHideIn)
       notifier.ticker = window.setInterval () -> notifier.hide(),
       autoHideIn
