@@ -623,7 +623,10 @@ span.btn-shortcut {
     .badge { background-color: white ; } 
   } 
   &.green {
-    .badge { background-color: $green ; }
+    .badge { 
+      background-color: $green ; 
+      color: white ; 
+    }
   } 
 
   > .dropdown { 
