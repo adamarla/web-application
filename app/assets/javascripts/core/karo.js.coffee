@@ -35,7 +35,7 @@ window.karo = {
   unhide : (child, panel) -> # hide / unhide children in a panel
     for m in panel.children()
       if karo.checkWhether m, 'pagination'
-        pagination.disable $(m)
+        paginator.disable $(m)
         continue
       id = $(m).attr 'id'
       if id is child then $(m).removeClass('hide') else $(m).addClass('hide')

@@ -1,5 +1,5 @@
 
-window.pagination = {
+window.paginator = {
   initialize : (links, nEnabled) ->
     # 'links' = <div class='pagination'>
     return false if nEnabled > 10
@@ -43,7 +43,7 @@ window.pagination = {
       # parameter example = "klass=11". Will add a new &klass=* - 
       # or replace an existing klass=* - with the passed one
       p = parameter.split("=")[0]
-      pagination.url.subtract p, obj
+      paginator.url.subtract p, obj
 
       ul = $(obj).children().eq(0)
       for m in ul.children('li')

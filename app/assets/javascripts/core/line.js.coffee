@@ -178,8 +178,8 @@ window.lines = {
     writeData = if key? then true else false
     # Enable / disable paginator as needed 
     if json.last_pg?
-      pagination.enable pgn, json.last_pg
-      pagination.url.set pgn, pgnUrl if pgnUrl?
+      paginator.enable pgn, json.last_pg
+      paginator.url.set pgn, pgnUrl if pgnUrl?
 
       ###
         this next bit of code is done only for teachers and in a very specific 

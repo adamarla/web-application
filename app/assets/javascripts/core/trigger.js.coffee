@@ -303,7 +303,7 @@ jQuery ->
     # Disable paginator in parent panel 
     panel = $(this).closest('.g-panel')[0]
     pgn = $(panel).children('.pagination').eq(0)
-    pagination.disable pgn
+    paginator.disable pgn
 
 
     ###
@@ -335,9 +335,8 @@ jQuery ->
       if karo.checkWhether this, 'nopurge-on-show'
         z = $($(this).attr('href'))
         proceed = z.hasClass('static') || (z.children().filter(":not([class~='purge-skip'])").length is 0)
-      if proceed
-        karo.ajaxCall ajax
-        pagination.url.set pgn, ajax
+      karo.ajaxCall(ajax) if proceed
+      # paginator.url.set pgn, ajax
     else
       # launch any help tied to this link. Do this ONLY for tabs that do NOT 
       # result in an ajax call. For tabs that do, tutorials are launched AFTER
