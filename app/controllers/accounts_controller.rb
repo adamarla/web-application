@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!, :except => :ask_question
   respond_to :json
 
@@ -67,11 +68,16 @@ class AccountsController < ApplicationController
       # And for a given exam, pick 5 random samples of each question
       qid = Exam.find(eid).quiz
       @indices = QSelection.where(quiz_id: qid).order(:index)
+      @last_pg = nil
     else 
       by = current_account.loggable_id
       @pending = GradedResponse.in_exam(eid).with_scan.ungraded.assigned_to(by)
       sel = @pending.map(&:q_selection_id).uniq
       @indices = QSelection.where(id: sel).order(:index)
+      n = @indices.count
+      per_pg, @last_pg = pagination_layout_details(n,10)
+      pg = params[:page].nil? ? 1 : params[:page].to_i
+      @indices = @indices.page(pg).per(per_pg)
     end
   end
 

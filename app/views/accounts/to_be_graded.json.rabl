@@ -11,3 +11,4 @@ object false
       { name: "Question ##{m.index}", id: m.id }
     }
   }
+  node(:last_pg, unless: @last_pg.nil?){ @last_pg }

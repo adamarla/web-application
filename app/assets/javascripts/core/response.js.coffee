@@ -22,7 +22,7 @@ jQuery ->
       preview.loadJson json # locker
       # prep the feedback panel
       splitTab = true
-      ulKlass = "span4 nopurge-ever"
+      ulKlass = "span4" 
       contentKlass = "span7"
 
       if json.sandbox?
@@ -43,12 +43,13 @@ jQuery ->
         target = '#pane-samples'
         writeBoth = false 
 
+      karo.empty $(target)
       leftTabs.create target, json, {
         shared : 'fdb-panel',
         split : splitTab,
         writeBoth : writeBoth,
         klass : {
-          root : "purge-destroy",
+          root : 'purge-destroy',
           ul : ulKlass,
           content : contentKlass
         },

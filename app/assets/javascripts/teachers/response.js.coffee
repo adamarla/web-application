@@ -13,8 +13,6 @@ jQuery ->
     target = null # where to write the returned JSON
     key = null
     menu = null # ID of contextual menu to attach w/ each .line
-    pgnUrl = null # base-url to be set on the paginator
-    pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .line
     lesson = null
     buttons = null
@@ -63,7 +61,7 @@ jQuery ->
         klass : {
           ul : "span4",
           content : "span7 scroll",
-          div : "multi-select pagination"
+          div : "multi-select paginator"
         },
         data : {
           url : "questions/on?id=:id&context=#{json.context}",
@@ -97,7 +95,6 @@ jQuery ->
       key = "root"
       wsSummary json
       $('#lnk-rc-download')[0].setAttribute 'href', "ws/report_card?id=#{json.a}&format=csv"
-      pgnUrl = url 
     else if url.match(/teacher\/sektions/)
       if json.context is 'list'
         target = $('#pane-mng-sektions-1')
@@ -201,7 +198,7 @@ jQuery ->
       matched = false
 
     # Render lines in the panel
-    lines.render target, key, json, menu, buttons, clickFirst, pgn, pgnUrl
+    lines.render target, key, json, menu, buttons, clickFirst
 
     # If in tutorial mode, then start the next tutorial - if any
     tutorial.start lesson if lesson?

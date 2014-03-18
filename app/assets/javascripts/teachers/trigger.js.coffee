@@ -7,13 +7,6 @@ jQuery ->
   # Auto-click on the 'quizzes' tab. This will initiate the $.get request to get things started
   # $('#left-1 > ul:first a:first').tab 'show'
 
-  $('#left-quizzes').on 'click', '.line', (event) ->
-    event.stopPropagation()
-    marker = $(this).attr 'marker'
-    $.get "quiz/preview.json?id=#{marker}"
-
-    return true
-
   $('#select-all-for-quiz').click (event) ->
     event.stopPropagation()
     $(m).click() for m in $('#wsb-sektions').children('.line')

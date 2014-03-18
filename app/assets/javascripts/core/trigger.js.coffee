@@ -300,12 +300,6 @@ jQuery ->
     if empty
       karo.empty $(this).attr('href')
 
-    # Disable paginator in parent panel 
-    panel = $(this).closest('.g-panel')[0]
-    pgn = $(panel).children('.pagination').eq(0)
-    paginator.disable pgn
-
-
     ###
       Do the next two for only * horizontal * tabs - not .tabs-left or .tabs-right
         1. Ensure that atmost 3 tabs are shown - including the just clicked one
@@ -329,14 +323,20 @@ jQuery ->
           karo.empty $(tab).attr('href')
 
     # Issue AJAX request * after * taking care of any :prev or :id in data-url
+    # Enable / disable paginator accordingly 
+
     ajax = karo.url.elaborate this
+    panel = $(this).closest('.g-panel')[0]
+    pgn = $(panel).children('.paginator').eq(0)
+
     if ajax?
       proceed = true
       if karo.checkWhether this, 'nopurge-on-show'
         z = $($(this).attr('href'))
         proceed = z.hasClass('static') || (z.children().filter(":not([class~='purge-skip'])").length is 0)
-      karo.ajaxCall(ajax) if proceed
-      # paginator.url.set pgn, ajax
+
+      paginator.initialize(pgn, ajax, this) unless isSideTab
+      karo.ajaxCall(ajax, this, isSideTab) if proceed
     else
       # launch any help tied to this link. Do this ONLY for tabs that do NOT 
       # result in an ajax call. For tabs that do, tutorials are launched AFTER
@@ -424,10 +424,10 @@ jQuery ->
     return true
 
   ###############################################
-  # When a pagination link is clicked 
+  # When a paginator link is clicked 
   ###############################################
 
-  $('.pagination a').click (event) ->
+  $('.paginator a').click (event) ->
     event.stopPropagation()
     li = $(this).parent()
     return false if li.hasClass 'disabled'

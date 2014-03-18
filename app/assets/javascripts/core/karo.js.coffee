@@ -3,8 +3,13 @@ window.karo = {
   nothing : () ->
     return true
 
-  ajaxCall : (url, callback = karo.nothing) ->
+  ajaxCall : (url, tab = null, isSideTab = false, callback = karo.nothing) ->
     $.get url, (json) ->
+      if tab? and not isSideTab
+        last = if json.last_pg? then json.last_pg else 1
+        tab.setAttribute('data-pg-last', last)
+        pgn = $(tab).closest('.g-panel').children('.paginator')[0]
+        paginator.enable $(pgn), last
       callback json, url
     
   empty : (node) ->
@@ -34,7 +39,7 @@ window.karo = {
 
   unhide : (child, panel) -> # hide / unhide children in a panel
     for m in panel.children()
-      if karo.checkWhether m, 'pagination'
+      if karo.checkWhether m, 'paginator'
         paginator.disable $(m)
         continue
       id = $(m).attr 'id'

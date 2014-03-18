@@ -38,7 +38,10 @@ class ExamsController < ApplicationController
 
     @who = current_account.loggable_type
     unless @exam.nil?
-      @subparts = Subpart.in_quiz @exam.quiz_id
+      @qsids = QSelection.where(quiz_id: @exam.quiz_id).order(:index)
+      per_pg, @last_pg = pagination_layout_details(@qsids.count, 8)
+      pg = params[:page].nil? ? 1 : params[:page].to_i
+      @qsids = @qsids.page(pg).per(per_pg)
       @gr = GradedResponse.of_student(student_id).in_exam @exam.id
     else
       head :bad_request 

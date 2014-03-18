@@ -191,7 +191,6 @@ tab-tc-rc-2 :
     wide : wide-chart-1
   url :
     self : exam/summary?id=:prev
-    panel : exam/layout.json?e=:prev&id=:id
   autoclick :
     tab : tab-tc-rc-3
   prev : tab-tc-rc-1
@@ -199,6 +198,10 @@ tab-tc-rc-2 :
 tab-tc-rc-3 :
   show : 
     wide : wide-X
+  url : 
+    self : exam/layout?e=:prev&id=:id
+  prev : tab-tc-rc-1
+  id : tab-tc-rc-2
 
 lnk-tc-rc :
   show : 
@@ -348,11 +351,12 @@ lnk-st-inbox :
 tab-st-rc-1 :
   url : 
     self : exams/list 
-    panel : exam/layout.json?e=:id
   autoclick :
     tab : tab-st-rc-2
 
 tab-st-rc-2 :
+  url : 
+    self : exam/layout?e=:prev
   prev : tab-st-rc-1
 
 tab-st-inbox :

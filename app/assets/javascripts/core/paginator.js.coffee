@@ -1,20 +1,20 @@
 
 window.paginator = {
-  initialize : (links, nEnabled) ->
-    # 'links' = <div class='pagination'>
-    return false if nEnabled > 10
-    
-    ul = $(links).children().eq(0)
-    $(m).addClass 'disabled' for m in ul.children('li')
-    for m in [0...nEnabled]
-      ul.children('li').eq(m).removeClass 'disabled'
+  initialize : (obj, baseUrl, tab) ->
+    # baseUrl = data-self-url of a horizontal tab with :id, :prev resolved
+    return false unless obj.hasClass 'paginator'
+
+    paginator.url.set(obj, baseUrl)
+    nEnable = tab.getAttribute 'data-pgn-last'
+    paginator.enable obj, nEnable
     return true
 
   enable : (pgs, m) ->
-    return false unless pgs.hasClass 'pagination'
+    return false unless m?
+    return false unless pgs.hasClass 'paginator'
     
     m = if typeof m is 'string' then parseInt(m) else m
-    pgs.removeClass 'hide' if m > 1
+    if m > 1 then pgs.removeClass('hide') else pgs.addClass('hide')
 
     ul = pgs.children('ul').eq(0)
     li = ul.children 'li'
@@ -25,7 +25,7 @@ window.paginator = {
     return true
 
   disable : (pgs) ->
-    return false unless pgs.hasClass 'pagination'
+    return false unless pgs.hasClass 'paginator'
     pgs.addClass 'hide'
     return true
   
