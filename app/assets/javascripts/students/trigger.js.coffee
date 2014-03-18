@@ -20,9 +20,9 @@ jQuery ->
     $('#m-dispute-2').modal 'show'
     return false
 
-  $('#m-dispute-2 form').submit ->
-    textbox = $(this).find('textarea').eq(0)
-    reason = textbox.val() 
-    jaxified = karo.jaxify reason
-    textbox.val jaxified
-    return true
+#  $('#m-dispute-2 form').submit ->
+#    textbox = $(this).find('textarea').eq(0)
+#    reason = textbox.val() 
+#    jaxified = karo.jaxify reason
+#    textbox.val jaxified
+#    return true

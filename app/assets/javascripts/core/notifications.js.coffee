@@ -27,18 +27,22 @@ window.notifier = {
         for type in ['title', 'msg']
           textToRender = json.notify[type]
           if textToRender?
-            t = $(notifier.current).find("[class~=#{type}]").eq(0)
-            if t.length isnt 0 
-              if karo.isPlainTextCheck textToRender
-                textToRender = karo.unjaxify textToRender
-                t.text textToRender
-              else
-                t.empty() # clear any old TeX comments
-                id = "tex-notice-#{parseInt(Math.random() * 1000)}"
-                script = $("<script id=#{id} type='math/tex'>#{textToRender}</script>")
-                $(script).appendTo t
-                MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"]
+            t = $(notifier.current).find("[class~=#{type}]")[0]
+            $(t).text(textToRender) if t?
 
+#  Following code allows LaTeX to be rendered within notifications
+#  Works reasonably well - but not perfectly 
+
+#            if t.length isnt 0 
+#              if karo.isPlainTextCheck textToRender
+#                textToRender = karo.unjaxify textToRender
+#                t.text textToRender
+#              else
+#                t.empty() # clear any old TeX comments
+#                id = "tex-notice-#{parseInt(Math.random() * 1000)}"
+#                script = $("<script id=#{id} type='math/tex'>#{textToRender}</script>")
+#                $(script).appendTo t
+#                MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"]
 
     # autoHideIn = notifier.current.dataset.autohide
     autoHideIn = notifier.current.getAttribute('data-autohide')
