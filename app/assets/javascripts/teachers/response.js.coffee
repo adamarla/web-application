@@ -194,6 +194,17 @@ jQuery ->
       $('#mng-assets').modal 'hide'
     else if url.match(/quiz\/mass_assign/)
       monitor.add json
+    else if url.match(/exam\/disputes/)
+      isPending = if json.pending? then true else false 
+      clickFirst = true
+      if isPending
+        target = $('#pane-pending-disputes')
+        key = 'pending'
+        menu = 'm-dispute'
+      else
+        target = $('#pane-resolved-disputes')
+        key = 'resolved'
+      karo.empty target
     else
       matched = false
 

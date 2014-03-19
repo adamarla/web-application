@@ -72,6 +72,24 @@ class ExamsController < ApplicationController
     end
   end
 
+  def pending_disputes
+    eid = params[:id]
+    @g = GradedResponse.in_exam(eid).unresolved.order(:student_id).order(:q_selection_id)
+    n = @g.count 
+    per_pg, @last = pagination_layout_details(n, 30)
+    page = params[:page].blank? ? 1 : params[:page].to_i
+    @g = @g.page(page).per(per_pg)
+  end
+
+  def resolved_disputes
+    eid = params[:id]
+    @g = GradedResponse.in_exam(eid).resolved.order(:student_id).order(:q_selection_id)
+    n = @g.count 
+    per_pg, @last = pagination_layout_details(n, 30)
+    page = params[:page].blank? ? 1 : params[:page].to_i
+    @g = @g.page(page).per(per_pg)
+  end
+
   def report_card
     exam = Exam.find_by_id(params[:id])
     if params[:format] == "csv"

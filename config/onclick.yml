@@ -28,6 +28,25 @@
 ## Teachers 
 ##############################################################################
 
+lnk-exam-disputes: 
+  show : 
+    left : left-9 
+    wide : wide-X
+  autoclick :
+    tab : tab-pending-disputes
+
+tab-pending-disputes : 
+  url : 
+    self : exam/disputes/pending?id=:prev
+    panel : load/dispute?id=:id
+  prev : tab-wsb-existing
+
+tab-resolved-disputes : 
+  url : 
+    self : exam/disputes/resolved?id=:prev
+    panel : load/dispute?id=:id
+  prev : tab-wsb-existing
+
 lnk-bell :
   show :
     menu : m-bell

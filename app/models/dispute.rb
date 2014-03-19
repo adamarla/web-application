@@ -18,4 +18,9 @@ class Dispute < ActiveRecord::Base
     where(student_id: id)
   end 
 
+  def self.in_exam(id)
+    gids = GradedResponse.in_exam(id).map(&:id)
+    where(graded_response_id: gids)
+  end
+
 end

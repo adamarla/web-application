@@ -1,0 +1,10 @@
+
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link for: 'Pending', id: 'tab-pending-disputes', href: '#pane-pending-disputes'
+  %li
+    = simple_link for: 'Resolved', id: 'tab-resolved-disputes', href: '#pane-resolved-disputes'
+
+.tab-content
+  #pane-pending-disputes.tab-pane
+  #pane-resolved-disputes.tab-pane

@@ -154,6 +154,8 @@ Webapp::Application.routes.draw do
   match 'ws/unpublish' => 'exams#uninbox', via: :get
   match 'ws/report_card' => 'exams#report_card', via: :get
   match 'ws/update_signature' => 'exams#update_signature', via: :get
+  match 'exam/disputes/pending' => 'exams#pending_disputes', via: :get
+  match 'exam/disputes/resolved' => 'exams#resolved_disputes', via: :get
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get

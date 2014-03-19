@@ -18,6 +18,7 @@
     = render partial: 'menus/teacher/rc' 
     = render partial: 'menus/teacher/howto' 
     = render partial: 'menus/teacher/qzb-filter'
+    = render partial: 'menus/examiner/per-dispute'
 
     = render partial: 'menus/user/account'
     = render partial: 'menus/user/notifications'
@@ -58,6 +59,7 @@
     = render partial: 'notifications/shared/last-scan'
     = render partial: 'notifications/shared/first-scan'
     = render partial: 'notifications/shared/question-received'
+    = render partial: 'notifications/shared/dispute-reason'
     - unless tc.online
       = render partial: 'notifications/teacher/prefabricating'
       = render partial: 'notifications/teacher/new-sektion'
@@ -165,6 +167,8 @@
             = render partial: 'teachers/edit-qz'
           #left-8
             = render partial: 'teachers/sektions'
+          #left-9
+            = render partial: 'teachers/disputes'
         #middle.g-panel.span4
           = render partial: 'toolbox/paginator', locals: { id: 'middle-paginator', url: '#' }
           #middle-X
