@@ -91,11 +91,6 @@ jQuery ->
       clickFirst = true
       target = $('#pane-disputes')
       menu = 'm-dispute'
-    else if url.match(/load\/dispute/)
-      preview.loadJson json
-      if json.comments?
-        overlay.over $(preview.root)
-        overlay.loadJson json.comments
     else if url.match(/(accept|reject)\/dispute/)
       target = $('#pane-disputes')
     else

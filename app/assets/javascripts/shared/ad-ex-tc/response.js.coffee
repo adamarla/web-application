@@ -38,6 +38,11 @@ jQuery ->
       $(m).prop 'checked', false for m in auditForm.find("input[type='checkbox']")
       auditForm.find('textarea').eq(0).val null
       auditForm.modal 'hide'
+    else if url.match(/load\/dispute/)
+      preview.loadJson json
+      if json.comments?
+        overlay.over $(preview.root)
+        overlay.loadJson json.comments
     else if url.match(/dispute\/reason/)
       notifier.show 'n-dispute-reason', json
     else
