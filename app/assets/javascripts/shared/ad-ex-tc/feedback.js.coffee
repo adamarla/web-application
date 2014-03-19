@@ -104,6 +104,7 @@ window.fdb = {
     if fdb.ticker?
       window.clearInterval fdb.ticker  
       fdb.ticker = null
+    fdb.clear()
     return true
 
   ping : () ->
