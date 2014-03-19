@@ -197,10 +197,10 @@ jQuery ->
     else if url.match(/exam\/disputes/)
       isPending = if json.pending? then true else false 
       clickFirst = true
+      menu = 'm-dispute'
       if isPending
         target = $('#pane-pending-disputes')
         key = 'pending'
-        menu = 'm-dispute'
       else
         target = $('#pane-resolved-disputes')
         key = 'resolved'
