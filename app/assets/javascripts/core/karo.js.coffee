@@ -209,18 +209,21 @@ window.karo = {
 
   unjaxify: (comment) ->
     # Reverses what karo.jaxify does 
-    c = decodeURIComponent comment
-    textRegExp = /\\text{.*?}/g
+    workingStr = decodeURIComponent comment
+    mathFilter = /(}|^).*?(\\text{|$)/g
+    ret = new String(workingStr)
 
-    while((arr = textRegExp.exec(c)) != null)
-      text = arr[0].replace /^\\text{/, ""
-      text = text.replace /}$/, ""
-      text = text.trim()
-
-      if arr.index is 0 # comment started with \text{ .... }
-        c = c.replace arr[0], "#{text}" 
+    while((mathBits = mathFilter.exec(workingStr)) != null)
+      bit = mathBits[0]
+      j = bit.replace(/^}|^/,'$')
+      j = j.replace(/$|\\text{/,'$')
+      if j isnt '$$'
+        ret = ret.replace(bit,j)
       else
-        c = c.replace arr[0], "$#{text}$"
-    return c
+        ret = ret.replace(bit,'') if bit is '\\text{'
+
+    ret = ret.trim()
+    ret = ret.replace /}$/, ''
+    return ret
 
 }
