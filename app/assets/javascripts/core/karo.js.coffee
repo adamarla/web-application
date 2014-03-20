@@ -172,48 +172,38 @@ window.karo = {
     return z.length == 0 # if nothing remains after removing all \text{ ... }, then its plain text 
 
   jaxify : (comment) ->
-    ###
-      Takes a TeX comment that a grader enters (something like this )
-        Why shouldn't it be $\binom{5}{2}$?
+    # Converts "A $B$ C $D$" as written by the user to "\text{ A }B\text{ C }D" as MathJax expects
 
-      and converts it to what MathJax expects and what is eventually stored in the DB (something like this )
-        \text{ Why shouldn't it be }\binom{5}{2}\text{ ?}
-    ###
+    comment = comment.replace(/\$\$/, '').trim() # get rid of empty $..$ pairs
+    mathFilter = /\$.*?\$/g
+    ret = new String(comment)
+    pureText = true
 
-    text = true
-    latex = false
-    buf = ""
-    z = ""
+    while((mathBits = mathFilter.exec(comment)) != null)
+      pureText = false
+      bit = mathBits[0]
+      j = bit.replace(/^\$/,'}')
+      j = j.replace(/\$/,'\\text{ ')
+      ret = ret.replace bit, j
 
-    for m in comment
-      if text
-        if m is '$' # opening $
-          text = false
-          latex = true
-          z += "\\text{ #{buf} }" unless buf.length is 0
-          buf = ""
-        else
-          buf += m
-      else if latex
-        if m is '$' # => closing $
-          text = true
-          latex = false
-          z += buf unless buf.length is 0
-          buf = ""
-        else
-          buf += m
-
-    if buf.length isnt 0
-      if text then z += "\\text{ #{buf} }" else z += buf
-    return z
-
+    if pureText 
+      ret = "\\text{ #{ret} }"
+    else 
+      ret = ret.replace(/^/, '\\text{ ')
+      ret = ret.concat ' }'
+      ret = ret.replace(/\\text{\s+}/g,'')
+    return ret
+    
   unjaxify: (comment) ->
     # Reverses what karo.jaxify does 
-    workingStr = decodeURIComponent comment
-    mathFilter = /(}|^).*?(\\text{|$)/g
-    ret = new String(workingStr)
+    # Converts "\text{ A }B\text{ C }D" - which is what is stored in the DB and used by MathJax 
+    # to "A $B$ C $D$" - which is how the user originally entered it
 
-    while((mathBits = mathFilter.exec(workingStr)) != null)
+    origStr = decodeURIComponent comment
+    mathFilter = /(}|^).*?(\\text{|$)/g
+    ret = new String(origStr)
+
+    while((mathBits = mathFilter.exec(origStr)) != null)
       bit = mathBits[0]
       j = bit.replace(/^}|^/,'$')
       j = j.replace(/$|\\text{/,'$')
