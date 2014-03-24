@@ -118,7 +118,6 @@ Webapp::Application.routes.draw do
   match 'inbox' => 'students#inbox', via: :get
   match 'inbox/echo' => 'students#inbox_echo', via: :get
   match 'outbox' => 'students#outbox', via: :get
-  match 'overall/proficiency' => 'students#proficiency', via: :get
   match 'enroll' => 'students#enroll', via: :post
   match 'dispute' => 'students#dispute', via: [:put, :post] 
 
@@ -145,6 +144,7 @@ Webapp::Application.routes.draw do
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
   match 'new/lesson' => 'teachers#add_lesson', via: :post
   # match 'prefab' => 'teachers#prefabricate', via: [:put, :post]
+  match 'overall/proficiency' => 'teachers#proficiency_chart', via: :get
 
   # Exam
   match 'exam/summary' => 'exams#summary', via: :get

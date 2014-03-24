@@ -114,6 +114,7 @@ jQuery ->
         target = $('#deepdive-topics')
       key = 'topics'
     else if url.match(/sektion\/proficiency/)
+      wsDeepdive.students json
       wsDeepdive.loadProficiencyData json
     else if url.match(/overall\/proficiency/)
       wsDeepdive.byStudent json

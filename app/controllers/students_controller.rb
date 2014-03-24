@@ -115,12 +115,6 @@ class StudentsController < ApplicationController
 
   end # method
 
-  def proficiency
-    student = Student.find params[:id]
-    teacher = current_account.nil? ? nil : (current_account.loggable_type == "Teacher" ? current_account.loggable : nil)
-    @json = student.proficiency teacher
-  end
-
   def inbox
     sid = params[:id]
     student = Student.find sid

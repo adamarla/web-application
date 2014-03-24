@@ -180,16 +180,16 @@ class Student < ActiveRecord::Base
     return g.count == 0
   end
 
-  def proficiency(teacher_id)
-    of_student = GradedResponse.of_student(self.id).graded
-    aggr = AggrByTopic.for_teacher teacher_id
+  def proficiency_chart_for(tid)
+    g = GradedResponse.of_student(self.id).graded
+    aggr = AggrByTopic.for_teacher tid
     topics = aggr.map(&:topic_id).uniq
     topics = Topic.where(:id => topics).sort{ |m,n| m.name <=> n.name }
-    ret = { :proficiency => [ {:name => "Example", :score => 0.43, :benchmark => 3.5, :historical_avg => 2.5 } ] }
+    ret = { proficiency: [ { name: 'Example', score: 0.43, benchmark: 3.5, historical_avg: 2.5 } ] }
 
     topics.each do |t|
       # student-specific
-      on_topic = of_student.on_topic t.id
+      on_topic = g.on_topic t.id
       next if on_topic.count == 0
       marks = on_topic.map(&:subpart).map(&:marks)
       n_attempted = marks.count
@@ -197,11 +197,9 @@ class Student < ActiveRecord::Base
       scored = on_topic.map(&:marks).inject(:+)
 
       # historical average on topic
-      agg = aggr.for_topic(t.id).first
-      ret[:proficiency].push({ :id => t.id, :name => t.name, 
-                               :score => (scored/total.to_f).round(2),
-                               :benchmark => agg.benchmark.round(2),
-                               :historical_avg => agg.average.round(2) })
+      d = aggr.for_topic(t.id).first
+      ret[:proficiency].push({ id: t.id, name: t.name, score: (scored/total.to_f).round(2), 
+                               benchmark: d.benchmark.round(2), historical_avg: d.average.round(2) })
     end
     return ret
   end

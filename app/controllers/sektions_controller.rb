@@ -1,4 +1,5 @@
 class SektionsController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!, except: [:monthly_audit]
   respond_to :json 
 
@@ -71,7 +72,13 @@ class SektionsController < ApplicationController
 
   def students 
     @sektion = Sektion.find params[:id]
-    @students = @sektion.students.order(:first_name)
+
+    @students = @sektion.students
+    n = @students.count 
+    per_pg, @last = pagination_layout_details(n)
+    pg = params[:page].blank? ? 1 : params[:page].to_i
+    @students = @students.order(:first_name).page(pg).per(per_pg)
+
     @context = params[:context]
 
     if @context == 'wsb'
@@ -99,16 +106,22 @@ class SektionsController < ApplicationController
     subparts = Subpart.where(:question_id => selections.map(&:question_id).uniq)
     @avg = (subparts.map(&:marks).inject(:+) / subparts.count.to_f).round(2)
     @db_avg = @topic.benchmark
+
+    students = sektion.students
+    n = students.count 
+    per_pg, @last = pagination_layout_details(n)
+    pg = params[:page].blank? ? 1 : params[:page].to_i
+    @students = students.page(pg).per(per_pg).order(:first_name)
     
-    @proficiency = sektion.students.map do |s|
-      graded = responses.where(:student_id => s.id)
+    @proficiency = students.map do |s|
+      graded = responses.where(student_id: s.id)
       unless graded.empty?
         # total = Subpart.where(:id => graded.map(&:subpart_id)).map(&:marks).inject(:+)
         total = graded.map(&:subpart).map(&:marks).inject(:+) # takes care of the case when a question is repeated 
         scored = graded.map(&:marks).inject(:+)
-        {:id => s.id, :score => (scored / total.to_f).round(2)}
+        {id: s.id, score: (scored / total.to_f).round(2)}
       else
-        { :id => s.id, :score => -1 }
+        { id: s.id, score: -1 }
       end
     end 
   end # of method

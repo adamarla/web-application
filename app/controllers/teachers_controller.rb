@@ -148,4 +148,11 @@ class TeachersController < ApplicationController
     end
   end
 
+  def proficiency_chart
+    s = Student.find params[:id]
+    tid = current_account.loggable_id
+    @json = s.proficiency_chart_for tid
+  end
+
+
 end # of class
