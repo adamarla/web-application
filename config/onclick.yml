@@ -292,6 +292,7 @@ tab-mng-sektions-1 :
   url : 
     self : teacher/sektions?context=list
     panel : sektion/students?id=:id&context=list
+  paginate-on : line
 
 lnk-like-question : 
   update-on : question/preview
