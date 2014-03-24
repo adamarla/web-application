@@ -3,14 +3,16 @@ window.karo = {
   nothing : () ->
     return true
 
-  ajaxCall : (url, tab = null, isSideTab = false, callback = karo.nothing) ->
+  ajaxCall : (url, tab = null, callback = karo.nothing) ->
     $.get url, (json) ->
-      if tab? and not isSideTab
-        last = if json.last_pg? then json.last_pg else 1
-        tab.setAttribute('data-pg-last', last)
-        pgn = $(tab).closest('.g-panel').children('.paginator')[0]
-        paginator.enable $(pgn), last
-      callback json, url
+      if tab? 
+        if json.last_pg? 
+          last = json.last_pg
+          tab.setAttribute('data-pg-last', last)
+          pgn = $(tab).closest('.g-panel').children('.paginator')[0]
+          paginator.enable $(pgn), last
+      # callback json, url
+    #return true
     
   empty : (node) ->
     node = if typeof node is 'string' then $(node) else node

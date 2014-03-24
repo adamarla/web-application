@@ -334,7 +334,6 @@ jQuery ->
       if karo.checkWhether this, 'nopurge-on-show'
         z = $($(this).attr('href'))
         proceed = z.hasClass('static') || (z.children().filter(":not([class~='purge-skip'])").length is 0)
-
       paginator.initialize(pgn, ajax, this) unless isSideTab
       karo.ajaxCall(ajax, this, isSideTab) if proceed
     else
@@ -523,7 +522,14 @@ jQuery ->
         if tab?
           tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
           ajax = karo.url.elaborate this, null, tab
-          karo.ajaxCall ajax if ajax?
+
+          if ajax?
+            pgnOn = tab.getAttribute('data-paginate-on')
+            if pgnOn? and pgnOn is 'line'
+              panel = $(this).closest('.g-panel')[0]
+              pgn = $(panel).children('.paginator').eq(0)
+              paginator.initialize(pgn, ajax, tab)
+            karo.ajaxCall(ajax, tab)
 
         # 4. Switch to next-tab - if so specified
         if activeTab?

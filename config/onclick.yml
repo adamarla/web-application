@@ -17,6 +17,7 @@
 #    url : 
 #      self : 
 #      panel :
+#    paginate-on: line/tab/sth. else
 #    default : true / false
 #    ajax : disabled / enabled 
 #    prev : 
@@ -253,7 +254,6 @@ lnk-rc-deepdive :
 tab-dive-1 :
   url : 
     self : teacher/sektions?context=deepdive
-    panel : sektion/students.json?id=:id&context=deepdive
   autoclick : 
     tab : tab-dive-2
 
@@ -265,6 +265,7 @@ tab-dive-2 :
 tab-dive-3 : 
   prev : tab-dive-1
   url :
+    self : sektion/students?id=:prev&context=deepdive
     panel : overall/proficiency.json?id=:id
   show :
     wide : wide-chart-3
@@ -273,6 +274,7 @@ deepdive-* :
   url : 
     self : vertical/topics?id=:id&context=deepdive
     panel : sektion/proficiency?of=:prev&in=:id
+  paginate-on : line 
   prev : tab-dive-1
 
 lnk-add-sektion :
