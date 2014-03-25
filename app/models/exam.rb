@@ -11,7 +11,7 @@
 #  takehome    :boolean         default(FALSE)
 #  job_id      :integer         default(-1)
 #  duration    :integer
-#  deadline    :datetime
+#  grade_by    :datetime
 #  uid         :string(40)
 #  open        :boolean         default(TRUE)
 #
@@ -36,7 +36,7 @@ class Exam < ActiveRecord::Base
   end
 
   def self.with_deadline
-    where{ deadline != nil }
+    where{ grade_by != nil }
   end
 
   def self.for_quiz(id)
@@ -157,17 +157,17 @@ class Exam < ActiveRecord::Base
     return "#{self.quiz.uid}/#{self.uid}"
   end 
 
-  def deadline? 
+  def grade_by? 
     # Returns the ** number of days ** left to finish grading this exam
     # Numbers < 0 => deadline missed 
 
-    if self.deadline.nil?
+    if self.grade_by.nil?
       g = GradedResponse.in_exam(self.id).with_scan.ungraded.order(:updated_at).last
       d = g.nil? ? 3.business_days.from_now : (3.business_days.after g.updated_at)
-      self.update_attribute(:deadline, d) 
+      self.update_attribute(:grade_by, d) 
     end
 
-    deadln = self.deadline.nil? ? 0 : (self.deadline.to_date - Date.today).to_i
+    deadln = self.grade_by.nil? ? 0 : (self.grade_by.to_date - Date.today).to_i
     return deadln
   end
 

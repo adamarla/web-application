@@ -123,10 +123,10 @@ class Examiner < ActiveRecord::Base
       end # over students
     end
 
-    # Update deadline field for each exam for which scans have been distributed 
+    # Update grade_by field for each exam for which scans have been distributed 
     deadline = 3.business_days.from_now
     for e in exams
-      e.update_attribute :deadline, deadline 
+      e.update_attribute :grade_by, deadline 
     end
 
     # Let the (offline) teacher know that scans have been received

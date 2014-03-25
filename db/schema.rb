@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140314092954) do
+ActiveRecord::Schema.define(:version => 20140325060631) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(:version => 20140314092954) do
     t.boolean  "takehome",                   :default => false
     t.integer  "job_id",                     :default => -1
     t.integer  "duration"
-    t.datetime "deadline"
+    t.datetime "grade_by"
     t.string   "uid",         :limit => 40
     t.boolean  "open",                       :default => true
   end
