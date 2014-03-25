@@ -232,7 +232,7 @@ lnk-tc-rc :
 
 lnk-build-ws :
   show : 
-    modal : m-ws-options
+    modal : m-exbopts-1
 
 lnk-ws-publish :
   url : 
