@@ -5,7 +5,7 @@ window.eTailor = {
 
   initialize : () ->
     unless root?
-      eTailor.root = $('#m-ws-options')
+      eTailor.root = $('#m-exbopts-1')
       eTailor.target = $('#form-exb-3').find('.ws-option').eq(0)
 
     # Disable the 'Make PDF' button initially
@@ -57,7 +57,7 @@ jQuery ->
   ## [wsb]: Selecting the type of a worksheet 
   #########################################################
 
-  $('#m-ws-options').on 'click', '.ws-option', (event) ->
+  $('#m-exbopts-1').on 'click', '.ws-option', (event) ->
     event.stopImmediatePropagation()
     # eTailor.show $(this)
 
@@ -65,7 +65,7 @@ jQuery ->
     target = eTailor.target.find("input[name]")
     $(m).val(null) for m in target # clear them all out
 
-    type = target.filter("[name='ws_type']")
+    type = target.filter("[name='etype']")
     isClicked = $(this).hasClass 'selected'
     btn = $(this).parent().find 'button'
 
@@ -88,19 +88,19 @@ jQuery ->
 
     return true
 
-  $('#m-ws-options').on 'click', 'a.go-back', (event) ->
+  $('#m-exbopts-1').on 'click', 'a.go-back', (event) ->
     event.stopImmediatePropagation()
     eTailor.rewind()
     return true
 
-  $('#m-ws-options').on 'click', 'a.submit, button', (event) ->
+  $('#m-exbopts-1').on 'click', 'a.submit, button', (event) ->
     event.stopImmediatePropagation()
     eTailor.root.modal 'hide'
     form = eTailor.target.closest('form')
     form.submit()
     return true
 
-  $('#m-ws-options').on 'click', "input[type='radio']", (event) ->
+  $('#m-exbopts-1').on 'click', "input[type='radio']", (event) ->
     form = $(this).closest 'form'
     for_deadline = form.hasClass('deadline')
 
