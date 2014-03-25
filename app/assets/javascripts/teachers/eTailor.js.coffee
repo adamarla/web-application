@@ -1,21 +1,21 @@
 
-window.wsTailor = {
+window.eTailor = {
   root : null,
   target : null,
 
   initialize : () ->
     unless root?
-      wsTailor.root = $('#m-ws-options')
-      wsTailor.target = $('#form-wsb-3').find('.ws-option').eq(0)
+      eTailor.root = $('#m-ws-options')
+      eTailor.target = $('#form-exb-3').find('.ws-option').eq(0)
 
     # Disable the 'Make PDF' button initially
-    wsTailor.root.find('button').prop 'disabled', true
+    eTailor.root.find('button').prop 'disabled', true
     return true
 
   rewind : () ->
-    wsTailor.initialize()
-    options = wsTailor.root.find('.ws-option')
-    details = wsTailor.root.find('.ws-detail')
+    eTailor.initialize()
+    options = eTailor.root.find('.ws-option')
+    details = eTailor.root.find('.ws-detail')
 
     for m in options
       $(m).removeClass 'hide offset1'
@@ -23,10 +23,10 @@ window.wsTailor = {
       $(n).removeClass('disabled') for n in $(m).find("p:not([class~='detail'])") # %p.detail
     options.eq(0).addClass 'offset1'
 
-    $(m).addClass('hide') for m in wsTailor.root.find('.ws-detail')
+    $(m).addClass('hide') for m in eTailor.root.find('.ws-detail')
     
     # Check the first radio buttons. Can't seem to figure out how to do it in HAML
-    for m in wsTailor.root.find('form')
+    for m in eTailor.root.find('form')
       rb = $(m).find("input[type='radio']").eq(0)
       rb.prop 'checked', true
     return true
@@ -46,7 +46,7 @@ window.wsTailor = {
     show = option[0].getAttribute 'data-show'
     show = if show? then show.split(' ') else []
     for m in show
-      obj = wsTailor.root.find "##{m}"
+      obj = eTailor.root.find "##{m}"
       obj.removeClass 'hide'
 
     return true
@@ -59,10 +59,10 @@ jQuery ->
 
   $('#m-ws-options').on 'click', '.ws-option', (event) ->
     event.stopImmediatePropagation()
-    # wsTailor.show $(this)
+    # eTailor.show $(this)
 
     id = $(this).attr 'id'
-    target = wsTailor.target.find("input[name]")
+    target = eTailor.target.find("input[name]")
     $(m).val(null) for m in target # clear them all out
 
     type = target.filter("[name='ws_type']")
@@ -90,13 +90,13 @@ jQuery ->
 
   $('#m-ws-options').on 'click', 'a.go-back', (event) ->
     event.stopImmediatePropagation()
-    wsTailor.rewind()
+    eTailor.rewind()
     return true
 
   $('#m-ws-options').on 'click', 'a.submit, button', (event) ->
     event.stopImmediatePropagation()
-    wsTailor.root.modal 'hide'
-    form = wsTailor.target.closest('form')
+    eTailor.root.modal 'hide'
+    form = eTailor.target.closest('form')
     form.submit()
     return true
 
@@ -104,7 +104,7 @@ jQuery ->
     form = $(this).closest 'form'
     for_deadline = form.hasClass('deadline')
 
-    j = wsTailor.target.find("input[name]")
+    j = eTailor.target.find("input[name]")
     target = if for_deadline then j.filter("[name='deadline']") else j.filter("[name='duration']")
     value = $(this).val()
     target.val value

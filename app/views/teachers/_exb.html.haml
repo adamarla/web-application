@@ -1,0 +1,26 @@
+-# Variable teacher comes from the layout file 
+
+- online_instructor = current_account.loggable.online
+
+%ul.nav.nav-tabs{ data: {'always-on' => "#{online_instructor}" } } 
+  %li
+    = simple_link for: "Quizzes", href: '#pane-exb-quizzes', id: 'tab-exb-quizzes'
+  - unless online_instructor
+    %li
+      = simple_link for: 'Assignments', href: '#pane-exb-existing', id: 'tab-exb-existing'
+    %li
+      = simple_link for: "Make New", href: '#pane-exb-sektions', id: 'tab-exb-sektions', class: 'nopurge-ever'
+  - if online_instructor
+    %li
+      = simple_link for: "Courses", href: "#pane-online-courses", id: 'tab-online-courses'
+
+.tab-content
+  #pane-exb-quizzes.tab-pane.scroll
+  - unless online_instructor
+    #pane-exb-existing.tab-pane.scroll
+    #pane-exb-sektions.tab-pane.scroll
+      = render partial: 'teachers/exb-sektions', locals: { teacher: teacher }
+  - if online_instructor
+    #pane-online-courses.tab-pane.scroll
+
+    

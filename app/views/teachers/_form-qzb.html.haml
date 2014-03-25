@@ -1,6 +1,6 @@
 
 - action = context == :editqz ? "#{quiz_edit_path}?id=:id&op=add" : quiz_build_path
-- data_id = context == :editqz ? "tab-wsb-quizzes" : nil
+- data_id = context == :editqz ? "tab-exb-quizzes" : nil
 - btn_text = context == :editqz ? "Add Selected" : "Build Quiz"
 
 = simple_form_for :checked, :remote => true, 

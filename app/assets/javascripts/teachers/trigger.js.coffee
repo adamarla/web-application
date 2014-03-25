@@ -9,22 +9,22 @@ jQuery ->
 
   $('#select-all-for-quiz').click (event) ->
     event.stopPropagation()
-    $(m).click() for m in $('#wsb-sektions').children('.line')
+    $(m).click() for m in $('#exb-sektions').children('.line')
     return false
 
   #$('#build-worksheet').click (event) ->
   $('#lnk-build-ws').click (event) ->
     someChecked = false
-    for m in $('#wsb-sektions').find("input[type='checkbox']")
+    for m in $('#exb-sektions').find("input[type='checkbox']")
       someChecked |= $(m).prop('checked')
       break if someChecked
     
     unless someChecked
       event.stopPropagation()
-      notifier.show 'n-wsb-no-selection'
+      notifier.show 'n-exb-no-selection'
     else
-      # wsTailor.rewind()
-      wsTailor.initialize()
+      # eTailor.rewind()
+      eTailor.initialize()
 
     return someChecked
 
@@ -57,8 +57,8 @@ jQuery ->
 
   ###
     [wsb] : Ensure that atleast one student is selected (issue #70) 
-  $('#form-wsb-3').submit (event) ->
-    students = $(this).children("[id='wsb-sektions']").eq(0)
+  $('#form-exb-3').submit (event) ->
+    students = $(this).children("[id='exb-sektions']").eq(0)
     sthSelected = false
     checkBoxes = students.find("input[type='checkbox']")
 
@@ -68,7 +68,7 @@ jQuery ->
       break if sthSelected
     
     return true if sthSelected
-    notifier.show 'n-wsb-no-selection'
+    notifier.show 'n-exb-no-selection'
     return false
   ###
 

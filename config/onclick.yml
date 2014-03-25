@@ -40,13 +40,13 @@ tab-pending-disputes :
   url : 
     self : exam/disputes/pending?id=:prev
     panel : load/dispute?id=:id
-  prev : tab-wsb-existing
+  prev : tab-exb-existing
 
 tab-resolved-disputes : 
   url : 
     self : exam/disputes/resolved?id=:prev
     panel : load/dispute?id=:id
-  prev : tab-wsb-existing
+  prev : tab-exb-existing
 
 lnk-bell :
   show :
@@ -71,7 +71,7 @@ lnk-edit-account :
 lnk-existing-quiz :
   default : true
   autoclick :
-    tab : tab-wsb-quizzes
+    tab : tab-exb-quizzes
   show : 
     left : left-1
     wide : wide-X
@@ -87,7 +87,7 @@ tab-editqz-1 :
   url : 
     self : quiz/questions.json?id=:prev
     panel : question/preview?id=:id
-  prev : tab-wsb-quizzes
+  prev : tab-exb-quizzes
 
 tab-online-courses : 
   show : 
@@ -101,26 +101,26 @@ tab-milestone-* :
 tab-available-* :
   prev : tab-online-courses
 
-tab-wsb-quizzes :
+tab-exb-quizzes :
   url : 
     self : quizzes/list
     panel : quiz/preview?id=:id
 
-lnk-wsb-new :
+lnk-exb-new :
   autoclick :
-    tab : tab-wsb-sektions
+    tab : tab-exb-sektions
   show : 
-    help : wsb-milestone-2
+    help : exb-milestone-2
 
-lnk-wsb-existing :
+lnk-exb-existing :
   autoclick :
-    tab : tab-wsb-existing
+    tab : tab-exb-existing
 
-tab-wsb-existing :
+tab-exb-existing :
   url : 
     self : quiz/exams.json?id=:prev
     panel : exam/load?id=:id
-  prev : tab-wsb-quizzes
+  prev : tab-exb-quizzes
 
 tab-wsl-quizzes :
   autoclick :
@@ -237,12 +237,12 @@ lnk-build-ws :
 lnk-ws-publish :
   url : 
     self : ws/publish.json?id=:id
-  id : tab-wsb-existing
+  id : tab-exb-existing
 
 lnk-ws-unpublish :
   url : 
     self : ws/unpublish.json?id=:id
-  id : tab-wsb-existing
+  id : tab-exb-existing
 
 lnk-rc-deepdive :
   show : 
@@ -315,7 +315,7 @@ help-make-a-quiz :
 
 help-make-a-ws : 
   show : 
-    help : wsb-milestone-1
+    help : exb-milestone-1
   autoclick : 
     link : lnk-existing-quiz
 

@@ -18,7 +18,7 @@ jQuery ->
     buttons = null
 
     if url.match(/quizzes\/list/)
-      target = $('#pane-wsb-quizzes')
+      target = $('#pane-exb-quizzes')
       key = 'quizzes'
       menu = "per-quiz"
       clickFirst = true
@@ -32,8 +32,8 @@ jQuery ->
         target = $('#enrolled-students')
         karo.empty target
       else
-        target = $('#wsb-sektions')
-        lesson = 'wsb-milestone-3'
+        target = $('#exb-sektions')
+        lesson = 'exb-milestone-3'
       key = "students"
 
     else if url.match(/share\/quiz/)
@@ -84,7 +84,7 @@ jQuery ->
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = 'icon-plus-sign'
     else if url.match(/quiz\/exams/)
-      target = $("#pane-wsb-existing")
+      target = $("#pane-exb-existing")
       key = "exams"
       menu = 'per-ws'
       clickFirst = true
@@ -130,10 +130,10 @@ jQuery ->
       # [102]: Add the new sektion as a left-tab so that teachers can start making 
       # worksheets without having to reload the site
       leftTabs.add '#sektions-tab', json, {
-        shared : 'wsb-sektions',
+        shared : 'exb-sektions',
         data : {
           url : "sektion/students.json?id=:id&context=wsb&quiz=:prev",
-          prev : "tab-wsb-quizzes"
+          prev : "tab-exb-quizzes"
         }
       }
     else if url.match(/ping\/sektion/)
@@ -162,7 +162,7 @@ jQuery ->
       notifier.show 'n-enrolled', json
     else if url.match(/ping\/queue/)
       # enable the newly built quizzes 
-      list = $('#pane-wsb-quizzes').children()
+      list = $('#pane-exb-quizzes').children()
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?

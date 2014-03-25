@@ -50,7 +50,7 @@
   #notifications
     = render partial: 'notifications/teacher/favourited'
     = render partial: 'notifications/teacher/qzb-no-selection'
-    = render partial: 'notifications/teacher/wsb-no-selection'
+    = render partial: 'notifications/teacher/exb-no-selection'
     = render partial: 'notifications/teacher/qzb-no-name'
     = render partial: 'notifications/teacher/queued'
     = render partial: 'notifications/teacher/compiled'
@@ -74,11 +74,11 @@
       - ['one', 'three', 'five', 'six', 'seven'].each do |m|
         = render partial: "tutorials/teacher/qzb/#{m}"
       - ['one', 'two', 'three'].each do |m|
-        = render partial: "tutorials/teacher/wsb/#{m}"
+        = render partial: "tutorials/teacher/exb/#{m}"
       - ['one', 'two', 'three', 'four', 'five', 'six'].each do |m|
         = render partial: "tutorials/teacher/editqz/#{m}"
       - ['one', 'two'].each do |m|
-        = render partial: "tutorials/teacher/publish-ws/#{m}"
+        = render partial: "tutorials/teacher/publish/#{m}"
       - ['one', 'two', 'three'].each do |m|
         = render partial: "tutorials/teacher/mng-sektions/#{m}"
       - ['one'].each do |m|
@@ -153,7 +153,7 @@
         #left.g-panel.span4
           = render partial: 'toolbox/paginator', locals: { id: 'left-paginator', url: '#' }
           #left-1
-            = render partial: 'teachers/wsb', locals: { teacher: tc }
+            = render partial: 'teachers/exb', locals: { teacher: tc }
           #left-2
             = render partial: 'teachers/qzb', locals: { teacher: tc }
           #left-3
