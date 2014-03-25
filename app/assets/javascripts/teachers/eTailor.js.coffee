@@ -6,7 +6,7 @@ window.eTailor = {
   initialize : () ->
     unless root?
       eTailor.root = $('#m-exbopts-1')
-      eTailor.target = $('#form-exb-3').find('.ws-option').eq(0)
+      eTailor.target = $('#form-exb-3').find('.exbopt').eq(0)
 
     # Disable the 'Make PDF' button initially
     eTailor.root.find('button').prop 'disabled', true
@@ -14,7 +14,7 @@ window.eTailor = {
 
   rewind : () ->
     eTailor.initialize()
-    options = eTailor.root.find('.ws-option')
+    options = eTailor.root.find('.exbopt')
     details = eTailor.root.find('.ws-detail')
 
     for m in options
@@ -57,7 +57,7 @@ jQuery ->
   ## [wsb]: Selecting the type of a worksheet 
   #########################################################
 
-  $('#m-exbopts-1').on 'click', '.ws-option', (event) ->
+  $('#m-exbopts-1').on 'click', '.exbopt', (event) ->
     event.stopImmediatePropagation()
     # eTailor.show $(this)
 
