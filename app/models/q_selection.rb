@@ -70,4 +70,8 @@ class QSelection < ActiveRecord::Base
     return TexComment.where(id: remarks.map(&:tex_comment_id).uniq).select{ |m| !m.trivial? }
   end
 
+  def name?
+    return self.index.nil? ? "Q.X" : "Q#{self.index}"
+  end
+
 end # of class
