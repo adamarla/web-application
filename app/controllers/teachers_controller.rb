@@ -154,5 +154,31 @@ class TeachersController < ApplicationController
     @json = s.proficiency_chart_for tid
   end
 
+  def def_distribution_scheme
+    e = Exam.find params[:id]
+    unless e.nil?
+      @eid = e.id
+      @q = e.quiz
+      @a = @q.teacher.apprentices.available
+    else
+      render json: { msg: 'Not found' }, status: :ok
+    end
+  end
+
+  def set_distribution_scheme
+    e = Exam.find params[:id]
+
+    unless e.nil?
+      scheme = params[:grid]
+      a = {}
+      for m in scheme.keys 
+        a[m.to_i] = scheme[m].keys.map(&:to_i)  
+      end 
+      yaml = a.blank? ? nil : a.to_yaml
+      e.update_attribute :dist_scheme, yaml
+    end
+    render json: { msg: :ok }, status: :ok
+  end
+
 
 end # of class

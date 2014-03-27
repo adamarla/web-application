@@ -195,6 +195,29 @@ jQuery ->
       $('#mng-assets').modal 'hide'
     else if url.match(/quiz\/mass_assign/)
       monitor.add json
+      if json.meta?
+        m = $('#m-exb-deadlines')
+        eid = json.meta['id']
+        f = m.find('form')
+        z.options[0].selected = true for z in f.find('select') # select default blank option
+        f.attr 'action', "set/deadlines?id=#{eid}"
+        m.modal 'show'
+    else if url.match(/set\/deadlines/)
+      m = $('#m-exb-deadlines')
+      m.modal 'hide'
+    else if url.match(/def\/dist\/scheme/) # STEP 1: define distribution scheme 
+      if json.apprentices?
+        n = $('#m-exb-dist-scheme')
+        f = n.find('form')
+        f.attr 'action', "set/dist/scheme?id=#{json.id}"
+        inputGrid.initialize(f)
+        inputGrid.render json.apprentices, json.layout, 'checkbox', true
+        n.modal 'show'
+      else
+        notifier.show 'n-no-apprentice'
+    else if url.match(/set\/dist\/scheme/) # STEP 2: close modal 
+        m = $('#m-exb-dist-scheme')
+        m.modal 'hide'
     else if url.match(/exam\/disputes/)
       isPending = if json.pending? then true else false 
       clickFirst = true

@@ -1427,3 +1427,12 @@ li.split {
     }
   }
 }
+
+table { 
+  td.y-label { 
+    text-align: center ;
+  }
+  td.x-label {
+    padding-right: 10px ;
+  }
+}

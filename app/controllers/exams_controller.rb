@@ -25,9 +25,9 @@ class ExamsController < ApplicationController
   def load 
     e = Exam.find params[:id]
     unless e.nil?
-      render json: { a: e.path? }
+      render json: { a: e.path?, b: e.id }
     else # shouldn't happen. But if it does, then show the sample created for the parent quiz
-      render json: { a: "#{e.quiz.path?}/sample" }
+      render json: { a: "#{e.quiz.path?}/sample", b: e.id }
     end
   end
 
@@ -95,6 +95,50 @@ class ExamsController < ApplicationController
     if params[:format] == "csv"
       send_data exam.to_csv, :filename => "#{exam.quiz.name}#{exam.name}.csv", :disposition => 'attachment'
     end
+  end
+
+  def deadlines
+    @eid = params[:id]
+    e = Exam.find @eid
+
+    # Example params: 
+    #    "deadline"=>{"submit(1i)"=>"", "submit(2i)"=>"", "submit(3i)"=>"", "regrade(1i)"=>"", "regrade(2i)"=>"", "regrade(3i)"=>""}
+    d = params[:deadline].values.map(&:to_i)
+    subm_m = d[1]
+    rgrd_m = d[4]
+    today = Date.today
+
+    unless subm_m == 0 # month component of submission deadline not defined
+      subm_d = d[2] == 0 ? 1 : d[2]
+      subm_date = Date.parse("#{subm_m}/#{subm_d}")
+      subm_date = subm_date > today ? subm_date : Date.parse("#{subm_d}/#{subm_m}/#{today.year + 1}")
+    else
+      subm_date = nil
+    end
+
+    unless rgrd_m == 0 # month component of regrade deadline not defined 
+      rgrd_d = d[5] == 0 ? 1 : d[5]
+      rgrd_date = Date.parse("#{rgrd_m}/#{rgrd_d}")
+      rgrd_date = rgrd_date > today ? rgrd_date : Date.parse("#{rgrd_d}/#{rgrd_m}/#{today.year + 1}")
+    else
+      rgrd_date = nil
+    end
+
+    unless subm_date.nil?
+      unless rgrd_date.nil?
+        rgrd_date = (rgrd_date < subm_date) ? (subm_date + 15.days) : rgrd_date
+      end
+    end
+
+    # Time to update exam object 
+    e.update_attributes submit_by: subm_date, regrade_by: rgrd_date
+    render json: { msg: :ok }, status: :ok
+  end
+
+  def redistribute
+    e = Exam.find params[:id]
+    e.reset unless e.nil?
+    render json: { msg: :ok }, status: :ok
   end
 
   # throwaway method

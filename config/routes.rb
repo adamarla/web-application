@@ -145,6 +145,8 @@ Webapp::Application.routes.draw do
   match 'new/lesson' => 'teachers#add_lesson', via: :post
   # match 'prefab' => 'teachers#prefabricate', via: [:put, :post]
   match 'overall/proficiency' => 'teachers#proficiency_chart', via: :get
+  match 'def/dist/scheme' => 'teachers#def_distribution_scheme', via: :get
+  match 'set/dist/scheme' => 'teachers#set_distribution_scheme', via: [:put, :post]
 
   # Exam
   match 'exam/summary' => 'exams#summary', via: :get
@@ -156,6 +158,8 @@ Webapp::Application.routes.draw do
   match 'ws/update_signature' => 'exams#update_signature', via: :get
   match 'exam/disputes/pending' => 'exams#pending_disputes', via: :get
   match 'exam/disputes/resolved' => 'exams#resolved_disputes', via: :get
+  match 'set/deadlines' => 'exams#deadlines', via: [:put, :post]
+  match 'exam/redistribute' => 'exams#redistribute', via: :get
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get

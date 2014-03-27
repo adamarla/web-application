@@ -14,6 +14,9 @@
 #  grade_by    :datetime
 #  uid         :string(40)
 #  open        :boolean         default(TRUE)
+#  submit_by   :datetime
+#  regrade_by  :datetime
+#  dist_scheme :text
 #
 
 include GeneralQueries
@@ -212,6 +215,20 @@ class Exam < ActiveRecord::Base
     return nil unless self.compiled?
     return nil if self.takehome
     return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
+  end
+
+  def distribution_scheme?
+    return {} if self.dist_scheme.blank?
+    return YAML.load self.dist_scheme
+  end
+
+  def reset
+    # For now, this method only unassigns any ungraded responses
+    # Needed if a teacher wants new distribution scheme to take effect 
+    g = GradedResponse.in_exam(self.id).with_scan.ungraded
+    g.each do |j|
+      j.update_attribute :examiner_id, nil
+    end
   end
 
   public 

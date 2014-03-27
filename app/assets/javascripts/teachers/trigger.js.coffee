@@ -148,3 +148,8 @@ jQuery ->
     sieve.through root
     return true
 
+  # Resetting input-grid when defining work distribution scheme 
+  $('#btn-dist-scheme-reset').click (event) ->
+    event.stopImmediatePropagation()
+    inputGrid.reset()
+    return true

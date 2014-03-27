@@ -19,16 +19,22 @@ class QuizzesController < ApplicationController
 
     unless quiz.nil?
       publish = !(params[:etype] == 'classwork')
-      teacher = quiz.teacher 
+      t = quiz.teacher 
       students = Student.where(id: params[:checked].keys)
 
       eid, job_id = students.blank? ? nil : quiz.mass_assign_to(students, publish)
       unless job_id.nil? 
         eta = minutes_to_completion job_id
-        render json: { monitor: { exam: [eid] }, notify: { title: "#{eta} minute(s)" }}, status: :ok
+        r = { monitor: { exam: [eid] }, notify: { title: "#{eta} minute(s)" }}
       else # should happen because the quiz IS being published - and no other reason
-        render json: { msg: :publish }, status: :ok
-      end 
+        r = { msg: :publish }
+      end
+
+      # For now, allow only offline teachers to specify any additional deadlines for the exam
+      unless t.online
+        r[:meta] = { id: eid }
+      end
+      render json: r, status: :ok
     else
       render json: { msg: 'No quiz found!' }, status: :ok
     end

@@ -29,6 +29,16 @@
 ## Teachers 
 ##############################################################################
 
+lnk-def-dist-scheme : 
+  url : 
+    self : def/dist/scheme?id=:b
+  update-on: exam/load
+
+lnk-exam-redistribute : 
+  url : 
+    self : exam/redistribute?id=:b
+  update-on: exam/load
+
 lnk-exam-disputes: 
   show : 
     left : left-9 
