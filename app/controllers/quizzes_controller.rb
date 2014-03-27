@@ -120,11 +120,12 @@ class QuizzesController < ApplicationController
   end
 
   def exams
-    @exams = Exam.where(quiz_id: params[:id])
+    @exams = Exam.where(quiz_id: params[:id]).order(:created_at)
+    @chronological = @exams.reverse
     n = @exams.count 
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i
-    @exams = @exams.order('created_at DESC').page(pg).per(@per_pg)
+    @exams = @exams.page(pg).per(@per_pg)
   end
 
 end
