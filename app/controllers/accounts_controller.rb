@@ -164,7 +164,8 @@ class AccountsController < ApplicationController
 
     @solution_video = @gr.subpart.question.video
     if current_account.loggable_type == 'Student' 
-      @regrade = { name: @gr.name?, disable: @gr.disputed }
+      exm = @gr.worksheet.exam
+      @regrade = exm.disputable? ? { name: @gr.name?, disable: @gr.disputed } : { name: 'Past deadline', disable: true }
     else
       @regrade = nil
     end 

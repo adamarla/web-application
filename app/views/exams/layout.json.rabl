@@ -17,3 +17,8 @@ object false
   node(:user) { @who }
   node(:caption) { @exam.quiz.name }
   node(:last_pg, unless: @last_pg.blank?){ @last_pg }
+  node(:disputable) { @exam.disputable? }
+  node(:notify, unless: @exam.regrade_by.nil?){
+    { title: "#{@exam.regrade_by.strftime('%B %d, %Y')}" }
+  }
+

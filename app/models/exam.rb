@@ -66,6 +66,18 @@ class Exam < ActiveRecord::Base
     GradedResponse.in_exam(self.id).with_scan.ungraded.count > 0
   end
 
+  def disputable?
+    # can a student dispute a grade at this time? 
+    return true if self.regrade_by.nil?
+    return (Date.today <= self.regrade_by.to_date)
+  end
+
+  def receptive?
+    # of any new scans. If not, then further submissions are disallowed
+    return true if self.submit_by.nil?
+    return (Date.today <= self.submit_by.to_date) 
+  end 
+
   def has_scans?
     # if false, then worksheet / exam is automatically ungradeable
     ret = GradedResponse.in_exam(self.id).with_scan.count > 0

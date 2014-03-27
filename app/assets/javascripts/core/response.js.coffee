@@ -36,6 +36,10 @@ jQuery ->
       if json.user is 'Student'
         target = '#pane-st-rc-2'
         writeBoth = true
+        if json.disputable
+          notifier.show('n-regrade-deadline', json) if json.notify
+        else
+          notifier.show('n-regrade-disallowed') 
       else if json.user is 'Teacher'
         target = '#pane-tc-rc-3'
         writeBoth = true
@@ -77,7 +81,7 @@ jQuery ->
         regradeBtn = $('#pane-st-rc-2').find('button').filter("[id='btn-regrade']")[0]
         if regradeBtn
           if json.regrade.disable 
-            $(regradeBtn).text('Disputed once')
+            $(regradeBtn).text json.regrade.name
             $(regradeBtn).prop 'disabled', true
           else 
             $(regradeBtn).text("Regrade #{json.regrade.name}") 
