@@ -83,14 +83,18 @@ class TeachersController < ApplicationController
   end 
 
   def sektions
-    teacher = params[:id].nil? ? current_account.loggable : Teacher.find(params[:id])
-    if teacher.nil?
-      @sektions = []
-    else
-      @sektions = teacher.sektions.order(:end_date).order(:name)
-      @sektions = Sektion.where(id: PREFAB_SECTION) if @sektions.blank?
+    t = current_account.loggable
+    all = t.sektions.order(:end_date).order(:name)
+
+    case params[:type]
+      when 'inactive'
+        @sektions = all.select{ |j| j.graduated? }
+      when 'future'
+        @sektions = all.select{ |j| j.due? }
+      else
+        @sektions = all.select{ |j| j.active? }
     end
-    @context = params[:context]
+    @sektions = Sektion.where(id: PREFAB_SECTION) if @sektions.blank?
   end
 
   def students 
