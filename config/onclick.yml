@@ -116,6 +116,11 @@ tab-exb-quizzes :
     self : quizzes/list
     panel : quiz/preview?id=:id
 
+tab-exb-sk* :
+  url: 
+    self: sektion/students?id=:id&context=exb&quiz=:prev
+  prev : tab-exb-quizzes
+
 lnk-exb-new :
   autoclick :
     tab : tab-exb-sektions

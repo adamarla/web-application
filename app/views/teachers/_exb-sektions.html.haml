@@ -1,14 +1,13 @@
 
-- my_sektions = teacher.sektions.order(:end_date).select{ |m| m.active? }
-- my_sektions = my_sektions.blank? ? Sektion.where(id: 58) : my_sektions
+- active_sk = teacher.sektions.order(:end_date).select{ |m| m.active? }
+- active_sk = active_sk.blank? ? Sektion.where(id: 58) : active_sk
 
 -# Left-side tabs - one per section
-#sektions-tab.tabbable.tabs-left
+#exb-2.tabbable.tabs-left
   %ul.nav.nav-tabs.span3{ id: 'exb-ul-milestone-2' }
-    - my_sektions.each_with_index do |m,j|
+    - active_sk.each_with_index do |m,j|
       %li
-        = simple_link for: "#{m.name}", toggle: :tab, marker: "#{m.id}", href: "#exb-sektions", 
-        url: { self: "sektion/students.json?id=#{m.id}&context=wsb&quiz=:prev" }, prev: 'tab-exb-quizzes'
+        = simple_link for: "#{m.name}", marker: "#{m.id}", href: '#exb-sektions', id: "tab-exb-sk-#{m.id}"
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
   .tab-content.span8{ :id => 'exb-div-milestone-3' }
