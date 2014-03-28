@@ -65,9 +65,14 @@ class Sektion < ActiveRecord::Base
     return active
   end
 
-  def future?
+  def due?
     return false if self.start_date.nil?
     return (self.start_date > Date.today)
+  end
+
+  def graduated? 
+    return true if self.end_date.nil?
+    return (self.end_date < Date.today)
   end
 
   def lifetime_in_days
@@ -143,7 +148,7 @@ class Sektion < ActiveRecord::Base
         return false unless t.account.active
         return false unless self.auto_renew
         return false if (self.start_date.nil? || self.end_date.nil?)
-        return false if (self.future? || self.active?) 
+        return false if (self.due? || self.active?) 
 
         lifetime = self.lifetime_in_days 
         start = Date.today.beginning_of_month 
