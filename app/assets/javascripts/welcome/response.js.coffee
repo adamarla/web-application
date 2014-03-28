@@ -32,15 +32,6 @@ jQuery ->
         karo.empty target
         key = 'candidates'
         $('#m-enrollment-confirm').modal 'show'
-    else if url.match(/buy\/credits/)
-      if json.status is 'ok'
-        $('#m-buy-credits').modal 'hide'
-        $('#balance').text "Your balance now is #{json.text}"
-        notifier.show 'n-purchase-complete'
-      else
-        alertbox = $('#m-buy-credits #message')
-        alertbox.text json.text
-        alertbox.removeClass 'hide'
     else
       matched = false
 

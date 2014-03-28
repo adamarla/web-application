@@ -39,10 +39,14 @@ class Payment < ActiveRecord::Base
   validates :zip, :presence => true 
   validates :country, :presence => true 
 
-  validate :validate_card, on: :create
+  validate :validate_payment, on: :create
 
-  def execute
-    response = STANDARD_GATEWAY.purchase price_in_cents, credit_card, payment_options
+  def execute(refund = false)
+    unless refund
+      response = STANDARD_GATEWAY.purchase price_in_cents, credit_card, payment_options
+    else 
+      response = STANDARD_GATEWAY.transfer price_in_cents, self.email, :subject => "refund request by #{self.name}", :note => "Refund worth #{self.cash_value} has been processed as per your request"
+    end
     self.update_attributes success: response.success?,
                            response_message: response.message,
                            response_params: response.params.to_s
@@ -52,11 +56,15 @@ class Payment < ActiveRecord::Base
     (self.cash_value * 100).round
   end
 
-  def validate_card
-    unless credit_card.valid?
-      credit_card.errors.full_messages.each do |msg|
-        errors.add :base, " #{msg}"
+  def validate_payment
+    if self.card_number.length > 0
+      unless credit_card.valid?
+        credit_card.errors.full_messages.each do |msg|
+          errors.add :base, "#{msg}"
+        end
       end
+    else
+      true
     end
   end
 
@@ -78,7 +86,7 @@ class Payment < ActiveRecord::Base
       "INR" => "₹",
       "USD" => "$"
     }
-    "#{symbols[self.currency]} #{self.cash_value}"
+    "#{symbols[self.currency]}#{self.cash_value}"
   end
 
   private

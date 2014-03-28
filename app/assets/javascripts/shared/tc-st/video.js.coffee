@@ -44,6 +44,7 @@ window.video = {
     return true
 }
 
+###
 jQuery ->
   sublime.load()
 
@@ -52,4 +53,5 @@ jQuery ->
       event.stopImmediatePropagation()
       return video.play(this) 
       
+###
 

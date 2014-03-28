@@ -37,7 +37,7 @@
           %h3 Billing Address*
           = f.input :country, :priority => ["India", "United States", "United Kingdom"]
           = f.input :address1, :placeholder => "Address Line 1"
-          = f.input :city, :placeholder => "City"
+          = f.input :city, :placeholder => "City", :input_html => { :id => 'test', :value => "Delhi" }
           = f.input :state, :placeholder => "State / Province"
           = f.input :zip, :placeholder => "Postal Code (ZIP/PIN)"
       .row-fluid

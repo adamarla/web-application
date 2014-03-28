@@ -17,9 +17,9 @@ class AccountingDoc < ActiveRecord::Base
   has_many :transactions
 
   DOC_TYPE = {
-    invoice: 1,
-    credit_note: 2, 
-    debit_note: 3
+    invoice: 0,
+    credit_note: 1, 
+    debit_note: 2
   }
   validates_inclusion_of :doc_type, :in => DOC_TYPE.values
 
@@ -47,6 +47,10 @@ class AccountingDoc < ActiveRecord::Base
 
   def self.new_invoice
     AccountingDoc.new doc_type: DOC_TYPE[:invoice], doc_date: Date.today
+  end
+
+  def display
+    "#{self.doc_date} #{DOC_TYPE.keys[self.doc_type].to_s.sub('_', ' ')}"
   end
 
   def close

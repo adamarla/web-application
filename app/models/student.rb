@@ -202,21 +202,6 @@ class Student < ActiveRecord::Base
     return ret
   end
 
-  def can_afford?(course)
-    self.customer.credit_balance >= course.price
-  end
-
-  def purchase(course)
-    customer = self.customer
-    return unless self.can_afford?
-
-    code = RateCode.for_course_credit(customer.currency)
-    course_buy = Transaction.new_course_buy(self, course, code, self.account)
-    credit_note = customer.credit_note
-    credit_note.transactions << course_buy
-    customer.update_attribute :credit_balance, (customer.credit_balance -= course.price)
-  end
-
   private 
     def destroyable?
       # A student can be destroyed if there is no associated data for it
