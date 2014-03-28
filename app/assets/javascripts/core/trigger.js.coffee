@@ -366,8 +366,13 @@ jQuery ->
       then autoclick the first tab
     ###
     pane = $($(this).attr('href'))
+    resetChildTabs = this.getAttribute('data-childtabs-reset') is 'true'
+
     for m in pane.find('.tabs-left')
-      firstTab = $(m).find('ul > li > a').eq(0)
+      tabs = $(m).find('ul > li')
+      if resetChildTabs
+        $(j).removeClass('active') for j in tabs
+      firstTab = tabs.eq(0).children('a').eq(0)
       firstTab.click()
 
     ###
