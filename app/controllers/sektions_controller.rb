@@ -81,9 +81,9 @@ class SektionsController < ApplicationController
 
     @context = params[:context]
 
-    if @context == 'wsb'
-      ws_ids = Exam.where(:quiz_id => params[:quiz]).map(&:id)
-      past_takers = Worksheet.where(:exam_id => ws_ids).map(&:student_id).uniq
+    if @context == 'exb'
+      eids = Exam.where(quiz_id: params[:quiz]).map(&:id)
+      past_takers = Worksheet.where(exam_id: eids).map(&:student_id).uniq
       @disabled = @students.map(&:id) & past_takers
     else
       @disabled = []

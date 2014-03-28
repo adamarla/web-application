@@ -129,11 +129,11 @@ jQuery ->
 
       # [102]: Add the new sektion as a left-tab so that teachers can start making 
       # worksheets without having to reload the site
-      leftTabs.add '#sektions-tab', json, {
+      leftTabs.add '#exb-2', json, {
         shared : 'exb-sektions',
         data : {
-          url : "sektion/students.json?id=:id&context=wsb&quiz=:prev",
-          prev : "tab-exb-quizzes"
+          url : 'sektion/students?id=:id&context=exb&quiz=:prev',
+          prev : 'tab-exb-quizzes'
         }
       }
     else if url.match(/ping\/sektion/)
