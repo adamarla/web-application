@@ -7,7 +7,7 @@ class SuggestionsController < ApplicationController
     teacher = tid.blank? ? nil : Teacher.find(tid)
     
     unless teacher.nil?
-      assignee = Examiner.available.sort{ |a,b| a.suggestion_ids.count <=> b.suggestion_ids.count }.first 
+      assignee = Examiner.internal.available.sort{ |a,b| a.suggestion_ids.count <=> b.suggestion_ids.count }.first 
       sg = teacher.suggestions.create signature: params[:signature],
                                       pages: params[:num_pages].to_i,
                                       examiner_id: assignee.id
