@@ -166,20 +166,25 @@ class ExaminersController < ApplicationController
       g = GradedResponse.where(id: ids)
     end
 
-    # A scan, one received, cannot be overwritten with a subsequently uploaded scan 
-    already = g.map(&:scan).select{ |x| !x.nil? }.count > 0
-    unless already
-      g.map{ |x| x.update_attributes scan: path, mobile: mobile } 
+    # Do NOT receive scan under the following conditions 
+    #   1. if the graded responses already have an associated scan 
+    #   2. if its past the submission deadline 
 
-      # Sometimes, the scans come in batches. And if the new ones come 
-      # after the old ones have been graded, then a mail is triggered 
-      # with each new student's work being graded. To avoid this, we 
-      # simply reset the exam to its initial unpublished state and leave 
-      # it to the grading process to set it back to publishable state
-      exam = g.first.worksheet.exam
-      exam.update_attribute :publishable, false
+    exam = g.first.worksheet.exam
+    if exam.receptive? 
+      j = g.without_scan
+      proceed = mobile ? true : (j.count == 0) # all or nothing if !mobile
+      if proceed
+        j.map{ |x| x.update_attributes(scan: path, mobile: mobile) }
+        exam.update_attribute :publishable, false
+        # Sometimes, the scans come in batches. And if the new ones come 
+        # after the old ones have been graded, then a mail is triggered 
+        # with each new student's work being graded. To avoid this, we 
+        # simply reset the exam to its initial unpublished state and leave 
+        # it to the grading process to set it back to publishable state
+      end
     end
-    render json: { status: ( already ? 'not ok' : 'ok' ) }
+    render json: { status: :ok }, status: :ok 
   end
 
   def audit_todo
