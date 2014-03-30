@@ -14,10 +14,12 @@ jQuery ->
 
     if url.match(/exams\/pending/)
       target = $('#pane-grd-exams')
+      karo.empty target
       key = 'exams'
       fdb.detach()
     else if url.match(/grade\/pending/)
       target = $('#pane-grd-questions')
+      karo.empty target
       key = 'questions'
       fdb.detach()
     else if url.match(/scans\/pending/)
