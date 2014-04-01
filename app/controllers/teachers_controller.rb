@@ -85,6 +85,7 @@ class TeachersController < ApplicationController
   def sektions
     t = current_account.loggable
     all = t.sektions.order(:end_date).order(:name)
+    @context = params[:context]
 
     case params[:type]
       when 'inactive'
