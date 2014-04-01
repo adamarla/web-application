@@ -10,4 +10,3 @@ node(:students) {
 node(:sektion) { @sektion.id } 
 node(:context) { @context.blank? ? "unknown" : @context }
 node(:disabled) { @disabled }
-node(:last_pg) { @last }
