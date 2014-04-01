@@ -73,11 +73,7 @@ class SektionsController < ApplicationController
   def students 
     @sektion = Sektion.find params[:id]
 
-    @students = @sektion.students
-    n = @students.count 
-    per_pg, @last = pagination_layout_details(n)
-    pg = params[:page].blank? ? 1 : params[:page].to_i
-    @students = @students.order(:first_name).page(pg).per(per_pg)
+    @students = @sektion.students.order(:first_name)
 
     @context = params[:context]
 
