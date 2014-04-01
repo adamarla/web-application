@@ -7,7 +7,7 @@ node(:schools) {
       :id => m.id, 
       :name => m.name, 
       :tag => (m.account.nil? ? "unknown" : (m.account.city.nil? ? "unknown" : m.account.city)), 
-      :badge => m.contracts.count
+      :badge => (m.account.nil? ? 0 : (m.account.customer.nil? ? 0 : m.account.customer.contracts.count ))
     }
   }
 }

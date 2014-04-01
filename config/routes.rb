@@ -32,20 +32,20 @@ Webapp::Application.routes.draw do
   # Admin 
   resource :admin, :controller => :admin 
 
-  # Contract
-  resource :contract, :only => [:show, :create, :update]
-  match 'contract/renew' => 'contracts#renew', via: :post
-  match 'contracts/list' => 'contracts#list', via: :get
-  match 'contract/complete' => 'contracts#complete', via: :get
-  match 'contract/cancel' => 'contracts#cancel', via: :get
-
   # Course
   match 'course/new' => 'course#create', via: :post
   match 'course/all' => 'course#show', via: :get
   match 'milestone/load' => 'course#load_milestone', via: :get
   match 'available/assets' => 'course#available_assets', via: :get
   match 'attach_detach_asset' => 'course#attach_detach_asset', via: :post
-  match 'buy' => 'course#buy', via: :get
+
+  # Customer
+  resource :customer, :only => [:show]
+  match 'customers/list' => 'customers#list', via: :get
+  match 'customer/activity' => 'customers#activity', via: :get
+  match 'customer/transactions' => 'customers#transactions', via: :get
+  match 'credits/transfer' => 'customers#transfer', via: :post
+  match 'course/buy' => 'customers#buy_course', via: :get
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
@@ -76,6 +76,7 @@ Webapp::Application.routes.draw do
   # Payment
   match 'buy/credits' => 'payments#credit_purchase', via: :post
   match 'apply/payment' => 'payments#bill_payment', via: :post
+  match 'refund' => 'payments#refund', via: :post
 
   # School 
   resource :school, :only => [:show, :create, :update]

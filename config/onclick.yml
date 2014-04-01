@@ -407,18 +407,6 @@ tab-customers :
     self : schools/list
     panel : school?id=:id
 
-lnk-new-contract :
-  show :
-    modal : m-new-contract-form
-
-lnk-show-contracts :
-  autoclick :
-    tab : tab-contracts
-
-tab-contracts :
-  url :
-    self : contracts/list?id=:id
-
 
 ##############################################################################
 ## Admin / Examiner specific  
@@ -573,19 +561,6 @@ lnk-add-examiner :
     modal : m-new-examiner
   
 ##############################################################################
-## Admin / Examiner specific  
-##############################################################################
-
-lnk-buy-credits :
-  show :
-    modal : m-buy-credits
-
-m-guardian-options :
-  show : 
-    menu : guardian-options
-
-
-##############################################################################
 ## Shared between Teachers, Examiners and Admin
 ##############################################################################
 
@@ -607,6 +582,43 @@ m-downloads :
 lnk-upload :
   show : 
     modal : m-upload-what
+
+lnk-admin-console :
+  show : 
+    left : left-1
+    wide : wide-2
+  autoclick :
+
+##############################################################################
+## Customer 
+##############################################################################
+
+m-customer-options :
+  show : 
+    menu : customer-main
+
+lnk-buy-credits :
+  show :
+    modal : m-buy-credits
+
+lnk-refund-credits :
+  show :
+    modal : m-refund-credits
+
+lnk-xfer-credits :
+  show :
+    modal : m-transfer
+
+lnk-see-activity :
+  autoclick : 
+    tab : tab-see-activity
+  show : 
+    left : left-3
+    wide : wide-1
+
+tab-see-activity :
+  url :
+    panel : customer/transactions?id=:id
 
 ##############################################################################
 ## Landing page  
