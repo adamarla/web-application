@@ -134,7 +134,7 @@ class Student < ActiveRecord::Base
     else
       marks = w.marks?
     end
-    return (marks.nil? ? 0 : marks)
+    return (marks.nil? ? 0 : marks.round(2))
   end
 
   def honestly_attempted? (ws_id)
