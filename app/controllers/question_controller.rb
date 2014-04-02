@@ -113,7 +113,7 @@ class QuestionController < ApplicationController
 
       if (@gating.count > 0 || @non_gating.count > 0 || !@comments.blank?)
         @author = Examiner.find @question.examiner_id
-        @author = @author.account.active ? @author : Examiner.available.sample(1).first
+        @author = @author.account.active ? @author : Examiner.internal.available.sample(1).first
         
         Mailbot.delay.send_audit_report(@question, @author, @gating, @non_gating, @comments)
       end
