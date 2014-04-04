@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140327085113) do
+ActiveRecord::Schema.define(:version => 20140404103912) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -307,15 +307,16 @@ ActiveRecord::Schema.define(:version => 20140327085113) do
   end
 
   create_table "sektions", :force => true do |t|
-    t.string   "name",       :limit => 40
+    t.string   "name",                 :limit => 40
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "teacher_id"
-    t.string   "uid",        :limit => 10
+    t.string   "uid",                  :limit => 10
     t.date     "start_date"
     t.date     "end_date"
-    t.boolean  "auto_renew",               :default => true
+    t.boolean  "auto_renew",                         :default => true
     t.boolean  "active"
+    t.boolean  "auto_renew_immediate",               :default => false
   end
 
   create_table "student_rosters", :force => true do |t|

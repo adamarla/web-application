@@ -91,7 +91,7 @@ class TeachersController < ApplicationController
       when 'inactive'
         @sektions = all.select{ |j| j.graduated? }
       when 'future'
-        @sektions = all.select{ |j| j.due? }
+        @sektions = all.select{ |j| j.future? }
       else
         @sektions = all.select{ |j| j.active? }
     end

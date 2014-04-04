@@ -12,7 +12,8 @@ class SektionsController < ApplicationController
 
     start_mnth = p['smonth(2i)'].to_i # the 2i bit is due to simple_form 
     duration = p[:duration].to_i
-    renew = p[:renew] == "2" ? false : true
+    renew = p[:renew] == "1" ? false : true
+    renew_immediate = p[:renew] == "2"
 
     today = Date.today 
 
@@ -39,9 +40,8 @@ class SektionsController < ApplicationController
     # current_account.loggable should be / would be a teacher. 
     # If not, then its an unexpected - and big - problem
     @sk = current_account.loggable.sektions.build name: p[:name],
-                                                 start_date: start_date,
-                                                 end_date: end_date,
-                                                 auto_renew: renew
+                                                 start_date: start_date, end_date: end_date,
+                                                 auto_renew: renew, auto_renew_immediate: renew_immediate
     unless @sk.save
       render json: { notify: { text: @sk.errors[:name] } }, status: :ok
     end

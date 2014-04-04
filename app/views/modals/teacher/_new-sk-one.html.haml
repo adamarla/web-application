@@ -6,7 +6,7 @@
     .span8
       %p
         = simple_form_for :new, url: add_sektion_path, remote: true, defaults: { label: false }  do |f|
-          = f.input :name, placeholder: 'Give the section a name' 
+          = f.input :name, placeholder: 'Course or section name' 
           .row-fluid
             .span4
               %h6.white= "Session starts in" 
@@ -18,6 +18,6 @@
             .span4
               %h6.white= "Auto-renews?"
               = f.input :renew, as: :select, selected: 1,
-                collection: [[1,'Yes'], [2,'No']], value_method: :first, label_method: :last
+                collection: [[1,'Never'], [2,'Immediately on expiry'], [3,'In next academic year']], value_method: :first, label_method: :last
           .row-fluid
             = f.button :submit, class: 'pull-right btn-large btn-primary', value: 'Create' 
