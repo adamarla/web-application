@@ -11,7 +11,12 @@ class CustomersController < ApplicationController
   end
 
   def activity
-    @accounting_docs = Customer.find(params[:id]).accounting_docs
+    unless params[:id].nil?
+      @accounting_docs = Customer.find(params[:id]).accounting_docs.order(:id).reverse_order
+    else
+      customer = current_account.loggable.customer
+      @accounting_docs = customer.accounting_docs.order(:id).reverse_order
+    end
   end
 
   def transactions

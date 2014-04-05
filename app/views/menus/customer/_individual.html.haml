@@ -13,5 +13,6 @@
       = simple_link :for => "Refund", :id => "lnk-refund-credits", :icon => 'icon-circle-arrow-left'
     %li.divider
     %li
-      = simple_link :for => "See Activity", :id => 'lnk-see-activity', :icon => 'icon-list', :href => "customer/activity?id=#{customer.id}", remote: true
+      -#= simple_link :for => "See Activity", :id => 'lnk-see-activity', :icon => 'icon-list', :href => "customer/activity?id=#{customer.id}", remote: true
+      = simple_link :for => "See Activity", :id => 'lnk-see-activity', :icon => 'icon-list'
 

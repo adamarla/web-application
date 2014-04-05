@@ -50,7 +50,11 @@ class AccountingDoc < ActiveRecord::Base
   end
 
   def display
-    "#{self.doc_date} #{DOC_TYPE.keys[self.doc_type].to_s.sub('_', ' ')}"
+    if self.open
+      "#{self.doc_date} to Present"
+    else
+      "#{self.doc_date} to #{self.updated_at.to_date}"
+    end
   end
 
   def close

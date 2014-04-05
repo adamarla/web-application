@@ -20,8 +20,9 @@ jQuery ->
     else if url.match(/customer\/activity/)
       target = $('#pane-cust-activity')
       key = 'activity'
+      clickFirst = true
       karo.empty target
-    else if url.match(/customer\/transactions/)
+    else if url.match(/document\/transactions/)
       target = $('#transactions')
       key = 'transactions'
       karo.empty target

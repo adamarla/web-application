@@ -43,7 +43,7 @@ Webapp::Application.routes.draw do
   resource :customer, :only => [:show]
   match 'customers/list' => 'customers#list', via: :get
   match 'customer/activity' => 'customers#activity', via: :get
-  match 'customer/transactions' => 'customers#transactions', via: :get
+  match 'document/transactions' => 'customers#transactions', via: :get
   match 'credits/transfer' => 'customers#transfer', via: :post
   match 'course/buy' => 'customers#buy_course', via: :get
 

@@ -618,7 +618,8 @@ lnk-see-activity :
 
 tab-see-activity :
   url :
-    panel : customer/transactions?id=:id
+    self : customer/activity
+    panel : document/transactions?id=:id
 
 ##############################################################################
 ## Landing page  
