@@ -173,7 +173,7 @@ class ExaminersController < ApplicationController
     exam = g.first.worksheet.exam
     if exam.receptive? 
       j = g.without_scan
-      proceed = mobile ? true : (j.count == 0) # all or nothing if !mobile
+      proceed = mobile ? true : (j.count == g.count) # all or nothing if !mobile
       if proceed
         j.map{ |x| x.update_attributes(scan: path, mobile: mobile) }
         exam.update_attribute :publishable, false
