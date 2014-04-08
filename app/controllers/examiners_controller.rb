@@ -165,6 +165,7 @@ class ExaminersController < ApplicationController
       g = GradedResponse.in_exam(ws_id).of_student(student_id).on_page(page)
     else
       ids = Worksheet.unmangle_qrcode qrc
+      puts "===GR ID =====#{ids.first} ==========="
       g = GradedResponse.where(id: ids)
     end
 
@@ -172,8 +173,10 @@ class ExaminersController < ApplicationController
     #   1. if the graded responses already have an associated scan 
     #   2. if its past the submission deadline 
 
+    puts "============ got here 1 ======#{path}===="
     exam = g.first.worksheet.exam
     if exam.receptive? 
+      puts "============ got here 2 ======#{path}===="
       j = g.without_scan
       proceed = mobile ? true : (j.count == 0) # all or nothing if !mobile
       if proceed
@@ -187,6 +190,7 @@ class ExaminersController < ApplicationController
         # it to the grading process to set it back to publishable state
       end
     end
+    puts "============ got here 3 ======#{path}===="
     render json: { status: :ok }, status: :ok 
   end
 
