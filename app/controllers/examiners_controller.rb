@@ -152,8 +152,6 @@ class ExaminersController < ApplicationController
     mobile = params[:type] == "GR" 
     old_style = mobile ? false : (qrc.length == 11)
 
-    puts "========debugging params #{path} #{qrc} #{params[:type]} ==========="
-
     if mobile
       ids = qrc.split('-').map(&:to_i)
       g = GradedResponse.where(id: ids)
@@ -165,7 +163,6 @@ class ExaminersController < ApplicationController
       g = GradedResponse.in_exam(ws_id).of_student(student_id).on_page(page)
     else
       ids = Worksheet.unmangle_qrcode qrc
-      puts "===GR ID =====#{ids.first} ==========="
       g = GradedResponse.where(id: ids)
     end
 
@@ -176,10 +173,8 @@ class ExaminersController < ApplicationController
     exam = g.first.worksheet.exam
     if exam.receptive? 
       j = g.without_scan
-      proceed = mobile ? true : (j.count == 0) # all or nothing if !mobile
-      puts "====mobile #{mobile} =====count = #{j.count} === proceed? #{proceed} ===="
+      proceed = mobile ? true : (j.count == g.count) # all or nothing if !mobile
       if proceed
-        puts "============ got here ======#{path}===="
         j.map{ |x| x.update_attributes(scan: path, mobile: mobile) }
         exam.update_attribute :publishable, false
         # Sometimes, the scans come in batches. And if the new ones come 
@@ -189,7 +184,6 @@ class ExaminersController < ApplicationController
         # it to the grading process to set it back to publishable state
       end
     end
-    puts "============ got here 3 ======#{path}===="
     render json: { status: :ok }, status: :ok 
   end
 
