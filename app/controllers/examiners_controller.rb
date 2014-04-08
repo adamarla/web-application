@@ -173,12 +173,11 @@ class ExaminersController < ApplicationController
     #   1. if the graded responses already have an associated scan 
     #   2. if its past the submission deadline 
 
-    puts "============ got here 1 ======#{path}===="
     exam = g.first.worksheet.exam
     if exam.receptive? 
-      puts "============ got here 2 ======#{path}===="
       j = g.without_scan
       proceed = mobile ? true : (j.count == 0) # all or nothing if !mobile
+      puts "====mobile #{mobile} =====count = #{j.count} === proceed? #{proceed} ===="
       if proceed
         puts "============ got here ======#{path}===="
         j.map{ |x| x.update_attributes(scan: path, mobile: mobile) }
