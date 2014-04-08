@@ -152,6 +152,8 @@ class ExaminersController < ApplicationController
     mobile = params[:type] == "GR" 
     old_style = mobile ? false : (qrc.length == 11)
 
+    puts "========debugging params #{path} #{qrc} #{params[:type]} ==========="
+
     if mobile
       ids = qrc.split('-').map(&:to_i)
       g = GradedResponse.where(id: ids)
@@ -175,6 +177,7 @@ class ExaminersController < ApplicationController
       j = g.without_scan
       proceed = mobile ? true : (j.count == 0) # all or nothing if !mobile
       if proceed
+        puts "============ got here ======#{path}===="
         j.map{ |x| x.update_attributes(scan: path, mobile: mobile) }
         exam.update_attribute :publishable, false
         # Sometimes, the scans come in batches. And if the new ones come 
