@@ -63,4 +63,8 @@ class CustomersController < ApplicationController
     end
   end
 
+  def generate_invoice
+    render json: { status: :success, message: "Invoice 123 created" }
+  end
+
 end

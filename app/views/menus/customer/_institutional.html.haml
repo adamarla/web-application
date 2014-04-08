@@ -1,6 +1,10 @@
 
-%ul.dropdown-menu.dropdown-inverse#per-customer{ :role => :menu }
+%ul.dropdown-menu.dropdown-inverse#institutional{ :role => :menu }
   %li
     = simple_link :for => 'List Contracts', :id => 'lnk-show-contracts', :icon => 'icon-list' 
   %li
     = simple_link :for => 'New Contract', :id => 'lnk-new-contract', :icon => 'icon-plus-sign'
+  %li
+    = simple_link :for => 'Generate Invoice', :id => 'lnk-gen-invoice', :icon => 'icon-shopping-cart'
+  %li
+    = simple_link :for => 'Apply Payment', :id => 'lnk-gen-invoice', :icon => 'icon-envelope'

@@ -17,6 +17,8 @@
 class Transaction < ActiveRecord::Base
   belongs_to :accounting_doc
 
+  has_one :rate_code
+
   TYPE = {           # reference_id => 
     subscription: 0, #   contract_id(school/uni/parent)
     course: 1,       #   course_id

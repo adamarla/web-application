@@ -29,16 +29,16 @@ jQuery ->
       key = 'accounts'
       karo.empty target
     else if url.match(/school\/create/)
-      $('#m-cust-create-form').modal 'hide' 
+      $('#m-school-create-form').modal 'hide' 
     else if url.match(/schools\/list/)
-      target = $('#pane-customers')
+      target = $('#pane-schools')
       key = 'schools'
-      menu = "per-customer"
+      menu = 'institutional'
       karo.empty target 
     else if url.match(/school/)
       school = json.school
-      $('#customer-overview #cust-name').text school.name
-      $('#customer-overview #cust-detail').text "#{school.city} #{school.phone}"
+      $('#school-overview #school-name').text school.name
+      $('#school-overview #school-detail').text "#{school.city} #{school.phone}"
     else
       matched = false
 

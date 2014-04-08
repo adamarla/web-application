@@ -390,23 +390,22 @@ m-admin-cust :
   show : 
     menu : admin-cust
 
-lnk-cust-create :
+lnk-school-create :
   show :
-    modal : m-cust-create-form
+    modal : m-school-create-form
 
-lnk-cust-list :
+lnk-school-list :
   show :
     left : left-9
   autoclick :
-    tab : tab-customers
+    tab : tab-schools
 
-tab-customers :
+tab-schools :
   show :
     wide : wide-3
   url : 
     self : schools/list
     panel : school?id=:id
-
 
 ##############################################################################
 ## Admin / Examiner specific  
@@ -620,6 +619,10 @@ tab-see-activity :
   url :
     self : customer/activity
     panel : document/transactions?id=:id
+
+lnk-gen-invoice :
+  show :
+    modal : m-invoice
 
 ##############################################################################
 ## Landing page  

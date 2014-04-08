@@ -50,6 +50,15 @@ jQuery ->
         alertbox.removeClass 'hide'
       else
         $('#m-transfer').modal 'hide'
+    else if url.match(/gen\/invoice/)
+      alertbox = $('#m-invoice #message')
+      alertbox.addClass 'hide'
+      if json.status is 'error'
+        alertbox.text json.message 
+        alertbox.removeClass 'hide'
+      else
+        $('#m-invoice').modal 'hide'
+        notifier.show 'n-purchase-complete'
     else
       matched = false
 
@@ -59,27 +68,3 @@ jQuery ->
     e.stopPropagation() if matched is true
     return true
 
-  ########################################################
-  #  WIDE PANEL
-  ########################################################
-
-  $('#wide').ajaxComplete (e, xhr, settings) ->
-    matched = true
-    url = settings.url
-    json = $.parseJSON xhr.responseText
-
-    if url.match(/question\/preview/)
-      $('#wide-wait').addClass 'hide'
-      $('#wide-X').removeClass 'hide'
-      preview.loadJson json # vault 
-      if json.context is 'qzb' # [#108]: possible only with teachers! 
-        tutorial.start 'qzb-milestone-6'
-        $('#m-audit-form').find('form').eq(0).attr 'action', "/audit/done?id=#{json.a}"
-    else if url.match(/rotate_scan/)
-      fdb.next.scan()
-    else
-      matched = false
-
-    e.stopImmediatePropagation() if matched
-    return true
-  

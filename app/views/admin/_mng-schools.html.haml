@@ -1,7 +1,7 @@
 
 %ul.nav.nav-tabs 
   %li
-    = simple_link :for => "Customers", :href => '#pane-customers', :id => 'tab-customers'
+    = simple_link :for => "Schools", :href => '#pane-schools', :id => 'tab-schools'
   %li
     = simple_link :for => "Contracts", :href => '#pane-contracts', :id => 'tab-contracts'
   %li
@@ -9,7 +9,7 @@
       :class => 'nopurge-ever'
 
 .tab-content
-  #pane-customers.tab-pane.scroll
+  #pane-schools.tab-pane.scroll
   #pane-contracts.tab-pane.scroll
   #pane-new-contract.tab-pane.scroll
     = render :partial => 'admin/form-ctrct-new'
