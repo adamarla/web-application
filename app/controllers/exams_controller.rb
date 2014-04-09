@@ -139,12 +139,6 @@ class ExamsController < ApplicationController
     render json: { msg: :ok }, status: :ok
   end
 
-  def redistribute
-    e = Exam.find params[:id]
-    e.reset unless e.nil?
-    render json: { msg: :ok }, status: :ok
-  end
-
   # throwaway method
   def update_signature
     student_id   = params[:id]

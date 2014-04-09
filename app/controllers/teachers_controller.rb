@@ -180,7 +180,7 @@ class TeachersController < ApplicationController
         a[m.to_i] = scheme[m].keys.map(&:to_i)  
       end 
       yaml = a.blank? ? nil : a.to_yaml
-      e.update_attribute :dist_scheme, yaml
+      e.reset if e.update_attribute(:dist_scheme, yaml)
     end
     render json: { msg: :ok }, status: :ok
   end

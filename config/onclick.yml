@@ -45,11 +45,6 @@ lnk-exam-deadlines :
     self : ping/exam?id=:b
   update-on: exam/load
 
-lnk-exam-redistribute : 
-  url : 
-    self : exam/redistribute?id=:b
-  update-on: exam/load
-
 lnk-exam-disputes: 
   show : 
     left : left-9 
