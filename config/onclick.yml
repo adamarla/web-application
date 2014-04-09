@@ -40,6 +40,11 @@ lnk-def-dist-scheme :
     self : def/dist/scheme?id=:b
   update-on: exam/load
 
+lnk-exam-deadlines : 
+  url : 
+    self : ping/exam?id=:b
+  update-on: exam/load
+
 lnk-exam-redistribute : 
   url : 
     self : exam/redistribute?id=:b

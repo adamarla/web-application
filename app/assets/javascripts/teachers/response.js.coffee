@@ -193,7 +193,7 @@ jQuery ->
       menu = 'per-asset'
     else if url.match(/attach_detach_asset/)
       $('#mng-assets').modal 'hide'
-    else if url.match(/quiz\/mass_assign/)
+    else if url.match(/quiz\/mass_assign/) || url.match(/ping\/exam/)
       monitor.add json
       if json.meta?
         m = $('#m-exb-deadlines')

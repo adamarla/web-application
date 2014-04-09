@@ -3,6 +3,10 @@ class ExamsController < ApplicationController
   before_filter :authenticate_account!, :except => [:update_signature]
   respond_to :json
 
+  def ping 
+    @e = Exam.find params[:id]
+  end 
+
   def summary
     # students who got this exam
     @exam = Exam.find params[:id]

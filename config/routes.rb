@@ -160,6 +160,7 @@ Webapp::Application.routes.draw do
   match 'exam/disputes/resolved' => 'exams#resolved_disputes', via: :get
   match 'set/deadlines' => 'exams#deadlines', via: [:put, :post]
   match 'exam/redistribute' => 'exams#redistribute', via: :get
+  match 'ping/exam' => 'exams#ping', via: :get
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get
