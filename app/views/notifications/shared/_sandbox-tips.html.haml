@@ -1,8 +1,7 @@
 
 - is_assistant = current_account.loggable.mentor_is_teacher 
-- timeout = is_assistant ? 30000 : 15000
 
-#n-sandbox-tips.modal.regular.hide.fade.row-fluid{ data: { autohide: timeout } } 
+#n-sandbox-tips.modal.regular.hide.fade.row-fluid{ data: { autohide: :never } } 
   .span3
     = image_tag 'notifications/keyboard.png', class: 'big-icon' 
   .span8
