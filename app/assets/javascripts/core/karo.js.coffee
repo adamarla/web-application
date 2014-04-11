@@ -94,6 +94,24 @@ window.karo = {
       return ul.children('li.active')[0]
   }
 
+  link : {
+    disable : (a) -> 
+      $(a).addClass 'disabled' 
+      i = $(a).children('i')[0]
+      if i? 
+        $(i).removeClass 'icon-white'
+        $(i).addClass 'icon-gray' 
+      return true
+
+    enable : (a) ->
+      $(a).removeClass 'disabled' 
+      i = $(a).children('i')[0]
+      if i? 
+        $(i).removeClass 'icon-gray'
+        $(i).addClass 'icon-white' 
+      return true
+  }
+
   url : {
     updateOnAjax : (a, url, json) ->
       # continue unless a.dataset.ajax is 'disabled'
@@ -102,6 +120,21 @@ window.karo = {
 
       return false unless updateOn?
       return false unless karo.url.match(url, updateOn)
+
+      disable = false 
+      key = a.getAttribute('data-disable-if')
+      if key?
+        disable = if json[key]? then json[key] else false
+      else
+        key = a.getAttribute('data-disable-unless')
+        if key? 
+          disable = if json[key]? then !json[key] else true
+
+      if disable
+        karo.link.disable a
+        return false
+      else
+        karo.link.enable a
 
       href = karo.url.elaborate a, json
       return false unless href?

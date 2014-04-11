@@ -23,6 +23,8 @@
 #    prev : 
 #    id : 
 #    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
 #    callback : 
 #     pre :    -> pre click
 #     post :   -> post click
@@ -39,6 +41,7 @@ lnk-def-dist-scheme :
   url : 
     self : def/dist/scheme?id=:b
   update-on: exam/load
+  disable-unless: has_apprentices 
 
 lnk-exam-deadlines : 
   url : 
@@ -140,6 +143,8 @@ lnk-exb-new :
 lnk-exb-existing :
   autoclick :
     tab : tab-exb-existing
+  update-on: quiz/preview
+  disable-unless : has_exams
 
 tab-exb-existing :
   url : 

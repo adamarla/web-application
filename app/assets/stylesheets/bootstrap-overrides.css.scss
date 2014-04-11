@@ -267,7 +267,10 @@ span.btn-shortcut {
 
 .navbar-inverse, .dropdown-menu {
   li { 
-    > a { color: white ; }
+    > a{ 
+      color: white ; 
+      &.disabled { color: $lightgray ; } 
+    }
   }
   p.footnote {
     padding: 0px 20px ;

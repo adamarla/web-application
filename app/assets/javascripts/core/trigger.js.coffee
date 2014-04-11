@@ -59,6 +59,10 @@ window.rails = {
 window.trigger = {
 
   click : (link, event = null) ->
+    if $(link).hasClass 'disabled'
+      event.stopImmediatePropagation() if event? 
+      return true 
+
     return true if $(link).hasClass 'carousel-control'
     type = link.getAttribute 'data-toggle'
 
