@@ -16,4 +16,5 @@ object false
   } 
   node(:a) { @quiz.path? }
   node(:caption) { @quiz.name }
+  node(:has_exams) { @quiz.exams.count > 0 }
 

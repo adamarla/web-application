@@ -54,6 +54,8 @@ lnk-exam-disputes:
     wide : wide-X
   autoclick :
     tab : tab-pending-disputes
+  update-on: exam/load
+  disable-if: no_disputes
 
 tab-pending-disputes : 
   url : 
