@@ -31,7 +31,7 @@ class QuizzesController < ApplicationController
       end
 
       # For now, allow only offline teachers to specify any additional deadlines for the exam
-      unless t.online
+      unless t.indie
         r[:meta] = { id: eid }
       end
       render json: r, status: :ok

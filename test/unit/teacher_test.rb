@@ -8,7 +8,7 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer
-#  online     :boolean         default(FALSE)
+#  indie      :boolean         default(TRUE)
 #
 
 require 'test_helper'

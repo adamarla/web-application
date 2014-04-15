@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
       when "Teacher"
         @newbie = obj.new_to_the_site?
 
-        if obj.online 
+        if obj.indie 
           @who = "Online"
         else
           # Draw attention to quizzes and exams made today
@@ -44,7 +44,7 @@ end
 
 # Demos are available only to external teachers. Our own instructors don't need them
 =begin
-        unless obj.online
+        unless obj.indie
           cloned = obj.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
           json[:demo] = {
             build: (PREFAB_QUIZ_IDS - cloned.map(&:parent_id)),
