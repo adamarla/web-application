@@ -1,10 +1,10 @@
 
-- online_instructor = current_account.loggable.online
+- indie = current_account.loggable.indie
 
 %ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
   %li
     = simple_link for: 'Edit Quiz', id: 'lnk-edit-qz', icon: 'icon-edit'
-  - unless online_instructor  
+  - unless indie  
     %li
       = simple_link for: 'New Assignment', id: 'lnk-exb-new', icon: 'icon-plus-sign'
     %li

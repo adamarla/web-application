@@ -25,7 +25,7 @@
     = render partial: 'toolbox/fdb-panel'
     = render partial: 'shared/user/preview'
     = render partial: 'shared/grading/shadow'
-    - if tc.online
+    - if tc.indie
       = render partial: 'menus/teacher/courses'
 
 - content_for :modals do
@@ -37,7 +37,7 @@
     = render partial: 'modals/user/upload-scans'
     = render partial: 'modals/examiner/audit'
     = render partial: 'modals/examiner/new-examiner'
-    - unless tc.online
+    - unless tc.indie
       = render partial: 'modals/user/ask-a-question'
       = render partial: 'modals/teacher/demo-intro'
       -#= render partial: 'modals/teacher/demo'
@@ -45,7 +45,7 @@
       = render partial: 'modals/teacher/new-sk-two'
       = render partial: 'modals/teacher/share-quiz'
 
-    - if tc.online
+    - if tc.indie
       = render partial: 'modals/teacher/new-course'
       = render partial: 'modals/teacher/new-lesson'
       = render partial: 'modals/teacher/mng-assets'
@@ -63,7 +63,7 @@
     = render partial: 'notifications/shared/first-scan'
     = render partial: 'notifications/shared/question-received'
     = render partial: 'notifications/shared/dispute-reason'
-    - unless tc.online
+    - unless tc.indie
       = render partial: 'notifications/teacher/prefabricating'
       = render partial: 'notifications/teacher/new-sektion'
       = render partial: 'notifications/teacher/share-missing-teacher'
@@ -71,7 +71,7 @@
       = render partial: 'notifications/teacher/share-success'
       = render partial: 'notifications/teacher/share-already'
 
--unless tc.online
+-unless tc.indie
   - content_for :tutorials do 
     #tutorials
       - ['one', 'three', 'five', 'six', 'seven'].each do |m|
@@ -135,7 +135,7 @@
                 %li.dropdown
                   = simple_link for: "Upload", id: 'lnk-upload'
 
-                - unless tc.online
+                - unless tc.indie
                   %li.dropdown
                     = simple_link for: "Groups", id: 'm-tc-sektions'
                   %li.dropdown
@@ -144,7 +144,7 @@
                   %li.dropdown
                     = simple_link for: "QuickTrial", id: 'lnk-demo'
 
-                - if tc.online
+                - if tc.indie
                   %li.dropdown 
                     = simple_link for: "Courses", id: 'lnk-courses'
 
@@ -187,15 +187,15 @@
           #wide-chart-2.offset1
           #wide-chart-3.offset1
 
-          - unless tc.online
+          - unless tc.indie
             #wide-4
               = render partial: 'teachers/edit-sektion', locals: { teacher: tc }
 
             #wide-5
-              = render partial: 'teachers/edit-course', if: tc.online
+              = render partial: 'teachers/edit-course', if: tc.indie
 
     = yield :toolbox
     = yield :modals
 
-    - unless tc.online 
+    - unless tc.indie 
       = yield :tutorials
