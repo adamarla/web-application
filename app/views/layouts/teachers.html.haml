@@ -1,0 +1,108 @@
+
+-# Some controls variables  
+- t = current_account.loggable
+- ttype = t.indie ? 'indie' : 'uni'
+- s = "#{Gutenberg['server']}"
+
+-# Define contents_for 
+- for j in [:toolbox, :menus, :modals, :notifications]
+  - content_for j do 
+    - klass = (j == :toolbox) ? 'hidden' : ''
+    -  m = (j == :toolbox) ? ['generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['shared', ttype].map{ |a| "#{j}/teacher/#{a}" }
+    - partials_f = m.map{ |b| "app/views/#{b}" }
+    %div{ id: j, class: klass }
+      - for f in partials_f
+        - Dir["#{f}/*.haml"].each do |p| 
+          = render file: Rails.root.join(p), locals: { teacher: t, server: s }
+      -# render exceptions here 
+      - if j == :menus 
+        = render partial: 'menus/user/account'
+      - if j == :toolbox
+        = render partial: 'toolbox/grading/fdb-panel'
+
+-# Tutorials 
+- content_for :tutorials do 
+  #tutorials 
+    - tutorials_f = ['shared', ttype].map{ |m| "app/views/tutorials/teacher/#{m}" }
+    - for f in tutorials_f 
+      - Dir["#{f}/*/*.haml"].each do |t|
+        = render file: Rails.root.join(t)
+
+-# Depending on whether teacher is indie or uni, we render the control panel and main body differently
+- unless t.indie
+  - control_panel = [ {for: 'Quizzes', id: 'm-teacher-quizzes'},
+                      {for: 'Report Cards', id: 'm-report-cards'},
+                      {for: 'Upload', id: 'lnk-upload'},
+                      {for: 'Groups', id: 'm-tc-sektions'},
+                      {for: 'Help', id: 'm-howto'},
+                      {icon: 'icon-bell', id: 'lnk-bell'},
+                      {for: "Hello, #{t.first_name}", id: 'm-account'} ]
+  
+  - layout = { left: [ [1, 'teachers/uni/exb'],
+                       [2, 'teachers/shared/qzb'],
+                       [5, 'teachers/uni/rc'],
+                       [6, 'teachers/uni/deepdive'],
+                       [7, 'teachers/shared/edit-qz'],
+                       [8, 'teachers/uni/sektions'],
+                       [9, 'teachers/shared/disputes']],
+               middle: [],
+               right: [],
+               wide: [ ['wait', 'toolbox/generic/wait'],
+                       ['chart-1', nil],
+                       ['chart-2', nil],
+                       ['chart-3', nil] ] } 
+
+!!!5
+
+%html{html_attrs}
+  %head 
+    = javascript_include_tag "application", "teachers"
+    %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
+    %script{ type: "text/x-mathjax-config" } 
+      MathJax.Hub.Config({
+      "HTML-CSS" : {
+      mtextFontInherit : true
+      },
+      styles : {
+      ".mrow > .mtext" : {
+      "font-family" : "Ubuntu 'Trebuchet MS' sans-serif",
+      "font-weight" : 300,
+      "font-size" : "100%"
+      },
+      ".mo, .mn" : {
+      "font-size" : "70%" 
+      }
+      }
+      });
+    = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
+    = javascript_include_tag "http://d3js.org/d3.v3.min.js"
+    = stylesheet_link_tag "application"
+    = csrf_meta_tag
+
+  %body 
+    #spinner.spinner
+      = image_tag "loading.gif", id: 'img-spinner', size: '50x50'
+    .container-fluid 
+      #control-panel.g-panel.row-fluid{ :marker => "#{t.id}" } 
+        .span12
+          .navbar.navbar-inverse
+            .navbar-inner
+              %a.brand.span3{ :href => "#"}
+                = image_tag "logo-mit-beta-2.png"
+              %ul.nav.span9.pull-right
+                - for l in control_panel 
+                  %li.dropdown 
+                    = simple_link for: l[:for], id: l[:id], icon: l[:icon]
+      
+      #desktop.row-fluid 
+        - layout.each do |pnl, child|
+          %div{ id: "#{pnl}", class: 'g-panel span4' }
+            -# Add paginator 
+            = render partial: 'toolbox/custom/paginator', locals: { id: "#{pnl}-paginator", url: '#' }
+            -# Then, add the { left-, middle-, right-, wide- } as specified in layout
+            - child.each do |j|
+              %div{ id: "#{pnl}-#{j.first}" }
+                = render(partial: "#{j.last}", locals: { teacher: t, server: s }) unless j.last.nil?
+
+    - for j in [:toolbox, :menus, :modals, :notifications, :tutorials]
+      = yield j
