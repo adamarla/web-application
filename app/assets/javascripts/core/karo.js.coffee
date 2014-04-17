@@ -234,11 +234,10 @@ window.karo = {
     # Converts "\text{ A }B\text{ C }D" - which is what is stored in the DB and used by MathJax 
     # to "A $B$ C $D$" - which is how the user originally entered it
 
-    origStr = decodeURIComponent comment
     mathFilter = /(}|^).*?(\\text{|$)/g
-    ret = new String(origStr)
+    ret = new String(comment)
 
-    while((mathBits = mathFilter.exec(origStr)) != null)
+    while((mathBits = mathFilter.exec(comment)) != null)
       bit = mathBits[0]
       j = bit.replace(/^}|^/,'$')
       j = j.replace(/$|\\text{/,'$')
