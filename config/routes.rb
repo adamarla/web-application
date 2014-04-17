@@ -46,7 +46,7 @@ Webapp::Application.routes.draw do
   match 'document/transactions' => 'customers#transactions', via: :get
   match 'credits/transfer' => 'customers#transfer', via: :post
   match 'course/buy' => 'customers#buy_course', via: :get
-  match 'gen/invoice' => 'customer#generate_invoice', via: :post
+  match 'gen/invoice' => 'customers#generate_invoice', via: :post
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]

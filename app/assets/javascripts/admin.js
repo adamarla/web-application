@@ -5,3 +5,4 @@
 //= require_directory ./shared/ad-ex
 //= require_directory ./shared/ad-ex-tc
 //= require_directory ./admin 
+//= require_directory ./customers

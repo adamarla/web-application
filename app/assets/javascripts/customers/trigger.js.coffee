@@ -1,5 +1,13 @@
 jQuery ->
 
+  $('#m-invoice').on 'shown', ->
+    customer = $('#pane-cust .selected')
+    customer_id = customer.attr "marker"
+    customer_name = customer.children('.text')[0].innerHTML
+
+    $('#m-invoice .title')[0].textContent = "Invoice for: " + customer_name
+    $('#m-invoice #customer_id')[0].value = customer_id
+
   $('#payment_credits').change ->
     recalc_payment_amount()
 

@@ -65,8 +65,7 @@ class PaymentsController < ApplicationController
       end            
 
       if account.customer.nil? 
-        customer = account.build_customer currency: p[:currency]
-        account.save
+        customer = account.create_customer currency: p[:currency]
       else
         customer = account.customer
       end
@@ -105,7 +104,7 @@ class PaymentsController < ApplicationController
         err = "Uh-oh, problem - #{refund.response_message}"
       else
         customer = current_account.loggable.customer
-        # customer.apply_refund(refund, current_account)
+        customer.apply_refund(refund, current_account)
         # Mailbot.delay.refund_received(customer, refund)
         render :json => {
           :text => "#{customer.balance}", 

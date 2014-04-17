@@ -1,9 +1,11 @@
-
-node(:customers) {
-  @customers.map { |c|
-    :name => c.account.email,
-    :id => c.id,
-    :tag => c.currency,
-    :badge => c.account.loggable == "School" ? c.cash_balance : c.credit_balance
+object false
+  node(:customers) {
+    @customers.map{ |c|
+      {
+        name: c.account.loggable.name,
+        id: c.id,
+        tag: c.currency,
+        badge: c.account.loggable == "Student" ? c.credit_balance : c.cash_balance
+      }
+    }
   }
-}

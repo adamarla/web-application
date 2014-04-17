@@ -29,9 +29,9 @@ class CustomersController < ApplicationController
     recepient_acct = Account.find_by_email transfer[:recepient_email]
 
     if recepient_acct.nil?
-      render json: { status: error, message: "Sorry #{transfer[:recepient_email]} is not registered with us as a Student" }
+      render json: { status: :error, message: "Sorry #{transfer[:recepient_email]} is not registered with us as a Student" }
     elsif recepient_acct.loggable_type != "Student"
-      render json: { status: error, message: "Sorry you can only transfer Gredits to a fellow Student" }
+      render json: { status: :error, message: "Sorry you can only transfer Gredits to a fellow Student" }
     else
       if recepient_acct.customer.nil?
         recepient_acct.build_customer currency: donor.currency
@@ -56,7 +56,7 @@ class CustomersController < ApplicationController
     account = current_account
     
     unless customer.can_afford? course.price 
-      render json: { status: error, message: "Ya need more Gredits Jim!" }
+      render json: { status: :error, message: "Ya need more Gredits Jim!" }
     else
       customer.purchase_course course, current_account
       render json: { status: :success, message: "Your got it - #{course.name} is yours!" }
@@ -64,7 +64,19 @@ class CustomersController < ApplicationController
   end
 
   def generate_invoice
-    render json: { status: :success, message: "Invoice 123 created" }
+    invoice_for = params[:invoice_for]
+    amount = invoice_for[:amount]
+    currency = invoice_for[:currency]
+    cost_code = invoice_for[:cost_code]
+    customer_id = invoice_for[:customer_id]
+    quantity = invoice_for[:quantity]
+
+    customer = Customer.find(customer_id)
+    invoice = customer.generate_invoice(amount, cost_code, quantity, current_account)
+    render json: { 
+      status: :success, 
+      message: "Invoice #{invoice.id} for #{amount} #{currency} #{cost_code} #{school_id}" 
+    }
   end
 
 end

@@ -449,7 +449,7 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.integer  "quantity"
     t.integer  "rate_code_id"
     t.integer  "reference_id"
-    t.integer  "reference_type"
+    t.string   "memo"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end

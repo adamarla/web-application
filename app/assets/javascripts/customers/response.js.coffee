@@ -14,9 +14,11 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
-    if url.match(/customer\/list/)
-      target = $('#')
+    if url.match(/customers\/list/)
+      target = $('#pane-cust')
       key = 'customers'
+      menu = 'admin'
+      karo.empty target
     else if url.match(/customer\/activity/)
       target = $('#pane-cust-activity')
       key = 'activity'

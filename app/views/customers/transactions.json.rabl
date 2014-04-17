@@ -4,8 +4,7 @@ node(:transactions) {
     {
       name: t.display,
       id: t.id,
-      tag: t.quantity,
-      badge: t.letter_code
+      tag: t.quantity
     }
   }
 }

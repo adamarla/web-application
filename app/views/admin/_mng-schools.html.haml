@@ -5,12 +5,9 @@
   %li
     = simple_link :for => "Contracts", :href => '#pane-contracts', :id => 'tab-contracts'
   %li
-    = simple_link :for => "Make New", :href => '#pane-new-contract', :id => 'tab-new-contract', 
-      :class => 'nopurge-ever'
+    = simple_link :for => "Statements", :href => '#pane-cust-activity', :id => 'tab-see-activity'
 
 .tab-content
   #pane-schools.tab-pane.scroll
   #pane-contracts.tab-pane.scroll
-  #pane-new-contract.tab-pane.scroll
-    = render :partial => 'admin/form-ctrct-new'
-
+  #pane-cust-activity.tab-pane.scroll

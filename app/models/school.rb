@@ -14,7 +14,6 @@
 class School < ActiveRecord::Base
   has_one :account, :as => :loggable
   has_many :teachers
-  has_many :contracts
 
   validates :name, :presence =>true
   after_create :assign_uid
@@ -69,6 +68,14 @@ class School < ActiveRecord::Base
 
   def customer
     return self.account.customer
+  end
+
+  def contracts
+    unless self.account.nil?
+      unless self.customer.nil?
+        self.customer.contracts
+      end
+    end
   end
 
   def assign_uid

@@ -624,6 +624,17 @@ lnk-gen-invoice :
   show :
     modal : m-invoice
 
+lnk-customer-list :
+  autoclick : 
+    tab : tab-cust
+  show : 
+    left : left-9
+
+tab-cust :
+  url :
+    self : customers/list
+
+
 ##############################################################################
 ## Landing page  
 ##############################################################################

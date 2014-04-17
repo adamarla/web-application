@@ -28,17 +28,18 @@ jQuery ->
       target = $('#accounts-in-country')
       key = 'accounts'
       karo.empty target
-    else if url.match(/school\/create/)
-      $('#m-school-create-form').modal 'hide' 
     else if url.match(/schools\/list/)
       target = $('#pane-schools')
       key = 'schools'
       menu = 'institutional'
       karo.empty target 
     else if url.match(/school/)
-      school = json.school
-      $('#school-overview #school-name').text school.name
-      $('#school-overview #school-detail').text "#{school.city} #{school.phone}"
+      if settings.type == "POST"
+        $('#m-school-create-form').modal 'hide' 
+      else
+        school = json.school
+        $('#school-overview #school-name').text school.name
+        $('#school-overview #school-detail').text "#{school.city} #{school.phone}"
     else
       matched = false
 

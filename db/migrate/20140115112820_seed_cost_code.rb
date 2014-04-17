@@ -6,7 +6,6 @@ class SeedCostCode < ActiveRecord::Migration
     CostCode.create(description: "Parental Access", subscription: true)
     CostCode.create(description: "Assessment Service Demo", subscription: false)
     CostCode.create(description: "Assessment Platform Demo", subscription: false)
-    CostCode.create(description: "One time charge", subscription: false)
   end
 
   def down

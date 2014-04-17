@@ -10,13 +10,13 @@
     = render partial: 'menus/user/account'
     - if is_admin
       = render partial: 'menus/examiner/workbench', locals: { is_admin: true } 
-      = render partial: 'menus/admin/school', locals: { is_admin: true } 
+      = render partial: 'menus/admin/customer', locals: { is_admin: true } 
+      = render partial: 'menus/customer/admin'
     = render partial: 'menus/user/notifications'
     = render partial: 'examiners/annotation-marks'
     = render partial: 'menus/examiner/blockdb'
     = render partial: 'menus/examiner/per-pending-video'
     = render partial: 'menus/examiner/per-audit'
-    = render partial: 'menus/customer/institutional'
     = render partial: 'shared/user/preview'
     = render partial: 'shared/grading/shadow'
   
@@ -28,6 +28,7 @@
     = render partial: 'modals/examiner/upload-video-solution'
     = render partial: 'notifications/shared/last-scan'
     = render partial: 'notifications/shared/first-scan'
+    = render partial: 'notifications/shared/purchase-completed'
     - if is_admin
       = render partial: 'modals/examiner/new-examiner'
       = render partial: 'modals/admin/create-school'
@@ -88,7 +89,7 @@
             = render partial: 'examiners/video-pending'
           - if is_admin
             #left-9
-              = render partial: 'admin/mng-schools'
+              = render partial: 'customers/list'
 
         - if is_admin
           #middle.g-panel.span4

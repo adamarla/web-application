@@ -21,6 +21,7 @@ class Customer < ActiveRecord::Base
   
   has_many :accounting_docs
   has_many :transactions, through: :accounting_docs
+  has_many :contracts
 
   def apply_payment(payment, account, accounting_doc = nil)
 
@@ -29,25 +30,31 @@ class Customer < ActiveRecord::Base
         self.accounting_docs << AccountingDoc.new_credit_note 
       end
       accounting_doc = self.open_credit_note
-
       rc = RateCode.for_course_credit(self.currency) 
 
+      # nullify previous statement by adjusting remaining balance into
+      # new statement
       if accounting_doc.balance > 0
         adjustment = accounting_doc.balance
-        neg_adj = Transaction.new_adjustment(adjustment*-1, accounting_doc.id, rc.id, account.id)
-        accounting_doc.transactions << neg_adj
+        accounting_doc.transactions.create(account_id: account.id,
+            quantity: (adjustment*-1), rate_code_id: rc.id, 
+            reference_id: accounting_doc.id, memo: "Negative Adjustment to close statement")
         accounting_doc.close
 
         accounting_doc = AccountingDoc.new_credit_note
         self.accounting_docs << accounting_doc
-        pos_adj = Transaction.new_adjustment(adjustment, accounting_doc.id, rc.id, account.id)
-        accounting_doc.transactions << pos_adj
+        accounting_doc.transactions.create(account_id: account.id,
+            quantity: adjustment, rate_code_id: rc.id, 
+            reference_id: accounting_doc.id, memo: "Positive Adjustment from prior Statement")
       end
 
-      pmnt_trans = Transaction.new_payment(payment.credits, payment.id, rc.id, account.id)
-      accounting_doc.transactions << pmnt_trans
+      # apply new payment
+      hash = eval payment.response_params
+      transaction_id = hash["transaction_id"]
+      accounting_doc.transactions.create(account_id: account.id,
+          quantity: payment.credits, rate_code_id: rc.id, 
+          reference_id: payment.id, memo: "Online Gredit Purchase Paypal ref #{transaction_id}")
       self.update_attribute :credit_balance, (self.credit_balance += payment.credits)
-
     else # is it an invoice? or a one time payment?
 
     end
@@ -60,26 +67,59 @@ class Customer < ActiveRecord::Base
 
   def purchase_course(course, account)
     code = RateCode.for_course_credit self.currency
-    course_purchase = Transaction.new_course course.price, course.id, code.id, account.id
     credit_note = self.open_credit_note
-    credit_note.transactions << course_purchase
+    credit_note.transactions.create(account_id: account.id,
+        quantity: (course.price*-1), rate_code_id: code.id,
+        reference_id: course.id, memo: "Signed up for #{course.name}")
     self.update_attribute :credit_balance, (self.credit_balance -= course.price)
   end
 
   def transfer_credits(quantity, recepient, account)
     code = RateCode.for_course_credit self.currency
-    from_trans = Transaction.new_transfer(quantity*-1, recepient.id, code.id, account.id)
     credit_note = self.open_credit_note
-    credit_note.transactions << from_trans
-    self.update_attribute :credit_balance, (self.credit_balance += from_trans.quantity)
+    credit_note.transactions.create(account_id: account.id, 
+        quantity: (quantity*-1), rate_code_id: code.id, 
+        reference_id: recepient.id, memo: "Gredits Donated to #{recepient.account.email}")
+    self.update_attribute :credit_balance, (self.credit_balance -= quantity)
 
-    to_trans = Transaction.new_transfer quantity, self.id, code.id, account.id
     if recepient.open_credit_note.nil?
       recepient.accounting_docs << AccountingDoc.new_credit_note
     end
     credit_note = recepient.open_credit_note
-    credit_note.transactions << to_trans
-    recepient.update_attribute :credit_balance, (recepient.credit_balance += to_trans.quantity)
+    credit_note.transactions.create(account_id: account.id, 
+        quantity: quantity, rate_code_id: code.id, 
+        reference_id: recepient.id, memo: "Gredits Received from #{account.email}")
+    recepient.update_attribute :credit_balance, (recepient.credit_balance += quantity)
+  end
+
+  def apply_refund(refund, account)
+    code = RateCode.for_course_credit self.currency
+    hash = eval refund.response_params
+    transaction_id = hash["transaction_id"]
+    open_credit_note = self.open_credit_note
+    open_credit_note.transactions.create(account_id: account.id,
+        quantity: refund.credits, rate_code_id: code.id,
+        reference_id: refund.id, memo: "Refund for #{refund.display_value} processed")
+    self.update_attribute :credit_balance, 0
+    open_credit_note.close
+  end
+
+  def generate_invoice(amount, cost_code, quantity, account)
+    rate_code = RateCode.where(cost_code_id: cost_code, currency: self.currency, value: amount)
+    if rate_code.nil?
+      rate_code = RateCode.new cost_code_id: cost_code, 
+          currency: self.currency, value: amount
+      rate_code.save
+    end
+
+    invoice = AccountingDoc.new_invoice
+    self.accounting_docs << invoice
+
+    invoice.transactions.create(account_id: account.id,
+      quantity: quantity, rate_code_id: rate_code.id,
+      reference_id: nil, memo: "Raised Invoice")
+    self.update_attribute :cash_balance, -1*amount
+    return invoice
   end
 
   def open_credit_note

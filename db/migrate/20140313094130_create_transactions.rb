@@ -6,7 +6,7 @@ class CreateTransactions < ActiveRecord::Migration
       t.integer :quantity
       t.integer :rate_code_id
       t.integer :reference_id
-      t.integer :reference_type
+      t.string  :memo
 
       t.timestamps
     end
