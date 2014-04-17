@@ -517,24 +517,6 @@ span.btn-shortcut {
   } 
 } 
 
-#lnk-logout{ color: $orange ; }
-
-.g-panel { 
-  h3 {
-    // color: $gradians-blue ;
-  }
-} 
-
-#cp-account-link { 
-  float: right ;
-  #m-account { 
-    font : { 
-      weight: 500 ;
-    }
-  }
-
-} 
-
 .nav { 
   &.nav-pills, &.nav-tabs { 
     > li {
