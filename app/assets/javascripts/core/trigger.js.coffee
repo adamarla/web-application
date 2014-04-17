@@ -613,7 +613,7 @@ jQuery ->
   ## Auto-click the first default link 
   #####################################################################
 
-   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default]")
+   for m in $("#control-panel, #menus > ul[role='menu']").find("a[data-default]")
      trigger.click m
      return true
 

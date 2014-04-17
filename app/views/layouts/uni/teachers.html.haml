@@ -3,9 +3,24 @@
 - tc = current_account.loggable
 - server = "#{Gutenberg['server']}"
 
--content_for :toolbox do
+- for j in [:toolbox, :menus, :modals, :notifications]
+  - content_for j do 
+    - klass = (j == :toolbox) ? 'hidden' : ''
+    -  m = (j == :toolbox) ? ['generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['shared', 'uni'].map{ |a| "#{j}/teacher/#{a}" }
+    - partials_f = m.map{ |b| "app/views/#{b}" }
+    %div{ id: j, class: klass }
+      - for f in partials_f
+        - Dir["#{f}/*.haml"].each do |p| 
+          = render file: Rails.root.join(p), locals: { teacher: tc, server: server }
+      -# render exceptions here 
+      - if j == :menus 
+        = render partial: 'menus/user/account'
+      - if j == :toolbox
+        = render partial: 'toolbox/grading/fdb-panel'
+      
+-#
+  -content_for :toolbox do
   #toolbox.hidden 
-    = render partial: 'teachers/sektions'
     = render partial: 'toolbox/line'
     = render partial: 'menus/teacher/bell'
     = render partial: 'menus/teacher/per-qz'
@@ -28,7 +43,8 @@
     - if tc.indie
       = render partial: 'menus/teacher/courses'
 
-- content_for :modals do
+-#
+  - content_for :modals do
   #modals
     = render partial: 'modals/user/account'
     = render partial: 'modals/teacher/exb_1'
@@ -95,7 +111,7 @@
   %head 
     = javascript_include_tag "application", "teachers"
     %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
-    %script{ :type => "text/x-mathjax-config" } 
+    %script{ type: "text/x-mathjax-config" } 
       MathJax.Hub.Config({
       "HTML-CSS" : {
       mtextFontInherit : true
@@ -152,6 +168,32 @@
                   = simple_link icon: 'icon-bell', id: 'lnk-bell'
                 %li#cp-account-link.dropdown
                   = simple_link for: "Hello, #{tc.first_name}", id: 'm-account'
+      
+      - layout = { left: [ [1, 'teachers/uni/exb'],
+                           [2, 'teachers/shared/qzb'],
+                           [5, 'teachers/uni/rc'],
+                           [6, 'teachers/uni/deepdive'],
+                           [7, 'teachers/shared/edit-qz'],
+                           [8, 'teachers/uni/sektions'],
+                           [9, 'teachers/shared/disputes']],
+                   middle: [],
+                   right: [],
+                   wide: [ ['wait', 'toolbox/generic/wait'],
+                           ['chart-1', nil],
+                           ['chart-2', nil],
+                           ['chart-3', nil] ] } 
+      
+      #desktop.row-fluid 
+        - layout.each do |pnl, child|
+          %div{ id: "#{pnl}", class: 'g-panel span4' }
+            -# Add paginator 
+            = render partial: 'toolbox/custom/paginator', locals: { id: "#{pnl}-paginator", url: '#' }
+            -# Then, add the { left-, middle-, right-, wide- } as specified in layout
+            - child.each do |j|
+              %div{ id: "#{pnl}-#{j.first}" }
+                = render(partial: "#{j.last}", locals: { teacher: tc, server: server }) unless j.last.nil?
+        
+    -#
       #desktop.row-fluid
         #left.g-panel.span4
           = render partial: 'toolbox/paginator', locals: { id: 'left-paginator', url: '#' }
@@ -194,8 +236,5 @@
             #wide-5
               = render partial: 'teachers/edit-course', if: tc.indie
 
-    = yield :toolbox
-    = yield :modals
-
-    - unless tc.indie 
-      = yield :tutorials
+    - for j in [:toolbox, :menus, :modals, :notifications]
+      = yield j

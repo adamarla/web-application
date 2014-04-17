@@ -167,12 +167,6 @@ jQuery ->
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
       # demo.update json
-    else if url.match(/prefab/)
-      monitor.add json
-      x = $('#m-demo').find("li[marker=#{json.timer.on}]").eq(0)
-      watch = x.children('.stopwatch')[0]
-      stopWatch.start watch, parseInt(json.timer.for)
-      $('#lnk-existing-quiz').click()
     else if url.match(/preview\/names/)
       target = $('#new-sk-students')
       lines.columnify target, json.names

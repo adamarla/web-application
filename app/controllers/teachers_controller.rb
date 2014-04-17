@@ -42,7 +42,7 @@ class TeachersController < ApplicationController
   end 
 
   def show 
-    render nothing: true, layout: 'teachers'
+    render nothing: true, layout: 'uni/teachers'
   end 
 
   def load
