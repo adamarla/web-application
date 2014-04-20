@@ -48,6 +48,7 @@
                middle: [],
                right: [],
                wide: [ ['wait', 'toolbox/generic/wait'],
+                       [4, 'teachers/uni/edit-sektion'],
                        ['chart-1', nil],
                        ['chart-2', nil],
                        ['chart-3', nil] ] } 
@@ -95,7 +96,8 @@
       
       #desktop.row-fluid 
         - layout.each do |pnl, child|
-          %div{ id: "#{pnl}", class: 'g-panel span4' }
+          - width = pnl != :wide ? 'span4' : 'span7'
+          %div{ id: "#{pnl}", class: "g-panel #{width}" }
             -# Add paginator 
             = render partial: 'toolbox/custom/paginator', locals: { id: "#{pnl}-paginator", url: '#' }
             -# Then, add the { left-, middle-, right-, wide- } as specified in layout
