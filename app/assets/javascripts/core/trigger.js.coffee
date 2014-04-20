@@ -134,17 +134,18 @@ window.trigger = {
 
 jQuery ->
 
+
   ###
     A spinner to show that AJAX request is in process. The spinner is shown only 
     in the control panel 
   ###
 
-  $('#spinner').bind 'ajaxSend', () ->
-    $(this).show()
+  $('body').bind 'ajaxSend', () ->
+    spinner.start()
   .bind 'ajaxStop', () ->
-    $(this).hide()
+    spinner.stop()
   .bind 'ajaxError', () ->
-    $(this).hide()
+    spinner.stop()
 
   # Initialize tutorials
   tutorial.initialize()
@@ -155,6 +156,9 @@ jQuery ->
   ###
 
   onPing = (response) ->
+    # Unhide the console 
+    $('body > .container-fluid').removeClass('hidden')
+
     # Start monitoring progress of any pending Delayed::Jobs
     monitor.add response, true
 

@@ -80,9 +80,8 @@
     = csrf_meta_tag
 
   %body 
-    #spinner.spinner
-      = image_tag "loading.gif", id: 'img-spinner', size: '50x50'
-    .container-fluid 
+    = render partial: 'toolbox/generic/spinner'
+    .container-fluid.hidden
       #control-panel.g-panel.row-fluid{ :marker => "#{t.id}" } 
         .span12
           .navbar.navbar-inverse
