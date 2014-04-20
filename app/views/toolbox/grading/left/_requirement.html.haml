@@ -1,10 +1,10 @@
 
 -# requirement comes as a local from the calling partial
 
-.row-fluid.requirement.leaf{ :marker => "#{requirement.id}" }
+.row-fluid.requirement.leaf{ marker: "#{requirement.id}" }
   .span2
     .badge= "#{requirement.posn}"
   .span10
     .bottomline= "#{requirement.bottomline}" 
     .text= "#{requirement.text}"
-    %input.hide{ :type => :checkbox, :name => "checked[#{requirement.id}]", :id => "checked_#{requirement.id}" }
+    %input.hide{ type: :checkbox, name: "checked[#{requirement.id}]", id: "checked_#{requirement.id}" }
