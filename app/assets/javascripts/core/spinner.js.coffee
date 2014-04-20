@@ -11,12 +11,11 @@ window.spinner = {
       spinner.root = $('body > #spinner')[0]
       spinner.dom = $(spinner.root).children()[0]
       settings = { 
-        lines: 13, # The number of lines to draw
-        length: 10, # The length of each line
+        lines: 10, # The number of lines to draw
+        length: 8, # The length of each line
         width: 4, # The line thickness
         radius: 10, # The radius of the inner circle
         color: '#fff', # #rgb or #rrggbb or array of colors
-        zIndex: 2e9, # The z-index (defaults to 2000000000)
         position: 'relative'
       }
       spinner.obj = new Spinner(settings)
