@@ -8,7 +8,7 @@ class VideosController < ApplicationController
 
     video = type == "Lesson" ? Lesson.find(id).video : Question.find(id).video
     unless video.nil?
-      render json: { uid: video.sublime_uid }, status: :ok
+      render json: { uid: video.uid }, status: :ok
     else
       render json: { status: :failed }, status: :bad_request
     end

@@ -148,7 +148,7 @@ class QuestionController < ApplicationController
     question = Question.find params[:id]
 
     unless question.nil?
-      question.create_video sublime_uid: uid, active: true
+      question.create_video uid: uid, active: true
       render json: { status: :great, hide: [question.id] }, status: :ok
     else
       render json: { status: :failed }, status: :ok
