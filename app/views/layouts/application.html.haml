@@ -22,8 +22,7 @@
     = javascript_include_tag "external" if Rails.env == "production"
     = csrf_meta_tag
   %body 
-    #spinner.spinner
-      = image_tag "loading.gif", :id => 'img-spinner'
+    = render partial: 'toolbox/generic/spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid
         .span12
