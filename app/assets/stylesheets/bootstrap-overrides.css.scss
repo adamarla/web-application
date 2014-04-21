@@ -828,8 +828,12 @@ button[data-toggle='button'] {
   z-index: 5;
   min-width: 700px ;
   width: 1024px ;
-  ul {
+  ul.nav {
     margin-top: 15px ;
+    > li:last-child {
+      float: right ;
+      > a { color: $orange ; font-weight: 500 ;}
+    }
   }
 
   a { 

@@ -67,7 +67,7 @@
                 - if user.mentor_is_teacher
                   %li
                     = simple_button for: 'Sandbox Off', toggle: :button, class: 'btn btn-primary', id: 'btn-sandbox-toggle'
-                %li#cp-account-link.dropdown
+                %li.dropdown
                   = simple_link :for => "Hello, #{user.first_name}", as: :dropdown, id: 'm-account'
 
       #desktop.row-fluid

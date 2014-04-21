@@ -67,7 +67,7 @@
             .navbar-inner
               %a.brand.span3{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
-              %ul.nav.span9.pull-right
+              %ul.nav.span8.pull-right
                 - for l in control_panel 
                   %li.dropdown 
                     = simple_link for: l[:for], id: l[:id], icon: l[:icon]
