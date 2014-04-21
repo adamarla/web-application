@@ -26,7 +26,7 @@
         = render partial: 'toolbox/grading/left/fdb-panel'
 
 -# Tutorials 
-- content_for :tutorials do 
+  - content_for :tutorials do 
   #tutorials 
     - tutorials_f = ['shared', ttype].map{ |m| "app/views/tutorials/teacher/#{m}" }
     - for f in tutorials_f 
@@ -39,7 +39,6 @@
                       {for: 'Report Cards', id: 'm-report-cards'},
                       {for: 'Upload', id: 'lnk-upload'},
                       {for: 'Groups', id: 'm-tc-sektions'},
-                      {for: 'Help', id: 'm-howto'},
                       {icon: 'icon-bell', id: 'lnk-bell'},
                       {for: "Hello, #{t.first_name}", id: 'm-account'} ]
   
@@ -110,5 +109,5 @@
               %div{ id: "#{pnl}-#{j.first}" }
                 = render(partial: "#{j.last}", locals: { teacher: t, server: s }) unless j.last.nil?
 
-    - for j in [:toolbox, :menus, :modals, :notifications, :tutorials]
+    - for j in [:toolbox, :menus, :modals, :notifications]
       = yield j
