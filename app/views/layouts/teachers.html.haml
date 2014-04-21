@@ -8,8 +8,12 @@
 - for j in [:toolbox, :menus, :modals, :notifications]
   - content_for j do 
     - klass = (j == :toolbox) ? 'hidden' : ''
-    -  m = (j == :toolbox) ? ['generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['shared', ttype].map{ |a| "#{j}/teacher/#{a}" }
+
+    -  m = (j == :toolbox) ? ['generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['shared', "teacher/#{ttype}", 
+    'teacher/shared'].map{ |a| "#{j}/#{a}" }
+
     - partials_f = m.map{ |b| "app/views/#{b}" }
+
     %div{ id: j, class: klass }
       - for f in partials_f
         - Dir["#{f}/*.haml"].each do |p| 
@@ -17,6 +21,7 @@
       -# render exceptions here 
       - if j == :menus 
         = render partial: 'menus/user/account'
+        = render partial: 'menus/examiner/per-dispute'
       - if j == :toolbox
         = render partial: 'toolbox/grading/left/fdb-panel'
 
