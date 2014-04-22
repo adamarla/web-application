@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140421085430) do
+ActiveRecord::Schema.define(:version => 20140422044600) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -57,21 +57,6 @@ ActiveRecord::Schema.define(:version => 20140421085430) do
   create_table "countries", :force => true do |t|
     t.string "name",         :limit => 50
     t.string "alpha_2_code"
-  end
-
-  create_table "courses", :force => true do |t|
-    t.string   "name",       :limit => 50
-    t.integer  "teacher_id"
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
-    t.decimal  "price",                    :precision => 5, :scale => 2
-  end
-
-  create_table "coursework", :force => true do |t|
-    t.integer  "milestone_id"
-    t.integer  "quiz_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -189,37 +174,6 @@ ActiveRecord::Schema.define(:version => 20140421085430) do
     t.boolean  "is_mother"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "lectures", :force => true do |t|
-    t.integer  "lesson_id"
-    t.integer  "milestone_id"
-    t.integer  "index",        :default => -1
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-  end
-
-  create_table "lessons", :force => true do |t|
-    t.string   "name",        :limit => 70
-    t.text     "description"
-    t.boolean  "history",                   :default => false
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.integer  "teacher_id"
-  end
-
-  create_table "milestones", :force => true do |t|
-    t.integer  "index",      :default => -1
-    t.integer  "course_id"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-  end
-
-  create_table "progressions", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "milestone_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
   end
 
   create_table "q_selections", :force => true do |t|
