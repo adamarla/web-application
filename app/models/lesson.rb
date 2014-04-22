@@ -14,4 +14,8 @@ class Lesson < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :teacher
   has_one :video, as: :watchable
+
+  def description?
+    return self.description || "No description"
+  end 
 end
