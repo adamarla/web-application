@@ -47,10 +47,6 @@ class Quiz < ActiveRecord::Base
   has_many :questions, through: :q_selections
   has_many :exams, dependent: :destroy
 
-  # Quiz -> Coursework -> Milestone
-  has_many :coursework 
-  has_many :milestones, through: :coursework
-
   # Validations
   validates :teacher_id, presence: true, numericality: true
   

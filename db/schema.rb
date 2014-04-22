@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140422044600) do
+ActiveRecord::Schema.define(:version => 20140422063143) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",   :null => false
@@ -58,6 +58,16 @@ ActiveRecord::Schema.define(:version => 20140422044600) do
     t.string "name",         :limit => 50
     t.string "alpha_2_code"
   end
+
+  create_table "courses", :force => true do |t|
+    t.string   "title",       :limit => 150
+    t.text     "description"
+    t.integer  "teacher_id"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  add_index "courses", ["teacher_id"], :name => "index_courses_on_teacher_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -141,6 +151,17 @@ ActiveRecord::Schema.define(:version => 20140422044600) do
     t.integer "question_id"
   end
 
+  create_table "freebies", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "lesson_id"
+    t.integer  "index",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "freebies", ["course_id"], :name => "index_freebies_on_course_id"
+  add_index "freebies", ["lesson_id"], :name => "index_freebies_on_lesson_id"
+
   create_table "graded_responses", :force => true do |t|
     t.integer  "student_id"
     t.datetime "created_at"
@@ -175,6 +196,16 @@ ActiveRecord::Schema.define(:version => 20140422044600) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "lessons", :force => true do |t|
+    t.string   "title",       :limit => 150
+    t.text     "description"
+    t.integer  "teacher_id"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
+
+  add_index "lessons", ["teacher_id"], :name => "index_lessons_on_teacher_id"
 
   create_table "q_selections", :force => true do |t|
     t.integer  "quiz_id"
@@ -314,6 +345,14 @@ ActiveRecord::Schema.define(:version => 20140422044600) do
     t.datetime "updated_at"
     t.string   "signature",   :limit => 15
     t.integer  "pages",                     :default => 1
+  end
+
+  create_table "takehomes", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "quiz_id"
+    t.integer  "index",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "teachers", :force => true do |t|
