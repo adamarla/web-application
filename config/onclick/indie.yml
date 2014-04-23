@@ -36,11 +36,11 @@
 ## Indi(pendent) Teachers 
 ##############################################################################
 
-l-indie-cp-1: 
+a-cp-1: 
   show : 
-    menu: m-indie-cp-1
+    menu: m-1
 
-l-indie-courses:
+a-my-courses:
   show : 
     left: left-1
     wide: wide-1
@@ -48,11 +48,29 @@ l-indie-courses:
   autoclick: 
     tab: tab-my-courses
 
-l-indie-new-course :
+tab-my-courses :
+  url : 
+    self : course/all
+
+tab-course-overview :
+  id: tab-my-courses
+
+tab-course-lessons:
+  id: tab-my-courses
+
+tab-course-quizzes:
+  id: tab-my-courses
+  url : 
+    self: course/quizzes?id=:id
+
+tab-course-stats :
+  id: tab-my-courses
+
+a-new-course :
   show : 
     modal : m-new-course
 
-l-indie-new-lesson : 
+a-new-lesson : 
   show : 
     modal : m-new-lesson
 

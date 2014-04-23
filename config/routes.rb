@@ -36,9 +36,7 @@ Webapp::Application.routes.draw do
   # Course
   match 'course/new' => 'course#create', via: :post
   match 'course/all' => 'course#show', via: :get
-  match 'milestone/load' => 'course#load_milestone', via: :get
-  match 'available/assets' => 'course#available_assets', via: :get
-  match 'attach_detach_asset' => 'course#attach_detach_asset', via: :post
+  match 'course/quizzes' => 'course#quizzes', via: :get
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]

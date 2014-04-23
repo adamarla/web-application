@@ -14,14 +14,30 @@ class Course < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :teacher
 
+  validates :title, presence: true
+
   has_many :freebies, dependent: :destroy
   has_many :lessons, through: :freebies
 
   has_many :takehomes, dependent: :destroy 
   has_many :quizzes, through: :takehomes
 
+  after_create :seal
+
   def description?
     return self.description || "No description"
+  end 
+
+  def quizzes 
+    # Returns the list of quizzes currently included in the quiz 
+    # - ordered by index
+    Takehome.where(course_id: self.id).order(:index).map(&:quiz)
+  end 
+
+  def lessons
+    # Returns the list of lessons currently included in the quiz 
+    # - ordered by index
+    Freebie.where(course_id: self.id).order(:index).map(&:lesson)
   end 
 
   def includeable_quizzes?
@@ -36,4 +52,13 @@ class Course < ActiveRecord::Base
     return Lesson.where(id: ids)
   end
 
-end
+#################################################################
+  
+  private 
+      
+      def seal 
+        d = self.description.blank? ? nil : self.description
+        self.update_attributes(description: d)
+      end 
+
+end # of class

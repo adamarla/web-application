@@ -1,0 +1,17 @@
+
+-# 'type' comes from the calling HAML
+
+.row-fluid.nopurge
+  .span8
+    .small-text.white
+      Simply drag and drop from one set to the other. Then click 'Submit'
+  .span3
+    = simple_button for: 'Submit', class: 'btn btn-primary pull-right'
+.row-fluid
+  .span4.used.assets{ id: "#{type}-used" }
+    %h4.white.text-center= 'Used'
+    %ul.serialize
+  .span7.available.assets{ id: "#{type}-available" }
+    %h4.white.text-center= 'Available'
+    %ul.span5
+    %ul.span5.offset1

@@ -58,11 +58,20 @@
                        ['chart-2', nil],
                        ['chart-3', nil] ] } 
 
+- if t.indie 
+  - control_panel = [ { for: 'Start here', id: 'a-cp-1' },
+                      {for: "Hello, #{t.first_name}", id: 'm-account'} ]
+
+  - layout = { left: [ [1, 'course/list'] ],
+               middle: [],
+               right: [],
+               wide: [ [1, 'course/details'] ] }
+
 !!!5
 
 %html{html_attrs}
   %head 
-    = javascript_include_tag "application", "teachers"
+    = javascript_include_tag "application", (t.indie ? 'indie' : 'uni')
     %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
     %script{ type: "text/x-mathjax-config" } 
       MathJax.Hub.Config({
@@ -82,7 +91,7 @@
       });
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = javascript_include_tag "http://d3js.org/d3.v3.min.js"
-    = stylesheet_link_tag "application"
+    = stylesheet_link_tag "application", (t.indie ? 'indie' : '')
     = csrf_meta_tag
 
   %body 

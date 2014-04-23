@@ -13,9 +13,23 @@
 class Lesson < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :teacher
+
+  validates :title, presence: true
+
   has_one :video, as: :watchable
+
+  after_create :seal
 
   def description?
     return self.description || "No description"
   end 
+
+#################################################################
+  
+  private 
+      
+      def seal 
+        d = self.description.blank? ? nil : self.description
+        self.update_attributes(description: d)
+      end 
 end

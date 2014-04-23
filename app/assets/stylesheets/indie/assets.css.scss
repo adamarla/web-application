@@ -1,0 +1,32 @@
+
+body.dragging, body.dragging * {
+  cursor: move !important ;
+}
+
+.dragged {
+  position: absolute ;
+  opacity: 0.5 ;
+  z-index: 2000 ;
+}
+
+.assets { 
+  > h4 { padding-bottom: 5px ; }
+  > ul { 
+    min-height: 50px ;
+    li {
+      cursor: pointer ;
+      padding: {
+        bottom: 3px ;
+        top: 3px ;
+      }
+      font-size: 11px ;
+      border-bottom: 1px dotted white ;
+      &.placeholder {
+        position: relative ;
+        &:before {
+          position: absolute ;
+        }
+      }
+    }
+  }
+}
