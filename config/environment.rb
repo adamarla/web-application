@@ -7,7 +7,13 @@ Webapp::Application.initialize!
 
 # Using YAML to set application-wide variables - Railscast #85
 Gutenberg = YAML.load_file("#{Dir.pwd}/config/gutenberg.yml")[Rails.env]
-OnClick = YAML.load_file("#{Dir.pwd}/config/onclick.yml")
+
+# Load the individual onclick files for various roles
+onclick_tmp = {}
+Dir["#{Dir.pwd}/config/onclick/*.yml"].each do |yml| 
+  onclick_tmp = onclick_tmp.merge YAML.load_file(yml)
+end 
+OnClick = onclick_tmp
 
 SavonClient = Savon::Client.new do
   wsdl.document = "#{Gutenberg['wsdl']}"

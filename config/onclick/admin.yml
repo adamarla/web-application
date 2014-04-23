@@ -1,0 +1,50 @@
+
+# Sample YAML 
+#
+#  lnk-something : 
+#    show : 
+#      left : 
+#      middle : 
+#      right : 
+#      wide : 
+#      modal : 
+#      menu :
+#      help : 
+#      video : true / false 
+#    autoclick : 
+#      tab : 
+#      link :
+#    url : 
+#      self : 
+#      panel :
+#    paginate-on: line/tab/sth. else
+#    default : true / false
+#    ajax : disabled / enabled 
+#    prev : 
+#    id : 
+#    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
+#    callback : 
+#     pre :    -> pre click
+#     post :   -> post click
+#    childtabs : 
+#     reset : true | false -> unclick child tabs or not before clicking first one
+#
+##############################################################################
+## Admin Only 
+##############################################################################
+
+lnk-admin-console :
+  show : 
+    left : left-1
+    wide : wide-2
+  autoclick :
+    tab : tab-teacher-accounts
+
+tab-teacher-accounts :
+  url : 
+    self : byCountry?type=teacher
+    panel : inCountry?type=teacher&country=:id
+
+

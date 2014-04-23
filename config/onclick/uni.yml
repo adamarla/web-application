@@ -1,0 +1,376 @@
+
+# Sample YAML 
+#
+#  lnk-something : 
+#    show : 
+#      left : 
+#      middle : 
+#      right : 
+#      wide : 
+#      modal : 
+#      menu :
+#      help : 
+#      video : true / false 
+#    autoclick : 
+#      tab : 
+#      link :
+#    url : 
+#      self : 
+#      panel :
+#    paginate-on: line/tab/sth. else
+#    default : true / false
+#    ajax : disabled / enabled 
+#    prev : 
+#    id : 
+#    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
+#    callback : 
+#     pre :    -> pre click
+#     post :   -> post click
+#    childtabs : 
+#     reset : true | false -> unclick child tabs or not before clicking first one
+#
+
+##############################################################################
+## Uni(versity) Teachers 
+##############################################################################
+
+lnk-def-dist-scheme : 
+  url : 
+    self : def/dist/scheme?id=:b
+  update-on: exam/load
+  disable-unless: has_apprentices 
+
+lnk-exam-deadlines : 
+  url : 
+    self : ping/exam?id=:b
+  update-on: exam/load
+
+lnk-exam-disputes: 
+  show : 
+    left : left-9 
+    wide : wide-X
+  autoclick :
+    tab : tab-pending-disputes
+  update-on: exam/load
+  disable-if: no_disputes
+
+tab-pending-disputes : 
+  url : 
+    self : exam/disputes/pending?id=:prev
+    panel : load/dispute?id=:id
+  prev : tab-exb-existing
+
+tab-resolved-disputes : 
+  url : 
+    self : exam/disputes/resolved?id=:prev
+    panel : load/dispute?id=:id
+  prev : tab-exb-existing
+
+lnk-bell :
+  show :
+    menu : m-bell
+
+lnk-courses : 
+  show :
+    menu : m-courses
+
+lnk-edit-account :
+  show : 
+    modal : m-edit-account
+
+lnk-existing-quiz :
+  default : true
+  autoclick :
+    tab : tab-exb-quizzes
+  show : 
+    left : left-1
+    wide : wide-X
+
+lnk-edit-qz :
+  autoclick :
+    tab : tab-editqz-1
+  show : 
+    left : left-7
+    wide : wide-X
+
+tab-editqz-1 : 
+  url : 
+    self : quiz/questions.json?id=:prev
+    panel : question/preview?id=:id
+  prev : tab-exb-quizzes
+
+tab-online-courses : 
+  show : 
+    wide : wide-5
+  url :
+    self : course/all
+
+tab-milestone-* : 
+  prev : tab-online-courses
+
+tab-available-* :
+  prev : tab-online-courses
+
+tab-exb-quizzes :
+  url : 
+    self : quizzes/list
+    panel : quiz/preview?id=:id
+
+tab-exb-sektions : 
+  childtabs : 
+    reset : true
+
+tab-exb-sk* :
+  url: 
+    self: sektion/students?id=:id&context=exb&quiz=:prev
+  prev : tab-exb-quizzes
+
+lnk-exb-new :
+  autoclick :
+    tab : tab-exb-sektions
+  show : 
+    help : exb-milestone-2
+
+lnk-exb-existing :
+  autoclick :
+    tab : tab-exb-existing
+  update-on: quiz/preview
+  disable-unless : has_exams
+
+tab-exb-existing :
+  url : 
+    self : quiz/exams.json?id=:prev
+    panel : exam/load?id=:id
+  prev : tab-exb-quizzes
+
+tab-wsl-quizzes :
+  autoclick :
+    link : lnk-existing-quiz
+
+lnk-ws-download :
+  ajax : disabled
+  update-on : exam/load
+
+lnk-download-* :
+  notouch : true
+  ajax : disabled
+  update-on : quiz/preview 
+
+lnk-suggestion-form :
+  notouch : true
+  ajax : disabled
+
+lnk-new-quiz :
+  autoclick : 
+    tab : tab-qzb-1
+  show : 
+    left : left-2
+    wide : wide-wait
+
+lnk-wb-pending : 
+  default : true
+  show : 
+    left : left-4
+    wide : wide-X
+  autoclick :
+    tab : tab-grd-exams
+
+m-teacher-quizzes :
+  show : 
+    menu : teacher-quiz
+
+m-tc-sektions :
+  show : 
+    menu : tc-sektions
+
+m-report-cards :
+  show : 
+    menu : teacher-rc
+
+m-account :
+  show : 
+    menu : tasks-on-account
+
+m-howto : 
+  show : 
+    menu : howto-guides
+
+tab-ws-performance :
+  url : 
+    self : performance/ws.json?id=:prev 
+    panel : student/performance.json?id=:id&ws=:prev 
+  prev : tab-wsl
+
+tab-grd-exams :
+  url : 
+    self : exams/pending
+  autoclick :
+    tab : tab-grd-questions
+
+tab-grd-questions :
+  prev : tab-grd-exams
+  url :
+    self : grade/pending?id=:prev
+  autoclick :
+    tab : tab-grd-panel
+
+tab-grd-panel :
+  prev : tab-grd-questions
+  id : tab-grd-exams
+  url : 
+    self : scans/pending.json?q=:prev&tp=:id
+
+tab-tc-rc-1 :
+  url : 
+    self : exams/list
+    # panel : exam/summary.json?id=:id
+  autoclick :
+    tab : tab-tc-rc-2
+
+tab-tc-rc-2 :
+  show :
+    wide : wide-chart-1
+  url :
+    self : exam/summary?id=:prev
+  autoclick :
+    tab : tab-tc-rc-3
+  prev : tab-tc-rc-1
+
+tab-tc-rc-3 :
+  show : 
+    wide : wide-X
+  url : 
+    self : exam/layout?e=:prev&id=:id
+  prev : tab-tc-rc-1
+  id : tab-tc-rc-2
+
+lnk-tc-rc :
+  show : 
+    left : left-5
+    wide : wide-wait
+  autoclick :
+    tab : tab-tc-rc-1
+
+lnk-build-ws :
+  show : 
+    modal : m-exbopts-1
+
+lnk-ws-publish :
+  url : 
+    self : ws/publish.json?id=:id
+  id : tab-exb-existing
+
+lnk-ws-unpublish :
+  url : 
+    self : ws/unpublish.json?id=:id
+  id : tab-exb-existing
+
+lnk-rc-deepdive :
+  show : 
+    left : left-6
+    wide : wide-chart-2
+  autoclick :
+    tab : tab-dive-1
+
+tab-dive-1 :
+  url : 
+    self : teacher/sektions?context=deepdive
+  autoclick : 
+    tab : tab-dive-2
+
+tab-dive-2 :
+  prev : tab-dive-1
+  show : 
+    wide : wide-chart-2
+
+tab-dive-3 : 
+  prev : tab-dive-1
+  url :
+    self : sektion/students?id=:prev&context=deepdive
+    panel : overall/proficiency.json?id=:id
+  show :
+    wide : wide-chart-3
+
+deepdive-* : 
+  url : 
+    self : vertical/topics?id=:id&context=deepdive
+    panel : sektion/proficiency?of=:prev&in=:id
+  paginate-on : line 
+  prev : tab-dive-1
+
+lnk-add-sektion :
+  show : 
+    modal : m-new-sk-1
+
+lnk-mng-sektions :
+  show : 
+    left : left-8
+    wide : wide-4
+  autoclick :
+    tab : tab-mng-sektions-1
+
+tab-mng-sektions-1 :
+  url : 
+    self : teacher/sektions?context=list
+    panel : sektion/students?id=:id&context=list
+  paginate-on : line
+
+lnk-like-question : 
+  update-on : question/preview
+  url :
+    self : like?id=:a
+
+lnk-ask-a-question :
+  show : 
+    modal : m-ask-a-question
+
+lnk-demo :
+  show : 
+    modal : m-demo
+
+help-make-a-quiz : 
+  show : 
+    help : qzb-milestone-1
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-make-a-ws : 
+  show : 
+    help : exb-milestone-1
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-edit-qz :
+  show : 
+    help : editqz-milestone-1
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-publish-ws :
+  show : 
+    help : publish-milestone-1 
+  autoclick : 
+    link : lnk-existing-quiz
+
+help-mng-sektions :
+  show : 
+    help : mng-sektions-milestone-1 
+
+lnk-audit-question :
+  show : 
+    modal : m-audit-form
+
+lnk-qzb-filter : 
+  show : 
+    menu : qzb-filter
+
+lnk-share-quiz : 
+  show : 
+    modal : m-share-quiz
+
+lnk-sk-add-std :
+  show: 
+    modal : m-new-sk-2
+

@@ -1,0 +1,58 @@
+
+# Sample YAML 
+#
+#  lnk-something : 
+#    show : 
+#      left : 
+#      middle : 
+#      right : 
+#      wide : 
+#      modal : 
+#      menu :
+#      help : 
+#      video : true / false 
+#    autoclick : 
+#      tab : 
+#      link :
+#    url : 
+#      self : 
+#      panel :
+#    paginate-on: line/tab/sth. else
+#    default : true / false
+#    ajax : disabled / enabled 
+#    prev : 
+#    id : 
+#    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
+#    callback : 
+#     pre :    -> pre click
+#     post :   -> post click
+#    childtabs : 
+#     reset : true | false -> unclick child tabs or not before clicking first one
+#
+
+##############################################################################
+## Indi(pendent) Teachers 
+##############################################################################
+
+l-indie-cp-1: 
+  show : 
+    menu: m-indie-cp-1
+
+l-indie-courses:
+  show : 
+    left: left-1
+    wide: wide-1
+  default: true
+  autoclick: 
+    tab: tab-my-courses
+
+l-indie-new-course :
+  show : 
+    modal : m-new-course
+
+l-indie-new-lesson : 
+  show : 
+    modal : m-new-lesson
+
