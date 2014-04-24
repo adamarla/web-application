@@ -27,6 +27,7 @@ window.assetMgr = {
       button = $(nd).closest('.tab-pane').find('button')[0]
       if button? 
         button.setAttribute 'data-id', json.id 
+        button.setAttribute 'data-type', json.type 
         break
     return true
 
@@ -50,3 +51,18 @@ window.assetMgr = {
         $(ul).sortable { group: json.type } 
     return true
 }
+
+jQuery ->
+  $('#pane-course-lessons, #pane-course-quizzes').on 'click', 'button', ->
+    id = this.getAttribute 'data-id'
+    type = this.getAttribute 'data-type'
+    nd = assetMgr.root['used']
+    ret = { used: new Array(), id: id, type: type }
+    if nd?
+      ul = $(nd).children('ul').eq(0)
+      for li in ul.children('li')
+        x = li.getAttribute('data-id')
+        ret.used.push x
+
+    $.post 'course/update', ret
+    return true
