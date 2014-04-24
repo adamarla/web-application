@@ -25,13 +25,8 @@ jQuery ->
     else if url.match(/course\/quizzes/) || url.match(/course\/lessons/)
       return assetMgr.render(json)
       
-    else if url.match(/milestone\/load/) || url.match(/available\/assets/)
-      target = $('#lessons-and-quizzes')
-      key = 'assets'
-      menu = 'per-asset'
-
-    else if url.match(/attach_detach_asset/)
-      $('#mng-assets').modal 'hide'
+    else if url.match(/ping\/course/)
+      karo.tab.enable 'tab-course-overview'
     else
       matched = false
 

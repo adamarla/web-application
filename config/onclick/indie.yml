@@ -51,6 +51,7 @@ a-my-courses:
 tab-my-courses :
   url : 
     self : course/all
+    panel : ping/course?id=:id
 
 tab-course-overview :
   id: tab-my-courses

@@ -17,6 +17,11 @@ class CourseController < ApplicationController
     @courses = Course.where(teacher_id: teacher.id)
   end
 
+  def ping
+    c = Course.find params[:id]
+    render json: { id: c.id }, status: :ok
+  end 
+
   def update
     c = Course.find params[:id]
     ids = params[:used].map(&:to_i)
