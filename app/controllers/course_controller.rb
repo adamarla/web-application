@@ -49,4 +49,8 @@ class CourseController < ApplicationController
     @c = Course.find params[:id]
   end 
 
+  def lessons
+    @c = Course.find params[:id]
+  end
+
 end # of class

@@ -9,7 +9,6 @@
 #  watchable_id   :integer
 #  watchable_type :string(20)
 #  uid            :string(20)
-#  title          :string(70)
 #
 
 require 'test_helper'

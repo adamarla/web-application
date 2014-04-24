@@ -13,12 +13,11 @@
 class Lesson < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :teacher
+  has_one :video, as: :watchable
+  after_create :seal
 
   validates :title, presence: true
-
-  has_one :video, as: :watchable
-
-  after_create :seal
+  validates_associated :video
 
   def description?
     return self.description || "No description"

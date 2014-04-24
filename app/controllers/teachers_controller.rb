@@ -140,13 +140,17 @@ class TeachersController < ApplicationController
   end 
 
   def add_lesson
-    teacher = current_account.loggable
-    data = params[:lesson]
+    t = current_account.loggable
+    p = params[:lesson]
 
-    lesson = teacher.lessons.build(name: data[:name], description: data[:description], history: (data[:type] == "h") )
-    lesson.build_video(title: data[:name], uid: data[:uid], active: true)
+    lsn = t.lessons.build title: p[:title], description: p[:description]
 
-    if lesson.save
+    youtube_url = p[:uid]
+    v = youtube_url.match(/v=.*/)
+    code = v.nil? ? nil : v.to_s.gsub(/v=/,'')
+    lsn.build_video uid: code
+
+    if lsn.save
       render json: { status: 'success' }, status: :ok
     else
       render json: { status: 'failed' }, status: :ok

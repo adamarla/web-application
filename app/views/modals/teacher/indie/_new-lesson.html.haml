@@ -6,7 +6,7 @@
     .span8
       = simple_form_for :lesson, url: new_lesson_path, remote: true, defaults: { label: false } do |f|
         = f.input :uid, hint: 'YouTube URL'
-        = f.input :name, hint: 'Title' 
+        = f.input :title, hint: 'Title' 
         = f.input :description, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, 
         hint: 'Details of what the lesson will cover'
         = simple_button for: 'Create', type: :submit, class: 'btn-primary' 

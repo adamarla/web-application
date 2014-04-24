@@ -22,7 +22,7 @@ jQuery ->
       key = 'courses'
       clickFirst = true
 
-    else if url.match(/course\/quizzes/)
+    else if url.match(/course\/quizzes/) || url.match(/course\/lessons/)
       return assetMgr.render(json)
       
     else if url.match(/milestone\/load/) || url.match(/available\/assets/)
