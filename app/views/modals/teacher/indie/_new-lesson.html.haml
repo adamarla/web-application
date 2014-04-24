@@ -5,8 +5,8 @@
       = image_tag 'notifications/camera.png', class: 'big-icon'
     .span8
       = simple_form_for :lesson, url: new_lesson_path, remote: true, defaults: { label: false } do |f|
-        = f.input :name, hint: 'Title - same as in SublimeVideo'
-        = f.input :description, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, hint: 'A few lines about the lesson'
-        = f.input :type, collection: { regular: :r, history: :h }, selected: :r, hint: 'Type of lesson'
-        = f.input :uid, hint: 'UID provided by SublimeVideo'
+        = f.input :uid, hint: 'YouTube URL'
+        = f.input :name, hint: 'Title' 
+        = f.input :description, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, 
+        hint: 'Details of what the lesson will cover'
         = simple_button for: 'Create', type: :submit, class: 'btn-primary' 
