@@ -14,6 +14,7 @@ class Lesson < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :teacher
   has_one :video, as: :watchable
+  has_many :freebies, dependent: :destroy
   after_create :seal
 
   validates :title, presence: true
