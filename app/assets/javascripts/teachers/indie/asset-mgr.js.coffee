@@ -64,5 +64,6 @@ jQuery ->
         x = li.getAttribute('data-id')
         ret.used.push x
 
+    spinner.setText 'Updating ...'
     $.post 'course/update', ret
     return true
