@@ -22,6 +22,8 @@ body.dragging, body.dragging * {
   } 
   > ul { 
     min-height: 50px ;
+    &:not([class~='serialize']){ list-style-type: circle ; }
+    &.serialize { list-style-type: square ; }
     li {
       cursor: pointer ;
       padding: {
