@@ -22,6 +22,10 @@ jQuery ->
       key = 'courses'
       clickFirst = true
 
+    else if url.match(/lessons\/list/) 
+      target = $('#pane-my-lessons')
+      key = 'lessons'
+
     else if url.match(/course\/quizzes/) || url.match(/course\/lessons/)
       return assetMgr.render(json)
       

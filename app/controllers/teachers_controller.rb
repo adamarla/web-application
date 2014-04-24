@@ -139,6 +139,12 @@ class TeachersController < ApplicationController
     end
   end 
 
+  def lessons 
+    # Return list of lessons made by this teacher
+    t = current_account.loggable 
+    @lessons = t.lessons 
+  end 
+
   def add_lesson
     t = current_account.loggable
     p = params[:lesson]

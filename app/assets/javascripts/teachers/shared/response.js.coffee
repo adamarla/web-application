@@ -18,10 +18,15 @@ jQuery ->
     buttons = null
 
     if url.match(/quizzes\/list/)
-      target = $('#pane-exb-quizzes')
       key = 'quizzes'
-      menu = "per-quiz"
       clickFirst = true
+      indie = if json.indie? then json.indie else false
+
+      if indie 
+        target = $('#pane-my-quizzes')
+      else
+        target = $('#pane-exb-quizzes')
+        menu = "per-quiz"
       karo.empty target
     else if url.match(/qzb\/echo/)
       if json.context is 'qzb'

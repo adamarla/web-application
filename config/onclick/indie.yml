@@ -77,3 +77,18 @@ a-new-lesson :
   show : 
     modal : m-new-lesson
 
+a-my-assets :
+  show : 
+    left : left-2
+    wide : wide-X
+  autoclick :
+    tab : tab-my-quizzes
+
+tab-my-quizzes : 
+  url : 
+    self : quizzes/list
+    panel : quiz/preview?id=:id
+
+tab-my-lessons :
+  url :
+    self : lessons/list

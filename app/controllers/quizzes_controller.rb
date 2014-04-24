@@ -82,13 +82,18 @@ class QuizzesController < ApplicationController
   end
 
   def list
-    teacher = (current_account.role == :teacher) ? current_account.loggable : nil
+    @t = (current_account.role == :teacher) ? current_account.loggable : nil
 
-    unless teacher.nil?
-      @quizzes = Quiz.where(teacher_id: teacher.id)
-      @quizzes = @quizzes.blank? ? Quiz.where(id: 318) : @quizzes # 318 = "A Demo Quiz" 
+    unless @t.nil?
+      @quizzes = Quiz.where(teacher_id: @t.id)
 
-      @disabled = @quizzes.select{ |m| m.compiling? }.map(&:id) 
+      if @quizzes.blank?
+        @quizzes = @t.indie ? @quizzes : Quiz.where(id: 318) # 318 = 'A Demo Quiz'
+        @disabled = []
+      else
+        @disabled = @quizzes.select{ |m| m.compiling? }.map(&:id) 
+      end 
+
       n = @quizzes.count 
       @per_pg, @last_pg = pagination_layout_details n
       pg = params[:page].nil? ? 1 : params[:page].to_i

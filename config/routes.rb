@@ -148,6 +148,7 @@ Webapp::Application.routes.draw do
   match 'overall/proficiency' => 'teachers#proficiency_chart', via: :get
   match 'def/dist/scheme' => 'teachers#def_distribution_scheme', via: :get
   match 'set/dist/scheme' => 'teachers#set_distribution_scheme', via: [:put, :post]
+  match 'lessons/list' => 'teachers#lessons', via: :get
 
   # Exam
   match 'exam/summary' => 'exams#summary', via: :get
