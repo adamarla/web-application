@@ -9,9 +9,9 @@
     = simple_button for: 'Submit', class: 'btn btn-primary pull-right'
 .row-fluid
   .span4.used.assets{ id: "#{type}-used" }
-    %h4.white.text-center= 'Being used'
+    %h5.white.text-center= "Used #{type}"
     %ul.serialize
   .span7.available.assets{ id: "#{type}-available" }
-    %h4.white.text-center= 'Not being used'
+    %h5.white.text-center= "Other available #{type}"
     %ul.span5
     %ul.span5.offset1

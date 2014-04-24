@@ -10,14 +10,15 @@ body.dragging, body.dragging * {
 }
 
 .assets { 
-  > h4 { 
+  > h5 { 
     padding: { top: 5px ; bottom: 5px ; }
-    border: 1px dotted white ;
+    border: none ; 
     border: {
       top-left-radius: 8px ;
       top-right-radius: 8px ;
     }
     font-weight: 300 ;
+    background: rgba(43,43,43,0.5) ;
   } 
   > ul { 
     min-height: 50px ;
