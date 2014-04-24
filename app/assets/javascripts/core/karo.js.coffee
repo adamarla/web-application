@@ -6,11 +6,12 @@ window.karo = {
   ajaxCall : (url, tab = null, callback = karo.nothing) ->
     $.get url, (json) ->
       if tab? 
-        if json.last_pg? 
-          last = json.last_pg
-          tab.setAttribute('data-pg-last', last)
-          pgn = $(tab).closest('.g-panel').children('.paginator')[0]
-          paginator.enable $(pgn), last
+        pgn = $(tab).closest('.g-panel').children('.paginator')[0]
+        if pgn?
+          if json.last_pg? 
+            last = json.last_pg
+            tab.setAttribute('data-pg-last', last)
+            paginator.enable $(pgn), last
       # callback json, url
     #return true
     

@@ -5,7 +5,7 @@ window.paginator = {
     return false unless obj.hasClass 'paginator'
 
     paginator.url.set(obj, baseUrl)
-    nEnable = tab.getAttribute 'data-pgn-last'
+    nEnable = tab.getAttribute 'data-pg-last'
     paginator.enable obj, nEnable
     return true
 
