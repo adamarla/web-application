@@ -35,6 +35,13 @@
 ## Students 
 ##############################################################################
 
+a-courses :
+  show : 
+    left: left-3
+    wide: wide-1
+  url: 
+    self: course/list
+
 lnk-st-rc : 
   autoclick :
     tab : tab-st-rc-1

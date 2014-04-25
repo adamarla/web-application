@@ -17,7 +17,7 @@ jQuery ->
       $('#m-new-course').modal 'hide'
       return line.write('#pane-courses', json)
 
-    else if url.match(/course\/all/)
+    else if url.match(/teacher\/courses/)
       target = $('#pane-courses')
       key = 'courses'
       clickFirst = true

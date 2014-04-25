@@ -50,7 +50,7 @@ a-my-courses:
 
 tab-my-courses :
   url : 
-    self : course/all
+    self : teacher/courses 
     panel : ping/course?id=:id
 
 tab-course-overview :

@@ -35,7 +35,7 @@ Webapp::Application.routes.draw do
 
   # Course
   match 'course/new' => 'course#create', via: :post
-  match 'course/all' => 'course#show', via: :get
+  match 'course/list' => 'course#list', via: :get
   match 'course/quizzes' => 'course#quizzes', via: :get
   match 'course/lessons' => 'course#lessons', via: :get
   match 'course/update' => 'course#update', via: :post
@@ -149,6 +149,7 @@ Webapp::Application.routes.draw do
   match 'def/dist/scheme' => 'teachers#def_distribution_scheme', via: :get
   match 'set/dist/scheme' => 'teachers#set_distribution_scheme', via: [:put, :post]
   match 'lessons/list' => 'teachers#lessons', via: :get
+  match 'teacher/courses' => 'teachers#courses', via: :get
 
   # Exam
   match 'exam/summary' => 'exams#summary', via: :get

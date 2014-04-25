@@ -12,9 +12,9 @@ class CourseController < ApplicationController
     end
   end
 
-  def show
-    teacher = current_account.loggable
-    @courses = Course.where(teacher_id: teacher.id)
+  def list
+    # going forward, factor in filters
+    @courses = Course.all
   end
 
   def ping

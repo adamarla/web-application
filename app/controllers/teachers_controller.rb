@@ -49,6 +49,11 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id]
   end
 
+  def courses
+    t = current_account.loggable
+    @courses = Course.where(teacher_id: t.id)
+  end 
+
   def worksheets
     teacher = current_account.loggable 
     head :bad_request if teacher.nil?
