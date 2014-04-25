@@ -19,18 +19,20 @@
       - if j == :toolbox
         = render partial: 'toolbox/grading/left/fdb-panel'
 
-- control_panel = [ {for: 'Report Cards', id: 'lnk-st-rc'},
+- control_panel = [ {for: 'Lessons', id: 'a-courses' },
+                    {for: 'Report Cards', id: 'lnk-st-rc'},
                     {for: 'Inbox', id: 'lnk-st-inbox'},
-                    {for: 'Upload', id: 'lnk-upload'},
                     {for: 'Enroll', id: 'lnk-enroll-self'},
                     {for: "Hello, #{student.first_name}", id: 'm-account'} ]
 
 - layout = { left: [ [1, 'students/rc'],
-                     [2, 'students/inbox']],
+                     [2, 'students/inbox'],
+                     [3, 'students/course_filter']],
              middle: [],
              right: [],
              wide: [ ['wait', 'toolbox/generic/wait'],
-                     ['X', nil] ] }
+                     ['X', nil],
+                     [1, 'students/course_list'] ] }
 
 !!!5
 
@@ -55,7 +57,7 @@
       }
       });
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
-    = stylesheet_link_tag "application" 
+    = stylesheet_link_tag 'application', 'students'
     = csrf_meta_tag
 
   %body 

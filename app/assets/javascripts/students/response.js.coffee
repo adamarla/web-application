@@ -24,6 +24,9 @@ jQuery ->
       karo.empty target
       key = 'inbox'
       menu = 'st-inbox'
+    else if url.match(/course\/list/)
+      e.stopImmediatePropagation()
+      return tiles.render(json.tiles)
     else if url.match(/outbox/)
     else if url.match(/enroll/)
       $('#m-enroll-self').modal 'hide'
