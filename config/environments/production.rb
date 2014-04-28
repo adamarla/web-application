@@ -67,7 +67,7 @@ Webapp::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true 
 
-  config.assets.precompile += ['admin.js', 'teachers.js', 'students.js', 'welcome.js', 'external.js', 'faq.js']
+  config.assets.precompile += ['admin.js', 'teachers.js', 'students.js', 'welcome.js', 'external.js', 'faq.js', 'customer.js']
   config.assets.js_compressor = :uglifier
 
   # Railscasts #146
