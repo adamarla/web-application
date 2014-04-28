@@ -80,6 +80,11 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def customer
+    return self.guardian.account.customer unless self.guardian.nil?
+    return self.account.customer
+  end
+
   def inbox
     # Returns the worksheets that should be shown in a student's inbox
     assigned = Worksheet.where(:student_id => self.id)

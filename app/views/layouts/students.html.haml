@@ -1,7 +1,8 @@
 
 -# Customized markers 
-- student = current_account.loggable
 - s = "#{Gutenberg['server']}"
+- student = current_account.loggable
+-# customer = student.customer
 
 -# Define contents_for 
 - for j in [:toolbox, :menus, :modals, :notifications]
@@ -16,8 +17,13 @@
       -# render exceptions here 
       - if j == :menus 
         = render partial: 'menus/user/account'
+        -#= render partial: 'menus/customer/individual', locals: { customer: customer }
       - if j == :toolbox
         = render partial: 'toolbox/grading/left/fdb-panel'
+      - if j == :modals
+        = render partial: 'modals/customer/purchase'
+        -#= render partial: 'modals/customer/transfer', locals: { customer: customer }
+        -#= render partial: 'modals/customer/refund', locals: { customer: customer }
 
 - control_panel = [ {for: 'Report Cards', id: 'lnk-st-rc'},
                     {for: 'Inbox', id: 'lnk-st-inbox'},
@@ -26,18 +32,20 @@
                     {for: "Hello, #{student.first_name}", id: 'm-account'} ]
 
 - layout = { left: [ [1, 'students/rc'],
-                     [2, 'students/inbox']],
+                     [2, 'students/inbox'],
+                     [3, 'customers/activity'] ],
              middle: [],
              right: [],
              wide: [ ['wait', 'toolbox/generic/wait'],
+                     [1, 'customers/transactions'],
                      ['X', nil] ] }
 
 !!!5
 
 %html{html_attrs}
   %head 
-    = javascript_include_tag "application", "students"
-    %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
+    = javascript_include_tag "application", "students", "customers"
+    -#%script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
     %script{ :type => "text/x-mathjax-config" } 
       MathJax.Hub.Config({
       "HTML-CSS" : {
@@ -54,7 +62,7 @@
       }
       }
       });
-    = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
+    -#= javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = stylesheet_link_tag "application" 
     = csrf_meta_tag
 

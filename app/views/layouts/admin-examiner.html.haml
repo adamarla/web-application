@@ -38,7 +38,6 @@
   - layout[:left].push [1, 'admin/system-overview'], ['X', nil]
   - layout[:wide].push [1, nil], [2, 'admin/accounts-in-country']
 
-
 !!!5
 
 %html{html_attrs}
@@ -62,6 +61,8 @@
                 - if is_admin
                   %li.dropdown
                     = simple_link :for => 'System Monitor', id: 'lnk-admin-console'
+                  -#%li.dropdown
+                    = simple_link :for => "Customer", as: :dropdown, id: 'm-admin-cust'
                 %li.dropdown
                   = simple_link :for => "Workbench", as: :dropdown, id: 'm-admin-wb'
                 - if user.mentor_is_teacher

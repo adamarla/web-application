@@ -451,6 +451,26 @@ tab-teacher-accounts :
     self : byCountry?type=teacher
     panel : inCountry?type=teacher&country=:id
 
+m-admin-cust :
+  show : 
+    menu : admin-cust
+
+lnk-school-create :
+  show :
+    modal : m-school-create-form
+
+lnk-school-list :
+  show :
+    left : left-9
+  autoclick :
+    tab : tab-schools
+
+tab-schools :
+  show :
+    wide : wide-3
+  url : 
+    self : schools/list
+    panel : school?id=:id
 
 ##############################################################################
 ## Admin / Examiner specific  
@@ -611,6 +631,12 @@ lnk-audit-form :
   show : 
     modal : m-audit-form
 
+lnk-edit-form : 
+  show : 
+    modal : m-edit-form
+  url :
+    self : question/gettex.json?id=:id
+
 tab-audit-todo : 
   url : 
     self : audit/todo
@@ -663,6 +689,59 @@ m-downloads :
 lnk-upload :
   show : 
     modal : m-upload-what
+
+lnk-admin-console :
+  show : 
+    left : left-1
+    wide : wide-2
+  autoclick :
+
+##############################################################################
+## Customer 
+##############################################################################
+
+m-customer-options :
+  show : 
+    menu : customer-main
+
+lnk-buy-credits :
+  show :
+    modal : m-buy-credits
+
+lnk-refund-credits :
+  show :
+    modal : m-refund-credits
+
+lnk-xfer-credits :
+  show :
+    modal : m-transfer
+
+lnk-see-activity :
+  autoclick : 
+    tab : tab-see-activity
+  show : 
+    left : left-3
+    wide : wide-1
+
+tab-see-activity :
+  url :
+    self : customer/activity
+    panel : document/transactions?id=:id
+
+lnk-gen-invoice :
+  show :
+    modal : m-invoice
+
+lnk-customer-list :
+  autoclick : 
+    tab : tab-cust
+  show : 
+    left : left-9
+
+tab-cust :
+  url :
+    self : customers/list
+
 
 ##############################################################################
 ## Landing page  

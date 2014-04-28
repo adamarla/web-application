@@ -38,4 +38,12 @@ Webapp::Application.configure do
   config.serve_static_assets = true 
   config.static_cache_control = "public, max-age=3600"
   config.assets.allow_debugging = true 
+
+  # Railscasts #145
+  # Configure bogus payment gwy
+  config.after_initialize do
+    ActiveMerchant::Billing::Base.mode = :test
+    ::GATEWAY = ActiveMerchant::Billing::BogusGateway.new
+  end
+
 end

@@ -116,6 +116,13 @@ class Mailbot < ActionMailer::Base
     @name = sk.name
     mail to: sk.teacher.account.email, subject: "[Gradians.com]: New section - #{@name} - created"
   end
+ 
+  def payment_received(customer, payment)
+    @name = customer.account.loggable.name
+    @payment_amount = payment.display_value
+    @balance = customer.balance
+    mail to: customer.account.email, subject: "Payment Received"
+  end
 
   def inform_apprentice(a,bottomline, gating, nongating, comments)
     @a = a 

@@ -10,6 +10,8 @@ class WelcomeController < ApplicationController
           redirect_to teacher_path
         when :student 
           redirect_to student_path
+        when :guardian 
+          redirect_to guardian_path
       end 
     end 
   end

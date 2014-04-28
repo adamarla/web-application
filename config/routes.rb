@@ -40,6 +40,15 @@ Webapp::Application.routes.draw do
   match 'available/assets' => 'course#available_assets', via: :get
   match 'attach_detach_asset' => 'course#attach_detach_asset', via: :post
 
+  # Customer
+  resource :customer, :only => [:show]
+  match 'customers/list' => 'customers#list', via: :get
+  match 'customer/activity' => 'customers#activity', via: :get
+  match 'document/transactions' => 'customers#transactions', via: :get
+  match 'credits/transfer' => 'customers#transfer', via: :post
+  match 'course/buy' => 'customers#buy_course', via: :get
+  match 'gen/invoice' => 'customers#generate_invoice', via: :post
+
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'untagged/list' => 'examiners#untagged', via: :get
@@ -71,8 +80,20 @@ Webapp::Application.routes.draw do
   match 'aggregate' => 'examiners#aggregate', via: :get
   match 'germane/comments' => 'examiners#germane_comments', via: :get
 
+  # Guardian
+  resource :guardian, :only => [:show]
+  match 'register/guardian' => 'guardians#create', via: :post
+  match 'guardian/add_student' => 'guardians#add_student', via: :get
+  match 'guardian/students' => 'guardians#students', via: :get
+
+  # Payment
+  match 'buy/credits' => 'payments#credit_purchase', via: :post
+  match 'apply/payment' => 'payments#bill_payment', via: :post
+  match 'refund' => 'payments#refund', via: :post
+
   # School 
   resource :school, :only => [:show, :create, :update]
+  match 'schools/list' => 'schools#list', via: :get
   match 'upload_student_list' => 'schools#upload_student_list', via: :post
 
   # Verticals 

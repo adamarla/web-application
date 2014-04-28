@@ -4,20 +4,28 @@ class SchoolsController < ApplicationController
   respond_to :json 
 
   def create 
-    email = params[:school].delete :email # email is part of Account model 
+    email = params[:school].delete :email # email -> Account model 
+    currency = params[:school].delete :currency # currency -> Customer model
     @school = School.new params[:school] 
     username = username_for @school, :school 
     email = email || "#{username}@drona.com"
-    zip = @school.account.postal_code
 
-    @school.build_account email: email, username: username, password: zip, password_confirmation: zip
-    @school.save ? respond_with(@school) : head(:bad_request) 
+    @school.build_account :email => email, :username => username, 
+                          :password => "gradians", :password_confirmation => "gradians"
+    if @school.save
+      @school.account.build_customer currency: currency
+    end
+    @school.account.save ? respond_with(@school) : head(:bad_request) 
   end 
 
   def show 
     @school = School.find params[:id]
     head :bad_request if @school.nil?
   end 
+
+  def list
+    @schools = School.order(:name)
+  end
 
   def find
     @schools = School.where{ name =~ params[:query] }

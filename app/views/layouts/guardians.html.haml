@@ -1,0 +1,84 @@
+
+-# Customized markers 
+- guardian = current_account.loggable
+- srvr = "#{Gutenberg['server']}"
+
+- content_for :toolbox do 
+  #toolbox.hidden 
+    = render partial: 'toolbox/line'
+    = render partial: 'toolbox/fdb-panel'
+    = render partial: 'menus/guardian/options'
+    = render partial: 'menus/user/account'
+    = render partial: 'menus/teacher/rc'
+    = render partial: 'shared/user/preview'
+
+- content_for :modals do
+  #modals
+    = render partial: 'modals/user/account'
+    = render partial: 'modals/user/purchase'
+    = render partial: 'modals/student/enroll'
+    = render partial: 'modals/student/enrollment-confirm'
+    = render partial: 'modals/user/ask-a-question'
+  #notifications
+    = render partial: 'notifications/guardian/purchase-completed'
+    = render partial: 'notifications/student/enrolled-already'
+    = render partial: 'notifications/student/sektion-not-found'
+
+!!!5
+
+%html{html_attrs}
+  %head 
+    = javascript_include_tag "application", "guardians", "welcome"
+    %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
+    %script{ :type => "text/x-mathjax-config" } 
+      MathJax.Hub.Config({
+      "HTML-CSS" : {
+      mtextFontInherit : true
+      },
+      styles : {
+      ".mrow > .mtext" : {
+      "font-family" : "Ubuntu 'Trebuchet MS' sans-serif",
+      "font-weight" : 300,
+      "font-size" : "100%"
+      },
+      ".mo, .mn" : {
+      "font-size" : "70%" 
+      }
+      }
+      });
+    = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
+    = stylesheet_link_tag "application" 
+    = csrf_meta_tag
+
+  %body 
+    #spinner.spinner
+      = image_tag "loading.gif", :id => 'img-spinner'
+    .container-fluid 
+      #control-panel.g-panel.row-fluid{ :marker => "#{guardian.id}" } 
+        .span12
+          .navbar.navbar-inverse
+            .navbar-inner
+              %a.brand.span3{ :href => "#"}
+                = image_tag "logo-mit-beta-2.png"
+              %ul.nav.span8.pull-right
+                %li
+                  = simple_link :for => "Purchase", :id => 'lnk-buy-credits'
+                %li.dropdown
+                  = simple_link :for => "Options", as: :dropdown, :id => 'm-guardian-options'
+                %li#cp-account-link.dropdown
+                  = simple_link :for => "Hello, #{guardian.first_name}", :as => :dropdown, :id => 'm-account'
+      #desktop.row-fluid
+        #left.g-panel.span4
+          = render partial: 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
+          #left-1
+            = render partial: 'teachers/rc'
+        -#middle.g-panel.span4
+          = render partial: 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
+          #middle-1
+        #wide.g-panel.span8
+          #wide-X
+          #wide-wait
+            = render partial: 'guardians/balance', locals: { guardian: guardian }
+
+    = yield :toolbox
+    = yield :modals

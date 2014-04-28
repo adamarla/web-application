@@ -4,7 +4,7 @@
 ############################################################################
 
 jQuery ->
-  $('#m-register').ajaxSuccess (e,xhr,settings) ->
+  $('#m-register, #m-buy-credits').ajaxSuccess (e,xhr,settings) ->
     json = $.parseJSON xhr.responseText
     url = settings.url
     matched = true

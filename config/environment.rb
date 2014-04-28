@@ -32,3 +32,10 @@ PREFAB_QUIZ_MAP = { algebra: 337, calculus: 338, trigonometry: 339, probability:
 JOB_INITIAL_STATE = -1 
 WRITE_TEX_ERROR = -2 
 COMPILE_TEX_ERROR = -3
+
+# Indices for cost_code_ids in harmony with 20140115112820_seed_cost_code.rb
+CC_ASSESSMENT_SERVICE = 1
+CC_ASSESSMENT_PLATFORM = 2
+CC_COURSE_CREDIT = 3
+CC_SUPERVISORY_ACCESS = 4
+
