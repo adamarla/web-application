@@ -53,7 +53,14 @@ jQuery ->
       notifier.show 'n-qzb-no-name' if isBlank
     else
       notifier.show 'n-qzb-no-selection'
-    return (sthSelected and not isBlank)
+
+    canSubmit = sthSelected and not isBlank
+    if canSubmit 
+      spinner.setText "Processing ..."
+      spinner.setSubtext "Putting request in queue"
+    else
+      spinner.reset()
+    return canSubmit 
 
   ###
     [wsb] : Ensure that atleast one student is selected (issue #70) 

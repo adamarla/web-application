@@ -1,0 +1,17 @@
+
+- sandboxed = !current_account.live?
+
+%ul.nav.nav-tabs
+  %li
+    = simple_link for: (sandboxed ? 'Sandbox' : 'Exams'), id: 'tab-grd-exams', href: "#pane-grd-exams", 
+    class: (sandboxed ? 'nopurge-ever' : nil)
+  %li
+    = simple_link for: "Questions", id: 'tab-grd-questions', href: '#pane-grd-questions'
+  %li
+    = simple_link for: 'Grade', id: 'tab-grd-panel', href: '#pane-grd-panel', class: 'nopurge-ever'
+
+.tab-content
+  #pane-grd-exams.tab-pane.purge-blind
+  #pane-grd-questions.tab-pane.purge-blind
+  #pane-grd-panel.tab-pane.static
+    = render partial: 'toolbox/grading/left/rubric'

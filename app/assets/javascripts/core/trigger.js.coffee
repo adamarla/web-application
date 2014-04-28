@@ -134,17 +134,18 @@ window.trigger = {
 
 jQuery ->
 
+
   ###
     A spinner to show that AJAX request is in process. The spinner is shown only 
     in the control panel 
   ###
 
-  $('#spinner').bind 'ajaxSend', () ->
-    $(this).show()
+  $('body').bind 'ajaxSend', () ->
+    spinner.start()
   .bind 'ajaxStop', () ->
-    $(this).hide()
+    spinner.stop()
   .bind 'ajaxError', () ->
-    $(this).hide()
+    spinner.stop()
 
   # Initialize tutorials
   tutorial.initialize()
@@ -155,6 +156,9 @@ jQuery ->
   ###
 
   onPing = (response) ->
+    # Unhide the console 
+    $('body > .container-fluid').removeClass('hidden')
+
     # Start monitoring progress of any pending Delayed::Jobs
     monitor.add response, true
 
@@ -613,7 +617,7 @@ jQuery ->
   ## Auto-click the first default link 
   #####################################################################
 
-   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default]")
+   for m in $("#control-panel, #menus > ul[role='menu']").find("a[data-default]")
      trigger.click m
      return true
 

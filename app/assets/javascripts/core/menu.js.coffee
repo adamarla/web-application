@@ -17,8 +17,8 @@ window.menu = {
 
     # If doing an auto-click, like when we click a default-link, no menu 
     # is opened and therefore no menu needs to be closed
-    toolboxed = menu.parent().attr('id') is 'toolbox'
-    return true if toolboxed
+    inMenu = menu.parent().attr('id') is 'menus'
+    return true if inMenu
     menu.remove()
     return true
 
@@ -30,8 +30,8 @@ window.menu = {
     open = $(m).siblings("ul[role='menu']").length > 0
     return false if open # menu already open. Do nothing
 
-    # all menus are rendered within #toolbox 
-    menuObj = $('#toolbox').find("##{menu}").eq(0)
+    # all menus are rendered within #menus 
+    menuObj = $('#menus').find("##{menu}").eq(0)
     if menuObj.length isnt 0
       newId = "#{menuObj.attr('id')}-curr" # There shouldn't be 2 elements with the same ID
       newObj = $(menuObj).clone()
@@ -41,7 +41,7 @@ window.menu = {
     return true
 
   update : (json, url) ->
-    for menu in $("#toolbox > ul[role='menu']")
+    for menu in $("#menus > ul[role='menu']")
       for a in $(menu).find 'a'
         karo.url.updateOnAjax a, url, json 
     return true

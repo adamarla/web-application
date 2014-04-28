@@ -1,31 +1,36 @@
 
 -# Customized markers 
 - student = current_account.loggable
-- srvr = "#{Gutenberg['server']}"
+- s = "#{Gutenberg['server']}"
 
-- content_for :toolbox do 
-  #toolbox.hidden 
-    = render partial: 'toolbox/line'
-    = render partial: 'toolbox/fdb-panel'
-    = render partial: 'menus/user/account'
-    = render partial: 'menus/student/inbox'
-    = render partial: 'shared/user/preview'
+-# Define contents_for 
+- for j in [:toolbox, :menus, :modals, :notifications]
+  - content_for j do 
+    - klass = (j == :toolbox) ? 'hidden' : ''
+    -  m = (j == :toolbox) ? ['generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['student','shared'].map{ |a| "#{j}/#{a}" }
+    - partials_f = m.map{ |b| "app/views/#{b}" }
+    %div{ id: j, class: klass }
+      - for f in partials_f
+        - Dir["#{f}/*.haml"].each do |p| 
+          = render file: Rails.root.join(p), locals: { server: s }
+      -# render exceptions here 
+      - if j == :menus 
+        = render partial: 'menus/user/account'
+      - if j == :toolbox
+        = render partial: 'toolbox/grading/left/fdb-panel'
 
-- content_for :modals do
-  #modals
-    = render partial: 'modals/user/account'
-    = render partial: 'modals/user/upload-scans'
-    = render partial: 'modals/student/enroll'
-    = render partial: 'modals/student/enrollment-confirm'
-    = render partial: 'modals/user/ask-a-question'
-    = render partial: 'modals/student/dispute_1'
-    = render partial: 'modals/student/dispute_2'
-  #notifications
-    = render partial: 'notifications/student/enrollment-blocked'
-    = render partial: 'notifications/student/enrolled-already'
-    = render partial: 'notifications/student/sektion-not-found'
-    = render partial: 'notifications/student/regrade-disallowed'
-    = render partial: 'notifications/student/regrade-deadline'
+- control_panel = [ {for: 'Report Cards', id: 'lnk-st-rc'},
+                    {for: 'Inbox', id: 'lnk-st-inbox'},
+                    {for: 'Upload', id: 'lnk-upload'},
+                    {for: 'Enroll', id: 'lnk-enroll-self'},
+                    {for: "Hello, #{student.first_name}", id: 'm-account'} ]
+
+- layout = { left: [ [1, 'students/rc'],
+                     [2, 'students/inbox']],
+             middle: [],
+             right: [],
+             wide: [ ['wait', 'toolbox/generic/wait'],
+                     ['X', nil] ] }
 
 !!!5
 
@@ -54,9 +59,8 @@
     = csrf_meta_tag
 
   %body 
-    #spinner.spinner
-      = image_tag "loading.gif", :id => 'img-spinner'
-    .container-fluid 
+    = render partial: 'toolbox/generic/spinner'
+    .container-fluid.hidden
       #control-panel.g-panel.row-fluid{ :marker => "#{student.id}" } 
         .span12
           .navbar.navbar-inverse
@@ -64,30 +68,20 @@
               %a.brand.span3{ :href => "#"}
                 = image_tag "logo-mit-beta-2.png"
               %ul.nav.span8.pull-right
-                %li
-                  = simple_link :for => "Report Cards", :id => 'lnk-st-rc'
-                %li
-                  = simple_link :for => "Inbox", :id => 'lnk-st-inbox'
-                %li.dropdown
-                  = simple_link :for => "Upload", :id => 'lnk-upload'
-                %li.dropdown
-                  = simple_link :for => "Enroll", :id => 'lnk-enroll-self'
-                %li#cp-account-link.dropdown
-                  = simple_link :for => "Hello, #{student.first_name}", :as => :dropdown, :id => 'm-account'
-      #desktop.row-fluid
-        #left.g-panel.span4
-          = render partial: 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
-          #left-1
-            = render partial: 'students/rc'
-          #left-2
-            = render partial: 'students/inbox'
-        #middle.g-panel.span4
-          = render partial: 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
-          #middle-1
-        #wide.g-panel.span8
-          #wide-X
-          #wide-wait
-            = render partial: 'toolbox/wait'
+                - for l in control_panel 
+                  %li.dropdown 
+                    = simple_link for: l[:for], id: l[:id], icon: l[:icon]
 
-    = yield :toolbox
-    = yield :modals
+      #desktop.row-fluid
+        - layout.each do |pnl, child|
+          - width = pnl != :wide ? 'span4' : 'span7'
+          %div{ id: "#{pnl}", class: "g-panel #{width}" }
+            -# Add paginator 
+            = render partial: 'toolbox/custom/paginator', locals: { id: "#{pnl}-paginator", url: '#' }
+            -# Then, add the { left-, middle-, right-, wide- } as specified in layout
+            - child.each do |j|
+              %div{ id: "#{pnl}-#{j.first}" }
+                = render(partial: "#{j.last}") unless j.last.nil?
+
+    - for j in [:toolbox, :menus, :modals, :notifications]
+      = yield j

@@ -52,7 +52,7 @@ class Exam < ActiveRecord::Base
 
   def close? 
     # Should the exam be closed to further students at the time of asking?
-    if self.quiz.teacher.online
+    if self.quiz.teacher.indie
       today = Date.today
       created = self.created_at
       return (today.month != created.month && today.year != created.year) 
@@ -248,10 +248,10 @@ class Exam < ActiveRecord::Base
       uid = self.uid.nil? ? "e/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
       self.update_attribute :uid, uid
 
-      # Only for exams made by online instructors can we do the following
+      # Only for exams made by indie instructors can we do the following
       # For those in schools, Quiz.mass_assign_to will set the 'name' 
       # and 'takehome' flags
-      if self.quiz.teacher.online
+      if self.quiz.teacher.indie
         created = self.created_at
         name = "#{created.strftime("%B %Y")}"
         self.update_attributes name: name, takehome: true

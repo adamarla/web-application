@@ -91,7 +91,7 @@ class Examiner < ActiveRecord::Base
   def self.distribute_scans
     ug = GradedResponse.unassigned.with_scan # ug = ungraded
     exams = ug.map(&:worksheet).uniq.map(&:exam).uniq 
-    offline = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.online }
+    offline = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.indie }
 
     for e in exams 
       scheme = e.distribution_scheme? 

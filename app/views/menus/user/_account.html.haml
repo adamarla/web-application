@@ -1,9 +1,9 @@
 
-%ul#tasks-on-account.dropdown-menu{ :role => :menu }
+%ul#tasks-on-account.dropdown-menu{ role: :menu } 
   %li
-    = simple_link :for => "Logout", :id => 'lnk-logout', :href => logout_path, :icon => 'icon-off'
+    = simple_link for: 'Logout', id: 'lnk-logout', href: logout_path, icon: 'icon-off', class: 'orange'
   %li
-    = simple_link :for => "Edit Account Details", :href => '#m-edit-account', :id => 'lnk-edit-account', :icon => 'icon-edit'
+    = simple_link for: 'Edit Account Details', href: '#m-edit-account', id: 'lnk-edit-account', icon: 'icon-edit'
   - if current_account.loggable_type == 'Teacher'
     %li
       = simple_link for: 'Add Teaching Assistants', id: 'lnk-add-examiner', icon: 'icon-user'

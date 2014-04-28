@@ -2,12 +2,10 @@
 - server = "#{Gutenberg['server']}"
 -content_for :toolbox do
   #toolbox.hidden 
-    = render :partial => 'toolbox/line'
     = render :partial => 'menus/user/abouts'
-    = render :partial => 'menus/teacher/howto'
   #modals
-    = render :partial => 'modals/user/register'
-    = render :partial => 'modals/user/enrollment-confirm'
+    = render :partial => 'modals/guest/register'
+    = render :partial => 'modals/guest/enrollment-confirm'
     = render :partial => 'notifications/shared/old-browser'
   #notifications
     = render :partial => 'notifications/student/enrollment-blocked'
@@ -24,8 +22,7 @@
     = javascript_include_tag "external" if Rails.env == "production"
     = csrf_meta_tag
   %body 
-    #spinner.spinner
-      = image_tag "loading.gif", :id => 'img-spinner'
+    = render partial: 'toolbox/generic/spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid
         .span12

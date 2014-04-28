@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140404103912) do
+ActiveRecord::Schema.define(:version => 20140421085430) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -456,7 +456,7 @@ ActiveRecord::Schema.define(:version => 20140404103912) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
-    t.boolean  "online",                   :default => false
+    t.boolean  "indie",                    :default => true
   end
 
   create_table "tex_comments", :force => true do |t|
@@ -500,8 +500,8 @@ ActiveRecord::Schema.define(:version => 20140404103912) do
     t.boolean  "active",                       :default => false
     t.integer  "watchable_id"
     t.string   "watchable_type", :limit => 20
-    t.string   "sublime_uid",    :limit => 20
-    t.string   "sublime_title",  :limit => 70
+    t.string   "uid",            :limit => 20
+    t.string   "title",          :limit => 70
   end
 
   create_table "worksheets", :force => true do |t|

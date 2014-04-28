@@ -104,7 +104,7 @@ class Quiz < ActiveRecord::Base
     end 
 
     # Close this exam for further modifications if school teacher
-    e.update_attribute(:open, false) unless e.quiz.teacher.online
+    e.update_attribute(:open, false) unless e.quiz.teacher.indie
 
     unless publish 
       Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
