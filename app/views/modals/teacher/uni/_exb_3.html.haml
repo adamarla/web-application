@@ -1,0 +1,14 @@
+
+#m-exb-dist-scheme.modal.fade.wide{ role: :dialog } 
+  .row-fluid
+    .span1
+    .span9
+      %p.title.underline
+        Distribute scans as follows ...
+      .row-fluid.purge-skip
+        %button.btn.btn-inverse.pull-left{id: 'btn-dist-scheme-reset' }= 'Reset'
+      = simple_form_for :allot, remote: true do |f|
+        .row-fluid
+          .input-grid.purge-blind
+        .row-fluid.purge-skip.push-down
+          %button.btn.btn-large.btn-primary.pull-left{ type: :submit }= 'Submit'

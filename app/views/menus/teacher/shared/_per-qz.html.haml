@@ -1,0 +1,19 @@
+
+- indie = current_account.loggable.indie
+
+%ul.dropdown-menu.dropdown-inverse#per-quiz{ :role => :menu }
+  %li
+    = simple_link for: 'Edit Quiz', id: 'lnk-edit-qz', icon: 'icon-edit'
+  - unless indie  
+    %li
+      = simple_link for: 'New Assignment', id: 'lnk-exb-new', icon: 'icon-plus-sign'
+    %li
+      = simple_link for: 'List Assignments', id: 'lnk-exb-existing', icon: 'icon-list'
+    %li
+      = simple_link for: 'Sample Assignment', id: 'lnk-download-sample', icon: 'icon-file',
+      url: { self: "#{Gutenberg['server']}/mint/:a/sample/document.pdf" }
+  %li
+    = simple_link for: "Download Solution (PDF)", id: 'lnk-download-solution', 
+    url: { self: "#{Gutenberg['server']}/mint/:a/document.pdf" }, icon: 'icon-download' 
+  %li
+    = simple_link for: "Share Quiz", id: 'lnk-share-quiz', icon: 'icon-share'

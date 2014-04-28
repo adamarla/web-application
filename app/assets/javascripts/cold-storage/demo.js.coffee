@@ -8,17 +8,19 @@ window.demo = {
     radioBtns = demo.root.find "input[type='radio']"
 
     for m in radioBtns
-      $(m).parent().addClass 'disabled'
-      $(m).prop 'disabled', true
+      $(m).parent().removeClass 'disabled'
+      $(m).prop 'disabled', false
 
-    # Enable available demos 
-    for m in json.build
-      radio = radioBtns.filter("[value=#{m}]").eq(0)
-      radio.prop 'disabled', false
-      radio.parent().removeClass 'disabled'
+    return true unless json?
 
+    # Disable demos that have been used 
+    for d in json
+      radio = radioBtns.filter("[value=#{d.id}]").eq(0)
+      radio.prop 'disabled', true
+      radio.parent().addClass 'disabled'
+      
     # Update the download PDF paths
-    demo.setDownloadUrls json.download
+    demo.setDownloadUrls json
     return true
 
   setDownloadUrls : (json) ->
@@ -26,16 +28,10 @@ window.demo = {
 
     for j in json
       a = downloadLnks.filter("[marker=#{j.id}]").eq(0)
-
       a.removeClass 'disabled'
       href = a.attr 'href'
           
-      # Update the download worksheet PDF link 
-      for key in ['a', 'b', 'c']
-        break unless j[key]? # no :b if no :a, no :c if no :b etc
-        while href.search(":#{key}") isnt -1
-          href = href.replace ":#{key}", j[key]
-      a.attr 'href', href
+      a.attr 'href', j.path
       a.attr 'target', "_blank"
       
       # stop any stopwatch 

@@ -24,7 +24,7 @@ window.tutorial = {
     },
 
     specificTo : {
-      'wsb-milestone-3' : {
+      'exb-milestone-3' : {
         'startTimerOnClick' : false,
         'timer' : 14000
       },

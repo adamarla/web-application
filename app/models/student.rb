@@ -16,18 +16,19 @@ include ApplicationUtil
 class Student < ActiveRecord::Base
   belongs_to :guardian
 
-  has_many :student_rosters, :dependent => :destroy 
-  has_many :sektions, :through => :student_rosters
+  has_many :student_rosters, dependent: :destroy 
+  has_many :sektions, through: :student_rosters
 
-  has_one :account, :as => :loggable, :dependent => :destroy
+  has_one :account, as: :loggable, dependent: :destroy
 
-  has_many :graded_responses, :dependent => :destroy
-  has_many :quizzes, :through => :graded_responses
+  has_many :graded_responses, dependent: :destroy
+  has_many :quizzes, through: :graded_responses
 
-  has_many :worksheets, :dependent => :destroy
-  has_many :exams, :through => :worksheets
+  has_many :worksheets, dependent: :destroy
+  has_many :exams, through: :worksheets
+  has_many :disputes, dependent: :destroy
 
-  validates :name, :presence => true
+  validates :name, presence: true
   validates_associated :account
 
   before_destroy :destroyable? 
@@ -127,10 +128,18 @@ class Student < ActiveRecord::Base
   end
 
   def marks_scored_in(exam_id)
-    a = Worksheet.where(:student_id => self.id, :exam_id => exam_id).first 
-    marks = a.nil? ? 0 : a.marks?
-    return marks unless marks == 0
-    return (self.absent_for_test?(exam_id) ? -1 : marks) 
+    w = Worksheet.where(student_id: self.id, exam_id: exam_id).first
+    g = w.nil? ? [] : GradedResponse.where(worksheet_id: w.id)
+
+    return 0 if g.blank?
+    return -1 if g.with_scan.count == 0 # absent perhaps?
+
+    if g.ungraded.count > 0
+      marks = g.graded.map(&:marks).inject(:+)
+    else
+      marks = w.marks?
+    end
+    return (marks.nil? ? 0 : marks.round(2))
   end
 
   def honestly_attempted? (ws_id)
@@ -176,16 +185,16 @@ class Student < ActiveRecord::Base
     return g.count == 0
   end
 
-  def proficiency(teacher_id)
-    of_student = GradedResponse.of_student(self.id).graded
-    aggr = AggrByTopic.for_teacher teacher_id
+  def proficiency_chart_for(tid)
+    g = GradedResponse.of_student(self.id).graded
+    aggr = AggrByTopic.for_teacher tid
     topics = aggr.map(&:topic_id).uniq
     topics = Topic.where(:id => topics).sort{ |m,n| m.name <=> n.name }
-    ret = { :proficiency => [ {:name => "Example", :score => 0.43, :benchmark => 3.5, :historical_avg => 2.5 } ] }
+    ret = { proficiency: [ { name: 'Example', score: 0.43, benchmark: 3.5, historical_avg: 2.5 } ] }
 
     topics.each do |t|
       # student-specific
-      on_topic = of_student.on_topic t.id
+      on_topic = g.on_topic t.id
       next if on_topic.count == 0
       marks = on_topic.map(&:subpart).map(&:marks)
       n_attempted = marks.count
@@ -193,11 +202,9 @@ class Student < ActiveRecord::Base
       scored = on_topic.map(&:marks).inject(:+)
 
       # historical average on topic
-      agg = aggr.for_topic(t.id).first
-      ret[:proficiency].push({ :id => t.id, :name => t.name, 
-                               :score => (scored/total.to_f).round(2),
-                               :benchmark => agg.benchmark.round(2),
-                               :historical_avg => agg.average.round(2) })
+      d = aggr.for_topic(t.id).first
+      ret[:proficiency].push({ id: t.id, name: t.name, score: (scored/total.to_f).round(2), 
+                               benchmark: d.benchmark.round(2), historical_avg: d.average.round(2) })
     end
     return ret
   end

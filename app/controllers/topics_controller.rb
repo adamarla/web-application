@@ -18,7 +18,7 @@ class TopicsController < ApplicationController
     else
       msg = "No vertical specified"
     end
-    render :json => { :notify => { :text => msg } }, :status => :ok
+    render json: { notify: { text: msg } }, status: :ok
   end 
 
   def update 

@@ -14,26 +14,26 @@
 #
 
 class Requirement < ActiveRecord::Base
-  validates :bottomline, :presence => true
-  validates :weight, :inclusion => { :in => [*-1..4] }
+  validates :bottomline, presence: true 
+  validates :weight, inclusion: { in: [*-1..4] }
 
   before_save :ensure_unique_type
   after_create :assign_position
 
   def self.honest 
-    Requirement.where(:honest => true).order(:posn)
+    Requirement.where(honest: true).order(:posn)
   end
 
   def self.cogent 
-    Requirement.where(:cogent => true).order(:posn)
+    Requirement.where(cogent: true).order(:posn)
   end
 
   def self.complete 
-    Requirement.where(:complete => true).order(:posn)
+    Requirement.where(complete: true).order(:posn)
   end
 
   def self.other
-    Requirement.where(:other => true).order(:posn)
+    Requirement.where(other: true).order(:posn)
   end
 
   def self.mangle_into_feedback( ids )
@@ -80,15 +80,15 @@ class Requirement < ActiveRecord::Base
     rel.each_with_index do |i,j|
       case j
         when 0
-          r = Requirement.where(:honest => true)
+          r = Requirement.where(honest: true)
         when 1
-          r = Requirement.where(:cogent => true)
+          r = Requirement.where(cogent: true)
         when 2
-          r = Requirement.where(:complete => true)
+          r = Requirement.where(complete: true)
         else
-          r = Requirement.where(:other => true)
+          r = Requirement.where(other: true)
       end # of case
-      r = r.where(:posn => i).first.id
+      r = r.where(posn: i).first.id
       actual.push r
     end # of each
     return actual
@@ -98,13 +98,13 @@ class Requirement < ActiveRecord::Base
     # Returns the fraction of marks to given a certain feedback
 
     feedback = feedback.class == Fixnum ? self.unmangle_feedback(feedback) : feedback
-    feedback = Requirement.where(:id => feedback)
+    feedback = Requirement.where(id: feedback)
 
-    honest = feedback.where(:honest => true).select(:weight).first.weight 
+    honest = feedback.where(honest: true).select(:weight).first.weight 
     if honest > 0
-      cogent = feedback.where(:cogent => true).select(:weight).first.weight 
-      complete = feedback.where(:complete => true).select(:weight).first.weight 
-      other = feedback.where(:other => true, :weight => 0).count
+      cogent = feedback.where(cogent: true).select(:weight).first.weight 
+      complete = feedback.where(complete: true).select(:weight).first.weight 
+      other = feedback.where(other: true, weight: 0).count
       other = (other > 2) ? 2 : other 
       fraction = ((cogent + complete) / 8.0) - (0.05 * other)
     else
@@ -128,13 +128,13 @@ class Requirement < ActiveRecord::Base
     posns.each_with_index do |p,j|
       case j
         when 0 
-          ret.push Requirement.where(:honest => true, :posn => p).map(&:id).first
+          ret.push Requirement.where(honest: true, posn: p).map(&:id).first
         when 1
-          ret.push Requirement.where(:cogent => true, :posn => p).map(&:id).first
+          ret.push Requirement.where(cogent: true, posn: p).map(&:id).first
         when 2
-          ret.push Requirement.where(:complete => true, :posn => p).map(&:id).first
+          ret.push Requirement.where(complete: true, posn: p).map(&:id).first
         else
-          ret.push Requirement.where(:other => true, :posn => p).map(&:id).first
+          ret.push Requirement.where(other: true, posn: p).map(&:id).first
       end  # of case
     end # of do .. 
     return ret

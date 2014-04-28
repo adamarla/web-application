@@ -59,6 +59,10 @@ window.rails = {
 window.trigger = {
 
   click : (link, event = null) ->
+    if $(link).hasClass 'disabled'
+      event.stopImmediatePropagation() if event? 
+      return true 
+
     return true if $(link).hasClass 'carousel-control'
     type = link.getAttribute 'data-toggle'
 
@@ -130,17 +134,18 @@ window.trigger = {
 
 jQuery ->
 
+
   ###
     A spinner to show that AJAX request is in process. The spinner is shown only 
     in the control panel 
   ###
 
-  $('#spinner').bind 'ajaxSend', () ->
-    $(this).show()
+  $('body').bind 'ajaxSend', () ->
+    spinner.start()
   .bind 'ajaxStop', () ->
-    $(this).hide()
+    spinner.stop()
   .bind 'ajaxError', () ->
-    $(this).hide()
+    spinner.stop()
 
   # Initialize tutorials
   tutorial.initialize()
@@ -151,6 +156,13 @@ jQuery ->
   ###
 
   onPing = (response) ->
+    # Unhide the console 
+    $('body > .container-fluid').removeClass('hidden')
+
+    # Start monitoring progress of any pending Delayed::Jobs
+    monitor.add response, true
+
+    # Set server 
     if response.deployment is 'production'
       gutenberg.server = gutenberg.serverOptions.remote
       rails.server = rails.serverOptions.remote
@@ -158,14 +170,19 @@ jQuery ->
       gutenberg.server = gutenberg.serverOptions.local
       rails.server = rails.serverOptions.local
 
-    # if logged in user is a teacher, then update her demo info (which demos done, which remain)
-#    if response.who is 'Teacher'
-#      if response.demo?
-#        demo.initialize(response.demo)
-#        $('#m-demo-intro').modal('show') if response.new is true
+    if response.new is true
+      switch response.who 
+        when 'Teacher'
+          break 
+        when 'Student'
+          $('#m-enroll-self').modal('show') 
+        when 'Examiner'
+          notifier.show 'n-sandbox'
 
-    if response.who is 'Student'
-      $('#m-enroll-self').modal('show') if response.new is true
+    # if logged in user is a teacher, then update her demo info (which demos done, which remain)
+    # if response.who is 'Teacher'
+    #  demo.initialize(response.demos)
+    #  $('#m-demo-intro').modal('show') if response.new is true
     return true
     
   pingArgs =
@@ -291,12 +308,6 @@ jQuery ->
     if empty
       karo.empty $(this).attr('href')
 
-    # Disable paginator in parent panel 
-    panel = $(this).closest('.g-panel')[0]
-    pgn = $(panel).children('.pagination').eq(0)
-    pagination.disable pgn
-
-
     ###
       Do the next two for only * horizontal * tabs - not .tabs-left or .tabs-right
         1. Ensure that atmost 3 tabs are shown - including the just clicked one
@@ -320,15 +331,19 @@ jQuery ->
           karo.empty $(tab).attr('href')
 
     # Issue AJAX request * after * taking care of any :prev or :id in data-url
+    # Enable / disable paginator accordingly 
+
     ajax = karo.url.elaborate this
+    panel = $(this).closest('.g-panel')[0]
+    pgn = $(panel).children('.paginator').eq(0)
+
     if ajax?
       proceed = true
       if karo.checkWhether this, 'nopurge-on-show'
         z = $($(this).attr('href'))
-        proceed = z.hasClass('static') || (z.children().length is 0)
-      if proceed
-        karo.ajaxCall ajax
-        pagination.url.set pgn, ajax
+        proceed = z.hasClass('static') || (z.children().filter(":not([class~='purge-skip'])").length is 0)
+      paginator.initialize(pgn, ajax, this) unless isSideTab
+      karo.ajaxCall(ajax, this, isSideTab) if proceed
     else
       # launch any help tied to this link. Do this ONLY for tabs that do NOT 
       # result in an ajax call. For tabs that do, tutorials are launched AFTER
@@ -359,8 +374,13 @@ jQuery ->
       then autoclick the first tab
     ###
     pane = $($(this).attr('href'))
+    resetChildTabs = this.getAttribute('data-childtabs-reset') is 'true'
+
     for m in pane.find('.tabs-left')
-      firstTab = $(m).find('ul > li > a').eq(0)
+      tabs = $(m).find('ul > li')
+      if resetChildTabs
+        $(j).removeClass('active') for j in tabs
+      firstTab = tabs.eq(0).children('a').eq(0)
       firstTab.click()
 
     ###
@@ -416,10 +436,10 @@ jQuery ->
     return true
 
   ###############################################
-  # When a pagination link is clicked 
+  # When a paginator link is clicked 
   ###############################################
 
-  $('.pagination a').click (event) ->
+  $('.paginator a').click (event) ->
     event.stopPropagation()
     li = $(this).parent()
     return false if li.hasClass 'disabled'
@@ -515,7 +535,14 @@ jQuery ->
         if tab?
           tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
           ajax = karo.url.elaborate this, null, tab
-          karo.ajaxCall ajax if ajax?
+
+          if ajax?
+            pgnOn = tab.getAttribute('data-paginate-on')
+            if pgnOn? and pgnOn is 'line'
+              panel = $(this).closest('.g-panel')[0]
+              pgn = $(panel).children('.paginator').eq(0)
+              paginator.initialize(pgn, ajax, tab)
+            karo.ajaxCall(ajax, tab)
 
         # 4. Switch to next-tab - if so specified
         if activeTab?
@@ -590,7 +617,7 @@ jQuery ->
   ## Auto-click the first default link 
   #####################################################################
 
-   for m in $("#control-panel, #toolbox > ul[role='menu']").find("a[data-default]")
+   for m in $("#control-panel, #menus > ul[role='menu']").find("a[data-default]")
      trigger.click m
      return true
 

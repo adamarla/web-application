@@ -26,7 +26,7 @@ class CourseController < ApplicationController
           id: m.id, 
           name: m.name, 
           klass: 'video lesson', 
-          video: m.video.sublime_uid } }
+          video: m.video.uid } }
 
         quizzes = milestone.quizzes.map{ |m| { id: m.id, name: m.name, badge: m.total? } }
       else
@@ -50,7 +50,7 @@ class CourseController < ApplicationController
           id: m.id, 
           name: m.name, 
           klass: 'lesson', 
-          video: m.video.sublime_uid } }
+          video: m.video.uid } }
       else
         response = available.map{ |m| { id: m.id, name: m.name, badge: m.total? } }
       end

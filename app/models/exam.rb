@@ -11,9 +11,12 @@
 #  takehome    :boolean         default(FALSE)
 #  job_id      :integer         default(-1)
 #  duration    :integer
-#  deadline    :datetime
+#  grade_by    :datetime
 #  uid         :string(40)
 #  open        :boolean         default(TRUE)
+#  submit_by   :datetime
+#  regrade_by  :datetime
+#  dist_scheme :text
 #
 
 include GeneralQueries
@@ -36,7 +39,7 @@ class Exam < ActiveRecord::Base
   end
 
   def self.with_deadline
-    where{ deadline != nil }
+    where{ grade_by != nil }
   end
 
   def self.for_quiz(id)
@@ -49,7 +52,7 @@ class Exam < ActiveRecord::Base
 
   def close? 
     # Should the exam be closed to further students at the time of asking?
-    if self.quiz.teacher.online
+    if self.quiz.teacher.indie
       today = Date.today
       created = self.created_at
       return (today.month != created.month && today.year != created.year) 
@@ -62,6 +65,18 @@ class Exam < ActiveRecord::Base
     return false unless self.has_scans?
     GradedResponse.in_exam(self.id).with_scan.ungraded.count > 0
   end
+
+  def disputable?
+    # can a student dispute a grade at this time? 
+    return true if self.regrade_by.nil?
+    return (Date.today <= self.regrade_by.to_date)
+  end
+
+  def receptive?
+    # of any new scans. If not, then further submissions are disallowed
+    return true if self.submit_by.nil?
+    return (Date.today <= self.submit_by.to_date) 
+  end 
 
   def has_scans?
     # if false, then worksheet / exam is automatically ungradeable
@@ -157,17 +172,17 @@ class Exam < ActiveRecord::Base
     return "#{self.quiz.uid}/#{self.uid}"
   end 
 
-  def deadline? 
+  def grade_by? 
     # Returns the ** number of days ** left to finish grading this exam
     # Numbers < 0 => deadline missed 
 
-    if self.deadline.nil?
+    if self.grade_by.nil?
       g = GradedResponse.in_exam(self.id).with_scan.ungraded.order(:updated_at).last
       d = g.nil? ? 3.business_days.from_now : (3.business_days.after g.updated_at)
-      self.update_attribute(:deadline, d) 
+      self.update_attribute(:grade_by, d) 
     end
 
-    deadln = self.deadline.nil? ? 0 : (self.deadline.to_date - Date.today).to_i
+    deadln = self.grade_by.nil? ? 0 : (self.grade_by.to_date - Date.today).to_i
     return deadln
   end
 
@@ -208,15 +223,35 @@ class Exam < ActiveRecord::Base
     return response[:error_out_response][:manifest]
   end
 
+  def download_pdf?
+    return nil unless self.compiled?
+    return nil if self.takehome
+    return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
+  end
+
+  def distribution_scheme?
+    return {} if self.dist_scheme.blank?
+    return YAML.load self.dist_scheme
+  end
+
+  def reset
+    # For now, this method only unassigns any ungraded responses
+    # Needed if a teacher wants new distribution scheme to take effect 
+    g = GradedResponse.in_exam(self.id).with_scan.ungraded
+    g.each do |j|
+      j.update_attribute :examiner_id, nil
+    end
+  end
+
   public 
     def seal 
       uid = self.uid.nil? ? "e/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
       self.update_attribute :uid, uid
 
-      # Only for exams made by online instructors can we do the following
+      # Only for exams made by indie instructors can we do the following
       # For those in schools, Quiz.mass_assign_to will set the 'name' 
       # and 'takehome' flags
-      if self.quiz.teacher.online
+      if self.quiz.teacher.indie
         created = self.created_at
         name = "#{created.strftime("%B %Y")}"
         self.update_attributes name: name, takehome: true

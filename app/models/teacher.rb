@@ -8,7 +8,7 @@
 #  created_at :datetime
 #  updated_at :datetime
 #  school_id  :integer
-#  online     :boolean         default(FALSE)
+#  indie      :boolean         default(TRUE)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -32,9 +32,6 @@ class Teacher < ActiveRecord::Base
   has_many :courses
   has_many :lessons
   has_many :aggr_by_topics, as: :aggregator
-
-  has_many :apprenticeships, dependent: :destroy 
-  has_many :examiners, through: :apprenticeships
 
   validates :name, presence: true
   validates_associated :account
@@ -130,14 +127,9 @@ class Teacher < ActiveRecord::Base
     @worksheets = Exam.where(:id => total).order('created_at DESC')
   end
 
-  def self_made_quizzes
-    qids = Quiz.where(:teacher_id => self.id).map(&:id)
-    self_made = qids - [PREFAB_DEMO_QUIZ] - PREFAB_QUIZ_IDS
-    Quiz.where(:id => self_made)
-  end 
 
   def new_to_the_site?
-    (self.self_made_quizzes.count < 1)
+    (self_made_quizzes.count < 1)
   end
 
 #####  PRIVATE ######################
@@ -150,6 +142,12 @@ class Teacher < ActiveRecord::Base
 
     def first_time_save? 
       self.new_record? || !self.account
+    end 
+
+    def self_made_quizzes
+      qids = Quiz.where(teacher_id: self.id).map(&:id)
+      self_made = qids - [PREFAB_DEMO_QUIZ] - PREFAB_QUIZ_IDS
+      Quiz.where(id: self_made)
     end 
 
 end # of class 

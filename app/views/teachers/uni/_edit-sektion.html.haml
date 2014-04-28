@@ -1,0 +1,11 @@
+
+#enrolled-students 
+  = simple_form_for :remove, remote: true,
+  html: { data: { action: "#{update_sektion_path}?id=:id", id: 'tab-mng-sektions-1' } } do |f|
+    .row-fluid
+      %button.btn.btn-primary.btn-large.offset4{ type: :submit }= "Remove Selected"
+    .row-fluid.push-down
+      .column.span3.purge-blind.multi-select
+      .column.span3.offset1.purge-blind.multi-select
+      .column.span3.offset1.purge-blind.multi-select
+

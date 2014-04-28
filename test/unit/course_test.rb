@@ -7,7 +7,7 @@
 #  teacher_id :integer
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
-#  price      :integer
+#  price      :decimal(5, 2)
 #
 
 require 'test_helper'

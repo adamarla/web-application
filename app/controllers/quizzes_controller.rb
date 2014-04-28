@@ -11,24 +11,30 @@ class QuizzesController < ApplicationController
 
     quiz = t.quizzes.create(name: name, question_ids: qids, num_questions: qids.count)
     eta = minutes_to_completion quiz.job_id
-    render json: { monitor: { quiz: quiz.id }, notify: { title: "#{eta} minutes(s)" } }, status: :ok
+    render json: { monitor: { quiz: [quiz.id] }, notify: { title: "#{eta} minutes(s)" } }, status: :ok
   end
 
   def mass_assign_to
     quiz = Quiz.find params[:id]
 
     unless quiz.nil?
-      publish = !(params[:ws_type] == 'classwork')
-      teacher = quiz.teacher 
+      publish = !(params[:etype] == 'classwork')
+      t = quiz.teacher 
       students = Student.where(id: params[:checked].keys)
 
       eid, job_id = students.blank? ? nil : quiz.mass_assign_to(students, publish)
       unless job_id.nil? 
         eta = minutes_to_completion job_id
-        render json: { monitor: { exam: eid }, notify: { title: "#{eta} minute(s)" }}, status: :ok
+        r = { monitor: { exam: [eid] }, notify: { title: "#{eta} minute(s)" }}
       else # should happen because the quiz IS being published - and no other reason
-        render json: { msg: :publish }, status: :ok
-      end 
+        r = { msg: :publish }
+      end
+
+      # For now, allow only offline teachers to specify any additional deadlines for the exam
+      unless t.indie
+        r[:meta] = { id: eid }
+      end
+      render json: r, status: :ok
     else
       render json: { msg: 'No quiz found!' }, status: :ok
     end
@@ -65,7 +71,7 @@ class QuizzesController < ApplicationController
 
       if question_ids.count > 0
         @title, @msg = (op == "remove") ? quiz.remove_questions(question_ids) : quiz.add_questions(question_ids)
-        @last_child = quiz.children?.order(:created_at).last
+        @last_child = quiz.exam_ids.count > 0 ? quiz.children?.order(:created_at).last : quiz
       else
         @title = "No change"
         @msg = (op == "remove") ? "No questions dropped" : "No questions added"
@@ -114,11 +120,12 @@ class QuizzesController < ApplicationController
   end
 
   def exams
-    @exams = Exam.where(quiz_id: params[:id])
+    @chronological = Exam.where(quiz_id: params[:id]).order(:created_at)
+    @exams = @chronological.reverse_order
     n = @exams.count 
     @per_pg, @last_pg = pagination_layout_details n
     pg = params[:page].nil? ? 1 : params[:page].to_i
-    @exams = @exams.order('created_at DESC').page(pg).per(@per_pg)
+    @exams = @exams.page(pg).per(@per_pg)
   end
 
 end

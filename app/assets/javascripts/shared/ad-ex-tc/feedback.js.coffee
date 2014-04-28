@@ -7,6 +7,7 @@ window.fdb = {
   mode: null,
   given: new Array(),
   history: new Array(),
+  ticker : null,
 
   current : {
     student : null,
@@ -35,13 +36,27 @@ window.fdb = {
         f += "/>"
         $(f).appendTo m 
 
-    # Set values for fdb.current.*
+    # Load historical comments 
+    fdb.history.length = 0
+    fdb.update.history json
 
+    # Set values for fdb.current.*
     c = here.children()[0]
     fdb.current.student = c 
     fdb.current.response = $(c).children()[0]
     fdb.current.scan = $(c).attr 'marker'
     fdb.update.view()
+
+    # Customize grading panel if in sandbox mode
+    buttons = fdb.controls.find 'button'
+    if json.sandbox 
+      for btn in ['btn-fresh-copy', 'btn-rotate']
+        b = buttons.filter("[id=#{btn}]").eq(0)
+        b.addClass 'disabled'
+      notifier.show 'n-sandbox-tips'
+    else
+      $(b).removeClass('disabled') for b in buttons
+      
     return true
 
   add : (comment, event) ->
@@ -76,16 +91,33 @@ window.fdb = {
 
     $(fdb.root).removeClass 'hide'
     fdb.update.ticker()
+
+    unless fdb.ticker?
+      fdb.ticker = window.setInterval () -> fdb.ping(), 
+      300000 # 5 min 
     return true
 
   detach : () ->
     preview.create() # within wide-X
     $(fdb.root).addClass 'hide'
+
+    if fdb.ticker?
+      window.clearInterval fdb.ticker  
+      fdb.ticker = null
+    fdb.clear()
+    return true
+
+  ping : () ->
+    r = fdb.current.response
+    if r?
+      gid = $(r).attr('marker')
+      $.get 'germane/comments', { g: gid }, (data) -> fdb.update.history(data), 
+      'json'
     return true
 
 
   #############################################################
-  ## Update Ticker
+  ## Update Methods 
   #############################################################
 
   update : {
@@ -104,6 +136,17 @@ window.fdb = {
       preview.load fdb.current.scan, 'locker'
       fdb.update.ticker()
       shadow.fall $(fdb.current.response).attr('shadow')
+      return true
+
+    history : (json) ->
+      # The returned JSON has just the non-trivial comments - the only type we want 
+      # to keep. Hence, with every periodic update, any trivial comments written 
+      # in the last 5 min will be lost. And that's ok
+
+      fdb.history.length = 0
+      for a in json.comments 
+        b = karo.unjaxify a
+        fdb.history.push b
       return true
 
   }
@@ -216,6 +259,8 @@ jQuery ->
     
   fdb.controls.on 'click', 'button', (event) ->
     event.stopImmediatePropagation()
+    return false if $(this).hasClass 'disabled'
+
     rubric.keyboard = true
     id = $(this).attr 'id'
     fdb.tex = null
@@ -249,6 +294,24 @@ jQuery ->
         fdb.mode = 'comments'
         $(shadow.commentBox).focus()
         $(this).addClass 'active'
+      when 'btn-perfect'
+        event.stopImmediatePropagation()
+        rubric.rewind()
+        rubric.select(3)
+        rubric.select(4)
+        rubric.select(5)
+      when 'btn-blank'
+        event.stopImmediatePropagation()
+        rubric.rewind()
+        rubric.select(0)
+        rubric.select(0)
+        rubric.select(0)
+      when 'btn-cheated'
+        event.stopImmediatePropagation()
+        rubric.rewind()
+        rubric.select(1)
+        rubric.select(0)
+        rubric.select(0)
       when 'btn-hide-controls'
         isClicked = $(this).hasClass 'active'
         btnGroups = $(this).closest('.row-fluid').siblings() 

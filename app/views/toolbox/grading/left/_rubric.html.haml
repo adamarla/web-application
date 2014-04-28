@@ -1,0 +1,40 @@
+
+= simple_form_for :checked, remote: true, url: submit_fdb_path, html: { id: 'form-feedback' } do |f|
+
+  .row-fluid.navbar
+    .btn-group.pull-right
+
+      %button#btn-toggle-answerkey.btn.btn-primary{ type: :button, 
+      'data-toggle' => :button }= "See Solution"
+      %button#btn-audit-key.btn.btn-inverse{ type: :button}= "Audit Solution" 
+
+      %button#btn-submit-fdb.btn.btn-inverse.disabled{ type: :button, disabled: :disabled }= "Submit"
+
+  .tabbable.tabs-left
+    %ul.nav.nav-tabs.span4.nopurge-ever
+      %li
+        = simple_link for: "An honest attempt - even if wrong and/or incomplete?", 
+        id: "tab-honest", href: "#pane-honest"
+      %li
+        = simple_link for: "Is the line of reasoning clear, correct and easy to follow?",
+        id: "tab-cogent", href: "#pane-cogent"
+      %li
+        = simple_link for: "Has the line of reasoning been taken to its logical conclusion?", id: "tab-complete",
+        href: "#pane-complete"
+      %li
+        = simple_link for: "Anything else?", id: "tab-other", href: "#pane-other"
+
+    -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
+    .tab-content.span7
+      #pane-honest.tab-pane
+        - Requirement.honest.each do |m|
+          = render partial: 'toolbox/grading/left/requirement', locals: { requirement: m }
+      #pane-cogent.tab-pane
+        - Requirement.cogent.each do |m|
+          = render partial: 'toolbox/grading/left/requirement', locals: { requirement: m }
+      #pane-complete.tab-pane
+        - Requirement.complete.each do |m|
+          = render partial: 'toolbox/grading/left/requirement', locals: { requirement: m }
+      #pane-other.tab-pane.multi-select
+        - Requirement.other.each do |m|
+          = render partial: 'toolbox/grading/left/requirement', locals: { requirement: m }

@@ -1,0 +1,27 @@
+
+- active_sk = teacher.sektions.order(:end_date).select{ |m| m.active? }
+- active_sk = active_sk.blank? ? Sektion.where(id: 58) : active_sk
+
+-# Left-side tabs - one per section
+#exb-2.tabbable.tabs-left
+  %ul.nav.nav-tabs.span3{ id: 'exb-ul-milestone-2' }
+    - active_sk.each_with_index do |m,j|
+      %li
+        = simple_link for: "#{m.name}", marker: "#{m.id}", href: '#exb-sektions', id: "tab-exb-sk-#{m.id}"
+
+  -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
+  .tab-content.span8{ :id => 'exb-div-milestone-3' }
+    = simple_form_for :checked, remote: true, defaults: { label: false, required: false }, html: { id: 'form-exb-3', 
+    class: 'multi-select', data: { action: "#{quiz_mass_assign_path}?id=:id", id: 'tab-exb-quizzes' } } do |f|
+      .btn-toolbar.purge-skip
+        .btn-group
+          = simple_button icon: 'icon-list', id: 'select-all-for-quiz', tooltip: 'Select All', placement: :right
+        .btn-group
+          = simple_link for: 'Make PDF', icon: 'icon-cog', id: 'lnk-build-ws', class: 'btn btn-inverse'
+        .hide.exbopt
+          = f.input :etype, input_html: { name: :etype }
+          = f.input :deadline, input_html: { name: :deadline } 
+          = f.input :duration, input_html: { name: :duration } 
+
+      #exb-sektions.tab-pane.multi-select
+

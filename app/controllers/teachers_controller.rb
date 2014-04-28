@@ -33,17 +33,16 @@ class TeachersController < ApplicationController
                                       country: country
                                      
       if teacher.save 
-        Mailbot.delay.welcome_teacher(teacher.account)
         sign_in teacher.account
         redirect_to teacher_path
       end # no reason for else if client side validations worked
     else # registration data probably entered by a bot
-      render :json => { :notify => { :text => "Bot?" } }, :status => :bad_request
+      render json: { notify: { text: "Bot?" } }, status: :bad_request
     end
   end 
 
   def show 
-    render :nothing => true, :layout => 'teachers'
+    render nothing: true, layout: 'teachers'
   end 
 
   def load
@@ -84,14 +83,19 @@ class TeachersController < ApplicationController
   end 
 
   def sektions
-    teacher = params[:id].nil? ? current_account.loggable : Teacher.find(params[:id])
-    if teacher.nil?
-      @sektions = []
-    else
-      @sektions = teacher.sektions.order(:end_date).order(:name)
-      @sektions = Sektion.where(id: PREFAB_SECTION) if @sektions.blank?
-    end
+    t = current_account.loggable
+    all = t.sektions.order(:end_date).order(:name)
     @context = params[:context]
+
+    case params[:type]
+      when 'inactive'
+        @sektions = all.select{ |j| j.graduated? }
+      when 'future'
+        @sektions = all.select{ |j| j.future? }
+      else
+        @sektions = all.select{ |j| j.active? }
+    end
+    @sektions = Sektion.where(id: PREFAB_SECTION) if @sektions.blank?
   end
 
   def students 
@@ -123,40 +127,24 @@ class TeachersController < ApplicationController
     @context = params[:context]
   end
 
-=begin
   def prefabricate
     topic = params[:prefab][:topic]
-    quiz = Quiz.find topic.to_i 
-
+    quiz = Quiz.find topic.to_i
     clone = quiz.clone current_account.loggable_id
     unless clone.nil?
-      job = Delayed::Job.enqueue CompileQuiz.new(clone.id), priority: 5
-      clone.update_attribute :job_id, job.id
-
-      # Now, randomly pick a student from the prefabricated section - Gradians.com 
-      sk = Sektion.find PREFAB_SECTION
-      random_student = sk.students.order(:created_at)[ [*2..10].sample ] # first 2 students are the founders
-
-      # and assign the just made quiz to him / her 
-      ws = clone.assign_to [random_student]
-      unless ws.nil?
-        job = Delayed::Job.enqueue CompileExam.new(ws, false), priority: 5
-        ws.update_attribute :job_id, job.id
-        estimate = minutes_to_completion job.id
-        render json: { monitor: { quiz: clone.id, exam: ws.id }, timer: { on: topic, for: "#{estimate * 60}"}}, status: :ok
-      end
-    else # no clone. should never happen
-      render :nothing => true, :status => :ok
+      estimate = minutes_to_completion clone.job_id
+      render json: { monitor: { quiz: clone.id }, timer: { on: topic, for: "#{estimate * 60}"}}, status: :ok
+    else
+      render nothing: true, status: :ok
     end
-  end
-=end
+  end 
 
   def add_lesson
     teacher = current_account.loggable
     data = params[:lesson]
 
     lesson = teacher.lessons.build(name: data[:name], description: data[:description], history: (data[:type] == "h") )
-    lesson.build_video(sublime_title: data[:name], sublime_uid: data[:uid], active: true)
+    lesson.build_video(title: data[:name], uid: data[:uid], active: true)
 
     if lesson.save
       render json: { status: 'success' }, status: :ok
@@ -164,5 +152,38 @@ class TeachersController < ApplicationController
       render json: { status: 'failed' }, status: :ok
     end
   end
+
+  def proficiency_chart
+    s = Student.find params[:id]
+    tid = current_account.loggable_id
+    @json = s.proficiency_chart_for tid
+  end
+
+  def def_distribution_scheme
+    e = Exam.find params[:id]
+    unless e.nil?
+      @eid = e.id
+      @q = e.quiz
+      @a = @q.teacher.apprentices.available
+    else
+      render json: { msg: 'Not found' }, status: :ok
+    end
+  end
+
+  def set_distribution_scheme
+    e = Exam.find params[:id]
+
+    unless e.nil?
+      scheme = params[:grid]
+      a = {}
+      for m in scheme.keys 
+        a[m.to_i] = scheme[m].keys.map(&:to_i)  
+      end 
+      yaml = a.blank? ? nil : a.to_yaml
+      e.reset if e.update_attribute(:dist_scheme, yaml)
+    end
+    render json: { msg: :ok }, status: :ok
+  end
+
 
 end # of class

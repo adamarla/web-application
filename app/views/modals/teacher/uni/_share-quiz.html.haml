@@ -1,0 +1,10 @@
+
+#m-share-quiz.modal.fade.regular{ role: :dialog } 
+  .row-fluid
+    .span3
+      = image_tag 'notifications/add-user.png'
+    .span8
+      = simple_form_for :share, remote: true, defaults: {validate: true }, 
+        html: { data: { action: "#{share_quiz_path}?id=:id", id: 'tab-exb-quizzes' } } do |f|
+        = f.input :email, required: false, label: "Share With", hint: "E-mail address"
+        %button.btn.btn-large.btn-primary.push-down.pull-right{:type => :submit}= "Submit"

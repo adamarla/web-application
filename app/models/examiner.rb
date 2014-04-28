@@ -2,32 +2,49 @@
 #
 # Table name: examiners
 #
-#  id              :integer         not null, primary key
-#  created_at      :datetime
-#  updated_at      :datetime
-#  is_admin        :boolean         default(FALSE)
-#  first_name      :string(30)
-#  last_name       :string(30)
-#  last_workset_on :datetime
-#  n_assigned      :integer         default(0)
-#  n_graded        :integer         default(0)
+#  id                :integer         not null, primary key
+#  created_at        :datetime
+#  updated_at        :datetime
+#  is_admin          :boolean         default(FALSE)
+#  first_name        :string(30)
+#  last_name         :string(30)
+#  last_workset_on   :datetime
+#  n_assigned        :integer         default(0)
+#  n_graded          :integer         default(0)
+#  live              :boolean         default(FALSE)
+#  mentor_id         :integer
+#  mentor_is_teacher :boolean         default(FALSE)
+#  internal          :boolean         default(FALSE)
 #
 
 include GeneralQueries
 
 class Examiner < ActiveRecord::Base
-  has_one :account, :as => :loggable
+  has_one :account, as: :loggable
   has_many :graded_responses
   has_many :suggestions
+  has_many :doodles, dependent: :destroy
 
-  has_many :apprenticeships, dependent: :destroy
+  validates_associated :account
 
   # [:all] ~> [:admin]
   # [:disputed] ~> [:student]
   #attr_accessible :disputed
 
   def self.available
-    select{ |m| m.account.active }
+    select{ |m| !m.account.nil? && m.live? }
+  end
+
+  def self.internal 
+    where(internal: true)
+  end 
+
+  def self.teaching_assistant_to(id)
+    where(mentor_is_teacher: true, mentor_id: id)
+  end
+
+  def self.experienced
+    where('(internal = ? AND n_graded > ?) OR (internal = ? AND n_graded > ?)', true, 1000, false, 2000)
   end
 
   def name 
@@ -72,47 +89,66 @@ class Examiner < ActiveRecord::Base
   end
 
   def self.distribute_scans
-    pnd = GradedResponse.unassigned.with_scan
-    exams = pnd.map(&:worksheet).uniq.map(&:exam).uniq 
-    by = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.online }
+    ug = GradedResponse.unassigned.with_scan # ug = ungraded
+    exams = ug.map(&:worksheet).uniq.map(&:exam).uniq 
+    offline = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.indie }
 
-    examiners = Examiner.select{ |e| e.account.active }.sort{ |m,n| m.updated_at <=> n.updated_at }
-    n_examiners = examiners.count
-    used = [] # to track examiners to whom an e-mail must be sent
+    for e in exams 
+      scheme = e.distribution_scheme? 
+      t = e.quiz.teacher
+      ta_ids = t.apprentices.available.map(&:id) # available TAs - if any
+      pending = ug.in_exam(e.id)
 
-    pnd.map(&:q_selection_id).uniq.each do |q|
-      pending = pnd.where(q_selection_id: q) # responses to specific question in specific quiz  
-      students = pending.map(&:student_id).uniq
-      limit = (students.count / n_examiners)
-      limit = limit > 20 ? limit : 20
+      pending.map(&:q_selection_id).uniq.each do |q|
+        p = pending.where(q_selection_id: q)
 
-      students.each_slice(limit).each do |j|
-        assignee = examiners.shift # pop from front 
-        used.push assignee.id
+        if ta_ids.blank? # no TAs 
+          examiners = Examiner.where(mentor_is_teacher: false).order(:n_assigned).available # Gradians.com graders
+        else # has TAs 
+          eid = scheme.blank? ? nil : scheme[q] # examiners for given q_selection
+          j = eid.blank? ? ta_ids : (ta_ids & eid)
+          j = ta_ids if j.blank?
+          examiners = Examiner.where(id: j).order(:n_assigned) # ta_ids ensures availability 
+        end 
 
-        work = pending.where(student_id: j)
-        work.map{ |m| m.update_attribute :examiner_id, assignee.id }
-        assignee.update_attribute :n_assigned, (assignee.n_assigned + work.count)
+        sids = p.map(&:student_id).uniq
+        n_examiners = examiners.count 
+        per = (sids.count / n_examiners)
+        per = per > 20 ? per : 20
 
-        examiners.push assignee # push to last
-      end # over students
-    end
+        sids.each_slice(per).each do |k|
+          exm = examiners.shift # pop from front 
+          work = p.where(student_id: k)
+          work.map{ |m| m.update_attribute :examiner_id, exm.id }
+          exm.update_attribute :n_assigned, (exm.n_assigned + work.size)
+          examiners.push exm # push to last
+        end # over students
+      end # over q-selections 
 
-    # Update deadline field for each exam for which scans have been distributed 
-    deadline = 3.business_days.from_now
-    for e in exams
-      e.update_attribute :deadline, deadline 
-    end
+      # Update grade_by field
+      deadline = ta_ids.blank? ? 3.business_days.from_now : 5.business_days.from_now
+      e.update_attribute :grade_by, deadline
+    end 
 
     # Let the (offline) teacher know that scans have been received
-    for t in by.uniq
+    # No need to inform graders / TAs as they will get one daily digest mail at 11:55pm IST 
+    for t in offline.uniq
       Mailbot.delay.scans_received(t)
     end
-    
-    # Let each grader know that he/she has got new scans to grade in their account
-    for id in used.uniq
-      Mailbot.delay.new_grading_work(id)
-    end
+  end
+
+  def live?
+    return true if self.live
+    is_live = self.is_admin ? true : false
+    self.update_attribute(:live, true) if is_live
+    return is_live 
+  end
+
+  def mail_daily_digest(tbd_grading, tbd_disputes)
+    x = tbd_grading ? 'Yes' : 'No'
+    y = tbd_disputes ? 'Yes' : 'No' 
+    name = self.first_name
+    Mailbot.delay.daily_digest name, self.account.email, x, y
   end
 
 end # of class

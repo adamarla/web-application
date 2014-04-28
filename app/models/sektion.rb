@@ -2,16 +2,17 @@
 #
 # Table name: sektions
 #
-#  id         :integer         not null, primary key
-#  name       :string(40)
-#  created_at :datetime
-#  updated_at :datetime
-#  teacher_id :integer
-#  uid        :string(10)
-#  start_date :date
-#  end_date   :date
-#  auto_renew :boolean         default(TRUE)
-#  active     :boolean
+#  id                   :integer         not null, primary key
+#  name                 :string(40)
+#  created_at           :datetime
+#  updated_at           :datetime
+#  teacher_id           :integer
+#  uid                  :string(10)
+#  start_date           :date
+#  end_date             :date
+#  auto_renew           :boolean         default(TRUE)
+#  active               :boolean
+#  auto_renew_immediate :boolean         default(FALSE)
 #
 
 class Sektion < ActiveRecord::Base
@@ -43,18 +44,26 @@ class Sektion < ActiveRecord::Base
     # The cron-job should be set for no earlier than 5:30AM IST 
     today = Date.today
     freshman = Sektion.where(start_date: today)
-    graduates = Sektion.where(end_date: today.yesterday)
+    graduates = Sektion.where(active: true, end_date: today.yesterday)
 
-    freshman.map{ |m| m.update_attribute(:active, true) }
+    for f in freshman
+      f.update_attribute(:active, true)
+    end 
+
     for g in graduates
-      g.update_attribute :active, false
       g.graduate if g.auto_renew
     end
+  end
+
+  def self.upcoming?(in_n_days = 3)
+    today = Date.today
+    where(active: false).where('start_date > ? AND start_date < ?', today, (today + in_n_days.days))
   end
 
   def active?
     # (adjective)
     return self.active unless self.active.nil?
+
     if (self.start_date.nil? || self.end_date.nil?)
       active = false
     else
@@ -68,6 +77,11 @@ class Sektion < ActiveRecord::Base
   def future?
     return false if self.start_date.nil?
     return (self.start_date > Date.today)
+  end
+
+  def graduated? 
+    return true if self.end_date.nil?
+    return (self.end_date < Date.today)
   end
 
   def lifetime_in_days
@@ -138,18 +152,18 @@ class Sektion < ActiveRecord::Base
   public 
       def graduate
         # (verb): Create a new sektion with the same lifetime as self
-        t = self.teacher 
+        return false unless self.active
 
-        return false unless t.account.active
-        return false unless self.auto_renew
-        return false if (self.start_date.nil? || self.end_date.nil?)
-        return false if (self.future? || self.active?) 
+        t = self.teacher 
+        return false unless (t.account.active && self.auto_renew)
 
         lifetime = self.lifetime_in_days 
-        start = Date.today.beginning_of_month 
+        start = self.auto_renew_immediate ? Date.today.beginning_of_month : (self.start_date + 1.year)
         expiry = (start + lifetime.days).end_of_month 
-        neu = t.sektions.create name: self.name, start_date: start, end_date: expiry
-        self.update_attribute :active, false # close the graduating sektion
+
+        neu = t.sektions.create name: self.name, start_date: start, end_date: expiry,
+                                auto_renew: true, auto_renew_immediate: self.auto_renew_immediate
+        self.update_attribute :active, false
       end
 
   private 
@@ -157,7 +171,7 @@ class Sektion < ActiveRecord::Base
         uid = "#{self.teacher_id.to_s(36)}#{rand(99999).to_s(20)}".upcase
         self.update_attributes uid: uid, name: self.name.titleize
         # Let the teacher know  
-        Mailbot.delay.new_sektion(self) unless self.teacher.online
+        Mailbot.delay.new_sektion(self) unless self.teacher.indie
       end 
 
 end

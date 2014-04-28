@@ -16,5 +16,5 @@ object false
   node(:b) { @question.uid }
 
   node(:video, unless: lambda{ |m| @question.video.nil? }) do |m| 
-    @question.video.sublime_uid
+    @question.video.uid
   end

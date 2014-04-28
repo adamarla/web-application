@@ -1,0 +1,33 @@
+
+
+#fdb-main.hide.span11
+  .hide{ id: 'pending-scans' }
+
+  .row-fluid{ id: 'fdb-active-area' }
+    .span2{id: 'fdb-controls' }
+      .row-fluid
+        .btn-group.btn-group-vertical
+          = simple_button for: 'Hide', id: 'btn-hide-controls', shortcut: 'I', class: 'btn-success btn-large'
+      .row-fluid.push-down
+        .btn-group.btn-group-vertical{ data: { toggle: :button }}
+          = simple_button for: 'ick', id: 'btn-ok', shortcut: 'T'
+          = simple_button for: 'Cross', id: 'btn-cross', shortcut: 'X'
+          = simple_button for: 'ow?', id: 'btn-what', shortcut: 'H'
+      .row-fluid.push-down
+        .btn-group.btn-group-vertical
+          = simple_button for: 'erfect', id: 'btn-perfect', shortcut: 'P'
+          = simple_button for: 'lank!', id: 'btn-blank', shortcut: 'B'
+          = simple_button for: 'heated!', id: 'btn-cheated', shortcut: 'C'
+      .row-fluid.push-down
+        .btn-group.btn-group-vertical
+          = simple_button for: 'estore', id: 'btn-fresh-copy', tooltip: 'Restore original scan', shortcut: 'R'
+          = simple_button for: 'rite', tooltip: 'Add a Comment', id: 'btn-write', shortcut: 'W'
+          = simple_button for: 'ndo', tooltip: 'Undo Last', id: 'btn-undo', shortcut: 'U'
+          = simple_button for: 'lip', tooltip: 'Flip Image', id: 'btn-rotate', shortcut: 'F'
+      .row-fluid.push-down
+        .btn-group.btn-group-vertical{ id: 'fdb-nav' }
+          = simple_button for: 'Prev Pg', tooltip: 'Previous Scan', id: 'btn-prev-scan', shortcut: '['
+          = simple_button for: 'Prev Q', tooltip: 'Previous Question', id: 'btn-prev-ques', shortcut: '<'
+          = simple_button for: 'Next Q', tooltip: 'Next Question', id: 'btn-next-ques', shortcut: '>'
+          = simple_button for: 'Next Pg', tooltip: 'Next Scan', id: 'btn-next-scan', shortcut: ']'
+    .span9{ id: 'fdb-preview-area' }

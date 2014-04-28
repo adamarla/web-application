@@ -30,7 +30,7 @@ class TokensController < ApplicationController
         :gradeables => gradeables
       }
     end
-    render :status => status, :json => json
+    render status: status, json: json
   end
 
   def destroy
@@ -43,7 +43,7 @@ class TokensController < ApplicationController
       status = 200 
       json = { :token => params[:id] }
     end
-    render :status => status, :json => json
+    render status: status, json: json
   end
 
   def verify
@@ -64,7 +64,7 @@ class TokensController < ApplicationController
         :gradeables => build_gradeables(@account)
       }
     end
-    render :status => status, :json => json
+    render status: status, json: json
   end
 
   private
@@ -78,7 +78,8 @@ class TokensController < ApplicationController
           id: g.id, 
           quiz: quiz.name, 
           quizId: quiz.id, 
-          name: g.subpart.name_if_in?(quiz)
+          name: g.subpart.name_if_in?(quiz),
+          locn: "#{quiz.uid/g.worksheet.uid}"
         }
       end 
       return gradeables

@@ -3,9 +3,16 @@ window.karo = {
   nothing : () ->
     return true
 
-  ajaxCall : (url, callback = karo.nothing) ->
+  ajaxCall : (url, tab = null, callback = karo.nothing) ->
     $.get url, (json) ->
-      callback json, url
+      if tab? 
+        if json.last_pg? 
+          last = json.last_pg
+          tab.setAttribute('data-pg-last', last)
+          pgn = $(tab).closest('.g-panel').children('.paginator')[0]
+          paginator.enable $(pgn), last
+      # callback json, url
+    #return true
     
   empty : (node) ->
     node = if typeof node is 'string' then $(node) else node
@@ -34,8 +41,8 @@ window.karo = {
 
   unhide : (child, panel) -> # hide / unhide children in a panel
     for m in panel.children()
-      if karo.checkWhether m, 'pagination'
-        pagination.disable $(m)
+      if karo.checkWhether m, 'paginator'
+        paginator.disable $(m)
         continue
       id = $(m).attr 'id'
       if id is child then $(m).removeClass('hide') else $(m).addClass('hide')
@@ -87,7 +94,53 @@ window.karo = {
       return ul.children('li.active')[0]
   }
 
+  link : {
+    disable : (a) -> 
+      $(a).addClass 'disabled' 
+      i = $(a).children('i')[0]
+      if i? 
+        $(i).removeClass 'icon-white'
+        $(i).addClass 'icon-gray' 
+      return true
+
+    enable : (a) ->
+      $(a).removeClass 'disabled' 
+      i = $(a).children('i')[0]
+      if i? 
+        $(i).removeClass 'icon-gray'
+        $(i).addClass 'icon-white' 
+      return true
+  }
+
   url : {
+    updateOnAjax : (a, url, json) ->
+      # continue unless a.dataset.ajax is 'disabled'
+      # updateOn = a.dataset.updateOn
+      updateOn = a.getAttribute('data-update-on')
+
+      return false unless updateOn?
+      return false unless karo.url.match(url, updateOn)
+
+      disable = false 
+      key = a.getAttribute('data-disable-if')
+      if key?
+        disable = if json[key]? then json[key] else false
+      else
+        key = a.getAttribute('data-disable-unless')
+        if key? 
+          disable = if json[key]? then !json[key] else true
+
+      if disable
+        karo.link.disable a
+        return false
+      else
+        karo.link.enable a
+
+      href = karo.url.elaborate a, json
+      return false unless href?
+      $(a).attr 'href', href
+      return true
+
     elaborate : (obj, json = null, tab = null) ->
       ajax = if tab? then tab.getAttribute('data-url-panel') else obj.getAttribute('data-url-self')
 
@@ -147,39 +200,54 @@ window.karo = {
     ret += "$" if nDollar % 2 isnt 0 # => odd number of $ => mismatched $..$ 
     return ret
 
+  isPlainTextCheck : (comment) ->
+    # Either a string is plain text - that is, no LaTeX - or it has LaTeX
+    # The passed 'comment' is jaxified and comes from the DB 
+    z = comment.replace(/\\text{\s+.*?\s+}/, "")
+    return z.length == 0 # if nothing remains after removing all \text{ ... }, then its plain text 
+
   jaxify : (comment) ->
-    ###
-      The comment entered in the comment box is assumed to be more of regular 
-      text with bits of inline-TeX thrown in ( enclosed between $..$ that is)
+    # Converts "A $B$ C $D$" as written by the user to "\text{ A }B\text{ C }D" as MathJax expects
 
-      But MathJax expects TeX that is more of TeX with bits of regular 
-      text thrown in (enclosed between \text{...})
+    comment = comment.replace(/\$\$/, '').trim() # get rid of empty $..$ pairs
+    mathFilter = /\$.*?\$/g
+    ret = new String(comment)
+    pureText = true
 
-      This method does that conversion from the user assumes and enters 
-      to what MathJax assumes and renders
-    ###
+    while((mathBits = mathFilter.exec(comment)) != null)
+      pureText = false
+      bit = mathBits[0]
+      j = bit.replace(/^\$/,'}')
+      j = j.replace(/\$/,'\\text{ ')
+      ret = ret.replace bit, j
 
-    text = true
-    latex = false
-    z = "\\text{"
-
-    for m in comment
-      if text
-        if m is '$' # opening $
-          text = false
-          latex = true
-          z += " }"
-        else
-          z += m
-      else if latex
-        if m is '$' # => closing $
-          text = true
-          latex = false
-          z += "\\text{ "
-        else
-          z += m
-    z += "}" if text
-    return z
+    if pureText 
+      ret = "\\text{ #{ret} }"
+    else 
+      ret = ret.replace(/^/, '\\text{ ')
+      ret = ret.concat ' }'
+      ret = ret.replace(/\\text{\s+}/g,'')
+    return ret
     
+  unjaxify: (comment) ->
+    # Reverses what karo.jaxify does 
+    # Converts "\text{ A }B\text{ C }D" - which is what is stored in the DB and used by MathJax 
+    # to "A $B$ C $D$" - which is how the user originally entered it
+
+    mathFilter = /(}|^).*?(\\text{|$)/g
+    ret = new String(comment)
+
+    while((mathBits = mathFilter.exec(comment)) != null)
+      bit = mathBits[0]
+      j = bit.replace(/^}|^/,'$')
+      j = j.replace(/$|\\text{/,'$')
+      if j isnt '$$'
+        ret = ret.replace(bit,j)
+      else
+        ret = ret.replace(bit,'') if bit is '\\text{'
+
+    ret = ret.trim()
+    ret = ret.replace /}$/, ''
+    return ret
 
 }

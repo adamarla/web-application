@@ -3,7 +3,7 @@ class StudentsController < ApplicationController
   respond_to :json
 
   def show
-    render :nothing => true, :layout => 'students'
+    render nothing: true, layout: 'students'
   end
 
   def create 
@@ -32,24 +32,27 @@ class StudentsController < ApplicationController
                                       postal_code: zip,
                                       country: country
       if student.save
-        Mailbot.delay.welcome_student(student.account)
         sign_in student.account
         redirect_to student_path
       end # no reason for else.. if client side validations worked
     else # registration data probably entered by a bot
-      render :json => { :notify => { :text => "Bot?" } }, :status => :bad_request
+      render json: { notify: { text: "Bot?" } }, status: :bad_request
     end
   end # of method 
 
   def claim
-    target_id = params[:checked].keys.first
-    if target_id.blank?
-      render :json => { :notify => { :title => "No account specified for merging" } }, :status => :ok
+    # Before execution gets here, client side validation would have ensured that 
+    #    1. aid != nil 
+    #    2. No account with email that the user has now specified exists from before
+
+    aid = params[:checked].keys.first
+    if aid.blank? # client side validation should ensure this never happens
+      render json: { notify: { title: "No account specified for merging" } }, status: :ok
     else
-      account = Account.find target_id
+      account = Account.find aid
     end
 
-    account_details = params[:account]
+    uinp = params[:account]
     location = request.location
     city = state = country = zip = nil
 
@@ -61,16 +64,12 @@ class StudentsController < ApplicationController
        country = country.id unless country.blank?
     end
  
-    account.update_attributes email: account_details[:email],
-                              password: account_details[:password],
-                              password_confirmation: account_details[:password],
-                              city: city,
-                              state: state,
-                              postal_code: zip,
-                              country: country 
+    updated = account.update_attributes email: uinp[:email],
+                              password: uinp[:password], password_confirmation: uinp[:password],
+                              city: city, state: state, postal_code: zip, country: country 
 
-    if account.save
-      Mailbot.delay.welcome_student(account)
+    if updated 
+      Mailbot.delay.welcome(account)
       sign_in account
       redirect_to student_path
     end # no reason for else.. if client side validations worked
@@ -116,12 +115,6 @@ class StudentsController < ApplicationController
 
   end # method
 
-  def proficiency
-    student = Student.find params[:id]
-    teacher = current_account.nil? ? nil : (current_account.loggable_type == "Teacher" ? current_account.loggable : nil)
-    @json = student.proficiency teacher
-  end
-
   def inbox
     sid = params[:id]
     student = Student.find sid
@@ -149,5 +142,23 @@ class StudentsController < ApplicationController
 
   def outbox
   end
+
+  def dispute 
+    g = GradedResponse.find params[:id]
+    unless g.nil?
+      reason = params[:dispute][:reason]
+      unless reason.blank?
+        r = reason.gsub("\r\n", " ").strip # remove carriage returns
+        d = current_account.loggable.disputes.build(graded_response_id: g.id, text: r)
+      else
+        d = nil
+      end 
+      unless d.nil?
+        d.save
+        g.update_attribute(:disputed, true) 
+      end
+    end
+    render json: { status: :ok }, status: :ok
+  end 
 
 end

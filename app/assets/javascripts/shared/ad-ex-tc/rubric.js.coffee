@@ -120,12 +120,19 @@ jQuery ->
       alert "Add atleast a comment or annotate with a check, cross or question mark"
       return false
 
-    id = $(fdb.current.response).attr 'marker'
-    overlay = fdb.decompile()
-    action = "submit/fdb.json?id=#{id}&overlay=#{overlay}"
-    # alert action
-    $(this).attr 'action', action
-    return true
+    unless sandbox.enabled 
+      id = $(fdb.current.response).attr 'marker'
+      overlay = fdb.decompile()
+      action = "submit/fdb.json?id=#{id}&overlay=#{overlay}"
+      # alert action
+      $(this).attr 'action', action
+    else 
+      fdb.clear()
+      $(fdb.current.response).addClass 'graded'
+      fdb.next.response()
+      rubric.rewind()
+      
+    return !sandbox.enabled
 
 
   #####################################################################
@@ -170,18 +177,24 @@ jQuery ->
       rubric.select( key - 49 )
     else if key is 115 # S => submit
       rubric.form.submit() if rubric.current.next().length is 0
-    else if (key >= 102 && key <= 122) 
-      buttons = $(fdb.root).find 'button'
+    else 
+      # alert key
       switch key 
+        when 98 # B
+          id = 'btn-blank'
+        when 99 # C 
+          id = 'btn-cheated'
+        when 112 # P 
+          id = 'btn-perfect'
         when 102  #F
           id = 'btn-rotate'
         when 104  #H
           id = 'btn-what'
         when 105 #I
           id = 'btn-hide-controls'
-        when 110  #N
+        when 93  # ]
           id = 'btn-next-scan'
-        when 112  #P
+        when 91  # [
           id = 'btn-prev-scan'
         when 114  #R
           id = 'btn-fresh-copy'
@@ -193,13 +206,17 @@ jQuery ->
           id = 'btn-write'
         when 120  #X
           id = 'btn-cross'
-        when 121  #Y
+        when 44  # < 
           id = 'btn-prev-ques'
-        when 122  #Z
+        when 46  # >
           id = 'btn-next-ques'
+        else 
+          id = nil
 
-      btn = buttons.filter("[id=#{id}]")[0]
-      $(btn).click() if btn?
+      if id?
+        buttons = $(fdb.root).find 'button'
+        btn = buttons.filter("[id=#{id}]")[0]
+        $(btn).click() if btn?
 
     return true
 

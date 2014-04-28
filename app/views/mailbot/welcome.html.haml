@@ -1,0 +1,40 @@
+
+%h3= "Dear #{@obj.first_name}," 
+
+- if  @self_registered
+  %p
+    You have successfully registered on Gradians.com. You can now access your account using the 
+    e-mail and password you provided during registration
+
+- unless @self_registered
+  %p
+    An <b>#{@type}</b> account has been created for you on Gradians.com. You can access it using 
+    the following details 
+    %ul
+      %li= "Email: #{@a.email}"
+      %li= "Password: 123456"
+  %p
+    The password is generic. And therefore, we strongly recommend that you <b>change the password</b>.
+    You can do this as follows:
+    %ul 
+      %li
+        Log into your Gradians.com account
+      %li
+        Click on <b>Hello, #{@obj.first_name}</b> in the top-right corner. This will open a menu
+      %li
+        Select <b>Edit Account Details</b> from the menu
+      %li
+        Specify a new password
+
+= render partial: 'mailbot/student' if @type == 'Student'
+= render partial: 'mailbot/teacher' if @type == 'Teacher'
+- if @type == 'Examiner'
+  = render partial: 'mailbot/assistant' unless @self_registered
+  = render partial: 'mailbot/examiner' if @self_registered
+
+%p
+  If you have <b>any questions, anytime</b>, then please do write to us at <b>help@gradians.com</b>.
+  We will respond at the earliest
+%p
+  <b>Gradians.com Team</b>
+        

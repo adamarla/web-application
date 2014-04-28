@@ -9,8 +9,6 @@ jQuery ->
     target = null # where to write the returned JSON
     key = null
     menu = null # ID of contextual menu to attach w/ each .line
-    pgnUrl = null # base-url to be set on the paginator
-    pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
@@ -85,14 +83,22 @@ jQuery ->
     else if url.match(/question\/add_video/)
       $('#m-upload-video-solution').modal 'hide'
       target = $('#pane-video-pending')
-    else if url.match(/question\/gettex/)
-      $('#m-edit-form #edit_tex').val = json.tex
+    else if url.match(/examiner\/apprentices/)
+      target = $('#pane-apprentices')
+      key = 'apprentices'
+    else if url.match(/disputes/)
+      key = 'disputes'
+      clickFirst = true
+      target = $('#pane-disputes')
+      menu = 'm-dispute'
+    else if url.match(/(accept|reject)\/dispute/)
+      target = $('#pane-disputes')
     else
       matched = false
 
 
     # Render lines in the panel
-    lines.render target, key, json, menu, buttons, clickFirst, pgn, pgnUrl
+    lines.render target, key, json, menu, buttons, clickFirst
 
     e.stopPropagation() if matched is true
     return true

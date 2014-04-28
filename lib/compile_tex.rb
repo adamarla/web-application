@@ -9,6 +9,7 @@
 class CompileTex < Struct.new(:id, :type)
   def perform
     obj = type.constantize.where(id: id ).first
+    raise "Why compile when writing failed" if obj.job_id == WRITE_TEX_ERROR
     resp = obj.nil? ? {} : obj.compile
     raise "CompileTex (failed)" unless resp[:error].blank?
   end

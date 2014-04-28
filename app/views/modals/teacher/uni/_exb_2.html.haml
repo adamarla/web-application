@@ -1,0 +1,23 @@
+
+#m-exb-deadlines.modal.fade.wide{ role: :dialog } 
+  .row-fluid
+    .span2.offset1
+      = image_tag 'notifications/calendar-2.png'
+    .span8
+      %p.title.underline= 'Deadlines' 
+      = simple_form_for :deadline, remote: true, defaults: { label: false } do |f|
+        %p.orange
+          Submission Deadline
+        %p.white
+          Last date for submitting assignment. Scans will not be accepted after this date.
+          Leave blank if no deadline
+        = f.input :submit, as: :date, discard_year: true, order: [:month, :day], input_html: { class: 'span4' }, include_blank: true
+
+        %p.orange
+          Regrade Deadline
+        %p.white
+          Last date for submitting a regrade request. Scores after this date will be considered full and final.
+          Leave blank if no deadline
+        = f.input :regrade, as: :date, discard_year: true, order: [:month, :day], input_html: { class: 'span4' }, include_blank: true
+        %button.btn.btn-large.btn-primary{ type: :submit }= 'Submit'
+

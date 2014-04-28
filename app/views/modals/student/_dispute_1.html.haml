@@ -1,0 +1,18 @@
+
+#m-dispute-1.modal.fade.regular.row-fluid{ role: :dialog } 
+  .span3
+    = image_tag 'notifications/alert.png', class: 'big-icon' 
+  .span8
+    %p.title.underline
+      Regrade?  
+    %p
+      You have chosen to contest the grader's original assessment 
+    %p
+      The grader could stick with their original assessment or could decide to regrade 
+      your solution
+    %p
+      Should the grader decide to re-grade, know that your new - and final - grade could be 
+      lower, higher or the same as before
+    .row-fluid 
+      = simple_button for: 'Cancel', id: 'btn-cancel-dispute', class: 'btn-inverse pull-left'
+      = simple_button for: 'I understand', id: 'btn-dispute-next', class: 'btn-primary pull-right'

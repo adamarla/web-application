@@ -2,37 +2,41 @@
 -# Customized markers 
 - user = current_account.loggable
 - is_admin = current_account.role == :admin
-- srvr = "#{Gutenberg['server']}"
 
-- content_for :toolbox do 
-  #toolbox.hidden 
-    = render partial: 'toolbox/line'
-    = render partial: 'menus/user/account'
-    - if is_admin
-      = render partial: 'menus/examiner/workbench', locals: { is_admin: true } 
-      = render partial: 'menus/admin/customer', locals: { is_admin: true } 
-      = render partial: 'menus/customer/admin'
-    = render partial: 'menus/user/notifications'
-    = render partial: 'examiners/annotation-marks'
-    = render partial: 'menus/examiner/blockdb'
-    = render partial: 'menus/examiner/per-pending-video'
-    = render partial: 'menus/examiner/per-audit'
-    = render partial: 'shared/user/preview'
-    = render partial: 'shared/grading/shadow'
-  
-- content_for :modals do
-  #modals
-    = render partial: 'modals/user/account'
-    = render partial: 'modals/examiner/edit'
-    = render partial: 'modals/examiner/audit'
-    = render partial: 'modals/examiner/upload-video-solution'
-    = render partial: 'notifications/shared/last-scan'
-    = render partial: 'notifications/shared/first-scan'
-    = render partial: 'notifications/shared/purchase-completed'
-    - if is_admin
-      = render partial: 'modals/examiner/new-examiner'
-      = render partial: 'modals/admin/create-school'
-      = render partial: 'modals/customer/invoice'
+-# Define contents_for 
+- for j in [:toolbox, :menus, :modals, :notifications]
+  - content_for j do 
+    - klass = (j == :toolbox) ? 'hidden' : ''
+    -  m = (j == :toolbox) ? ['grading/right', 'generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['examiner','shared'].map{ |a| "#{j}/#{a}" }
+    - partials_f = m.map{ |b| "app/views/#{b}" }
+    %div{ id: j, class: klass }
+      - for f in partials_f
+        - Dir["#{f}/*.haml"].each do |p| 
+          = render file: Rails.root.join(p), locals: { me: user, admin: is_admin } 
+      -# render exceptions here 
+      - if j == :menus 
+        = render partial: 'menus/user/account'
+      - if j == :toolbox
+        = render partial: 'toolbox/grading/left/fdb-panel'
+
+- layout = { left: [ [2, 'admin/mng-topics'],
+                     [3, 'examiners/tag-pending'],
+                     [4, 'toolbox/grading/left/pending'],
+                     [5, 'examiners/typeset-pending'],
+                     [6, 'examiners/resolution-pending'],
+                     [7, 'examiners/audit'],
+                     [8, 'examiners/video-pending'],
+                     [9, 'examiners/apprentices'],
+                     [10, 'examiners/disputes']],
+             middle: [],
+             right: [],
+             wide: [ ['wait', 'toolbox/generic/wait'],
+                     ['X', 'toolbox/grading/right/controls'],
+                     ['graph-1', nil] ] } 
+
+- if is_admin 
+  - layout[:left].push [1, 'admin/system-overview'], ['X', nil]
+  - layout[:wide].push [1, nil], [2, 'admin/accounts-in-country']
 
 !!!5
 
@@ -44,8 +48,7 @@
     = csrf_meta_tag
 
   %body 
-    #spinner.spinner
-      = image_tag "loading.gif", id: 'img-spinner'
+    = render partial: 'toolbox/generic/spinner'
     .container-fluid 
       #control-panel.g-panel.row-fluid{ :marker => "#{user.id}" } 
         .span12
@@ -58,59 +61,26 @@
                 - if is_admin
                   %li.dropdown
                     = simple_link :for => 'System Monitor', id: 'lnk-admin-console'
-                  %li.dropdown
+                  -#%li.dropdown
                     = simple_link :for => "Customer", as: :dropdown, id: 'm-admin-cust'
                 %li.dropdown
                   = simple_link :for => "Workbench", as: :dropdown, id: 'm-admin-wb'
-                %li#cp-account-link.dropdown
+                - if user.mentor_is_teacher
+                  %li
+                    = simple_button for: 'Sandbox Off', toggle: :button, class: 'btn btn-primary', id: 'btn-sandbox-toggle'
+                %li.dropdown
                   = simple_link :for => "Hello, #{user.first_name}", as: :dropdown, id: 'm-account'
+
       #desktop.row-fluid
-        #left.g-panel.span4
-          = render partial: 'toolbox/paginator', locals: { id: 'left-paginator', url: '#' }
+        - layout.each do |pnl, child|
+          - width = pnl != :wide ? 'span4' : 'span7'
+          %div{ id: "#{pnl}", class: "g-panel #{width}" }
+            -# Add paginator 
+            = render partial: 'toolbox/custom/paginator', locals: { id: "#{pnl}-paginator", url: '#' }
+            -# Then, add the { left-, middle-, right-, wide- } as specified in layout
+            - child.each do |j|
+              %div{ id: "#{pnl}-#{j.first}" }
+                = render(partial: "#{j.last}") unless j.last.nil?
 
-          - if is_admin
-            #left-1
-              = render partial: 'admin/system-overview'
-            #left-X
-
-          #left-2
-            = render partial: "admin/mng-topics"
-          #left-3
-            = render partial: 'examiners/tag-pending'
-          #left-4
-            = render partial: 'shared/grading/pending'
-          #left-5
-            = render partial: 'examiners/typeset-pending'
-          #left-6
-            = render partial: 'examiners/resolution-pending'
-          #left-7
-            = render partial: 'examiners/audit'
-          #left-8
-            = render partial: 'examiners/video-pending'
-          - if is_admin
-            #left-9
-              = render partial: 'customers/list'
-
-        - if is_admin
-          #middle.g-panel.span4
-            = render partial: 'toolbox/paginator', locals: { id: 'middle-paginator', url: '#' }
-            #middle-X
-          #right.g-panel.span4
-            = render partial: 'toolbox/paginator', locals: { id: 'right-paginator', url: '#' }
-            #right-X
-
-        #wide.g-panel.span8
-          - if is_admin
-            #wide-1
-            #wide-2
-              = render partial: 'admin/accounts-in-country'
-            #wide-3
-              = render partial: 'admin/school-overview'
-          #wide-X
-            = render partial: 'shared/grading/controls'
-          #wide-wait
-            = render partial: 'toolbox/wait'
-          #graph-paper
-
-    = yield :toolbox
-    = yield :modals
+    - for j in [:toolbox, :menus, :modals, :notifications]
+      = yield j

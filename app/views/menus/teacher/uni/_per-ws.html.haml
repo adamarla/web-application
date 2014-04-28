@@ -1,0 +1,11 @@
+
+%ul.dropdown-menu.dropdown-inverse#per-ws{ :role => :menu }
+  %li
+    = simple_link for: "Download PDF", id: 'lnk-ws-download', icon: 'icon-download',
+    url: { self: "#{Gutenberg['server']}/mint/:a/document.pdf" }
+  %li
+    = simple_link for: 'View Disputes', id: 'lnk-exam-disputes', icon: 'icon-comment'
+  %li
+    = simple_link for: 'Distribution Scheme', id: 'lnk-def-dist-scheme', icon: 'icon-inbox'
+  %li
+    = simple_link for: 'Set Deadlines', id: 'lnk-exam-deadlines', icon: 'icon-calendar'

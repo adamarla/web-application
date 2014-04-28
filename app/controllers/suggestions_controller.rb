@@ -7,7 +7,7 @@ class SuggestionsController < ApplicationController
     teacher = tid.blank? ? nil : Teacher.find(tid)
     
     unless teacher.nil?
-      assignee = Examiner.select{ |e| e.account.active }.sort{ |a,b| a.suggestion_ids.count <=> b.suggestion_ids.count }.first 
+      assignee = Examiner.internal.available.sort{ |a,b| a.suggestion_ids.count <=> b.suggestion_ids.count }.first 
       sg = teacher.suggestions.create signature: params[:signature],
                                       pages: params[:num_pages].to_i,
                                       examiner_id: assignee.id
@@ -22,7 +22,7 @@ class SuggestionsController < ApplicationController
     suggestion = params[:sid].to_i
 
     Delayed::Job.enqueue BlockDbSlots.new(n,suggestion), priority: 0, run_at: Time.zone.now 
-    render :json => { :notify => { :text => "#{n} slots blocked" } }, :status => :ok
+    render json: { notify: { text: "#{n} slots blocked" } }, status: :ok
   end
 
   def preview

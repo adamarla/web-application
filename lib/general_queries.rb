@@ -3,7 +3,7 @@ module GeneralQueries
   BIG_7 = (36 ** 7) - 1
   BIG_3 = (36 ** 3) - 1
 
-  def pagination_layout_details(n_entries)
+  def pagination_layout_details(n_entries, per_pg = nil)
 =begin
     Kaminari offers helpful helper methods to generate the correct # of 
     pagination links - given the number of records per page
@@ -17,11 +17,14 @@ module GeneralQueries
     required and the # of records per page - given the total # of entries
     Return values (in order): # of entries per page, # reqd pages (max 8)
 =end
-    default_per_pg = 25
-    max_pages = 6 
-
-    per_pg = (n_entries / default_per_pg.to_f).ceil > max_pages ? (n_entries / max_pages.to_f).ceil : default_per_pg 
+    per_pg = 45 if per_pg.nil?
+    max_pages = 10
     n_pgs = (n_entries / per_pg.to_f).ceil
+
+    if n_pgs > max_pages
+      per_pg = (n_entries / max_pages.to_f).ceil
+      n_pgs = max_pages
+    end 
     return per_pg, n_pgs
   end
   
@@ -66,9 +69,21 @@ module GeneralQueries
 
   def minutes_to_completion(job_id)
     return 0 if (job_id.blank? || job_id < 1)
-    queued = Delayed::Job.where(:failed_at => nil).order(:priority).order(:created_at).map(&:id)
-    at = queued.index job_id
-    return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
+    priors = Delayed::Job.where(failed_at: nil).order(:priority).order(:created_at)
+    at = priors.map(&:id).index job_id
+
+    estimate = priors[0..at].map{ |j| job_minutes_reqd(j) }.inject(:+).ceil 
+    return estimate
+    # return at.nil? ? 1 : (at + 1) # at = nil could happen before but shouldn't happen now
+  end
+
+  def job_minutes_reqd(job)
+    node = YAML.load job.handler
+    return 0.3 unless node.class.name == "CompileTex"
+
+    return 1 unless node.type == "Quiz"
+    quiz = node.type.constantize.find node.id
+    return (quiz.pages? / 3.0).ceil # assuming JPEG creation at the rate of 3 pages / minute
   end
 
 end

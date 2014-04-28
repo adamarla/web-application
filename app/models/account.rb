@@ -64,12 +64,17 @@ class Account < ActiveRecord::Base
     end
   end 
 
-  after_validation :geocode, :if => :geocodeable?
+  after_validation :geocode, if: :geocodeable? 
+  after_create :send_email
 
   def geocodeable?
     return false if self.last_sign_in_ip.nil?
     return true
   end 
+
+  def live?
+    return (self.loggable_type == 'Examiner' ? self.loggable.live? : true)
+  end
 
   def self.merge(a,b)
     # Merges 'b' into 'a' and then destroys b's loggable object
@@ -180,16 +185,24 @@ class Account < ActiveRecord::Base
 
     case self.role
       when :student
-        ids = Worksheet.where(student_id: me).select{ |m| m.publishable? }.map(&:exam_id)
+        # ids = Worksheet.where(student_id: me).select{ |m| m.publishable? }.map(&:exam_id)
+        ids = Worksheet.where(student_id: me).map(&:exam_id)
         @exams = Exam.where(id: ids)
       when :teacher 
         ids = Quiz.where(:teacher_id => me).map(&:id)
         ids = ids.blank? ? 318 : ids # 318 =  "A Demo Quiz"
         @exams = Exam.where(:quiz_id => ids).select{ |m| m.has_scans? }
       when :examiner, :admin
-        g = GradedResponse.assigned_to(me).with_scan.ungraded
-        ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
-        @exams = Exam.where(:id => ids)
+        sandbox = !self.live?
+        if sandbox 
+          # For sandbox, we consider exams created on or after OCtober 1st, 2013
+          e = Exam.where('id > ?', 342).select{ |j| j.publishable? }.sample(5)
+          ids = e.map(&:id)
+        else
+          g = GradedResponse.assigned_to(me).with_scan.ungraded
+          ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
+        end
+        @exams = Exam.where(id: ids)
       else 
         @exams = []
     end
@@ -225,12 +238,16 @@ class Account < ActiveRecord::Base
   end
 
   protected 
+      # Overriding Devise's default email-required validation. 
+      # Ref : https://github.com/plataformatec/devise/pull/545
 
-    # Overriding Devise's default email-required validation. 
-    # Ref : https://github.com/plataformatec/devise/pull/545
+      def email_required?
+        false
+      end 
 
-    def email_required?
-      false
-    end 
+  private
+      def send_email
+        Mailbot.delay.welcome(self) if email_is_real?
+      end
 
 end # of class 

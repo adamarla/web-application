@@ -17,16 +17,61 @@
 #    url : 
 #      self : 
 #      panel :
+#    paginate-on: line/tab/sth. else
 #    default : true / false
 #    ajax : disabled / enabled 
 #    prev : 
 #    id : 
 #    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
+#    callback : 
+#     pre :    -> pre click
+#     post :   -> post click
+#    childtabs : 
+#     reset : true | false -> unclick child tabs or not before clicking first one
+#
 #
 
 ##############################################################################
 ## Teachers 
 ##############################################################################
+
+lnk-def-dist-scheme : 
+  url : 
+    self : def/dist/scheme?id=:b
+  update-on: exam/load
+  disable-unless: has_apprentices 
+
+lnk-exam-deadlines : 
+  url : 
+    self : ping/exam?id=:b
+  update-on: exam/load
+
+lnk-exam-disputes: 
+  show : 
+    left : left-9 
+    wide : wide-X
+  autoclick :
+    tab : tab-pending-disputes
+  update-on: exam/load
+  disable-if: no_disputes
+
+tab-pending-disputes : 
+  url : 
+    self : exam/disputes/pending?id=:prev
+    panel : load/dispute?id=:id
+  prev : tab-exb-existing
+
+tab-resolved-disputes : 
+  url : 
+    self : exam/disputes/resolved?id=:prev
+    panel : load/dispute?id=:id
+  prev : tab-exb-existing
+
+lnk-bell :
+  show :
+    menu : m-bell
 
 lnk-courses : 
   show :
@@ -47,7 +92,7 @@ lnk-edit-account :
 lnk-existing-quiz :
   default : true
   autoclick :
-    tab : tab-wsb-quizzes
+    tab : tab-exb-quizzes
   show : 
     left : left-1
     wide : wide-X
@@ -63,7 +108,7 @@ tab-editqz-1 :
   url : 
     self : quiz/questions.json?id=:prev
     panel : question/preview?id=:id
-  prev : tab-wsb-quizzes
+  prev : tab-exb-quizzes
 
 tab-online-courses : 
   show : 
@@ -77,26 +122,37 @@ tab-milestone-* :
 tab-available-* :
   prev : tab-online-courses
 
-tab-wsb-quizzes :
+tab-exb-quizzes :
   url : 
     self : quizzes/list
     panel : quiz/preview?id=:id
 
-lnk-wsb-new :
+tab-exb-sektions : 
+  childtabs : 
+    reset : true
+
+tab-exb-sk* :
+  url: 
+    self: sektion/students?id=:id&context=exb&quiz=:prev
+  prev : tab-exb-quizzes
+
+lnk-exb-new :
   autoclick :
-    tab : tab-wsb-sektions
+    tab : tab-exb-sektions
   show : 
-    help : wsb-milestone-2
+    help : exb-milestone-2
 
-lnk-wsb-existing :
+lnk-exb-existing :
   autoclick :
-    tab : tab-wsb-existing
+    tab : tab-exb-existing
+  update-on: quiz/preview
+  disable-unless : has_exams
 
-tab-wsb-existing :
+tab-exb-existing :
   url : 
     self : quiz/exams.json?id=:prev
     panel : exam/load?id=:id
-  prev : tab-wsb-quizzes
+  prev : tab-exb-quizzes
 
 tab-wsl-quizzes :
   autoclick :
@@ -178,7 +234,7 @@ tab-grd-panel :
 tab-tc-rc-1 :
   url : 
     self : exams/list
-    panel : exam/summary.json?id=:id
+    # panel : exam/summary.json?id=:id
   autoclick :
     tab : tab-tc-rc-2
 
@@ -186,7 +242,7 @@ tab-tc-rc-2 :
   show :
     wide : wide-chart-1
   url :
-    panel : exam/layout.json?e=:prev&id=:id
+    self : exam/summary?id=:prev
   autoclick :
     tab : tab-tc-rc-3
   prev : tab-tc-rc-1
@@ -194,6 +250,10 @@ tab-tc-rc-2 :
 tab-tc-rc-3 :
   show : 
     wide : wide-X
+  url : 
+    self : exam/layout?e=:prev&id=:id
+  prev : tab-tc-rc-1
+  id : tab-tc-rc-2
 
 lnk-tc-rc :
   show : 
@@ -204,17 +264,17 @@ lnk-tc-rc :
 
 lnk-build-ws :
   show : 
-    modal : m-ws-options
+    modal : m-exbopts-1
 
 lnk-ws-publish :
   url : 
     self : ws/publish.json?id=:id
-  id : tab-wsb-existing
+  id : tab-exb-existing
 
 lnk-ws-unpublish :
   url : 
     self : ws/unpublish.json?id=:id
-  id : tab-wsb-existing
+  id : tab-exb-existing
 
 lnk-rc-deepdive :
   show : 
@@ -226,7 +286,6 @@ lnk-rc-deepdive :
 tab-dive-1 :
   url : 
     self : teacher/sektions?context=deepdive
-    panel : sektion/students.json?id=:id&context=deepdive
   autoclick : 
     tab : tab-dive-2
 
@@ -238,6 +297,7 @@ tab-dive-2 :
 tab-dive-3 : 
   prev : tab-dive-1
   url :
+    self : sektion/students?id=:prev&context=deepdive
     panel : overall/proficiency.json?id=:id
   show :
     wide : wide-chart-3
@@ -246,6 +306,7 @@ deepdive-* :
   url : 
     self : vertical/topics?id=:id&context=deepdive
     panel : sektion/proficiency?of=:prev&in=:id
+  paginate-on : line 
   prev : tab-dive-1
 
 lnk-add-sektion :
@@ -263,9 +324,12 @@ tab-mng-sektions-1 :
   url : 
     self : teacher/sektions?context=list
     panel : sektion/students?id=:id&context=list
+  paginate-on : line
 
 lnk-like-question : 
   update-on : question/preview
+  url :
+    self : like?id=:a
 
 lnk-ask-a-question :
   show : 
@@ -283,7 +347,7 @@ help-make-a-quiz :
 
 help-make-a-ws : 
   show : 
-    help : wsb-milestone-1
+    help : exb-milestone-1
   autoclick : 
     link : lnk-existing-quiz
 
@@ -341,11 +405,12 @@ lnk-st-inbox :
 tab-st-rc-1 :
   url : 
     self : exams/list 
-    panel : exam/layout.json?e=:id
   autoclick :
     tab : tab-st-rc-2
 
 tab-st-rc-2 :
+  url : 
+    self : exam/layout?e=:prev
   prev : tab-st-rc-1
 
 tab-st-inbox :
@@ -411,6 +476,33 @@ tab-schools :
 ## Admin / Examiner specific  
 ##############################################################################
 
+lnk-dispute-reason : 
+  url :
+    self : dispute/reason?id=:a
+  update-on: load/dispute
+
+lnk-wb-disputes :
+  show : 
+    left : left-10
+    wide: wide-X
+  autoclick :
+    tab : tab-disputes
+
+tab-disputes : 
+  url :
+    self : disputes
+    panel : load/dispute?id=:id
+
+lnk-reject-dispute :
+  url: 
+    self : dispute/reject?id=:a
+  update-on: load/dispute
+
+lnk-accept-dispute :
+  url: 
+    self : dispute/accept?id=:a
+  update-on: load/dispute
+
 lnk-audit-close : 
   update-on: question/preview
   url : 
@@ -438,6 +530,22 @@ tab-mng-topics-1 :
   url : 
     self : verticals/list
     panel : vertical/topics?id=:id
+
+lnk-wb-apprentices : 
+  show : 
+    left : left-9
+    wide : wide-X
+  autoclick :
+    tab : tab-apprentices
+
+tab-apprentices :
+  url :
+    self : examiner/apprentices
+    panel : load/samples?id=:id
+
+lnk-audit-apprentice : 
+  show : 
+    modal : m-audit-apprentice
 
 lnk-wb-schools :
   show : 

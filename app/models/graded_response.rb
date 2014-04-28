@@ -15,6 +15,8 @@
 #  feedback       :integer         default(0)
 #  worksheet_id   :integer
 #  mobile         :boolean         default(FALSE)
+#  disputed       :boolean         default(FALSE)
+#  resolved       :boolean         default(FALSE)
 #
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
@@ -25,7 +27,8 @@ class GradedResponse < ActiveRecord::Base
   belongs_to :q_selection
   belongs_to :worksheet
   belongs_to :subpart
-  has_many :tex_comments, dependent: :destroy
+  has_many :remarks, dependent: :destroy
+  has_many :doodles, dependent: :destroy
 
   validates :q_selection_id, presence: true
   validates :student_id, presence: true
@@ -102,12 +105,26 @@ class GradedResponse < ActiveRecord::Base
     where('scan LIKE ?', "#{Date.parse(date).strftime('%d.%B.%Y')}%")
   end
 
+  def self.disputed 
+    where(disputed: true)
+  end 
+
+  def self.resolved 
+    where(disputed: true, resolved: true)
+  end 
+
+  def self.unresolved
+    where(disputed: true, resolved: false)
+  end 
+
   def shadow?
     return 0 if self.mobile
     quiz = self.worksheet.exam.quiz
     return 0 if quiz.nil?
     
-    shadows = quiz.shadows.split(',').map(&:to_i) # as an array of integers
+    curtain = quiz.shadows
+    shadows = curtain.blank? ? [] : curtain.split(',').map(&:to_i) # as an array of integers
+    return 0 if shadows.empty?
     idx = quiz.subparts.index self.subpart
     return shadows[idx]
   end
@@ -126,24 +143,28 @@ class GradedResponse < ActiveRecord::Base
     self.reset if self.feedback # over-write previous feedback 
 
     if self.update_attributes(feedback: m, marks: earned)
-      # Increment n_graded count of the grading examiner
-      e = Examiner.find self.examiner_id
-      n_graded = e.n_graded + 1
-      e.update_attribute :n_graded, n_graded
+      unless self.disputed
+        # Increment n_graded count of the grading examiner
+        e = Examiner.find self.examiner_id
+        n_graded = e.n_graded + 1
+        e.update_attribute :n_graded, n_graded
 
-      # Time to send mails 
-      exam = Exam.where(id: self.worksheet.exam_id).first
-      ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.worksheet.exam_id).first
+        # Time to send mails 
+        exam = Exam.where(id: self.worksheet.exam_id).first
+        ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.worksheet.exam_id).first
 
-      if exam.publishable? # to the teacher - once all worksheets are graded
-        # Time to inform the teacher. You can do this only if teacher has provided 
-        # an e-mail address. The default we assign will not work
-        teacher = exam.quiz.teacher 
-        Mailbot.delay.grading_done(exam) if teacher.account.email_is_real?
-      end 
+        if exam.publishable? # to the teacher - once all worksheets are graded
+          # Time to inform the teacher. You can do this only if teacher has provided 
+          # an e-mail address. The default we assign will not work
+          teacher = exam.quiz.teacher 
+          Mailbot.delay.grading_done(exam) if teacher.account.email_is_real?
+        end 
 
-      if ws.publishable? # to the student if his/her worksheet has been graded
-        Mailbot.delay.worksheet_graded(ws) if self.student.account.email_is_real? 
+        if ws.publishable? # to the student if his/her worksheet has been graded
+          Mailbot.delay.worksheet_graded(ws) if self.student.account.email_is_real? 
+        end
+      else # previously graded, but disputed now 
+        self.update_attribute(:resolved, true)
       end
 
     end # of if 
@@ -158,9 +179,9 @@ class GradedResponse < ActiveRecord::Base
     w = self.worksheet
     w.update_attributes( marks: nil, graded: false, honest: nil) unless w.nil? 
 
-    # Soft (default) reset -> does NOT destroy any associated TexComments
-    # Hard reset -> also destroys any associated TeXComments
-    self.tex_comments.map(&:destroy) unless soft
+    # Soft (default) reset -> does NOT destroy any associated Remarks
+    # Hard reset -> also destroys any associated Remarks
+    self.remarks.map(&:destroy) unless soft
   end 
 
   def index?
@@ -226,8 +247,6 @@ class GradedResponse < ActiveRecord::Base
 
   def honest?
     return :disabled if self.scan.nil?
-    return :nodata unless self.feedback
-    
     posn = self.feedback & 15 
     score = Requirement.honest.where(posn: posn).map(&:weight).first
 

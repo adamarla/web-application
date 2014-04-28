@@ -9,16 +9,14 @@ class Mailbot < ActionMailer::Base
       body:  teacherform[:text], to:  "abhinav@gradians.com"
   end
 
-  def welcome_student(new_account)
-    @account = new_account
-    mail to:  @account.email, subject:  "Welcome to Gradians.com"
+  def welcome(a)
+    @obj = a.loggable
+    @type = a.loggable_type
+    @self_registered = (@type != 'Examiner') ? true : !@obj.mentor_is_teacher 
+    @a = a
+    mail to: a.email, subject: 'Welcome to Gradians.com'
   end
 
-  def welcome_teacher(new_account)
-    @account = new_account
-    mail to:  @account.email, subject:  "Welcome to Gradians.com"
-  end
-  
   def grading_done(exam)
     @exam = exam # need a object variable to pass to view
     @quiz = @exam.quiz
@@ -124,6 +122,21 @@ class Mailbot < ActionMailer::Base
     @payment_amount = payment.display_value
     @balance = customer.balance
     mail to: customer.account.email, subject: "Payment Received"
+  end
+
+  def inform_apprentice(a,bottomline, gating, nongating, comments)
+    @a = a 
+    @gating = gating 
+    @nongating = nongating 
+    @comments = comments
+    mail to: @a.account.email, subject: "[Gradians.com]: #{bottomline}"
+  end 
+
+  def daily_digest(name, email, tbd_grading, tbd_disputes)
+    @name = name 
+    @tbd_g = tbd_grading 
+    @tbd_d = tbd_disputes
+    mail to: email, subject: "[Gradians.com] - Pending work as of #{Date.today.strftime('%B %d, %Y')}"
   end
 
 end

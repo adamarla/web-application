@@ -1,0 +1,30 @@
+
+#fdb-panel.static
+  .row-fluid
+    .question= "An honest attempt- even if wrong or incomplete?"
+    %div
+      - Requirement.honest.each do |m|
+        .row-fluid.hide.requirement{ marker: m.id }
+          .bottomline= "#{m.bottomline}"
+          .text= "#{m.text}"
+  .row-fluid
+    .question= "Is the line of reasoning clear, correct and easy to follow?" 
+    %div
+      - Requirement.cogent.each do |m|
+        .row-fluid.hide.requirement{ marker: m.id }
+          .bottomline= "#{m.bottomline}"
+          .text= "#{m.text}"
+  .row-fluid
+    .question= "Has the line of reasoning been taken to its logical conclusion?"
+    %div
+      - Requirement.complete.each do |m|
+        .row-fluid.hide.requirement{ marker: m.id }
+          .bottomline= "#{m.bottomline}"
+          .text= "#{m.text}"
+  .row-fluid
+    .question= "Anything else ?"
+    %div
+      - Requirement.other.each do |m|
+        .row-fluid.hide.requirement{ marker: m.id }
+          .bottomline= "#{m.bottomline}"
+          .text= "#{m.text}"

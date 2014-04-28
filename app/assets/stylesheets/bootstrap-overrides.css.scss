@@ -32,6 +32,14 @@ span.MathJax {
   padding: 5px ;
 }
 
+span.btn-shortcut {
+  padding: 2px 4px ; 
+  background: white ;
+  color: $panel-colour ;
+  border-radius: 5px ;
+  font-weight: 500 ;
+}
+
 .carousel:not([id~='how-it-works']), .overlay, .shadow {
   position: absolute ; 
   top: 0px ;
@@ -90,15 +98,10 @@ span.MathJax {
       color: white ;
       background: transparent ;
       box-shadow: none ;
-      padding: {
-        top: 10px ;
-        bottom: 7px ;
-        left: 10px ;
-      }
+      min-height: 30px ;
       font: { 
-        size: 10px ;
+        size: 11px ;
         family: "Lucida Sans Typewriter", "Lucida Console", "Arial Black", "Droid Dans Mono", monospace ;
-        weight: 500 ;
       }
       border: {
         radius: 0px ;
@@ -268,7 +271,10 @@ span.MathJax {
 
 .navbar-inverse, .dropdown-menu {
   li { 
-    > a { color: white ; }
+    > a{ 
+      color: white ; 
+      &.disabled { color: $lightgray ; } 
+    }
   }
   p.footnote {
     padding: 0px 20px ;
@@ -362,6 +368,18 @@ span.MathJax {
     font-size: 12px ;
   } 
 } 
+
+#lnk-register { 
+} 
+
+#lnk-bell {
+  padding: 10px ; 
+  border-radius: 5px ;
+  margin-top: -1px ;
+  &.on {
+    background-color: $deep-blue ;
+  }
+}
 
 .orange { 
   color: $orange ;
@@ -491,7 +509,7 @@ span.MathJax {
     border-radius: 0px ;
     font : { 
       size: 12px ;
-      family: "Tahoma" ; 
+      weight: 300 ;
     } 
     color: white ; 
     line-height: 15px ;
@@ -501,24 +519,6 @@ span.MathJax {
       top: 15px ;
     } 
   } 
-} 
-
-#lnk-logout{ color: $orange ; }
-
-.g-panel { 
-  h3 {
-    // color: $gradians-blue ;
-  }
-} 
-
-#cp-account-link { 
-  float: right ;
-  #m-account { 
-    font : { 
-      weight: 500 ;
-    }
-  }
-
 } 
 
 .nav { 
@@ -612,7 +612,10 @@ span.MathJax {
     .badge { background-color: white ; } 
   } 
   &.green {
-    .badge { background-color: $green ; }
+    .badge { 
+      background-color: $green ; 
+      color: white ; 
+    }
   } 
 
   > .dropdown { 
@@ -628,7 +631,6 @@ span.MathJax {
         float: none ;
         padding: 3px 20px ;
         border-radius: 0px ;
-        &:hover { color: white ; }
       } 
     } 
   } 
@@ -750,6 +752,10 @@ button[data-toggle='button'] {
   background: transparent ;
 } 
 
+.semi-transparent { 
+  background-color: rgba(43,43,43,0.5) ;
+}
+
 #wait {
   height: 400px ;
   text-align: center ;
@@ -826,8 +832,12 @@ button[data-toggle='button'] {
   z-index: 5;
   min-width: 700px ;
   width: 1024px ;
-  ul {
+  ul.nav {
     margin-top: 15px ;
+    > li:last-child {
+      float: right ;
+      > a { color: $orange ; font-weight: 500 ;}
+    }
   }
 
   a { 
@@ -1027,13 +1037,34 @@ li.split {
   text-align: center ;
 } 
 
-.spinner {
+body > #spinner {
   position: fixed ;
-  top: 9% ;
+  top: 50% ;
   left: 50% ;
-  z-index: 6 ;
-  width: 24px ;
-  height: 26px ;
+  .text { 
+    font: {
+      size: 18px ;
+      variant: small-caps; 
+    }
+    text-align: center ;
+    margin-bottom: 5px ;
+  }
+
+  .subtext { 
+    font: {
+      size: 12px ;
+    }
+  }
+
+  background: rgba(19,19,19,0.9) ;
+  padding: 30px 10px ; 
+  min-width: 100px ;
+  max-width: 200px ;
+  border-radius: 10px ;
+  > .spinner { 
+    min-height: 30px ;
+    padding: 10px 0px 0px 0px ;
+  }
 }
 
 .container-fluid {
@@ -1330,7 +1361,7 @@ li.split {
   } 
 }
 
-#m-audit-form { 
+#m-audit-form, #m-audit-apprentice { 
   label.checkbox { 
     font-size: 11px ;
   } 
@@ -1360,7 +1391,7 @@ li.split {
   text-align: center ;
 } 
 
-#m-ws-options {
+#m-exbopts-1 {
   button {
     margin-top: 7px ;
   }
@@ -1402,7 +1433,6 @@ li.split {
   } 
 } 
 
-
 #m-buy-credits, #m-refund-credits, #m-invoice {
 
   select {
@@ -1437,5 +1467,25 @@ li.split {
     margin-bottom: -7px ;
   }
 
+}
+
+#fm-new-examiners {
+  > .row-fluid { 
+    input { 
+      padding: 3px ; 
+      font-size: 12px ;
+      border: none ; 
+      border-bottom: 1px solid white ;
+    }
+  }
+}
+
+table { 
+  td.y-label { 
+    text-align: center ;
+  }
+  td.x-label {
+    padding-right: 10px ;
+  }
 }
 

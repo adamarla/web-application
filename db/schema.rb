@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140313094130) do
+ActiveRecord::Schema.define(:version => 20140421085430) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -64,26 +64,6 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
-
-  create_table "aggr_teacher_topics", :force => true do |t|
-    t.integer  "teacher_id"
-    t.integer  "topic_id"
-    t.float    "benchmark"
-    t.float    "average"
-    t.integer  "attempts"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "apprenticeships", :force => true do |t|
-    t.integer  "examiner_id"
-    t.integer  "teacher_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  add_index "apprenticeships", ["examiner_id"], :name => "index_apprenticeships_on_examiner_id"
-  add_index "apprenticeships", ["teacher_id"], :name => "index_apprenticeships_on_teacher_id"
 
   create_table "contracts", :force => true do |t|
     t.integer  "customer_id"
@@ -155,16 +135,42 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "disputes", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "graded_response_id"
+    t.text     "text"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "disputes", ["student_id"], :name => "index_disputes_on_student_id"
+
+  create_table "doodles", :force => true do |t|
+    t.integer  "examiner_id"
+    t.integer  "feedback",           :default => 0
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.integer  "graded_response_id"
+  end
+
+  add_index "doodles", ["examiner_id"], :name => "index_doodles_on_examiner_id"
+
   create_table "examiners", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_admin",                      :default => false
-    t.string   "first_name",      :limit => 30
-    t.string   "last_name",       :limit => 30
+    t.boolean  "is_admin",                        :default => false
+    t.string   "first_name",        :limit => 30
+    t.string   "last_name",         :limit => 30
     t.datetime "last_workset_on"
-    t.integer  "n_assigned",                    :default => 0
-    t.integer  "n_graded",                      :default => 0
+    t.integer  "n_assigned",                      :default => 0
+    t.integer  "n_graded",                        :default => 0
+    t.boolean  "live",                            :default => false
+    t.integer  "mentor_id"
+    t.boolean  "mentor_is_teacher",               :default => false
+    t.boolean  "internal",                        :default => false
   end
+
+  add_index "examiners", ["mentor_id"], :name => "index_examiners_on_mentor_id"
 
   create_table "exams", :force => true do |t|
     t.integer  "quiz_id"
@@ -175,9 +181,12 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.boolean  "takehome",                   :default => false
     t.integer  "job_id",                     :default => -1
     t.integer  "duration"
-    t.datetime "deadline"
+    t.datetime "grade_by"
     t.string   "uid",         :limit => 40
     t.boolean  "open",                       :default => true
+    t.datetime "submit_by"
+    t.datetime "regrade_by"
+    t.text     "dist_scheme"
   end
 
   create_table "faculty_rosters", :force => true do |t|
@@ -205,6 +214,8 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.integer  "feedback",                     :default => 0
     t.integer  "worksheet_id"
     t.boolean  "mobile",                       :default => false
+    t.boolean  "disputed",                     :default => false
+    t.boolean  "resolved",                     :default => false
   end
 
   add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
@@ -328,8 +339,8 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.string   "uid",                   :limit => 40
     t.string   "version",               :limit => 10
     t.string   "shadows"
-    t.string   "page_breaks_after",     :limit => 30
-    t.string   "switch_versions_after", :limit => 30
+    t.string   "page_breaks_after"
+    t.string   "switch_versions_after"
   end
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
@@ -341,6 +352,16 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.string   "currency",     :limit => 3
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
+  end
+
+  create_table "remarks", :force => true do |t|
+    t.integer  "x"
+    t.integer  "y"
+    t.integer  "graded_response_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "tex_comment_id"
+    t.integer  "doodle_id"
   end
 
   create_table "requirements", :force => true do |t|
@@ -364,15 +385,16 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
   end
 
   create_table "sektions", :force => true do |t|
-    t.string   "name",       :limit => 40
+    t.string   "name",                 :limit => 40
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "teacher_id"
-    t.string   "uid",        :limit => 10
+    t.string   "uid",                  :limit => 10
     t.date     "start_date"
     t.date     "end_date"
-    t.boolean  "auto_renew",               :default => true
+    t.boolean  "auto_renew",                         :default => true
     t.boolean  "active"
+    t.boolean  "auto_renew_immediate",               :default => false
   end
 
   create_table "student_rosters", :force => true do |t|
@@ -424,16 +446,15 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "school_id"
-    t.boolean  "online",                   :default => false
+    t.boolean  "indie",                    :default => true
   end
 
   create_table "tex_comments", :force => true do |t|
-    t.integer  "x"
-    t.integer  "y"
-    t.text     "tex"
-    t.integer  "graded_response_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.text     "text"
+    t.integer  "examiner_id"
+    t.boolean  "trivial"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "topics", :force => true do |t|
@@ -469,8 +490,8 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.boolean  "active",                       :default => false
     t.integer  "watchable_id"
     t.string   "watchable_type", :limit => 20
-    t.string   "sublime_uid",    :limit => 20
-    t.string   "sublime_title",  :limit => 70
+    t.string   "uid",            :limit => 20
+    t.string   "title",          :limit => 70
   end
 
   create_table "worksheets", :force => true do |t|
@@ -482,7 +503,7 @@ ActiveRecord::Schema.define(:version => 20140313094130) do
     t.boolean  "graded",                   :default => false
     t.integer  "honest"
     t.boolean  "received",                 :default => false
-    t.string   "signature",  :limit => 50
+    t.string   "signature"
     t.string   "uid",        :limit => 40
     t.integer  "job_id",                   :default => -1
   end

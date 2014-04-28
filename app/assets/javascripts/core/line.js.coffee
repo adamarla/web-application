@@ -170,28 +170,25 @@ window.lines = {
       nAdded += 1
     return true
 
-  # target, key, json, menu, buttons, clickFirst, pgn, pgnUrl
-  render : (target, key, json, menu, buttons, clickFirst, pgn, pgnUrl = null) -> 
+  # target, key, json, menu, buttons, clickFirst
+  render : (target, key, json, menu, buttons, clickFirst) ->
     return false unless target?
     return false if target.length is 0
 
     writeData = if key? then true else false
-    # Enable / disable paginator as needed 
-    if json.last_pg?
-      pagination.enable pgn, json.last_pg
-      pagination.url.set pgn, pgnUrl if pgnUrl?
 
+    if json.last_pg?
       ###
         this next bit of code is done only for teachers and in a very specific 
         contexts - picking questions to add to a quiz - either when its 
         first being built or when its being edited subsequently
 
-        the issue is that we would like pagination with multi-select. 
-        with pagination, we can break a long list down into manageable chunks
+        the issue is that we would like paginator with multi-select. 
+        with paginator, we can break a long list down into manageable chunks
         But multi-select requires that we retain any previously loaded data 
         and selections
       ###
-      if target.hasClass 'pagination'
+      if target.hasClass 'paginator'
         if json.pg?
           page = target.children("div[page='#{json.pg}']")
           $("<div page=#{json.pg} class='multi-select purge-skip'></div>").appendTo target if page.length is 0

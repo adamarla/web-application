@@ -22,6 +22,7 @@ Webapp::Application.routes.draw do
   match 'grade/pending' => 'accounts#to_be_graded', via: :get
   match 'scans/pending' => 'accounts#pending_scans', via: :get
   match 'submit/fdb' => 'accounts#submit_fdb', via: [:put, :post]
+  match 'close/apprentice/audit' => 'accounts#audit_apprentice', via: [:put, :post]
   match 'view/fdb' => 'accounts#view_fdb', via: :get
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
   match 'byCountry' => 'accounts#by_country', via: :get
@@ -63,10 +64,21 @@ Webapp::Application.routes.draw do
   match 'update_scan_id' => 'examiners#receive_single_scan', via: :post
   match 'audit/todo' => 'examiners#audit_todo', via: :get
   match 'audit/review' => 'examiners#audit_review', via: :get
+  match 'examiner/apprentices' => 'examiners#apprentices', via: :get
+  match 'load/samples' => 'examiners#load_samples', via: :get
+
+  match 'disputes' => 'examiners#disputed', via: :get
+  match 'load/dispute' => 'examiners#load_dispute', via: :get
+  match 'dispute/reject' => 'examiners#reject_dispute', via: :get
+  match 'dispute/accept' => 'examiners#accept_dispute', via: :get
+  match 'dispute/reason' => 'examiners#load_dispute_reason', via: :get
+
+  match 'mail/digest' => 'examiners#daily_digest', via: :get
 
   # Graded Response 
   match 'reset/graded' => 'examiners#reset_graded', via: :get
   match 'aggregate' => 'examiners#aggregate', via: :get
+  match 'germane/comments' => 'examiners#germane_comments', via: :get
 
   # Guardian
   resource :guardian, :only => [:show]
@@ -127,8 +139,8 @@ Webapp::Application.routes.draw do
   match 'inbox' => 'students#inbox', via: :get
   match 'inbox/echo' => 'students#inbox_echo', via: :get
   match 'outbox' => 'students#outbox', via: :get
-  match 'overall/proficiency' => 'students#proficiency', via: :get
   match 'enroll' => 'students#enroll', via: :post
+  match 'dispute' => 'students#dispute', via: [:put, :post] 
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get
@@ -152,6 +164,10 @@ Webapp::Application.routes.draw do
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', via: :get
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
   match 'new/lesson' => 'teachers#add_lesson', via: :post
+  # match 'prefab' => 'teachers#prefabricate', via: [:put, :post]
+  match 'overall/proficiency' => 'teachers#proficiency_chart', via: :get
+  match 'def/dist/scheme' => 'teachers#def_distribution_scheme', via: :get
+  match 'set/dist/scheme' => 'teachers#set_distribution_scheme', via: [:put, :post]
 
   # Exam
   match 'exam/summary' => 'exams#summary', via: :get
@@ -161,6 +177,10 @@ Webapp::Application.routes.draw do
   match 'ws/unpublish' => 'exams#uninbox', via: :get
   match 'ws/report_card' => 'exams#report_card', via: :get
   match 'ws/update_signature' => 'exams#update_signature', via: :get
+  match 'exam/disputes/pending' => 'exams#pending_disputes', via: :get
+  match 'exam/disputes/resolved' => 'exams#resolved_disputes', via: :get
+  match 'set/deadlines' => 'exams#deadlines', via: [:put, :post]
+  match 'ping/exam' => 'exams#ping', via: :get
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get

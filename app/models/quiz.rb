@@ -16,8 +16,8 @@
 #  uid                   :string(40)
 #  version               :string(10)
 #  shadows               :string(255)
-#  page_breaks_after     :string(30)
-#  switch_versions_after :string(30)
+#  page_breaks_after     :string(255)
+#  switch_versions_after :string(255)
 #
 
 #     __:has_many_____     ___:has_many___  
@@ -104,7 +104,7 @@ class Quiz < ActiveRecord::Base
     end 
 
     # Close this exam for further modifications if school teacher
-    e.update_attribute(:open, false) unless e.quiz.teacher.online
+    e.update_attribute(:open, false) unless e.quiz.teacher.indie
 
     unless publish 
       Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
@@ -131,6 +131,10 @@ class Quiz < ActiveRecord::Base
     last = QSelection.where(quiz_id: self.id).order(:index).last.end_page
     self.update_attribute :span, last
     return last
+  end
+
+  def pages?
+    return self.span?
   end
 
   def shred_pdfs
@@ -166,10 +170,10 @@ class Quiz < ActiveRecord::Base
       t = self.teacher_id 
       n = nil
       pid = self.id
-    else # teacher sharing quiz with someone else
+    else # teacher sharing quiz with someone else. Take care of demo quizzes
       t = tid 
       n = self.name
-      pid = nil 
+      pid = PREFAB_QUIZ_IDS.include?(self.id) ? self.id :  nil 
     end
 
     c = Quiz.create teacher_id: t, question_ids: qids, num_questions: qids.count, parent_id: pid, name: n
@@ -218,7 +222,6 @@ class Quiz < ActiveRecord::Base
 
   def write
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
-    self.lay_it_out unless self.laid_out?
 
     # Write TeX for the quiz 
     response = SavonClient.request :wsdl, :writeTex do
@@ -322,6 +325,11 @@ class Quiz < ActiveRecord::Base
     return true
   end
 
+  def download_pdf?
+    return nil unless self.compiled?
+    return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
+  end
+
 #################################################################
 
   public
@@ -337,7 +345,7 @@ class Quiz < ActiveRecord::Base
         end
 
         self.update_attributes uid: uid, name: name
-        self.lay_it_out(qids) unless qids.blank?
+        self.lay_it_out(qids) 
 
         Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
         job = Delayed::Job.enqueue CompileTex.new(self.id, self.class.name)

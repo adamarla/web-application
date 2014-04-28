@@ -73,3 +73,18 @@ jQuery ->
     $(m).prop('checked', false) for m in form.find("input[type='checkbox']")
     form.find("textarea").eq(0).val null
     return true
+
+  $('#apprentice-gating').on 'click', 'input[type=checkbox]', (event) ->
+    event.stopImmediatePropagation()
+    allGating = $(this).parent().parent().find "input[type='checkbox']"
+    gating = false
+    
+    for m in allGating 
+      gating |= $(m).prop('checked')
+      break if gating 
+
+    form = $(this).closest('form')
+    submitBtn = form.find('button').eq(0)
+    if gating then submitBtn.text('Keep Sandboxed') else submitBtn.text('Can go Live')
+    return true
+

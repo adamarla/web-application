@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  include GeneralQueries
   before_filter :authenticate_account!, :except => :ask_question
   respond_to :json
 
@@ -28,18 +29,18 @@ class AccountsController < ApplicationController
     else
       msg = "Nothing updated"
     end
-    render :json => { :notify => {:text => msg} }, :status => :ok
+    render json: { notify: {text: msg} }, status: :ok
   end 
 
   def merge
     # Merges the passed account into current_account, and then deletes the passed loggable obj
     target_id = params[:checked].keys.first
     if target_id.blank?
-      render :json => { :notify => { :title => "No account specified for merging" } }, :status => :ok
+      render json: { notify: { title: "No account specified for merging" } }, status: :ok
     else
       source = Account.find target_id
       merged = Account.merge current_account, source
-      render :json => { :success => merged }, :status => :ok
+      render json: { success: merged }, status: :ok
     end
   end
 
@@ -55,29 +56,49 @@ class AccountsController < ApplicationController
 
   def pending_exams
     @exams = current_account.pending_exams
+    @sandboxed = !current_account.live?
   end
 
   def to_be_graded
-    tid = params[:id]
-    by = current_account.loggable_id
-    @pending = GradedResponse.in_exam(tid).with_scan.ungraded.assigned_to(by)
-    sel = @pending.map(&:q_selection_id).uniq
-    @indices = QSelection.where(id: sel).order(:index)
+    @sandboxed = !current_account.live?
+    eid = params[:id]
+    
+    if @sandboxed 
+      # Only publishable exams are considered for sandboxing. 
+      # And for a given exam, pick 5 random samples of each question
+      qid = Exam.find(eid).quiz
+      @indices = QSelection.where(quiz_id: qid).order(:index)
+      @last_pg = nil
+    else 
+      by = current_account.loggable_id
+      @pending = GradedResponse.in_exam(eid).with_scan.ungraded.assigned_to(by)
+      sel = @pending.map(&:q_selection_id).uniq
+      @indices = QSelection.where(id: sel).order(:index)
+      n = @indices.count
+      per_pg, @last_pg = pagination_layout_details(n,10)
+      pg = params[:page].nil? ? 1 : params[:page].to_i
+      @indices = @indices.page(pg).per(per_pg)
+    end
   end
 
   def pending_scans
     # Given: The question and the exam 
     # Known: The examiner who needs to grade them
 
-    tp = params[:tp]
+    eid = params[:tp]
     q = params[:q]
-    eid = current_account.loggable_id
+    exid = current_account.loggable_id
+    @sandboxed = !current_account.live?
 
     # { pending: [{ scan: a, student: b, gr: [{ id: 12, name: "Q6.A" }, {id: 13, name: "Q6.B"}]}, { scan: b ... } ] }
 
-    p = GradedResponse.in_exam(tp).where(q_selection_id: q).with_scan.ungraded.assigned_to(eid)
-    @pending = p.order(:student_id).order(:subpart_id)
+    qsel = QSelection.find q
+    @comments = qsel.germane_comments 
 
+    candidates = GradedResponse.in_exam(eid).where(q_selection_id: q).with_scan
+    p = @sandboxed ? candidates.limit(5) : candidates.ungraded.assigned_to(exid)
+
+    @pending = p.order(:student_id).order(:subpart_id)
     @students = Student.where(id: @pending.map(&:student_id).uniq)
     @scans = @pending.map(&:scan).uniq
   end 
@@ -101,29 +122,61 @@ class AccountsController < ApplicationController
   end
 
   def submit_fdb
-    r = GradedResponse.find(params[:id].to_i)
+    sandboxed = !current_account.live?
+    gid = params[:id].to_i
+
+    db_obj = sandboxed ? current_account.loggable.doodles.build(graded_response_id: gid) : GradedResponse.find(gid)
     ids = params[:checked].keys.map(&:to_i)
-    r.fdb ids
+
+    db_obj.fdb(ids) # will either update GradedResponse obj or add a new Doodle
+
     overlay = params[:overlay].split("@d@").select{ |m| !m.blank? }
     n = 0
     z = overlay.slice(n,3)
 
     while !z.blank?
-      r.tex_comments.create x: z[0], y:z[1], tex: z[2]
+      tx = TexComment.where(text: z[2]).first
+      if tx.nil?
+        tx = TexComment.new examiner_id: current_account.loggable_id, text: z[2]
+        tx.save
+      end
+
+      rmrk = tx.remarks.create x: z[0], y: z[1], graded_response_id: gid 
+      rmrk.update_attributes(doodle_id: db_obj.id) if sandboxed
+
       n += 3
       z = overlay.slice(n,3)
     end
-    render :json => { :status => :ok }, :status => :ok
+    render json: { status: :ok }, status: :ok
   end
 
   def view_fdb
-    @gr = GradedResponse.find(params[:id])
-    @fdb = Requirement.unmangle_feedback @gr.feedback
+    gid = params[:id].to_i
+    @gr = GradedResponse.find gid
+    sandboxed = params[:sandbox] == "true" 
+
+    if sandboxed 
+      doodle = Doodle.where(examiner_id: params[:a], graded_response_id: gid).first
+      @fdb = Requirement.unmangle_feedback doodle.feedback
+    else
+      @fdb = Requirement.unmangle_feedback @gr.feedback
+    end
+
     @solution_video = @gr.subpart.question.video
+    if current_account.loggable_type == 'Student' 
+      exm = @gr.worksheet.exam
+      @regrade = exm.disputable? ? { name: @gr.name?, disable: @gr.disputed } : { name: 'Past deadline', disable: true }
+    else
+      @regrade = nil
+    end 
 
     unless (@fdb.nil? || @fdb == 0) # => none so far 
-      siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
-      @comments = TexComment.where(graded_response_id: siblings) 
+      if sandboxed 
+        @comments = Remark.where(doodle_id: doodle.id)
+      else 
+        siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
+        @comments = Remark.where(graded_response_id: siblings) 
+      end 
     end
   end
 
@@ -131,9 +184,9 @@ class AccountsController < ApplicationController
     quiz_ids = params[:quizzes].blank? ? [] : params[:quizzes].map(&:to_i)
     eids = params[:exams].blank? ? [] : params[:exams].map(&:to_i)
 
-    @quizzes = Quiz.where(id: quiz_ids).select{ |m| !m.compiling? }
-    @ws = Exam.where(id: eids).select{ |m| !m.compiling? }
-    # @demo = @ws.select{ |m| PREFAB_QUIZ_IDS.include? m.quiz.parent_id }
+    @q = Quiz.where(id: quiz_ids).select{ |m| m.compiled? } 
+    @e = Exam.where(id: eids, takehome: false).select{ |m| m.compiled? }
+    # @demos = Quiz.where(teacher_id: current_account.loggable_id, parent_id: PREFAB_QUIZ_IDS).where('uid IS NOT ?', nil).select{ |m| m.compiled? }
   end 
 
   def by_country
@@ -152,19 +205,40 @@ class AccountsController < ApplicationController
     unless current_account.nil?
       unless params[:new][:question].blank?
         Mailbot.delay.ask_question(current_account, params[:new][:question])
-        render :json => { :notify => { :title => "Got it!", 
+        render json: { notify: { title: "Got it!", 
                                        msg: 'We will answer your question within 24 hours. Thank you for writing' } }, 
                                        status: :ok
       else
-        render :json => { :notify => { :title => "Blank question?", 
+        render json: { notify: { title: "Blank question?", 
                                        msg: 'You seem to have asked nothing' }}, 
                                        status: :ok
       end
     else
-      render :json => { :notify => { :title => "Missing E-mail", 
+      render json: { notify: { title: "Missing E-mail", 
                                      msg: 'Need an e-mail address to reply to' }}, 
                                      status: :ok
     end
+  end
+
+  def audit_apprentice
+    @apprentice = Examiner.find params[:id]
+
+    unless @apprentice.nil?
+      audit = params[:audit]
+      @gating = audit[:gating].select{ |m| !m.blank? }
+      @nongating = audit[:non_gating].select{ |m| !m.blank? }
+      @comment = audit[:comments]
+
+      if @gating.count > 0 
+        @apprentice.update_attribute(:live, false)
+        @bottomline = "Mentor needs to see more grading samples"
+      else 
+        @apprentice.update_attribute(:live, true)
+        @bottomline = "You are now live and will receive real grading work"
+      end 
+      Mailbot.delay.inform_apprentice(@apprentice, @bottomline, @gating, @nongating, @comments)
+    end
+    render json: { status: :ok }, status: :ok
   end
 
 end

@@ -42,7 +42,7 @@ jQuery ->
       for m in $(preview.root).children('a')
         if controls then $(m).removeClass('hide') else $(m).addClass('hide')
 
-      $(preview.root).carousel { interval:15000 }
+      $(preview.root).carousel { interval: false }
       return true
 
     clear : () ->

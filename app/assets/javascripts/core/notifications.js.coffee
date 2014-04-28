@@ -15,26 +15,39 @@ window.notifier = {
   current : null,
 
   show : (obj, json = null) ->
-    # show only one notification at a time. If the notification auto-hides, then 
-    # it would persist for only 3 seconds. Unlikely that the user would do anything
-    # in that time that could spawn another notification. Unless, of course the user
-    # is an idiot / child and presses the same button again and again 
+    # Show only one notification at a time. If the notification auto-hides, then 
+    # it would persist for only 3 seconds. Otherwise, let the new notification 
+    # take precedence over any old notification
 
-    return true if notifier.current?
+    notifier.hide() if notifier.current?
     notifier.current = if typeof obj is 'string' then $("##{obj}")[0] else obj
 
     if json?
       if json.notify?
         for type in ['title', 'msg']
-          if json.notify[type]
-            t = $(notifier.current).find("[class~=#{type}]").eq(0)
-            t.text(json.notify[type]) if t.length isnt 0
+          textToRender = json.notify[type]
+          if textToRender?
+            t = $(notifier.current).find("[class~=#{type}]")[0]
+            $(t).text(textToRender) if t?
 
+#  Following code allows LaTeX to be rendered within notifications
+#  Works reasonably well - but not perfectly 
+
+#            if t.length isnt 0 
+#              if karo.isPlainTextCheck textToRender
+#                textToRender = karo.unjaxify textToRender
+#                t.text textToRender
+#              else
+#                t.empty() # clear any old TeX comments
+#                id = "tex-notice-#{parseInt(Math.random() * 1000)}"
+#                script = $("<script id=#{id} type='math/tex'>#{textToRender}</script>")
+#                $(script).appendTo t
+#                MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"]
 
     # autoHideIn = notifier.current.dataset.autohide
     autoHideIn = notifier.current.getAttribute('data-autohide')
 
-    if autoHideIn?
+    if autoHideIn? and autoHideIn isnt 'never'
       autoHideIn = parseInt(autoHideIn)
       notifier.ticker = window.setInterval () -> notifier.hide(),
       autoHideIn

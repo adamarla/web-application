@@ -13,14 +13,12 @@ jQuery ->
     target = null # where to write the returned JSON
     key = null
     menu = null # ID of contextual menu to attach w/ each .line
-    pgnUrl = null # base-url to be set on the paginator
-    pgn = $('#left-paginator')
     clickFirst = false # whether or not to auto-click the first .line
     lesson = null
     buttons = null
 
     if url.match(/quizzes\/list/)
-      target = $('#pane-wsb-quizzes')
+      target = $('#pane-exb-quizzes')
       key = 'quizzes'
       menu = "per-quiz"
       clickFirst = true
@@ -34,8 +32,8 @@ jQuery ->
         target = $('#enrolled-students')
         karo.empty target
       else
-        target = $('#wsb-sektions')
-        lesson = 'wsb-milestone-3'
+        target = $('#exb-sektions')
+        lesson = 'exb-milestone-3'
       key = "students"
 
     else if url.match(/share\/quiz/)
@@ -63,7 +61,7 @@ jQuery ->
         klass : {
           ul : "span4",
           content : "span7 scroll",
-          div : "multi-select pagination"
+          div : "multi-select paginator"
         },
         data : {
           url : "questions/on?id=:id&context=#{json.context}",
@@ -86,13 +84,14 @@ jQuery ->
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = 'icon-plus-sign'
     else if url.match(/quiz\/exams/)
-      target = $("#pane-wsb-existing")
+      target = $("#pane-exb-existing")
       key = "exams"
       menu = 'per-ws'
       clickFirst = true
       lesson = 'publish-milestone-2'
     else if url.match(/exam\/summary/)
       target = $("#pane-tc-rc-2")
+      karo.empty target
       key = "root"
       wsSummary json
       $('#lnk-rc-download')[0].setAttribute 'href', "ws/report_card?id=#{json.a}&format=csv"
@@ -115,6 +114,7 @@ jQuery ->
         target = $('#deepdive-topics')
       key = 'topics'
     else if url.match(/sektion\/proficiency/)
+      wsDeepdive.students json
       wsDeepdive.loadProficiencyData json
     else if url.match(/overall\/proficiency/)
       wsDeepdive.byStudent json
@@ -129,11 +129,11 @@ jQuery ->
 
       # [102]: Add the new sektion as a left-tab so that teachers can start making 
       # worksheets without having to reload the site
-      leftTabs.add '#sektions-tab', json, {
-        shared : 'wsb-sektions',
+      leftTabs.add '#exb-2', json, {
+        shared : 'exb-sektions',
         data : {
-          url : "sektion/students.json?id=:id&context=wsb&quiz=:prev",
-          prev : "tab-wsb-quizzes"
+          url : 'sektion/students?id=:id&context=exb&quiz=:prev',
+          prev : 'tab-exb-quizzes'
         }
       }
     else if url.match(/ping\/sektion/)
@@ -162,20 +162,11 @@ jQuery ->
       notifier.show 'n-enrolled', json
     else if url.match(/ping\/queue/)
       # enable the newly built quizzes 
-      list = $('#pane-wsb-quizzes').children()
+      list = $('#pane-exb-quizzes').children()
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?
-
-      if json.worksheets.length > 0
-        notifier.show('n-compiled') if json.quizzes.length < 1 # only info on compiled worksheets returned
-
-    else if url.match(/prefab/)
-      monitor.add json
-      x = $('#m-demo').find("li[marker=#{json.timer.on}]").eq(0)
-      watch = x.children('.stopwatch')[0]
-      stopWatch.start watch, parseInt(json.timer.for)
-      $('#lnk-existing-quiz').click()
+      # demo.update json
     else if url.match(/preview\/names/)
       target = $('#new-sk-students')
       lines.columnify target, json.names
@@ -196,11 +187,47 @@ jQuery ->
       menu = 'per-asset'
     else if url.match(/attach_detach_asset/)
       $('#mng-assets').modal 'hide'
+    else if url.match(/quiz\/mass_assign/) || url.match(/ping\/exam/)
+      monitor.add json
+      if json.meta?
+        m = $('#m-exb-deadlines')
+        eid = json.meta['id']
+        f = m.find('form')
+        z.options[0].selected = true for z in f.find('select') # select default blank option
+        f.attr 'action', "set/deadlines?id=#{eid}"
+        m.modal 'show'
+    else if url.match(/set\/deadlines/)
+      m = $('#m-exb-deadlines')
+      m.modal 'hide'
+    else if url.match(/def\/dist\/scheme/) # STEP 1: define distribution scheme 
+      if json.apprentices?
+        n = $('#m-exb-dist-scheme')
+        f = n.find('form')
+        f.attr 'action', "set/dist/scheme?id=#{json.id}"
+        inputGrid.initialize(f)
+        inputGrid.render json.apprentices, json.layout, 'checkbox', true
+        n.modal 'show'
+      else
+        notifier.show 'n-no-apprentice'
+    else if url.match(/set\/dist\/scheme/) # STEP 2: close modal 
+        m = $('#m-exb-dist-scheme')
+        m.modal 'hide'
+    else if url.match(/exam\/disputes/)
+      isPending = if json.pending? then true else false 
+      clickFirst = true
+      menu = 'm-dispute'
+      if isPending
+        target = $('#pane-pending-disputes')
+        key = 'pending'
+      else
+        target = $('#pane-resolved-disputes')
+        key = 'resolved'
+      karo.empty target
     else
       matched = false
 
     # Render lines in the panel
-    lines.render target, key, json, menu, buttons, clickFirst, pgn, pgnUrl
+    lines.render target, key, json, menu, buttons, clickFirst
 
     # If in tutorial mode, then start the next tutorial - if any
     tutorial.start lesson if lesson?

@@ -1,0 +1,10 @@
+
+#m-dispute-2.modal.fade.wide.row-fluid{ role: :dialog } 
+  .span2
+  .span9
+    %p
+      = simple_form_for :dispute, remote: true, defaults: { label: false }, 
+      html: { data: { id: 'tab-st-rc-2', action: 'dispute?id=:id' } } do |f|
+        = f.input :reason, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, 
+        hint: '( Mandatory ) Provide precise reasons for why you think the question should be regraded'
+        %button.btn.btn-primary.pull-right.btn-large{ type: :submit }= 'Please regrade'

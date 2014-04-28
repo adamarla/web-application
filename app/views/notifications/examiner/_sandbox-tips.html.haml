@@ -1,0 +1,26 @@
+
+- is_assistant = current_account.loggable.mentor_is_teacher 
+
+#n-sandbox-tips.modal.regular.hide.fade.row-fluid{ data: { autohide: :never } } 
+  .span3
+    = image_tag 'notifications/keyboard.png', class: 'big-icon' 
+  .span8
+    - if is_assistant
+      %p.title.underline= 'Sandbox Mode Enabled'
+      %p
+        The sandbox mode is for you to get comfortable with the grading panel. 
+        Your feedback will <b>not be recorded</b>. So, feel free to 
+        write anything or press any key
+      %p
+        When you feel comfortable, simply switch off the sandbox mode
+    %p.title.underline= 'Grading Tip'
+    %p
+      Use <b>keyboard shortcuts</b> to grade faster 
+    %p
+      The grading panel has keyboard shortcuts for almost every action. 
+      For example, press <span class='btn-shortcut'>W</span> to start writing a comment 
+    %p
+      Or, press <span class='btn-shortcut'>3</span> to select the third option from  
+      the left-panel
+    %p
+      Press <span class='btn-shortcut'>S</span> to submit

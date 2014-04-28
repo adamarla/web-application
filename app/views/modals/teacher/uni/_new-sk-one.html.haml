@@ -1,0 +1,23 @@
+
+#m-new-sk-1.modal.fade.wide{ role: :dialog }
+  .row-fluid{ id: :step_1 }
+    .span2.offset1
+      = image_tag 'notifications/group.png', class: 'big-icon'
+    .span8
+      %p
+        = simple_form_for :new, url: add_sektion_path, remote: true, defaults: { label: false }  do |f|
+          = f.input :name, placeholder: 'Course or section name' 
+          .row-fluid
+            .span4
+              %h6.white= "Session starts in" 
+              = f.input :smonth, as: :date, order: [:month]
+            .span4
+              %h6.white= "Lasts for"
+              = f.input :duration, as: :select, selected: 12,
+                collection: [*1..12].map{ |m| [m, "#{m} month(s)"] }, value_method: :first, label_method: :last
+            .span4
+              %h6.white= "Auto-renews?"
+              = f.input :renew, as: :select, selected: 1,
+                collection: [[1,'Never'], [2,'Immediately on expiry'], [3,'In next academic year']], value_method: :first, label_method: :last
+          .row-fluid
+            = f.button :submit, class: 'pull-right btn-large btn-primary', value: 'Create' 

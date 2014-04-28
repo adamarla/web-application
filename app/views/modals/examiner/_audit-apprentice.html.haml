@@ -1,0 +1,23 @@
+
+#m-audit-apprentice.modal.fade.wide
+  .row-fluid
+    .span2
+      = image_tag 'notifications/microscope.png', :class => 'big-icon'
+    .span9
+      = simple_form_for :audit, remote: true, defaults: { label: false, required: false }, 
+      html: { data: { prev: 'tab-apprentices', action: "#{close_apprentice_audit_path}?id=:prev" } } do |f|
+        .row-fluid
+          .span6
+            %p.heading= "Gating Issues"
+            = f.input :gating, as: :check_boxes, wrapper_html: { id: 'apprentice-gating' },
+              collection: ['Tone generally a bit harsh',
+              'Feedback too generic; Lacks precision',
+              'Incorrect diagnosis in more than one case']
+          .span6
+            %p.heading= "Non-gating Issues"
+            = f.input :non_gating, as: :check_boxes, wrapper_html: { id: 'apprentice-non-gating' }, 
+              collection: [ 'Write more Math in response to Math',
+              'Feedback a tad terse. Say a bit more']
+        .row-fluid
+          = f.input :comments, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, labels: false
+          %button.btn.btn-primary.btn-large.pull-right{ type: :submit }= "Can go Live"

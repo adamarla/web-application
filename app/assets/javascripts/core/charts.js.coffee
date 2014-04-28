@@ -24,7 +24,7 @@ window.chart = {
     return true
 
   draw : (options = {}) ->
-    target = $('#graph-paper')
+    target = $('#wide-graph-1')
     target.addClass 'hide-y'
 
     chart.plot = $.plot target, chart.seriesList, options

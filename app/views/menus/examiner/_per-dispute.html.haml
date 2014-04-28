@@ -1,0 +1,8 @@
+
+%ul.dropdown-menu.dropdown-inverse.slim{ id: 'm-dispute', role: :menu }
+  %li
+    = simple_link for: 'Disputed because ...', id: 'lnk-dispute-reason', remote: true, icon: 'icon-comment'
+  %li
+    = simple_link for: 'Reject', id: 'lnk-reject-dispute', remote: true, icon: 'icon-trash'
+  %li
+    = simple_link for: 'Accept', id: 'lnk-accept-dispute', remote: true, icon: 'icon-plus-sign'

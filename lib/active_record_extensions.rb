@@ -12,9 +12,13 @@ module ActiveRecordExtensions
 
   def compiling? 
     return false unless self.respond_to? :job_id
-    return false if self.errored_out?
     return self.job_id > 0
   end 
+
+  def compiled?
+    return false unless self.respond_to? :job_id
+    return self.job_id == 0
+  end
 
   def errored_out?
     return false unless self.respond_to? :job_id
@@ -32,5 +36,30 @@ module ActiveRecordExtensions
     end 
     return safe
   end
+
+  def activate
+    # self = anything other than an Account object
+    return false unless self.respond_to? :account
+    return self.account.update_attribute :active, true
+  end
+
+  def deactivate
+    # self = anything other than an Account object
+    return false unless self.respond_to? :account
+    self.account.update_attribute :active, false
+    is_admin = (self.respond_to?(:is_admin) ? self.is_admin : nil) 
+    return (is_admin.nil? ? true : (is_admin ? true : self.update_attribute(:live, false))) 
+  end
+
+  def apprentices
+    return [] unless self.respond_to? :account
+    is_teacher = self.account.loggable_type == 'Teacher'
+    return Examiner.where(mentor_id: self.id, mentor_is_teacher: is_teacher)
+  end 
+
+  def mentor 
+    return [] unless self.respond_to? :account
+    return self.mentor_is_teacher ? Teacher.where(id: self.mentor_id) : Examiner.where(id: self.mentor_id)
+  end 
 
 end

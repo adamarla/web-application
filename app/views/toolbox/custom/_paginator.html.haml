@@ -1,0 +1,8 @@
+
+-# url & id are variables from the calling view
+
+.paginator.offset1.no-remove{ id: id } 
+  %ul
+    - for pg in [*1..10]
+      %li
+        = link_to pg, "#{url}?page=#{pg}"
