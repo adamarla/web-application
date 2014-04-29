@@ -79,7 +79,7 @@ class TokensController < ApplicationController
           quiz: quiz.name, 
           quizId: quiz.id, 
           name: g.subpart.name_if_in?(quiz),
-          locn: "#{quiz.uid/g.worksheet.uid}"
+          locn: "#{quiz.uid}/#{g.worksheet.uid}"
         }
       end 
       return gradeables
