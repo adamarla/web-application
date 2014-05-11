@@ -1,0 +1,42 @@
+
+$gray: #191919 ; // rgb(25,25,25)
+$lightgray: lighten($gray, 30%) ; // rgb(102,102,102)
+$gradians-blue: #6ca7ab ; // rgb(108,167,171)
+$orange:#ffa500 ; // rgb(255,165,0)
+$panel-colour: lighten(black, 17%) ; // rgb(43,43,43)
+$deep-blue: #0081c2 ; // rgb(0,129,194)
+
+.exploded { 
+  > .row-fluid {
+    padding-bottom: 10px ;
+    border-bottom: 1px dotted white ;
+  } 
+  .name {
+    font: { size: 25px ; weight: 300 ; } 
+    line-height: 30px ;
+  }
+
+  .author { 
+    font: { size: 12px ; weight: 300 ; }
+  } 
+
+  .description {
+    font: { size: 12px ; }
+    line-height: 15px ;
+  }
+
+  .heading { 
+    font: { size: 13px ; weight: 300 ; }
+    padding: { 
+      top: 7px ;
+      bottom: 7px ;
+    }
+    text-align: center ;
+    border: {
+      top-left-radius: 8px ;
+      top-right-radius: 8px ;
+      style: none ;
+    }
+    background: rgba(43,43,43,0.5) ;
+  } 
+}

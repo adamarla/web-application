@@ -22,6 +22,10 @@ class CourseController < ApplicationController
     render json: { id: c.id }, status: :ok
   end 
 
+  def outline 
+    @c = Course.find params[:id]
+  end 
+
   def update
     c = Course.find params[:id]
     ids = params[:used].map(&:to_i)

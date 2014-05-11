@@ -40,6 +40,7 @@ Webapp::Application.routes.draw do
   match 'course/lessons' => 'course#lessons', via: :get
   match 'course/update' => 'course#update', via: :post
   match 'ping/course' => 'course#ping', via: :get
+  match 'course/outline' => 'course#outline', via: :get
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]

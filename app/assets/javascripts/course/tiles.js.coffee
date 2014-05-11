@@ -31,7 +31,7 @@ window.tiles = {
     
     for m, index in json
       rawTile = blueprint.clone() 
-      rawTile.attr 'marker', json.id
+      rawTile.attr 'marker', m.id
 
       for j in ['name', 'author', 'num_quizzes', 'num_lessons']
         nd = rawTile.find(".#{j}")[0]
@@ -43,3 +43,11 @@ window.tiles = {
     return true
     
 }
+
+jQuery ->
+  $('#wide').on 'click', '.tile', (event) -> 
+    event.stopImmediatePropagation() 
+    id = $(this).attr 'marker'
+    $.get "course/outline?id=#{id}"
+    tiles.hide()
+    return true
