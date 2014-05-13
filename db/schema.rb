@@ -201,6 +201,17 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
     t.integer "question_id"
   end
 
+  create_table "freebies", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "lesson_id"
+    t.integer  "index",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "freebies", ["course_id"], :name => "index_freebies_on_course_id"
+  add_index "freebies", ["lesson_id"], :name => "index_freebies_on_lesson_id"
+
   create_table "graded_responses", :force => true do |t|
     t.integer  "student_id"
     t.datetime "created_at"
@@ -236,14 +247,6 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
     t.datetime "updated_at"
     t.string   "first_name", :limit => 30
     t.string   "last_name",  :limit => 30
-  end
-
-  create_table "invoices", :force => true do |t|
-    t.date     "date"
-    t.boolean  "open",        :default => true
-    t.integer  "customer_id"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
   end
 
   create_table "lectures", :force => true do |t|
@@ -438,6 +441,14 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
     t.datetime "updated_at"
     t.string   "signature",   :limit => 15
     t.integer  "pages",                     :default => 1
+  end
+
+  create_table "takehomes", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "quiz_id"
+    t.integer  "index",      :default => 0
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "teachers", :force => true do |t|

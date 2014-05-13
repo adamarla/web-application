@@ -8,7 +8,7 @@
 #  quantity          :integer
 #  rate_code_id      :integer
 #  reference_id      :integer
-#  reference_type    :integer
+#  memo              :string(255)
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
 #

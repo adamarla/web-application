@@ -6,7 +6,7 @@
 #  doc_type    :integer
 #  customer_id :integer
 #  doc_date    :date
-#  open        :boolean
+#  open        :boolean         default(TRUE)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #
