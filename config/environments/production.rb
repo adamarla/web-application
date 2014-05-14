@@ -75,6 +75,7 @@ Webapp::Application.configure do
                                'external.js', 
                                'faq.js',
                                'indie.css',
+                               'uni.css',
                                'students.css']
 
   config.assets.js_compressor = :uglifier
