@@ -1,0 +1,43 @@
+
+body.dragging, body.dragging * {
+  cursor: move !important ;
+}
+
+.dragged {
+  position: absolute ;
+  opacity: 0.5 ;
+  z-index: 2000 ;
+}
+
+.assets { 
+  > h5 { 
+    padding: { top: 5px ; bottom: 5px ; }
+    border: none ; 
+    border: {
+      top-left-radius: 8px ;
+      top-right-radius: 8px ;
+    }
+    font-weight: 300 ;
+    background: rgba(43,43,43,0.5) ;
+  } 
+  > ul { 
+    min-height: 50px ;
+    &:not([class~='serialize']){ list-style-type: circle ; }
+    &.serialize { list-style-type: square ; }
+    li {
+      cursor: pointer ;
+      padding: {
+        bottom: 3px ;
+        top: 3px ;
+      }
+      font-size: 11px ;
+      border-bottom: 1px dotted white ;
+      &.placeholder {
+        position: relative ;
+        &:before {
+          position: absolute ;
+        }
+      }
+    }
+  }
+}

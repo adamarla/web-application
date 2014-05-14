@@ -1,0 +1,17 @@
+
+-# 'type' comes from the calling HAML
+
+.row-fluid.nopurge
+  .span9
+    .small-text.white
+      Drag and drop between sets or within a set to change order. Then, click 'Submit'
+  .span2
+    = simple_button for: 'Submit', class: 'btn btn-primary pull-right'
+.row-fluid
+  .span4.used.assets{ id: "#{type}-used" }
+    %h5.white.text-center= "Used #{type}"
+    %ul.serialize
+  .span7.available.assets{ id: "#{type}-available" }
+    %h5.white.text-center= "Other available #{type}"
+    %ul.span5
+    %ul.span5.offset1

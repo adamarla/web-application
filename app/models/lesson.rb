@@ -3,23 +3,33 @@
 # Table name: lessons
 #
 #  id          :integer         not null, primary key
-#  name        :string(70)
+#  title       :string(150)
 #  description :text
-#  history     :boolean         default(FALSE)
+#  teacher_id  :integer
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
-#  teacher_id  :integer
 #
 
 class Lesson < ActiveRecord::Base
+  # attr_accessible :title, :body
   belongs_to :teacher
   has_one :video, as: :watchable
+  has_many :freebies, dependent: :destroy
+  after_create :seal
 
-  has_many :lectures
-  has_many :milestones, through: :lectures
+  validates :title, presence: true
+  validates_associated :video
 
-  validates :name, presence: true
-  validates :description, presence: true
-  validates_associated :video, as: :watchable
+  def description?
+    return self.description || "No description"
+  end 
 
+#################################################################
+  
+  private 
+      
+      def seal 
+        d = self.description.blank? ? nil : self.description
+        self.update_attributes(description: d)
+      end 
 end

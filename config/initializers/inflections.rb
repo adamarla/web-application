@@ -10,4 +10,5 @@
    inflect.irregular 'syllabus', 'syllabi'
    inflect.irregular 'pending', 'pending'
    inflect.irregular 'coursework', 'coursework'
+   inflect.irregular 'freebie', 'freebies'
  end

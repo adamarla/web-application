@@ -2,95 +2,63 @@
 #
 # Table name: courses
 #
-#  id         :integer         not null, primary key
-#  name       :string(50)
-#  teacher_id :integer
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#  price      :integer
+#  id          :integer         not null, primary key
+#  title       :string(150)
+#  description :text
+#  teacher_id  :integer
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
 #
 
 class Course < ActiveRecord::Base
-  validates :name, presence: true
-
+  # attr_accessible :title, :body
   belongs_to :teacher
-  has_many :milestones
-  after_create :add_milestones
 
-  def available_quizzes
-=begin
-  Returns list of quizzes: 
-    1. Made by the instructor of this course 
-    2. and which are NOT being used in this course
-=end
-    all = Quiz.where(teacher_id: self.teacher_id).map(&:id)
-    used = Coursework.where(milestone_id: self.milestone_ids).map(&:quiz_id)
-    return Quiz.where(id: (all - used)).order(:name)
-  end
+  validates :title, presence: true
 
-  def available_lessons
-=begin
-  Returns list of lessons: 
-    1. Made by any instructor - and not just the one for the course 
-    2. and which are NOT being used in this course
-=end
-    all = Lesson.all.map(&:id) 
-    used = Lecture.where(milestone_id: self.milestone_ids).map(&:lesson_id)
-    return Lesson.where(id: (all - used))
-  end
+  has_many :freebies, dependent: :destroy
+  has_many :lessons, through: :freebies
 
-  def add_milestones
-    for i in [*1..3]
-      m = self.milestones.create index: i
-    end
-  end
+  has_many :takehomes, dependent: :destroy 
+  has_many :quizzes, through: :takehomes
 
-  def lesson_ids
-    # returns list of lesson_ids within all milestones
-    Lecture.where(milestone_id: self.milestone_ids).map(&:lesson_id).uniq
-  end
+  after_create :seal
 
-  def quiz_ids 
-    # returns list of quiz_ids within all milestones
-    Coursework.where(milestone_id: self.milestone_ids).map(&:quiz_id).uniq
-  end
-
-  def has_asset(id, is_lesson)
-    asset_ids = is_lesson ?  self.lesson_ids : self.quiz_ids
-    return asset_ids.include? id
-  end
-
-  def attach(id, is_lesson, milestone_index) 
-    # Ensure that the same asset is ** not ** included in the same course twice
-    return false if self.has_asset id, is_lesson 
-
-    m = Milestone.in_course(self.id).where(index: milestone_index).first
-    return false if m.nil?
-
-    if is_lesson
-      m.lesson_ids = (m.lesson_ids + [id]).uniq
-    else
-      m.quiz_ids = (m.quiz_ids + [id]).uniq
-    end
+  def description?
+    return self.description || "No description"
   end 
 
-  def detach(id, is_lesson) 
-    return false unless self.has_asset id, is_lesson 
-    m = nil
-
-    for m in self.milestones 
-      ids = is_lesson ? m.lesson_ids : m.quiz_ids
-      break if ids.include? id
-    end
-
-    return false if m.nil? # Should never, ever happen !!!
-
-    if is_lesson
-      m.lesson_ids = (m.lesson_ids - [id]).uniq
-    else
-      m.quiz_ids = (m.quiz_ids - [id]).uniq
-    end
+  def quizzes 
+    # Returns the list of quizzes currently included in the quiz 
+    # - ordered by index
+    Takehome.where(course_id: self.id).order(:index).map(&:quiz)
   end 
 
+  def lessons
+    # Returns the list of lessons currently included in the quiz 
+    # - ordered by index
+    Freebie.where(course_id: self.id).order(:index).map(&:lesson)
+  end 
 
-end
+  def includeable_quizzes?
+    # Quizzes that can be, but haven't yet been, included in this course
+    ids = Quiz.where(teacher_id: self.teacher_id).map(&:id) - self.quizzes.map(&:id)
+    return Quiz.where(id: ids)
+  end 
+
+  def includeable_lessons?
+    # Lessons that can be, but haven't yet been, included in this course
+    ids = Lesson.where(teacher_id: self.teacher_id).map(&:id) - self.lessons.map(&:id)
+    return Lesson.where(id: ids)
+  end
+
+#################################################################
+  
+  private 
+      
+      def seal 
+        d = self.description.blank? ? nil : self.description
+        self.update_attributes(description: d)
+      end 
+
+end # of class

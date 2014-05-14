@@ -1,0 +1,11 @@
+
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link for: 'Outline', id: 'tab-course-outline', href: '#pane-course-outline'
+  %li
+    = simple_link for: 'Discussion', id: 'tab-course-discussion', href: '#pane-course-discussion'
+
+.tab-content
+  #pane-course-outline.tab-pane
+    = render partial: 'course/view/outline'
+  #pane-course-discussion.tab-pane

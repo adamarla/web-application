@@ -1,0 +1,94 @@
+
+# Sample YAML 
+#
+#  lnk-something : 
+#    show : 
+#      left : 
+#      middle : 
+#      right : 
+#      wide : 
+#      modal : 
+#      menu :
+#      help : 
+#      video : true / false 
+#    autoclick : 
+#      tab : 
+#      link :
+#    url : 
+#      self : 
+#      panel :
+#    paginate-on: line/tab/sth. else
+#    default : true / false
+#    ajax : disabled / enabled 
+#    prev : 
+#    id : 
+#    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
+#    callback : 
+#     pre :    -> pre click
+#     post :   -> post click
+#    childtabs : 
+#     reset : true | false -> unclick child tabs or not before clicking first one
+#
+
+##############################################################################
+## Indi(pendent) Teachers 
+##############################################################################
+
+a-cp-1: 
+  show : 
+    menu: m-1
+
+a-my-courses:
+  show : 
+    left: left-1
+    wide: wide-1
+  default: true
+  autoclick: 
+    tab: tab-my-courses
+
+tab-my-courses :
+  url : 
+    self : teacher/courses 
+    panel : ping/course?id=:id
+
+tab-course-overview :
+  id: tab-my-courses
+
+tab-course-lessons:
+  id: tab-my-courses
+  url :
+    self : course/lessons?id=:id
+
+tab-course-quizzes:
+  id: tab-my-courses
+  url : 
+    self: course/quizzes?id=:id
+
+tab-course-stats :
+  id: tab-my-courses
+
+a-new-course :
+  show : 
+    modal : m-new-course
+
+a-new-lesson : 
+  show : 
+    modal : m-new-lesson
+
+a-my-assets :
+  show : 
+    left : left-2
+    wide : wide-X
+  autoclick :
+    tab : tab-my-quizzes
+
+tab-my-quizzes : 
+  url : 
+    self : quizzes/list
+    panel : quiz/preview?id=:id
+
+tab-my-lessons :
+  url :
+    self : lessons/list

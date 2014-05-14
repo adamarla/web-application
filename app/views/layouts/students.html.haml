@@ -25,20 +25,23 @@
         -#= render partial: 'modals/customer/transfer', locals: { customer: customer }
         -#= render partial: 'modals/customer/refund', locals: { customer: customer }
 
-- control_panel = [ {for: 'Report Cards', id: 'lnk-st-rc'},
+- control_panel = [ {for: 'Lessons', id: 'a-courses' },
+                    {for: 'Report Cards', id: 'lnk-st-rc'},
                     {for: 'Inbox', id: 'lnk-st-inbox'},
-                    {for: 'Upload', id: 'lnk-upload'},
                     {for: 'Enroll', id: 'lnk-enroll-self'},
                     {for: "Hello, #{student.first_name}", id: 'm-account'} ]
 
 - layout = { left: [ [1, 'students/rc'],
                      [2, 'students/inbox'],
-                     [3, 'customers/activity'] ],
+                     [3, 'course/view/filters'],
+                     [4, 'customers/activity'] ],
              middle: [],
              right: [],
              wide: [ ['wait', 'toolbox/generic/wait'],
-                     [1, 'customers/transactions'],
-                     ['X', nil] ] }
+                     ['X', nil],
+                     [1, 'course/view/tiles'],
+                     [2, 'course/view/exploded'], 
+                     [3, 'customers/transactions'] ] }
 
 !!!5
 
@@ -63,7 +66,7 @@
       }
       });
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
-    = stylesheet_link_tag "application" 
+    = stylesheet_link_tag 'application', 'students'
     = csrf_meta_tag
 
   %body 

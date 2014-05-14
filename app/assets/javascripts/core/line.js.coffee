@@ -19,7 +19,7 @@ renderTextAndEqnsOn = (obj, text, marker) ->
 
 window.line = {
 
-  write : (here, json, menu, buttons = null) ->
+  write : (here, json, menu = null, buttons = null) ->
     return false if not json.id? or not json.name?
     here = if typeof here is 'string' then $(here) else here
 

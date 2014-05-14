@@ -4,74 +4,62 @@ class CourseController < ApplicationController
 
   def create
     data = params[:course]
-    c = current_account.loggable.courses.new(name: data[:title], price: data[:price])
+    c = current_account.loggable.courses.new title: data[:title], description: data[:description]
     if c.save
-      render json: { status: :ok }, status: :ok
+      render json: { name: c.title, id: c.id }, status: :ok 
     else
       render json: { status: :failed }, status: :ok
     end
   end
 
-  def show
-    teacher = current_account.loggable
-    @courses = Course.where(teacher_id: teacher.id).order(:price)
+  def list
+    # going forward, factor in filters
+    @courses = Course.all
   end
 
-  def load_milestone
-    course = Course.find params[:course]
-    unless course.nil? 
-      milestone = Milestone.where(course_id: course.id).where(index: params[:index]).first
-      unless milestone.nil?
-        lessons = milestone.lessons.map{ |m| { 
-          id: m.id, 
-          name: m.name, 
-          klass: 'video lesson', 
-          video: m.video.uid } }
+  def ping
+    c = Course.find params[:id]
+    render json: { id: c.id }, status: :ok
+  end 
 
-        quizzes = milestone.quizzes.map{ |m| { id: m.id, name: m.name, badge: m.total? } }
-      else
-        lessons = quizzes = []
-      end
-      @assets = lessons + quizzes
-      render json: { assets: @assets }, status: :ok
-    else # course NOT found !
-      render json: { status: 'failed' }, status: :ok
-    end
-  end
+  def outline 
+    @c = Course.find params[:id]
+  end 
 
-  def available_assets
-    course = Course.find params[:course]
-    unless course.nil?
-      show_lessons = params[:type] == "Lessons"
-      available = show_lessons ? course.available_lessons : course.available_quizzes
+  def update
+    c = Course.find params[:id]
+    ids = params[:used].map(&:to_i)
 
-      if show_lessons
-        response = available.map{ |m| { 
-          id: m.id, 
-          name: m.name, 
-          klass: 'lesson', 
-          video: m.video.uid } }
-      else
-        response = available.map{ |m| { id: m.id, name: m.name, badge: m.total? } }
-      end
-      render json: { assets: response }, status: :ok
+    # before setting indices in the join table, ensure that only the assets
+    # that need to be bound to the course are bound
+
+    is_quiz = true
+    if params[:type] == 'quizzes'
+      c.quiz_ids = ids 
+      joins = Takehome.where(course_id: c.id)
     else
-      render json: { status: 'failed' }, status: :ok
+      is_quiz = false
+      c.lesson_ids = ids
+      joins = Freebie.where(course_id: c.id)
     end
+
+    # then, set the indices on the join table records
+    ids.each_with_index do |i,j|
+      if is_quiz 
+        joins.where(quiz_id: i).first.update_attribute(:index, j)
+      else
+        joins.where(lesson_id: i).first.update_attribute(:index, j)
+      end 
+    end 
+    render json: { status: :ok }, status: :ok
   end
 
-  def attach_detach_asset
-    is_lesson = params[:type] == "Lesson"
-    id = params[:id].to_i
-    course = Course.find params[:course][:id]
-    attach = params[:course][:operation] == "attach"
+  def quizzes
+    @c = Course.find params[:id]
+  end 
 
-    unless course.nil?
-      success = attach ? course.attach(id, is_lesson, params[:course][:milestone]) : course.detach(id, is_lesson) 
-      render json: { status: (success ? :success : :failed) }, status: :ok
-    else
-      render json: { status: :failed }, status: :ok
-    end
+  def lessons
+    @c = Course.find params[:id]
   end
 
-end
+end # of class

@@ -49,6 +49,11 @@ class TeachersController < ApplicationController
     @teacher = Teacher.find params[:id]
   end
 
+  def courses
+    t = current_account.loggable
+    @courses = Course.where(teacher_id: t.id)
+  end 
+
   def worksheets
     teacher = current_account.loggable 
     head :bad_request if teacher.nil?
@@ -139,14 +144,24 @@ class TeachersController < ApplicationController
     end
   end 
 
+  def lessons 
+    # Return list of lessons made by this teacher
+    t = current_account.loggable 
+    @lessons = t.lessons 
+  end 
+
   def add_lesson
-    teacher = current_account.loggable
-    data = params[:lesson]
+    t = current_account.loggable
+    p = params[:lesson]
 
-    lesson = teacher.lessons.build(name: data[:name], description: data[:description], history: (data[:type] == "h") )
-    lesson.build_video(title: data[:name], uid: data[:uid], active: true)
+    lsn = t.lessons.build title: p[:title], description: p[:description]
 
-    if lesson.save
+    youtube_url = p[:uid]
+    v = youtube_url.match(/v=.*/)
+    code = v.nil? ? nil : v.to_s.gsub(/v=/,'')
+    lsn.build_video uid: code
+
+    if lsn.save
       render json: { status: 'success' }, status: :ok
     else
       render json: { status: 'failed' }, status: :ok

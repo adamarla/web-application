@@ -1,10 +1,11 @@
 
-#m-new-course.modal.fade.regular{ :role => :dialog }
+#m-new-course.modal.fade.regular{ role: :dialog }
   .row-fluid
     .span3
     .span8
-      = simple_form_for :course, :url => course_new_path, :remote => true, :defaults => { :label => false } do |f|
-        = f.input :title, hint: "Title"
-        = f.input :price, as: :numeric, input_html: {value: 20, step:0.5}, hint: "Price (USD)"
-        = simple_button :for => 'Create', :type => :submit, :class => 'btn-primary'
+      = simple_form_for :course, url: course_new_path, remote: true, defaults: { label: false } do |f|
+        = f.input :title, hint: 'Course name'
+        = f.input :description, as: :text, hint: 'Something on the scope and objectives for this course',
+        input_html: { rows: 10 }
+        = simple_button for: 'Create', type: :submit, class: 'btn-primary'
 

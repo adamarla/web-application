@@ -1,0 +1,222 @@
+
+# Sample YAML 
+#
+#  lnk-something : 
+#    show : 
+#      left : 
+#      middle : 
+#      right : 
+#      wide : 
+#      modal : 
+#      menu :
+#      help : 
+#      video : true / false 
+#    autoclick : 
+#      tab : 
+#      link :
+#    url : 
+#      self : 
+#      panel :
+#    paginate-on: line/tab/sth. else
+#    default : true / false
+#    ajax : disabled / enabled 
+#    prev : 
+#    id : 
+#    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
+#    callback : 
+#     pre :    -> pre click
+#     post :   -> post click
+#    childtabs : 
+#     reset : true | false -> unclick child tabs or not before clicking first one
+#
+
+##############################################################################
+## Admin / Examiner specific  
+##############################################################################
+
+lnk-dispute-reason : 
+  url :
+    self : dispute/reason?id=:a
+  update-on: load/dispute
+
+lnk-wb-disputes :
+  show : 
+    left : left-10
+    wide: wide-X
+  autoclick :
+    tab : tab-disputes
+
+tab-disputes : 
+  url :
+    self : disputes
+    panel : load/dispute?id=:id
+
+lnk-reject-dispute :
+  url: 
+    self : dispute/reject?id=:a
+  update-on: load/dispute
+
+lnk-accept-dispute :
+  url: 
+    self : dispute/accept?id=:a
+  update-on: load/dispute
+
+lnk-audit-close : 
+  update-on: question/preview
+  url : 
+    self : audit/close?id=:a
+
+m-admin-wb :
+  show : 
+    menu : admin-wb
+
+m-admin-schools :
+  show : 
+    menu : admin-schools 
+
+lnk-wb-receive :
+  url : 
+    self : receive/scans
+
+lnk-mng-topics : 
+  show : 
+    left : left-2
+  autoclick :
+    tab : tab-mng-topics-1
+
+tab-mng-topics-1 :
+  url : 
+    self : verticals/list
+    panel : vertical/topics?id=:id
+
+lnk-wb-apprentices : 
+  show : 
+    left : left-9
+    wide : wide-X
+  autoclick :
+    tab : tab-apprentices
+
+tab-apprentices :
+  url :
+    self : examiner/apprentices
+    panel : load/samples?id=:id
+
+lnk-audit-apprentice : 
+  show : 
+    modal : m-audit-apprentice
+
+lnk-wb-schools :
+  show : 
+    left : left-1
+    wide : wide-1
+  url : 
+    self : schools/list
+
+lnk-wb-blockdb :
+  url : 
+    self : examiner/block_db_slots.json?id=:id
+  id : control-panel
+
+m-examiner-wb :
+  show : 
+    menu : examiner-wb
+
+lnk-wb-tagging :
+  show : 
+    left : left-3
+    wide : wide-X
+  autoclick :
+    tab : tab-tag-pending
+
+tab-tag-pending :
+  url : 
+    self : untagged/list
+    panel : question/preview.json?id=:id
+  autoclick :
+    tab : tab-tag-topic
+
+lnk-wb-typeset :
+  show : 
+    left : left-5
+    wide : wide-X
+  autoclick :
+    tab : tab-typeset-new
+
+tab-typeset-new :
+  url : 
+    self : typeset/new
+    panel : suggestion/preview.json?id=:id
+
+lnk-block-* : 
+  id : tab-typeset-new
+
+m-block-slots :
+  show : 
+    menu : blockdb-slots
+
+tab-typeset-ongoing :
+  url : 
+    self : typeset/ongoing
+    panel : question/preview.json?id=:id
+
+lnk-wb-resolve :
+  show : 
+    left : left-6
+    wide : wide-X
+  autoclick : 
+    tab : tab-resolution-pending
+
+lnk-wb-audit :
+  show : 
+    left : left-7
+    wide : wide-X
+  autoclick : 
+    tab : tab-audit-review
+
+lnk-wb-add-videos :
+  show : 
+    left : left-8
+    wide : wide-X
+  autoclick : 
+    tab : tab-video-pending
+
+tab-video-pending : 
+  url : 
+    self : questions/without_video
+    panel : question/preview.json?id=:id
+
+lnk-audit-form : 
+  show : 
+    modal : m-audit-form
+
+tab-audit-todo : 
+  url : 
+    self : audit/todo
+    panel : question/preview.json?id=:id
+
+tab-audit-review : 
+  url : 
+    self : audit/review
+    panel : question/preview.json?id=:id
+
+tab-resolution-pending :
+  url : 
+    self : pages/unresolved
+    panel : unresolved/preview?id=:id
+
+lnk-rotate-sg :
+  update-on : suggestion/preview 
+
+btn-upload-video-solution : 
+  show : 
+    modal : m-upload-video-solution
+
+lnk-download-pg-1 : 
+  update-on: question/preview
+  ajax : disabled
+
+lnk-add-examiner : 
+  show : 
+    modal : m-new-examiner

@@ -1,0 +1,18 @@
+
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link for: 'Overview', id: 'tab-course-overview', href: '#pane-course-overview'
+  %li
+    = simple_link for: 'Lessons', id: 'tab-course-lessons', href: '#pane-course-lessons'
+  %li
+    = simple_link for: 'Quizzes', id: 'tab-course-quizzes', href: '#pane-course-quizzes'
+  %li
+    = simple_link for: 'Statistics', id: 'tab-course-stats', href: '#pane-course-stats'
+
+.tab-content
+  #pane-course-overview.tab-pane
+  #pane-course-lessons.tab-pane
+    = render partial: 'course/assets', locals: { type: :lessons }
+  #pane-course-quizzes.tab-pane
+    = render partial: 'course/assets', locals: { type: :quizzes }
+  #pane-course-stats.tab-pane

@@ -94,19 +94,14 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
   end
 
   create_table "courses", :force => true do |t|
-    t.string   "name",       :limit => 50
+    t.string   "title",       :limit => 150
+    t.text     "description"
     t.integer  "teacher_id"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
-    t.integer  "price"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
-  create_table "coursework", :force => true do |t|
-    t.integer  "milestone_id"
-    t.integer  "quiz_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
+  add_index "courses", ["teacher_id"], :name => "index_courses_on_teacher_id"
 
   create_table "customers", :force => true do |t|
     t.integer  "account_id"
@@ -249,29 +244,15 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
     t.string   "last_name",  :limit => 30
   end
 
-  create_table "lectures", :force => true do |t|
-    t.integer  "lesson_id"
-    t.integer  "milestone_id"
-    t.integer  "index",        :default => -1
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-  end
-
   create_table "lessons", :force => true do |t|
-    t.string   "name",        :limit => 70
+    t.string   "title",       :limit => 150
     t.text     "description"
-    t.boolean  "history",                   :default => false
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
     t.integer  "teacher_id"
-  end
-
-  create_table "milestones", :force => true do |t|
-    t.integer  "index",      :default => -1
-    t.integer  "course_id"
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end
+
+  add_index "lessons", ["teacher_id"], :name => "index_lessons_on_teacher_id"
 
   create_table "payments", :force => true do |t|
     t.integer  "invoice_id"
@@ -286,13 +267,6 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
     t.text     "response_params"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
-  end
-
-  create_table "progressions", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "milestone_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
   end
 
   create_table "q_selections", :force => true do |t|
@@ -502,7 +476,6 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
     t.integer  "watchable_id"
     t.string   "watchable_type", :limit => 20
     t.string   "uid",            :limit => 20
-    t.string   "title",          :limit => 70
   end
 
   create_table "worksheets", :force => true do |t|

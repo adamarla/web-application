@@ -1,4 +1,6 @@
 
-collection @courses => :courses
-  attributes :name, :id
-  node(:tag) { |m| "#{m.board.name}" }
+object false
+  node(:courses) {
+    @courses.map{ |c| { id: c.id, name: c.title } }
+  } 
+  

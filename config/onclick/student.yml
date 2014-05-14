@@ -1,0 +1,92 @@
+
+# Sample YAML 
+#
+#  lnk-something : 
+#    show : 
+#      left : 
+#      middle : 
+#      right : 
+#      wide : 
+#      modal : 
+#      menu :
+#      help : 
+#      video : true / false 
+#    autoclick : 
+#      tab : 
+#      link :
+#    url : 
+#      self : 
+#      panel :
+#    paginate-on: line/tab/sth. else
+#    default : true / false
+#    ajax : disabled / enabled 
+#    prev : 
+#    id : 
+#    update-on : < list of URLs >
+#    disable-if : key ( => json.key is true ) 
+#    disable-unless : key ( => json.key is false )
+#    callback : 
+#     pre :    -> pre click
+#     post :   -> post click
+#    childtabs : 
+#     reset : true | false -> unclick child tabs or not before clicking first one
+#
+##############################################################################
+## Students 
+##############################################################################
+
+a-courses :
+  show : 
+    left: left-3
+    wide: wide-1
+  url: 
+    self: course/list
+
+lnk-st-rc : 
+  autoclick :
+    tab : tab-st-rc-1
+  show : 
+    left : left-1
+    wide : wide-X
+  default : true
+
+lnk-st-inbox :
+  autoclick :
+    tab : tab-st-inbox
+  show : 
+    left : left-2
+    wide : wide-wait
+
+tab-st-rc-1 :
+  url : 
+    self : exams/list 
+  autoclick :
+    tab : tab-st-rc-2
+
+tab-st-rc-2 :
+  url : 
+    self : exam/layout?e=:prev
+  prev : tab-st-rc-1
+
+tab-st-inbox :
+  url : 
+    self : inbox.json?id=:prev
+    panel : inbox/echo.json?e=:id
+  prev : control-panel
+
+tab-st-outbox :
+  url : 
+    self : outbox
+
+lnk-inbox-download :
+  ajax: disabled
+  update-on : inbox/echo
+
+lnk-enroll-self : 
+  show : 
+    modal : m-enroll-self
+
+lnk-attach-asset : 
+  show : 
+    modal : mng-assets
+
