@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => :ask_question
+  before_filter :authenticate_account!, :except => [:ask_question, :view_fdb]
   respond_to :json
 
   def update 
