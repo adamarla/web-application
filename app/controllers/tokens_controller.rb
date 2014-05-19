@@ -71,7 +71,10 @@ class TokensController < ApplicationController
 
     def build_gradeables(account)
       student = Student.find_by_id(account.loggable_id)
-      without_scans = GradedResponse.of_student(student[:id]).without_scan.sort
+      ws_ids = Worksheet.where(student_id: student.id).map(&:id)
+      #without_scans = GradedResponse.of_student(student[:id]).without_scan.sort
+      #gradeables = without_scans.map do |g|
+      grs = GradedResponse.where(worksheet_id: ws_ids)
       gradeables = without_scans.map do |g|
         quiz = g.worksheet.exam.quiz
         {
@@ -80,7 +83,8 @@ class TokensController < ApplicationController
           quizId: quiz.id, 
           name: g.subpart.name_if_in?(quiz),
           locn: "#{quiz.uid}/#{g.worksheet.uid}",
-          img: "#{g.q_selection.question.uid}/#{g.version}"
+          img: "#{g.q_selection.question.uid}/#{g.version}",
+          state: g.scan.nil? ? 0 : (g.feedback == 0 ? 1 : 2)
         }
       end 
       return gradeables
