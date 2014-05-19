@@ -75,7 +75,7 @@ class TokensController < ApplicationController
       #without_scans = GradedResponse.of_student(student[:id]).without_scan.sort
       #gradeables = without_scans.map do |g|
       grs = GradedResponse.where(worksheet_id: ws_ids)
-      gradeables = without_scans.map do |g|
+      gradeables = grs.map do |g|
         quiz = g.worksheet.exam.quiz
         {
           id: g.id, 
