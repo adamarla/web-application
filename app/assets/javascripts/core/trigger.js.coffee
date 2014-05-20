@@ -59,25 +59,22 @@ window.rails = {
 window.trigger = {
 
   click : (link, event = null) ->
-    if $(link).hasClass 'disabled'
-      event.stopImmediatePropagation() if event? 
-      return true 
-
-    return true if $(link).hasClass 'carousel-control'
-    type = link.getAttribute 'data-toggle'
-
-    isTab = type is 'tab'
-    isModal = type is 'modal'
+    event.stopImmediatePropagation() if event?
+    noGo = $(link).hasClass('disabled') or $(link).hasClass('carousel-control')
+    return true if noGo 
 
     if $(link).parent().hasClass 'dropdown-submenu'
       isDefault = if link.getAttribute('data-default')? then true else false
       return false unless isDefault
 
-    event.stopImmediatePropagation() if event? and (isTab or isModal)
+    # event.stopImmediatePropagation() if event? and (isTab or isModal)
     # (YAML) Hide / unhide panels as needed
 
     noTouch = link.getAttribute('data-no-touch')
     noTouch = if noTouch? then (noTouch is 'true') else false
+    type = link.getAttribute 'data-toggle'
+    isTab = type is 'tab'
+    isModal = type is 'modal'
 
     unless noTouch
       for j in ['left', 'right', 'middle', 'wide']
