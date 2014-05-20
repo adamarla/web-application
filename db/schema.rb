@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140428170024) do
+ActiveRecord::Schema.define(:version => 20140519202131) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -490,6 +490,7 @@ ActiveRecord::Schema.define(:version => 20140428170024) do
     t.string   "signature"
     t.string   "uid",        :limit => 40
     t.integer  "job_id",                   :default => -1
+    t.boolean  "billed",                   :default => false
   end
 
   add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"

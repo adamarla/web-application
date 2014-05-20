@@ -143,6 +143,8 @@ Webapp::Application.routes.draw do
   match 'outbox' => 'students#outbox', via: :get
   match 'enroll' => 'students#enroll', via: :post
   match 'dispute' => 'students#dispute', via: [:put, :post] 
+  match 'indie/take/q' => 'students#self_subscribe_to_quiz', via: :get
+  match 'indie/pay/q' => 'students#pay_to_grade'
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get

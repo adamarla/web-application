@@ -26,14 +26,14 @@ class QuizzesController < ApplicationController
       unless job_id.nil? 
         eta = minutes_to_completion job_id
         r = { monitor: { exam: [eid] }, notify: { title: "#{eta} minute(s)" }}
-      else # should happen because the quiz IS being published - and no other reason
+      else 
+        # either because the quiz is being published OR
+        # mass_assignment called by an indie teacher (not allowed)
         r = { msg: :publish }
       end
 
       # For now, allow only offline teachers to specify any additional deadlines for the exam
-      unless t.indie
-        r[:meta] = { id: eid }
-      end
+      r[:meta] = { id: eid } unless t.indie
       render json: r, status: :ok
     else
       render json: { msg: 'No quiz found!' }, status: :ok

@@ -69,46 +69,51 @@ class Quiz < ActiveRecord::Base
   end
 
   def last_open_exam? 
-    open = Exam.for_quiz(self.id).open.order(:created_at)
-    return open.last
+    last = Exam.for_quiz(self.id).open.order(:created_at).last
+    if self.teacher.indie 
+      today = Date.today 
+      created_at = last.created_at 
+      return last if ( today.month == created_at.month && today.year == created_at.year )
+      last.update_attribute :open, false
+      last = self.exams.create 
+    end 
+    return last # guaranteed to be non-null either by here or by mass_assign_to
   end 
 
   def assign_to(sid)
     e = self.last_open_exam?
-    e = self.exams.create if e.nil?
-    w = e.worksheets.build student_id: sid 
-
-    qsel = QSelection.where(quiz_id: self.id).order(:index)
-    qsel.each do |y|
-      sbp = y.question.subparts
-      sbp.each do |s|
-        g = w.graded_responses.build student_id: sid, q_selection_id: y.id, subpart_id: s.id
-        w.graded_responses << g
-      end
-    end
-    if w.save
-      Delayed::Job.enqueue(CompileTex.new(w.id, w.class.name)) if e.takehome
-    end
+    w = e.worksheets.create student_id: sid 
+    return w
   end
 
+  # 'mass_assign_to' makes sense only in the institutional offering. Its what 
+  # we did first. Has no relevance in the individual offering
+
   def mass_assign_to(students, publish = false)
+    indie = self.teacher.indie
+    return nil,nil if indie # no mass-assignment for indie teachers
+
     sk = Sektion.common_to(students.map(&:id)).last
     name = "#{sk.name} (#{Date.today.strftime('%b %Y')})"
     e = self.exams.create name: name, takehome: publish
+
     for s in students 
-      self.assign_to s.id
+      w = self.assign_to s.id
+      w.bill # creates the graded response slots
+      Delayed::Job.enqueue WriteTex.new(w.id, w.class.name, publish)
+      Delayed::Job.enqueue CompileTex.new(w.id, w.class.name) if publish
     end 
 
     # Close this exam for further modifications if school teacher
-    e.update_attribute(:open, false) unless e.quiz.teacher.indie
+    e.update_attribute(:open, false) 
 
     unless publish 
-      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
+      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name, false)
       job = Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
       e.update_attribute :job_id, job.id
       return e.id, job.id 
     else 
-      return nil, nil # no compilation required 
+      return e.id, nil # no compilation required 
     end
   end
 
@@ -216,7 +221,7 @@ class Quiz < ActiveRecord::Base
     return !not_laid_out
   end
 
-  def write
+  def write(abridged = false)
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
 
     # Write TeX for the quiz 
@@ -330,8 +335,6 @@ class Quiz < ActiveRecord::Base
 
   public
       def seal(qids = [])
-        uid = self.uid.nil? ? "q/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
-
         if self.name.nil?
           version = self.version?
           base = self.adam?.name.titleize
@@ -340,7 +343,7 @@ class Quiz < ActiveRecord::Base
           name = self.name.titleize
         end
 
-        self.update_attributes uid: uid, name: name
+        self.update_attribute :name, name
         self.lay_it_out(qids) 
 
         Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
