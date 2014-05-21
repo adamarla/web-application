@@ -84,7 +84,7 @@ class TokensController < ApplicationController
           name: g.subpart.name_if_in?(quiz),
           locn: "#{quiz.uid}/#{g.worksheet.uid}",
           img: "#{g.q_selection.question.uid}/#{g.version}",
-          marks: g.feedback == 0 ? -1 : g.marks,
+          marks: g.feedback == 0 ? -1.0 : g.marks,
           scan: g.scan 
         }
       end 
