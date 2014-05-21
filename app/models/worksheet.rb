@@ -36,6 +36,11 @@ class Worksheet < ActiveRecord::Base
     where(exam_id: nil)
   end
 
+  def download_pdf?
+    return nil unless self.compiled?
+    return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
+  end
+
   def received?(extent = :fully) # other options - :none, :partially
     # Returns true if scans have been received for some or all 
     # of the responses  
