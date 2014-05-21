@@ -100,7 +100,7 @@ class Quiz < ActiveRecord::Base
     indie = self.teacher.indie 
     w.bill unless indie # for indie quizzes, block slots only on payment
     Delayed::Job.enqueue WriteTex.new(w.id, w.class.name, take_home)
-    job = take_home ? Delayed::Job.enqueue CompileTex.new(w.id, w.class.name) : nil
+    job = take_home ? Delayed::Job.enqueue(CompileTex.new(w.id, w.class.name)) : nil
 
     unless job.nil?
       w.update_attribute(:job_id, job.id) if indie
