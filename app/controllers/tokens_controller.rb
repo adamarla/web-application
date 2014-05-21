@@ -84,7 +84,8 @@ class TokensController < ApplicationController
           name: g.subpart.name_if_in?(quiz),
           locn: "#{quiz.uid}/#{g.worksheet.uid}",
           img: "#{g.q_selection.question.uid}/#{g.version}",
-          state: g.scan.nil? ? 0 : (g.feedback == 0 ? 1 : 2)
+          marks: g.feedback == 0 ? -1 : g.marks,
+          scan: g.scan 
         }
       end 
       return gradeables
