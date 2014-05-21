@@ -192,10 +192,15 @@ class Worksheet < ActiveRecord::Base
 
   def write(abridged = false) 
     e = self.exam
-    span = e.quiz.span?
-    g = GradedResponse.in_worksheet(self.id) 
-    ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
-    mangled = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
+
+    if abridged 
+      mangled_qrcs = []
+    else 
+      span = e.quiz.span?
+      g = GradedResponse.in_worksheet(self.id) 
+      ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
+      mangled_qrcs = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
+    end 
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
     response = SavonClient.request :wsdl, :writeTex do
@@ -204,7 +209,7 @@ class Worksheet < ActiveRecord::Base
         mode: ( abridged ? 'worksheet abridged' : 'worksheet' ),
         imports: "#{e.quiz.uid}",
         author: self.student.name, 
-        wFlags: { versions: self.signature, responses: mangled } 
+        wFlags: { versions: self.signature, responses: mangled_qrcs } 
       }
       end
     return response

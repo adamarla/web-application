@@ -78,36 +78,55 @@ class Quiz < ActiveRecord::Base
       last = self.exams.create 
     end 
     return last # guaranteed to be non-null either by here or by mass_assign_to
-  end 
+  end
 
-  def assign_to(sid)
+
+=begin
+    
+    Individual worksheets!!
+
+    take_home?      indie?      implies     write?        compile?
+    ----------      ------      --------    ------        --------
+       no             no        in-class      full           no
+       no             yes       non-sense      -             -
+       yes            no        takehome     abridged        yes
+       yes            yes       takehome     abridged        yes
+=end
+
+  def assign_to(sid, take_home = false)
     e = self.last_open_exam?
     w = e.worksheets.create student_id: sid 
+
+    indie = self.teacher.indie 
+    w.bill unless indie # for indie quizzes, block slots only on payment
+    Delayed::Job.enqueue WriteTex.new(w.id, w.class.name, take_home)
+    job = take_home ? Delayed::Job.enqueue CompileTex.new(w.id, w.class.name) : nil
+
+    unless job.nil?
+      w.update_attribute(:job_id, job.id) if indie
+    end
     return w
   end
 
   # 'mass_assign_to' makes sense only in the institutional offering. Its what 
   # we did first. Has no relevance in the individual offering
 
-  def mass_assign_to(students, publish = false)
+  def mass_assign_to(students, take_home = false)
     indie = self.teacher.indie
     return nil,nil if indie # no mass-assignment for indie teachers
 
     sk = Sektion.common_to(students.map(&:id)).last
     name = "#{sk.name} (#{Date.today.strftime('%b %Y')})"
-    e = self.exams.create name: name, takehome: publish
+    e = self.exams.create name: name, takehome: take_home
 
     for s in students 
-      w = self.assign_to s.id
-      w.bill # creates the graded response slots
-      Delayed::Job.enqueue WriteTex.new(w.id, w.class.name, publish)
-      Delayed::Job.enqueue CompileTex.new(w.id, w.class.name) if publish
+      w = self.assign_to(s.id, take_home)
     end 
 
     # Close this exam for further modifications if school teacher
     e.update_attribute(:open, false) 
 
-    unless publish 
+    unless take_home 
       Delayed::Job.enqueue WriteTex.new(e.id, e.class.name, false)
       job = Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
       e.update_attribute :job_id, job.id
