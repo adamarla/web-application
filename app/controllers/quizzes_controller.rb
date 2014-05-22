@@ -18,18 +18,18 @@ class QuizzesController < ApplicationController
     quiz = Quiz.find params[:id]
 
     unless quiz.nil?
-      publish = !(params[:etype] == 'classwork')
+      take_home = !(params[:etype] == 'classwork')
       t = quiz.teacher 
       students = Student.where(id: params[:checked].keys)
 
-      eid, job_id = students.blank? ? nil : quiz.mass_assign_to(students, publish)
+      eid, job_id = students.blank? ? nil : quiz.mass_assign_to(students, take_home)
       unless job_id.nil? 
         eta = minutes_to_completion job_id
         r = { monitor: { exam: [eid] }, notify: { title: "#{eta} minute(s)" }}
       else 
         # either because the quiz is being published OR
         # mass_assignment called by an indie teacher (not allowed)
-        r = { msg: :publish }
+        r = { msg: :take_home }
       end
 
       # For now, allow only offline teachers to specify any additional deadlines for the exam

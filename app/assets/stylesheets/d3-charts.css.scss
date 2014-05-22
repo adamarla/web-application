@@ -4,12 +4,12 @@ $lightgray: lighten($gray, 35%) ;
 $gradians-blue: #6ca7ab ; // rgb(108,167,171)
 $orange:#ffa500 ; // rgb(255,165,0)
 $panel-colour: lighten(black, 17%) ;
-$deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ;
-$lightblue: lighten($deep-blue, 23%) ;
 $red: #d72323 ; // rgb(215, 35, 35)
 $steel: #56a5ec ;
 $green: #23898f ; // rgb(87,188,32)
+$deep-blue: #01537d ; // rgb(1,83,125)
+$lightblue: lighten($deep-blue, 23%) ;
 
 $lightrect : #dcdcdc ;
 $darkrect : #555555 ;

@@ -32,8 +32,11 @@ jQuery ->
 
     else if url.match(/course\/outline/)
       e.stopImmediatePropagation()
-      return exploded.render(json.course)
+      return exploded.initialize(json.course)
       
+    else if url.match(/course\/quizzes/)
+      target = $('#pane-outln-quizzes')
+      key = 'quizzes'
     else if url.match(/outbox/)
     else if url.match(/enroll/)
       $('#m-enroll-self').modal 'hide'

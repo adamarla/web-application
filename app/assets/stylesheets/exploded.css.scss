@@ -4,12 +4,19 @@ $lightgray: lighten($gray, 30%) ; // rgb(102,102,102)
 $gradians-blue: #6ca7ab ; // rgb(108,167,171)
 $orange:#ffa500 ; // rgb(255,165,0)
 $panel-colour: lighten(black, 17%) ; // rgb(43,43,43)
-$deep-blue: #0081c2 ; // rgb(0,129,194)
+$deep-blue: #01537d ; // rgb(1,83,125)
 
 .exploded { 
+  .line { 
+    min-height: 10px ;
+    max-height: 20px ;
+    border: {
+      bottom: 1px dotted white ;
+    }
+  } 
+
   > .row-fluid {
     padding-bottom: 10px ;
-    border-bottom: 1px dotted white ;
   } 
   .name {
     font: { size: 25px ; weight: 300 ; } 
@@ -18,6 +25,7 @@ $deep-blue: #0081c2 ; // rgb(0,129,194)
 
   .author { 
     font: { size: 12px ; weight: 300 ; }
+    color: $orange ;
   } 
 
   .description {

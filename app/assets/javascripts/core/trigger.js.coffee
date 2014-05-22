@@ -67,14 +67,14 @@ window.trigger = {
       isDefault = if link.getAttribute('data-default')? then true else false
       return false unless isDefault
 
-    # event.stopImmediatePropagation() if event? and (isTab or isModal)
-    # (YAML) Hide / unhide panels as needed
-
-    noTouch = link.getAttribute('data-no-touch')
-    noTouch = if noTouch? then (noTouch is 'true') else false
     type = link.getAttribute 'data-toggle'
     isTab = type is 'tab'
     isModal = type is 'modal'
+    # event.stopImmediatePropagation() if event? and (isTab or isModal)
+
+    # (YAML) Hide / unhide panels as needed
+    noTouch = link.getAttribute('data-no-touch')
+    noTouch = if noTouch? then (noTouch is 'true') else false
 
     unless noTouch
       for j in ['left', 'right', 'middle', 'wide']

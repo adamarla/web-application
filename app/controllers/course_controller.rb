@@ -55,6 +55,7 @@ class CourseController < ApplicationController
   end
 
   def quizzes
+    @is_student = current_account.loggable_type == 'Student' 
     @c = Course.find params[:id]
   end 
 

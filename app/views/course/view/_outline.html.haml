@@ -1,21 +1,27 @@
 
-.row-fluid.exploded
+.row-fluid.exploded{ id: 'course-outline' }
   .row-fluid
     .span8
       .name
       .author
     .span4
-      .rating 
+      = simple_button for: 'Back to course list', class: 'btn-primary', id: 'btn-show-tiles'
   .row-fluid
     .span8
       .description
   .row-fluid.push-down 
-    .span4
-      .heading= 'Quizzes'
-      .quizzes
-    .span4
-      .heading= 'Lessons'
-      .lessons
-    .span4
-      .heading= 'Reading Material'
-      .reading-material
+    %ul.nav.nav-tabs.always-on
+      %li
+        = simple_link for: 'Quizzes', id: 'tab-outln-quizzes', href: '#pane-outln-quizzes'
+      %li
+        = simple_link for: 'Reading Material', id: 'tab-outln-refs', href: '#pane-outln-refs'
+      %li
+        = simple_link for: 'Discussion', id: 'tab-outln-disqus', href: '#pane-outln-disqus'
+    .tab-content
+      #pane-outln-quizzes.tab-pane
+        .column.span5
+        .column.span5
+      #pane-outln-refs.tab-pane
+        .column.span5
+        .column.span5
+      #pane-outln-disqus.tab-pane
