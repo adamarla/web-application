@@ -35,6 +35,22 @@ window.monitor = {
         b.addClass('on') 
       monitor.bell.stop() if monitor.bell.nPings > 7
       return true
+
+    update : (json) ->
+      mn = $('#m-bell')
+      for type in ['quizzes', 'exams']
+        continue unless json[type]?
+
+        for j in json[type]
+          at = monitor[type].indexOf j.id
+          # alert "#{monitor[type]} --> #{at}"
+          if at isnt -1
+            monitor[type].splice(at, 1) # remove the id for further monitoring
+            monitor.bell.start()
+            # Add download path to $('#m-bell')
+            html = $("<li><a href='#{j.path}'>#{j.name}</a></li>")
+            html.appendTo mn
+      return true
   }
 
   add : (json, immediate = false) ->
@@ -81,21 +97,8 @@ window.monitor = {
       monitor.start() unless monitor.isEmpty() # revert to polling every 30 seconds
     return true
 
-  update : (json) ->
-    mn = $('#m-bell')
-    for type in ['quizzes', 'exams']
-      continue unless json[type]?
-
-      for j in json[type]
-        at = monitor[type].indexOf j.id
-        # alert "#{monitor[type]} --> #{at}"
-        if at isnt -1
-          monitor[type].splice(at, 1) # remove the id for further monitoring
-          monitor.bell.start()
-          # Add download path to $('#m-bell')
-          html = $("<li><a href='#{j.path}'>#{j.name}</a></li>")
-          html.appendTo mn
-
+  update : (json, fn = monitor.bell.update) ->
+    fn(json) if fn?
     monitor.stop() if monitor.isEmpty()
     return true
 
