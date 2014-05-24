@@ -69,6 +69,13 @@ tab-course-quizzes:
 tab-course-stats :
   id: tab-my-courses
 
+a-new-quiz :
+  autoclick : 
+    tab : tab-qzb-1
+  show : 
+    left : left-3
+    wide : wide-wait
+
 a-new-course :
   show : 
     modal : m-new-course
