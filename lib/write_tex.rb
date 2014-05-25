@@ -13,8 +13,10 @@ class WriteTex < Struct.new(:id, :type, :abridged)
       t = type[0].downcase # q => quiz, e => exam, w => worksheet
       uid = "#{t}/#{rand(999)}/#{obj.id.to_s(36)}"
       obj.update_attribute :uid, uid
-    end 
-    resp = obj.write(abridged) 
+      resp = obj.write(abridged) 
+    else
+      resp = {}
+    end
     raise "WriteTex (failed)" unless resp[:error].blank?
   end 
 
