@@ -184,6 +184,7 @@ class Worksheet < ActiveRecord::Base
   end
 
   def bill
+    return false if self.billed # do not bill a quiz again
     # 1. allot graded response slots for this worksheet 
     q = self.exam.quiz
     qsel = QSelection.where(quiz_id: q.id).order(:index)

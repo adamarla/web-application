@@ -133,6 +133,7 @@ Webapp::Application.routes.draw do
   match 'share/quiz' => 'quizzes#share', via: :post
   match 'quiz/build' => 'quizzes#build', via: [:put, :post]
   match 'ping/quiz' => 'quizzes#ping', via: :get
+  match 'grade/quiz' => 'quizzes#pay_to_grade', via: :get
 
   # Student 
   resource :student, :only => [:update, :show]
@@ -144,7 +145,6 @@ Webapp::Application.routes.draw do
   match 'outbox' => 'students#outbox', via: :get
   match 'enroll' => 'students#enroll', via: :post
   match 'dispute' => 'students#dispute', via: [:put, :post] 
-  match 'indie/pay/q' => 'students#pay_to_grade'
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get
