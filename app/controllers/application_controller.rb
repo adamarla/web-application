@@ -37,22 +37,4 @@ class ApplicationController < ActionController::Base
         @newbie = false
     end
   end # of method
-
 end
-
-
-
-# Demos are available only to external teachers. Our own instructors don't need them
-=begin
-        unless obj.indie
-          cloned = obj.quizzes.where{ parent_id >> PREFAB_QUIZ_IDS }
-          json[:demo] = {
-            build: (PREFAB_QUIZ_IDS - cloned.map(&:parent_id)),
-            download: cloned.map{ |m| 
-              ws = m.exams.first
-              ws = ws.nil? ? 1 : ws.id
-              { id: m.parent_id, a: encrypt(ws,7), b: m.id, c: ws }
-            }
-          }
-        end # of unless 
-=end
