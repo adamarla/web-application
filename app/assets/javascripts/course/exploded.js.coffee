@@ -41,7 +41,7 @@ window.exploded = {
       ln = list.filter("[marker=#{w.q}]")[0]
       if ln?
         $(ln).children('.subtext').eq(0).remove()
-        $("<a href=#{w.path} target=_blank>PDF</a>").appendTo($(l)) 
+        $("<a href=#{w.path} target=_blank>PDF</a>").appendTo($(ln)) 
         $(ln).removeClass 'disabled'
     return true
     

@@ -29,15 +29,15 @@ class CourseController < ApplicationController
 
   def update
     c = Course.find params[:id]
-    ids = params[:used].map(&:to_i)
+    ids = params[:used].blank? ? [] : params[:used].map(&:to_i)
 
     # before setting indices in the join table, ensure that only the assets
     # that need to be bound to the course are bound
 
     is_quiz = true
     if params[:type] == 'quizzes'
-      c.quiz_ids = ids 
-      joins = Takehome.where(course_id: c.id)
+      c.update_quiz_list ids 
+      joins = Takehome.where(course_id: c.id, live: true)
     else
       is_quiz = false
       c.lesson_ids = ids
@@ -77,11 +77,11 @@ class CourseController < ApplicationController
 
       for qid in not_compiled 
         q = Quiz.find qid 
-        w = q.assign_to(sid, true) # take_home = true 
-        @queued.push w.id 
+        new_w = q.assign_to(sid, true) # take_home = true 
+        @queued.push new_w.id 
       end 
       @disabled = @c.quiz_ids - compiled
-      @ready = w.select{ |j| compiled.include? j.exam.quiz_id }
+      @ready = w.select{ |j| compiled.include?(j.exam.quiz_id) }
     end
   end 
 
