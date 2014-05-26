@@ -158,7 +158,6 @@ Webapp::Application.routes.draw do
 
   # Teacher 
   resource :teacher, :only => [:update, :show]
-  match 'register/teacher' => 'teachers#create', via: :post
   match 'teachers/list' => 'teachers#list', via: :get
   match 'teacher/sektions' => 'teachers#sektions', via: :get
   match 'teacher/load' => 'teachers#load', via: :get
