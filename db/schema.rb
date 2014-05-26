@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140519202131) do
+ActiveRecord::Schema.define(:version => 20140526062211) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -421,8 +421,9 @@ ActiveRecord::Schema.define(:version => 20140519202131) do
     t.integer  "course_id"
     t.integer  "quiz_id"
     t.integer  "index",      :default => 0
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.boolean  "live",       :default => true
   end
 
   create_table "teachers", :force => true do |t|
