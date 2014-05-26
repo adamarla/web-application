@@ -15,6 +15,22 @@ $green: #347235 ; // rgb(87,188,32)
 $deep-blue: #01537d ; // rgb(1,83,125)
 $lightblue: lighten($deep-blue, 23%) ; // rgb(56,188,255) 
 
+ul {
+  > li {
+    > .footnote { 
+      text-align: left ;
+      font: {
+        size: 10px ;
+        weight: 300 ;
+      }
+      color: white;
+      margin-top: -4px ;
+      padding-left: 20px ;
+    }
+  }
+}
+
+
 img { 
   &.big-icon { 
     padding: 5px ;

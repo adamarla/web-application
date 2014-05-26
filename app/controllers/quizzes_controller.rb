@@ -141,4 +141,16 @@ class QuizzesController < ApplicationController
     @exams = @exams.page(pg).per(@per_pg)
   end
 
+  def pay_to_grade
+    qid = params[:id].to_i
+    w = Worksheet.of_student(current_account.loggable_id).select{ |j| j.exam.quiz_id == qid }.first
+
+    unless w.nil?
+      w.bill
+      render json: { id: w.id }, status: :ok
+    else
+      render json: { status: :failed }, status: :ok
+    end
+  end
+
 end

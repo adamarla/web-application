@@ -95,3 +95,11 @@ tab-expld-quizzes :
   url : 
     self : course/quizzes?id=:prev
     panel : ping/quiz?id=:id
+
+a-pay : 
+  id : tab-expld-quizzes
+  url : 
+    self : grade/quiz?id=:id
+  update-on : ping/quiz
+  disable-if : paid_for
+
