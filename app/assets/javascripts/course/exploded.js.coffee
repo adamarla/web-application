@@ -2,8 +2,10 @@
 window.exploded = { 
   root : null, 
   tabs : null,
+  visible : false, 
 
   hide : () -> 
+    exploded.visible = false
     return false unless exploded.root?
     $(exploded.root).parent().addClass 'hide' # effectively $('#wide-2')
     return true 
@@ -13,7 +15,7 @@ window.exploded = {
 
   initialize : (json) ->
     unless exploded.root?
-      exploded.root = $('#course-outline')[0] 
+      exploded.root = $('#course-expld-view')[0] 
       exploded.tabs = $(exploded.root).find('ul')[0]
 
     $(exploded.root).attr 'marker', json.id
@@ -27,5 +29,20 @@ window.exploded = {
 
     # unhide #wide-2
     $(exploded.root).parent().removeClass 'hide'
+    exploded.visible = true
     return true
+
+  update : (json) ->
+    # Updates the exploded view with data returned by ping/queue
+    return false unless exploded.visible 
+    return false unless json.worksheets?
+    list = $('#pane-expld-quizzes').find('.line')
+    for w in json.worksheets 
+      ln = list.filter("[marker=#{w.q}]")[0]
+      if ln?
+        $(ln).children('.subtext').eq(0).remove()
+        $("<a href=#{w.path} target=_blank>PDF</a>").appendTo($(l)) 
+        $(ln).removeClass 'disabled'
+    return true
+    
 }

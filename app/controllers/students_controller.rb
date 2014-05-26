@@ -161,13 +161,6 @@ class StudentsController < ApplicationController
     render json: { status: :ok }, status: :ok
   end 
 
-  def self_subscribe_to_quiz
-    sid = current_account.loggable_id
-    q = Quiz.find params[:id]
-    w = q.assign_to sid
-    render json: { w: w.id, q: q.id, e: w.exam.id }, status: :ok
-  end 
-
   def pay_to_grade
     w = Worksheet.find params[:id] 
     unless w.nil?

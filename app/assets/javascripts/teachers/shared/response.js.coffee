@@ -97,8 +97,10 @@ jQuery ->
       notifier.show 'n-favourited'
 
     else if url.match(/ping\/queue/)
+      bell.update json
       # enable the newly built quizzes 
-      list = $('#pane-exb-quizzes').children()
+      j = if json.indie then $('#pane-my-quizzes') else $('#pane-exb-quizzes')
+      list = j.children()
       for id in json.enable
         quiz = list.filter("[marker=#{id}]")[0]
         $(quiz).removeClass('disabled') if quiz?

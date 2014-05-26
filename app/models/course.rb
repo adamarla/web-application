@@ -29,7 +29,7 @@ class Course < ActiveRecord::Base
   end 
 
   def quizzes 
-    # Returns the list of quizzes currently included in the quiz 
+    # Returns the list of quizzes currently included in the course
     # - ordered by index
     Takehome.where(course_id: self.id).order(:index).map(&:quiz)
   end 
@@ -39,6 +39,25 @@ class Course < ActiveRecord::Base
     # - ordered by index
     Freebie.where(course_id: self.id).order(:index).map(&:lesson)
   end 
+
+  def pre_check(sid) 
+    # For a given student, returns the following triplet of quiz-id arrays
+    #     1. never compiled or new quizzes 
+    #     2. in compilation 
+    #     3. compiled
+    w = Worksheet.of_student(sid).for_course(self.id)
+
+    # worksheet objects
+    compiling = w.select{ |j| j.compiling? }
+    compiled = w.select{ |j| j.compiled? }
+
+    # quiz IDs
+    compiling = compiling.map{ |k| k.exam.quiz_id }.uniq
+    compiled = compiled.map{ |k| k.exam.quiz_id }.uniq
+    not_compiled = self.quiz_ids - compiling - compiled 
+
+    return not_compiled, compiling, compiled
+  end
 
   def includeable_quizzes?
     # Quizzes that can be, but haven't yet been, included in this course

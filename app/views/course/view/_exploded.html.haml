@@ -1,11 +1,27 @@
 
-%ul.nav.nav-tabs.always-on
-  %li
-    = simple_link for: 'Outline', id: 'tab-course-outline', href: '#pane-course-outline'
-  %li
-    = simple_link for: 'Discussion', id: 'tab-course-discussion', href: '#pane-course-discussion'
-
-.tab-content
-  #pane-course-outline.tab-pane
-    = render partial: 'course/view/outline'
-  #pane-course-discussion.tab-pane
+.row-fluid.exploded{ id: 'course-expld-view' }
+  .row-fluid
+    .span8
+      .name
+      .author
+    .span4
+      = simple_button for: 'Back to course list', class: 'btn-primary', id: 'btn-show-tiles'
+  .row-fluid
+    .span8
+      .description
+  .row-fluid.push-down 
+    %ul.nav.nav-tabs.always-on
+      %li
+        = simple_link for: 'Quizzes', id: 'tab-expld-quizzes', href: '#pane-expld-quizzes'
+      %li
+        = simple_link for: 'Reading Material', id: 'tab-expld-refs', href: '#pane-expld-refs'
+      %li
+        = simple_link for: 'Discussion', id: 'tab-expld-disqus', href: '#pane-expld-disqus'
+    .tab-content
+      #pane-expld-quizzes.tab-pane
+        .column.span5
+        .column.span5
+      #pane-expld-refs.tab-pane
+        .column.span5
+        .column.span5
+      #pane-expld-disqus.tab-pane

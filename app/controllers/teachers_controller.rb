@@ -138,7 +138,7 @@ class TeachersController < ApplicationController
     clone = quiz.clone current_account.loggable_id
     unless clone.nil?
       estimate = minutes_to_completion clone.job_id
-      render json: { monitor: { quiz: clone.id }, timer: { on: topic, for: "#{estimate * 60}"}}, status: :ok
+      render json: { monitor: { quizzes: [clone.id] }, timer: { on: topic, for: "#{estimate * 60}"}}, status: :ok
     else
       render nothing: true, status: :ok
     end

@@ -90,7 +90,8 @@ lnk-attach-asset :
   show : 
     modal : mng-assets
 
-tab-outln-quizzes : 
-  id: course-outline
+tab-expld-quizzes : 
+  prev: course-expld-view
   url : 
-    self : course/quizzes?id=:id
+    self : course/quizzes?id=:prev
+    panel : ping/quiz?id=:id

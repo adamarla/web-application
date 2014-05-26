@@ -40,7 +40,7 @@ Webapp::Application.routes.draw do
   match 'course/lessons' => 'course#lessons', via: :get
   match 'course/update' => 'course#update', via: :post
   match 'ping/course' => 'course#ping', via: :get
-  match 'course/outline' => 'course#outline', via: :get
+  match 'load/course' => 'course#load', via: :get
 
   # Customer
   resource :customer, :only => [:show]
@@ -132,6 +132,7 @@ Webapp::Application.routes.draw do
   match 'quiz/edit' => 'quizzes#add_remove_questions', via: [:put, :post]
   match 'share/quiz' => 'quizzes#share', via: :post
   match 'quiz/build' => 'quizzes#build', via: [:put, :post]
+  match 'ping/quiz' => 'quizzes#ping', via: :get
 
   # Student 
   resource :student, :only => [:update, :show]
@@ -143,7 +144,6 @@ Webapp::Application.routes.draw do
   match 'outbox' => 'students#outbox', via: :get
   match 'enroll' => 'students#enroll', via: :post
   match 'dispute' => 'students#dispute', via: [:put, :post] 
-  match 'indie/take/q' => 'students#self_subscribe_to_quiz', via: :get
   match 'indie/pay/q' => 'students#pay_to_grade'
 
   # Sektion 

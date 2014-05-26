@@ -11,7 +11,15 @@ class QuizzesController < ApplicationController
 
     quiz = t.quizzes.create(name: name, question_ids: qids, num_questions: qids.count)
     eta = minutes_to_completion quiz.job_id
-    render json: { monitor: { quiz: [quiz.id] }, notify: { title: "#{eta} minutes(s)" } }, status: :ok
+    render json: { monitor: { quizzes: [quiz.id] }, notify: { title: "#{eta} minutes(s)" } }, status: :ok
+  end
+
+  def ping
+    # This action is only for our individual offering. Invoked only by a student 
+    # subscribing to quizzes made by us 
+    @qid = params[:id].to_i
+    @sid = current_account.loggable_id # must be a student
+    @w = Worksheet.of_student(@sid).select{ |j| j.exam.quiz_id == @qid }.first
   end
 
   def mass_assign_to
@@ -25,7 +33,7 @@ class QuizzesController < ApplicationController
       eid, job_id = students.blank? ? nil : quiz.mass_assign_to(students, take_home)
       unless job_id.nil? 
         eta = minutes_to_completion job_id
-        r = { monitor: { exam: [eid] }, notify: { title: "#{eta} minute(s)" }}
+        r = { monitor: { exams: [eid] }, notify: { title: "#{eta} minute(s)" }}
       else 
         # either because the quiz is being published OR
         # mass_assignment called by an indie teacher (not allowed)

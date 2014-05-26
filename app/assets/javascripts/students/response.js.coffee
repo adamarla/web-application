@@ -30,13 +30,20 @@ jQuery ->
       e.stopImmediatePropagation()
       return tiles.render(json.tiles)
 
-    else if url.match(/course\/outline/)
+    else if url.match(/load\/course/)
       e.stopImmediatePropagation()
       return exploded.initialize(json.course)
       
     else if url.match(/course\/quizzes/)
-      target = $('#pane-outln-quizzes')
+      target = $('#pane-expld-quizzes')
       key = 'quizzes'
+      menu = 'per-qz'
+      monitor.add json
+
+    else if url.match(/ping\/queue/)
+      monitor.update json
+      exploded.update json
+
     else if url.match(/outbox/)
     else if url.match(/enroll/)
       $('#m-enroll-self').modal 'hide'

@@ -36,6 +36,11 @@ class Worksheet < ActiveRecord::Base
     where(exam_id: nil)
   end
 
+  def self.for_course(id)
+    qids = Course.find(id).quiz_ids
+    select{ |j| qids.include? j.exam.quiz_id }
+  end
+
   def download_pdf?
     return nil unless self.compiled?
     return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
@@ -199,7 +204,7 @@ class Worksheet < ActiveRecord::Base
     e = self.exam
 
     if abridged 
-      mangled_qrcs = []
+      mangled_qrcs = 'null,null'
     else 
       span = e.quiz.span?
       g = GradedResponse.in_worksheet(self.id) 

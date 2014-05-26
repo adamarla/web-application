@@ -48,6 +48,6 @@ jQuery ->
   $('#wide').on 'click', '.tile', (event) -> 
     event.stopImmediatePropagation() 
     id = $(this).attr 'marker'
-    $.get "course/outline?id=#{id}"
+    $.get "load/course?id=#{id}"
     tiles.hide()
     return true

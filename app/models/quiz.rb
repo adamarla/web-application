@@ -69,13 +69,21 @@ class Quiz < ActiveRecord::Base
   end
 
   def last_open_exam? 
-    last = Exam.for_quiz(self.id).open.order(:created_at).last
+    past = Exam.for_quiz(self.id).open
+    last = past.blank? ? nil : past.order(:created_at).last
+
     if self.teacher.indie 
-      today = Date.today 
-      created_at = last.created_at 
-      return last if ( today.month == created_at.month && today.year == created_at.year )
-      last.update_attribute :open, false
-      last = self.exams.create 
+      if last.nil?
+        renew = true 
+      else
+        today = Date.today 
+        created_at = last.created_at 
+        renew = ( today.month != created_at.month || today.year != created_at.year )
+      end 
+      if renew
+        last.update_attribute(:open, false) unless last.nil?
+        last = self.exams.create 
+      end
     end 
     return last # guaranteed to be non-null either by here or by mass_assign_to
   end
@@ -147,10 +155,17 @@ class Quiz < ActiveRecord::Base
 
   def span?
     return self.span unless self.span.nil?
+    est = self.questions.map(&:length?).inject(:+).ceil
+    self.update_attribute :span, est
+    return est
+=begin
+    # The start_page and end_page stored in QSelection is really for worksheets 
+    # However, for quizzes with their solutions, the algo for calculating span? should be different 
 
     last = QSelection.where(quiz_id: self.id).order(:index).last.end_page
     self.update_attribute :span, last
     return last
+=end
   end
 
   def pages?
