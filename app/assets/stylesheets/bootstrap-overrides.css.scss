@@ -9,11 +9,11 @@ $lightgray: lighten($gray, 30%) ; // rgb(102,102,102)
 $gradians-blue: #6ca7ab ; // rgb(108,167,171)
 $orange:#ffa500 ; // rgb(255,165,0)
 $panel-colour: lighten(black, 17%) ; // rgb(43,43,43)
-$deep-blue: #0081c2 ; // rgb(0,129,194)
 $background: darken($panel-colour, 12%) ; // rgb(13,13,13)
-$lightblue: lighten($deep-blue, 23%) ; // rgb(56,188,255) 
 $red: #d72323 ; // rgb(215, 35, 35)
 $green: #347235 ; // rgb(87,188,32)
+$deep-blue: #01537d ; // rgb(1,83,125)
+$lightblue: lighten($deep-blue, 23%) ; // rgb(56,188,255) 
 
 img { 
   &.big-icon { 
@@ -526,21 +526,20 @@ span.btn-shortcut {
     > li {
       font : {
         size: 14px ;
-        weight: 200 ;
+        weight: normal ;
       } 
-      &:hover { 
-        background: transparent ;
-      }
       &:not([class~='disabled']) {
+        &:hover { background: transparent ; }
         > a { 
-          color: white ;
-          &:hover { border: 1px solid white; }
+          color: white ; 
+          border: none ;
+        }
+        &:not([class~='active']){
+          > a:hover { background: rgba(102,102,102,0.6) ; } 
         }
       } 
       &.disabled, &[disabled='true'] {
-        > a { 
-          &:hover { border: 1px dashed white ; }
-        }
+        > a { &:hover { border: 2px dotted white ; border-bottom: none ; }}
       } 
     }
   } 

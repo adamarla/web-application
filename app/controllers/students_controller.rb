@@ -161,4 +161,14 @@ class StudentsController < ApplicationController
     render json: { status: :ok }, status: :ok
   end 
 
+  def pay_to_grade
+    w = Worksheet.find params[:id] 
+    unless w.nil?
+      w.bill
+      render json: { w: w.id }, status: :ok
+    else
+      render json: { status: :failed }, status: :ok
+    end
+  end
+
 end

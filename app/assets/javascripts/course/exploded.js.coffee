@@ -2,40 +2,47 @@
 window.exploded = { 
   root : null, 
   tabs : null,
+  visible : false, 
 
   hide : () -> 
-    return false unless exploded.tabs?
-    $(exploded.tabs).parent().addClass 'hide' # effectively $('#wide-2')
-    return true 
-
-  show : () ->
-    return false unless exploded.tabs?
-    $(exploded.tabs).parent().removeClass 'hide'
+    exploded.visible = false
+    return false unless exploded.root?
+    $(exploded.root).parent().addClass 'hide' # effectively $('#wide-2')
     return true 
 
   reset : () ->
     return true 
 
-  render : (json) ->
+  initialize : (json) ->
     unless exploded.root?
-      exploded.root = $('#pane-course-outline > .exploded')[0] 
-      exploded.tabs = $('#wide-2 > ul')[0]
+      exploded.root = $('#course-expld-view')[0] 
+      exploded.tabs = $(exploded.root).find('ul')[0]
+
+    $(exploded.root).attr 'marker', json.id
+    firstTab = $(exploded.tabs).children('li').eq(0).children('a')[0]
+    karo.tab.enable firstTab
 
     for k in ['name', 'author', 'description']
       nd = $(exploded.root).find(".#{k}")[0]
       continue unless nd?
       $(nd).text json[k]
 
-    for k in ['quizzes', 'lessons']
-      isVideo = k is 'lessons'
-      nd = $(exploded.root).find(".#{k}")[0]
-      continue unless nd? 
-
-      for j in json[k]
-        html = "<div marker=#{j.id}>#{j.name}</div>"
-        $(html).appendTo $(nd)
-
-    #karo.tab.enable $(exploded.tabs).children('li')[0]
-    exploded.show()
+    # unhide #wide-2
+    $(exploded.root).parent().removeClass 'hide'
+    exploded.visible = true
     return true
+
+  update : (json) ->
+    # Updates the exploded view with data returned by ping/queue
+    return false unless exploded.visible 
+    return false unless json.worksheets?
+    list = $('#pane-expld-quizzes').find('.line')
+    for w in json.worksheets 
+      ln = list.filter("[marker=#{w.q}]")[0]
+      if ln?
+        $(ln).children('.subtext').eq(0).remove()
+        $("<a href=#{w.path} target=_blank>PDF</a>").appendTo($(ln)) 
+        $(ln).removeClass 'disabled'
+    return true
+    
 }

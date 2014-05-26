@@ -5,8 +5,8 @@ object false
   node(:who, unless: @who.nil? ) { @who }
   node(:monitor) {
     { 
-      quiz: (@q.blank? ? [] : @q.map(&:id)), 
-      exam: (@e.blank? ? [] : @e.map(&:id)) 
+      quizzes: (@q.blank? ? [] : @q.map(&:id)), 
+      exams: (@e.blank? ? [] : @e.map(&:id)) 
     }
   }
 

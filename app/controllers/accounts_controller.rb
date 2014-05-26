@@ -183,12 +183,15 @@ class AccountsController < ApplicationController
   end
 
   def poll_delayed_job_queue
-    quiz_ids = params[:quizzes].blank? ? [] : params[:quizzes].map(&:to_i)
+    qids = params[:quizzes].blank? ? [] : params[:quizzes].map(&:to_i)
     eids = params[:exams].blank? ? [] : params[:exams].map(&:to_i)
+    wids = params[:worksheets].blank? ? [] : params[:worksheets].map(&:to_i)
 
-    @q = Quiz.where(id: quiz_ids).select{ |m| m.compiled? } 
+    @q = Quiz.where(id: qids).select{ |m| m.compiled? } 
     @e = Exam.where(id: eids, takehome: false).select{ |m| m.compiled? }
-    # @demos = Quiz.where(teacher_id: current_account.loggable_id, parent_id: PREFAB_QUIZ_IDS).where('uid IS NOT ?', nil).select{ |m| m.compiled? }
+    @w = Worksheet.where(id: wids).select{ |m| m.compiled? }
+    user = current_account.loggable 
+    @indie = user.respond_to?(:indie) ? user.indie : false
   end 
 
   def by_country

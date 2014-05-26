@@ -5,5 +5,5 @@ object false
   } 
 
   node(:monitor, if: lambda { |m| !@last_child.nil? }) {
-    { quiz: [@last_child.id] }
+    { quizzes: [@last_child.id] }
   } 

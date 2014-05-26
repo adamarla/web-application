@@ -14,6 +14,7 @@
 #  signature  :string(255)
 #  uid        :string(40)
 #  job_id     :integer         default(-1)
+#  billed     :boolean         default(FALSE)
 #
 
 class Worksheet < ActiveRecord::Base
@@ -33,6 +34,16 @@ class Worksheet < ActiveRecord::Base
 
   def self.online 
     where(exam_id: nil)
+  end
+
+  def self.for_course(id)
+    qids = Course.find(id).quiz_ids
+    select{ |j| qids.include? j.exam.quiz_id }
+  end
+
+  def download_pdf?
+    return nil unless self.compiled?
+    return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
   end
 
   def received?(extent = :fully) # other options - :none, :partially
@@ -172,20 +183,43 @@ class Worksheet < ActiveRecord::Base
     return "#{self.exam.quiz.uid}/#{self.uid}"
   end
 
-  def write 
-    span = self.exam.quiz.span?
-    g = GradedResponse.in_worksheet(self.id) 
-    ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
-    mangled = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
+  def bill
+    # 1. allot graded response slots for this worksheet 
+    q = self.exam.quiz
+    qsel = QSelection.where(quiz_id: q.id).order(:index)
+    sid = self.student_id
+
+    qsel.each do |y|
+      sbp = y.question.subparts
+      sbp.each do |s|
+        g = self.graded_responses.build student_id: sid, q_selection_id: y.id, subpart_id: s.id
+        self.graded_responses << g
+      end
+    end
+    self.update_attribute :billed, true
+    # 2. update account balance 
+  end 
+
+  def write(abridged = false) 
+    e = self.exam
+
+    if abridged 
+      mangled_qrcs = 'null,null'
+    else 
+      span = e.quiz.span?
+      g = GradedResponse.in_worksheet(self.id) 
+      ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
+      mangled_qrcs = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
+    end 
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
     response = SavonClient.request :wsdl, :writeTex do
       soap.body = { 
         target: self.path?,
-        mode: 'worksheet',
-        imports: "#{self.exam.quiz.uid}",
+        mode: ( abridged ? 'worksheet abridged' : 'worksheet' ),
+        imports: "#{e.quiz.uid}",
         author: self.student.name, 
-        wFlags: { versions: self.signature, responses: mangled } 
+        wFlags: { versions: self.signature, responses: mangled_qrcs } 
       }
       end
     return response
@@ -226,11 +260,11 @@ class Worksheet < ActiveRecord::Base
 
   public 
       def seal 
-        uid = self.uid.nil? ? "w/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
+        # Creating a worksheet does not automatically imply that it also 
+        # needs to be compiled. However, versions for a questions must be set 
         n = QSelection.where(quiz_id: self.exam.quiz_id).count 
         sig = [*1..n].map{ rand(4) }
-        self.update_attributes uid: uid, signature: sig.join(',')
-        Delayed::Job.enqueue WriteTex.new(self.id, self.class.name)
+        self.update_attributes signature: sig.join(',') 
       end
 
 end # of class

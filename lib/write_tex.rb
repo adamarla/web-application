@@ -6,10 +6,17 @@
 #      time the code gets to the error / failure callbacks. In that 
 #      case, we should get a nil object instead of an out-of-date object
 
-class WriteTex < Struct.new(:id, :type)
+class WriteTex < Struct.new(:id, :type, :abridged)
   def perform
     obj = type.constantize.where(id: id).first
-    resp = obj.write 
+    if obj.uid.nil? # seal mint/ path
+      t = type[0].downcase # q => quiz, e => exam, w => worksheet
+      uid = "#{t}/#{rand(999)}/#{obj.id.to_s(36)}"
+      obj.update_attribute :uid, uid
+      resp = obj.write(abridged) 
+    else
+      resp = {}
+    end
     raise "WriteTex (failed)" unless resp[:error].blank?
   end 
 

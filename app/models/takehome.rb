@@ -8,6 +8,7 @@
 #  index      :integer         default(0)
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
+#  live       :boolean         default(TRUE)
 #
 
 class Takehome < ActiveRecord::Base

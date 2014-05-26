@@ -129,8 +129,14 @@ window.line = {
       hiddenChkBox.attr 'id', "checked_#{json.id}"
 
     # Stopwatch 
-    watch = children.filter(".stopwatch")
-    watch.remove() unless json.timer?
+    watch = children.filter(".stopwatch")[0]
+    $(watch).remove() unless json.timer?
+
+#    if json.timer?
+#      stopWatch.add watch
+#      stopWatch.start watch, 30
+#    else
+#      $(watch).remove()
 
     # Whatever span remains, give to 'label'
     remaining = if remaining > 8 then 8 else remaining
@@ -209,6 +215,15 @@ window.lines = {
       for k in json[m]
         l = j.filter("[marker=#{k}]")[0]
         $(l).addClass(m) if l?
+
+    if json.download?
+      j = target.find('.line')
+      for k in json.download
+        l = j.filter("[marker=#{k.id}]")[0]
+        if l?
+          tag = $(l).children('.subtext')[0]
+          $(tag).remove() if tag?
+          $("<a href=#{k.path} target=_blank>PDF</a>").appendTo($(l)) 
 
     # Auto-click first line - if needed
     target.children('.line').filter(":not([class~='disabled'])").eq(0).click() if clickFirst

@@ -193,10 +193,9 @@ class Exam < ActiveRecord::Base
     return ret
   end
 
-  def write 
+  def write(abridged = false) 
     response = {} 
-    return response if self.takehome 
-
+    
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
     response = SavonClient.request :wsdl, :writeTex do
       soap.body = { 
@@ -245,17 +244,14 @@ class Exam < ActiveRecord::Base
 
   public 
     def seal 
-      uid = self.uid.nil? ? "e/#{rand(999)}/#{self.id.to_s(36)}" : self.uid
-      self.update_attribute :uid, uid
+      indie = self.quiz.teacher.indie 
 
-      # Only for exams made by indie instructors can we do the following
-      # For those in schools, Quiz.mass_assign_to will set the 'name' 
-      # and 'takehome' flags
-      if self.quiz.teacher.indie
+      if indie 
         created = self.created_at
         name = "#{created.strftime("%B %Y")}"
         self.update_attributes name: name, takehome: true
-      end
+      end 
+      # Setting the uid => exam needs to be written. Hence, defer the setting to write() 
     end
 
 end # of class
