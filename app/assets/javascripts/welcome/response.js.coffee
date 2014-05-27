@@ -26,10 +26,12 @@ jQuery ->
       else if json.blocked is true
         notifier.show 'n-enrollment-blocked'
       else
-        target = $('#sk-confirm-identity')
+        # target = $('#sk-confirm-identity')
+        a = $('#m-enrollment-confirm')
+        target = a.find('#sk-confirm-identity')
         karo.empty target
         key = 'candidates'
-        $('#m-enrollment-confirm').modal 'show'
+        a.modal 'show'
     else
       matched = false
 

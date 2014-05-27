@@ -2,15 +2,16 @@
 - server = "#{Gutenberg['server']}"
 -content_for :toolbox do
   #toolbox.hidden 
-    = render :partial => 'menus/user/abouts'
+    = render partial: 'menus/user/abouts'
+    = render partial: 'toolbox/generic/line'
   #modals
-    = render :partial => 'modals/guest/register'
-    = render :partial => 'modals/guest/enrollment-confirm'
-    = render :partial => 'notifications/shared/old-browser'
+    = render partial: 'modals/guest/register'
+    = render partial: 'modals/guest/enrollment-confirm'
+    = render partial: 'notifications/shared/old-browser'
   #notifications
-    = render :partial => 'notifications/student/enrollment-blocked'
-    = render :partial => 'notifications/student/enrolled-already'
-    = render :partial => 'notifications/student/sektion-not-found'
+    = render partial: 'notifications/student/enrollment-blocked'
+    = render partial: 'notifications/student/enrolled-already'
+    = render partial: 'notifications/student/sektion-not-found'
 
 !!!5
 
@@ -28,38 +29,38 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span4{ :href => "#"}
+              %a.brand.span4{ href: "#"}
                 = image_tag "logo-mit-beta-2.png"
               %ul.nav.span7
                 %li.pull-right
                   #signin-form
-                    %form.form-inline{ :action => session_path(:account), :method => :post }
-                      %input.input-medium{ :type => :text, :name => "account[login]", :placeholder => "Email"}
+                    %form.form-inline{ action: session_path(:account), method: :post }
+                      %input.input-medium{ type: :text, name: "account[login]", placeholder: "Email"}
                       .input-append
-                        %input.input-medium{ :type => :password, :name => "account[password]", :placeholder => "Password" }
-                        %button.btn.btn-large.btn-primary{ :type => :submit }= "Sign In"
+                        %input.input-medium{ type: :password, name: "account[password]", placeholder: "Password" }
+                        %button.btn.btn-large.btn-primary{ type: :submit }= "Sign In"
 
-      .row-fluid{ :id => 'badge' }
+      .row-fluid{ id: 'badge' }
         .span2
           = image_tag "landing/finalist.png"
-      .row-fluid.hero-unit{ :id => 'shopfront' }
+      .row-fluid.hero-unit{ id: 'shopfront' }
         .row-fluid.jumbotron.span9
           .span8
             %p= "Teach more. Help more. Grade less."
           .span4
-            = simple_link :for => "Register", :id => 'btn-register', :class => 'btn btn-inverse btn-large'
-            = simple_link :for => "Learn More", :icon => 'icon-question-sign', 
-              :class => 'btn btn-large btn-inverse', :href => faq_path 
+            = simple_link for: "Register", id: 'btn-register', class: 'btn btn-inverse btn-large'
+            = simple_link for: "Learn More", icon: 'icon-question-sign', 
+              class: 'btn btn-large btn-inverse', href: faq_path 
         .row-fluid
           .span11
-            .span11.offset1{ :id => 'carousel' }
-              .carousel.slide{ :id => 'how-it-works' }
+            .span11.offset1{ id: 'carousel' }
+              .carousel.slide{ id: 'how-it-works' }
                 .carousel-inner
-                  .item.active{ :id => 'step-1' }
+                  .item.active{ id: 'step-1' }
                     .carousel-caption.span6
                       .span3
                         .number= "1"
-                        = image_tag "landing/teacher.png", :size => "40x40"
+                        = image_tag "landing/teacher.png", size: "40x40"
                       .span8
                         %p.title
                           Make Worksheets
@@ -68,13 +69,13 @@
                           Our database of questions is open. Which means you can send us questions you 
                           would like to see and we will include them for you
 
-                    = image_tag "landing/worksheet.png", :class => 'offset7'
+                    = image_tag "landing/worksheet.png", class: 'offset7'
 
-                  .item{ :id => 'step-2' }
+                  .item{ id: 'step-2' }
                     .carousel-caption.span6
                       .span3
                         .number= "2"
-                        = image_tag "quick-trial/write.png", :size => "40x40"
+                        = image_tag "quick-trial/write.png", size: "40x40"
                       .span8
                         %p.title
                           Students do their work
@@ -84,25 +85,25 @@
                           You can use Gradians.com to administer a quiz in class or to give homework. And if 
                           you want, you can even post assignments into students' Gradians.com account from 
                           where they can download it before attempting
-                    = image_tag "landing/written.png", :class => 'span6 pull-right'
+                    = image_tag "landing/written.png", class: 'span6 pull-right'
 
-                  .item{ :id => 'step-3' }
+                  .item{ id: 'step-3' }
                     .carousel-caption.span6
                       .span3
                         .number= "3"
-                        = image_tag "notifications/preview.png", :size => "40x40"
+                        = image_tag "notifications/preview.png", size: "40x40"
                       .span8
                         %p.title 
                           We take a first look
                         %p
                           And provide our feedback and assessment on each student's work on each question 
-                    = image_tag "landing/graded.png", :class => 'span6 pull-right'
+                    = image_tag "landing/graded.png", class: 'span6 pull-right'
 
-                  .item{ :id => 'step-4' }
+                  .item{ id: 'step-4' }
                     .carousel-caption.span6
                       .span3
                         .number= "4"
-                        = image_tag "landing/teacher.png", :size => "40x40"
+                        = image_tag "landing/teacher.png", size: "40x40"
                       .span8
                         %p.title
                           Monitor performance
@@ -110,11 +111,11 @@
                           All of our feedback, on all of the questions answered by all of your 
                           students is collected into statistics for you to see. The statistics 
                           will help you identify which students to help with what topics
-                    = image_tag "landing/report.png", :class => 'offset6'
+                    = image_tag "landing/report.png", class: 'offset6'
 
-                %a.carousel-control.left{ :href => '#how-it-works', :data => { :slide => :prev } }
+                %a.carousel-control.left{ href: '#how-it-works', data: { slide: :prev } }
                   \&lsaquo;
-                %a.carousel-control.right{ :href => '#how-it-works', :data => { :slide => :next } }
+                %a.carousel-control.right{ href: '#how-it-works', data: { slide: :next } }
                   \&rsaquo;
 
     = yield :toolbox
