@@ -494,10 +494,7 @@ span.btn-shortcut {
 
     select, input:not([type='submit']) {
       background: transparent ; 
-      font: { 
-        size: 14px ;
-        weight: 300 ;
-      } 
+      font-weight: 300 ;
       color: white ; 
       border: { style: none ; radius: 0px ; }
       border-bottom: 1px dotted white ; 
@@ -508,6 +505,9 @@ span.btn-shortcut {
         right: 6px ;
       }
     } 
+
+    select { font-size: 11px; }
+    input:not([type='submit']) { font-size: 14px ; }
 
     input[type='file'] {
       font-size: 11px ;
@@ -1108,8 +1108,8 @@ body > #spinner {
 
   .chuppa-hua {
     border: none ;
-    width: 2px ;
-    height: 2px ;
+    width: 0px ;
+    height: 0px ;
   }
 } 
 
