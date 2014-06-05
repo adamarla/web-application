@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     
     case @who
       when "Student"
-        @newbie = StudentRoster.where(student_id: obj.id).count < 1
+        @newbie = current_account.sign_in_count < 4 #StudentRoster.where(student_id: obj.id).count < 1
       when "Teacher"
         @newbie = obj.new_to_the_site?
 

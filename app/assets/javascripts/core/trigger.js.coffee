@@ -172,7 +172,7 @@ jQuery ->
         when 'Teacher'
           break 
         when 'Student'
-          $('#m-enroll-self').modal('show') 
+          $('#m-new-login').modal('show') 
         when 'Examiner'
           notifier.show 'n-sandbox'
 

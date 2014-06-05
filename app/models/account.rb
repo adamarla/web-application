@@ -38,12 +38,17 @@ class Account < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :login
   attr_accessor :login
 
-  validates :email, :presence => true
-  validates :email, :uniqueness => true
+  # email
+  validates :email, presence: true
+  validates :email, uniqueness: true
+  # password 
+  validates :password, length: { minimum: 6 }
+  validates :password, confirmation: true
+  validates :password_confirmation, presence: true
 
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
-  belongs_to :loggable, :polymorphic => true
+  belongs_to :loggable, polymorphic: true 
   has_one :customer
 
   # Geo-coding. Ref: https://github.com/alexreisner/geocoder
@@ -163,16 +168,17 @@ class Account < ActiveRecord::Base
     return (self.active && super)
   end
 
-  def email_is_real?
-    # E-mails of the form xyz@drona.com are generated for new users. 
-    # However, these are not real e-mail addresses. This method detects that 
+  def has_email?
+    # Previously, we generated e-mails of the form xyz@drona.com for new users. 
+    # This is really not needed - as long as we handle nil emails
+    return false if self.email.blank?
     domain = self.email[/@drona.com/]
     return domain.nil?
   end
 
   def real_email
     # Returns the real email - as defined by the method above - and nil otherwise
-    return (self.email_is_real? ? self.email : nil)
+    return (self.has_email? ? self.email : nil)
   end
 
   def exams
@@ -247,7 +253,7 @@ class Account < ActiveRecord::Base
 
   private
       def send_email
-        Mailbot.delay.welcome(self) if email_is_real?
+        Mailbot.delay.welcome(self) if has_email?
       end
 
 end # of class 

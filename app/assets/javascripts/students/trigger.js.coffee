@@ -25,6 +25,19 @@ jQuery ->
     exploded.hide()
     tiles.show()
     return true
+  
+  $('#m-enrollment-confirm').on 'click', '.line', (event) ->
+    event.stopImmediatePropagation() 
+    form = $(this).closest 'form'
+    submitBtn = form.find("button[id='btn-enroll-me']")
+    submitBtn.prop 'disabled', false
+    return true
+
+  $('#m-enrollment-confirm').on 'click', "button:not([type='submit'])", (event) ->
+    event.stopImmediatePropagation() 
+    mdl = $(this).closest '.modal'
+    mdl.modal 'hide'
+    return true
 
 #  $('#m-dispute-2 form').submit ->
 #    textbox = $(this).find('textarea').eq(0)

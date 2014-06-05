@@ -30,7 +30,6 @@ ul {
   }
 }
 
-
 img { 
   &.big-icon { 
     padding: 5px ;
@@ -82,7 +81,7 @@ span.btn-shortcut {
     right: -20px ;
     color: white ;
     > * { 
-      tex-align: center ;
+      text-align: center ;
       padding: { top: 10px ; left: 5px ; bottom: 10px ; right: 10px ; }
       font-weight: 300 ;
     }
@@ -138,11 +137,17 @@ span.btn-shortcut {
 }
 
 .title { 
-  font: {
-    size: 18px ;
-    weight: 500 ;
+  font-weight: 300 ;
+  &.boxed { 
+    padding: 8px ;
+    font-size: 15px ;
+    background: rgba(1,83,125,0.5) ; 
+    // border-radius: 5px ;
   }
-  padding-bottom: 8px ;
+  &:not([class~='boxed']){
+    padding-bottom: 8px ;
+    font-size: 18px ;
+  }
 } 
 
 .description { 
@@ -402,7 +407,7 @@ span.btn-shortcut {
 } 
 
 .blue { 
-  color: $gradians-blue ;
+  color: $deep-blue ;
 } 
 
 .modal { 
@@ -490,15 +495,18 @@ span.btn-shortcut {
     select, input:not([type='submit']) {
       background: transparent ; 
       font: { 
-        size: 15px ;
+        size: 14px ;
+        weight: 300 ;
       } 
       color: white ; 
-      border: {
-        style: 1px solid $deep-blue ;
-        radius: 0px ;
+      border: { style: none ; radius: 0px ; }
+      border-bottom: 1px dotted white ; 
+      padding: {
+        top: 3px ;
+        bottom: 8px ;
+        left: 6px ;
+        right: 6px ;
       }
-      padding: 6px ;
-      min-height: 18px ;
     } 
 
     input[type='file'] {
@@ -508,15 +516,20 @@ span.btn-shortcut {
 
     .help-inline {
       margin-top: -15px ;
+      padding: 0px ;
     }
 
     p {
       &.help-block { 
-        font-size: 11px ;
-        margin-top: -4px ;
-        color: white ; 
+        font-size: 12px ;
+        margin-top: -5px ;
+        color: $orange; 
       }
     }
+
+    .controls { 
+      margin-bottom: 15px ;
+    } 
   }
 
   textarea { 
@@ -1088,10 +1101,15 @@ body > #spinner {
 }
 
 #m-register, #m-enrollment-confirm {
-
   .btn-large {
     font-size: 16px ;
     font-weight: 400 ;
+  }
+
+  .chuppa-hua {
+    border: none ;
+    width: 2px ;
+    height: 2px ;
   }
 } 
 
@@ -1333,9 +1351,6 @@ body > #spinner {
   }
 } 
 
-#btn-register { 
-  font-size: 16px ;
-}
 
 #lnk-faq { 
   font: { 

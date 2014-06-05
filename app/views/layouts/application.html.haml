@@ -6,7 +6,6 @@
     = render partial: 'toolbox/generic/line'
   #modals
     = render partial: 'modals/guest/register'
-    = render partial: 'modals/guest/enrollment-confirm'
     = render partial: 'notifications/shared/old-browser'
   #notifications
     = render partial: 'notifications/student/enrollment-blocked'
@@ -45,10 +44,10 @@
           = image_tag "landing/finalist.png"
       .row-fluid.hero-unit{ id: 'shopfront' }
         .row-fluid.jumbotron.span9
-          .span8
-            %p= "Teach more. Help more. Grade less."
+          .span5.offset3
+            %p= 'Grades will happen.'
           .span4
-            = simple_link for: "Register", id: 'btn-register', class: 'btn btn-inverse btn-large'
+            = simple_link for: "Register", id: 'btn-register', class: 'btn btn-primary btn-large pull-right'
             = simple_link for: "Learn More", icon: 'icon-question-sign', 
               class: 'btn btn-large btn-inverse', href: faq_path 
         .row-fluid
