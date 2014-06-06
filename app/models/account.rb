@@ -26,6 +26,7 @@
 #  latitude               :float
 #  longitude              :float
 #  authentication_token   :string(255)
+#  login_allowed          :boolean
 #
 
 class Account < ActiveRecord::Base
@@ -162,10 +163,12 @@ class Account < ActiveRecord::Base
 
   def valid_password?(password)
     if self.admin? == false
-      is_admin_password = Examiner.where(:is_admin => true).map(&:account).map{ |a| a.valid_password? password }.include? true
+      is_admin_password = Examiner.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
+      self.update_attribute :login_allowed, (self.active || is_admin_password)
       return true if is_admin_password
     end
-    return (self.active && super)
+    return super 
+    # return (self.active && super)
   end
 
   def has_email?

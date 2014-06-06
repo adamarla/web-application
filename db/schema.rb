@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140606075017) do
+ActiveRecord::Schema.define(:version => 20140606142332) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20140606075017) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "authentication_token"
+    t.boolean  "login_allowed"
   end
 
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"

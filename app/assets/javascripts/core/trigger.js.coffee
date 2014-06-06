@@ -156,6 +156,14 @@ jQuery ->
     # Unhide the console 
     $('body > .container-fluid').removeClass('hidden')
 
+    if response.blocked # => blocked user
+      notifier.show 'n-login-blocked'
+      setTimeout () -> 
+        $('#lnk-logout')[0].click()
+        return true
+      ,15000
+      return true
+
     # Start monitoring progress of any pending Delayed::Jobs
     monitor.add response, true
 
@@ -168,7 +176,7 @@ jQuery ->
       rails.server = rails.serverOptions.local
 
     if response.new is true
-      switch response.who 
+      switch response.type 
         when 'Teacher'
           break 
         when 'Student'

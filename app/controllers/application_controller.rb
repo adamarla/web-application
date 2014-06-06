@@ -11,19 +11,27 @@ class ApplicationController < ActionController::Base
 
   def ping
     @dep = Rails.env
-    obj = current_account.nil? ? nil : current_account.loggable 
-    @who = obj.nil? ? nil : obj.class.name
+
+    unless current_account.nil?
+      obj = current_account.loggable 
+      @blocked = !current_account.login_allowed
+    else
+      obj = nil 
+      @blocked = false
+    end 
+
+    @type = obj.nil? ? nil : obj.class.name
     @q = nil
     @e = nil
     
-    case @who
+    case @type
       when "Student"
         @newbie = current_account.sign_in_count < 4 #StudentRoster.where(student_id: obj.id).count < 1
       when "Teacher"
         @newbie = obj.new_to_the_site?
 
         if obj.indie 
-          @who = "Online"
+          @type = "Online"
         else
           # Draw attention to quizzes and exams made today
           quizzes = Quiz.where(teacher_id: obj.id)
