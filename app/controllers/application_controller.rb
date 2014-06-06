@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
     unless current_account.nil?
       obj = current_account.loggable 
-      @blocked = !current_account.login_allowed
+      @blocked = current_account.login_allowed.nil? ? false : current_account.login_allowed
     else
       obj = nil 
       @blocked = false
