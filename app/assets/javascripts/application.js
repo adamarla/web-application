@@ -9,5 +9,4 @@
 //= require_directory ../../../vendor/assets/javascripts/joyride
 //= require_directory ../../../vendor/assets/javascripts/uploader
 //= require_directory ../../../vendor/assets/javascripts/spinner
-//= require rails.validations
-//= require rails.validations.simple_form
+//= require_directory ../../../vendor/assets/javascripts/client-side-validations

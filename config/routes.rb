@@ -139,11 +139,9 @@ Webapp::Application.routes.draw do
   resource :student, :only => [:update, :show]
   match 'register/student' => 'students#create', via: :post
   match 'match/student' => 'students#match', via: :post
-  match 'claim/account' => 'students#claim', via: :post
   match 'inbox' => 'students#inbox', via: :get
   match 'inbox/echo' => 'students#inbox_echo', via: :get
   match 'outbox' => 'students#outbox', via: :get
-  match 'enroll' => 'students#enroll', via: :post
   match 'dispute' => 'students#dispute', via: [:put, :post] 
 
   # Sektion 

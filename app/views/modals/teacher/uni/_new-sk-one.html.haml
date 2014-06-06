@@ -9,14 +9,14 @@
           = f.input :name, placeholder: 'Course or section name' 
           .row-fluid
             .span4
-              %h6.white= "Session starts in" 
+              %h6.orange= "Session starts in" 
               = f.input :smonth, as: :date, order: [:month]
             .span4
-              %h6.white= "Lasts for"
+              %h6.orange= "Lasts for"
               = f.input :duration, as: :select, selected: 12,
                 collection: [*1..12].map{ |m| [m, "#{m} month(s)"] }, value_method: :first, label_method: :last
             .span4
-              %h6.white= "Auto-renews?"
+              %h6.orange= "Auto-renews?"
               = f.input :renew, as: :select, selected: 1,
                 collection: [[1,'Never'], [2,'Immediately on expiry'], [3,'In next academic year']], value_method: :first, label_method: :last
           .row-fluid

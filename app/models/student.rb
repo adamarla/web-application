@@ -34,6 +34,7 @@ class Student < ActiveRecord::Base
   before_destroy :destroyable? 
 
   attr_accessor :code
+  accepts_nested_attributes_for :account # simple_form_for needs this 
 
   def self.name_begins_with( allowed = [] )
     return if allowed.empty? 

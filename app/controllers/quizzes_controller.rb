@@ -61,7 +61,7 @@ class QuizzesController < ApplicationController
         orig = Quiz.find params[:id]
         clone = orig.nil? ? nil : orig.clone(t.id)
         unless clone.nil?
-          Mailbot.delay.quiz_shared(clone, current_account.loggable, t) if account.email_is_real?
+          Mailbot.delay.quiz_shared(clone, current_account.loggable, t) if account.has_email?
         end 
       end # already_shared
       render json: { status: :ok }, status: :ok

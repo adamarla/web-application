@@ -251,8 +251,7 @@ class Quiz < ActiveRecord::Base
   end
 
   def laid_out?
-    not_laid_out = self.page_breaks_after.blank? && self.switch_versions_after.blank?
-    return !not_laid_out
+    return !(self.page_breaks_after.blank? || self.switch_versions_after.blank?)
   end
 
   def write(abridged = false)

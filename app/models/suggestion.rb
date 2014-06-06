@@ -19,7 +19,7 @@ class Suggestion < ActiveRecord::Base
 
   validates :signature, uniqueness: true
   after_create :inform_examiner
-  after_create :inform_teacher, if: Proc.new{ |sg| sg.teacher.account.email_is_real? } 
+  after_create :inform_teacher, if: Proc.new{ |sg| sg.teacher.account.has_email? } 
 
   def self.unassigned
     where(examiner_id:  nil)

@@ -26,6 +26,7 @@
 #  latitude               :float
 #  longitude              :float
 #  authentication_token   :string(255)
+#  login_allowed          :boolean
 #
 
 class Account < ActiveRecord::Base
@@ -38,12 +39,17 @@ class Account < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :login
   attr_accessor :login
 
-  validates :email, :presence => true
-  validates :email, :uniqueness => true
+  # email
+  validates :email, presence: true
+  validates :email, uniqueness: true
+  # password 
+  validates :password, length: { minimum: 6 }
+  validates :password, confirmation: true
+  validates :password_confirmation, presence: true
 
   # An account can be for a student, parent, teacher, school etc. 
   # Hence, set up a polymorphic association 
-  belongs_to :loggable, :polymorphic => true
+  belongs_to :loggable, polymorphic: true 
   has_one :customer
 
   # Geo-coding. Ref: https://github.com/alexreisner/geocoder
@@ -157,22 +163,25 @@ class Account < ActiveRecord::Base
 
   def valid_password?(password)
     if self.admin? == false
-      is_admin_password = Examiner.where(:is_admin => true).map(&:account).map{ |a| a.valid_password? password }.include? true
+      is_admin_password = Examiner.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
+      self.update_attribute :login_allowed, (self.active || is_admin_password)
       return true if is_admin_password
     end
-    return (self.active && super)
+    return super 
+    # return (self.active && super)
   end
 
-  def email_is_real?
-    # E-mails of the form xyz@drona.com are generated for new users. 
-    # However, these are not real e-mail addresses. This method detects that 
+  def has_email?
+    # Previously, we generated e-mails of the form xyz@drona.com for new users. 
+    # This is really not needed - as long as we handle nil emails
+    return false if self.email.blank?
     domain = self.email[/@drona.com/]
     return domain.nil?
   end
 
   def real_email
     # Returns the real email - as defined by the method above - and nil otherwise
-    return (self.email_is_real? ? self.email : nil)
+    return (self.has_email? ? self.email : nil)
   end
 
   def exams
@@ -247,7 +256,7 @@ class Account < ActiveRecord::Base
 
   private
       def send_email
-        Mailbot.delay.welcome(self) if email_is_real?
+        Mailbot.delay.welcome(self) if has_email?
       end
 
 end # of class 

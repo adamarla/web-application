@@ -26,6 +26,7 @@
 #  latitude               :float
 #  longitude              :float
 #  authentication_token   :string(255)
+#  login_allowed          :boolean
 #
 
 require 'test_helper'

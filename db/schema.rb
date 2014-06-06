@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140526062211) do
+ActiveRecord::Schema.define(:version => 20140606142332) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20140526062211) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "authentication_token"
+    t.boolean  "login_allowed"
   end
 
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"
@@ -97,8 +98,9 @@ ActiveRecord::Schema.define(:version => 20140526062211) do
     t.string   "title",       :limit => 150
     t.text     "description"
     t.integer  "teacher_id"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.boolean  "live",                       :default => true
   end
 
   add_index "courses", ["teacher_id"], :name => "index_courses_on_teacher_id"

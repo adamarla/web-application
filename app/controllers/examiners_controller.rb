@@ -259,7 +259,7 @@ class ExaminersController < ApplicationController
     e = Examiner.available
 
     for j in e
-      next unless j.account.email_is_real?
+      next unless j.account.has_email?
       a = ug.where(examiner_id: j.id).count > 0
       b = d.where(examiner_id: j.id).count > 0
       if a || b 
