@@ -43,6 +43,16 @@
 %html{html_attrs}
   %head 
     = javascript_include_tag "application", "admin"
+    %script{ type: "text/x-mathjax-config" } 
+      MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready", function() {
+      var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT ;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif") ;
+      }) ;
+      MathJax.Hub.Config({
+      styles: {
+      "span.mtext" : { "font-size" : "14px" , "font-weight" : 300 }
+      }
+      }) ;
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = stylesheet_link_tag "application" 
     = csrf_meta_tag
