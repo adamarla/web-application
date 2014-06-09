@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140606142332) do
+ActiveRecord::Schema.define(:version => 20140608052357) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -66,6 +66,12 @@ ActiveRecord::Schema.define(:version => 20140606142332) do
     t.datetime "updated_at",                    :null => false
   end
 
+  create_table "checklists", :force => true do |t|
+    t.integer "rubric_id"
+    t.integer "criterion_id"
+    t.integer "index"
+  end
+
   create_table "contracts", :force => true do |t|
     t.integer  "customer_id"
     t.date     "start_date"
@@ -104,6 +110,17 @@ ActiveRecord::Schema.define(:version => 20140606142332) do
   end
 
   add_index "courses", ["teacher_id"], :name => "index_courses_on_teacher_id"
+
+  create_table "criteria", :force => true do |t|
+    t.string   "text"
+    t.integer  "penalty",    :default => 0
+    t.integer  "account_id"
+    t.boolean  "standard",   :default => true
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "criteria", ["account_id"], :name => "index_criteria_on_account_id"
 
   create_table "customers", :force => true do |t|
     t.integer  "account_id"
@@ -352,6 +369,13 @@ ActiveRecord::Schema.define(:version => 20140606142332) do
     t.boolean "other",                     :default => false
     t.integer "weight",                    :default => -1
     t.integer "posn"
+  end
+
+  create_table "rubrics", :force => true do |t|
+    t.string   "name",       :limit => 100
+    t.integer  "teacher_id"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "schools", :force => true do |t|
