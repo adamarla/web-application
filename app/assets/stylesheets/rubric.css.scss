@@ -1,0 +1,33 @@
+
+$gray: #191919 ; // rgb(25,25,25)
+$lightgray: lighten($gray, 30%) ; // rgb(102,102,102)
+$deep-blue: #01537d ; // rgb(1,83,125)
+$orange:#ffa500 ; // rgb(255,165,0)
+
+.criterion {
+  .badge {
+     width: 8px ; 
+     height: 8px ;
+     padding-top: 0px ;
+     float: left ;
+     margin-top: 4px ;
+     background-color: $lightgray ;
+  }
+
+  &.selected { 
+    .badge { background-color: $orange ; }
+  }
+
+  .stars { 
+    width: 30% ; 
+    float: right ;
+    > .star { 
+      float: left ; 
+      width: 8px ;
+      height: 8px ;
+      background-color: $lightgray ;
+      border: none ;
+      &.enable { background-color: $deep-blue ; }  
+    } 
+  } 
+}

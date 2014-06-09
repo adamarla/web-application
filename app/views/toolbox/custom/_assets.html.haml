@@ -5,8 +5,10 @@
   .span9
     .small-text.white
       Drag and drop between sets or within a set to change order. Then, click 'Submit'
-  .span2
-    = simple_button for: 'Submit', class: 'btn btn-primary pull-right'
+  .span3
+    .btn-group
+      = simple_button(for: 'New', class: 'btn-inverse pull-left', id: 'btn-new-criterion') if type == :criteria
+      = simple_button for: 'Submit', class: 'btn btn-primary pull-right'
 .row-fluid
   .span4.used.assets{ id: "#{type}-used" }
     %h5.white.text-center= "Used #{type}"

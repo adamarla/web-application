@@ -18,6 +18,7 @@
         = render partial: 'menus/user/account'
       - if j == :toolbox
         = render partial: 'toolbox/grading/left/fdb-panel'
+        = render partial: 'toolbox/rubric/criterion'
 
 - layout = { left: [ [2, 'admin/mng-topics'],
                      [3, 'examiners/tag-pending'],
@@ -35,8 +36,12 @@
                      ['graph-1', nil] ] } 
 
 - if is_admin 
-  - layout[:left].push [1, 'admin/system-overview'], ['X', nil]
-  - layout[:wide].push [1, nil], [2, 'admin/accounts-in-country']
+  - layout[:left].push [1, 'admin/system-overview'], 
+                       ['X', nil],
+                       [11, 'admin/rubrics']
+  - layout[:wide].push [1, nil], 
+                       [2, 'admin/accounts-in-country'],
+                       [3, 'admin/rubric-details']
 
 !!!5
 
@@ -54,7 +59,7 @@
       }
       }) ;
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
-    = stylesheet_link_tag "application" 
+    = stylesheet_link_tag "application", "indie"
     = csrf_meta_tag
 
   %body 

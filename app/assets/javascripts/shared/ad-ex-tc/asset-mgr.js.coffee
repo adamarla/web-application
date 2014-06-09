@@ -1,6 +1,6 @@
 
 # Passed 'json' is assumed to have the following - and only the following - keys 
-#    type: [ quizzes | lessons ]
+#    type: [ quizzes | lessons  | criteria ]
 #    used : list of used assets of type = 'type'
 #    available : the other unused / available assets of type = 'type'
 #    id : of the course being edited
@@ -39,8 +39,8 @@ window.assetMgr = {
       root = assetMgr.root[j]
       continue unless root? 
 
-      singleColumn = j is 'used'
       ul = $(root).children('ul')
+      singleColumn = ul.length is 1  
 
       for d,index in json[j]
         nd = if singleColumn then ul[0] else ul[index % 2]
