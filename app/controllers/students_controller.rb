@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_filter :authenticate_account!, :except => [:create, :match, :claim]
+  before_filter :authenticate_account!, :except => [:create]
   respond_to :json
 
   def show
@@ -7,10 +7,10 @@ class StudentsController < ApplicationController
   end
 
   def create 
-    data = params[:student]
+    d = params[:student]
 
-    if data[:guard].blank? # => human entered registration data
-      student = Student.new name: data[:name]
+    if d[:jaal].blank? # => human entered registration data
+      student = Student.new name: d[:name]
 
       location = request.location
       city = state = country = zip = nil
@@ -23,16 +23,17 @@ class StudentsController < ApplicationController
          country = country.id unless country.blank?
       end
 
-      account_details = data[:account]
-      account = student.build_account email: account_details[:email], 
-                                      password: account_details[:password],
-                                      password_confirmation: account_details[:password],
+      login = d[:account_attributes]
+      account = student.build_account email: login[:email], 
+                                      password: login[:password],
+                                      password_confirmation: login[:password],
                                       city: city,
                                       state: state, 
                                       postal_code: zip,
                                       country: country
       if student.save
-        sign_in student.account
+        Mailbot.delay.welcome(account)
+        sign_in account
         redirect_to student_path
       end # no reason for else.. if client side validations worked
     else # registration data probably entered by a bot
@@ -40,45 +41,9 @@ class StudentsController < ApplicationController
     end
   end # of method 
 
-  def claim
-    # Before execution gets here, client side validation would have ensured that 
-    #    1. aid != nil 
-    #    2. No account with email that the user has now specified exists from before
-
-    aid = params[:checked].keys.first
-    if aid.blank? # client side validation should ensure this never happens
-      render json: { notify: { title: "No account specified for merging" } }, status: :ok
-    else
-      account = Account.find aid
-    end
-
-    uinp = params[:account]
-    location = request.location
-    city = state = country = zip = nil
-
-    unless location.nil?
-       city = location.city
-       state = location.state
-       zip = location.postal_code
-       country = Country.where{ name =~ location.country }.first
-       country = country.id unless country.blank?
-    end
- 
-    updated = account.update_attributes email: uinp[:email],
-                              password: uinp[:password], password_confirmation: uinp[:password],
-                              city: city, state: state, postal_code: zip, country: country 
-
-    if updated 
-      Mailbot.delay.welcome(account)
-      sign_in account
-      redirect_to student_path
-    end # no reason for else.. if client side validations worked
-  end
-
   def match
-    data = params[:student]
-    student = Student.new name: data[:name]
-    sk = Sektion.where{ uid =~ "#{data[:code]}" }.first
+    sk = Sektion.where(uid: "#{params[:enroll][:sektion]}".upcase).first 
+    nm = current_account.loggable.name
 
     @exists = true
     @enrolled = false
@@ -87,30 +52,8 @@ class StudentsController < ApplicationController
     if sk.nil?
       @exists = false
     else
-      unmatched = sk.students.select{ |s| !s.account.email_is_real? }
-      @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, student.name) < 3 }
-    end # else
-
-  end # method
-
-  def enroll 
-    code = params[:enroll][:sektion]
-    sk = Sektion.where{ uid =~ "#{code}" }.first
-
-    @exists = true
-    @enrolled = false
-    @candidates = []
-
-    if sk.nil?
-      @exists = false
-    elsif sk.student_ids.include? current_account.loggable_id
-      @enrolled = true
-    else
-      student = current_account.loggable
-      enrolled = sk.students 
-
-      similarly_named = enrolled.select{ |m| Levenshtein.distance(m.name, student.name) < 5 }
-      @candidates = similarly_named.select{ |m| !m.account.email_is_real? } 
+      unmatched = sk.students.select{ |s| !s.account.has_email? }
+      @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, nm) < 3 }
     end # else
 
   end # method

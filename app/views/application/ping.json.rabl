@@ -1,8 +1,9 @@
 
 object false 
   node(:deployment) { @dep }
+  node(:type, unless: @type.nil? ) { @type }
+  node(:blocked) { @blocked }
   node(:new) { @newbie }
-  node(:who, unless: @who.nil? ) { @who }
   node(:monitor) {
     { 
       quizzes: (@q.blank? ? [] : @q.map(&:id)), 

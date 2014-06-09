@@ -157,11 +157,11 @@ class GradedResponse < ActiveRecord::Base
           # Time to inform the teacher. You can do this only if teacher has provided 
           # an e-mail address. The default we assign will not work
           teacher = exam.quiz.teacher 
-          Mailbot.delay.grading_done(exam) if teacher.account.email_is_real?
+          Mailbot.delay.grading_done(exam) if teacher.account.has_email?
         end 
 
         if ws.publishable? # to the student if his/her worksheet has been graded
-          Mailbot.delay.worksheet_graded(ws) if self.student.account.email_is_real? 
+          Mailbot.delay.worksheet_graded(ws) if self.student.account.has_email? 
         end
       else # previously graded, but disputed now 
         self.update_attribute(:resolved, true)

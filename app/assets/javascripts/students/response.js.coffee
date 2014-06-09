@@ -45,7 +45,7 @@ jQuery ->
       exploded.update json
 
     else if url.match(/outbox/)
-    else if url.match(/enroll/)
+    else if url.match(/match\/student/)
       $('#m-enroll-self').modal 'hide'
 
       if json.exists is false
@@ -55,10 +55,15 @@ jQuery ->
       else if json.blocked is true
         notifier.show 'n-enrollment-blocked'
       else
-        target = $('#sk-confirm-identity')
+        mdl = $('#m-enrollment-confirm')
+        target = mdl.find '#sk-confirm-identity' 
+        submitBtn = mdl.find("button[id='btn-enroll-me']")
+        submitBtn.prop 'disabled', true
         karo.empty target
         key = 'candidates'
-        $('#m-enrollment-confirm').modal 'show'
+        mdl.modal 'show'
+    else if url.match(/merge\/accounts/)
+      $('#m-enrollment-confirm').modal 'hide'
     else if url.match(/dispute/)
       m = $('#m-dispute-2')
       m.find('textarea').val null

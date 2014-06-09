@@ -7,8 +7,9 @@
     %p
       Your name is most similar to the following names added by your teacher
     %p
-      Pick your name from the list and press <b>That's me!</b>. However, if none the names match  
-      then click <b>Not in the list</b>
+      Pick your name from the list and press <span class='orange'>That's me!</span>
+    %p
+      However, if none of the names match then press <span class='orange'>Not in the list</span>
     %p
       = simple_form_for :enroll, url: "#{merge_accounts_path}", remote: true, defaults: { label: false } do |f|
         #sk-confirm-identity

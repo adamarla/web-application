@@ -26,6 +26,7 @@
 #  latitude               :float
 #  longitude              :float
 #  authentication_token   :string(255)
+#  login_allowed          :boolean
 #
 
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html

@@ -36,21 +36,4 @@ module ApplicationUtil
     return "#{prefix}.#{suffix}".downcase
   end
 
-  def circular_slice(array, start, n)
-    # returns an array of indices in 'array' starting at 'start' and going 
-    # upto the next 'n' elements. If 'n' takes one beyond the end of the
-    # array, then wraps around to 0 and starts picking indices from there
-    #   Example: If array = [1,2,3], then circular_slice(array, 1, 3) -> [2,3,1]
-    #            and circular_slice(array,1,7) -> [2,3,1,2,3,1,2]
-
-    y = array
-    last = start + n 
-    n_concat = last / array.length
-    [*0...n_concat].each do |j|
-      y += array 
-    end
-    return y[start, n]
-  end
-
-
 end # of module 
