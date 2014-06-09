@@ -19,12 +19,12 @@ window.shadow = {
 
     $(shadow.root).focusin (event) ->
       event.stopPropagation()
-      rubric.keyboard = false
+      gp.keyboard = false
       return true
 
     $(shadow.root).focusout (event) ->
       event.stopPropagation()
-      rubric.keyboard = true
+      gp.keyboard = true
       return true
 
     $(shadow.commentBox).typeahead {

@@ -244,7 +244,7 @@ jQuery ->
 
   fdb.nav.on 'click', 'button', (event) ->
     event.stopImmediatePropagation()
-    rubric.keyboard = true
+    gp.keyboard = true
     id = $(this).attr 'id'
     switch id 
       when 'btn-prev-ques'
@@ -261,7 +261,7 @@ jQuery ->
     event.stopImmediatePropagation()
     return false if $(this).hasClass 'disabled'
 
-    rubric.keyboard = true
+    gp.keyboard = true
     id = $(this).attr 'id'
     fdb.tex = null
 
@@ -290,28 +290,28 @@ jQuery ->
         event.stopImmediatePropagation()
         $.get "rotate_scan.json?id=#{fdb.current.scan}"
       when 'btn-write'
-        rubric.keyboard = false
+        gp.keyboard = false
         fdb.mode = 'comments'
         $(shadow.commentBox).focus()
         $(this).addClass 'active'
       when 'btn-perfect'
         event.stopImmediatePropagation()
-        rubric.rewind()
-        rubric.select(3)
-        rubric.select(4)
-        rubric.select(5)
+        gp.rewind()
+        gp.select(3)
+        gp.select(4)
+        gp.select(5)
       when 'btn-blank'
         event.stopImmediatePropagation()
-        rubric.rewind()
-        rubric.select(0)
-        rubric.select(0)
-        rubric.select(0)
+        gp.rewind()
+        gp.select(0)
+        gp.select(0)
+        gp.select(0)
       when 'btn-cheated'
         event.stopImmediatePropagation()
-        rubric.rewind()
-        rubric.select(1)
-        rubric.select(0)
-        rubric.select(0)
+        gp.rewind()
+        gp.select(1)
+        gp.select(0)
+        gp.select(0)
       when 'btn-hide-controls'
         isClicked = $(this).hasClass 'active'
         btnGroups = $(this).closest('.row-fluid').siblings() 

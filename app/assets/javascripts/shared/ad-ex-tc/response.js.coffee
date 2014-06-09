@@ -25,7 +25,7 @@ jQuery ->
     else if url.match(/scans\/pending/)
       fdb.attach()
       fdb.initialize json
-      rubric.show()
+      gp.show()
     else if url.match(/audit\/open/) or url.match(/close\/apprentice\/audit/)
       isQuestion = if url.match(/audit\/open/)? then true else false
 
