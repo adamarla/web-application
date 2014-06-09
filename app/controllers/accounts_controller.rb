@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:ask_question, :view_fdb]
+  before_filter :authenticate_account!, :except => [:ask_question]
   respond_to :json
 
   def update 
@@ -180,6 +180,7 @@ class AccountsController < ApplicationController
         @comments = Remark.where(graded_response_id: siblings) 
       end 
     end
+
   end
 
   def poll_delayed_job_queue

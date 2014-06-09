@@ -2,7 +2,7 @@ class TokensController < ApplicationController
   respond_to :json
 
   def create
-    @account = Account.find_by_email(params[:email].downcase)
+    @account = Account.where(email: params[:email].downcase).first
     if @account.nil?
       status = 204 # no content, check in other system
       json = { :message => "Check in other system" }
@@ -17,7 +17,7 @@ class TokensController < ApplicationController
       case @account.loggable_type
         when "Student"
           name = Student.find_by_id(id)[:first_name]
-          gradeables = build_gradeables(@account)
+          worksheets = get_worksheets(@account)
         when "Teacher"
           name = Teacher.find_by_id(id)[:first_name]
         when "Examiner"
@@ -27,7 +27,7 @@ class TokensController < ApplicationController
         :token => @account.authentication_token, 
         :email => @account.email,
         :name  => name,
-        :gradeables => gradeables
+        :ws    => worksheets
       }
     end
     render status: status, json: json
@@ -61,34 +61,58 @@ class TokensController < ApplicationController
         :token => @account.authentication_token, 
         :email => @account.email,
         :name  => student.name,
-        :gradeables => build_gradeables(@account)
+        :ws    => get_worksheets(@account)
       }
     end
     render status: status, json: json
   end
 
+  def view_fdb
+    gr_ids = params[:id].split('-').map{ |id| id.to_i }
+    grs = GradedResponse.where(id: gr_ids)
+    @comments = Remark.where(graded_response_id: grs)
+    json = {
+      comments: @comments.map{ |c| 
+        { x: c.x, y: c.y, comment: c.tex_comment.text } 
+      }
+    }
+    render status: 200, json: json
+  end
+
   private
 
-    def build_gradeables(account)
+    def get_worksheets(account)
       student = Student.find_by_id(account.loggable_id)
-      ws_ids = Worksheet.where(student_id: student.id).map(&:id)
-      #without_scans = GradedResponse.of_student(student[:id]).without_scan.sort
-      #gradeables = without_scans.map do |g|
-      grs = GradedResponse.where(worksheet_id: ws_ids)
-      gradeables = grs.map do |g|
-        quiz = g.worksheet.exam.quiz
-        {
-          id: g.id, 
-          quiz: quiz.name, 
-          quizId: quiz.id, 
-          name: g.subpart.name_if_in?(quiz),
-          locn: "#{quiz.uid}/#{g.worksheet.uid}",
-          img: "#{g.q_selection.question.uid}/#{g.version}",
-          marks: g.feedback == 0 ? -1.0 : g.marks,
-          scan: g.scan 
+      ws = Worksheet.where(student_id: student.id)
+      worksheets = []
+      ws.each do |w|
+        quiz = w.exam.quiz
+        qsels = quiz.q_selections.order(:index)
+        qs = qsels.map(&:question)
+        gr = w.graded_responses
+        vers = w.signature.split(',')
+        items = []
+
+        items = qsels.each_with_index.map{ |qsel, i|
+          {
+            id: "#{w.id}.#{i+1}",
+            grId: w.billed ? gr.where(q_selection_id: qsel.id).map(&:id).join('-') : "",
+            name: "Q.#{i+1}",
+            img: "#{qs[i].uid}/#{vers[i]}",
+            scan: gr.nil? ? "" : gr.where(q_selection_id: qsel.id).first.scan,
+            marks: w.graded ? gr.where(q_selection_id: qsel.id).map(&:marks).inject(:+) : -1.0
+          }
         }
-      end 
-      return gradeables
+
+        worksheets << {
+          quizId: quiz.id,
+          quiz: quiz.name,
+          locn: "#{quiz.uid}/#{w.uid}",
+          questions: items
+	}
+
+      end
+      return worksheets
     end
 
 end

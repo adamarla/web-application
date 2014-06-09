@@ -199,6 +199,7 @@ Webapp::Application.routes.draw do
   # Token
   resources :tokens, :only => [:create, :destroy]
   match 'tokens/verify' => 'tokens#verify', via: :get
+  match 'tokens/view_fdb' => 'tokens#view_fdb', via: :get
   
   root :to => "welcome#index"
 
