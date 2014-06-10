@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20140608052357) do
     t.integer "rubric_id"
     t.integer "criterion_id"
     t.integer "index"
+    t.boolean "active",       :default => false
   end
 
   create_table "contracts", :force => true do |t|

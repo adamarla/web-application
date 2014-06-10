@@ -6,6 +6,7 @@
 #  rubric_id    :integer
 #  criterion_id :integer
 #  index        :integer
+#  active       :boolean         default(FALSE)
 #
 
 class Checklist < ActiveRecord::Base
