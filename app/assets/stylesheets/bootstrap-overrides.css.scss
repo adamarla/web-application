@@ -282,10 +282,12 @@ span.btn-shortcut {
 } 
 
 .subtext { 
-  color: $orange ;
-  font-size: 11px ;
   padding: 3px ;
-  text-transform: lowercase ;
+  color: $orange ;
+  font: { 
+    size: 11px ;
+    variant: small-caps ;
+  } 
 }
 
 .white { color: white }

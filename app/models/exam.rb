@@ -169,7 +169,7 @@ class Exam < ActiveRecord::Base
   end
 
   def path? 
-    return "#{self.quiz.uid}/#{self.uid}"
+    return self.uid.blank? ? "#{self.quiz.uid}/sample" : "#{self.quiz.uid}/#{self.uid}"
   end 
 
   def grade_by? 

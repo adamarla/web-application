@@ -263,6 +263,14 @@ ActiveRecord::Schema.define(:version => 20140608052357) do
     t.string   "last_name",  :limit => 30
   end
 
+  create_table "invoices", :force => true do |t|
+    t.date     "date"
+    t.boolean  "open",        :default => true
+    t.integer  "customer_id"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
   create_table "lessons", :force => true do |t|
     t.string   "title",       :limit => 150
     t.text     "description"
