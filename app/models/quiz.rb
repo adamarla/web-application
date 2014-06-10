@@ -124,7 +124,7 @@ class Quiz < ActiveRecord::Base
     return nil,nil if indie # no mass-assignment for indie teachers
 
     sk = Sektion.common_to(students.map(&:id)).last
-    name = "#{sk.name} (#{Date.today.strftime('%b %Y')})"
+    name = "#{sk.name}_#{Date.today.strftime('%b %Y')}"
     e = self.exams.create name: name, takehome: take_home
 
     for s in students 
