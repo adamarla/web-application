@@ -2,14 +2,8 @@
 object false 
   node(:exams) {
     @exams.map { |m|
-      if m.takehome 
-        tokens = m.name.split('_')
-        tag = tokens.last 
-        title = tokens.first 
-      else 
-        tag = nil
-        title = m.name 
-      end 
+      tag = m.created_at.strftime('%b %Y')
+      title = m.name.split('_').first
       { name: title, id: m.id, badge: (m.takehome ? 'icon-home' : 'icon-print'), tag: tag } 
     }
   } 

@@ -101,9 +101,10 @@ jQuery ->
       # enable the newly built quizzes 
       j = if json.indie then $('#pane-my-quizzes') else $('#pane-exb-quizzes')
       list = j.children()
-      for id in json.enable
-        quiz = list.filter("[marker=#{id}]")[0]
-        $(quiz).removeClass('disabled') if quiz?
+      if json.enable?
+        for id in json.enable
+          quiz = list.filter("[marker=#{id}]")[0]
+          $(quiz).removeClass('disabled') if quiz?
       # demo.update json
 
     else if url.match(/quiz\/mass_assign/) || url.match(/ping\/exam/)
