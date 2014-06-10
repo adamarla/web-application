@@ -82,7 +82,7 @@ window.line = {
 
     if json.badge? || isVideo
       if isVideo
-        useIcon = 'icon-factime-video'
+        useIcon = 'icon-facetime-video'
         badge.addClass 'video'
         badge.attr 'data-video', json.video
       else if typeof(json.badge) is 'string'
