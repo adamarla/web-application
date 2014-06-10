@@ -4,7 +4,8 @@
 #
 #  id         :integer         not null, primary key
 #  name       :string(100)
-#  teacher_id :integer
+#  account_id :integer
+#  standard   :boolean         default(TRUE)
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
 #
@@ -16,6 +17,6 @@ class Rubric < ActiveRecord::Base
   has_many :criteria, through: :checklists
 
   def self.standard 
-    where(teacher_id: nil)
+    where(standard: true)
   end 
 end
