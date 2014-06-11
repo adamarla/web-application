@@ -88,4 +88,13 @@ class Rubric < ActiveRecord::Base
     return ret
   end 
 
+  def colour?(mangled_fdb) 
+    # Returns one of :red, :orange, :green or :blank
+    return :blank if mangled_fdb == 0 
+    criteria = Criterion.where(id: self.criteria_ids_given(mangled_fdb))
+    return :red if criteria.map(&:red_flag).include?(true)
+    return :orange if criteria.map(&:orange_flag).include?(true)
+    return :green
+  end 
+
 end
