@@ -17,7 +17,11 @@ window.criteria = {
       stars.remove() 
     else if json.n_stars > 0
       b = stars.children('.star')
-      b.eq(j).addClass('enabled') for j in [0...json.n_stars]
+      for j in [0...json.n_stars]
+        z = b.eq(j)
+        z.addClass 'enabled' 
+        z.addClass 'orange' if json.orange 
+        z.addClass 'red' if json.red 
       
     # whether or not to show badge 
     showBadge = if (json.badge? and json.badge is true) then true else false 

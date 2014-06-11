@@ -3,6 +3,9 @@ $gray: #191919 ; // rgb(25,25,25)
 $lightgray: lighten($gray, 30%) ; // rgb(102,102,102)
 $deep-blue: #01537d ; // rgb(1,83,125)
 $orange:#ffa500 ; // rgb(255,165,0)
+$gradians-blue: #6ca7ab ; // rgb(108,167,171)
+$green: #11c214 ; // rgb(17,194,20)
+$red: #c40e0e ; // rgb(196,14,14)
 
 .criterion {
   > div > .badge {
@@ -27,7 +30,11 @@ $orange:#ffa500 ; // rgb(255,165,0)
       border-radius: 5px ;
       background-color: $lightgray ;
       border: none ;
-      &.enabled { background-color: $orange; }  
+      &.enabled { 
+        background-color: $green ;
+        &.red { background-color: $red ; }
+        &.orange { background-color: $orange ; }
+      }
       float: left ;
       margin-right: 4px ;
     } 

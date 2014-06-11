@@ -6,6 +6,10 @@
       = simple_form_for :criterion, remote: true, url: criterion_path, defaults: { label: false } do |f| 
         = f.input :desc, as: :text, hint: 'Describe the criterion ( 255 characters )', 
           input_html: { rows: 5, cols: 60, class: 'span11'}
-        = f.input :penalty, as: :select, collection: (0..100).step(5).to_a, wrapper_html: { class: 'span6' },
+        = f.input :penalty, as: :select, collection: (0..100).step(5).to_a, wrapper_html: { class: 'span3' },
           hint: 'Penalty (%)', include_blank: false
-        = simple_button for: 'Submit', class: 'pull-right btn-primary', type: :submit
+        = f.input :red_flag, as: :select, collection: [false, true], wrapper_html: { class: 'span3 offset1' },
+          hint: 'Red Flag?', include_blank: false
+        = f.input :orange_flag, as: :select, collection: [false, true], wrapper_html: { class: 'span4' },
+          hint: 'Orange Flag?', include_blank: false
+        = simple_button for: 'Submit', class: 'btn-primary', type: :submit

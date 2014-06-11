@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140608052357) do
+ActiveRecord::Schema.define(:version => 20140611101130) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -117,11 +117,13 @@ ActiveRecord::Schema.define(:version => 20140608052357) do
 
   create_table "criteria", :force => true do |t|
     t.string   "text"
-    t.integer  "penalty",    :default => 0
+    t.integer  "penalty",     :default => 0
     t.integer  "account_id"
-    t.boolean  "standard",   :default => true
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.boolean  "standard",    :default => true
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "red_flag",    :default => false
+    t.boolean  "orange_flag", :default => false
   end
 
   add_index "criteria", ["account_id"], :name => "index_criteria_on_account_id"

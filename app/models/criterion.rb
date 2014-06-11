@@ -2,13 +2,15 @@
 #
 # Table name: criteria
 #
-#  id         :integer         not null, primary key
-#  text       :string(255)
-#  penalty    :integer         default(0)
-#  account_id :integer
-#  standard   :boolean         default(TRUE)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id          :integer         not null, primary key
+#  text        :string(255)
+#  penalty     :integer         default(0)
+#  account_id  :integer
+#  standard    :boolean         default(TRUE)
+#  created_at  :datetime        not null
+#  updated_at  :datetime        not null
+#  red_flag    :boolean         default(FALSE)
+#  orange_flag :boolean         default(FALSE)
 #
 
 class Criterion < ActiveRecord::Base
@@ -21,7 +23,7 @@ class Criterion < ActiveRecord::Base
   end 
 
   def num_stars?
-    return ((100 - self.penalty) / 20.0).round
+    return self.red_flag ? 5 : ((100 - self.penalty) / 20.0).round
   end 
 
 end
