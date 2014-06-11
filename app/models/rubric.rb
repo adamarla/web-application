@@ -8,6 +8,7 @@
 #  standard   :boolean         default(TRUE)
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
+#  active     :boolean         default(FALSE)
 #
 
 class Rubric < ActiveRecord::Base

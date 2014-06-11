@@ -9,6 +9,7 @@
 #  updated_at :datetime
 #  school_id  :integer
 #  indie      :boolean         default(TRUE)
+#  rubric_id  :integer
 #
 
 #     __:has_many_____     ___:has_many___  

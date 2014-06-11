@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140611101130) do
+ActiveRecord::Schema.define(:version => 20140611175950) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(:version => 20140611101130) do
     t.datetime "submit_by"
     t.datetime "regrade_by"
     t.text     "dist_scheme"
+    t.integer  "rubric_id"
   end
 
   create_table "faculty_rosters", :force => true do |t|
@@ -381,8 +382,9 @@ ActiveRecord::Schema.define(:version => 20140611101130) do
     t.string   "name",       :limit => 100
     t.integer  "account_id"
     t.boolean  "standard",                  :default => true
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.boolean  "active",                    :default => false
   end
 
   create_table "schools", :force => true do |t|
@@ -466,6 +468,7 @@ ActiveRecord::Schema.define(:version => 20140611101130) do
     t.datetime "updated_at"
     t.integer  "school_id"
     t.boolean  "indie",                    :default => true
+    t.integer  "rubric_id"
   end
 
   create_table "tex_comments", :force => true do |t|

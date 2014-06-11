@@ -17,6 +17,7 @@
 #  submit_by   :datetime
 #  regrade_by  :datetime
 #  dist_scheme :text
+#  rubric_id   :integer
 #
 
 include GeneralQueries
