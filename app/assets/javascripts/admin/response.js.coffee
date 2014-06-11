@@ -49,6 +49,7 @@ jQuery ->
     else if url.match(/rubric$/) # only if its a POST request to create a new rubric
       target = $('#my-rubrics')
       key = 'rubrics'
+      menu = 'per-rubric'
     else if url.match(/criterion/)
       $('#m-new-criterion').modal 'hide'
       return assetMgr.render(json.criteria, true)
