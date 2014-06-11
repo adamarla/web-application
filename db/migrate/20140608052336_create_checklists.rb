@@ -6,5 +6,7 @@ class CreateChecklists < ActiveRecord::Migration
       t.integer :index 
       t.boolean :active, default: false 
     end
+    add_index :checklists, :rubric_id 
+    add_index :checklists, :criterion_id 
   end
 end

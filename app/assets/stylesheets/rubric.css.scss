@@ -5,10 +5,10 @@ $deep-blue: #01537d ; // rgb(1,83,125)
 $orange:#ffa500 ; // rgb(255,165,0)
 
 .criterion {
-  .badge {
+  > div > .badge {
      width: 8px ; 
      height: 8px ;
-     padding-top: 0px ;
+     padding: 4px ;
      float: left ;
      margin-top: 4px ;
      background-color: $lightgray ;
@@ -19,15 +19,17 @@ $orange:#ffa500 ; // rgb(255,165,0)
   }
 
   .stars { 
-    width: 30% ; 
-    float: right ;
+    float: left ;
+    margin-top:3px ;
     > .star { 
-      float: left ; 
-      width: 8px ;
-      height: 8px ;
+      width: 5px ;
+      height: 5px ;
+      border-radius: 5px ;
       background-color: $lightgray ;
       border: none ;
-      &.enable { background-color: $deep-blue ; }  
+      &.enabled { background-color: $orange; }  
+      float: left ;
+      margin-right: 4px ;
     } 
   } 
 }

@@ -53,3 +53,8 @@ lnk-def-rubric :
     wide: wide-3
   autoclick :
     tab : tab-rubrics
+
+tab-rubrics : 
+  url : 
+    self : list/rubrics
+    panel : rubric/load?id=:id

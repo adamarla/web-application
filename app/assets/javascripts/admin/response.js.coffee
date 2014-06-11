@@ -38,6 +38,19 @@ jQuery ->
         school = json.school
         $('#school-overview #school-name').text school.name
         $('#school-overview #school-detail').text "#{school.city} #{school.phone}"
+    else if url.match(/list\/rubrics/)
+      target = $('#my-rubrics')
+      key = 'rubrics'
+      clickFirst = true 
+    else if url.match(/rubric\/load/)
+      karo.tab.enable 'tab-rubric-details'
+      return assetMgr.render(json)
+    else if url.match(/rubric/)
+      target = $('#my-rubrics')
+      key = 'rubrics'
+    else if url.match(/criterion/)
+      $('#m-new-criterion').modal 'hide'
+      return assetMgr.render(json.criteria, true)
     else
       matched = false
 

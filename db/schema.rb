@@ -73,6 +73,9 @@ ActiveRecord::Schema.define(:version => 20140608052357) do
     t.boolean "active",       :default => false
   end
 
+  add_index "checklists", ["criterion_id"], :name => "index_checklists_on_criterion_id"
+  add_index "checklists", ["rubric_id"], :name => "index_checklists_on_rubric_id"
+
   create_table "contracts", :force => true do |t|
     t.integer  "customer_id"
     t.date     "start_date"

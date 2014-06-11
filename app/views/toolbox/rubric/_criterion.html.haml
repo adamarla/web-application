@@ -1,13 +1,10 @@
 
 .row-fluid.leaf.criterion
   .span1
-    .badge.hide
-  .span10
+    .badge
+  .span11
     .text= 'something, something'
     .stars
-      .star
-      .star
-      .star
-      .star
-      .star
+      - for j in [*1..5]
+        .star
   = check_box_tag :tbd, :t, false, class: :hide 

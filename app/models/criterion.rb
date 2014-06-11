@@ -19,4 +19,9 @@ class Criterion < ActiveRecord::Base
   def self.standard
     where(standard: true)
   end 
+
+  def num_stars?
+    return ((100 - self.penalty) / 20.0).round
+  end 
+
 end

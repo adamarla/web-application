@@ -19,6 +19,8 @@
       - if j == :toolbox
         = render partial: 'toolbox/grading/left/fdb-panel'
         = render partial: 'toolbox/rubric/criterion'
+      - if j == :modals
+        = render partial: 'modals/admin/new-criterion' if is_admin
 
 - layout = { left: [ [2, 'admin/mng-topics'],
                      [3, 'examiners/tag-pending'],
@@ -60,6 +62,7 @@
       }) ;
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = stylesheet_link_tag "application", "indie"
+    = stylesheet_link_tag "admin" if is_admin 
     = csrf_meta_tag
 
   %body 

@@ -185,6 +185,14 @@ Webapp::Application.routes.draw do
   match 'set/deadlines' => 'exams#deadlines', via: [:put, :post]
   match 'ping/exam' => 'exams#ping', via: :get
 
+  # Rubrics 
+  resource :rubric, controller: :rubrics, only: [:create]
+  match 'list/rubrics' => 'rubrics#list', via: :get
+  match 'rubric/load' => 'rubrics#load', via: :get
+
+  # Criterion
+  resource :criterion, controller: :criteria, only: [ :create ]
+
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get
   match 'faq' => 'welcome#faq'

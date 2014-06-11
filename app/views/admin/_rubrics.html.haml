@@ -1,7 +1,10 @@
 
 %ul.nav.nav-tabs.always-on
   %li
-    = simple_link for: 'Existing', id: 'tab-rubrics', href: '#pane-rubrics'
+    = simple_link for: 'Rubrics', id: 'tab-rubrics', href: '#pane-rubrics'
 .tab-content
   #pane-rubrics.tab-pane
-    = simple_button icon: 'icon-plus', id: 'btn-new-rubric', class: 'btn-primary no-remove pull-right'
+    = simple_form_for :rubric, remote: true, url: rubric_path, defaults: { label: false } do |f| 
+      = f.input_field :name, placeholder: 'Name the rubric', class: 'span8'
+      %button.btn.btn-primary.pull-right{ type: :submit }= 'Add'
+    %div.purge-blind{ id: 'my-rubrics' }
