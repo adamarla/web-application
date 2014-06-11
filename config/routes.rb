@@ -190,6 +190,7 @@ Webapp::Application.routes.draw do
   match 'rubric/update' => 'rubrics#update', via: :post
   match 'list/rubrics' => 'rubrics#list', via: :get
   match 'rubric/load' => 'rubrics#load', via: :get
+  match 'activate/rubric' => 'rubrics#activate', via: :get
 
   # Criterion
   resource :criterion, controller: :criteria, only: [ :create ]

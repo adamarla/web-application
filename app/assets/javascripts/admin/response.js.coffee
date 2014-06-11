@@ -42,6 +42,7 @@ jQuery ->
       target = $('#my-rubrics')
       key = 'rubrics'
       clickFirst = true 
+      menu = 'per-rubric'
     else if url.match(/rubric\/load/)
       karo.tab.enable 'tab-rubric-details'
       return assetMgr.render(json)

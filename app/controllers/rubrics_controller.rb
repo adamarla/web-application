@@ -39,4 +39,16 @@ class RubricsController < ApplicationController
     @used = Criterion.where(id: used_ids).order(:penalty).reverse_order
     @available = Criterion.where(id: other_ids).order(:penalty).reverse_order
   end 
+
+  def activate 
+    # Only one rubric can be active at a time 
+    r = Rubric.find params[:id]
+    unless r.nil?
+      others = Rubric.where(account_id: r.account_id)
+      others.map{ |a| a.update_attribute(:active, false) }
+      r.update_attribute :active, true
+    end 
+    render json: { status: :ok }, status: :ok
+  end 
+
 end

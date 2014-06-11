@@ -8,3 +8,4 @@ object false
   node(:available) {
     @available.map{ |c| { id: c.id, name: c.text, n_stars: c.num_stars?, red: c.red_flag, orange: c.orange_flag } } 
   }
+  node(:a) { @rbid }

@@ -16,6 +16,7 @@
       -# render exceptions here 
       - if j == :menus 
         = render partial: 'menus/user/account'
+        = render partial: 'menus/admin/per-rubric' if is_admin
       - if j == :toolbox
         = render partial: 'toolbox/grading/left/fdb-panel'
         = render partial: 'toolbox/rubric/criterion'

@@ -58,3 +58,8 @@ tab-rubrics :
   url : 
     self : list/rubrics
     panel : rubric/load?id=:id
+
+a-activate-rubric : 
+  update-on : rubric/load
+  url : 
+    self : activate/rubric?id=:a
