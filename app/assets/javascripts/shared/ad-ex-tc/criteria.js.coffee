@@ -37,4 +37,17 @@ jQuery ->
     switch id 
       when 'btn-new-criterion'
         $('#m-new-criterion').modal 'show'
+      when 'btn-update-assets'
+        rbId = this.getAttribute 'data-id' # rubric ID 
+        nd = assetMgr.root['used']
+        ret = { used: new Array(), id: rbId }
+        if nd?
+          ul = $(nd).children('ul').eq(0)
+          for li in ul.children('li')
+            x = li.getAttribute('data-id')
+            ret.used.push x
+
+        spinner.setText 'Updating ...'
+        $.post 'rubric/update', ret
+
     return true

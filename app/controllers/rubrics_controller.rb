@@ -12,6 +12,16 @@ class RubricsController < ApplicationController
     end 
   end 
 
+  def update 
+    rb = Rubric.find params[:id]
+
+    unless rb.nil?
+      used = params[:used].map(&:to_i)
+      rb.update_criteria used 
+    end 
+    render json: { result: :done }, status: :ok
+  end 
+
   def list 
     is_admin = current_account.admin?
     @rb = Rubric.where('account_id = ? OR standard = ?', current_account.id, true)

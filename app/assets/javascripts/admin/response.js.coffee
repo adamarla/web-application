@@ -45,7 +45,7 @@ jQuery ->
     else if url.match(/rubric\/load/)
       karo.tab.enable 'tab-rubric-details'
       return assetMgr.render(json)
-    else if url.match(/rubric/)
+    else if url.match(/rubric$/) # only if its a POST request to create a new rubric
       target = $('#my-rubrics')
       key = 'rubrics'
     else if url.match(/criterion/)

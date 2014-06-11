@@ -187,6 +187,7 @@ Webapp::Application.routes.draw do
 
   # Rubrics 
   resource :rubric, controller: :rubrics, only: [:create]
+  match 'rubric/update' => 'rubrics#update', via: :post
   match 'list/rubrics' => 'rubrics#list', via: :get
   match 'rubric/load' => 'rubrics#load', via: :get
 
