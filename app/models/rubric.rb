@@ -37,6 +37,8 @@ class Rubric < ActiveRecord::Base
   end 
 
   def num_criteria?(type = :active) 
+    # returns the number of criteria in this rubric. By default, returns the 
+    # number of active criteria
     c = Checklist.where(rubric_id: self.id)
     case type 
       when :active 
@@ -47,6 +49,43 @@ class Rubric < ActiveRecord::Base
         c = c 
     end 
     return c.count 
+  end 
+
+  def fdb_and_penalty_given(criterion_ids)
+    # We are intentionally not considering just the active criteria. 
+    # Its possible that the rubric owner is making changes while graders are grading. 
+    # In which case, the graders would see the old rubric till such time that they 
+    # reload. The choice then is of either not recording some of what the grader 
+    # says OR recording irrespective of whether some criteria are now inactive. We 
+    # choose to do the latter 
+
+    criteria = Checklist.where(rubric_id: self.id).order(:index)
+
+    mangled_fdb = 0 
+    penalty = 0 
+
+    ids = criteria.map(&:criterion_id)
+    indices = criteria.map(&:index)
+    penalties = criteria.map(&:criterion).map(&:penalty)
+
+    for m in criterion_ids
+      j = ids.index m
+      next if j.nil?
+      mangled_fdb |= ( 1 << indices[j] )
+      penalty += penalties[j]
+    end 
+    penalty = (penalty > 100) ? 100 : penalty 
+    return mangled_fdb, penalty
+  end 
+
+  def criteria_ids_given(mangled_fdb)
+    criteria = Checklist.where(rubric_id: self.id).order(:index)
+    ret = [] 
+
+    for j in criteria  
+      ret.push(j.criterion_id) if ((mangled_fdb & ( 1 << j.index )) != 0 )
+    end 
+    return ret
   end 
 
 end
