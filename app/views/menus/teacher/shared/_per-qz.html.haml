@@ -11,9 +11,9 @@
       = simple_link for: 'List Assignments', id: 'lnk-exb-existing', icon: 'icon-list'
     %li
       = simple_link for: 'Sample Assignment', id: 'lnk-download-sample', icon: 'icon-file',
-      url: { self: "#{Gutenberg['server']}/mint/:a/sample/document.pdf" }
+      url: { self: "#{Gutenberg['server']}/mint/:a/sample/document.pdf" }, target: '_blank'
   %li
     = simple_link for: "Download Solution (PDF)", id: 'lnk-download-solution', 
-    url: { self: "#{Gutenberg['server']}/mint/:a/document.pdf" }, icon: 'icon-download' 
+    url: { self: "#{Gutenberg['server']}/mint/:a/document.pdf" }, icon: 'icon-download', target: '_blank'
   %li
     = simple_link for: "Share Quiz", id: 'lnk-share-quiz', icon: 'icon-share'
