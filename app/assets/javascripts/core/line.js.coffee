@@ -79,13 +79,22 @@ window.line = {
 
     # Badge
     badge = children.filter(".badge")
+
     if json.badge? || isVideo
       if isVideo
-        $("<i class='icon-facetime-video'></i>").appendTo badge
+        useIcon = 'icon-facetime-video'
         badge.addClass 'video'
         badge.attr 'data-video', json.video
+      else if typeof(json.badge) is 'string'
+        useIcon = if json.badge.search(/^icon-/) isnt -1 then json.badge else null
+      else
+        useIcon = null
+
+      if useIcon?
+        $("<i class='#{useIcon}'></i>").appendTo badge
       else
         badge.text json.badge
+
       badge.addClass 'span2'
       remaining -= 2
 

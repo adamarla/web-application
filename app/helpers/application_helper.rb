@@ -21,7 +21,7 @@ module ApplicationHelper
     attributes = {}
 
     # HAML: non data-* attributes
-    [:href, :id, :class, :marker].each do |k|
+    [:href, :id, :class, :marker, :target].each do |k|
       v = options.delete(k)
       attributes[k] = ( k == :href ) ? (v || '#') : v
     end
