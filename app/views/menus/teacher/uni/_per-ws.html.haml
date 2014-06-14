@@ -1,8 +1,8 @@
 
-%ul.dropdown-menu.dropdown-inverse#per-ws{ :role => :menu }
+%ul.dropdown-menu.dropdown-inverse#per-ws{ role: :menu }
   %li
     = simple_link for: "Download PDF", id: 'lnk-ws-download', icon: 'icon-download',
-    url: { self: "#{Gutenberg['server']}/mint/:a/document.pdf" }
+    url: { self: "#{Gutenberg['server']}/mint/:a/document.pdf" }, target: '_blank'
   %li
     = simple_link for: 'View Disputes', id: 'lnk-exam-disputes', icon: 'icon-comment'
   %li

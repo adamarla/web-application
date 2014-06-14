@@ -2,4 +2,4 @@
 %ul.dropdown-menu.dropdown-inverse#st-inbox{ :role => :menu }
   %li
     = simple_link for: 'Download PDF', id: 'lnk-inbox-download', icon: 'icon-download',
-    url: { self: "#{Gutenberg['server']}/:a/document.pdf" }
+    url: { self: "#{Gutenberg['server']}/:a/document.pdf" }, target: '_blank'
