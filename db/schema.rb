@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140611175950) do
+ActiveRecord::Schema.define(:version => 20140616052417) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -468,7 +468,6 @@ ActiveRecord::Schema.define(:version => 20140611175950) do
     t.datetime "updated_at"
     t.integer  "school_id"
     t.boolean  "indie",                    :default => true
-    t.integer  "rubric_id"
   end
 
   create_table "tex_comments", :force => true do |t|

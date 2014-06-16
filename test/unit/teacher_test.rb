@@ -9,7 +9,6 @@
 #  updated_at :datetime
 #  school_id  :integer
 #  indie      :boolean         default(TRUE)
-#  rubric_id  :integer
 #
 
 require 'test_helper'
