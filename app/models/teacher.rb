@@ -110,6 +110,12 @@ class Teacher < ActiveRecord::Base
     Sektion.joins(:faculty_rosters).where('faculty_rosters.teacher_id = ?', self.id)
   end 
 
+  def rubric_id? 
+    own = Rubric.where(account_id: self.account.id, active: true)
+    ret = own.blank? ? Rubric.where(standard: true, active: true) : own
+    return (ret.blank? ? nil : ret.first.id)
+  end 
+
   def worksheets
 =begin
     A teacher can access:
@@ -126,7 +132,6 @@ class Teacher < ActiveRecord::Base
 
     @worksheets = Exam.where(:id => total).order('created_at DESC')
   end
-
 
   def new_to_the_site?
     (self_made_quizzes.count < 1)

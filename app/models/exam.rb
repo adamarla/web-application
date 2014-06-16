@@ -51,6 +51,14 @@ class Exam < ActiveRecord::Base
     where(open: true)
   end 
 
+  def rubric_id? 
+    return self.rubric_id unless self.rubric_id.nil?
+    t = self.quiz.teacher 
+    rubric = t.rubric_id?
+    self.update_attribute :rubric_id, rubric 
+    return rubric 
+  end 
+
   def close? 
     # Should the exam be closed to further students at the time of asking?
     if self.quiz.teacher.indie
@@ -245,9 +253,11 @@ class Exam < ActiveRecord::Base
 
   public 
     def seal 
-      indie = self.quiz.teacher.indie 
+      t = self.quiz.teacher 
+      rubric = t.rubric_id?
 
-      if indie 
+      self.update_attribute(:rubric_id, rubric) unless rubric.nil?
+      if t.indie 
         created = self.created_at
         name = "#{created.strftime("%B %Y")}"
         self.update_attributes name: name, takehome: true
