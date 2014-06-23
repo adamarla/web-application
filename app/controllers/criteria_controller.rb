@@ -6,7 +6,7 @@ class CriteriaController < ApplicationController
     d = params[:criterion]
     is_admin = current_account.admin?
     red_flag = d[:red_flag] == 'true' 
-    orange_flag = d[:orange_flag] == 'true'
+    orange_flag = (d[:orange_flag] == 'true') && !red_flag # one or the other - not both
     shortcut = (!is_admin || d[:shortcut].blank?) ? nil : d[:shortcut]
 
     @c = Criterion.new text: d[:desc], penalty: d[:penalty], standard: is_admin, 

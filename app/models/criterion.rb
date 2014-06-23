@@ -20,6 +20,11 @@ class Criterion < ActiveRecord::Base
   validates :penalty, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
   validates :shortcut, uniqueness: true, if: :has_shortcut
 
+  before_save :no_orange, if: :red_flag_changed?
+  before_save :no_red, if: :orange_flag_changed?
+  before_save :standard, if: :shortcut_changed?
+  before_save :no_shortcut, if: :standard_changed?
+
   def self.standard
     where(standard: true)
   end 
@@ -35,19 +40,12 @@ class Criterion < ActiveRecord::Base
     return (100 - self.penalty)
   end 
 
-  def perception? 
-    # return :red if self.red_flag? 
-    # n = self.num_stars?
-    # return ( n < 3 ? :light : ( n == 3 ? :med : :dark ) )
-    return (self.red_flag ? :red : (self.orange_flag ? :orange : :green))
+  def penalty?
+    return self.penalty
   end 
 
-  def badge? 
-    return 'icon-flag red' if self.red_flag
-    return 'icon-flag orange' if self.orange_flag
-    n = self.num_stars? 
-    return (n < 4 ? 'icon-tag' : 'icon-thumbs-up')
-    # return (n < 3 ? 'icon-thumbs-down' : ( n < 5 ? 'icon-tag' : 'icon-thumbs-up'))
+  def perception? 
+    return (self.red_flag ? :red : (self.orange_flag ? :orange : :green))
   end 
 
   def shortcut? 
@@ -57,6 +55,21 @@ class Criterion < ActiveRecord::Base
   private 
       def has_shortcut
         return !shortcut.blank?
+      end 
+
+      def no_red
+        return true unless orange_flag # no problem if orange_flag is being set to false
+        assign_attributes red_flag: false
+      end 
+
+      def no_orange
+        return true unless red_flag # no problem if red_flag is being set to false 
+        assign_attributes orange_flag: false
+      end 
+
+      def no_shortcut
+        return true if standard
+        assign_attributes shortcut: nil
       end 
 
 end # of class
