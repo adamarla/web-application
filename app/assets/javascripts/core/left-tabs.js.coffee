@@ -58,12 +58,14 @@ emptyOptions = {
 }
 
 window.leftTabs = {
+  sharedPanel : null,
+
   create : (root, json, optns = {}) ->
     root = if typeof root is 'string' then $(root) else root
 
     options = {}
     $.extend options, emptyOptions, optns # at the very least, ensure empty values 
-    sharedPanel = options.shared
+    pnId = options.shared
 
     html = $("<div id='#{options.id.root}' class='tabbable tabs-left #{options.klass.root}'></div>")
 
@@ -74,8 +76,10 @@ window.leftTabs = {
     ul.appendTo html
 
     content.appendTo html
-    if sharedPanel?
-      $("#toolbox").children("##{sharedPanel}").eq(0).clone().appendTo content
+    if pnId?
+      pn = $("#toolbox").children("##{pnId}").eq(0).clone()
+      pn.attr 'id', "#{pnId}-shared"
+      pn.appendTo content
 
     # Collect the data-* attributes set on ul > li > a into one string. These are common to all <a>
     data = ""
@@ -96,11 +100,11 @@ window.leftTabs = {
     for m,i in json.tabs
       # make the <li>
 
-      liColour = m.colour
-      disable = liColour is 'disabled' || liColour is 'nodata'
+      liColor = m.color
+      disable = liColor is 'disabled' || liColor is 'nodata'
 
       li = "<li marker=#{m.id}"
-      li += " colour=#{liColour}" unless disable
+      li += " color=#{liColor}" unless disable
       if disable
         li += (if options.split then " class='split disabled'" else " class='disabled'")
       else
@@ -118,8 +122,8 @@ window.leftTabs = {
       else
         script = m.name
 
-      if sharedPanel?
-        aHtml = "<a href=##{sharedPanel} #{data} class='#{options.klass.a}'>"
+      if pnId?
+        aHtml = "<a href=##{pnId} #{data} class='#{options.klass.a}'>"
         if options.split
           aHtml += "<div class='pull-left'>#{m.name}</div>"
           if options.writeBoth
@@ -129,7 +133,7 @@ window.leftTabs = {
             aHtml += "<div class='pull-right'></div></a>"
           a = $(aHtml)
         else
-          a = $("<a href=##{sharedPanel} #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
+          a = $("<a href=##{pnId} #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
       else
         divId = if options.id.div? then options.id.div else "dyn-tab"
         a = $("<a href='##{divId}-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")

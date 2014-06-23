@@ -2,7 +2,7 @@
 object false 
   node(:criteria) {
     { used: [],
-      available: [ { name: @c.text, id: @c.id, n_stars: @c.num_stars? } ],
+      available: [ { text: @c.text, id: @c.id, badge: @c.badge?, kb: @c.shortcut? } ],
       type: :criteria }
   }
     

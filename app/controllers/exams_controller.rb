@@ -19,8 +19,8 @@ class ExamsController < ApplicationController
     pg = params[:page].nil? ? 1 : params[:page].to_i
     @students = @students.page(pg).per(@per_pg)
 
-    @totals = @students.map{ |s| s.marks_scored_in @exam.id }
-    @honest = @students.map{ |s| s.honestly_attempted? @exam.id }
+    @totals = @students.map{ |s| s.score_in? @exam.id }
+    @perceptions = @students.map{ |s| @exam.perception?(s.id) }
     @max = @exam.quiz.total?
     @questions = @exam.quiz.subparts # subparts actually - and index ordered 
     @g_all = GradedResponse.in_exam @exam.id
@@ -42,6 +42,8 @@ class ExamsController < ApplicationController
       pg = params[:page].nil? ? 1 : params[:page].to_i
       @qsids = @qsids.page(pg).per(per_pg)
       @gr = GradedResponse.of_student(student_id).in_exam @exam.id
+      @criteria = Rubric.find(@exam.rubric_id?).criteria?(:all) 
+      # include even those criteria that have become inactive since the time the exam was graded
     else
       head :bad_request 
     end

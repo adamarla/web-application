@@ -116,7 +116,8 @@ module ApplicationHelper
     id = options.delete :id
     tooltip = options.delete(:tooltip) || nil
     type = options.delete(:type) || :button
-    shortcut = options.delete(:shortcut) || nil
+    kb = options[:kb] || nil
+    options[:kb] = options[:kb].downcase unless options[:kb].blank?
 
     unless tooltip.nil?
       rel = :tooltip
@@ -126,7 +127,7 @@ module ApplicationHelper
     end
 
     content_tag :button, class: "btn #{klass}", type: type, id: id, rel: rel, title: title, data: options do 
-      render = label.blank? ? "" : (shortcut.blank? ? label : "<span class='kb-shortcut'>#{shortcut}</span>#{label}")
+      render = label.blank? ? "" : (kb.blank? ? label : "<span class='kb'>#{kb}</span>#{label}")
       render += (icon.blank? ? "" : content_tag(:i, nil, :class => "icon-white #{icon}") )
       unless as.blank?
         render += (as == :radio) ? 

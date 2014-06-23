@@ -19,7 +19,7 @@ class TexComment < ActiveRecord::Base
 
   def trivial?
     return self.trivial unless self.trivial.nil?
-    c = crux
+    c = crux # private method call !
     txt = c.select{ |j| j =~ /^text/ }
     math = (c - txt).select{ |m| !(m =~ /surd|times|\?/) } # ignore standalone $\surd$, $\times$ and $?$ as math
     n_words = txt.blank? ? 0 : txt.map{ |m| m.split.count }.inject(:+) # number of english words
@@ -27,6 +27,25 @@ class TexComment < ActiveRecord::Base
     self.update_attribute :trivial, trivial
     return trivial
   end
+
+  def self.record(comments, e_id, a_id, d_id = nil)
+    # comments -> an array of TeX comments with x- and y- coordinates 
+    # eid -> examiner id 
+ 
+    # A TexComment stores the TeX to be rendered 
+    # A Remark adds positional information (x,y) to 
+    # A Doodle is a collection of remarks for a question attempt by a non-live examiner 
+    # - perhaps as part of the training / vetting process 
+
+    # Each chunk is of the form --> [x, y, TeX]
+    for chunk in comments.each_slice(3).to_a 
+      break if chunk.length != 3 # the tex w/ x- and y- coordinates
+      tex = TexComment.where(text: chunk[2]).first 
+      tex = tex.nil? ? TexComment.create(text: chunk[2], examiner_id: e_id) : tex
+      tex.remarks.create(x: chunk[0], y: chunk[1], graded_response_id: a_id, doodle_id: d_id)
+    end 
+    
+  end 
 
   private
       def crux 

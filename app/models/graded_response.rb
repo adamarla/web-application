@@ -17,6 +17,11 @@
 #  mobile         :boolean         default(FALSE)
 #  disputed       :boolean         default(FALSE)
 #  resolved       :boolean         default(FALSE)
+#  orange_flag    :boolean
+#  red_flag       :boolean
+#  weak           :boolean
+#  medium         :boolean
+#  strong         :boolean
 #
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
@@ -33,6 +38,7 @@ class GradedResponse < ActiveRecord::Base
   validates :q_selection_id, presence: true
   validates :student_id, presence: true
 
+  before_update :reset_marks_color_quality, if: :feedback_changed?
   after_create :page? # fix it now so that if Quiz layout changes tomorrow, then things still work
 
   def self.on_page(page)
@@ -133,16 +139,17 @@ class GradedResponse < ActiveRecord::Base
     return self.marks
   end
 
-  def fdb( ids ) 
-    # ids = list of Requirement indices extracted from params[:checked] 
-    m = Requirement.mangle_into_feedback ids
-    n = Requirement.marks_if? ids
-    marks = self.subpart.marks
-    earned = (n * marks).round(2)
-
+  def annotate(comments) 
+    TexComment.record(comments, self.examiner_id, self.id, nil)
+  end 
+  
+  def grade(criterion_ids)
     self.reset if self.feedback # over-write previous feedback 
 
-    if self.update_attributes(feedback: m, marks: earned)
+    rubric = Rubric.find self.worksheet.exam.rubric_id? 
+    f = rubric.fdb_if? criterion_ids 
+
+    if (self.update_attributes(feedback: f))
       unless self.disputed
         # Increment n_graded count of the grading examiner
         e = Examiner.find self.examiner_id
@@ -166,18 +173,14 @@ class GradedResponse < ActiveRecord::Base
       else # previously graded, but disputed now 
         self.update_attribute(:resolved, true)
       end
-
-    end # of if 
-  end
+    end # of if..else  
+  end # of method  
 
   def reset(soft = true)
-    # For times when a graded response has to be re-graded. Set the grade_id 
-    # for the response to nil - as also the marks, graded? and honest? fields of the 
-    # corresponding answer sheet 
-
+    # For times when a graded response has to be re-graded. 
+    # Setting feedback = 0 will trigger the following before_update 
+    # callbacks on the GradedResponse and then on the worksheet
     self.update_attribute :feedback, 0
-    w = self.worksheet
-    w.update_attributes( marks: nil, graded: false, honest: nil) unless w.nil? 
 
     # Soft (default) reset -> does NOT destroy any associated Remarks
     # Hard reset -> also destroys any associated Remarks
@@ -245,28 +248,44 @@ class GradedResponse < ActiveRecord::Base
     return (ret.blank? ? "0" : ret)
   end
 
-  def honest?
-    return :disabled if self.scan.nil?
-    posn = self.feedback & 15 
-    score = Requirement.honest.where(posn: posn).map(&:weight).first
-
-    case score
-      when 0 then return :red
-      when 1,2,3 then return :orange
-      else return :green
-    end
+  def quality?
+    for m in [:weak, :medium, :strong]
+      return m if self[m]
+    end 
+    return :blank
   end 
 
-  def colour? 
-    return :disabled if (self.scan.nil? or self.feedback == 0)
-
-    honest = Requirement.honest.where(posn: (self.feedback & 15)).map(&:weight).first
-    return :red if honest == 0
-    frac = (self.marks / self.subpart.marks).round(2)
-    return :light if frac < 0.3
-    return :medium if frac < 0.85
-    return :dark if frac < 0.95
+  def perception? 
+    return :disabled if self.scan.nil?
+    return :blank if self.feedback == 0
+    return :red if self.red_flag 
+    return :orange if self.orange_flag 
     return :green
-  end
+  end 
+
+  private 
+      def reset_marks_color_quality
+        if feedback == 0
+          assign_attributes red_flag: false, orange_flag: false, marks: 0,
+                            weak: false, medium: false, strong: false
+          worksheet.update_attribute :graded, false # calls before_update callback of Worksheet model
+        else 
+          rubric = Rubric.find(worksheet.exam.rubric_id?)
+          cids = rubric.criterion_ids_given(feedback)
+          p = rubric.penalty_if? cids  
+          max = subpart.marks 
+          marks = ((( 100 - p )/100.0) * max).round(2)
+          # Quality booleans 
+          w = p > 65
+          m = (p < 65 && p > 15)
+          s = (p < 15)
+          # Color booleans 
+          colors = Criterion.where(id: cids).map(&:perception?)
+          red = colors.include? :red
+          orange = red ? false : colors.include?(:orange)  # only one of red or orange should be set  
+          assign_attributes red_flag: red, orange_flag: orange, marks: marks, 
+                            weak: w, medium: m, strong: s
+        end 
+      end 
 
 end # of class

@@ -21,7 +21,6 @@ jQuery ->
       # load student scans 
       preview.loadJson json # locker
       # prep the feedback panel
-      splitTab = true
       ulKlass = "span4" 
       contentKlass = "span7"
 
@@ -33,24 +32,26 @@ jQuery ->
         sandbox = false 
         apprentice = null 
 
-      if json.user is 'Student'
+      if json.user is 'Student' # a student viewing his/her own results
         target = '#pane-st-rc-2'
         writeBoth = true
         if json.disputable
           notifier.show('n-regrade-deadline', json) if json.notify
         else
           notifier.show('n-regrade-disallowed') 
-      else if json.user is 'Teacher'
+      else if json.user is 'Teacher' # a teacher viewing grading results 
         target = '#pane-tc-rc-3'
         writeBoth = true
-      else 
+      else # a mentor reviewing grading work done by a novice grader 
         target = '#pane-samples'
         writeBoth = false 
 
+      # render the left-tabs - one tab per question 
+
       karo.empty $(target)
       leftTabs.create target, json, {
-        shared : 'fdb-panel',
-        split : splitTab,
+        shared : 'q-fdb',
+        split : true,
         writeBoth : writeBoth,
         klass : {
           root : 'purge-destroy',
@@ -58,54 +59,16 @@ jQuery ->
           content : contentKlass
         },
         data : {
-          url : "view/fdb.json?id=:id&sandbox=#{sandbox}&a=#{apprentice}"
+          url : "load/fdb?id=:id&sandbox=#{sandbox}&a=#{apprentice}"
         }
       }
+
+      # load the applicable rubric in the shared tab-pane 
+      rubric.initialize '#q-fdb-shared'
+      rubric.render json.criteria 
+
+      # prep preview. Scans will be loaded on-demand in response to view/fdb 
       $('#overlay-preview-carousel').removeClass 'hide'
-      return true
-    else if url.match(/view\/fdb/)
-      target = $('#fdb-panel')
-      $(m).addClass('hide') for m in target.find('.requirement')
-
-      if json.fdb?
-        target.find(".requirement[marker=#{id}]").eq(0).removeClass('hide') for id in json.fdb
-
-      if json.split?
-        active = target.parent().prev().children('li.active').eq(0)
-        active.children('a.split').eq(0).text json.split
-
-      if json.regrade? # => only returned for students
-        # we need to the next line to correctly submit the dispute form
-        $('#tab-st-rc-2').parent().attr 'marker', json.a # json.a = graded-response-id
-
-        regradeBtn = $('#pane-st-rc-2').find('button').filter("[id='btn-regrade']")[0]
-        if regradeBtn
-          if json.regrade.disable 
-            $(regradeBtn).text json.regrade.name
-            $(regradeBtn).prop 'disabled', true
-          else 
-            $(regradeBtn).text("Regrade #{json.regrade.name}") 
-            $(regradeBtn).prop 'disabled', false
-
-      # Set data-* attributes on the 'Read' and 'See' solution buttons
-      b = target.closest('.tab-pane').find('.navbar').eq(0).find('button')
-
-      btnVideo = b.filter("[id='btn-video-solution']")[0]
-      btnSee = b.filter("[id='btn-show-solution']")[0]
-      btnSee.setAttribute("data-#{m}", json[m]) for m in ['id','e']
-
-      if json.video?
-        $(btnVideo).removeClass 'disabled'
-        btnVideo.setAttribute 'data-video', json.video
-        video.unload btnVideo
-      else
-        $(btnVideo).addClass 'disabled'
-
-      if json.preview? 
-        preview.loadJson json
-        if json.comments?
-          overlay.over $(preview.root)
-          overlay.loadJson json.comments
       return true
     else
       matched = false

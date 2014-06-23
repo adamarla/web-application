@@ -8,10 +8,10 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
-$panel-colour: lighten(black, 17%) ;
+$panel-color: lighten(black, 17%) ;
 $gradians-blue : #6ca7ab ;
 $orange : #fda500 ;
-$background: darken($panel-colour, 12%) ;
+$background: darken($panel-color, 12%) ;
 $gray: #191919 ; // rgb(25,25,25)
 $deep-blue: #01537d ; // rgb(1,83,125)
 
@@ -5035,7 +5035,7 @@ a.thumbnail:hover {
   width: 560px;
   margin: -250px 0 0 -280px;
   // background-color: #ffffff;
-  background-color: $panel-colour ;
+  background-color: $panel-color ;
   border: 1px solid #999;
   border: 1px solid rgba(0, 0, 0, 0.3);
   *border: 1px solid #999;
@@ -5165,7 +5165,7 @@ a.thumbnail:hover {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  background-color: $panel-colour ; // fall-back colour for browsers that don't support rgba
+  background-color: $panel-color ; // fall-back color for browsers that don't support rgba
   background-color: rgba(43,43,43,0.9) ; 
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);

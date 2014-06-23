@@ -1,17 +1,10 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Quizzes", :id => 'tab-st-rc-1', :href => "#pane-st-rc-1"
+    = simple_link for: "Quizzes", id: 'tab-st-rc-1', href: "#pane-st-rc-1"
   %li
-    = simple_link :for => "Feedback", :id => 'tab-st-rc-2', :href => "#pane-st-rc-2"
+    = simple_link for: "Feedback", id: 'tab-st-rc-2', href: "#pane-st-rc-2"
 
 .tab-content
   #pane-st-rc-1.tab-pane
   #pane-st-rc-2.tab-pane
-    .row-fluid.navbar.purge-skip
-      = simple_button for: 'Regrade', id: 'btn-regrade', class: 'btn-inverse pull-left'
-      .btn-group.pull-right
-        = simple_button for: 'Read Solution', 
-          id: 'btn-show-solution', toggle: :button
-        = simple_button for: 'View Solution', icon: 'icon-facetime-video', 
-          id: 'btn-video-solution', class: 'video btn-inverse'

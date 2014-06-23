@@ -175,19 +175,17 @@ jQuery ->
       gutenberg.server = gutenberg.serverOptions.local
       rails.server = rails.serverOptions.local
 
+    # If a new user 
     if response.new is true
       switch response.type 
-        when 'Teacher'
-          break 
         when 'Student'
           $('#m-new-login').modal('show') 
         when 'Examiner'
           notifier.show 'n-sandbox'
 
-    # if logged in user is a teacher, then update her demo info (which demos done, which remain)
-    # if response.who is 'Teacher'
-    #  demo.initialize(response.demos)
-    #  $('#m-demo-intro').modal('show') if response.new is true
+    if response.type?
+      rubric.audience = response.type # who will be seeing the rubric  
+      rubric.grading = rubric.audience is 'Examiner' # ... and whether they will have grading privileges 
     return true
     
   pingArgs =

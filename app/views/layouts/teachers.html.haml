@@ -23,7 +23,9 @@
         = render partial: 'menus/user/account'
         = render partial: 'menus/examiner/per-dispute'
       - if j == :toolbox
-        = render partial: 'toolbox/grading/left/fdb-panel'
+        = render partial: 'toolbox/grading/left/q-fdb'
+        = render partial: 'toolbox/rubric/buttons'
+        = render partial: 'toolbox/rubric/criterion'
 
 -# Tutorials 
   - content_for :tutorials do 

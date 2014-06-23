@@ -17,6 +17,11 @@
 #  mobile         :boolean         default(FALSE)
 #  disputed       :boolean         default(FALSE)
 #  resolved       :boolean         default(FALSE)
+#  orange_flag    :boolean
+#  red_flag       :boolean
+#  weak           :boolean
+#  medium         :boolean
+#  strong         :boolean
 #
 
 require 'test_helper'

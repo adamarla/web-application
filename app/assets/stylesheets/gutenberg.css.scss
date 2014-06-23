@@ -12,7 +12,7 @@ $gradians-blue: #6ca7ab ;
 $red: #ff0000 ;
 $orange:#ffa500 ;
 $green:#168816 ;
-$panel-colour: lighten(black, 20%) ;
+$panel-color: lighten(black, 20%) ;
 
 /*
   On www.codestyle.org, one can build combinations of font-families
@@ -512,7 +512,7 @@ span.unhappyMessage {
   .swiss-knife {
     > .ticker {
       font-size: 11px ;
-      background-color: $panel-colour ;
+      background-color: $panel-color ;
       color: white ;
       padding: 2px 6px ;
       min-width: 12% ;

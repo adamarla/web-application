@@ -10,8 +10,8 @@ object false
         name: s.name, 
         id: s.id,
         tag: (marks > -1 ? "#{marks}/#{@max}" : "no scans"),
-        klass: @honest[id],
-        spectrum: @questions.map{ |q| @g_all.where(:student_id => s.id, :subpart_id => q.id).first.colour?},
+        klass: @perceptions[id],
+        spectrum: @exam.spectrum?(s.id) 
       }
     }
   }

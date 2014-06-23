@@ -23,7 +23,8 @@ class Examiner < ActiveRecord::Base
   has_one :account, as: :loggable
   has_many :graded_responses
   has_many :suggestions
-  has_many :doodles, dependent: :destroy
+  has_many :doodles, dependent: :destroy # will destroy associated remarks 
+  has_many :remarks # choosing not to destroy 'live' remarks  
 
   validates_associated :account
 

@@ -77,11 +77,14 @@ class QuestionController < ApplicationController
   end # of method 
 
   def preview
-    g = params[:gr].blank? ? nil : GradedResponse.where(id: params[:gr])
-    qid = g.nil? ? params[:id] : g.map(&:q_selection).map(&:question_id).first
-
-    @question = Question.find qid 
-    @version = g.nil? ? "0" : g.first.version
+    if params[:type] == 'g'
+      g = GradedResponse.find params[:id]
+      @question = g.subpart.question
+      @version = g.version
+    else 
+      @question = Question.find params[:id]
+      @version = "0"
+    end 
     @context = params[:context] || "unknown" 
   end
 
@@ -93,12 +96,13 @@ class QuestionController < ApplicationController
   end
 
   def audit_open
-    gr = params[:gr].to_i # gr = 0 if params[:gr] == nil
-    gr = gr == 0 ? nil : GradedResponse.find(gr) 
-    subpart_index = gr.nil? ? nil : [*'A'..'Z'][gr.subpart.index]
-
-    qid = gr.nil? ? params[:id] : gr.subpart.question_id
-    @question = Question.find qid
+    if params[:type] == 'g'
+      g = GradedResponse.find params[:id]
+      subpart_index = g.subpart.index 
+      @question = g.subpart.question
+    else 
+      @question = Question.find params[:id]      
+    end 
 
     unless @question.nil?
       audit_report = params[:audit]
@@ -109,7 +113,7 @@ class QuestionController < ApplicationController
 
       @comments.prepend("[Part #{subpart_index}]: ") unless subpart_index.nil?
 
-      @question.update_attributes :audited_on => Date.today, :available => (@gating.count == 0)
+      @question.update_attributes audited_on: Date.today, available: (@gating.count == 0)
 
       if (@gating.count > 0 || @non_gating.count > 0 || !@comments.blank?)
         @author = Examiner.find @question.examiner_id
@@ -119,7 +123,7 @@ class QuestionController < ApplicationController
       end
       render json: { msg: "Audit Report Sent", disabled: [@question.id] }, status: :ok
     else
-      render json: { :msg => "Question not found" }, status: :ok
+      render json: { msg: "Question not found" }, status: :ok
     end
   end 
 

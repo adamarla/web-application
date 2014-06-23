@@ -88,10 +88,10 @@ class Student < ActiveRecord::Base
 
   def inbox
     # Returns the worksheets that should be shown in a student's inbox
-    assigned = Worksheet.where(:student_id => self.id)
-    received = assigned.where(:received => true)
+    assigned = Worksheet.where(student_id: self.id)
+    received = assigned.where(received: true)
     due = assigned.map(&:exam_id) - received.map(&:exam_id)
-    Exam.where(:id => due, :inboxed => true) 
+    Exam.where(id: due, inboxed: true) 
   end
 
   def outbox
@@ -106,9 +106,9 @@ class Student < ActiveRecord::Base
     # Filter both of these out before returning
 
     a = a.select{ |m| m.graded?(:none) } # --> (1) --> only those not graded at all
-    ws_ids = a.map(&:exam_id)
-    without_scans = GradedResponse.in_exam(ws_ids).of_student(self.id).without_scan.map(&:exam_id).uniq
-    ungraded_with_scans = ws_ids - without_scans
+    eids = a.map(&:exam_id)
+    without_scans = GradedResponse.in_exam(eids).of_student(self.id).without_scan.map(&:exam_id).uniq
+    ungraded_with_scans = eids - without_scans
     return Exam.where(id: ungraded_with_scans)
   end
 
@@ -123,12 +123,12 @@ class Student < ActiveRecord::Base
   end 
 
   def quiz_ids
-    t_ids = Worksheet.where(:student_id => self.id).map(&:exam_id)
-    quiz_ids = Exam.where(:id => t_ids).map(&:quiz_id).uniq
+    t_ids = Worksheet.where(student_id: self.id).map(&:exam_id)
+    quiz_ids = Exam.where(id: t_ids).map(&:quiz_id).uniq
     return quiz_ids
   end
 
-  def marks_scored_in(exam_id)
+  def score_in?(exam_id)
     w = Worksheet.where(student_id: self.id, exam_id: exam_id).first
     g = w.nil? ? [] : GradedResponse.where(worksheet_id: w.id)
 
@@ -141,11 +141,6 @@ class Student < ActiveRecord::Base
       marks = w.marks?
     end
     return (marks.nil? ? 0 : marks.round(2))
-  end
-
-  def honestly_attempted? (ws_id)
-    a = Worksheet.where(:student_id => self.id, :exam_id => ws_id).first
-    return a.nil? ? :disabled : a.honest?
   end
 
   def responses(exam_id)
@@ -167,13 +162,13 @@ class Student < ActiveRecord::Base
       avg = (having.map(&:marks).inject(:+) / having.count.to_f).round(2) # avg score on 'k' mark questions
       earned += avg
     end 
-    max = Subpart.where(:id => sids).map(&:marks).uniq.inject(:+)
+    max = Subpart.where(id: sids).map(&:marks).uniq.inject(:+)
     weighted = max.nil? ? 0 : (earned/max).round(2)
   end 
 
   def absent_for_quiz?(quiz_id)
-    tids = Worksheet.where(:student_id => self.id).map(&:exam_id)
-    qids = Exam.where(:id => tids).map(&:quiz_id)
+    tids = Worksheet.where(student_id: self.id).map(&:exam_id)
+    qids = Exam.where(id: tids).map(&:quiz_id)
     took_test = qids.include? quiz_id 
     return true if !took_test
 
@@ -190,7 +185,7 @@ class Student < ActiveRecord::Base
     g = GradedResponse.of_student(self.id).graded
     aggr = AggrByTopic.for_teacher tid
     topics = aggr.map(&:topic_id).uniq
-    topics = Topic.where(:id => topics).sort{ |m,n| m.name <=> n.name }
+    topics = Topic.where(id: topics).sort{ |m,n| m.name <=> n.name }
     ret = { proficiency: [ { name: 'Example', score: 0.43, benchmark: 3.5, historical_avg: 2.5 } ] }
 
     topics.each do |t|
@@ -215,7 +210,7 @@ class Student < ActiveRecord::Base
       # A student can be destroyed if there is no associated data for it
       is_empty = true 
       [Worksheet, GradedResponse, StudentRoster].each do |m|
-        is_empty = m.where(:student_id => self.id).empty?
+        is_empty = m.where(student_id: self.id).empty?
         break unless is_empty
       end
       # puts " ++++ Can be destroyed [#{self.id}]" if is_empty

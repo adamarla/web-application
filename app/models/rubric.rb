@@ -37,49 +37,62 @@ class Rubric < ActiveRecord::Base
     end 
   end 
 
-  def num_criteria?(type = :active) 
-    # returns the number of criteria in this rubric. By default, returns the 
-    # number of active criteria
-    c = Checklist.where(rubric_id: self.id)
+  def criteria?(type = :active)
+    c = Checklist.where(rubric_id: self.id) 
     case type 
-      when :active 
-        c = c.where(active: true)
-      when :inactive 
-        c = c.where(active: false)
+      when :active then c = c.where(active: true)
+      when :inactive then c = c.where(active: false)
       else 
         c = c 
     end 
-    return c.count 
+    return Criterion.where(id: c.map(&:criterion_id)).order(:penalty).reverse_order
   end 
 
-  def fdb_and_penalty_given(criterion_ids)
-    # We are intentionally not considering just the active criteria. 
-    # Its possible that the rubric owner is making changes while graders are grading. 
-    # In which case, the graders would see the old rubric till such time that they 
-    # reload. The choice then is of either not recording some of what the grader 
-    # says OR recording irrespective of whether some criteria are now inactive. We 
-    # choose to do the latter 
+  def num_criteria?(type = :active) 
+    # returns the number of criteria in this rubric. By default, returns the 
+    # number of active criteria
+    criteria = self.criteria?(type)
+    return criteria.count 
+  end 
 
+=begin
+  # We are intentionally not considering just the active criteria. 
+  # Its possible that the rubric owner is making changes while graders are grading. 
+  # In which case, the graders would see the old rubric till such time that they 
+  # reload. The choice then is of either not recording some of what the grader 
+  # says OR recording irrespective of whether some criteria are now inactive. We 
+  # choose to do the latter 
+=end
+
+  def penalty_if?(criterion_ids)
     criteria = Checklist.where(rubric_id: self.id).order(:index)
-
-    mangled_fdb = 0 
-    penalty = 0 
-
     ids = criteria.map(&:criterion_id)
-    indices = criteria.map(&:index)
     penalties = criteria.map(&:criterion).map(&:penalty)
+    p = 0 
 
     for m in criterion_ids
       j = ids.index m
       next if j.nil?
-      mangled_fdb |= ( 1 << indices[j] )
-      penalty += penalties[j]
+      p += penalties[j]
     end 
-    penalty = (penalty > 100) ? 100 : penalty 
-    return mangled_fdb, penalty
-  end 
+    return (p > 100 ? 100 : p)
+  end
 
-  def criteria_ids_given(mangled_fdb)
+  def fdb_if?(criterion_ids)
+    criteria = Checklist.where(rubric_id: self.id).order(:index)
+    ids = criteria.map(&:criterion_id)
+    indices = criteria.map(&:index)
+    f = 0 
+
+    for m in criterion_ids
+      j = ids.index m
+      next if j.nil?
+      f |= ( 1 << indices[j] )
+    end 
+    return f
+  end
+
+  def criterion_ids_given(mangled_fdb)
     criteria = Checklist.where(rubric_id: self.id).order(:index)
     ret = [] 
 
@@ -89,10 +102,10 @@ class Rubric < ActiveRecord::Base
     return ret
   end 
 
-  def colour?(mangled_fdb) 
+  def perception?(mangled_fdb) 
     # Returns one of :red, :orange, :green or :blank
     return :blank if mangled_fdb == 0 
-    criteria = Criterion.where(id: self.criteria_ids_given(mangled_fdb))
+    criteria = Criterion.where(id: self.criterion_ids_given(mangled_fdb))
     return :red if criteria.map(&:red_flag).include?(true)
     return :orange if criteria.map(&:orange_flag).include?(true)
     return :green

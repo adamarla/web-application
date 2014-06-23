@@ -50,7 +50,7 @@ window.wsSummary = (json) ->
   .text (d) ->
     return d.name
 
-  # colour code the little squares
+  # color code the little squares
   svg.selectAll('g').data(json.root)
   .selectAll('rect')
   .data((d,i) -> return d.spectrum)

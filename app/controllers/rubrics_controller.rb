@@ -29,15 +29,22 @@ class RubricsController < ApplicationController
 
   def load
     @rbid = params[:id].to_i
-    is_admin = current_account.admin?
+    # is_admin = current_account.admin?
+
     aid = current_account.id 
+    @ctx = params[:context] # can be one of edit | grade | view
 
-    universal_set = (Criterion.where(account_id: aid) + Criterion.where(standard: true)).map(&:id).uniq
-    used_ids = Checklist.where(rubric_id: @rbid, active: true).map(&:criterion_id)
-    other_ids = universal_set - used_ids 
+    if @ctx == 'edit'
+      universal_set = (Criterion.where(account_id: aid) + Criterion.where(standard: true)).map(&:id).uniq
+      used_ids = Checklist.where(rubric_id: @rbid, active: true).map(&:criterion_id)
+      other_ids = universal_set - used_ids 
 
-    @used = Criterion.where(id: used_ids).order(:penalty).reverse_order
-    @available = Criterion.where(id: other_ids).order(:penalty).reverse_order
+      @used = Criterion.where(id: used_ids).order(:penalty).reverse_order
+      @available = Criterion.where(id: other_ids).order(:penalty).reverse_order
+    else 
+      @available = nil 
+      @used = Rubric.find(params[:id]).criteria.order(:penalty).reverse_order
+    end 
   end 
 
   def activate 

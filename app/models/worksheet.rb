@@ -2,19 +2,21 @@
 #
 # Table name: worksheets
 #
-#  id         :integer         not null, primary key
-#  student_id :integer
-#  exam_id    :integer
-#  created_at :datetime
-#  updated_at :datetime
-#  marks      :float
-#  graded     :boolean         default(FALSE)
-#  honest     :integer
-#  received   :boolean         default(FALSE)
-#  signature  :string(255)
-#  uid        :string(40)
-#  job_id     :integer         default(-1)
-#  billed     :boolean         default(FALSE)
+#  id          :integer         not null, primary key
+#  student_id  :integer
+#  exam_id     :integer
+#  created_at  :datetime
+#  updated_at  :datetime
+#  marks       :float
+#  graded      :boolean         default(FALSE)
+#  honest      :integer
+#  received    :boolean         default(FALSE)
+#  signature   :string(255)
+#  uid         :string(40)
+#  job_id      :integer         default(-1)
+#  billed      :boolean         default(FALSE)
+#  orange_flag :boolean
+#  red_flag    :boolean
 #
 
 class Worksheet < ActiveRecord::Base
@@ -22,6 +24,7 @@ class Worksheet < ActiveRecord::Base
   belongs_to :exam  
   has_many :graded_responses, dependent: :destroy
 
+  before_update :reset_marks_color, if: :graded_changed?
   after_create :seal
 
   def self.of_student(id)
@@ -82,54 +85,34 @@ class Worksheet < ActiveRecord::Base
     return submitted.ungraded.count == 0
   end
 
-  def honest?
-    # Returns the confidence we have that the student truly earned 
-    # the points he/she earned. Store only if honesty scores available for 
-    # all responses
+  def perception? 
+    # Returns either [:red | :orange | :green | :blank ] depending on 
+    # what flags were set on the GradedResponses
 
-    unless self.honest.nil?
-      case self.honest
-        when 0 then return :red
-        when 1, 2, 3 then return :orange 
-        when 4 then return :green 
-      end
-    end
+    return :red if self.red_flag
+    return :orange if self.orange_flag
 
-    g = GradedResponse.where(worksheet_id: self.id)
-    scans = g.with_scan
+    m = self.graded_responses.map(&:perception?)
+    n = :blank 
 
-    return :disabled if scans.count == 0
-
-    posns = scans.graded.map(&:feedback).map{ |m| m & 15 }.uniq
-    scores = Requirement.where(:honest => true, :posn => posns)
-    
-    return :nodata if scores.empty?
-    lowest = scores.map(&:weight).sort.first
-
-    if scans.ungraded.count == 0
-      self.update_attribute :honest, lowest 
-    end
-
-    case lowest
-      when 0 then return :red
-      when 1,2,3 then return :orange
-      else return :green
-    end
-
-
-=begin
-    score = 0 
-    posns.uniq.each do |m| 
-      score += (Requirement.where(:honest => true, :posn => m).map(&:weight).first * posns.count(m))  
+    if m.include? :red 
+      self.update_attributes red_flag: true, orange_flag: false 
+      n = :red
+    elsif m.include? :orange 
+      self.update_attributes red_flag: false, orange_flag: true
+      n = :orange
+    elsif m.include? :green 
+      self.update_attributes red_flag: false, orange_flag: false
+      n = :green
     end 
-
-    unless n == 0
-      score = ((score / ( 4 * n ).to_f) * 100).round(0) # max-weight = 4
-      self.update_attribute(:honest, score) unless g.ungraded.count
-    end
-    return ( n ? score : "-" ) # for times when none of the responses have been graded
-=end
+    return n
   end 
+
+  def spectrum?
+    sbp_ids = self.exam.quiz.subparts.map(&:id)
+    g = GradedResponse.where(worksheet_id: self.id).sort{ |m,n| sbp_ids.index(m.subpart_id) <=> sbp_ids.index(n.subpart_id) }
+    return g.map(&:perception?)
+  end
 
   def graded?( extent = :fully ) # or :partially or :none
     return (extent != :none) if self.graded
@@ -259,13 +242,18 @@ class Worksheet < ActiveRecord::Base
     return others
   end
 
-  public 
+  private 
       def seal 
         # Creating a worksheet does not automatically imply that it also 
         # needs to be compiled. However, versions for a questions must be set 
-        n = QSelection.where(quiz_id: self.exam.quiz_id).count 
+        n = QSelection.where(quiz_id: exam.quiz_id).count 
         sig = [*1..n].map{ rand(4) }
-        self.update_attributes signature: sig.join(',') 
+        update_attributes signature: sig.join(',') 
       end
+
+      def reset_marks_color
+        return true unless graded # only if graded goes from true -> false => resetting
+        assign_attributes marks: nil, red_flag: nil, orange_flag: nil
+      end 
 
 end # of class

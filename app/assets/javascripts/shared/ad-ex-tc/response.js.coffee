@@ -22,10 +22,12 @@ jQuery ->
       karo.empty target
       key = 'questions'
       fdb.detach()
+      rubric.initialize '#div-rubric-criteria'
+      rubric.render json.criteria
     else if url.match(/scans\/pending/)
       fdb.attach()
       fdb.initialize json
-      gp.show()
+      # gp.show()
     else if url.match(/audit\/open/) or url.match(/close\/apprentice\/audit/)
       isQuestion = if url.match(/audit\/open/)? then true else false
 

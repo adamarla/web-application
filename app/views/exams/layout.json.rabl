@@ -8,7 +8,7 @@ object false
           name: s.name_if_in?(@exam.quiz_id),
           id: @gr.where(subpart_id: s.id).map(&:id).first,
           split: @gr.where(subpart_id: s.id).map(&:marks?).first,
-          colour: @gr.where(subpart_id: s.id).map(&:honest?).first
+          color: @gr.where(subpart_id: s.id).map(&:perception?).first
         } 
       }
     }.flatten 
@@ -21,4 +21,8 @@ object false
   node(:notify, unless: @exam.regrade_by.nil?){
     { title: "#{@exam.regrade_by.strftime('%B %d, %Y')}" }
   }
+
+  node(:criteria) {
+    @criteria.map{ |c| { id: c.id, text: c.text, reward: c.reward?, color: c.perception? } } 
+  } 
 

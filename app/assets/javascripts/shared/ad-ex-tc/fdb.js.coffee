@@ -4,7 +4,6 @@ window.fdb = {
   list : null,
   controls: null, 
   nav: null,
-  mode: null,
   given: new Array(),
   history: new Array(),
   ticker : null,
@@ -132,9 +131,10 @@ window.fdb = {
 
     view : (clearOverlay = true) ->
       # To be called when fdb.current.scan changes value => switching from one scan to the next
-      overlay.clear() if clearOverlay is true
+      if clearOverlay
+        overlay.clear() 
+        fdb.update.ticker()
       preview.load fdb.current.scan, 'locker'
-      fdb.update.ticker()
       shadow.fall $(fdb.current.response).attr('shadow')
       return true
 
@@ -224,6 +224,54 @@ window.fdb = {
       return fdb.find.response(false)
   } # namespace 'prev'
 
+  #############################################################
+  ## Key Press Processing   
+  #############################################################
+  
+  pressKey : (event) ->
+    # 'event' propagation was stopped within rubric.pressKey() before 
+    # execution came here. Hence, there is little need to call 
+    # event.stopImmediatePropagation() here 
+
+    key = event.which 
+    switch key
+      when 72 # H => hide/unhide controls 
+        controls = fdb.controls.children()
+        hideBtn = controls.eq(0).find('button')
+        if hideBtn.hasClass 'active' 
+          hideBtn.removeClass 'active'
+          hideBtn.text 'Hide'
+          $("<span class='kb'>H</span>").prependTo hideBtn
+          shadow.unhide()
+          $(m).removeClass('hide') for m in controls.filter(":not(:first-child)")
+        else 
+          hideBtn.addClass 'active'
+          hideBtn.empty() 
+          hideBtn.text 'Unhide'
+          $("<span class='kb'>H</span>").prependTo hideBtn
+          shadow.hide()
+          $(m).addClass('hide') for m in controls.filter(":not(:first-child)")
+      when 82 # R => restore pristine copy 
+        fdb.clear()
+        $.get "reset/graded?id=#{$(fdb.current.response).attr 'marker'}" # will also destroy any associated comments
+      when 83 # S => submit feedback 
+        $(rubric.form).submit() 
+      when 87 # W => write a comment 
+        $(shadow.commentBox).focus()
+      when 85 # U => clear last entered comment 
+        fdb.pop()
+      when 70 # F => flip the image 
+        $.get "rotate_scan.json?id=#{fdb.current.scan}"
+      when 219 # [ => previous page 
+        fdb.prev.scan()
+      when 188 # < => previous question 
+        fdb.prev.response()
+      when 190 # > => next question 
+        fdb.next.response()
+      when 221 # ] => next page 
+        fdb.next.scan()
+    return true 
+
 }
 
 #############################################################
@@ -237,120 +285,3 @@ jQuery ->
     fdb.pending = $(fdb.root).find('#pending-scans').eq(0)
     fdb.nav = $(fdb.root).find('#fdb-nav').eq(0) 
     fdb.controls = $(fdb.root).find('#fdb-controls').eq(0)
-
-  ###
-    Shared behaviour 
-  ###
-
-  fdb.nav.on 'click', 'button', (event) ->
-    event.stopImmediatePropagation()
-    gp.keyboard = true
-    id = $(this).attr 'id'
-    switch id 
-      when 'btn-prev-ques'
-        fdb.prev.response()
-      when 'btn-next-ques'
-        fdb.next.response()
-      when 'btn-prev-scan'
-        fdb.prev.scan()
-      when 'btn-next-scan'
-        fdb.next.scan()
-    return  true
-    
-  fdb.controls.on 'click', 'button', (event) ->
-    event.stopImmediatePropagation()
-    return false if $(this).hasClass 'disabled'
-
-    gp.keyboard = true
-    id = $(this).attr 'id'
-    fdb.tex = null
-
-    allButtons = fdb.controls.find("button:not([id='btn-hide-controls'])")
-    $(m).removeClass('active') for m in allButtons 
-    fdb.mode = null
-
-    switch id
-      when 'btn-ok'
-        fdb.mode = 'check'
-        $(this).addClass 'active'
-      when 'btn-cross'
-        fdb.mode = 'cross'
-        $(this).addClass 'active'
-      when 'btn-what'
-        fdb.mode = 'question'
-        $(this).addClass 'active'
-      when 'btn-undo'
-        event.stopImmediatePropagation()
-        fdb.pop()
-      when 'btn-fresh-copy'
-        event.stopImmediatePropagation()
-        fdb.clear()
-        $.get "reset/graded?id=#{$(fdb.current.response).attr 'marker'}" # will also destroy any associated comments
-      when 'btn-rotate'
-        event.stopImmediatePropagation()
-        $.get "rotate_scan.json?id=#{fdb.current.scan}"
-      when 'btn-write'
-        gp.keyboard = false
-        fdb.mode = 'comments'
-        $(shadow.commentBox).focus()
-        $(this).addClass 'active'
-      when 'btn-perfect'
-        event.stopImmediatePropagation()
-        gp.rewind()
-        gp.select(3)
-        gp.select(4)
-        gp.select(5)
-      when 'btn-blank'
-        event.stopImmediatePropagation()
-        gp.rewind()
-        gp.select(0)
-        gp.select(0)
-        gp.select(0)
-      when 'btn-cheated'
-        event.stopImmediatePropagation()
-        gp.rewind()
-        gp.select(1)
-        gp.select(0)
-        gp.select(0)
-      when 'btn-hide-controls'
-        isClicked = $(this).hasClass 'active'
-        btnGroups = $(this).closest('.row-fluid').siblings() 
-        if isClicked 
-          next = 'Hide'
-          $(j).removeClass('hide') for j in btnGroups
-          $(this).removeClass 'active'
-          shadow.unhide()
-        else
-          next = 'Unhide'
-          $(j).addClass('hide') for j in btnGroups 
-          $(this).addClass 'active'
-          shadow.hide()
-        $(this).text next
-        $("<span class='kb-shortcut'>I</span>").prependTo $(this)
-
-    return true # end of method
-
-  $(fdb.root).on 'click', (event) ->
-    event.stopImmediatePropagation()
-    return false unless fdb.mode?
-
-    switch fdb.mode
-      when 'check'
-        fdb.add "$\\surd$", event
-      when 'cross'
-        fdb.add "$\\times$", event
-      when 'question'
-        fdb.add "$?$", event
-      when 'comments'
-        c = $(shadow.commentBox).val()
-        $(shadow.commentBox).val '' # clear it 
-        unique = true
-        for m in fdb.history 
-          if m is c
-            unique = false 
-            break
-        fdb.history.push c if unique 
-        fdb.add c, event 
-
-    return true
-    

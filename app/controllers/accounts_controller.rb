@@ -61,13 +61,15 @@ class AccountsController < ApplicationController
 
   def to_be_graded
     @sandboxed = !current_account.live?
-    eid = params[:id]
+    eid = params[:id].to_i
+    e = Exam.find eid
+    rubric = Rubric.find e.rubric_id? # whatever rubric was attached to the exam
+    @criteria = rubric.criteria?
     
     if @sandboxed 
       # Only publishable exams are considered for sandboxing. 
       # And for a given exam, pick 5 random samples of each question
-      qid = Exam.find(eid).quiz
-      @indices = QSelection.where(quiz_id: qid).order(:index)
+      @indices = QSelection.where(quiz_id: e.quiz_id).order(:index)
       @last_pg = nil
     else 
       by = current_account.loggable_id
@@ -119,68 +121,6 @@ class AccountsController < ApplicationController
     @students = Student.where(id: @gr.map(&:student_id).uniq)
     @scans = @gr.map(&:scan).uniq
     @quiz = Exam.where(id: @ws_id).map(&:quiz_id).first
-  end
-
-  def submit_fdb
-    sandboxed = !current_account.live?
-    gid = params[:id].to_i
-
-    db_obj = sandboxed ? current_account.loggable.doodles.build(graded_response_id: gid) : GradedResponse.find(gid)
-    ids = params[:checked].keys.map(&:to_i)
-
-    db_obj.fdb(ids) # will either update GradedResponse obj or add a new Doodle
-
-    overlay = params[:overlay].split("@d@").select{ |m| !m.blank? }
-    n = 0
-    z = overlay.slice(n,3)
-
-    while !z.blank?
-      tx = TexComment.where(text: z[2]).first
-      if tx.nil?
-        tx = TexComment.new examiner_id: current_account.loggable_id, text: z[2]
-        tx.save
-      end
-
-      rmrk = tx.remarks.create x: z[0], y: z[1], graded_response_id: gid 
-      rmrk.update_attributes(doodle_id: db_obj.id) if sandboxed
-
-      n += 3
-      z = overlay.slice(n,3)
-    end
-    render json: { status: :ok }, status: :ok
-  end
-
-  def view_fdb
-    gid = params[:id].to_i
-    @gr = GradedResponse.find gid
-    sandboxed = params[:sandbox] == "true" 
-
-    if sandboxed 
-      doodle = Doodle.where(examiner_id: params[:a], graded_response_id: gid).first
-      @fdb = Requirement.unmangle_feedback doodle.feedback
-    else
-      @fdb = Requirement.unmangle_feedback @gr.feedback
-    end
-
-    @solution_video = @gr.subpart.question.video
-    unless current_account.nil? 
-      if current_account.loggable_type == 'Student' 
-        exm = @gr.worksheet.exam
-        @regrade = exm.disputable? ? { name: @gr.name?, disable: @gr.disputed } : { name: 'Past deadline', disable: true }
-      else
-        @regrade = nil
-      end 
-    end
-
-    unless (@fdb.nil? || @fdb == 0) # => none so far 
-      if sandboxed 
-        @comments = Remark.where(doodle_id: doodle.id)
-      else 
-        siblings = GradedResponse.where(scan: @gr.scan).map(&:id)
-        @comments = Remark.where(graded_response_id: siblings) 
-      end 
-    end
-
   end
 
   def poll_delayed_job_queue

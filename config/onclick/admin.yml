@@ -57,7 +57,7 @@ lnk-def-rubric :
 tab-rubrics : 
   url : 
     self : list/rubrics
-    panel : rubric/load?id=:id
+    panel : rubric/load?id=:id&context=edit
 
 a-activate-rubric : 
   update-on : rubric/load

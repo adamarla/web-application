@@ -1,36 +1,56 @@
 
 
-# JSON = { name: text-description, id: id, n_stars: number, badge: true | false }
+# JSON 
+# { 
+#   text: description, 
+#   id: critertion_id, 
+#   kb: keyboard shortcut key - if any, 
+#   bars : [0..5] -> penalty (0 = max. penalty, 5 = no penalty)
+#   color : [ red | orange | blank ] -> if a red/orange flag issue 
+# }
+
 # n_stars -> how many of the five stars to enable => low n_stars => high penalty 
 # badge : true => show, false => don't show 
 
 window.criteria = { 
   render : (json) ->
     obj = $('#toolbox > .criterion').clone()
-    obj.find('.text').text json.name 
+    obj.find('.text').text json.text 
     obj.attr 'marker', json.id 
 
-    # whether or not to show rating stars 
-    showStars = if (json.stars? and json.stars is false) then false else true
-    stars = obj.find '.stars'
-    unless showStars 
-      stars.remove() 
-    else if json.n_stars > 0
-      b = stars.children('.star')
-      for j in [0...json.n_stars]
-        z = b.eq(j)
-        z.addClass 'enabled' 
-        z.addClass 'orange' if json.orange 
-        z.addClass 'red' if json.red 
-      
-    # whether or not to show badge 
-    showBadge = if (json.badge? and json.badge is true) then true else false 
-    obj.find('.badge').eq(0).remove() unless showBadge
+    # keyboard short-cut 
+    if json.kb?
+      obj.find('.kb').eq(0).text json.kb
+      obj[0].setAttribute 'data-kb', json.kb
 
     # set name on the checkbox 
     cb = obj.find("input[type='checkbox']")
     cb.attr 'name', "criterion[#{json.id}]"
+
+    if json.reward? 
+      rwd = obj.find('.reward').eq(0) 
+      rwd.css "width", "#{json.reward}%"
+      rwd.addClass(json.color) if json.color?
+    else
+      obj.find('.reward').parent().remove()
     return obj
+
+  select : (nd) ->
+    return false unless nd?
+    return false unless $(nd).hasClass 'criterion'
+
+    already = $(nd).hasClass 'selected' 
+    cbx = $(nd).find("input[type='checkbox']").eq(0)
+    icon = $(nd).find('i')[0]
+    if already
+      $(nd).removeClass 'selected'
+      cbx.prop 'checked', false
+      $(icon).removeClass('icon-white') if icon?
+    else 
+      $(nd).addClass 'selected' 
+      cbx.prop 'checked', true
+      $(icon).addClass('icon-white') if icon?
+    return true 
 }
 
 jQuery ->

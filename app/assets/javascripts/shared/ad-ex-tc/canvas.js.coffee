@@ -16,7 +16,7 @@ window.canvas = {
     question : null
   },
 
-  colour : {
+  color : {
     white : "#ffffff",
     blue : "#1b13f1",
     green : "#3f9129"
@@ -45,8 +45,8 @@ window.canvas = {
       canvas.clicks[m] = new Array()
 
     canvas.comments = new Array()
-    canvas.ctx.fillStyle = canvas.colour.blue
-    canvas.ctx.strokeStyle = canvas.colour.blue
+    canvas.ctx.fillStyle = canvas.color.blue
+    canvas.ctx.strokeStyle = canvas.color.blue
     canvas.ctx.font = "12px Ubuntu"
     return true
     
@@ -151,9 +151,9 @@ window.canvas = {
         x = clicks.pop()
         if x? and y?
           ctx = canvas.ctx
-          ctx.fillStyle = canvas.colour.white
+          ctx.fillStyle = canvas.color.white
           ctx.fillRect x,y,16,16 # overwrite image with a white rectangle 
-          ctx.fillStyle = canvas.colour.blue
+          ctx.fillStyle = canvas.color.blue
     else if canvas.comments?
       canvas.comments.pop() for m in [1..3] # 3 pops for 3 pushes
       script = canvas.object.siblings('script:last')

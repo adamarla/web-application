@@ -71,7 +71,7 @@ jQuery ->
       $(m).prop('checked', false) for m in form.find("input[type='checkbox']")
       form.find("textarea").eq(0).val null
       $('#m-audit-form').modal 'hide'
-      gp.keyboard = true # re-enable keyboard input - if auditing during grading
+      rubric.typing = false
     else if url.match(/audit\/close/)
       target = $('#pane-audit-review')
     else if url.match(/questions\/without_video/)

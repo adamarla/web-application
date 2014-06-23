@@ -73,12 +73,12 @@ window.overlay = {
       # Prepare comment for MathJax 
       comment = karo.sanitize comment
       overlay.tex = karo.jaxify comment
-      overlay.nComments += 1
     else 
       overlay.tex = comment
       # Only the jaxified version of the comment is stored in the DB
       
     # Prepare the <script> to pass to MathJax 
+    overlay.nComments += 1
     overlay.counter += 1
     id = "tex-comment-#{overlay.counter}"
     script = $("<script id=#{id} type='math/tex'>#{overlay.tex}</script>")

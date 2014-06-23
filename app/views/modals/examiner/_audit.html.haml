@@ -1,13 +1,12 @@
 
-- is_teacher = current_account.loggable_type == "Teacher"
-- html = is_teacher ? {} : { data: { id: 'tab-audit-todo', action: "#{audit_open_path}?id=:id&gr=0" } }
+- is_examiner = current_account.loggable_type == 'Examiner'
 
 #m-audit-form.modal.fade.wide
   .row-fluid
     .span2
-      = image_tag 'notifications/microscope.png', :class => 'big-icon'
+      = image_tag 'notifications/microscope.png'
     .span9
-      = simple_form_for :audit, remote: true, defaults: { label: false, required: false }, html: html do |f|
+      = simple_form_for :audit, remote: true, defaults: { label: false, required: false } do |f|
         .row-fluid
           .span6
             %p.heading= "Gating Issues"
@@ -34,5 +33,5 @@
         .row-fluid
           = f.input :comments, as: :text, input_html: { rows: 5, cols: 60, class: 'span11' }, labels: false
           %button.btn.btn-primary.btn-large.pull-left{ type: :submit }= "Submit"
-          - unless is_teacher
+          - if is_examiner
             %button.btn.btn-inverse.btn-large.pull-right{ type: :submit, id: 'btn-audit-allok' }= "All Good"

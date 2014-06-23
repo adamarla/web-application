@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140616052417) do
+ActiveRecord::Schema.define(:version => 20140623051853) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -117,13 +117,14 @@ ActiveRecord::Schema.define(:version => 20140616052417) do
 
   create_table "criteria", :force => true do |t|
     t.string   "text"
-    t.integer  "penalty",     :default => 0
+    t.integer  "penalty",                  :default => 0
     t.integer  "account_id"
-    t.boolean  "standard",    :default => true
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-    t.boolean  "red_flag",    :default => false
-    t.boolean  "orange_flag", :default => false
+    t.boolean  "standard",                 :default => true
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
+    t.boolean  "red_flag",                 :default => false
+    t.boolean  "orange_flag",              :default => false
+    t.string   "shortcut",    :limit => 1
   end
 
   add_index "criteria", ["account_id"], :name => "index_criteria_on_account_id"
@@ -248,6 +249,11 @@ ActiveRecord::Schema.define(:version => 20140616052417) do
     t.boolean  "mobile",                       :default => false
     t.boolean  "disputed",                     :default => false
     t.boolean  "resolved",                     :default => false
+    t.boolean  "orange_flag"
+    t.boolean  "red_flag"
+    t.boolean  "weak"
+    t.boolean  "medium"
+    t.boolean  "strong"
   end
 
   add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
@@ -365,18 +371,10 @@ ActiveRecord::Schema.define(:version => 20140616052417) do
     t.datetime "updated_at",         :null => false
     t.integer  "tex_comment_id"
     t.integer  "doodle_id"
+    t.integer  "examiner_id"
   end
 
-  create_table "requirements", :force => true do |t|
-    t.string  "text",       :limit => 100
-    t.string  "bottomline", :limit => 20
-    t.boolean "honest",                    :default => false
-    t.boolean "cogent",                    :default => false
-    t.boolean "complete",                  :default => false
-    t.boolean "other",                     :default => false
-    t.integer "weight",                    :default => -1
-    t.integer "posn"
-  end
+  add_index "remarks", ["examiner_id"], :name => "index_remarks_on_examiner_id"
 
   create_table "rubrics", :force => true do |t|
     t.string   "name",       :limit => 100
@@ -520,13 +518,15 @@ ActiveRecord::Schema.define(:version => 20140616052417) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "marks"
-    t.boolean  "graded",                   :default => false
+    t.boolean  "graded",                    :default => false
     t.integer  "honest"
-    t.boolean  "received",                 :default => false
+    t.boolean  "received",                  :default => false
     t.string   "signature"
-    t.string   "uid",        :limit => 40
-    t.integer  "job_id",                   :default => -1
-    t.boolean  "billed",                   :default => false
+    t.string   "uid",         :limit => 40
+    t.integer  "job_id",                    :default => -1
+    t.boolean  "billed",                    :default => false
+    t.boolean  "orange_flag"
+    t.boolean  "red_flag"
   end
 
   add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"

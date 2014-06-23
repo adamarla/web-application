@@ -1,42 +1,80 @@
 
 $gray: #191919 ; // rgb(25,25,25)
-$lightgray: lighten($gray, 30%) ; // rgb(102,102,102)
-$deep-blue: #01537d ; // rgb(1,83,125)
-$orange:#ffa500 ; // rgb(255,165,0)
+$lightgray: #999999 ; // rgb(153,153,153) 
 $gradians-blue: #6ca7ab ; // rgb(108,167,171)
 $green: #11c214 ; // rgb(17,194,20)
-$red: #c40e0e ; // rgb(196,14,14)
 
-.criterion {
-  > div > .badge {
-     width: 8px ; 
-     height: 8px ;
-     padding: 4px ;
-     float: left ;
+$red: #c40e0e;
+$orange: rgba(255,165,0,0.5) ; // rgb(255,165,0)
+$deep-blue: #01537d ; // rgb(1,83,125)
+
+.criterion { 
+  font-size: 11px ;
+  cursor: pointer ; 
+
+  &.fdb { 
+    padding-bottom: 5px ;
+    border-bottom: 1px dotted white ;
+    margin-top: 8px ;
+    text-align: justify ;
+  }
+
+  .kb { 
+     text-align: center ;
      margin-top: 4px ;
-     background-color: $lightgray ;
+     padding: 4px ;
+     min-width: 14px ;
+     min-height: 15px ;
+     background-color: $lightgray ; 
+     font-weight: 700 ;
+     &:empty { display: none ; }
+     border-radius: 15px ;
+     float: none ;
   }
 
-  &.selected { 
-    .badge { background-color: $orange ; }
+  div:not([class]) {
+    background-color: $lightgray ;
+    height: 4px ;
+    width: 90% ;
+    margin-top: 6px ;
+    border-radius: 1px ;
+    > .reward {
+      background-color: rgba(1,83,125,0.7) ;
+      height: 100% ;
+      &.red { background-color: $red ; }
+      &.orange { background-color: rgba(255,165,0,0.9) ; }
+    }
   }
 
-  .stars { 
-    float: left ;
-    margin-top:3px ;
-    > .star { 
-      width: 5px ;
-      height: 5px ;
-      border-radius: 5px ;
-      background-color: $lightgray ;
-      border: none ;
-      &.enabled { 
-        background-color: $green ;
-        &.red { background-color: $red ; }
-        &.orange { background-color: $orange ; }
-      }
-      float: left ;
-      margin-right: 4px ;
-    } 
+} 
+
+#fdb-main {
+  position: absolute ; 
+  top: 0px ;
+  left: 0px ;
+
+  > div:not([id~='pending-scans']) {
+    position: absolute ;
+  }
+
+  > #fdb-active-area {
+    top: 50px ;
+  }
+}
+
+#fdb-controls, #fdb-typeahead {
+  z-index: 4 ;
+  float: left ;
+}
+
+#fdb-controls {
+  position: fixed ;
+  button[data-kb] { 
+    border-radius: 0px ;
+    min-height: 30px ;
+    min-width: 98px ;
+    > span.kb { padding: 3px ; border-radius: 10px ; font-weight: 500 ; }
+    &.btn-success { color: $gray ; font-size: 14px; } 
   } 
 }
+

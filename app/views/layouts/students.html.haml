@@ -19,7 +19,9 @@
         = render partial: 'menus/user/account'
         -#= render partial: 'menus/customer/individual', locals: { customer: customer }
       - if j == :toolbox
-        = render partial: 'toolbox/grading/left/fdb-panel'
+        = render partial: 'toolbox/grading/left/q-fdb'
+        = render partial: 'toolbox/rubric/buttons'
+        = render partial: 'toolbox/rubric/criterion'
       - if j == :modals
         = render partial: 'modals/customer/purchase'
         -#= render partial: 'modals/customer/transfer', locals: { customer: customer }

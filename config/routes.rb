@@ -21,9 +21,7 @@ Webapp::Application.routes.draw do
   match 'exams/pending' => 'accounts#pending_exams', via: :get
   match 'grade/pending' => 'accounts#to_be_graded', via: :get
   match 'scans/pending' => 'accounts#pending_scans', via: :get
-  match 'submit/fdb' => 'accounts#submit_fdb', via: [:put, :post]
   match 'close/apprentice/audit' => 'accounts#audit_apprentice', via: [:put, :post]
-  match 'view/fdb' => 'accounts#view_fdb', via: :get
   match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
   match 'byCountry' => 'accounts#by_country', via: :get
   match 'inCountry' => 'accounts#in_country', via: :get
@@ -77,10 +75,13 @@ Webapp::Application.routes.draw do
 
   match 'mail/digest' => 'examiners#daily_digest', via: :get
 
-  # Graded Response 
   match 'reset/graded' => 'examiners#reset_graded', via: :get
   match 'aggregate' => 'examiners#aggregate', via: :get
   match 'germane/comments' => 'examiners#germane_comments', via: :get
+
+  # Attempt 
+  match 'record/fdb' => 'attempts#grade', via: [:put, :post]
+  match 'load/fdb' => 'attempts#load_fdb', via: :get
 
   # Guardian
   resource :guardian, :only => [:show]

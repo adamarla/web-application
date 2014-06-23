@@ -251,16 +251,29 @@ class Exam < ActiveRecord::Base
     end
   end
 
-  public 
+  def perception?(sid)
+    # Returns one of [:red | :orange | :green | :blank | :disabled ] 
+    # representing the overall sense of what the student has done in the exam
+    w = Worksheet.where(student_id: sid, exam_id: self.id).first
+    return w.nil? ? :disabled : w.perception?
+  end 
+
+  def spectrum?(sid)
+    # Returns perceptions - as color codes - for every response 
+    # by a student in the given exam
+    w = Worksheet.where(exam_id: self.id, student_id: sid).first 
+    w.nil? ? [] : w.spectrum?
+  end 
+
+  private 
     def seal 
-      t = self.quiz.teacher 
+      t = quiz.teacher 
       rubric = t.rubric_id?
 
-      self.update_attribute(:rubric_id, rubric) unless rubric.nil?
+      update_attribute(:rubric_id, rubric) unless rubric.nil?
       if t.indie 
-        created = self.created_at
-        name = "#{created.strftime("%B %Y")}"
-        self.update_attributes name: name, takehome: true
+        name = "#{created_at.strftime("%B %Y")}"
+        update_attributes name: name, takehome: true
       end 
       # Setting the uid => exam needs to be written. Hence, defer the setting to write() 
     end
