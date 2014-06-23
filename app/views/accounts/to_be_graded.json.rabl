@@ -13,5 +13,5 @@ object false
   }
   node(:last_pg, unless: @last_pg.nil?){ @last_pg }
   node(:criteria){
-    @criteria.map{ |c| { text: c.text, id: c.id, badge: c.badge?, kb: c.shortcut? } } 
+    @criteria.map{ |c| { text: c.text, id: c.id, kb: c.shortcut? } } 
   }

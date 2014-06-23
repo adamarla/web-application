@@ -54,9 +54,11 @@ window.rubric = {
 
   processJson : (e, xhr, settings) ->
     url = settings.url 
+    matched = true
 
-    if url.match(/load\/fdb/) # viewing feedback !!!!!!!
-      e.stopImmediatePropagation() 
+    if url.match(/scans\/pending/) # when grading 
+      rubric.buttonsOff false 
+    else if url.match(/load\/fdb/) # viewing feedback !!!!!!!
       json = $.parseJSON xhr.responseText 
       $(rubric.buttons).attr('marker', json.id) if rubric.buttons? 
 
@@ -84,7 +86,10 @@ window.rubric = {
         for j in ids 
           k = criteria.filter("[marker=#{j}]")[0]
           $(k).removeClass('disabled') if k?
+    else # no match !!!  
+      matched = false 
 
+    e.stopImmediatePropagation() if matched 
     return true 
 
   postSubmitCallBk : (e, xhr, settings) ->
@@ -191,7 +196,8 @@ window.rubric = {
           if rubric.grading 
             fdb.attach()
             fdb.update.view(false)
-          $.get "load/fdb?id=#{id}&type=g"
+          else 
+            $.get "load/fdb?id=#{id}&type=g"
         else
           $(btn).addClass 'active'
           fdb.detach() if rubric.grading
