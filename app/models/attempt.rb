@@ -263,6 +263,13 @@ class Attempt < ActiveRecord::Base
     return :green
   end 
 
+  def regradeable? 
+    return false if (self.scan.nil? || self.feedback == 0)
+    return false if self.resolved  
+    return false unless self.worksheet.exam.disputable?
+    return true
+  end 
+
   private 
       def reset_marks_color_quality
         if feedback == 0

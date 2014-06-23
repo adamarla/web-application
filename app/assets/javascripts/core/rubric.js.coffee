@@ -66,6 +66,15 @@ window.rubric = {
         if json.comments?
           overlay.over $(preview.root)
           overlay.loadJson json.comments
+
+      # enable / disable buttons as needed 
+      rubric.buttonsOff true 
+      for j in ['solution', 'audit', 'regrade']
+        continue unless json[j]
+        b = $(rubric.buttons).find("button[data-karo=#{j}]")[0]
+        if b?
+          $(b).removeClass 'disabled' 
+          $(b).prop 'disabled', false
     return true 
 
   postSubmitCallBk : (e, xhr, settings) ->
@@ -92,6 +101,8 @@ window.rubric = {
       nd = criteria.render m
       nd.addClass 'fdb' # for differential styling in feedback panel 
       nd.appendTo $(rubric.root)
+
+    rubric.buttonsOff true # re-enable in response to JSON
     return true 
 
   isBlankFdb : () ->
@@ -186,7 +197,7 @@ window.rubric = {
 #      when 'regrade'
     return true
 
-  buttonsOnOff : (state = true) -> # true => disabled
+  buttonsOff : (state = true) -> # true => disabled
     for b in $(rubric.buttons).find('button')
       $(b).prop 'disabled', state
       if state then $(b).addClass('disabled') else $(b).removeClass('disabled')
