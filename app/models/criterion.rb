@@ -32,7 +32,7 @@ class Criterion < ActiveRecord::Base
   end 
 
   def self.available_shortcuts
-    all = [*'A'..'Z'] + [*'0'..'9']
+    all = [*'0'..'9'] + [*'A'..'Z'] 
     reserved = ['H','R','W','U','F','S','L']
     used = Criterion.where(standard: true).map(&:shortcut).select{ |k| !k.nil? }
     return all - reserved - used 

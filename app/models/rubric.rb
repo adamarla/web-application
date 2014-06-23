@@ -45,7 +45,7 @@ class Rubric < ActiveRecord::Base
       else 
         c = c 
     end 
-    return Criterion.where(id: c.map(&:criterion_id)).order(:penalty).reverse_order
+    return Criterion.where(id: c.map(&:criterion_id)).order(:shortcut)
   end 
 
   def num_criteria?(type = :active) 
