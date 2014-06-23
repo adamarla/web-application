@@ -37,7 +37,7 @@ window.rubric = {
     btns.appendTo $(rubric.root)
     rubric.buttons = btns[0] 
     $(rubric.buttons).on 'click', 'button', rubric.clickBtn 
-    $(rubric.buttons).on 'ajaxSuccess', rubric.customizeBtns
+    $(rubric.buttons).on 'ajaxSuccess', rubric.processJson
     return true 
 
   reset : () ->
@@ -52,10 +52,10 @@ window.rubric = {
     fdb.next.response()
     return true 
 
-  customizeBtns : (e, xhr, settings) ->
+  processJson : (e, xhr, settings) ->
     url = settings.url 
 
-    if url.match(/load\/fdb/)
+    if url.match(/load\/fdb/) # viewing feedback !!!!!!!
       e.stopImmediatePropagation() 
       json = $.parseJSON xhr.responseText 
       $(rubric.buttons).attr('marker', json.id) if rubric.buttons? 
@@ -75,6 +75,16 @@ window.rubric = {
         if b?
           $(b).removeClass 'disabled' 
           $(b).prop 'disabled', false
+
+      # enable / disable criteria as needed 
+      if json.criteria?
+        ids = json.criteria 
+        criteria = $(rubric.root).children('.criterion')
+        $(m).addClass('disabled') for m in criteria 
+        for j in ids 
+          k = criteria.filter("[marker=#{j}]")[0]
+          $(k).removeClass('disabled') if k?
+
     return true 
 
   postSubmitCallBk : (e, xhr, settings) ->
