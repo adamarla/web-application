@@ -151,6 +151,8 @@ window.rubric = {
     # for a key reserved by fdb-controls
 
     key = String.fromCharCode(event.which)
+    # alert "#{event.which} --> #{key}"
+
     nd = $(rubric.root).children().filter("[data-kb='#{key}']")[0]
     if nd? 
       criteria.select nd

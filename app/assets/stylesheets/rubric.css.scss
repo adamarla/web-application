@@ -25,11 +25,23 @@ $deep-blue: #01537d ; // rgb(1,83,125)
      padding: 4px ;
      min-width: 14px ;
      min-height: 15px ;
-     background-color: $lightgray ; 
      font-weight: 700 ;
      &:empty { display: none ; }
      border-radius: 15px ;
      float: none ;
+  }
+
+  &.selected { 
+    .kb { 
+      background-color: $deep-blue ; 
+      color: white ;
+    } 
+  } 
+
+  &:not([class~='selected']){
+    .kb { 
+      background-color: $lightgray ; 
+    } 
   }
 
   div:not([class]) {
