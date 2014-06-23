@@ -20,6 +20,8 @@ class Criterion < ActiveRecord::Base
   validates :penalty, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
   validates :shortcut, uniqueness: true, if: :has_shortcut
 
+  has_many :checklists, dependent: :destroy
+
   before_save :no_orange, if: :red_flag_changed?
   before_save :no_red, if: :orange_flag_changed?
   before_save :standard, if: :shortcut_changed?
@@ -30,7 +32,7 @@ class Criterion < ActiveRecord::Base
   end 
 
   def self.available_shortcuts
-    all = [*'A'..'Z'] + [*'1'..'9']
+    all = [*'A'..'Z'] + [*'0'..'9']
     reserved = ['H','R','W','U','F','S','L']
     used = Criterion.where(standard: true).map(&:shortcut).select{ |k| !k.nil? }
     return all - reserved - used 
