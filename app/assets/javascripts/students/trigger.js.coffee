@@ -4,10 +4,6 @@
 ############################################################################
 
 jQuery ->
-  $('#btn-regrade').click (event) ->
-    event.stopImmediatePropagation() 
-    $('#m-dispute-1').modal 'show'
-    return true
 
   $('#btn-cancel-dispute').click (event) ->
     event.stopImmediatePropagation() 
@@ -38,6 +34,10 @@ jQuery ->
     mdl = $(this).closest '.modal'
     mdl.modal 'hide'
     return true
+
+# [Abhinav]: Code below is for allowing students to write TeX as part of their 
+# re-grade request. Worked sort of fine - but not perfectly. Can consider 
+# revisiting and bringing it back sometime later
 
 #  $('#m-dispute-2 form').submit ->
 #    textbox = $(this).find('textarea').eq(0)

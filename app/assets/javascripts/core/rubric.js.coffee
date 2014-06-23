@@ -194,7 +194,12 @@ window.rubric = {
         $(fm).attr 'action', "audit/open?id=#{id}&type=g"
         mdl.modal 'show'
         rubric.typing = true
-#      when 'regrade'
+      when 'regrade'
+        mdl_1 = $('#m-dispute-1')
+        fm = $('#m-dispute-2 form')
+        fm.attr 'action', "dispute?id=#{id}"
+        mdl_1.modal 'show'
+        rubric.typing = true
     return true
 
   buttonsOff : (state = true) -> # true => disabled
