@@ -53,7 +53,7 @@ class Question < ActiveRecord::Base
 
   has_many :q_selections
   has_many :quizzes, :through => :q_selections
-  has_many :graded_responses
+  has_many :attempts
   has_many :subparts, :dependent => :destroy
 
   has_one :video, as: :watchable

@@ -91,7 +91,7 @@ class Account < ActiveRecord::Base
 
     case a.loggable_type
       when "Student"
-        merge = [Worksheet, GradedResponse, StudentRoster]
+        merge = [Worksheet, Attempt, StudentRoster]
         key = :student_id
     end
     return false if merge.blank?
@@ -208,7 +208,7 @@ class Account < ActiveRecord::Base
           e = Exam.where('id > ?', 342).select{ |j| j.publishable? }.sample(5)
           ids = e.map(&:id)
         else
-          g = GradedResponse.assigned_to(me).with_scan.ungraded
+          g = Attempt.assigned_to(me).with_scan.ungraded
           ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
         end
         @exams = Exam.where(id: ids)

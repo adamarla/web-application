@@ -29,9 +29,9 @@ class AggrByTopic < ActiveRecord::Base
     where(topic_id: topic_id)
   end
   
-  def self.build(graded_responses)
+  def self.build(attempts)
     vals = {}
-    graded_responses.each do |gr|
+    attempts.each do |gr|
       next if gr.feedback == 0 # make sure it is in fact a "graded" response
       q_selection = gr.q_selection
       teacher_id  = q_selection.quiz.teacher_id

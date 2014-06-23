@@ -78,7 +78,7 @@ class QuestionController < ApplicationController
 
   def preview
     if params[:type] == 'g'
-      g = GradedResponse.find params[:id]
+      g = Attempt.find params[:id]
       @question = g.subpart.question
       @version = g.version
     else 
@@ -97,7 +97,7 @@ class QuestionController < ApplicationController
 
   def audit_open
     if params[:type] == 'g'
-      g = GradedResponse.find params[:id]
+      g = Attempt.find params[:id]
       subpart_index = g.subpart.index 
       @question = g.subpart.question
     else 

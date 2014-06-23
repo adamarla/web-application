@@ -26,7 +26,7 @@ class Ability
     # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
     case account.role 
       when :student 
-        can :read, GradedResponse, :student_id => account.loggable_id
+        can :read, Attempt, :student_id => account.loggable_id
       when :teacher 
         can [:create, :read], Quiz # let the teacher view quizzes by other teachers? 
         cannot [:update, :destroy], Quiz
@@ -35,8 +35,8 @@ class Ability
         can :manage, :all 
       when :school
       when :examiner
-        can :manage, GradedResponse, :examiner_id => account.loggable_id
-        cannot :destroy, GradedResponse
+        can :manage, Attempt, :examiner_id => account.loggable_id
+        cannot :destroy, Attempt
     end 
   end
 end

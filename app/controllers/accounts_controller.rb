@@ -73,7 +73,7 @@ class AccountsController < ApplicationController
       @last_pg = nil
     else 
       by = current_account.loggable_id
-      @pending = GradedResponse.in_exam(eid).with_scan.ungraded.assigned_to(by)
+      @pending = Attempt.in_exam(eid).with_scan.ungraded.assigned_to(by)
       sel = @pending.map(&:q_selection_id).uniq
       @indices = QSelection.where(id: sel).order(:index)
       n = @indices.count
@@ -97,7 +97,7 @@ class AccountsController < ApplicationController
     qsel = QSelection.find q
     @comments = qsel.germane_comments 
 
-    candidates = GradedResponse.in_exam(eid).where(q_selection_id: q).with_scan
+    candidates = Attempt.in_exam(eid).where(q_selection_id: q).with_scan
     p = @sandboxed ? candidates.limit(5) : candidates.ungraded.assigned_to(exid)
 
     @pending = p.order(:student_id).order(:subpart_id)
@@ -112,7 +112,7 @@ class AccountsController < ApplicationController
     @gr = []
 
     if (who == "Teacher" || who == "Examiner")
-      @gr = GradedResponse.in_exam(@ws_id).ungraded.with_scan
+      @gr = Attempt.in_exam(@ws_id).ungraded.with_scan
       @gr = ( who == 'Examiner' ) ? @gr.assigned_to(current_account.loggable_id) : @gr 
       @gr = @gr.on_page(page)
     end

@@ -180,7 +180,7 @@ class Quiz < ActiveRecord::Base
   end
 
   def pending_scans(examiner, page)
-    @pending = GradedResponse.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
+    @pending = Attempt.ungraded.with_scan.in_quiz(self.id).assigned_to(examiner).on_page(page)
     @pending = @pending.sort{ |m,n| m.index? <=> n.index? }
 
     @scans = @pending.map(&:scan).uniq.sort
@@ -332,12 +332,12 @@ class Quiz < ActiveRecord::Base
 
   def recompile(qids = [])
     # Set pages on all responses to nil so that they can be recomputed -
-    # based on the changed layout (problem?) - in the next call to GradedResponse::page?
+    # based on the changed layout (problem?) - in the next call to Attempt::page?
 
     proceed = qids.blank? ? (self.laid_out? ? false : true) : true
     return false unless proceed
 
-    GradedResponse.in_quiz(self.id).each do |g|
+    Attempt.in_quiz(self.id).each do |g|
       g.update_attribute :page, nil
     end
 

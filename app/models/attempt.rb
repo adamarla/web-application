@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: graded_responses
+# Table name: attempts
 #
 #  id             :integer         not null, primary key
 #  student_id     :integer
@@ -26,7 +26,7 @@
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
 
-class GradedResponse < ActiveRecord::Base
+class Attempt < ActiveRecord::Base
   belongs_to :student
   belongs_to :examiner
   belongs_to :q_selection
@@ -179,7 +179,7 @@ class GradedResponse < ActiveRecord::Base
   def reset(soft = true)
     # For times when a graded response has to be re-graded. 
     # Setting feedback = 0 will trigger the following before_update 
-    # callbacks on the GradedResponse and then on the worksheet
+    # callbacks on the Attempt and then on the worksheet
     self.update_attribute :feedback, 0
 
     # Soft (default) reset -> does NOT destroy any associated Remarks
@@ -209,8 +209,8 @@ class GradedResponse < ActiveRecord::Base
 
   def siblings_same_worksheet
     # same student, same worksheet
-    ids = GradedResponse.in_worksheet(self.worksheet_id).map(&:id) - [self.id]
-    GradedResponse.where(id: ids)
+    ids = Attempt.in_worksheet(self.worksheet_id).map(&:id) - [self.id]
+    Attempt.where(id: ids)
   end
 
   def siblings_same_page
@@ -223,7 +223,7 @@ class GradedResponse < ActiveRecord::Base
     # same student, same worksheet, same question - perhaps different pages
     db_question_id = self.subpart.question_id 
     ids = self.siblings_same_worksheet.to_db_question(db_question_id).map(&:id) - [self.id]
-    GradedResponse.where(id: ids)
+    Attempt.where(id: ids)
   end
 
   def name?

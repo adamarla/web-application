@@ -25,7 +25,7 @@ include GeneralQueries
 class Exam < ActiveRecord::Base
   belongs_to :quiz
 
-  has_many :graded_responses, dependent: :destroy
+  has_many :attempts, dependent: :destroy
   has_many :worksheets, dependent: :destroy
   has_many :students, through: :worksheets
 
@@ -72,7 +72,7 @@ class Exam < ActiveRecord::Base
 
   def gradeable?
     return false unless self.has_scans?
-    GradedResponse.in_exam(self.id).with_scan.ungraded.count > 0
+    Attempt.in_exam(self.id).with_scan.ungraded.count > 0
   end
 
   def disputable?
@@ -89,7 +89,7 @@ class Exam < ActiveRecord::Base
 
   def has_scans?
     # if false, then worksheet / exam is automatically ungradeable
-    ret = GradedResponse.in_exam(self.id).with_scan.count > 0
+    ret = Attempt.in_exam(self.id).with_scan.count > 0
     return ret
   end
 
@@ -120,7 +120,7 @@ class Exam < ActiveRecord::Base
     # some or all of their answer-sheet graded are considered. Hence, know 
     # that this number will change with time before settling to a final value
     
-    g = GradedResponse.in_exam(self.id).graded
+    g = Attempt.in_exam(self.id).graded
     return 0 if g.blank?
     total = g.map(&:marks).inject(:+)
     nsubm = g.map(&:student_id).uniq.count
@@ -134,7 +134,7 @@ class Exam < ActiveRecord::Base
   def submitters
     # Returns list of students who have made some submission for this exam.
     # Can change as more scans come in
-    ids = GradedResponse.in_exam(self.id).with_scan.map(&:student_id).uniq
+    ids = Attempt.in_exam(self.id).with_scan.map(&:student_id).uniq
     Student.where(id: ids)
   end
 
@@ -186,7 +186,7 @@ class Exam < ActiveRecord::Base
     # Numbers < 0 => deadline missed 
 
     if self.grade_by.nil?
-      g = GradedResponse.in_exam(self.id).with_scan.ungraded.order(:updated_at).last
+      g = Attempt.in_exam(self.id).with_scan.ungraded.order(:updated_at).last
       d = g.nil? ? 3.business_days.from_now : (3.business_days.after g.updated_at)
       self.update_attribute(:grade_by, d) 
     end
@@ -196,7 +196,7 @@ class Exam < ActiveRecord::Base
   end
 
   def percent_graded?
-    g = GradedResponse.in_exam(self.id).with_scan
+    g = Attempt.in_exam(self.id).with_scan
     return 0 if g.count == 0
     ret = (( g.graded.count.to_f / g.count )*100).round
     return ret
@@ -245,7 +245,7 @@ class Exam < ActiveRecord::Base
   def reset
     # For now, this method only unassigns any ungraded responses
     # Needed if a teacher wants new distribution scheme to take effect 
-    g = GradedResponse.in_exam(self.id).with_scan.ungraded
+    g = Attempt.in_exam(self.id).with_scan.ungraded
     g.each do |j|
       j.update_attribute :examiner_id, nil
     end

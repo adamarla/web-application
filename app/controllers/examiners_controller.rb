@@ -59,7 +59,7 @@ class ExaminersController < ApplicationController
   def load_samples
     @apprentice = params[:id].to_i
     doodles = Doodle.where(examiner_id: @apprentice)
-    @gids = doodles.map(&:graded_response_id).uniq 
+    @gids = doodles.map(&:attempt_id).uniq 
   end
 
   def untagged
@@ -154,16 +154,16 @@ class ExaminersController < ApplicationController
 
     if mobile
       ids = qrc.split('-').map(&:to_i)
-      g = GradedResponse.where(id: ids)
+      g = Attempt.where(id: ids)
     elsif old_style # can be, and should be, deprecated by March 2014
       ws_id = decrypt qrc[0..6]
       rel_index = decrypt qrc[7..9]
       page = qrc[10].to_i(36)
       student_id = Worksheet.where(exam_id: ws_id).map(&:student_id).sort[rel_index]
-      g = GradedResponse.in_exam(ws_id).of_student(student_id).on_page(page)
+      g = Attempt.in_exam(ws_id).of_student(student_id).on_page(page)
     else
       ids = Worksheet.unmangle_qrcode qrc
-      g = GradedResponse.where(id: ids)
+      g = Attempt.where(id: ids)
     end
 
     # Do NOT receive scan under the following conditions 
@@ -201,7 +201,7 @@ class ExaminersController < ApplicationController
   end 
 
   def reset_graded 
-    g = GradedResponse.find params[:id]
+    g = Attempt.find params[:id]
     unless g.nil?
       g.reset false # false => non-soft resetting => associated comments also destroyed
     end
@@ -209,7 +209,7 @@ class ExaminersController < ApplicationController
   end 
 
   def germane_comments
-    g = GradedResponse.find params[:g]
+    g = Attempt.find params[:g]
     unless g.nil?
       @comments = g.q_selection.germane_comments
     else
@@ -219,21 +219,21 @@ class ExaminersController < ApplicationController
 
   def aggregate
     # Right now it aggregates by teacher_id, can do by others in future - 01/24/14
-    AggrByTopic.build(GradedResponse.graded)
+    AggrByTopic.build(Attempt.graded)
     render json: { status: :ok}
   end
 
   def load_dispute 
-    @g = GradedResponse.find params[:id]
-    @comments = @g.nil? ? nil : Remark.where(graded_response_id: @g.id)
+    @g = Attempt.find params[:id]
+    @comments = @g.nil? ? nil : Remark.where(attempt_id: @g.id)
   end 
 
   def disputed 
-    @g = GradedResponse.assigned_to(current_account.loggable_id).with_scan.unresolved
+    @g = Attempt.assigned_to(current_account.loggable_id).with_scan.unresolved
   end 
 
   def reject_dispute
-    g = GradedResponse.find params[:id]
+    g = Attempt.find params[:id]
     unless g.nil?
       g.update_attribute :resolved, true
       render json: { disabled: g.id }, status: :ok
@@ -243,7 +243,7 @@ class ExaminersController < ApplicationController
   end 
 
   def accept_dispute
-    g = GradedResponse.find params[:id]
+    g = Attempt.find params[:id]
     unless g.nil?
       g.reset false
       render json: { disabled: g.id }, status: :ok
@@ -253,7 +253,7 @@ class ExaminersController < ApplicationController
   end 
 
   def daily_digest  
-    g = GradedResponse.with_scan
+    g = Attempt.with_scan
     ug = g.ungraded # ug = ungraded 
     d = g.unresolved # d = disputes 
     e = Examiner.available
@@ -270,7 +270,7 @@ class ExaminersController < ApplicationController
   end 
 
   def load_dispute_reason
-    d = Dispute.where(graded_response_id: params[:id]).first
+    d = Dispute.where(attempt_id: params[:id]).first
     reason = (d.nil? || d.text.blank?) ? "No reason provided" : d.text
     render json: { notify: { msg: reason } }, status: :ok
   end

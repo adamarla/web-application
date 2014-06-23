@@ -21,8 +21,8 @@ class Student < ActiveRecord::Base
 
   has_one :account, as: :loggable, dependent: :destroy
 
-  has_many :graded_responses, dependent: :destroy
-  has_many :quizzes, through: :graded_responses
+  has_many :attempts, dependent: :destroy
+  has_many :quizzes, through: :attempts
 
   has_many :worksheets, dependent: :destroy
   has_many :exams, through: :worksheets
@@ -107,7 +107,7 @@ class Student < ActiveRecord::Base
 
     a = a.select{ |m| m.graded?(:none) } # --> (1) --> only those not graded at all
     eids = a.map(&:exam_id)
-    without_scans = GradedResponse.in_exam(eids).of_student(self.id).without_scan.map(&:exam_id).uniq
+    without_scans = Attempt.in_exam(eids).of_student(self.id).without_scan.map(&:exam_id).uniq
     ungraded_with_scans = eids - without_scans
     return Exam.where(id: ungraded_with_scans)
   end
@@ -115,7 +115,7 @@ class Student < ActiveRecord::Base
   def pending
     # Any student worksheet - without scans
     assigned = self.exams.map(&:id) 
-    g = GradedResponse.in_exam(assigned).of_student(self.id).without_scan
+    g = Attempt.in_exam(assigned).of_student(self.id).without_scan
   end
 
   def teachers
@@ -130,7 +130,7 @@ class Student < ActiveRecord::Base
 
   def score_in?(exam_id)
     w = Worksheet.where(student_id: self.id, exam_id: exam_id).first
-    g = w.nil? ? [] : GradedResponse.where(worksheet_id: w.id)
+    g = w.nil? ? [] : Attempt.where(worksheet_id: w.id)
 
     return 0 if g.blank?
     return -1 if g.with_scan.count == 0 # absent perhaps?
@@ -144,7 +144,7 @@ class Student < ActiveRecord::Base
   end
 
   def responses(exam_id)
-    a = GradedResponse.of_student(self.id).in_exam(exam_id).with_scan
+    a = Attempt.of_student(self.id).in_exam(exam_id).with_scan
     return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
   end
 
@@ -152,7 +152,7 @@ class Student < ActiveRecord::Base
     # Returns the weighted average percentage earned by a student on
     # a given topic on the questions his/her teacher set
     # Returns: a number in [0,1]
-    g = GradedResponse.of_student(self.id).graded.on_topic(topic_id)
+    g = Attempt.of_student(self.id).graded.on_topic(topic_id)
     sids = g.map(&:subpart_id).uniq
 
     earned = 0 
@@ -172,17 +172,17 @@ class Student < ActiveRecord::Base
     took_test = qids.include? quiz_id 
     return true if !took_test
 
-    g = GradedResponse.of_student(self.id).in_quiz(quiz_id).with_scan
+    g = Attempt.of_student(self.id).in_quiz(quiz_id).with_scan
     return g.count == 0
   end
 
   def absent_for_test?(exam_id)
-    g = GradedResponse.of_student(self.id).in_exam(exam_id).with_scan
+    g = Attempt.of_student(self.id).in_exam(exam_id).with_scan
     return g.count == 0
   end
 
   def proficiency_chart_for(tid)
-    g = GradedResponse.of_student(self.id).graded
+    g = Attempt.of_student(self.id).graded
     aggr = AggrByTopic.for_teacher tid
     topics = aggr.map(&:topic_id).uniq
     topics = Topic.where(id: topics).sort{ |m,n| m.name <=> n.name }
@@ -209,7 +209,7 @@ class Student < ActiveRecord::Base
     def destroyable?
       # A student can be destroyed if there is no associated data for it
       is_empty = true 
-      [Worksheet, GradedResponse, StudentRoster].each do |m|
+      [Worksheet, Attempt, StudentRoster].each do |m|
         is_empty = m.where(student_id: self.id).empty?
         break unless is_empty
       end

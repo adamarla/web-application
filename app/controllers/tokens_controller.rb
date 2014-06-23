@@ -69,8 +69,8 @@ class TokensController < ApplicationController
 
   def view_fdb
     gr_ids = params[:id].split('-').map{ |id| id.to_i }
-    grs = GradedResponse.where(id: gr_ids)
-    @comments = Remark.where(graded_response_id: grs)
+    grs = Attempt.where(id: gr_ids)
+    @comments = Remark.where(attempt_id: grs)
     json = {
       comments: @comments.map{ |c| 
         { x: c.x, y: c.y, comment: c.tex_comment.text } 
@@ -89,7 +89,7 @@ class TokensController < ApplicationController
         quiz = w.exam.quiz
         qsels = quiz.q_selections.order(:index)
         qs = qsels.map(&:question)
-        gr = w.graded_responses
+        gr = w.attempts
         vers = w.signature.split(',')
         items = []
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140623051853) do
+ActiveRecord::Schema.define(:version => 20140623052624) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -65,6 +65,32 @@ ActiveRecord::Schema.define(:version => 20140623051853) do
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
   end
+
+  create_table "attempts", :force => true do |t|
+    t.integer  "student_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "examiner_id"
+    t.integer  "q_selection_id"
+    t.float    "marks"
+    t.string   "scan",           :limit => 40
+    t.integer  "subpart_id"
+    t.integer  "page"
+    t.integer  "feedback",                     :default => 0
+    t.integer  "worksheet_id"
+    t.boolean  "mobile",                       :default => false
+    t.boolean  "disputed",                     :default => false
+    t.boolean  "resolved",                     :default => false
+    t.boolean  "orange_flag"
+    t.boolean  "red_flag"
+    t.boolean  "weak"
+    t.boolean  "medium"
+    t.boolean  "strong"
+  end
+
+  add_index "attempts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
+  add_index "attempts", ["student_id"], :name => "index_graded_responses_on_student_id"
+  add_index "attempts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
 
   create_table "checklists", :force => true do |t|
     t.integer "rubric_id"
@@ -158,20 +184,20 @@ ActiveRecord::Schema.define(:version => 20140623051853) do
 
   create_table "disputes", :force => true do |t|
     t.integer  "student_id"
-    t.integer  "graded_response_id"
+    t.integer  "attempt_id"
     t.text     "text"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "disputes", ["student_id"], :name => "index_disputes_on_student_id"
 
   create_table "doodles", :force => true do |t|
     t.integer  "examiner_id"
-    t.integer  "feedback",           :default => 0
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-    t.integer  "graded_response_id"
+    t.integer  "feedback",    :default => 0
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.integer  "attempt_id"
   end
 
   add_index "doodles", ["examiner_id"], :name => "index_doodles_on_examiner_id"
@@ -233,32 +259,6 @@ ActiveRecord::Schema.define(:version => 20140623051853) do
 
   add_index "freebies", ["course_id"], :name => "index_freebies_on_course_id"
   add_index "freebies", ["lesson_id"], :name => "index_freebies_on_lesson_id"
-
-  create_table "graded_responses", :force => true do |t|
-    t.integer  "student_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "examiner_id"
-    t.integer  "q_selection_id"
-    t.float    "marks"
-    t.string   "scan",           :limit => 40
-    t.integer  "subpart_id"
-    t.integer  "page"
-    t.integer  "feedback",                     :default => 0
-    t.integer  "worksheet_id"
-    t.boolean  "mobile",                       :default => false
-    t.boolean  "disputed",                     :default => false
-    t.boolean  "resolved",                     :default => false
-    t.boolean  "orange_flag"
-    t.boolean  "red_flag"
-    t.boolean  "weak"
-    t.boolean  "medium"
-    t.boolean  "strong"
-  end
-
-  add_index "graded_responses", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
-  add_index "graded_responses", ["student_id"], :name => "index_graded_responses_on_student_id"
-  add_index "graded_responses", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
 
   create_table "grades", :force => true do |t|
     t.float    "allotment"
@@ -366,9 +366,9 @@ ActiveRecord::Schema.define(:version => 20140623051853) do
   create_table "remarks", :force => true do |t|
     t.integer  "x"
     t.integer  "y"
-    t.integer  "graded_response_id"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.integer  "attempt_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.integer  "tex_comment_id"
     t.integer  "doodle_id"
     t.integer  "examiner_id"

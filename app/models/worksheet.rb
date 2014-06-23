@@ -22,7 +22,7 @@
 class Worksheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :exam  
-  has_many :graded_responses, dependent: :destroy
+  has_many :attempts, dependent: :destroy
 
   before_update :reset_marks_color, if: :graded_changed?
   after_create :seal
@@ -55,7 +55,7 @@ class Worksheet < ActiveRecord::Base
 
     return ( extent == :none ? false : true ) if self.received
 
-    gr = GradedResponse.where(worksheet_id: self.id)
+    gr = Attempt.where(worksheet_id: self.id)
     n_total = gr.count 
     n_with_scan = gr.with_scan.count 
     self.update_attribute :received, true if (n_with_scan == n_total)
@@ -80,19 +80,19 @@ class Worksheet < ActiveRecord::Base
     # A student's answer sheete becomes publishable as soon as the 
     # last of the graded responses has been graded
 
-    submitted = GradedResponse.where(worksheet_id: self.id).with_scan
+    submitted = Attempt.where(worksheet_id: self.id).with_scan
     return false if submitted.count == 0
     return submitted.ungraded.count == 0
   end
 
   def perception? 
     # Returns either [:red | :orange | :green | :blank ] depending on 
-    # what flags were set on the GradedResponses
+    # what flags were set on the Attempts
 
     return :red if self.red_flag
     return :orange if self.orange_flag
 
-    m = self.graded_responses.map(&:perception?)
+    m = self.attempts.map(&:perception?)
     n = :blank 
 
     if m.include? :red 
@@ -110,7 +110,7 @@ class Worksheet < ActiveRecord::Base
 
   def spectrum?
     sbp_ids = self.exam.quiz.subparts.map(&:id)
-    g = GradedResponse.where(worksheet_id: self.id).sort{ |m,n| sbp_ids.index(m.subpart_id) <=> sbp_ids.index(n.subpart_id) }
+    g = Attempt.where(worksheet_id: self.id).sort{ |m,n| sbp_ids.index(m.subpart_id) <=> sbp_ids.index(n.subpart_id) }
     return g.map(&:perception?)
   end
 
@@ -122,7 +122,7 @@ class Worksheet < ActiveRecord::Base
       ret = ( extent == :none ) ? false : true
       self.update_attribute :graded, true unless (extent == :none)
     else
-      gr = GradedResponse.where(worksheet_id: self.id)
+      gr = Attempt.where(worksheet_id: self.id)
       case extent
         when :fully 
           ret = gr.count ? (gr.graded.count == gr.count) : false 
@@ -139,7 +139,7 @@ class Worksheet < ActiveRecord::Base
   def marks?
     return self.marks unless self.marks.nil?
 
-    g = GradedResponse.where(worksheet_id: self.id)
+    g = Attempt.where(worksheet_id: self.id)
     marks = g.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
     self.update_attributes(marks: marks, graded: true) if g.ungraded.count == 0
     return marks.nil? ? 0 : marks.round(2)
@@ -150,14 +150,14 @@ class Worksheet < ActiveRecord::Base
     # and more of the student's exam is graded 
     return self.exam.quiz.total? if self.graded?
 
-    g = GradedResponse.where(worksheet_id: self.id)
+    g = Attempt.where(worksheet_id: self.id)
     thus_far = g.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 
   def graded_thus_far_as_str
     # Returns a string of the form "marks / graded_thus_far" - where marks are whats been earned till now
-    absent = GradedResponse.of_student(self.student_id).in_exam(self.exam_id).with_scan.count == 0
+    absent = Attempt.of_student(self.student_id).in_exam(self.exam_id).with_scan.count == 0
     marks = absent ? -1 : self.marks?
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
@@ -176,8 +176,8 @@ class Worksheet < ActiveRecord::Base
     qsel.each do |y|
       sbp = y.question.subparts
       sbp.each do |s|
-        g = self.graded_responses.build student_id: sid, q_selection_id: y.id, subpart_id: s.id
-        self.graded_responses << g
+        g = self.attempts.build student_id: sid, q_selection_id: y.id, subpart_id: s.id
+        self.attempts << g
       end
     end
     self.update_attribute :billed, true
@@ -191,7 +191,7 @@ class Worksheet < ActiveRecord::Base
       mangled_qrcs = 'null,null'
     else 
       span = e.quiz.span?
-      g = GradedResponse.in_worksheet(self.id) 
+      g = Attempt.in_worksheet(self.id) 
       ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
       mangled_qrcs = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
     end 

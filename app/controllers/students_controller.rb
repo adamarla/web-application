@@ -87,12 +87,12 @@ class StudentsController < ApplicationController
   end
 
   def dispute 
-    g = GradedResponse.find params[:id]
+    g = Attempt.find params[:id]
     unless g.nil?
       reason = params[:dispute][:reason]
       unless reason.blank?
         r = reason.gsub("\r\n", " ").strip # remove carriage returns
-        d = current_account.loggable.disputes.build(graded_response_id: g.id, text: r)
+        d = current_account.loggable.disputes.build(attempt_id: g.id, text: r)
       else
         d = nil
       end 

@@ -15,7 +15,7 @@
 
 class Subpart < ActiveRecord::Base
   belongs_to :question
-  has_many :graded_responses
+  has_many :attempts
 
   def name_if_in?(quiz)
     qsel = QSelection.where(:quiz_id => quiz, :question_id => self.question_id).first

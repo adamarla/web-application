@@ -21,7 +21,7 @@ include GeneralQueries
 
 class Examiner < ActiveRecord::Base
   has_one :account, as: :loggable
-  has_many :graded_responses
+  has_many :attempts
   has_many :suggestions
   has_many :doodles, dependent: :destroy # will destroy associated remarks 
   has_many :remarks # choosing not to destroy 'live' remarks  
@@ -86,11 +86,11 @@ class Examiner < ActiveRecord::Base
   end
 
   def pending_workload
-    return GradedResponse.where(:examiner_id => self.id).where('grade_id IS NULL').count
+    return Attempt.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
 
   def self.distribute_scans
-    ug = GradedResponse.unassigned.with_scan # ug = ungraded
+    ug = Attempt.unassigned.with_scan # ug = ungraded
     exams = ug.map(&:worksheet).uniq.map(&:exam).uniq 
     offline = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.indie }
 

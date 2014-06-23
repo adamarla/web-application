@@ -2,12 +2,12 @@
 #
 # Table name: disputes
 #
-#  id                 :integer         not null, primary key
-#  student_id         :integer
-#  graded_response_id :integer
-#  text               :text
-#  created_at         :datetime        not null
-#  updated_at         :datetime        not null
+#  id         :integer         not null, primary key
+#  student_id :integer
+#  attempt_id :integer
+#  text       :text
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
 #
 
 class Dispute < ActiveRecord::Base
@@ -19,8 +19,8 @@ class Dispute < ActiveRecord::Base
   end 
 
   def self.in_exam(id)
-    gids = GradedResponse.in_exam(id).map(&:id)
-    where(graded_response_id: gids)
+    gids = Attempt.in_exam(id).map(&:id)
+    where(attempt_id: gids)
   end
 
 end
