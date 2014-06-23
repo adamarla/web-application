@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: graded_responses
+# Table name: attempts 
 #
 #  id             :integer         not null, primary key
 #  student_id     :integer
@@ -26,7 +26,7 @@
 
 require 'test_helper'
 
-class GradedResponseTest < ActiveSupport::TestCase
+class AttemptTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
