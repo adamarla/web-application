@@ -14,7 +14,7 @@
 class Rubric < ActiveRecord::Base
   # attr_accessible :title, :body
   validates :name, presence: true
-  has_many :checklists 
+  has_many :checklists, dependent: :destroy
   has_many :criteria, through: :checklists
 
   def self.standard 
