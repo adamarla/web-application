@@ -65,16 +65,7 @@ class Rubric < ActiveRecord::Base
 =end
 
   def penalty_if?(criterion_ids)
-    criteria = Checklist.where(rubric_id: self.id).order(:index)
-    ids = criteria.map(&:criterion_id)
-    penalties = criteria.map(&:criterion).map(&:penalty)
-    p = 0 
-
-    for m in criterion_ids
-      j = ids.index m
-      next if j.nil?
-      p += penalties[j]
-    end 
+    p = Criterion.where(id: criterion_ids).map(&:penalty).inject(:+)
     return (p > 100 ? 100 : p)
   end
 
