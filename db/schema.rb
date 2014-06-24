@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140623052624) do
+ActiveRecord::Schema.define(:version => 20140624094618) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
