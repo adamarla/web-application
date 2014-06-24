@@ -7,7 +7,6 @@ window.rubric = {
   typing : false, # false => writing a comment
   form : null,
   buttons : null,
-  submitBtn : null,
 
   initialize : (node) ->
     rubric.root = if typeof node is 'string' then $(node)[0] else node
@@ -79,13 +78,7 @@ window.rubric = {
           $(b).prop 'disabled', false
 
       # enable / disable criteria as needed 
-      if json.criteria?
-        ids = json.criteria 
-        criteria = $(rubric.root).children('.criterion')
-        $(m).addClass('disabled') for m in criteria 
-        for j in ids 
-          k = criteria.filter("[marker=#{j}]")[0]
-          $(k).removeClass('disabled') if k?
+      rubric.highlight(json.criteria) if json.criteria?
     else # no match !!!  
       matched = false 
 
@@ -114,7 +107,8 @@ window.rubric = {
     return false unless rubric.root? 
     for m in json
       nd = criteria.render m
-      nd.addClass 'fdb' # for differential styling in feedback panel 
+      klass = if rubric.grading then 'grade' else 'view'
+      nd.addClass(klass) # for differential styling in feedback panel 
       nd.appendTo $(rubric.root)
 
     rubric.buttonsOff true # re-enable in response to JSON
@@ -156,13 +150,6 @@ window.rubric = {
     nd = $(rubric.root).children().filter("[data-kb='#{key}']")[0]
     if nd? 
       criteria.select nd
-      sthSelected = $(rubric.root).children().filter('.selected').length > 0
-      if sthSelected 
-        $(rubric.submitBtn).prop 'disabled', false 
-        $(rubric.submitBtn).removeClass 'disabled'
-      else 
-        $(rubric.submitBtn).prop 'disabled', true 
-        $(rubric.submitBtn).addClass 'disabled'
     else 
       fdb.pressKey event
       return true 
@@ -231,10 +218,5 @@ jQuery ->
   $('.tab-pane').on 'click', '.criterion', (event) ->
     event.stopImmediatePropagation() 
     return false unless rubric.grading 
-
     criteria.select this
-
-    sthSelected = $(this).hasClass('selected') or  $(this).siblings().filter('.selected').length > 0
-    $(rubric.submitBtn).prop('disabled', !sthSelected)
-    if sthSelected then $(rubric.submitBtn).removeClass('disabled') else $(rubric.submitBtn).removeClass('disabled')
     return true
