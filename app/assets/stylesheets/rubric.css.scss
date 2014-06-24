@@ -14,14 +14,14 @@ $deep-blue: #01537d ; // rgb(1,83,125)
 
   &.grade { 
     padding: { 
-      top: 0px ;
-      bottom: 3px ; 
-      left: 5px ; 
-      right: 5px ;
+      top: 2px ;
+      bottom: 4px ; 
+      left: 4px ; 
+      right: 2px ;
     } 
     &:nth-child(odd) { 
       background-color: rgba(1,83,125,0.5);
-      border-radius: 2px ;
+      border-radius: 5px ;
     } 
   }
 
