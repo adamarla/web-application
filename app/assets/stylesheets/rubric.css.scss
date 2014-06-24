@@ -26,7 +26,18 @@ $deep-blue: #01537d ; // rgb(1,83,125)
   }
 
   &.view { 
-    text-align: justify ;
+    max-width: 95% ;
+    font-size: 10.5px ;
+    padding: { 
+      bottom: 4px; 
+      left: 4px ;
+      top: 4px ;
+      right: 4px ;
+    } 
+    border-radius: 5px ;
+    &:not([class~='hidden']):nth-child(even) {
+      background-color: rgba(1,83,125,0.5);
+    }
   } 
 
   .kb { 
