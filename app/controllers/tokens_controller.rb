@@ -79,6 +79,17 @@ class TokensController < ApplicationController
     render status: 200, json: json
   end
 
+  def bill_ws
+    ws = Worksheet.find(params[:id])
+    ws.bill
+    grs = ws.graded_responses
+    qsels = ws.exam.quiz.q_selections.order(:index)
+    grIds = qsels.each_with_index.map{ |qsel, i|
+      grs.where(q_selection_id: qsel.id).map(&:id).join('-')
+    }
+    render status:200, json: { gr_ids: grIds }
+  end
+
   private
 
     def get_worksheets(account)
@@ -91,7 +102,6 @@ class TokensController < ApplicationController
         qs = qsels.map(&:question)
         gr = w.attempts
         vers = w.signature.split(',')
-        items = []
 
         items = qsels.each_with_index.map{ |qsel, i|
           {
@@ -107,6 +117,7 @@ class TokensController < ApplicationController
         worksheets << {
           quizId: quiz.id,
           quiz: quiz.name,
+          price: 20, # Quiz.Price?
           locn: "#{quiz.uid}/#{w.uid}",
           questions: items
 	}
