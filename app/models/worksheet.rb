@@ -111,7 +111,7 @@ class Worksheet < ActiveRecord::Base
   def spectrum?
     sbp_ids = self.exam.quiz.subparts.map(&:id)
     g = Attempt.where(worksheet_id: self.id).sort{ |m,n| sbp_ids.index(m.subpart_id) <=> sbp_ids.index(n.subpart_id) }
-    return g.map(&:perception?)
+    return g.map(&:quality?)
   end
 
   def graded?( extent = :fully ) # or :partially or :none

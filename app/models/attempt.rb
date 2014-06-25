@@ -249,6 +249,7 @@ class Attempt < ActiveRecord::Base
   end
 
   def quality?
+    return :red if self.red_flag
     for m in [:weak, :medium, :strong]
       return m if self[m]
     end 

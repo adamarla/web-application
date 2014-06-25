@@ -42,8 +42,8 @@ text {
 }
 
 rect {
-  &.light{ fill: $lightrect ; }
-  &.dark, &.green { fill: $darkrect ; }
+  &.light, &.weak{ fill: $lightrect ; }
+  &.dark, &.strong { fill: $darkrect ; }
   &.medium{ fill: $mediumrect ; } 
   &.disabled{ stroke: lighten($background,55%) ; stroke-width: 0.25px ; } 
   &.red{ fill: lighten($red,10%) ; } 
