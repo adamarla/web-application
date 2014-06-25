@@ -284,4 +284,11 @@ jQuery ->
     fdb.root = $('#fdb-main')[0]
     fdb.pending = $(fdb.root).find('#pending-scans').eq(0)
     fdb.nav = $(fdb.root).find('#fdb-nav').eq(0) 
+
     fdb.controls = $(fdb.root).find('#fdb-controls').eq(0)
+    fdb.controls.hover () ->
+      $(this).stop().fadeTo('slow', 0)
+    , () ->
+      $(this).stop().fadeTo('slow', 1)
+
+
