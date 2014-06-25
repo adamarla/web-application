@@ -17,12 +17,11 @@ $lightblue: lighten($deep-blue, 23%) ; // rgb(56,188,255)
 
 div { 
   &.tex-index { 
-    width: 20px ;
     text-align: center ;
     font-weight: 500 ; 
     color: white ;
-    background-color: rgba(1,83,125,0.7) ; 
-    padding: 2px 5px ;
+    background-color: rgba(1,83,125,0.75) ; 
+    padding: 2px 5px 3px 5px;
     border-radius: 5px ;
     float: left ;
     cursor: pointer ;
