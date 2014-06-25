@@ -15,18 +15,6 @@ $green: #347235 ; // rgb(87,188,32)
 $deep-blue: #01537d ; // rgb(1,83,125)
 $lightblue: lighten($deep-blue, 23%) ; // rgb(56,188,255) 
 
-div { 
-  &.tex-index { 
-    text-align: center ;
-    font-weight: 500 ; 
-    color: white ;
-    background-color: rgba(1,83,125,0.75) ; 
-    padding: 2px 5px 3px 5px;
-    border-radius: 5px ;
-    float: left ;
-    cursor: pointer ;
-  } 
-} 
 
 ul {
   > li {
@@ -50,6 +38,7 @@ img {
 }
 
 span.MathJax {
+  cursor: pointer ;
   display: inline-block ;
   position: absolute ;
   background: rgba(43,43,43,0.6);
@@ -58,6 +47,15 @@ span.MathJax {
     radius: 5px ;
   }
   padding: 5px ;
+  > div.tex-index { 
+    text-align: center ;
+    font-weight: 500 ; 
+    color: white ;
+    background-color: rgba(1,83,125,0.75) ; 
+    padding: 2px 5px 3px 5px;
+    border-radius: 5px ;
+    float: left ;
+  } 
 }
 
 span.btn-shortcut {
