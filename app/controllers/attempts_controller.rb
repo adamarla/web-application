@@ -30,8 +30,8 @@ class AttemptsController < ApplicationController
       @comments = Remark.where(doodle_id: doodle.id)
     else 
       @criterion_ids = rubric.criterion_ids_given @g.feedback
-      on_this_page = @g.scan.nil? ? nil : Attempt.where(scan: @g.scan).map(&:id)
-      @comments = on_this_page.nil? ? [] : Remark.where(attempt_id: on_this_page).live
+      # on_this_page = @g.scan.nil? ? nil : Attempt.where(scan: @g.scan).map(&:id)
+      @comments = @g.scan.nil? ? [] : Remark.where(attempt_id: @g.id).live.order(:id)
     end 
   end 
 
