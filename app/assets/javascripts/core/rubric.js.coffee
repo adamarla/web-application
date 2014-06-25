@@ -98,9 +98,11 @@ window.rubric = {
     criteria = $(rubric.root).children('.criterion')
 
     $(m).addClass('hide') for m in criteria 
-    for j in ids 
-      nd = criteria.filter("[marker=#{j}]")[0]
-      $(nd).removeClass('hide') if nd?
+    for m,j in ids 
+      nd = criteria.filter("[marker=#{m}]")[0]
+      if nd?
+        $(nd).removeClass 'hide' 
+        if j % 2 is 0 then $(nd).removeClass('highlight') else $(nd).addClass('highlight')
     return true 
 
   render : (json) ->

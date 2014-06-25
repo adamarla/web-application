@@ -18,21 +18,31 @@ window.criteria = {
     obj.find('.text').text json.text 
     obj.attr 'marker', json.id 
 
-    # keyboard short-cut 
-    if json.kb?
-      obj.find('.kb').eq(0).text json.kb
-      obj[0].setAttribute 'data-kb', json.kb
+    c = obj.children() 
+    
+    if not json.kb? and not json.reward? 
+      # remove the first-child = .span2
+      c.eq(1).removeClass('span10').addClass('span12')
+      c.eq(0).remove()
+    else 
+      # keyboard short-cut 
+      first = c.eq(0)
+      if json.kb?
+        first.find('.kb').eq(0).text json.kb
+        obj[0].setAttribute 'data-kb', json.kb
+      else
+        first.find('.kb').remove()
+
+      if json.reward? 
+        rwd = first.find('.reward').eq(0) 
+        rwd.css "width", "#{json.reward}%"
+        rwd.addClass(json.color) if json.color?
+      else
+        first.find('.reward').parent().remove()
 
     # set name on the checkbox 
     cb = obj.find("input[type='checkbox']")
     cb.attr 'name', "criterion[#{json.id}]"
-
-    if json.reward? 
-      rwd = obj.find('.reward').eq(0) 
-      rwd.css "width", "#{json.reward}%"
-      rwd.addClass(json.color) if json.color?
-    else
-      obj.find('.reward').parent().remove()
     return obj
 
   select : (nd) ->

@@ -23,6 +23,6 @@ object false
   }
 
   node(:criteria) {
-    @criteria.map{ |c| { id: c.id, text: c.text, reward: c.reward?, color: c.perception? } } 
+    @criteria.map{ |c| { id: c.id, text: c.text, color: c.perception? } } 
   } 
 
