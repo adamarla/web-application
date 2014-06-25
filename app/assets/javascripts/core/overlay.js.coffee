@@ -83,7 +83,7 @@ window.overlay = {
     id = "tex-comment-#{overlay.counter}"
     script = $("<script id=#{id} type='math/tex'>#{overlay.tex}</script>")
     $(script).appendTo $(overlay.root)
-    MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [overlay.writeTex, script, xp,yp]
+    MathJax.Hub.Queue ['Typeset', MathJax.Hub, "#{id}"], [overlay.writeTex, script, xp,yp, overlay.nComments]
     return true
 
   pop : () ->
@@ -95,10 +95,15 @@ window.overlay = {
     c.filter("#{m}:last").remove() for m in ['span','script']
     return true
 
-  writeTex : (script, xp, yp) ->
+  writeTex : (script, xp, yp, index) ->
     # (xp, yp) = offsets - expressed as percentage - from left and top respectively
     tex = script.prev('span')
     tex.attr 'style', "left:#{xp}%;top:#{yp}%;"
+    $("<div class='tex-index'>#{index}</div>").prependTo tex
     return true
-
 }
+
+#jQuery ->
+#  $('span.MathJax').on 'click', 'div.tex-index', (event) ->
+#    event.stopImmediatePropagation() 
+
