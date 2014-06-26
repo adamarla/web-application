@@ -255,7 +255,7 @@ class Exam < ActiveRecord::Base
     # Returns one of [:red | :orange | :green | :blank | :disabled ] 
     # representing the overall sense of what the student has done in the exam
     w = Worksheet.where(student_id: sid, exam_id: self.id).first
-    return w.nil? ? :disabled : w.perception?
+    return w.nil? ? :disabled : (w.received?(:none) ? :disabled : w.perception?)
   end 
 
   def spectrum?(sid)
