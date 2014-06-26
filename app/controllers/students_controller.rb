@@ -52,8 +52,13 @@ class StudentsController < ApplicationController
     if sk.nil?
       @exists = false
     else
-      unmatched = sk.students.select{ |s| !s.account.has_email? }
-      @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, nm) < 3 }
+      @enrolled = sk.student_ids.include? current_account.loggable_id
+      unless @enrolled
+        unmatched = sk.students.select{ |s| !s.account.has_email? }
+        @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, nm) < 3 }
+      else
+        @candidates = []
+      end 
     end # else
 
   end # method
