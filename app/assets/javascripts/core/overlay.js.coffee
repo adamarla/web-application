@@ -21,18 +21,10 @@ window.overlay = {
     overlay.counter = 0
     overlay.ref = $('#wide')[0] unless overlay.ref?  # all overlays rendered within #wide 
 
-    $(overlay.root).on 'click', 'span.MathJax', (event) ->
-      event.stopImmediatePropagation()
-      bgColor = this.style.backgroundColor
-      hidden = bgColor is 'transparent' 
-      if hidden
-        this.style.backgroundColor = "rgba(43,43,43,0.6)" 
-      else
-        this.style.backgroundColor = "transparent"
-
-      # if hidden then $(this).css('background', 'none repeat scroll 0% 0% rgba(43,43,43,0.6)') else $(this).css('background', 'transparent')
-      return true 
-
+    $(overlay.root).on 'mouseenter', 'span.MathJax', () ->
+      $(this).stop().fadeTo('slow', 0)
+    $(overlay.root).on 'mouseleave', 'span.MathJax', () ->
+      $(this).stop().fadeTo('slow', 1)
     return true
 
   clear : () ->
