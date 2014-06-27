@@ -41,21 +41,28 @@ class Student < ActiveRecord::Base
     select{ |m| allowed.include? m.first_name[0] }
   end
 
-  def self.min_levenshtein_distance(x,y)
-    # (x,y) -> two names
-    xa = x.split
-    ya = y.split
-    min = -1
 
-    for i in xa 
-      for j in ya
-        dist = Levenshtein.distance(i,j)
-        min = (min != -1) ? (dist < min ? dist : min): dist
-        return min if min == 0
-      end
-    end
-    return min
-  end
+  def self.min_levenshtein_distance(x,y) 
+    # (x,y) -> two account objects 
+    # Working with account / loggable objects because we want to compare the 
+    # sanitized / humanized names we store in the DB
+    x_obj = x.loggable 
+    y_obj = y.loggable
+
+    x_first_name = x_obj.first_name.blank? ? "" : x_obj.first_name
+    x_last_name = x_obj.last_name.blank? ? "" : x_obj.last_name
+    y_first_name = y_obj.first_name.blank? ? "" : y_obj.first_name
+    y_last_name = y_obj.last_name.blank? ? "" : y_obj.last_name
+    score = 0
+
+    score = Levenshtein.distance(x_first_name,y_first_name) + Levenshtein.distance(x_last_name, y_last_name)
+    return score if score < 6 # average 3 differences each in first and last names
+
+    # In Southern India, the norm is to write the last name first and first name last
+    # 
+    score = Levenshtein.distance(x_first_name, y_last_name) + Levenshtein.distance(x_last_name, y_first_name)
+    return score 
+  end 
 
   def username?
     self.account.username

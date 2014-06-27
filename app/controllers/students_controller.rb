@@ -43,8 +43,6 @@ class StudentsController < ApplicationController
 
   def match
     sk = Sektion.where(uid: "#{params[:enroll][:sektion]}".upcase).first 
-    nm = current_account.loggable.name
-
     @exists = true
     @enrolled = false
     @candidates = []
@@ -55,12 +53,11 @@ class StudentsController < ApplicationController
       @enrolled = sk.student_ids.include? current_account.loggable_id
       unless @enrolled
         unmatched = sk.students.select{ |s| !s.account.has_email? }
-        @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.name, nm) < 3 }
+        @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s.account, current_account) < 6 }
       else
         @candidates = []
       end 
     end # else
-
   end # method
 
   def inbox
