@@ -1,7 +1,7 @@
 
 .row-fluid.navbar{ id: 'rubric-standard-btns' }
   .btn-group.pull-right
-    = simple_button icon: 'icon-align-justify', tooltip: 'See solution', karo: :solution
-    = simple_button icon: 'icon-comment', tooltip: 'Report an issue', karo: :audit
+    = simple_button karo: :solution, for: 'Solution', class: 'small-text btn-inverse btn'
+    = simple_button karo: :regrade, for: 'Regrade', class: 'small-text btn-inverse btn'
+    = simple_button karo: :audit, for: 'Issue', class: 'small-text btn-inverse btn'
     -#= simple_button icon: 'icon-facetime-video', tootip: 'Video Solution', karo: :video
-    = simple_button icon: 'icon-repeat', tooltip: 'Regrade', karo: :regrade
