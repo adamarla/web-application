@@ -149,6 +149,14 @@ class Sektion < ActiveRecord::Base
      return response.to_hash[:generate_student_roster]
   end
 
+  def enroll(ids = [])
+    self.student_ids = self.student_ids + ids 
+  end 
+
+  def unenroll(ids = [])
+    self.student_ids = self.student_ids - ids 
+  end 
+
   public 
       def graduate
         # (verb): Create a new sektion with the same lifetime as self
