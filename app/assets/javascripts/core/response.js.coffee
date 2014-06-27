@@ -85,7 +85,7 @@ jQuery ->
     url = settings.url
     # json = if xhr? then $.parseJSON(xhr.responseText) else null
 
-    if url.match('account')
+    if url.match(/^account/)
       $('#m-edit-account').modal 'hide'
     else if url.match(/ask\/question/)
       json = $.parseJSON xhr.responseText
