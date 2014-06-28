@@ -61,5 +61,5 @@ module ActiveRecordExtensions
     return [] unless self.respond_to? :account
     return self.mentor_is_teacher ? Teacher.where(id: self.mentor_id) : Examiner.where(id: self.mentor_id)
   end 
+end # of extensions 
 
-end
