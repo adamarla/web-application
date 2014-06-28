@@ -109,13 +109,6 @@ class TeachersController < ApplicationController
     @students = teacher.nil? ? [] : teacher.students(all).order(:first_name)
   end 
 
-  def students_with_names
-    teacher = Teacher.find params[:id]
-    all = (params[:exclusive] == "yes") ? false : true 
-    starting_with = [*"#{params[:start]}".."#{params[:end]}"]
-    @students = teacher.nil? ? [] : teacher.students(all, starting_with)
-  end
-
   def suggested_questions
     teacher = current_account.loggable_type == "Teacher" ? current_account.loggable : nil
     unless teacher.nil? 

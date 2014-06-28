@@ -162,7 +162,6 @@ Webapp::Application.routes.draw do
   match 'teacher/load' => 'teachers#load', via: :get
   match 'teacher/ws' => 'teachers#worksheets', via: :get
   match 'teacher/students' => 'teachers#students', via: :get
-  match 'teacher/students_with_names' => 'teachers#students_with_names', via: :get
   match 'teacher/suggested_questions' => 'teachers#suggested_questions', via: :get
   match 'qzb/echo' => 'teachers#qzb_echo', via: [:put, :post]
   match 'new/lesson' => 'teachers#add_lesson', via: :post
