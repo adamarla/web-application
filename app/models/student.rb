@@ -8,7 +8,7 @@
 #  last_name   :string(30)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  uid         :string(20)
+#  shell       :boolean         default(FALSE)
 #
 
 include ApplicationUtil
@@ -29,6 +29,7 @@ class Student < ActiveRecord::Base
   has_many :disputes, dependent: :destroy
 
   validates :name, presence: true
+  before_save :ensure_account, unless: :shell
   validates_associated :account
 
   before_destroy :destroyable? 
@@ -36,31 +37,23 @@ class Student < ActiveRecord::Base
   attr_accessor :code
   accepts_nested_attributes_for :account # simple_form_for needs this 
 
-  def self.name_begins_with( allowed = [] )
-    return if allowed.empty? 
-    select{ |m| allowed.include? m.first_name[0] }
-  end
-
-
   def self.min_levenshtein_distance(x,y) 
-    # (x,y) -> two account objects 
-    # Working with account / loggable objects because we want to compare the 
+    # (x,y) -> two student objects 
+    # Working with student objects because we want to compare the 
     # sanitized / humanized names we store in the DB
-    x_obj = x.loggable 
-    y_obj = y.loggable
 
-    x_first_name = x_obj.first_name.blank? ? "" : x_obj.first_name
-    x_last_name = x_obj.last_name.blank? ? "" : x_obj.last_name
-    y_first_name = y_obj.first_name.blank? ? "" : y_obj.first_name
-    y_last_name = y_obj.last_name.blank? ? "" : y_obj.last_name
+    x_f = x.first_name.blank? ? "" : x.first_name
+    x_l = x.last_name.blank? ? "" : x.last_name
+    y_f = y.first_name.blank? ? "" : y.first_name
+    y_l = y.last_name.blank? ? "" : y.last_name
     score = 0
 
-    score = Levenshtein.distance(x_first_name,y_first_name) + Levenshtein.distance(x_last_name, y_last_name)
+    score = Levenshtein.distance(x_f,y_f) + Levenshtein.distance(x_l, y_l)
     return score if score < 6 # average 3 differences each in first and last names
 
     # In Southern India, the norm is to write the last name first and first name last
     # 
-    score = Levenshtein.distance(x_first_name, y_last_name) + Levenshtein.distance(x_last_name, y_first_name)
+    score = Levenshtein.distance(x_f, y_l) + Levenshtein.distance(x_l, y_f)
     return score 
   end 
 
@@ -222,6 +215,10 @@ class Student < ActiveRecord::Base
       end
       # puts " ++++ Can be destroyed [#{self.id}]" if is_empty
       return is_empty
+    end 
+
+    def ensure_account
+      return !self.account.blank?
     end 
 
 end # of class 

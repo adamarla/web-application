@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: attempts 
+# Table name: attempts
 #
 #  id             :integer         not null, primary key
 #  student_id     :integer

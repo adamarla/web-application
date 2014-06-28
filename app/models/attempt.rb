@@ -168,7 +168,8 @@ class Attempt < ActiveRecord::Base
         end 
 
         if ws.publishable? # to the student if his/her worksheet has been graded
-          Mailbot.delay.worksheet_graded(ws) if self.student.account.has_email? 
+          a = self.student.account
+          Mailbot.delay.worksheet_graded(ws) unless (a.nil? || !a.has_email?)
         end
       else # previously graded, but disputed now 
         self.update_attribute(:resolved, true)

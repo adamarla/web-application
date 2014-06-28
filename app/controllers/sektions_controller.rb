@@ -135,9 +135,9 @@ class SektionsController < ApplicationController
       new_student_ids = [] 
 
       for m in students
-        s = Student.new name: m
-        username = username_for s, :student
-        a = s.build_account email: "#{username}@drona.com", password: '123456', password_confirmation: '123456'
+        s = Student.new(name: m, shell: true)
+        #username = username_for s, :student
+        #a = s.build_account email: "#{username}@drona.com", password: '123456', password_confirmation: '123456'
         new_student_ids.push(s.id) if s.save
       end
 

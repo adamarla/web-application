@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140624094618) do
+ActiveRecord::Schema.define(:version => 20140628072841) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -418,7 +418,7 @@ ActiveRecord::Schema.define(:version => 20140624094618) do
     t.string   "last_name",   :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "uid",         :limit => 20
+    t.boolean  "shell",                     :default => false
   end
 
   create_table "subjects", :force => true do |t|

@@ -8,7 +8,7 @@
 #  last_name   :string(30)
 #  created_at  :datetime
 #  updated_at  :datetime
-#  uid         :string(20)
+#  shell       :boolean         default(FALSE)
 #
 
 require 'test_helper'
