@@ -53,7 +53,7 @@ class StudentsController < ApplicationController
       enrolled = sk.students 
       @already = enrolled.include? current_account.loggable_id
       unless @already
-        unmatched = enrolled.select{ |s| s.account.nil? || !s.account.has_email? }
+        unmatched = enrolled.where(shell: true)
         gold = current_account.loggable
         @candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s, gold) < 6 }
       else
