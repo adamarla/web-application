@@ -26,7 +26,6 @@ Webapp::Application.routes.draw do
   match 'byCountry' => 'accounts#by_country', via: :get
   match 'inCountry' => 'accounts#in_country', via: :get
   match 'ask/question' => 'accounts#ask_question', via: :post
-  match 'merge/accounts' => 'accounts#merge', via: :post
 
   # Admin 
   resource :admin, :controller => :admin 
@@ -144,6 +143,7 @@ Webapp::Application.routes.draw do
   match 'inbox/echo' => 'students#inbox_echo', via: :get
   match 'outbox' => 'students#outbox', via: :get
   match 'dispute' => 'students#dispute', via: [:put, :post] 
+  match 'merge' => 'students#merge', via: [:post, :put]
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get

@@ -11,7 +11,7 @@
     %p
       However, if none of the names match then press <span class='orange'>Not in the list</span>
     %p
-      = simple_form_for :enroll, url: "#{merge_accounts_path}", remote: true, defaults: { label: false } do |f|
+      = simple_form_for :enroll, url: "#{merge_path}", remote: true, defaults: { label: false } do |f|
         #sk-confirm-identity
         .push-down
           = simple_button for: "Not in the list", id: 'btn-enroll-exit', class: 'btn-inverse pull-left'

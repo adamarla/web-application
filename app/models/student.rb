@@ -37,6 +37,32 @@ class Student < ActiveRecord::Base
   attr_accessor :code
   accepts_nested_attributes_for :account # simple_form_for needs this 
 
+  def self.merge(a,b) 
+    # Merging of two student records can happen only if 
+    #   1. (src) one of 'a' or 'b' has an associated account AND 
+    #   2. (target) the other one does not
+
+    target = a.account.nil? ? a : (b.account.nil? ? b : nil)
+    return false if target.nil?
+    src = a.account.nil? ? (b.account.nil? ? nil : b) : a
+    return false if src.nil?
+
+    # Transfer data - like name - from src -> target 
+    target.update_attributes first_name: src.first_name, last_name: src.last_name, guardian_id: src.guardian_id
+    # src.account ---> target
+    a = src.account 
+    a.update_attribute :loggable_id, target.id
+
+    # Hugely important. Only after after these next 3 reloads 
+    # is 'src' truly disconnected from its account!
+    [a, src, target].map(&:reload)
+
+    target.update_attribute :shell, false
+    # Delete src student object
+    src.destroy
+    return true
+  end 
+
   def self.min_levenshtein_distance(x,y) 
     # (x,y) -> two student objects 
     # Working with student objects because we want to compare the 

@@ -62,6 +62,19 @@ class StudentsController < ApplicationController
     end # else
   end # method
 
+  def merge 
+    target_id = params[:checked].keys.first
+    unless target_id.blank?
+      target = Student.find target_id 
+      src = current_account.loggable
+      merged = Student.merge target, src
+      sign_in current_account, bypass: true if merged 
+      render json: { success: merged }, status: :ok
+    else 
+      render json: { notify: { title: "No account specified for merging" } }, status: :ok
+    end 
+  end 
+
   def inbox
     sid = params[:id]
     student = Student.find sid
