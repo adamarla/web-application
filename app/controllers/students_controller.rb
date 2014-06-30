@@ -32,7 +32,6 @@ class StudentsController < ApplicationController
                                       postal_code: zip,
                                       country: country
       if student.save
-        Mailbot.delay.welcome(account)
         sign_in account
         redirect_to student_path
       end # no reason for else.. if client side validations worked
