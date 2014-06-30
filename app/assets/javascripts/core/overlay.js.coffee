@@ -27,6 +27,14 @@ window.overlay = {
       $(this).stop().fadeTo('slow', 1)
     return true
 
+  detach : () ->
+    return false unless overlay.root? 
+    $(overlay.root).remove()
+    overlay.root = null 
+    overlay.nComments = 0 
+    overlay.counter = 0
+    return true
+
   clear : () ->
     return false unless overlay.root?
     return false if overlay.nComments < 1
