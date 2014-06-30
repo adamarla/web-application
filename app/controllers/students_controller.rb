@@ -63,8 +63,8 @@ class StudentsController < ApplicationController
     if sk.nil?
       @exists = false
     else
-      enrolled = sk.students 
-      @already = enrolled.include? current_account.loggable_id
+      enrolled = sk.students
+      @already = enrolled.map(&:id).include? current_account.loggable_id
       unless @already
         unmatched = enrolled.where(shell: true)
         gold = current_account.loggable
