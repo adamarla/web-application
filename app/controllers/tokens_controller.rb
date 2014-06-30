@@ -16,12 +16,12 @@ class TokensController < ApplicationController
       gradeables = nil
       case @account.loggable_type
         when "Student"
-          name = Student.find_by_id(id)[:first_name]
+          name = Student.find_by_id(id).first_name
           worksheets = get_worksheets(@account)
         when "Teacher"
-          name = Teacher.find_by_id(id)[:first_name]
+          name = Teacher.find_by_id(id).first_name
         when "Examiner"
-          name = Examiner.find_by_id(id)[:first_name]
+          name = Examiner.find_by_id(id).first_name
       end
       json = { 
         :token => @account.authentication_token, 
@@ -55,12 +55,12 @@ class TokensController < ApplicationController
       status = 404 
       json = { :message => "Not Authorized" }
     else 
-      student = Student.find_by_id(@account.loggable_id) 
+      name = Student.find_by_id(@account.loggable_id).first_name
       status = 200
       json = { 
         :token => @account.authentication_token, 
         :email => @account.email,
-        :name  => student.name,
+        :name  => name,
         :ws    => get_worksheets(@account)
       }
     end
@@ -109,7 +109,7 @@ class TokensController < ApplicationController
             grId: w.billed ? gr.where(q_selection_id: qsel.id).map(&:id).join('-') : "",
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
-            scan: gr.nil? ? "" : gr.where(q_selection_id: qsel.id).first.scan,
+            scan: w.billed ? gr.where(q_selection_id: qsel.id).first.scan : "",
             marks: w.graded ? gr.where(q_selection_id: qsel.id).map(&:marks).inject(:+) : -1.0
           }
         }
