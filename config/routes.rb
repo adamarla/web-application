@@ -140,10 +140,12 @@ Webapp::Application.routes.draw do
   match 'register/student' => 'students#create', via: :post
   match 'match/student' => 'students#match', via: :post
   match 'inbox' => 'students#inbox', via: :get
-  match 'inbox/echo' => 'students#inbox_echo', via: :get
   match 'outbox' => 'students#outbox', via: :get
   match 'dispute' => 'students#dispute', via: [:put, :post] 
   match 'merge' => 'students#merge', via: [:post, :put]
+
+  # Worksheets 
+  match 'worksheet/preview' => 'worksheets#preview', via: :get
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get

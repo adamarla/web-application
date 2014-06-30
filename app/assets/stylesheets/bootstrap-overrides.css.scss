@@ -726,6 +726,7 @@ span.btn-shortcut {
     position: absolute ; 
     top: 0px ;
     left: 0px ;
+    // background: rgba(43,43,43,0.5) ;
   }
 
   .carousel { 
@@ -736,10 +737,16 @@ span.btn-shortcut {
       > img { display: inline-block ; }
       > .carousel-caption { 
         top: 0px ; 
-        color: $orange ;
-        font: {
-          variant: small-caps ;
-        }
+        max-height: 20px ;
+        > div { 
+          max-width: 30% ;
+          float: left ;
+          font: { 
+            size: 23px ;
+          } 
+          color: $orange ;
+        } 
+
       }
     }
   }
