@@ -42,24 +42,18 @@ class Student < ActiveRecord::Base
     #   1. (src) one of 'a' or 'b' has an associated account AND 
     #   2. (target) the other one does not
 
-    target = a.account.nil? ? a : (b.account.nil? ? b : nil)
+    target = a.shell ? a : (b.shell ? b : nil)
     return false if target.nil?
-    src = a.account.nil? ? (b.account.nil? ? nil : b) : a
+    src = a.shell ? (b.shell ? nil : b) : a 
     return false if src.nil?
 
-    # Transfer data - like name - from src -> target 
-    target.update_attributes first_name: src.first_name, last_name: src.last_name, guardian_id: src.guardian_id
-    # src.account ---> target
-    a = src.account 
-    a.update_attribute :loggable_id, target.id
-
-    # Hugely important. Only after after these next 3 reloads 
-    # is 'src' truly disconnected from its account!
-    [a, src, target].map(&:reload)
-
-    target.update_attribute :shell, false
-    # Delete src student object
-    src.destroy
+    # Transfer worksheets and attempts from target -> src 
+    [Attempt, Worksheet, StudentRoster].each do |k|
+      k.where(student_id: target.id).each do |j|
+        j.update_attribute :student_id, src.id
+      end 
+    end 
+    target.destroy # the shell account, that is 
     return true
   end 
 
