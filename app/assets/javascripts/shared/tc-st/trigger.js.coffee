@@ -27,25 +27,6 @@ updateProgress = (btn, loaded, total) ->
 
 jQuery ->
   
-  $('#btn-show-solution').click (event) ->
-    already = $(this).hasClass 'active'
-    e = this.getAttribute 'data-e'
-    student = this.getAttribute 'data-id'
-
-    if already
-      id = this.getAttribute 'data-id'
-      $(this).text "See Solution"
-      karo.empty $(this).closest('.navbar').next()
-      $(overlay.root).removeClass('hide') if overlay.root?
-      $.get "exam/layout.json?e=#{e}&id=#{id}"
-    else
-      tabpane = $(this).closest('.tab-pane.active')
-      id = tabpane.find('.split.active').eq(0).attr 'marker'
-      $(this).text "Back to Scans"
-      $(overlay.root).addClass('hide') if overlay.root?
-      $.get "question/preview?gr=#{id}"
-    return true
-
   $('#btn-video-solution').click (event) ->
     event.stopImmediatePropagation()
     video.play this

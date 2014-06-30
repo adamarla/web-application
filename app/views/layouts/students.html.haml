@@ -27,14 +27,12 @@
         -#= render partial: 'modals/customer/transfer', locals: { customer: customer }
         -#= render partial: 'modals/customer/refund', locals: { customer: customer }
 
-- control_panel = [ {for: 'Lessons', id: 'a-courses' },
-                    {for: 'Report Cards', id: 'lnk-st-rc'},
-                    {for: 'Inbox', id: 'lnk-st-inbox'},
+- control_panel = [ {for: 'Assignments', id: 'a-st-main'},
+                    {for: 'Lessons', id: 'a-courses' },
                     {for: 'Enroll', id: 'lnk-enroll-self'},
                     {for: "Hello, #{student.first_name}", id: 'm-account'} ]
 
-- layout = { left: [ [1, 'students/rc'],
-                     [2, 'students/inbox'],
+- layout = { left: [ [1, 'students/main'],
                      [3, 'course/view/filters'],
                      [4, 'customers/activity'] ],
              middle: [],

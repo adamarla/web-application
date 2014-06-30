@@ -41,6 +41,19 @@ class StudentsController < ApplicationController
     end
   end # of method 
 
+  def inbox 
+    # published with ** no scans **  
+    all = Worksheet.where(student_id: current_account.loggable_id)
+    @inboxed = all.select{ |j| !j.billed || ( j.billed && j.received?(:none) )} 
+  end 
+
+  def outbox
+    # some/all scans received - not graded 
+    all = Worksheet.where(student_id: current_account.loggable_id, billed: true)
+    some_scans = all.select{ |j| !j.received?(:none) } 
+    @outboxed = some_scans.select{ |j| j.attempts.graded.count == 0 } 
+  end
+
   def match
     sk = Sektion.where(uid: "#{params[:enroll][:sektion]}".upcase).first 
     @exists = true
@@ -75,33 +88,7 @@ class StudentsController < ApplicationController
     end 
   end 
 
-  def inbox
-    sid = params[:id]
-    student = Student.find sid
-    hw = student.nil? ? [] : Worksheet.where(student_id: sid, exam_id: Exam.takehome.map(&:id))
-    open = hw.select{ |h| h.received? :none }
 
-    unless open.blank?
-      @exams = Exam.where(id: open.map(&:exam_id).uniq)
-    else
-      render(json: { notify: { text: 'No new worksheets' }}, status: :ok) if @exams.blank?
-    end
-  end 
-
-  def inbox_echo
-    eid = params[:e]
-    sid = current_account.loggable_id
-
-    w = Worksheet.where(student_id: sid, exam_id: eid).first 
-    unless w.nil?
-      render json: { a: "mint/#{w.path?}" }, status: :ok
-    else
-      render json: { status: 'No worksheet found' }, status: :bad_request 
-    end
-  end
-
-  def outbox
-  end
 
   def dispute 
     g = Attempt.find params[:id]

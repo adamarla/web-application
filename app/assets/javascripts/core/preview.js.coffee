@@ -89,7 +89,7 @@ jQuery ->
         $("<img alt='' src=#{server}/#{json.preview.source}/#{img}>").appendTo $(item)
 
         caption = if json.captions? then json.captions[i] else null
-        $("<div class='carousel-caption top'><h3>#{caption}</h3></div>").appendTo($(item)) if caption?
+        $("<div class='carousel-caption top'><div>#{caption}</div></div>").appendTo($(item)) if caption?
 
       preview.execute()
       return true

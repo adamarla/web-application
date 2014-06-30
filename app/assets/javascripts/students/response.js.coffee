@@ -17,14 +17,14 @@ jQuery ->
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
 
-    if url.match(/inbox\/echo/)
-      # only because /inbox/echo also matches /inbox
-    else if url.match(/inbox/)
-      unless json.notify
-        target = $('#pane-st-inbox')
-        karo.empty target
-        key = 'inbox'
-        menu = 'st-inbox'
+    if url.match(/inbox$/)
+      target = $('#pane-st-inbox')
+      karo.empty target
+      key = 'inbox'
+      clickFirst = true
+    else if url.match(/worksheet\/preview/)
+      overlay.detach()
+      preview.loadJson json
 
     else if url.match(/course\/list/)
       e.stopImmediatePropagation()
@@ -44,7 +44,11 @@ jQuery ->
       monitor.update json
       exploded.update json
 
-    else if url.match(/outbox/)
+    else if url.match(/outbox$/)
+      target = $('#pane-st-outbox')
+      karo.empty target
+      key = 'outbox'
+      clickFirst = true
     else if url.match(/match\/student/)
       $('#m-enroll-self').modal 'hide'
 

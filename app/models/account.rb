@@ -166,7 +166,7 @@ class Account < ActiveRecord::Base
     case self.role
       when :student
         # ids = Worksheet.where(student_id: me).select{ |m| m.publishable? }.map(&:exam_id)
-        ids = Worksheet.where(student_id: me).map(&:exam_id)
+        ids = Worksheet.where(student_id: me, billed: true).select{ |j| j.attempts.graded.count > 0 }.map(&:exam_id)
         @exams = Exam.where(id: ids)
       when :teacher 
         ids = Quiz.where(:teacher_id => me).map(&:id)

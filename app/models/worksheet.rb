@@ -44,6 +44,12 @@ class Worksheet < ActiveRecord::Base
     select{ |j| qids.include? j.exam.quiz_id }
   end
 
+  def questions
+    # returns the ordered list of question objects 
+    qsel = QSelection.where(quiz_id: self.exam.quiz_id).order(:index)
+    return qsel.map(&:question)
+  end 
+
   def download_pdf?
     return nil unless self.compiled?
     return "#{Gutenberg['server']}/mint/#{self.path?}/document.pdf"
@@ -77,7 +83,7 @@ class Worksheet < ActiveRecord::Base
   end
 
   def publishable?
-    # A student's answer sheete becomes publishable as soon as the 
+    # A student's answer sheet becomes publishable as soon as the 
     # last of the graded responses has been graded
 
     submitted = Attempt.where(worksheet_id: self.id).with_scan

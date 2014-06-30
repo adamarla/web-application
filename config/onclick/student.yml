@@ -42,20 +42,13 @@ a-courses :
   url: 
     self: course/list
 
-lnk-st-rc : 
+a-st-main :
   autoclick :
     tab : tab-st-rc-1
   show : 
     left : left-1
     wide : wide-X
   default : true
-
-lnk-st-inbox :
-  autoclick :
-    tab : tab-st-inbox
-  show : 
-    left : left-2
-    wide : wide-wait
 
 tab-st-rc-1 :
   url : 
@@ -70,17 +63,15 @@ tab-st-rc-2 :
 
 tab-st-inbox :
   url : 
-    self : inbox.json?id=:prev
-    panel : inbox/echo.json?e=:id
-  prev : control-panel
+    self : inbox
+    panel : worksheet/preview?id=:id 
+  id : tab-st-inbox
 
 tab-st-outbox :
   url : 
     self : outbox
-
-lnk-inbox-download :
-  ajax: disabled
-  update-on : inbox/echo
+    panel : worksheet/preview?id=:id 
+  id : tab-st-outbox
 
 lnk-enroll-self : 
   show : 

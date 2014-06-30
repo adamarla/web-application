@@ -1,0 +1,16 @@
+
+%ul.nav.nav-tabs.always-on
+  %li
+    = simple_link for: "Inbox", id: 'tab-st-inbox', href: '#pane-st-inbox'
+  %li
+    = simple_link for: "Outbox", id: 'tab-st-outbox', href: '#pane-st-outbox'
+  %li
+    = simple_link for: "Graded", id: 'tab-st-rc-1', href: "#pane-st-rc-1"
+  %li
+    = simple_link for: "Feedback", id: 'tab-st-rc-2', href: "#pane-st-rc-2"
+
+.tab-content
+  #pane-st-inbox.tab-pane
+  #pane-st-outbox.tab-pane
+  #pane-st-rc-1.tab-pane
+  #pane-st-rc-2.tab-pane

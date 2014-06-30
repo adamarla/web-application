@@ -1,5 +1,5 @@
 
 object false 
   node(:inbox) {
-    @exams.map { |e| { name: e.quiz.name, id: e.id, tag: e.quiz.teacher.name } }
+    @inboxed.map{ |w| { name: w.exam.quiz.name, id: w.id, badge: 'icon-home' } }
   } 
