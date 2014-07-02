@@ -1488,3 +1488,16 @@ table {
   }
 }
 
+span { 
+  &.ping { 
+    font: { 
+      size: 8px ;
+    } 
+    padding: 2px 4px ; 
+    border-radius: 5px ;
+    // background: darken($deep-blue, 10%) ; 
+    background: white ;
+    color: $gray ; 
+  } 
+} 
+

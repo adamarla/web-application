@@ -2,9 +2,14 @@
 jQuery ->
 
   $('#left').ajaxComplete (e,xhr, settings) ->
+    json = $.parseJSON xhr.responseText
+
+    if json.render? and not json.render 
+      e.stopImmediatePropagation() 
+      return true 
+
     url = settings.url
     matched = true
-    json = $.parseJSON xhr.responseText
 
     target = null # where to write the returned JSON
     key = null

@@ -5,7 +5,12 @@ window.karo = {
 
   ajaxCall : (url, tab = null, callback = karo.nothing) ->
     $.get url, (json) ->
-      if tab? 
+      if tab?
+        if json.ping? 
+          monitor.tabs.active = $(tab).closest('ul')[0]
+          monitor.tabs.refreshSiblingsOf(tab)
+          monitor.tabs.update tab, json.ping
+
         pgn = $(tab).closest('.g-panel').children('.paginator')[0]
         if pgn?
           if json.last_pg? 

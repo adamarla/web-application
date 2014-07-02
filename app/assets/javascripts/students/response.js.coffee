@@ -6,6 +6,11 @@
 jQuery ->
   $('#left').ajaxSuccess (e,xhr,settings) ->
     json = $.parseJSON xhr.responseText
+
+    if json.render? and not json.render
+      e.stopImmediatePropagation() 
+      return true 
+
     url = settings.url
     matched = true
 

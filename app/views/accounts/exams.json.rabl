@@ -21,3 +21,4 @@ object false
   } 
 
   node(:user) { @who }
+  node(:ping) { @exams.count }

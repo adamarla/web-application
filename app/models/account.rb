@@ -129,7 +129,7 @@ class Account < ActiveRecord::Base
   def self.find_for_authentication(warden_conditions) 
     conditions = warden_conditions.dup 
     login = conditions.delete(:login)
-    where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first 
+    where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first 
   end 
 
   def valid_password?(password)
@@ -169,9 +169,8 @@ class Account < ActiveRecord::Base
         ids = Worksheet.where(student_id: me, billed: true).select{ |j| j.attempts.graded.count > 0 }.map(&:exam_id)
         @exams = Exam.where(id: ids)
       when :teacher 
-        ids = Quiz.where(:teacher_id => me).map(&:id)
-        ids = ids.blank? ? 318 : ids # 318 =  "A Demo Quiz"
-        @exams = Exam.where(:quiz_id => ids).select{ |m| m.has_scans? }
+        ids = Quiz.where(teacher_id: me).map(&:id)
+        @exams = ids.blank? ? [] : Exam.where(quiz_id: ids).select{ |m| m.has_scans? }
       when :examiner, :admin
         sandbox = !self.live?
         if sandbox 
@@ -207,8 +206,8 @@ class Account < ActiveRecord::Base
     @exams = nil
     case self.role 
       when :teacher 
-        ids = Quiz.where(:teacher_id => self.loggable_id).map(&:id)
-        @exams = Exam.where(:quiz_id => ids).select{ |m| !m.publishable? }
+        ids = Quiz.where(teacher_id: self.loggable_id).map(&:id)
+        @exams = Exam.where(quiz_id: ids).select{ |m| !m.publishable? }
       when :student 
         @exams = []
       else 

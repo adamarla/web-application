@@ -25,3 +25,4 @@ node(:comments){
 }
 
 node(:sandbox) { @sandboxed } 
+node(:ping) { @pending.count }

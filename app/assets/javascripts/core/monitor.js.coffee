@@ -7,6 +7,46 @@ window.monitor = {
   pulse : null,
   immediate : false, 
 
+  tabs : { 
+    list : null,
+    active : null,
+
+    start : () -> 
+      unless monitor.tabs.list?
+        monitor.tabs.list = $("#desktop > .g-panel > :not([class~='paginator']) > ul")
+      return true
+
+    refreshSiblingsOf : (tab) -> # tab = <a data-toggle='tab'> 
+      hidden = $(tab).closest('div').hasClass 'hide'
+      return false if hidden
+
+      uncles = $(tab).parent().siblings('li')
+      for j in uncles 
+        if $(j).hasClass 'disabled'
+          $(k).remove() for k in $(j).find('span.ping')
+        else
+          pinged = $(j).find('span.ping').length isnt 0
+          continue if pinged 
+          a = $(j).children('a')[0]
+          url = a.getAttribute 'data-url-self'
+          isAtomic = url.indexOf('?') is -1
+          continue unless isAtomic
+
+          $.ajax {
+            url: url,
+            context: a, # by far, the most important line in this call
+            data: { ping: true },
+            success: (json) ->
+              monitor.tabs.update this, json.ping
+          }
+      return true 
+
+    update : (tab, value) -> # tab = <a data-toggle='tab'>
+      $(m).remove() for m in $(tab).children('span')
+      $("<span class='ping'>#{value}</span>").appendTo $(tab)
+      return true
+  },
+
   add : (json, immediate = false) ->
     list = json.monitor
     return false unless list?

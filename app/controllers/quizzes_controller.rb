@@ -89,27 +89,16 @@ class QuizzesController < ApplicationController
     end
   end
 
-  def list
-    @t = (current_account.role == :teacher) ? current_account.loggable : nil
-
-    unless @t.nil?
-      @quizzes = Quiz.where(teacher_id: @t.id)
-
-      if @quizzes.blank?
-        @quizzes = @t.indie ? @quizzes : Quiz.where(id: 318) # 318 = 'A Demo Quiz'
-        @disabled = []
-      else
-        @disabled = @quizzes.select{ |m| m.compiling? }.map(&:id) 
-      end 
-
-      n = @quizzes.count 
-      @per_pg, @last_pg = pagination_layout_details n
-      pg = params[:page].nil? ? 1 : params[:page].to_i
-      @quizzes = @quizzes.order('created_at DESC').page(pg).per(@per_pg)
-    else
-      @quizzes = []
-    end
-  end
+  def list 
+    t = current_account.loggable 
+    @quizzes = Quiz.where(teacher_id: t.id)
+    @disabled = @quizzes.select{ |j| j.compiling? }.map(&:id)
+    @ping = @quizzes.count 
+    @per_pg, @last_pg = pagination_layout_details @ping
+    pg = params[:page].nil? ? 1 : params[:page].to_i
+    @quizzes = @quizzes.order('created_at DESC').page(pg).per(@per_pg)
+    @indie = t.indie
+  end 
 
   def questions
     @quiz = Quiz.find params[:id]

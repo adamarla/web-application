@@ -145,7 +145,7 @@ jQuery ->
     spinner.stop()
 
   # Initialize tutorials
-  tutorial.initialize()
+  # tutorial.initialize()
 
   ###
     This next call is unassuming but rather important. We initialize 
@@ -166,6 +166,9 @@ jQuery ->
 
     # Start monitoring progress of any pending Delayed::Jobs
     monitor.add response, true
+
+    # Monitor horizontal tabs rendered within .g-panels  
+    # monitor.tabs.start()
 
     # Set server 
     if response.deployment is 'production'

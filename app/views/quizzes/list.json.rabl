@@ -14,5 +14,6 @@ node(:quizzes) {
 
 node(:last_pg) { @last_pg }
 node(:disabled) { @disabled }
-node(:indie, unless: @t.nil?) { @t.indie }
+node(:indie, unless: @t.nil?) { @indie } 
+node(:ping) { @ping }
 
