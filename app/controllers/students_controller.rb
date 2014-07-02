@@ -44,7 +44,7 @@ class StudentsController < ApplicationController
     # published with ** no scans **  
     all = Worksheet.where(student_id: current_account.loggable_id)
     @inboxed = all.select{ |j| !j.billed || ( j.billed && j.received?(:none) )} 
-    @render = params[:ping].blank? ? true : params[:ping]
+    @render = params[:ping].blank? 
   end 
 
   def outbox
@@ -52,7 +52,7 @@ class StudentsController < ApplicationController
     all = Worksheet.where(student_id: current_account.loggable_id, billed: true)
     some_scans = all.select{ |j| !j.received?(:none) } 
     @outboxed = some_scans.select{ |j| j.attempts.graded.count == 0 } 
-    @render = params[:ping].blank? ? true : params[:ping]
+    @render = params[:ping].blank? 
   end
 
   def match
