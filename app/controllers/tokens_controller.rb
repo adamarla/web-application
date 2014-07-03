@@ -110,7 +110,8 @@ class TokensController < ApplicationController
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
             scan: w.billed ? gr.where(q_selection_id: qsel.id).first.scan : "",
-            marks: w.graded ? gr.where(q_selection_id: qsel.id).map(&:marks).inject(:+) : -1.0
+            marks: w.graded ? gr.where(q_selection_id: qsel.id).map(&:marks).inject(:+) : -1.0,
+            outof: qs[i].marks
           }
         }
 
