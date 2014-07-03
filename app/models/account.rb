@@ -211,7 +211,7 @@ class Account < ActiveRecord::Base
       when :student 
         @exams = []
       else 
-        @exams = self.exams
+        @exams = self.exams.select{ |j| j.grade_by? > -15 }
     end
     return @exams
   end

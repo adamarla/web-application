@@ -260,7 +260,7 @@ class ExaminersController < ApplicationController
 
     for j in e
       next unless j.account.has_email?
-      a = ug.where(examiner_id: j.id).count > 0
+      a = ug.where(examiner_id: j.id).map(&:worksheet).map(&:exam).uniq.select{ |k| k.grade_by? > -15 }.count > 0
       b = d.where(examiner_id: j.id).count > 0
       if a || b 
         j.mail_daily_digest a,b
