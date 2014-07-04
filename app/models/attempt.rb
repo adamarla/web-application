@@ -284,9 +284,9 @@ class Attempt < ActiveRecord::Base
           max = subpart.marks 
           marks = ((( 100 - p )/100.0) * max).round(2)
           # Quality booleans 
-          w = p > 65
+          w = p >= 65
           m = (p < 65 && p > 15)
-          s = (p < 15)
+          s = (p <= 15)
           # Color booleans 
           colors = Criterion.where(id: cids).map(&:perception?)
           red = colors.include? :red
