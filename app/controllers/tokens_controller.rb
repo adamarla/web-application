@@ -82,7 +82,7 @@ class TokensController < ApplicationController
   def bill_ws
     ws = Worksheet.find(params[:id])
     ws.bill
-    grs = ws.graded_responses
+    grs = ws.attempts
     qsels = ws.exam.quiz.q_selections.order(:index)
     grIds = qsels.each_with_index.map{ |qsel, i|
       grs.where(q_selection_id: qsel.id).map(&:id).join('-')
@@ -100,26 +100,28 @@ class TokensController < ApplicationController
         quiz = w.exam.quiz
         qsels = quiz.q_selections.order(:index)
         qs = qsels.map(&:question)
-        gr = w.attempts
+        atts = w.attempts
         vers = w.signature.split(',')
 
         items = qsels.each_with_index.map{ |qsel, i|
           {
             id: "#{w.id}.#{i+1}",
-            grId: w.billed ? gr.where(q_selection_id: qsel.id).map(&:id).join('-') : "",
+            grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join('-') : "",
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
-            scan: w.billed ? gr.where(q_selection_id: qsel.id).first.scan : "",
-            marks: w.billed ? gr.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+) : -1.0,
+            scan: w.billed ? atts.where(q_selection_id: qsel.id).first.scan : "",
+            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+) : -1.0,
             outof: qs[i].marks
           }
         }
 
+        remarks = Remark.where(attempt_id: atts.map(&:id))
         worksheets << {
           quizId: quiz.id,
           quiz: quiz.name,
           price: 20, # Quiz.Price?
           locn: "#{quiz.uid}/#{w.uid}",
+          fdbkMrkr: remarks.count == 0 ? 0 : remarks.order(:id).map(&:id).last,
           questions: items
 	}
 
