@@ -47,7 +47,7 @@ window.overlay = {
     ###
       json = [{ x:< > , y:< > , comment: < > } ... { ... } ]
     ###
-    overlay.add(decodeURIComponent(m.comment), null, m.x, m.y) for m in json
+    overlay.add(m.comment, null, m.x, m.y) for m in json
     return true
 
   add : (comment, event = null, xp = null, yp = null) ->
