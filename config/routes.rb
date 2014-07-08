@@ -146,6 +146,7 @@ Webapp::Application.routes.draw do
 
   # Worksheets 
   match 'worksheet/preview' => 'worksheets#preview', via: :get
+  match 'worksheet/scans' => 'worksheets#scans', via: :get
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get
