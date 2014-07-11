@@ -68,7 +68,7 @@ Webapp::Application.routes.draw do
 
   match 'disputes' => 'examiners#disputed', via: :get
   match 'load/dispute' => 'examiners#load_dispute', via: :get
-  match 'dispute/reject' => 'examiners#reject_dispute', via: :get
+  match 'dispute/reject' => 'examiners#reject_dispute', via: [:put, :post] 
   match 'dispute/accept' => 'examiners#accept_dispute', via: :get
   match 'dispute/reason' => 'examiners#load_dispute_reason', via: :get
 

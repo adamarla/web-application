@@ -54,9 +54,8 @@ tab-disputes :
     panel : load/dispute?id=:id
 
 lnk-reject-dispute :
-  url: 
-    self : dispute/reject?id=:a
-  update-on: load/dispute
+  show : 
+    modal : m-reject-dispute 
 
 lnk-accept-dispute :
   url: 

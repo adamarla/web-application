@@ -30,13 +30,13 @@ class Mailbot < ActionMailer::Base
   def new_suggestion(sg)
     @sg = sg 
     deadline = 3.business_days.from_now.in_time_zone('Kolkata') 
-    mail to: @sg.examiner.account.email, subject: "[Typesetting Deadline]: #{deadline.strftime('%I:%M%p on %A, %b %d')}"
+    mail to: @sg.examiner.account.email, subject: "( Typesetting Deadline ): #{deadline.strftime('%I:%M%p on %A, %b %d')}"
   end 
 
   def suggestion_received(sg)
     @deadline = 3.business_days.from_now # report in GMT to external parties
     @teacher = sg.teacher
-    mail to: @teacher.account.email, subject: "[Gradians.com]: We have received your questions"
+    mail to: @teacher.account.email, subject: "( Gradians.com ): We have received your questions"
   end
 
   def suggestion_typeset( suggestion )
@@ -53,7 +53,7 @@ class Mailbot < ActionMailer::Base
   def new_grading_work(eid)
     examiner = Examiner.find eid
     deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
-    mail subject: "[Grading Deadline]:  #{deadline.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
+    mail subject: "( Grading Deadline ):  #{deadline.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
   end
 
   def quiz_assigned(wsid)
@@ -61,7 +61,7 @@ class Mailbot < ActionMailer::Base
     @student = w.student
     unless @student.account.real_email.nil?
       @quiz = w.exam.quiz
-      mail subject:  "[Gradians.com]: New homework posted to your account", to:  @student.account.real_email
+      mail subject:  "( Gradians.com ): New homework posted to your account", to:  @student.account.real_email
     end
   end
 
@@ -77,26 +77,26 @@ class Mailbot < ActionMailer::Base
     @gating_issues = gating_issues 
     @non_gating_issues = non_gating_issues 
     @comments = comments
-    mail to:  author.account.email, subject:  "[Question Audit]: #{question.uid.upcase}"
+    mail to:  author.account.email, subject:  "( Question Audit ): #{question.uid.upcase}"
   end
 
   def quiz_shared(quiz, from, to)
     @quiz_name = quiz.name
     @from_name = from.name
     @to_name = to.first_name
-    mail to: to.account.email, subject: "[Gradians.com]: #{@from_name} has shared a quiz with you"
+    mail to: to.account.email, subject: "( Gradians.com ): #{@from_name} has shared a quiz with you"
   end
 
   def scans_received(id)
     @teacher = Teacher.find id
     @deadline = 3.business_days.from_now # in GMT to external parties
-    mail to: @teacher.account.email, subject: "[Gradians.com]: Scans received for grading"
+    mail to: @teacher.account.email, subject: "( Gradians.com ): Scans received for grading"
   end
 
   def worksheet_graded(ws)
     @student = ws.student
     @quiz = ws.exam.quiz
-    mail to: @student.account.email, subject: "[Gradians.com]: Quiz '#{@quiz.name}' has been graded" 
+    mail to: @student.account.email, subject: "( Gradians.com ): Quiz '#{@quiz.name}' has been graded" 
   end
 
   def report_mint_error(obj, link)
@@ -104,7 +104,7 @@ class Mailbot < ActionMailer::Base
     @id = obj.id 
     @ref = link
     @during = (obj.job_id == WRITE_TEX_ERROR )? "Writing" : "Compiling"
-    mail to: "bugs@gradians.com", subject: "[Gradians.com]: Error in Mint"
+    mail to: "bugs@gradians.com", subject: "( Gradians.com ): Error in Mint"
   end
 
   def new_sektion(sk)
@@ -114,7 +114,7 @@ class Mailbot < ActionMailer::Base
     @renew = sk.auto_renew ? "Yes" : "No"
     @code = sk.uid
     @name = sk.name
-    mail to: sk.teacher.account.email, subject: "[Gradians.com]: New section - #{@name} - created"
+    mail to: sk.teacher.account.email, subject: "( Gradians.com ): New section - #{@name} - created"
   end
  
   def payment_received(customer, payment)
@@ -129,14 +129,24 @@ class Mailbot < ActionMailer::Base
     @gating = gating 
     @nongating = nongating 
     @comments = comments
-    mail to: @a.account.email, subject: "[Gradians.com]: #{bottomline}"
+    mail to: @a.account.email, subject: "( Gradians.com ): #{bottomline}"
   end 
 
   def daily_digest(name, email, tbd_grading, tbd_disputes)
     @name = name 
     @tbd_g = tbd_grading 
     @tbd_d = tbd_disputes
-    mail to: email, subject: "[Gradians.com] - Pending work as of #{Date.today.strftime('%B %d, %Y')}"
+    mail to: email, subject: "( Gradians.com ) - Pending work as of #{Date.today.strftime('%B %d, %Y')}"
+  end
+
+  def reject_dispute(id, eid, reason)
+    a = Attempt.find id
+    quiz = a.worksheet.exam.quiz.name 
+    ques = a.name?
+    e = Examiner.find eid
+    @exm = e.name
+    @reason = reason
+    mail to: a.student.account.email, subject: "(Dispute Rejected): #{ques} of '#{quiz}'"
   end
 
 end
