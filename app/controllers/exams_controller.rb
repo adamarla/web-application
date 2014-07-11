@@ -33,15 +33,20 @@ class ExamsController < ApplicationController
   def layout
     # Returns ordered list of questions - renderable as .tabs-left
     @exam = Exam.find params[:e]
-    student_id = params[:id].blank? ? current_account.loggable_id : params[:id]
+    sid = params[:id].blank? ? current_account.loggable_id : params[:id]
 
     @who = current_account.loggable_type
     unless @exam.nil?
       @qsids = QSelection.where(quiz_id: @exam.quiz_id).order(:index)
       per_pg, @last_pg = pagination_layout_details(@qsids.count, 8)
       pg = params[:page].nil? ? 1 : params[:page].to_i
+      w = Worksheet.where(student_id: sid, exam_id: @exam.id).first 
+
+      if pg == 1 # only when the exam layout is first loaded 
+        @who == 'Student' ? w.up_view_count(:student) : w.up_view_count(:teacher)
+      end 
       @qsids = @qsids.page(pg).per(per_pg)
-      @gr = Attempt.of_student(student_id).in_exam @exam.id
+      @gr = Attempt.where(worksheet_id: w.id)
       @criteria = Rubric.find(@exam.rubric_id?).criteria?(:all) 
       # include even those criteria that have become inactive since the time the exam was graded
     else
