@@ -243,6 +243,10 @@ class Worksheet < ActiveRecord::Base
     end 
   end 
 
+  def self.viewed_by(audience = :student) # audience = :student | :teacher 
+    audience == :student ?  where('num_views_student > ?', 0) : where('num_views_teacher > ?', 0)
+  end 
+
   def self.qrcode(ids = [])
     return "" if ids.blank?
     ids = ids.sort.reverse
