@@ -68,8 +68,9 @@ class TokensController < ApplicationController
   end
 
   def view_fdb
+    scan = params[:scan]
     gr_ids = params[:id].split('-').map{ |id| id.to_i }
-    grs = Attempt.where(id: gr_ids)
+    grs = Attempt.where(id: gr_ids, scan: scan)
     @comments = Remark.where(attempt_id: grs)
     json = {
       comments: @comments.map{ |c| 
@@ -109,7 +110,8 @@ class TokensController < ApplicationController
             grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join('-') : "",
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
-            scan: w.billed ? atts.where(q_selection_id: qsel.id).first.scan : "",
+            imgspan: qs[i].answer_key_span?,
+            scan: w.billed ? atts.where(q_selection_id: qsel.id).map(&:scan).uniq.join(',') : "",
             marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+) : -1.0,
             outof: qs[i].marks
           }
