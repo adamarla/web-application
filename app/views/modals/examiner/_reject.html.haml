@@ -1,0 +1,10 @@
+
+#m-reject-dispute.modal.fade.regular
+  .row-fluid
+    .span3
+      = image_tag 'notifications/trash.png', :class => 'big-icon'
+    .span8
+      = simple_form_for :reject, remote: true, defaults: { label: false }, 
+        html: { data: { action: "#{dispute_reject_path}?id=:id", id: 'tab-disputes' } } do |f|
+        = f.input :reason, as: :text, input_html: { rows: 6, cols: 50 }, labels: false, hint: 'Provide reasons for rejecting'
+        %button.btn.btn-primary.btn-large.pull-left{ type: :submit }= "Submit"

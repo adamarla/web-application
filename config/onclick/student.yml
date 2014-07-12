@@ -70,7 +70,7 @@ tab-st-inbox :
 tab-st-outbox :
   url : 
     self : outbox
-    panel : worksheet/preview?id=:id 
+    panel : worksheet/scans?id=:id 
   id : tab-st-outbox
 
 lnk-enroll-self : 

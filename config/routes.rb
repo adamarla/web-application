@@ -68,7 +68,7 @@ Webapp::Application.routes.draw do
 
   match 'disputes' => 'examiners#disputed', via: :get
   match 'load/dispute' => 'examiners#load_dispute', via: :get
-  match 'dispute/reject' => 'examiners#reject_dispute', via: :get
+  match 'dispute/reject' => 'examiners#reject_dispute', via: [:put, :post] 
   match 'dispute/accept' => 'examiners#accept_dispute', via: :get
   match 'dispute/reason' => 'examiners#load_dispute_reason', via: :get
 
@@ -146,6 +146,7 @@ Webapp::Application.routes.draw do
 
   # Worksheets 
   match 'worksheet/preview' => 'worksheets#preview', via: :get
+  match 'worksheet/scans' => 'worksheets#scans', via: :get
 
   # Sektion 
   match 'sektion/students' => 'sektions#students', via: :get

@@ -91,8 +91,9 @@ jQuery ->
       clickFirst = true
       target = $('#pane-disputes')
       menu = 'm-dispute'
-    else if url.match(/(accept|reject)\/dispute/)
+    else if url.match(/dispute\/(accept|reject)/)
       target = $('#pane-disputes')
+      $('#m-reject-dispute').modal 'hide'
     else
       matched = false
 

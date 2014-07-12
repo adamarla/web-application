@@ -27,7 +27,7 @@ jQuery ->
       karo.empty target
       key = 'inbox'
       clickFirst = true
-    else if url.match(/worksheet\/preview/)
+    else if url.match(/worksheet\/preview/) or url.match(/worksheet\/scans/)
       overlay.detach()
       preview.loadJson json
 

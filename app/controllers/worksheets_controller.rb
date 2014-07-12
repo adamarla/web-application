@@ -9,4 +9,14 @@ class WorksheetsController < ApplicationController
     end 
   end 
 
+  def scans
+    w = Worksheet.find params[:id]
+    a = w.attempts.with_scan
+    unless a.blank? 
+      @imgs = a.map(&:scan).uniq
+    else 
+      @imgs = []
+    end 
+  end
+
 end

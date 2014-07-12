@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140628072841) do
+ActiveRecord::Schema.define(:version => 20140711121616) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -518,15 +518,17 @@ ActiveRecord::Schema.define(:version => 20140628072841) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "marks"
-    t.boolean  "graded",                    :default => false
+    t.boolean  "graded",                          :default => false
     t.integer  "honest"
-    t.boolean  "received",                  :default => false
+    t.boolean  "received",                        :default => false
     t.string   "signature"
-    t.string   "uid",         :limit => 40
-    t.integer  "job_id",                    :default => -1
-    t.boolean  "billed",                    :default => false
+    t.string   "uid",               :limit => 40
+    t.integer  "job_id",                          :default => -1
+    t.boolean  "billed",                          :default => false
     t.boolean  "orange_flag"
     t.boolean  "red_flag"
+    t.integer  "num_views_student",               :default => 0
+    t.integer  "num_views_teacher",               :default => 0
   end
 
   add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"

@@ -99,17 +99,10 @@ window.line = {
       remaining -= 2
 
     # Icons 
-    icons = children.filter "i"
-    if json.icons?
-      j = json.icons.split(' ')
-      for k in j
-        i = icons.filter("[class~=#{k}]")[0]
-        continue unless i?
-        $(i).removeClass 'hide'
-        remaining -= 1
-      $(m).remove() for m in icons.filter(".hide") # remove the unrequired and/or not found
-    else
-      $(m).remove() for m in icons
+    icons = if json.icons? then json.icons.split(' ') else null
+    if icons? 
+      for j in icons 
+        $("<i class='#{j} icon-gray pull-right'></i>").appendTo obj
 
     # Buttons 
     btns = children.filter("div[class~='btn']")

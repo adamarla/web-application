@@ -233,10 +233,11 @@ class ExaminersController < ApplicationController
   end 
 
   def reject_dispute
-    g = Attempt.find params[:id]
-    unless g.nil?
-      g.update_attribute :resolved, true
-      render json: { disabled: g.id }, status: :ok
+    a = Attempt.find params[:id]
+    unless a.nil?
+      a.update_attribute :resolved, true
+      Mailbot.delay.reject_dispute a.id, a.examiner_id, params[:reject][:reason]
+      render json: { disabled: [a.id] }, status: :ok
     else
       render json: { status: :ok }, status: :ok
     end 
@@ -246,7 +247,7 @@ class ExaminersController < ApplicationController
     g = Attempt.find params[:id]
     unless g.nil?
       g.reset false
-      render json: { disabled: g.id }, status: :ok
+      render json: { disabled: [g.id] }, status: :ok
     else
       render json: { status: :ok }, status: :ok
     end 

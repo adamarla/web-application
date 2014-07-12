@@ -2,21 +2,23 @@
 #
 # Table name: worksheets
 #
-#  id          :integer         not null, primary key
-#  student_id  :integer
-#  exam_id     :integer
-#  created_at  :datetime
-#  updated_at  :datetime
-#  marks       :float
-#  graded      :boolean         default(FALSE)
-#  honest      :integer
-#  received    :boolean         default(FALSE)
-#  signature   :string(255)
-#  uid         :string(40)
-#  job_id      :integer         default(-1)
-#  billed      :boolean         default(FALSE)
-#  orange_flag :boolean
-#  red_flag    :boolean
+#  id                :integer         not null, primary key
+#  student_id        :integer
+#  exam_id           :integer
+#  created_at        :datetime
+#  updated_at        :datetime
+#  marks             :float
+#  graded            :boolean         default(FALSE)
+#  honest            :integer
+#  received          :boolean         default(FALSE)
+#  signature         :string(255)
+#  uid               :string(40)
+#  job_id            :integer         default(-1)
+#  billed            :boolean         default(FALSE)
+#  orange_flag       :boolean
+#  red_flag          :boolean
+#  num_views_student :integer         default(0)
+#  num_views_teacher :integer         default(0)
 #
 
 class Worksheet < ActiveRecord::Base
@@ -230,6 +232,20 @@ class Worksheet < ActiveRecord::Base
     end
     return response[:error_out_response][:manifest]
   end
+
+  def up_view_count( audience ) # audience = :student | :teacher 
+    if audience == :student 
+      n = self.num_views_student 
+      self.update_attribute :num_views_student, (n + 1)
+    elsif audience == :teacher 
+      n = self.num_views_teacher 
+      self.update_attribute :num_views_teacher, (n + 1)
+    end 
+  end 
+
+  def self.viewed_by(audience = :student) # audience = :student | :teacher 
+    audience == :student ?  where('num_views_student > ?', 0) : where('num_views_teacher > ?', 0)
+  end 
 
   def self.qrcode(ids = [])
     return "" if ids.blank?
