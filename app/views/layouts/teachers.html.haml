@@ -26,6 +26,8 @@
         = render partial: 'toolbox/grading/left/q-fdb'
         = render partial: 'toolbox/rubric/buttons'
         = render partial: 'toolbox/rubric/criterion'
+      - if j == :modals
+        = render partial: 'modals/examiner/new-examiner'
 
 -# Tutorials 
   - content_for :tutorials do 
