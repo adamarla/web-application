@@ -73,7 +73,7 @@ jQuery ->
         mdl.modal 'show'
     else if url.match(/merge$/)
       $('#m-enrollment-confirm').modal 'hide'
-      trigger.click $('#lnk-st-rc')[0] # auto-load the report cards for the merged account
+      trigger.click $('#a-st-main')[0] # auto-load the report cards for the merged account
     else if url.match(/dispute/)
       m = $('#m-dispute-2')
       m.find('textarea').val null
