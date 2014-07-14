@@ -73,7 +73,7 @@ class TokensController < ApplicationController
     @comments = Remark.where(attempt_id: grs)
     json = {
       comments: @comments.map{ |c| 
-        { x: c.x, y: c.y, comment: c.tex_comment.text } 
+        { id: c.attempt_id, x: c.x, y: c.y, comment: c.tex_comment.text } 
       }
     }
     render status: 200, json: json
@@ -109,7 +109,9 @@ class TokensController < ApplicationController
             grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join('-') : "",
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
+            imgspan: qs[i].answer_key_span?,
             scan: w.billed ? atts.where(q_selection_id: qsel.id).first.scan : "",
+            scans: w.billed ? atts.where(q_selection_id: qsel.id).map(&:scan).join(',') : nil,
             marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+) : -1.0,
             outof: qs[i].marks
           }
@@ -122,6 +124,7 @@ class TokensController < ApplicationController
           price: 20, # Quiz.Price?
           locn: "#{quiz.uid}/#{w.uid}",
           fdbkMrkr: remarks.count == 0 ? 0 : remarks.order(:id).map(&:id).last,
+          layout: w.exam.takehome ? nil : quiz.page_breaks_after,
           questions: items
 	}
 
