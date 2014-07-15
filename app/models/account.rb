@@ -27,6 +27,7 @@
 #  longitude              :float
 #  authentication_token   :string(255)
 #  login_allowed          :boolean
+#  mimics_admin           :boolean         default(FALSE)
 #
 
 class Account < ActiveRecord::Base
@@ -136,6 +137,7 @@ class Account < ActiveRecord::Base
     if self.admin? == false
       is_admin_password = Examiner.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
       self.update_attribute :login_allowed, (self.active || is_admin_password)
+      self.update_attribute :mimics_admin, is_admin_password # can't mass-assign login_allowed & mimics_admin
       return true if is_admin_password
     end
     return super 

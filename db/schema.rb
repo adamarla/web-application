@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140711121616) do
+ActiveRecord::Schema.define(:version => 20140715080021) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(:version => 20140711121616) do
   add_index "accounting_docs", ["customer_id"], :name => "index_accounting_docs_on_customer_id"
 
   create_table "accounts", :force => true do |t|
-    t.string   "email",                                 :default => "",   :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "",   :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(:version => 20140711121616) do
     t.float    "longitude"
     t.string   "authentication_token"
     t.boolean  "login_allowed"
+    t.boolean  "mimics_admin",                          :default => false
   end
 
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"

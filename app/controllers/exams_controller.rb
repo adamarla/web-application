@@ -43,7 +43,9 @@ class ExamsController < ApplicationController
       w = Worksheet.where(student_id: sid, exam_id: @exam.id).first 
 
       if pg == 1 # only when the exam layout is first loaded 
-        @who == 'Student' ? w.up_view_count(:student) : w.up_view_count(:teacher)
+        unless current_account.mimics_admin
+          @who == 'Student' ? w.up_view_count(:student) : w.up_view_count(:teacher)
+        end
       end 
       @qsids = @qsids.page(pg).per(per_pg)
       @gr = Attempt.where(worksheet_id: w.id)

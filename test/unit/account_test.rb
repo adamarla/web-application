@@ -27,6 +27,7 @@
 #  longitude              :float
 #  authentication_token   :string(255)
 #  login_allowed          :boolean
+#  mimics_admin           :boolean         default(FALSE)
 #
 
 require 'test_helper'
