@@ -167,7 +167,7 @@ class ExaminersController < ApplicationController
     end
 
     # Do NOT receive scan under the following conditions 
-    #   1. if the graded responses already have an associated scan 
+    #   1. if the attempts already have an associated scan 
     #   2. if its past the submission deadline 
 
     exam = g.first.worksheet.exam

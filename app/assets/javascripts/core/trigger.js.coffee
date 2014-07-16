@@ -287,15 +287,22 @@ jQuery ->
     li = $(this).parent()
     name = $(this).attr 'id'
 
-    prev = this.getAttribute('data-prev')
     if li.hasClass 'disabled'
       event.stopImmediatePropagation()
       return false
-    else if prev?
-      m = $("##{prev}").parent() # the <li> - not the <a>
-      if not m.attr('marker')? # no selection made in data-prev
-        event.stopImmediatePropagation()
-        return false
+    else 
+      within = ['exploded'] # whitelist of ancestor element classes that we would ignore 
+      ignore = false 
+      for w in within 
+        ignore |= ( if $(this).closest(".#{w}")?  then true else false )
+        break if ignore 
+      unless ignore 
+        prev = this.getAttribute('data-prev')
+        if prev?
+          m = $("##{prev}").parent() # the <li> - not the <a>
+          if not m.attr('marker')? # no selection made in data-prev
+            event.stopImmediatePropagation()
+            return true
     trigger.click this
     return true
 
