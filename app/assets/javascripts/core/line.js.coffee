@@ -104,31 +104,13 @@ window.line = {
       for j in icons 
         $("<i class='#{j} icon-gray pull-right'></i>").appendTo obj
 
-    # Buttons 
-    btns = children.filter("div[class~='btn']")
-    hiddenChkBox = children.filter("input[type='checkbox']")
-
     if buttons?
-      hiddenChkBox.remove()
-      j = buttons.split(' ') # each token = class set on an <i> within the .btn
-      for b in btns
-        keep = false
-        i = $(b).children('i').eq(0)
-        for k in j
-          keep = true if i.hasClass(k)
-          break if keep
-        
-        if keep
-          chkBox = $(b).children("input[type='checkbox']").eq(0)
-          name = chkBox.attr 'name'
-          chkBox.attr 'name', "#{name}[#{json.id}]"
-          chkBox.attr 'id', "#{name}_#{json.id}"
-        else
-          $(b).remove()
-    else
-      $(m).remove() for m in btns
-      hiddenChkBox.attr 'name', "checked[#{json.id}]"
-      hiddenChkBox.attr 'id', "checked_#{json.id}"
+      for b in buttons
+        k = if b.klass? then "btn btn-mini #{b.klass}" else "btn btn-mini hide default"
+        btn = $("<div class='#{k}'></div>")
+        $("<i class='icon-white #{b.icon}'></i>").appendTo(btn) if b.icon?
+        $("<input class='hide' type='checkbox' name=#{b.cbx}[#{json.id}]></input>").appendTo(btn) if b.cbx?
+        btn.appendTo obj
 
     # Stopwatch 
     watch = children.filter(".stopwatch")[0]
@@ -147,6 +129,10 @@ window.line = {
     # Done !!!
     obj.appendTo here
     return true
+
+  hiddenCbx : (line) ->
+    cbx = $(line).children('.btn.default')[0]
+    return ( if cbx? then $(cbx).children("input[type='checkbox']")[0] else null )
 }
 
 ### 

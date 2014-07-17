@@ -25,6 +25,7 @@ jQuery ->
       else if json.context is 'list'
         target = $('#enrolled-students')
         karo.empty target
+        buttons = [ { cbx: 'checked' } ]
       else
         target = $('#exb-sektions')
         lesson = 'exb-milestone-3'
@@ -104,12 +105,14 @@ jQuery ->
 
     else if url.match(/preview\/names/)
       target = $('#new-sk-students')
-      lines.columnify target, json.names
+      buttons = [ { cbx: 'names' } ]
+      lines.columnify target, json.names, null, buttons
       for m in target.find '.line'
-        $(m).addClass 'disabled'
-        cb = $(m).children("[type='checkbox']").eq(0)
-        cb.prop 'checked', true
-        cb.attr 'value', cb.siblings('.text').eq(0).text()
+        # $(m).addClass 'disabled'
+        cbx = line.hiddenCbx(m)
+        if cbx? 
+          $(cbx).prop('checked', true) 
+          $(cbx).attr 'value', $(cbx).parent().siblings('.text').eq(0).text()
       return true
 
     else if url.match(/set\/deadlines/)

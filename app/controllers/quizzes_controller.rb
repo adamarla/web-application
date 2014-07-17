@@ -4,10 +4,9 @@ class QuizzesController < ApplicationController
   respond_to :json
 
   def build
-    p = params[:checked]
     t = current_account.loggable
-    name = p.delete :name
-    qids = p.keys.map(&:to_i)
+    name = params[:qzb][:name]
+    qids = params[:q].keys.map(&:to_i)
 
     quiz = t.quizzes.create(name: name, question_ids: qids, num_questions: qids.count)
     eta = minutes_to_completion quiz.job_id

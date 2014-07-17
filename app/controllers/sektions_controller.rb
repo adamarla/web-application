@@ -131,7 +131,7 @@ class SektionsController < ApplicationController
     sk = params[:id].blank? ? nil : Sektion.find(params[:id])
 
     unless sk.nil?
-      students = params[:checked].values.map(&:strip).map(&:titleize)
+      students = params[:names].values.map(&:strip).map(&:titleize)
       new_student_ids = [] 
 
       for m in students
