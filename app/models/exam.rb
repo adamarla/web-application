@@ -116,7 +116,7 @@ class Exam < ActiveRecord::Base
 
   def mean?
     # Returns the average for the class/group that took this exam
-    # Only graded responses and only those students that have
+    # Only attempts and only those students that have
     # some or all of their answer-sheet graded are considered. Hence, know 
     # that this number will change with time before settling to a final value
     
@@ -243,8 +243,7 @@ class Exam < ActiveRecord::Base
   end
 
   def reset
-    # For now, this method only unassigns any ungraded responses
-    # Needed if a teacher wants new distribution scheme to take effect 
+    # Resets examiner_id so that work can be distributed as per new distribution scheme 
     g = Attempt.in_exam(self.id).with_scan.ungraded
     g.each do |j|
       j.update_attribute :examiner_id, nil

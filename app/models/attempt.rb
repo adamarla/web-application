@@ -177,7 +177,7 @@ class Attempt < ActiveRecord::Base
   end # of method  
 
   def reset(soft = true)
-    # For times when a graded response has to be re-graded. 
+    # For times when a attempt has to be re-graded. 
     # Setting feedback = 0 will trigger the following before_update 
     # callbacks on the Attempt and then on the worksheet
     self.update_attribute :feedback, 0
@@ -188,8 +188,8 @@ class Attempt < ActiveRecord::Base
   end 
 
   def index?
-    # The index of the question / subpart to which this is the graded response
-    # Hence, if sth. like 2.4 is returned, then it means that this graded response 
+    # The index of the question / subpart to which this is the attempt
+    # Hence, if sth. like 2.4 is returned, then it means that this attempt 
     # is for the 4th subpart of the second question in the quiz
     return ( self.q_selection.index + ( self.subpart.index/10.0)).round(1)
   end
@@ -227,19 +227,19 @@ class Attempt < ActiveRecord::Base
   end
 
   def name?
-    # The name of a graded response is a function of the quiz it is in, the
+    # The name of a attempt is a function of the quiz it is in, the
     # index of the parent question in the quiz and the index of the corresponding sub-part 
     # relative to the parent question 
     return self.subpart.name_if_in? self.worksheet.exam.quiz_id
   end
 
   def teacher?
-    # Returns the teacher to whose quiz this graded response is
+    # Returns the teacher to whose quiz this attempt is
     return Teacher.where(id: self.worksheet.exam.quiz.teacher_id).first
   end
 
   def version
-    # Returns the version the student got and for which this is the graded response
+    # Returns the version the student got and for which this is the attempt
     sign = self.worksheet.signature 
     return "0" if sign.blank?
     idx = self.q_selection.index - 1 # QSelections are 1-indexed - not 0-indexed

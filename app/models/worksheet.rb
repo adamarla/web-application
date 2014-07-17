@@ -86,7 +86,7 @@ class Worksheet < ActiveRecord::Base
 
   def publishable?
     # A student's answer sheet becomes publishable as soon as the 
-    # last of the graded responses has been graded
+    # last of the attempts has been graded
 
     submitted = Attempt.where(worksheet_id: self.id).with_scan
     return false if submitted.count == 0
@@ -176,7 +176,7 @@ class Worksheet < ActiveRecord::Base
 
   def bill
     return false if self.billed # do not bill a quiz again
-    # 1. allot graded response slots for this worksheet 
+    # 1. allot attempt slots for this worksheet 
     q = self.exam.quiz
     qsel = QSelection.where(quiz_id: q.id).order(:index)
     sid = self.student_id

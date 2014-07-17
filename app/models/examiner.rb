@@ -101,7 +101,7 @@ class Examiner < ActiveRecord::Base
       pending = ug.in_exam(e.id)
 
       pending.map(&:q_selection_id).uniq.each do |q|
-        p = pending.where(q_selection_id: q)
+        p = pending.where(q_selection_id: q) # same question, same quiz, all students
 
         if ta_ids.blank? # no TAs 
           examiners = Examiner.where(mentor_is_teacher: false).order(:n_assigned).available # Gradians.com graders
@@ -118,10 +118,14 @@ class Examiner < ActiveRecord::Base
         per = per > 20 ? per : 20
 
         sids.each_slice(per).each do |k|
+          # ignore student if scans for all subparts not in
+          is_complete = Attempt.where(student_id: k, q_selection_id: q).without_scan.count == 0
+          next unless is_complete
+
           exm = examiners.shift # pop from front 
-          work = p.where(student_id: k)
-          work.map{ |m| m.update_attribute :examiner_id, exm.id }
-          exm.update_attribute :n_assigned, (exm.n_assigned + work.size)
+          work_chunk = p.where(student_id: k) # same question, same quiz, one student
+          work_chunk.map{ |m| m.update_attribute :examiner_id, exm.id }
+          exm.update_attribute :n_assigned, (exm.n_assigned + work_chunk.size)
           examiners.push exm # push to last
         end # over students
       end # over q-selections 
