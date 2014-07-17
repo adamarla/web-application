@@ -106,7 +106,7 @@ window.line = {
 
     if buttons?
       for b in buttons
-        k = if b.klass? then "btn btn-mini #{b.klass}" else "btn btn-mini hide default"
+        k = if b.icon? then 'btn btn-mini' else (if b.klass? then "btn btn-mini #{b.klass}" else "btn btn-mini hide default")
         btn = $("<div class='#{k}'></div>")
         $("<i class='icon-white #{b.icon}'></i>").appendTo(btn) if b.icon?
         $("<input class='hide' type='checkbox' name=#{b.cbx}[#{json.id}]></input>").appendTo(btn) if b.cbx?
