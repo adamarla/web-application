@@ -12,4 +12,5 @@
    inflect.irregular 'coursework', 'coursework'
    inflect.irregular 'freebie', 'freebies'
    inflect.irregular 'criterion', 'criteria'
+   inflect.irregular 'watan', 'watan'
  end
