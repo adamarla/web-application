@@ -9,6 +9,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  shell       :boolean         default(FALSE)
+#  phone       :string(15)
 #
 
 require 'test_helper'

@@ -45,6 +45,7 @@ gem 'business_time'
 gem 'delayed_job_active_record'
 
 gem 'levenshtein-ffi', :require => 'levenshtein'
+#gem 'phony_rails'
 
 gem 'activemerchant', '~> 1.42.3' # payment gwy
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140715080021) do
+ActiveRecord::Schema.define(:version => 20140718054330) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20140715080021) do
     t.string   "authentication_token"
     t.boolean  "login_allowed"
     t.boolean  "mimics_admin",                          :default => false
+    t.string   "phone",                  :limit => 15
   end
 
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"
@@ -420,6 +421,7 @@ ActiveRecord::Schema.define(:version => 20140715080021) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "shell",                     :default => false
+    t.string   "phone",       :limit => 15
   end
 
   create_table "subjects", :force => true do |t|

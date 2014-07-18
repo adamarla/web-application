@@ -9,6 +9,7 @@
 #  created_at  :datetime
 #  updated_at  :datetime
 #  shell       :boolean         default(FALSE)
+#  phone       :string(15)
 #
 
 include ApplicationUtil
@@ -39,21 +40,29 @@ class Student < ActiveRecord::Base
 
   def self.merge(a,b) 
     # Merging of two student records can happen only if 
-    #   1. (src) one of 'a' or 'b' has an associated account AND 
-    #   2. (target) the other one does not
+    #   1. (neu) one of 'a' or 'b' has an associated account AND 
+    #   2. (old) the other one does not
 
-    target = a.shell ? a : (b.shell ? b : nil)
-    return false if target.nil?
-    src = a.shell ? (b.shell ? nil : b) : a 
-    return false if src.nil?
+    old = a.shell ? a : (b.shell ? b : nil)
+    return false if old.nil?
+    neu = a.shell ? (b.shell ? nil : b) : a 
+    return false if neu.nil?
 
-    # Transfer worksheets and attempts from target -> src 
+    # Transfer worksheets and attempts from old -> neu 
     [Attempt, Worksheet, StudentRoster].each do |k|
-      k.where(student_id: target.id).each do |j|
-        j.update_attribute :student_id, src.id
+      k.where(student_id: old.id).each do |j|
+        j.update_attribute :student_id, neu.id
       end 
     end 
-    target.destroy # the shell account, that is 
+
+    # if the old has an associated phone #, then transfer it to 
+    # the source
+    if neu.account.phone.blank?
+      unless old.phone.blank?
+        neu.account.update_attribute :phone, old.phone
+      end
+    end 
+    old.destroy # the shell account, that is 
     return true
   end 
 

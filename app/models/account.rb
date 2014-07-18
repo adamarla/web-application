@@ -28,6 +28,7 @@
 #  authentication_token   :string(255)
 #  login_allowed          :boolean
 #  mimics_admin           :boolean         default(FALSE)
+#  phone                  :string(15)
 #
 
 class Account < ActiveRecord::Base

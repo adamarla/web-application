@@ -131,6 +131,15 @@ jQuery ->
     else if url.match(/set\/dist\/scheme/) # STEP 2: close modal 
         m = $('#m-exb-dist-scheme')
         m.modal 'hide'
+    else if url.match(/phones/)
+      mdl = $('#m-phones') 
+      columns = mdl.find('.column')
+      $(m).empty() for m in columns
+      for j,n in json.phones
+        clm = columns.eq( n % 2 )
+        $("<input type='tel' name='phone[#{j.id}]' class='span12'></input><span class='small-text orange'>#{j.name}</span>").appendTo clm
+      mdl.modal 'show'
+      return true
     else
       matched = false
 

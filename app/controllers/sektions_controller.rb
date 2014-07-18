@@ -153,4 +153,9 @@ class SektionsController < ApplicationController
     end 
   end
 
+  def ping_for_phones
+    ids = params[:checked].keys
+    @students = Student.where(id: ids)
+  end 
+
 end
