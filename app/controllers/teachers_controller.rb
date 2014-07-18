@@ -6,7 +6,7 @@ class TeachersController < ApplicationController
     data = params[:teacher]
 
     if data[:guard].blank? # => human entered registration data
-      country = data[:country].blank? ? nil : Country.where{ name =~ "%#{data[:country]}%" }.first
+      country = data[:country].blank? ? nil : Watan.where{ name =~ "%#{data[:country]}%" }.first
 
       teacher = Teacher.new name: data[:name]
 
@@ -19,7 +19,7 @@ class TeachersController < ApplicationController
          zip = location.postal_code
          country = location.country
          # Mailbot.delay.registration_debug(city, state, zip, country)
-         country = Country.where{ name =~ country }.first
+         country = Watan.where{ name =~ country }.first
          country = country.id unless country.blank?
       end
 

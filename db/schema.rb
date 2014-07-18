@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140718054330) do
+ActiveRecord::Schema.define(:version => 20140718071746) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -125,11 +125,6 @@ ActiveRecord::Schema.define(:version => 20140718054330) do
     t.boolean  "subscription"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-  end
-
-  create_table "countries", :force => true do |t|
-    t.string "name",         :limit => 50
-    t.string "alpha_2_code"
   end
 
   create_table "courses", :force => true do |t|
@@ -513,6 +508,11 @@ ActiveRecord::Schema.define(:version => 20140718054330) do
     t.integer  "watchable_id"
     t.string   "watchable_type", :limit => 20
     t.string   "uid",            :limit => 20
+  end
+
+  create_table "watan", :force => true do |t|
+    t.string "name",         :limit => 50
+    t.string "alpha_2_code"
   end
 
   create_table "worksheets", :force => true do |t|

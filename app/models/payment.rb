@@ -29,15 +29,15 @@ class Payment < ActiveRecord::Base
 
   attr_accessor :email, :card_number, :card_verification, :expiration, :address1, :city, :state, :country, :zip
 
-  validates :email, :presence => true 
-  validates :name, :presence => true 
-  validates :card_number, :presence => true, numericality: true
-  validates :card_verification, :presence => true, numericality: true
-  validates :address1, :presence => true 
-  validates :city, :presence => true 
-  validates :state, :presence => true 
-  validates :zip, :presence => true 
-  validates :country, :presence => true 
+  validates :email, presence: true 
+  validates :name, presence: true 
+  validates :card_number, presence: true, numericality: true
+  validates :card_verification, presence: true, numericality: true
+  validates :address1, presence: true 
+  validates :city, presence: true 
+  validates :state, presence: true 
+  validates :zip, presence: true 
+  validates :country, presence: true 
 
   validate :validate_payment, on: :create
 
@@ -45,7 +45,9 @@ class Payment < ActiveRecord::Base
     unless refund
       response = STANDARD_GATEWAY.purchase price_in_cents, credit_card, payment_options
     else 
-      response = STANDARD_GATEWAY.transfer price_in_cents, self.email, :subject => "refund request by #{self.name}", :note => "Refund worth #{self.cash_value} has been processed as per your request"
+      response = STANDARD_GATEWAY.transfer price_in_cents, self.email, 
+                 subject: "refund request by #{self.name}", 
+                 note: "Refund worth #{self.cash_value} has been processed as per your request"
     end
     self.update_attributes success: response.success?,
                            response_message: response.message,

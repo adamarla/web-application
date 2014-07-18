@@ -7,9 +7,9 @@
 #  alpha_2_code :string(255)
 #
 
-class Country < ActiveRecord::Base
+class Watan < ActiveRecord::Base
   def self.collection
-    Country.all.map{ |c|
+    Watan.all.map{ |c|
       {
 #       :id    => c.id,
         :label => c.name,
@@ -20,7 +20,7 @@ class Country < ActiveRecord::Base
 
   def self.names
     []
-    Country.all.each do |c|
+    Watan.all.each do |c|
       [].push(c.name)  
     end
   end 

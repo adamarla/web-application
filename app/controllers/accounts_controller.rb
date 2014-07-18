@@ -126,7 +126,7 @@ class AccountsController < ApplicationController
   def by_country
     type = params[:type].humanize
     @accounts = Account.where(loggable_type: type)
-    @countries = Country.where(id: @accounts.map(&:country).uniq)
+    @countries = Watan.where(id: @accounts.map(&:country).uniq)
   end
 
   def in_country

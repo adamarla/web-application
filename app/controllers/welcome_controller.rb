@@ -17,7 +17,7 @@ class WelcomeController < ApplicationController
   end
   
   def countries
-    @countries = Country.all
+    @countries = Watan.all
     render json: @countries
   end
 
