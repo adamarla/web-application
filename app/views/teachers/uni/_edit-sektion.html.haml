@@ -3,9 +3,9 @@
   = simple_form_for :remove, remote: true,
   html: { data: { action: "#{update_sektion_path}?id=:id", id: 'tab-mng-sektions-1' } } do |f|
     .row-fluid
-      %button.btn.btn-primary{ type: :submit, id: 'btn-unenroll' }= "Remove Selected"
+      %button.btn.btn-inverse{ type: :submit, id: 'btn-unenroll' }= "Remove Selected"
       - if current_account.mimics_admin
-        %button.btn.btn-primary.btn-inverse{ type: :submit, id: 'btn-add-phone' }= "Add Phone #s"
+        %button.btn.btn-primary.btn-primary{ type: :submit, id: 'btn-add-phone' }= "Add Phone #s"
     .row-fluid.push-down
       .column.span4.purge-blind.multi-select
       .column.span4.purge-blind.multi-select
