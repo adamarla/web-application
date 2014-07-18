@@ -106,6 +106,7 @@ class TokensController < ApplicationController
         items = qsels.each_with_index.map{ |qsel, i|
           {
             id: "#{w.id}.#{i+1}",
+            subparts: qs[i].subparts.count,
             grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join('-') : "",
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
