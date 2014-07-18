@@ -158,4 +158,13 @@ class SektionsController < ApplicationController
     @students = Student.where(id: ids)
   end 
 
+  def update_phones
+    a = params[:phone].select{ |j,k| !k.blank? }
+    a.each do |k,v| 
+      s = Student.find k.to_i
+      s.set_phone v
+    end 
+    render json: { status: :ok }, status: :ok
+  end 
+
 end

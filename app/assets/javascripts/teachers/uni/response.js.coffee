@@ -131,7 +131,7 @@ jQuery ->
     else if url.match(/set\/dist\/scheme/) # STEP 2: close modal 
         m = $('#m-exb-dist-scheme')
         m.modal 'hide'
-    else if url.match(/phones/)
+    else if url.match(/ping\/for\/phones/)
       mdl = $('#m-phones') 
       columns = mdl.find('.column')
       $(m).empty() for m in columns
@@ -140,6 +140,9 @@ jQuery ->
         $("<input type='tel' name='phone[#{j.id}]' class='span12'></input><span class='small-text orange'>#{j.name}</span>").appendTo clm
       mdl.modal 'show'
       return true
+    else if url.match(/update\/phones/)
+      mdl = $('#m-phones') 
+      mdl.modal 'hide'
     else
       matched = false
 
