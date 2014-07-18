@@ -64,6 +64,7 @@ jQuery ->
       else if json.blocked is true
         notifier.show 'n-enrollment-blocked'
       else
+        buttons = [ { cbx: 'checked' } ]
         mdl = $('#m-enrollment-confirm')
         target = mdl.find '#sk-confirm-identity' 
         submitBtn = mdl.find("button[id='btn-enroll-me']")
