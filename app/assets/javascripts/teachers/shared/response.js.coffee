@@ -15,7 +15,7 @@ jQuery ->
     menu = null # ID of contextual menu to attach w/ each .line
     clickFirst = false # whether or not to auto-click the first .line
     lesson = null
-    buttons = null
+    buttons = [ { cbx: 'checked' } ]
 
     if url.match(/quizzes\/list/)
       key = 'quizzes'
@@ -64,7 +64,7 @@ jQuery ->
       key = 'questions'
       menu = 'per-question'
       lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
-      buttons = 'icon-plus-sign'
+      buttons = [{ icon: 'icon-plus-sign', cbx: 'q' }]
 
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'

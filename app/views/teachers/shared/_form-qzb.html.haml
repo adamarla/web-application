@@ -3,18 +3,15 @@
 - data_id = context == :editqz ? "tab-exb-quizzes" : nil
 - btn_text = context == :editqz ? "Add Selected" : "Build Quiz"
 
-= simple_form_for :checked, :remote => true, 
-  :html => { :id => "form-#{context}", :class => 'no-remove', 
-             :data => { :id => data_id, :action => action } } do |f|
-
+= simple_form_for :qzb, remote: true, html: { id: "form-#{context}", class: 'no-remove', data: { id: data_id, action: action } } do |f|
   .row-fluid.navbar.purge-skip
     - if context == :editqz
-      %button.btn.btn-inverse.pull-right{ :type => :submit, :id => "#{context}-btn-final" }= "#{btn_text}"
+      %button.btn.btn-inverse.pull-right{ type: :submit, id: "#{context}-btn-final" }= "#{btn_text}"
     - else
       .input-append.span10
-        = f.input_field :name, :class => "span8", :placeholder => "Name the Quiz"
-        %button.btn.btn-inverse{ :type => :submit }= "#{btn_text}"
+        = f.input_field :name, class: "span8", placeholder: "Name the Quiz"
+        %button.btn.btn-inverse{ type: :submit }= "#{btn_text}"
       .btn-group
-        = simple_link :icon => 'icon-filter', :id => 'lnk-qzb-filter', :class => 'btn btn-primary'
+        = simple_link icon: 'icon-filter', id: 'lnk-qzb-filter', class: 'btn btn-primary'
         .dropdown-selection.white= "Show All"
-  %div.purge-blind{ :id => "#{context}-questions" }
+  %div.purge-blind{ id: "#{context}-questions" }

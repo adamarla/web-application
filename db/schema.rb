@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140715080021) do
+ActiveRecord::Schema.define(:version => 20140718071746) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20140715080021) do
     t.string   "authentication_token"
     t.boolean  "login_allowed"
     t.boolean  "mimics_admin",                          :default => false
+    t.string   "phone",                  :limit => 15
   end
 
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"
@@ -124,11 +125,6 @@ ActiveRecord::Schema.define(:version => 20140715080021) do
     t.boolean  "subscription"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-  end
-
-  create_table "countries", :force => true do |t|
-    t.string "name",         :limit => 50
-    t.string "alpha_2_code"
   end
 
   create_table "courses", :force => true do |t|
@@ -420,6 +416,7 @@ ActiveRecord::Schema.define(:version => 20140715080021) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "shell",                     :default => false
+    t.string   "phone",       :limit => 15
   end
 
   create_table "subjects", :force => true do |t|
@@ -511,6 +508,11 @@ ActiveRecord::Schema.define(:version => 20140715080021) do
     t.integer  "watchable_id"
     t.string   "watchable_type", :limit => 20
     t.string   "uid",            :limit => 20
+  end
+
+  create_table "watan", :force => true do |t|
+    t.string "name",         :limit => 50
+    t.string "alpha_2_code"
   end
 
   create_table "worksheets", :force => true do |t|

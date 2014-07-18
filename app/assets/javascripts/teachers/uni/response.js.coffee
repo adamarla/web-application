@@ -25,6 +25,7 @@ jQuery ->
       else if json.context is 'list'
         target = $('#enrolled-students')
         karo.empty target
+        buttons = [ { cbx: 'checked' } ]
       else
         target = $('#exb-sektions')
         lesson = 'exb-milestone-3'
@@ -104,12 +105,14 @@ jQuery ->
 
     else if url.match(/preview\/names/)
       target = $('#new-sk-students')
-      lines.columnify target, json.names
+      buttons = [ { cbx: 'names' } ]
+      lines.columnify target, json.names, null, buttons
       for m in target.find '.line'
-        $(m).addClass 'disabled'
-        cb = $(m).children("[type='checkbox']").eq(0)
-        cb.prop 'checked', true
-        cb.attr 'value', cb.siblings('.text').eq(0).text()
+        # $(m).addClass 'disabled'
+        cbx = line.hiddenCbx(m)
+        if cbx? 
+          $(cbx).prop('checked', true) 
+          $(cbx).attr 'value', $(cbx).parent().siblings('.text').eq(0).text()
       return true
 
     else if url.match(/set\/deadlines/)
@@ -128,6 +131,18 @@ jQuery ->
     else if url.match(/set\/dist\/scheme/) # STEP 2: close modal 
         m = $('#m-exb-dist-scheme')
         m.modal 'hide'
+    else if url.match(/ping\/for\/phones/)
+      mdl = $('#m-phones') 
+      columns = mdl.find('.column')
+      $(m).empty() for m in columns
+      for j,n in json.phones
+        clm = columns.eq( n % 2 )
+        $("<input type='tel' name='phone[#{j.id}]' class='span12'></input><span class='small-text orange'>#{j.name}</span>").appendTo clm
+      mdl.modal 'show'
+      return true
+    else if url.match(/update\/phones/)
+      mdl = $('#m-phones') 
+      mdl.modal 'hide'
     else
       matched = false
 

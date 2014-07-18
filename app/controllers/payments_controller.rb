@@ -44,7 +44,7 @@ class PaymentsController < ApplicationController
             student.save
             # create an account for guardian
             pwd = Guardian.initial_pwd(student.first_name)
-            country = Country.where{ name =~ p[:country] }.first
+            country = Watan.where{ name =~ p[:country] }.first
             account = guardian.build_account email: payment.email,
                                              password: pwd,
                                              password_confirmation: pwd,

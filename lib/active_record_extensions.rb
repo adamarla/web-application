@@ -61,5 +61,35 @@ module ActiveRecordExtensions
     return [] unless self.respond_to? :account
     return self.mentor_is_teacher ? Teacher.where(id: self.mentor_id) : Examiner.where(id: self.mentor_id)
   end 
+
+  def country_code? 
+    if self.respond_to? :account # => any loggable 
+      self.account.nil? ? 'IN' : self.account.country_code?
+    elsif self.respond_to? :country # => Account model  
+      return Watan.where(id: self.country).map(&:alpha_2_code).first
+    else
+      return nil
+    end 
+  end 
+
+  ####
+  # Use only set_phone to store phone numbers. Do NOT use update_attribute
+  ####
+  def set_phone(phone)
+    phone = phone.blank? ? nil : phone.to_s
+    return false if phone.nil?
+
+    normalized = PhonyRails.normalize_number(phone, country_code: self.country_code?)
+    return false unless Phony.plausible?(normalized)
+
+    if self.respond_to? :account
+      a = self.account 
+      # Only students can not have an associated account
+      a.nil? ? self.update_attribute(:phone, normalized) : a.update_attribute(:phone, normalized)
+    else
+      return false
+    end 
+  end 
+
 end # of extensions 
 

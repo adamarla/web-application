@@ -1,0 +1,11 @@
+
+#m-phones.modal.fade.wide
+  .row-fluid
+    .span1
+    .span10
+      = simple_form_for :contact, remote: true, url: update_phones_path,
+      defaults: { label: false }, html: { id: 'fm-phone' } do |f|
+        .row-fluid
+          .column.span6
+          .column.span6
+        = simple_button for: 'Add', type: :submit, class: 'btn-large btn-inverse pull-right'

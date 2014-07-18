@@ -6,7 +6,7 @@ class GuardiansController < ApplicationController
     data = params[:guardian]
 
     if data[:guard].blank? # => human entered registration data
-      country = data[:country].blank? ? nil : Country.where{ name =~ "%#{data[:country]}%" }.first
+      country = data[:country].blank? ? nil : Watan.where{ name =~ "%#{data[:country]}%" }.first
 
       guardian = Guardian.new name: data[:name]
 
@@ -18,7 +18,7 @@ class GuardiansController < ApplicationController
          state = location.state
          zip = location.postal_code
          country = location.country
-         country = Country.where{ name =~ country }.first
+         country = Watan.where{ name =~ country }.first
          country = country.id unless country.blank?
       end
 

@@ -28,6 +28,7 @@
 #  authentication_token   :string(255)
 #  login_allowed          :boolean
 #  mimics_admin           :boolean         default(FALSE)
+#  phone                  :string(15)
 #
 
 class Account < ActiveRecord::Base
@@ -62,7 +63,7 @@ class Account < ActiveRecord::Base
         next if val.blank? 
 
         if key == :country
-          country = Country.where{ name =~ val }.first
+          country = Watan.where{ name =~ val }.first
           next if country.nil?
           val = country.id
         end

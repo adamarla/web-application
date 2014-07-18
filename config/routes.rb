@@ -156,6 +156,8 @@ Webapp::Application.routes.draw do
   match 'ping/sektion' => 'sektions#ping', via: :get
   match 'preview/names' => 'sektions#preview_names', via: :post
   match 'enroll/named' => 'sektions#enroll_named_students', via: :post
+  match 'ping/for/phones' => 'sektions#ping_for_phones', via: [:put, :post]
+  match 'update/phones' => 'sektions#update_phones', via: [:put, :post]
   match 'sektions/monthly_audit' => 'sektions#monthly_audit', via: :get
 
   # Teacher 

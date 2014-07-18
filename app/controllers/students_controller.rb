@@ -19,7 +19,7 @@ class StudentsController < ApplicationController
          city = location.city
          state = location.state
          zip = location.postal_code
-         country = Country.where{ name =~ location.country }.first
+         country = Watan.where{ name =~ location.country }.first
          country = country.id unless country.blank?
       end
 

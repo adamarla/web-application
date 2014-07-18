@@ -475,7 +475,7 @@ jQuery ->
 
     clickedObj = $(event.target)
     m = null
-    hasButton = $(this).children('.btn').length > 0
+    # hasButton = $(this).children('.btn').length > 0
     # alert clickedObj.attr('class')
 
     if clickedObj.hasClass('dropdown')
@@ -510,60 +510,63 @@ jQuery ->
       event.stopPropagation() 
 
       parent = $(this).parent()
-      multiOk = if hasButton then false else parent.hasClass('multi-select') # parent = .content / .tab-pane / form
+      # multiOk = if hasButton then false else parent.hasClass('multi-select') # parent = .content / .tab-pane / form
+      multiOk = parent.hasClass('multi-select') # parent = .content / .tab-pane / form
       reissueAjax = parent.hasClass 'reissue-ajax'
       activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
       
       badge = $(this).find('.badge').eq(0)
-      otherLines = $(this).siblings('.line')
       isClicked = if reissueAjax then false else $(this).hasClass('selected') # issues 55 and 112
 
+      hdnCbx = line.hiddenCbx(this) 
       if isClicked
-        if multiOk
+        if multiOk # only in multi-select mode should a line be deselected on second click
           $(this).removeClass 'selected'
           badge.removeClass 'badge-warning'
-          $(this).find("input[type='checkbox']").eq(0).prop('checked', false) unless hasButton
+          $(hdnCbx).prop('checked', false) if hdbCbx?
       else
         $(this).addClass('selected')
         badge.addClass 'badge-warning'
-        $(this).find("input[type='checkbox']").eq(0).prop('checked', true) unless hasButton
-
+        $(hdnCbx).prop('checked', true) if hdnCbx?
+        
         unless multiOk
           # 1. Remove selected from siblings if not multi-select
+          otherLines = $(this).siblings('.line')
           for k in otherLines
             $(k).removeClass 'selected'
             $(k).find('.badge').eq(0).removeClass 'badge-warning'
-            $(k).find("input[type='checkbox']").eq(0).prop 'checked', false unless hasButton
+            l = line.hiddenCbx(k)
+            $(l).prop('checked', false) if l?
 
-          if not hasButton
-            if not $(activeTab).parent().hasClass 'lock'
-              $(activeTab).attr 'marker', $(this).attr('marker')
+      # Set line's marker on parent-tab - unless tab is locked - ie. not open to updation
+      if not $(activeTab).parent().hasClass 'lock'
+        $(activeTab).attr 'marker', $(this).attr('marker')
 
-        # 2. Close any previously open menus - perhaps belonging to a sibling 
-        for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
-          menu.close $(m)
+      # 2. Close any previously open menus - perhaps belonging to a sibling 
+      for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
+        menu.close $(m)
 
-        # 3. Issue AJAX request - if defined and set on containing panel
-        tab = karo.tab.find this
-        if tab?
-          tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
-          ajax = karo.url.elaborate this, null, tab
+      # 3. Issue AJAX request - if defined and set on containing panel
+      tab = karo.tab.find this
+      if tab?
+        tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
+        ajax = karo.url.elaborate this, null, tab
 
-          if ajax?
-            pgnOn = tab.getAttribute('data-paginate-on')
-            if pgnOn? and pgnOn is 'line'
-              panel = $(this).closest('.g-panel')[0]
-              pgn = $(panel).children('.paginator').eq(0)
-              paginator.initialize(pgn, ajax, tab)
-            karo.ajaxCall(ajax, tab)
+        if ajax?
+          pgnOn = tab.getAttribute('data-paginate-on')
+          if pgnOn? and pgnOn is 'line'
+            panel = $(this).closest('.g-panel')[0]
+            pgn = $(panel).children('.paginator').eq(0)
+            paginator.initialize(pgn, ajax, tab)
+          karo.ajaxCall(ajax, tab)
 
-        # 4. Switch to next-tab - if so specified
-        if activeTab?
-          # activeTab is a <li> and what we are looking for is in the <a> within it
-          a = $(activeTab).children('a')[0]
-          # next = a.dataset.autoclickTab
-          next = a.getAttribute('data-autoclick-tab')
-          karo.tab.enable next if next?
+      # 4. Switch to next-tab - if so specified
+      if activeTab?
+        # activeTab is a <li> and what we are looking for is in the <a> within it
+        a = $(activeTab).children('a')[0]
+        # next = a.dataset.autoclickTab
+        next = a.getAttribute('data-autoclick-tab')
+        karo.tab.enable next if next?
 
     # End of method 
     return (if m? then false else true)

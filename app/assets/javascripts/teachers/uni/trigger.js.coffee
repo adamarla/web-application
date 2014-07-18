@@ -147,3 +147,13 @@ jQuery ->
     event.stopImmediatePropagation()
     inputGrid.reset()
     return true
+
+  $('#enrolled-students').on 'click', '#btn-unenroll, #btn-add-phone', (event) ->
+    id = $(this).attr 'id' 
+    fm = $(this).closest('form')[0]
+    if id is 'btn-unenroll' 
+      newAction = 'update/sektion?id=:id'
+    else
+      newAction = 'ping/for/phones?id=:id'
+    fm.setAttribute 'data-action', newAction 
+    return true

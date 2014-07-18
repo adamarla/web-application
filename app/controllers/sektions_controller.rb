@@ -131,7 +131,7 @@ class SektionsController < ApplicationController
     sk = params[:id].blank? ? nil : Sektion.find(params[:id])
 
     unless sk.nil?
-      students = params[:checked].values.map(&:strip).map(&:titleize)
+      students = params[:names].values.map(&:strip).map(&:titleize)
       new_student_ids = [] 
 
       for m in students
@@ -152,5 +152,19 @@ class SektionsController < ApplicationController
       render json: { notify: { title: "Group not found!" } }, status: :ok
     end 
   end
+
+  def ping_for_phones
+    ids = params[:checked].keys
+    @students = Student.where(id: ids)
+  end 
+
+  def update_phones
+    a = params[:phone].select{ |j,k| !k.blank? }
+    a.each do |k,v| 
+      s = Student.find k.to_i
+      s.set_phone v
+    end 
+    render json: { status: :ok }, status: :ok
+  end 
 
 end
