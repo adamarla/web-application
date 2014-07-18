@@ -155,7 +155,7 @@ class SektionsController < ApplicationController
 
   def ping_for_phones
     ids = params[:checked].keys
-    @students = Student.where(id: ids)
+    @students = Student.where(id: ids).order(:first_name)
   end 
 
   def update_phones
