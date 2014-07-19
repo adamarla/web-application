@@ -7,6 +7,7 @@ class WorksheetsController < ApplicationController
     @imgs.each_with_index do |m,j| 
       @imgs[j] += v[j] 
     end 
+    @imgs.prepend 'common/hwi.jpeg' # common homework instructions
   end 
 
   def scans
