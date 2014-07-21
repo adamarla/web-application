@@ -29,7 +29,61 @@ ul {
       padding-left: 20px ;
     }
   }
+  &.nav-tabs { 
+    > li { 
+      background-color: transparent ;
+      > a[data-toggle='tab'] { 
+        text-shadow: none ;
+        color: white ;
+        border: none ; 
+        font-size: 14px ;
+        font-weight: 300 ;
+        cursor: pointer ;
+      } 
+      &.active { 
+        > a[data-toggle='tab'], > a[data-toggle='tab']:focus { 
+          background-color: $deep-blue ;
+          color: white ;
+        } 
+      }
+      &.disabled { 
+        > a[data-toggle='tab'] { 
+          color: $lightgray ;
+          background-color: transparent ;
+          cursor: no-drop ;
+        } 
+      } 
+      &:not([class~='active']) {
+        &:not([class~='disabled']) {
+          > a[data-toggle='tab'] { 
+            &:hover { background-color: $lightgray ; }
+          } 
+        } 
+      } 
+    } 
+  } 
 }
+
+.tabs-left, .tabs-right { 
+  .nav-tabs { 
+    > li {
+      font-size: 12px ; 
+      width: 100% ;
+      > a[data-toggle='tab'] {
+        text-align: left ; 
+        margin-right: 0px ;
+        font: {
+          size: 12px ;
+          weight: 300 ;
+        } 
+        color: white ;
+      }
+      &:hover { 
+        color: $deep-blue ; 
+      } 
+    }
+  } 
+} 
 
 img { 
   &.big-icon { 
@@ -564,30 +618,6 @@ span.btn-shortcut {
   } 
 } 
 
-.nav { 
-  &.nav-pills, &.nav-tabs { 
-    > li {
-      font : {
-        size: 14px ;
-        weight: normal ;
-      } 
-      &:not([class~='disabled']) {
-        &:hover { background: transparent ; }
-        > a { 
-          color: white ; 
-          border: none ;
-        }
-        &:not([class~='active']){
-          > a:hover { background: rgba(102,102,102,0.6) ; } 
-        }
-      } 
-      &.disabled, &[disabled='true'] {
-        > a { &:hover { border: 2px dotted white ; border-bottom: none ; }}
-      } 
-    }
-  } 
-} 
-
 .tab-content { 
   &:not[class~="scroll"] { min-height: 500px ; }
   > form { 
@@ -769,22 +799,6 @@ span.btn-shortcut {
   }
 } 
 
-.tabs-left, .tabs-right { 
-  .nav-tabs { 
-    > li {
-      font-size: 12px ; 
-      > a {
-        text-align: left ; 
-      }
-    }
-  } 
-
-  > .tab-content { 
-    .line { 
-      min-height: 20px ;
-    }
-  }
-} 
 
 button[data-toggle='button'] {
   background: {
@@ -886,7 +900,6 @@ button[data-toggle='button'] {
 .tabs-left { 
   > .nav-tabs {
     > li {
-      margin-bottom: 5px ;
       &.split {
         margin-bottom: 10px ;
         > a {
