@@ -1,12 +1,12 @@
 
 %ul.nav.nav-tabs.always-on
   %li
-    = simple_link :for => "To Do", :id => 'tab-audit-todo', :href => '#pane-audit-todo'
+    = simple_link for: "To Do", id: 'tab-audit-1', href: '#pane-audit-1'
   %li
-    = simple_link :for => "Review", :id => 'tab-audit-review', :href => '#pane-audit-review'
+    = simple_link for: "Review", id: 'tab-audit-2', href: '#pane-audit-2'
 
 .tab-content
-  #pane-audit-todo.tab-pane
+  #pane-audit-1.tab-pane
     .row-fluid.no-remove
       .btn-group.pull-left
         = simple_link for: 'Oldest', class: 'btn btn-inverse', 
@@ -14,6 +14,6 @@
         = simple_link for: 'Newest', class: 'btn btn-inverse', 
           id: 'lnk-audit-newest', href: "#{audit_todo_path}?t=newest", remote: true
       .btn-group.pull-right
-        = simple_link :for => "Edit", :class => 'btn btn-inverse', :id => 'lnk-edit-form'
-        = simple_link :for => "Audit", :class => 'btn btn-inverse', :id => 'lnk-audit-form'
-  #pane-audit-review.tab-pane
+        = simple_link for: "Edit", class: 'btn btn-inverse', id: 'lnk-edit-form'
+        = simple_link for: "Audit", class: 'btn btn-inverse', id: 'lnk-audit-form'
+  #pane-audit-2.tab-pane

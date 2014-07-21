@@ -172,7 +172,7 @@ lnk-wb-audit :
     left : left-7
     wide : wide-X
   autoclick : 
-    tab : tab-audit-review
+    tab : tab-audit-2
 
 lnk-wb-add-videos :
   show : 
@@ -190,12 +190,12 @@ lnk-audit-form :
   show : 
     modal : m-audit-form
 
-tab-audit-todo : 
+tab-audit-1 : 
   url : 
     self : audit/todo
     panel : question/preview.json?id=:id
 
-tab-audit-review : 
+tab-audit-2 : 
   url : 
     self : audit/review
     panel : question/preview.json?id=:id
