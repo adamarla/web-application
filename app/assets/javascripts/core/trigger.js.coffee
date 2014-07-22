@@ -70,7 +70,6 @@ window.trigger = {
     type = link.getAttribute 'data-toggle'
     isTab = type is 'tab'
     isModal = type is 'modal'
-    # event.stopImmediatePropagation() if event? and (isTab or isModal)
 
     # (YAML) Hide / unhide panels as needed
     noTouch = link.getAttribute('data-no-touch')
@@ -285,7 +284,6 @@ jQuery ->
 
   $(".g-panel").on 'click', "a[data-toggle='tab']", (event) ->
     li = $(this).parent()
-    name = $(this).attr 'id'
 
     if li.hasClass 'disabled'
       event.stopImmediatePropagation()
@@ -308,18 +306,20 @@ jQuery ->
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()
-    name = $(this).attr 'id'
 
-    # Empty the last-enabled tab's contents - if needed
-    prevTab = event.relatedTarget
-    unless $(prevTab).length is 0
-      unless karo.checkWhether prevTab, 'nopurge-on-inactive'
-        karo.empty $(prevTab).attr('href')
+#    # Empty the last-enabled tab's contents - if needed
+#    prevTab = event.relatedTarget
+#    unless $(prevTab).length is 0
+#      unless karo.checkWhether prevTab, 'nopurge-on-inactive'
+#        karo.empty $(prevTab).attr('href')
 
-    # Empty the currently-enabled tab's contents - if needed
-    empty = not karo.checkWhether(this, 'nopurge-on-show')
-    if empty
+    reload = this.getAttribute('data-reload') is 'true' 
+    if reload 
       karo.empty $(this).attr('href')
+    else 
+      loaded = this.getAttribute('data-loaded') is 'true'
+      return true if loaded
+
 
     ###
       Do the next two for only * horizontal * tabs - not .tabs-left or .tabs-right

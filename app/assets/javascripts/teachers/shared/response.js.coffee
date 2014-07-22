@@ -72,7 +72,7 @@ jQuery ->
         milestone = if json.context is 'qzb' then 3 else 4
         lesson = "#{json.context}-milestone-#{milestone}"
       else
-        target = $('#deepdive-topics')
+        target = $('#deepdive-common-pane')
       key = 'topics'
 
     else if url.match(/quiz\/questions/)

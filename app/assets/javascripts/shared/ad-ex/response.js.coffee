@@ -16,7 +16,8 @@ jQuery ->
       target = $('#pane-tag-pending')
       key = 'pending'
     else if url.match(/vertical\/topics/)
-      target = $('#pane-vertical-topics')
+      id = "##{json.context}-common-pane"
+      target = $(id)
       key = 'topics'
     else if url.match(/typeset\/new/)
       target = $('#pane-typeset-new')
