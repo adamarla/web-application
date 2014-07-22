@@ -29,6 +29,7 @@ jQuery ->
       else
         target = $('#exb-sektions')
         lesson = 'exb-milestone-3'
+        buttons = [ { cbx: 'checked' } ]
       key = "students"
 
     else if url.match(/share\/quiz/)
