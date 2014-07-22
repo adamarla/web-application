@@ -1,11 +1,9 @@
 
 %ul.nav.nav-tabs.always-on
   %li
-    = simple_link :for => "Teachers", :href => "#pane-teacher-accounts",
-      :id => "tab-teacher-accounts", :class => "nopurge-ever"
+    = simple_link for: "Teachers", href: "#pane-teacher-accounts", id: "tab-teacher-accounts"
   %li
-    = simple_link :for => "Examiners", :href => "#pane-examiner-accounts",
-      :id => "tab-examiner-accounts"
+    = simple_link for: "Examiners", href: "#pane-examiner-accounts", id: "tab-examiner-accounts"
 
 .tab-content
   #pane-teacher-accounts.tab-pane

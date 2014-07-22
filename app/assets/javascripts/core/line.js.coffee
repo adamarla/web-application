@@ -40,7 +40,7 @@ window.line = {
     isVideo = json.video?
 
     obj = $('#toolbox').children('.line').eq(0).clone()
-    remaining = 12
+    remaining = 11
 
     # 1. Do the easiest first 
     if json.klass?
@@ -73,7 +73,6 @@ window.line = {
 
       unless isVideo
         children.filter(".badge").eq(0).remove() unless json.badge? # no badge if menu and badge.empty?
-      remaining -= 1
     else
       $(m).parent().remove()
 
@@ -111,6 +110,7 @@ window.line = {
         $("<i class='icon-white #{b.icon}'></i>").appendTo(btn) if b.icon?
         $("<input class='hide' type='checkbox' name=#{b.cbx}[#{json.id}]></input>").appendTo(btn) if b.cbx?
         btn.appendTo obj
+        remaining -= 1 unless btn.hasClass('hide')
 
     # Stopwatch 
     watch = children.filter(".stopwatch")[0]
@@ -123,7 +123,7 @@ window.line = {
 #      $(watch).remove()
 
     # Whatever span remains, give to 'label'
-    remaining = if remaining > 8 then 8 else remaining
+    remaining = if remaining > 9 then 9 else remaining
     label.addClass("span#{remaining}") if remaining > 0
 
     # Done !!!

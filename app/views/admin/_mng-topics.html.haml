@@ -1,20 +1,18 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Vertical", :href => "#pane-mng-topics-1",
-      :id => "tab-mng-topics-1", :class => "nopurge-ever"
+    = simple_link for: "Vertical", href: "#pane-mng-topics-1", id: "tab-mng-topics-1"
   %li
-    = simple_link :for => "Topics", :href => "#pane-mng-topics-2",
-      :id => "tab-mng-topics-2"
+    = simple_link for: "Topics", href: "#pane-mng-topics-2", id: "tab-mng-topics-2"
 
 .tab-content
   #pane-mng-topics-1.tab-pane
   #pane-mng-topics-2.tab-pane
-    = simple_form_for :checked, :remote => true, 
-      :html => { :id => "form-add-topic", :class => 'no-remove', 
+    = simple_form_for :checked, remote: true, 
+      :html => { id: "form-add-topic", class: 'no-remove', 
       'data-action' => "#{topic_path}?id=:prev", 'data-prev' => 'tab-mng-topics-1' } do |f|
 
       .row-fluid.navbar.purge-skip
         .input-append.pull-right.span10
-          = f.input_field :name, :class => "span8", :placeholder => "New Topic"
+          = f.input_field :name, class: "span8", :placeholder => "New Topic"
           %button.btn.btn-inverse{ :type => :submit }= "Add"

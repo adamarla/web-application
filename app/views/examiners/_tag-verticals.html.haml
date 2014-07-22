@@ -4,8 +4,8 @@
   %ul.nav.nav-tabs.span4.purge-skip
     - Vertical.order(:name).each do |m|
       %li
-        = simple_link :for => "#{m.name}", :toggle => :tab, :marker => "#{m.id}",
-        :href => "#pane-vertical-topics", :url => { :self => "vertical/topics.json?id=:id" }
+        = simple_link for: "#{m.name}", :toggle => :tab, :marker => "#{m.id}",
+        href: "#pane-vertical-topics", url: { :self => "vertical/topics.json?id=:id" }
 
   .tab-content.span7
     #pane-vertical-topics.tab-pane.purge-blind

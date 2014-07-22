@@ -1,7 +1,7 @@
 
-= simple_form_for :contract, :remote => true, 
-  :html => { :id => "fm-new-contract", :class => 'no-remove', 
-             :data => { :id => cust_id } } do |f|
+= simple_form_for :contract, remote: true, 
+  :html => { id: "fm-new-contract", class: 'no-remove', 
+             data: { id: cust_id } } do |f|
     = f.select_date :start_date, :placeholder => "Start Date"
     = f.input_field :duration, :placeholder => "Duration (Months)"
     = f.input_field :price, :placeholder => "Price (Per Student Per Month)"

@@ -4,6 +4,10 @@
     = simple_link for: "To Do", id: 'tab-audit-1', href: '#pane-audit-1'
   %li
     = simple_link for: "Review", id: 'tab-audit-2', href: '#pane-audit-2'
+  %li
+    = simple_link for: "On topic(s)", id: 'tab-audit-3', href: '#pane-audit-3'
+  %li
+    = simple_link for: "... By me", id: 'tab-audit-4', href: '#pane-audit-4'
 
 .tab-content
   #pane-audit-1.tab-pane
@@ -17,3 +21,6 @@
         = simple_link for: "Edit", class: 'btn btn-inverse', id: 'lnk-edit-form'
         = simple_link for: "Audit", class: 'btn btn-inverse', id: 'lnk-audit-form'
   #pane-audit-2.tab-pane
+  #pane-audit-3.tab-pane
+    = render partial: 'topics/selector', locals: { context: :audit, onepane: true }
+  #pane-audit-4.tab-pane

@@ -636,13 +636,15 @@ span.btn-shortcut {
 }
 
 .line {
-
+  &:not([class~='disabled']) { 
+    color: white ;
+  } 
+  &.disabled { color: $lightgray ; cursor: no-drop ; }
   &:not([class~=kompact]) { 
     padding: {
       top: 3px ;
-      bottom: 2px ;
     } 
-    min-height: 26px ;
+    min-height: 20px ;
     font-size: 11.5px ; 
   } 
   &.kompact { 
@@ -657,11 +659,6 @@ span.btn-shortcut {
     width: 1px ;
   } 
   
-  &:hover {
-    > .text { 
-      color: $lightblue ; 
-    }
-  } 
   &.selected {
     > .dropdown { > a { color: white ; } }
     
@@ -721,19 +718,20 @@ span.btn-shortcut {
   } 
 
   .badge { 
-     padding: 0px ; 
-     padding-top: 4px ;
      text-align: center ;
-     height: 16px ;
-     width: 20px ;
      color: $gray ;
      border-radius: 4px ;
+     padding: 0px ;
      &:empty {
-       width: 8px ; 
-       height: 8px ;
-       padding-top: 0px ;
+       width: 6px ; 
+       height: 6px ;
        float: left ;
        margin-top: 4px ;
+     } 
+     &:not(:empty) { 
+      max-width: 20px ;
+      padding: 2px 0px ;
+      min-height: 15px ;
      } 
      font: {
        size: 11px ;

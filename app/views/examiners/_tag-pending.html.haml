@@ -1,17 +1,18 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link :for => "Question", :href => '#pane-tag-pending', :id => 'tab-tag-pending'
+    = simple_link for: "Question", href: '#pane-tag-pending', id: 'tab-tag-pending'
   %li
-    = simple_link :for => "On Topic", :href => '#pane-tag-topic', 
-      :id => 'tab-tag-topic', :class => 'nopurge-ever'
+    = simple_link for: "On Topic", href: '#pane-tag-topic', 
+      id: 'tab-tag-topic', class: 'nopurge-ever'
   %li
-    = simple_link :for => "Misc", :href => '#pane-tag-misc', 
-      :id => 'tab-tag-misc', :class => 'nopurge-ever'
+    = simple_link for: "Misc", href: '#pane-tag-misc', 
+      id: 'tab-tag-misc', class: 'nopurge-ever'
 
 .tab-content
   #pane-tag-pending.tab-pane
   #pane-tag-topic.tab-pane
-    = render :partial => 'examiners/tag-verticals'
+    -#= render :partial => 'examiners/tag-verticals'
+    = render partial: 'topics/selector', locals: { context: :tag, onepane: true }
   #pane-tag-misc.tab-pane
     = render :partial => 'examiners/tag-misc'

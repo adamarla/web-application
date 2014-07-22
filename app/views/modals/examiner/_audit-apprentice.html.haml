@@ -2,7 +2,7 @@
 #m-audit-apprentice.modal.fade.wide
   .row-fluid
     .span2
-      = image_tag 'notifications/microscope.png', :class => 'big-icon'
+      = image_tag 'notifications/microscope.png', class: 'big-icon'
     .span9
       = simple_form_for :audit, remote: true, defaults: { label: false, required: false }, 
       html: { data: { prev: 'tab-apprentices', action: "#{close_apprentice_audit_path}?id=:prev" } } do |f|

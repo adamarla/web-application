@@ -78,16 +78,16 @@
               %ul.nav.span8.pull-right
                 - if is_admin
                   %li.dropdown
-                    = simple_link :for => 'System Monitor', id: 'lnk-admin-console'
+                    = simple_link for: 'System Monitor', id: 'lnk-admin-console'
                   -#%li.dropdown
-                    = simple_link :for => "Customer", as: :dropdown, id: 'm-admin-cust'
+                    = simple_link for: "Customer", as: :dropdown, id: 'm-admin-cust'
                 %li.dropdown
-                  = simple_link :for => "Workbench", as: :dropdown, id: 'm-admin-wb'
+                  = simple_link for: "Workbench", as: :dropdown, id: 'm-admin-wb'
                 - if user.mentor_is_teacher
                   %li
                     = simple_button for: 'Sandbox Off', toggle: :button, class: 'btn btn-primary', id: 'btn-sandbox-toggle'
                 %li.dropdown
-                  = simple_link :for => "Hello, #{user.first_name}", as: :dropdown, id: 'm-account'
+                  = simple_link for: "Hello, #{user.first_name}", as: :dropdown, id: 'm-account'
 
       #desktop.row-fluid
         - layout.each do |pnl, child|

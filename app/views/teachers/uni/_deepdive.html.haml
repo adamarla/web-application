@@ -4,15 +4,17 @@
     = simple_link for: "Group", id: "tab-dive-1", href: '#pane-dive-1'
   %li
     = simple_link for: "By Topic", id: "tab-dive-2",
-      href: '#pane-dive-2', :class => 'nopurge-ever'
+      href: '#pane-dive-2', class: 'nopurge-ever'
   %li
     = simple_link for: "By Student", id: "tab-dive-3",
-      href: '#pane-dive-3', :class => 'nopurge-ever'
+      href: '#pane-dive-3', class: 'nopurge-ever'
 
 .tab-content
   #pane-dive-1.tab-pane
 
   #pane-dive-2.tab-pane
+    = render partial: 'topics/selector', locals: { context: :deepdive, onepane: true }
+  -#
     .tabbable.tabs-left
       %ul.nav.nav-tabs.span4.purge-skip.lock
         - Vertical.all.each do |m|

@@ -3,7 +3,7 @@
   -# 'action' for <form> within .tab-pane are evaluated just before submission
   -# Use this fact to your advantage by specifying the requisite data-* attributes
 
-  = simple_form_for :misc, :remote => true,
+  = simple_form_for :misc, remote: true,
     :html => { 'data-action' => "tag/question?id=:id&topic=:prev", 
                'data-id' => 'tab-tag-pending', 
                'data-prev' => 'tab-tag-topic'},
@@ -13,12 +13,12 @@
         = f.input :level, :hint => "target level", :selected => "3",
           :collection => { 'Grd < 9' => 1, '9-10' => 2, '11-12' => 3, 'University' => 4 } 
       .span2
-        = f.input :total, :collection => [*1..7], :hint => 'total parts', :input_html => { :id => 'num-subparts' }
+        = f.input :total, :collection => [*1..7], :hint => 'total parts', :input_html => { id: 'num-subparts' }
       .span3
         = f.input :calculator, :collection => { :yes => true, :no => false }, 
           :hint => 'calculator?', :selected => :false
       .span2
-        = f.button :submit, :class => "btn-primary", :value => "Tag"
+        = f.button :submit, class: "btn-primary", :value => "Tag"
     - [*1..7].each do |k|
       .row-fluid.subpart-tagging
         .span1.offset1.label= "##{k}"

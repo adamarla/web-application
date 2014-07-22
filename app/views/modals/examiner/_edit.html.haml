@@ -2,7 +2,7 @@
 #m-edit-form.modal.fade.wide
   .row-fluid
     -#.span2
-      = image_tag 'notifications/microscope.png', :class => 'big-icon'
+      = image_tag 'notifications/microscope.png', class: 'big-icon'
     -#.span9
     = simple_form_for :edit, remote: true, defaults: { label: false, required: false } do |f|
       .row-fluid

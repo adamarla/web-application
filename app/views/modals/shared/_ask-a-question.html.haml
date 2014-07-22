@@ -2,12 +2,12 @@
 #m-ask-a-question.modal.fade.wide{ :role => :dialog }
   .row-fluid
     .span3
-      = image_tag 'notifications/question.png', :class => 'big-icon'
+      = image_tag 'notifications/question.png', class: 'big-icon'
     .span9
       %p.title.underline= "Write question below"
-      = simple_form_for :new, :url => ask_question_path, :remote => true, :defaults => { :label => false } do |f|
+      = simple_form_for :new, url: ask_question_path, remote: true, :defaults => { :label => false } do |f|
         - if current_account.nil?
-          = f.input :name, :as => :string, :label => 'full name'
+          = f.input :name, as: :string, :label => 'full name'
           = f.input :email, :label => 'Your e-mail'
-        = f.input :question, :as => :text, :input_html => { :rows => 10, :cols => 60, :class => 'span11' }
+        = f.input :question, as: :text, :input_html => { :rows => 10, :cols => 60, class: 'span11' }
         %button.btn.btn-primary.btn-large.pull-right{ :type => :submit }= "Ask Question"

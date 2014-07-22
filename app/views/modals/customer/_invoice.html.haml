@@ -5,18 +5,18 @@
     %li#transfer
       %p.title= "Create Invoice"
 
-  = simple_form_for :invoice_for, :url => gen_invoice_path, :remote => true, 
-    :defaults => { :required => false, :label => false }, :html => { :id => 'fm-gen-invoice' } do |f|
+  = simple_form_for :invoice_for, url: gen_invoice_path, remote: true, 
+    :defaults => { :required => false, :label => false }, :html => { id: 'fm-gen-invoice' } do |f|
     .row-fluid
       .span4
-        = f.input :amount, :placeholder => "Amount", :input_html => { :class => 'input-mini' }
+        = f.input :amount, :placeholder => "Amount", :input_html => { class: 'input-mini' }
       .span4
-        = f.input :quantity, :placeholder => "Qty", :input_html => { :class => 'input-mini' }
+        = f.input :quantity, :placeholder => "Qty", :input_html => { class: 'input-mini' }
       .span4
         = f.select :currency, [["USD", "USD"], ["INR", "INR"]]
     .row-fluid
       = f.select :cost_code, cost_codes
-    %input.hide{ :type => :string, :data => { :validate => false }, :id => 'customer_id', :name => 'invoice_for[customer_id]' }
+    %input.hide{ :type => :string, data: { :validate => false }, id: 'customer_id', :name => 'invoice_for[customer_id]' }
     #message.alert.alert-error.hide
     %button.btn.btn-large.btn-primary.push-down.pull-right{:type => :submit}= "Generate"
 
