@@ -25,7 +25,6 @@ include GeneralQueries
 class Exam < ActiveRecord::Base
   belongs_to :quiz
 
-  has_many :attempts, dependent: :destroy
   has_many :worksheets, dependent: :destroy
   has_many :students, through: :worksheets
 
