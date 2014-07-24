@@ -185,7 +185,7 @@ window.lines = {
       if target.hasClass 'paginator'
         if json.pg?
           page = target.children("div[page='#{json.pg}']")
-          $("<div page=#{json.pg} class='multi-select purge-skip'></div>").appendTo target if page.length is 0
+          $("<div page=#{json.pg}></div>").appendTo target if page.length is 0
           target = target.children("div[page='#{json.pg}']").eq(0)
           $(m).addClass 'hide' for m in target.siblings()
           target.removeClass 'hide'

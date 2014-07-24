@@ -42,7 +42,7 @@ jQuery ->
         klass : {
           ul : "span4",
           content : "span7 scroll",
-          div : "multi-select paginator"
+          div : "paginator"
         },
         data : {
           url : "questions/on?id=:id&context=#{json.context}",
@@ -50,8 +50,8 @@ jQuery ->
         },
         id : {
           div : "#{json.context}-pick",
-          ul : "#{json.context}-ul-milestone-4",
-          root : "#{json.context}-div-milestone-5"
+          ul : "#{json.context}-ul-4",
+          root : "#{json.context}-div-5"
         }
       }
 
@@ -63,7 +63,7 @@ jQuery ->
       target = $("##{json.context}-pick-#{topic}")
       key = 'questions'
       menu = 'per-question'
-      lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
+      # lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = [{ icon: 'icon-plus-sign', cbx: 'q' }]
 
     else if url.match(/vertical\/topics/)

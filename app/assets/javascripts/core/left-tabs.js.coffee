@@ -20,7 +20,6 @@
       klass : { => 'class' attributes to set on ... 
         root : ( .tabbable and .tabs-left are implicit )
         ul : ( root > ul: .nav & .nav-tabs are implicit )
-        a : ( ul > a )
         content : ( .tab-content is implicit )
         div : ( content > div: .tab-pane is implicit )
       },
@@ -40,7 +39,6 @@ emptyOptions = {
   klass : {
     root : "",
     ul : "",
-    a : "",
     content : "",
     div : ""
   },
@@ -52,16 +50,16 @@ emptyOptions = {
     div : null
   },
   data : {
-    prev : ""
+    prev : "",
     url : ""
   }
 }
 
 window.leftTabs = {
-  sharedPanel : null,
 
   create : (root, json, optns = {}) ->
     root = if typeof root is 'string' then $(root) else root
+    root.empty()
 
     options = {}
     $.extend options, emptyOptions, optns # at the very least, ensure empty values 
@@ -69,17 +67,19 @@ window.leftTabs = {
 
     html = $("<div id='#{options.id.root}' class='tabbable tabs-left #{options.klass.root}'></div>")
 
-    # <ul> 
+    # <ul> and <div class='tab-content'> 
     html.appendTo root
     ul = $("<ul class='nav nav-tabs #{options.klass.ul}' id='#{options.id.ul}'></ul>")
     content = $("<div class='tab-content #{options.klass.content}' id='#{options.id.content}'></div>")
-    ul.appendTo html
 
+    ul.appendTo html
     content.appendTo html
+
     if pnId?
       pn = $("#toolbox").children("##{pnId}").eq(0).clone()
       pn.attr 'id', "#{pnId}-shared"
       pn.appendTo content
+      ul[0].setAttribute 'data-onepane', true
 
     # Collect the data-* attributes set on ul > li > a into one string. These are common to all <a>
     data = ""
@@ -95,23 +95,17 @@ window.leftTabs = {
       data += " data-url-self=#{url}" # -> final url - with filters
 
     data += " data-toggle='tab'"
+    data += " data-reload='true'" if options.shared? 
 
     # Then, write the JSON
     for m,i in json.tabs
       # make the <li>
 
       liColor = m.color
-      disable = liColor is 'disabled' || liColor is 'nodata'
+      disabled = liColor is 'disabled' || liColor is 'nodata'
 
-      li = "<li marker=#{m.id}"
-      li += " color=#{liColor}" unless disable
-      if disable
-        li += (if options.split then " class='split disabled'" else " class='disabled'")
-      else
-        li += (if options.split then " class='split'" else " class=''")
-
-      li = $("#{li}" + "></li>")
-      li.appendTo ul
+      li = $("<li marker=#{m.id}></li>").appendTo ul
+      li.addClass 'disabled' if disabled
 
       # 3. <a> 
       isTex = false
@@ -123,24 +117,17 @@ window.leftTabs = {
         script = m.name
 
       if pnId?
-        aHtml = "<a href=##{pnId} #{data} class='#{options.klass.a}'>"
-        if options.split
-          aHtml += "<div class='pull-left'>#{m.name}</div>"
-          if options.writeBoth
-            splitText = if m.split? then m.split else 'TBD'
-            aHtml += "<div class='pull-right'>#{splitText}</div></a>"
-          else
-            aHtml += "<div class='pull-right'></div></a>"
-          a = $(aHtml)
-        else
-          a = $("<a href=##{pnId} #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
+        href = "#{pnId}-shared"
+        a = $("<a href=##{href} #{data}>#{script}</a>")
       else
         divId = if options.id.div? then options.id.div else "dyn-tab"
-        a = $("<a href='##{divId}-#{m.id}' #{data} data-toggle='tab' class='#{options.klass.a}'>#{script}</a>")
+        a = $("<a href='##{divId}-#{m.id}' #{data}>#{script}</a>")
         pane = $("<div class='tab-pane #{options.klass.div}' id='#{divId}-#{m.id}'></div>")
         pane.appendTo content
 
       a = a.appendTo li
+      leftTabs.ping.set(a[0], m.split, true) if m.split?
+
       if isTex
         j = a.children('script')[0]
         MathJax.Hub.Queue ['Typeset', MathJax.Hub, j]
@@ -175,4 +162,54 @@ window.leftTabs = {
     firstTab = ul.find('li > a').eq(0)
     firstTab.click()
     return true
+
+  ping : { 
+    # tab = <a data-toggle='tab'></a>
+
+    set : (tab, n, large = false) ->
+      return false unless n?
+      klass = if large then 'ping right' else 'ping'
+      leftTabs.ping.unset tab
+      $("<span class='#{klass}'>#{n}</span>").appendTo $(tab)
+      return true
+
+    unset : (tab) ->
+      $(m).remove() for m in $(tab).children('span')
+      return true 
+
+    get : (tab) ->
+      span = $(tab).children('span')[0]
+      ret = if span? then $(span).text() else null
+      return null unless ret? 
+      isNumber = /^\d+$/.test(ret)
+      return ( if isNumber then parseInt(ret) else ret )
+
+    count : (model) ->
+      # finds and counts objects 
+      #   1. similarly placed in the DOM hierarchy as model
+      #   2. with the same class attributes as 'model'
+      uncles = $(model).parent().siblings()
+      klass = $(model).attr 'class'
+      n = uncles.children().filter("[class='#{klass}']").length
+      return n
+
+    up : (tab, large = false) -> 
+      val = leftTabs.ping.get tab
+      if val? 
+        return false if typeof(val) is 'string'
+      else 
+        val = 0
+      leftTabs.ping.set(tab, val + 1, large)
+      return true
+
+    down : (tab, large = false) ->
+      val = leftTabs.ping.get tab
+      if val? 
+        return false if typeof(val) is 'string'
+      else 
+        val = 0
+      leftTabs.ping.set(tab, val - 1, large)
+      return true
+  } 
+
 }

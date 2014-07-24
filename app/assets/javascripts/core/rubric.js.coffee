@@ -60,6 +60,7 @@ window.rubric = {
     else if url.match(/load\/fdb/) # viewing feedback !!!!!!!
       json = $.parseJSON xhr.responseText 
       $(rubric.buttons).attr('marker', json.id) if rubric.buttons? 
+      rubric.render(json.criteria) if json.criteria?
 
       # load scan and overlay comments - if any
       if json.preview? 
@@ -77,8 +78,6 @@ window.rubric = {
           $(b).removeClass 'disabled' 
           $(b).prop 'disabled', false
 
-      # enable / disable criteria as needed 
-      rubric.highlight(json.criteria) if json.criteria?
     else # no match !!!  
       matched = false 
 
@@ -92,24 +91,16 @@ window.rubric = {
       rubric.reset()
     return true
 
-  highlight : (ids) ->
-    # ids = [ array of criterion ids ]
-    return false unless rubric.root? 
-    criteria = $(rubric.root).children('.criterion')
-
-    $(m).addClass('hide') for m in criteria 
-    for m,j in ids 
-      nd = criteria.filter("[marker=#{m}]")[0]
-      if nd?
-        $(nd).removeClass 'hide' 
-        if j % 2 is 0 then $(nd).removeClass('highlight') else $(nd).addClass('highlight')
-    return true 
-
   render : (json) ->
     return false unless rubric.root? 
-    for m in json
+    karo.empty $(rubric.root)
+
+    for m,j in json
       nd = criteria.render m
-      klass = if rubric.grading then 'grade' else 'view'
+      if rubric.grading
+        klass = if (j % 2 is 0) then 'grade' else 'grade highlight'
+      else 
+        klass = if (j % 2 is 0) then 'view' else 'view highlight'
       nd.addClass(klass) # for differential styling in feedback panel 
       nd.appendTo $(rubric.root)
 

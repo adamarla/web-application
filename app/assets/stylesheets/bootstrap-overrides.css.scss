@@ -895,46 +895,6 @@ button[data-toggle='button'] {
   } 
 } 
 
-.tabs-left { 
-  > .nav-tabs {
-    > li {
-      &.split {
-        margin-bottom: 10px ;
-        > a {
-          min-height: 20px ;
-          background: transparent ;
-
-          > div { 
-            border-radius: 4px ;
-            &:not(:empty) {
-              width: 50% ; 
-              text-align: center ; 
-              padding: 3px 0px ;
-            }
-            &:empty { 
-              width: 8px ;
-              height: 8px ;
-              margin-top:6px ;
-            } 
-          } 
-        } 
-      }
-
-      &[color='green'] { .pull-right { background: rgba(87,188,32,0.5) ; } }
-      &[color='orange'] { .pull-right { background: rgba(255,165,0,0.7) ; } }
-      &[color='red'] { .pull-right { background: rgba(215,35,35,0.7) ; } }
-
-      &[color][class~='active'] {
-        > a { 
-          background-color: rgba(43,43,43,0.75) ;
-          border: none ;
-          > .pull-left { font-weight: 500 ; font-size: 12px ; }
-        } 
-      }
-    } 
-  } 
-} 
-
 .tab-content {
   .btn-group {
     margin-bottom: 25px ;
@@ -1511,11 +1471,23 @@ span {
     font: { 
       size: 8px ;
     } 
-    padding: 2px 4px ; 
+    padding: 0px 4px ; 
     border-radius: 5px ;
-    // background: darken($deep-blue, 10%) ; 
     background: white ;
     color: $gray ; 
+    text-align: center ; 
+    float: right ;
+    margin-left: 3px ;
+
+    &.right, &.left { 
+      padding: 2px ; 
+      min-width: 20px ; 
+      font: { 
+        size: 10px ; 
+        weight: 400 ;
+        variant: small-caps ;
+      } 
+    } 
   } 
 } 
 

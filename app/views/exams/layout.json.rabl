@@ -4,11 +4,12 @@ object false
     @qsids.map{ |m| 
       sbp = Question.find(m.question_id).subparts
       sbp.map{ |s|
+        a = @gr.where(subpart_id: s.id).first
         {
           name: s.name_if_in?(@exam.quiz_id),
-          id: @gr.where(subpart_id: s.id).map(&:id).first,
-          split: @gr.where(subpart_id: s.id).map(&:marks?).first,
-          color: @gr.where(subpart_id: s.id).map(&:perception?).first
+          id: a.id,
+          split: (a.marks.nil? ? 'tbd' : a.marks),
+          color: a.perception?
         } 
       }
     }.flatten 
@@ -21,8 +22,3 @@ object false
   node(:notify, unless: @exam.regrade_by.nil?){
     { title: "#{@exam.regrade_by.strftime('%B %d, %Y')}" }
   }
-
-  node(:criteria) {
-    @criteria.map{ |c| { id: c.id, text: c.text, color: c.perception? } } 
-  } 
-

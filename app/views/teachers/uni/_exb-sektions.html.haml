@@ -4,13 +4,13 @@
 
 -# Left-side tabs - one per section
 #exb-2.tabbable.tabs-left
-  %ul.nav.nav-tabs.span3{ id: 'exb-ul-milestone-2', data: { onepane: :true } }
+  %ul.nav.nav-tabs.span4{ id: 'exb-ul-milestone-2', data: { onepane: :true } }
     - active_sk.each_with_index do |m,j|
       %li
-        = simple_link for: "#{m.name}", marker: "#{m.id}", href: '#exb-sektions', id: "tab-exb-sk-#{m.id}"
+        = simple_link for: "#{m.name}", marker: "#{m.id}", href: '#exb-sektions', id: "tab-exb-sk-#{m.id}", reload: true
 
   -# List of students - by sektion - shown in a sektion-specific tab and wrapped in a <form>
-  .tab-content.span8{ id: 'exb-div-milestone-3' }
+  .tab-content.span7{ id: 'exb-div-milestone-3' }
     = simple_form_for :checked, remote: true, defaults: { label: false, required: false }, html: { id: 'form-exb-3', 
     class: 'multi-select', data: { action: "#{quiz_mass_assign_path}?id=:id", id: 'tab-exb-quizzes' } } do |f|
       .btn-toolbar.purge-skip

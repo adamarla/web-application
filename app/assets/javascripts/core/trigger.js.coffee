@@ -306,43 +306,25 @@ jQuery ->
 
   $(".g-panel").on 'shown', "a[data-toggle='tab']", (event) ->
     event.stopPropagation()
+    li = $(this).parent()[0] 
+    ul = $(li).parent()[0] 
+    onePane = ul.getAttribute('data-onepane') is 'true'
+    reload = onePane || this.getAttribute('data-reload') is 'true' 
 
-#    # Empty the last-enabled tab's contents - if needed
-#    prevTab = event.relatedTarget
-#    unless $(prevTab).length is 0
-#      unless karo.checkWhether prevTab, 'nopurge-on-inactive'
-#        karo.empty $(prevTab).attr('href')
-
-    reload = this.getAttribute('data-reload') is 'true' 
     if reload 
-      karo.empty $(this).attr('href')
+      pane = karo.find.pane this 
+      $(pane).addClass 'precious'
+      karo.empty $(pane) 
     else 
       loaded = this.getAttribute('data-loaded') is 'true'
       return true if loaded
 
-
-    ###
-      Do the next two for only * horizontal * tabs - not .tabs-left or .tabs-right
-        1. Ensure that atmost 3 tabs are shown - including the just clicked one
-        2. disable all subsequent tabs 
-
-      Side tabs are for special use-cases and therefore one can't make a 
-      blanket call on their behaviour. 
-    ###
-    ul = $(this).parent().parent() # => ul.nav-tabs
-    tabbable = ul.parent()
-    isSideTab = tabbable.hasClass('tabs-left') || tabbable.hasClass('tabs-right')
-
-    unless isSideTab 
-      li = $(this).parent()
-      li.removeClass 'hide'
-
-      for m in li.nextAll('li')
+    sideTab = $(this).closest('.tabbable')[0]
+    unless sideTab? 
+      $(li).removeClass('hide')
+      for m in $(li).nextAll('li')
         $(m).addClass 'disabled' unless karo.checkWhether(m, 'always-on')
-        tab = $(m).children('a')[0]
-        unless karo.checkWhether tab, 'nopurge-on-disable'
-          karo.empty $(tab).attr('href')
-
+        
     # Issue AJAX request * after * taking care of any :prev or :id in data-url
     # Enable / disable paginator accordingly 
 
@@ -351,12 +333,10 @@ jQuery ->
     pgn = $(panel).children('.paginator').eq(0)
 
     if ajax?
-      proceed = true
-      if karo.checkWhether this, 'nopurge-on-show'
-        z = $($(this).attr('href'))
-        proceed = z.hasClass('static') || (z.children().filter(":not([class~='purge-skip'])").length is 0)
+      isSideTab = if sideTab? then true else false
       paginator.initialize(pgn, ajax, this) unless isSideTab
-      karo.ajaxCall(ajax, this, isSideTab) if proceed
+      karo.ajaxCall(ajax, this, isSideTab)
+      this.setAttribute 'data-loaded', true
     else
       # launch any help tied to this link. Do this ONLY for tabs that do NOT 
       # result in an ajax call. For tabs that do, tutorials are launched AFTER
@@ -366,19 +346,7 @@ jQuery ->
       help = this.getAttribute('data-show-help')
       tutorial.start(help) if help?
 
-    # Set base-ajax url on containing panel
-    unless ul.hasClass 'lock'
-      # panelUrl = this.dataset.panelUrl
-      panelUrl = this.getAttribute('data-url-panel')
-
-      #panel.dataset.url = if panelUrl? then panelUrl else null
-      if panelUrl?
-        panel.setAttribute('data-url', panelUrl)
-      else
-        panel.setAttribute('data-url', null)
-
     # Auto-click any autoclick links - but not tabs 
-    # autoLink = this.dataset.autoclickLink
     autoLink = this.getAttribute('data-autoclick-link')
     $("##{autoLink}").click() if autoLink?
 
@@ -387,12 +355,8 @@ jQuery ->
       then autoclick the first tab
     ###
     pane = $($(this).attr('href'))
-    resetChildTabs = this.getAttribute('data-childtabs-reset') is 'true'
-
     for m in pane.find('.tabs-left')
       tabs = $(m).find('ul > li')
-      if resetChildTabs
-        $(j).removeClass('active') for j in tabs
       firstTab = tabs.eq(0).children('a').eq(0)
       firstTab.click()
 
@@ -477,29 +441,40 @@ jQuery ->
     m = null
     # hasButton = $(this).children('.btn').length > 0
     # alert clickedObj.attr('class')
-
-    if clickedObj.hasClass('dropdown')
+    
+    # Case I 
+    if clickedObj.hasClass('dropdown') 
       m = clickedObj
+
+    # Case II
     else if clickedObj.hasClass 'dropdown-toggle'
       m = clickedObj.parent()
+
+    # Case III
     else if clickedObj.hasClass('btn') or clickedObj.is('i') 
       ### 
         Above solves two issues
           61: event.target different on Chrome
           65: limited nesting within <button> allowed by IE
       ###
+        
       clickedObj = if clickedObj.is('i') then clickedObj.parent() else clickedObj
-      checkBox = clickedObj.children("input[type='checkbox']")[0] 
+      cbx = clickedObj.children("input[type='checkbox']")[0] 
 
+      tab = if clickedObj.closest('.tabbable')[0]? then karo.find.tab(clickedObj[0]) else null
       if clickedObj.hasClass('active')
         clickedObj.removeClass 'active'
-        $(checkBox).prop('checked', false) if checkBox?
+        $(cbx).prop('checked', false) if cbx?
+        leftTabs.ping.down(tab)
       else
         clickedObj.addClass 'active'
-        $(checkBox).prop('checked', true) if checkBox?
+        $(cbx).prop('checked', true) if cbx?
+        leftTabs.ping.up(tab)
 
       return clickedObj.hasClass 'video'
-    else if clickedObj.is 'li > a' # menu-item in contextual menu
+
+    # Case IV: menu-item in contextual menu
+    else if clickedObj.is 'li > a'
       event.stopImmediatePropagation()
       return trigger.click event.target 
 
@@ -547,11 +522,18 @@ jQuery ->
         menu.close $(m)
 
       # 3. Issue AJAX request - if defined and set on containing panel
-      tab = karo.tab.find this
+      tab = karo.find.tab this
       if tab?
-        tab = $(tab).children('a')[0] # tab was an <li>. We need the <a> within it
         ajax = karo.url.elaborate this, null, tab
 
+        # Side-tabs generally capture a long list of options for the user to pick from. 
+        # We would like to show how many the user has selected so far
+
+        # Update pings on the side-tab showing number of selections
+        sideTab = $(this).closest('.tabbable')[0]
+        if sideTab?
+          if $(this).hasClass('selected') then leftTabs.ping.up(tab) else leftTabs.ping.down(tab)
+          
         if ajax?
           pgnOn = tab.getAttribute('data-paginate-on')
           if pgnOn? and pgnOn is 'line'
