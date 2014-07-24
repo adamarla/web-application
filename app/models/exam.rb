@@ -272,7 +272,7 @@ class Exam < ActiveRecord::Base
         :worksheet_uid => self.worksheets.map(&:uid)
       }
     end
-    manifest = response[:destroy_exam][:manifest]
+    manifest = response[:destroy_exam_response][:manifest]
     return manifest.nil?
   end
 
