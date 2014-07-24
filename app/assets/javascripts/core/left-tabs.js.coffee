@@ -167,6 +167,9 @@ window.leftTabs = {
     # tab = <a data-toggle='tab'></a>
 
     set : (tab, n, large = false) ->
+      allowed = $(tab).closest('ul')[0].getAttribute('data-ping') is 'true'
+      return false unless allowed 
+
       return false unless n?
       klass = if large then 'ping right' else 'ping'
       leftTabs.ping.unset tab
@@ -194,6 +197,9 @@ window.leftTabs = {
       return n
 
     up : (tab, large = false) -> 
+      allowed = $(tab).closest('ul')[0].getAttribute('data-ping') is 'true'
+      return false unless allowed 
+
       val = leftTabs.ping.get tab
       if val? 
         return false if typeof(val) is 'string'
@@ -203,6 +209,9 @@ window.leftTabs = {
       return true
 
     down : (tab, large = false) ->
+      allowed = $(tab).closest('ul')[0].getAttribute('data-ping') is 'true'
+      return false unless allowed 
+
       val = leftTabs.ping.get tab
       if val? 
         return false if typeof(val) is 'string'
