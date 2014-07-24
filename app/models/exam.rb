@@ -25,7 +25,7 @@ include GeneralQueries
 class Exam < ActiveRecord::Base
   belongs_to :quiz
 
-  has_many :attempts, dependent: :destroy
+  has_many :attempts, through: :worksheets
   has_many :worksheets, dependent: :destroy
   has_many :students, through: :worksheets
 
@@ -263,6 +263,18 @@ class Exam < ActiveRecord::Base
     w = Worksheet.where(exam_id: self.id, student_id: sid).first 
     w.nil? ? [] : w.spectrum?
   end 
+
+  def deleteFiles()
+    SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['destroy_exam']}"
+    response = SavonClient.request :wsdl, :destroyExam do
+      soap.body = {
+        :uid => self.quiz.uid,
+        :worksheet_uid => self.worksheets.map(&:uid)
+      }
+    end
+    manifest = response[:destroy_exam][:manifest]
+    return manifest.nil?
+  end
 
   private 
     def seal 
