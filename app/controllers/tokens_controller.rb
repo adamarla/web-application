@@ -107,13 +107,14 @@ class TokensController < ApplicationController
           {
             id: "#{w.id}.#{i+1}",
             subparts: qs[i].subparts.count,
-            grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join('-') : nil,
+            grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join(',') : nil,
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
             imgspan: qs[i].answer_key_span?,
             scans: w.billed ? atts.where(q_selection_id: qsel.id).map(&:scan).join(',') : nil,
-            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+) : -1.0,
-            outof: qs[i].marks
+            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+):-1.0,
+            outof: qs[i].marks,
+            examiner: w.billed ? atts.where(q_selection_id: qsel.id).map(&:examiner_id).join(',') : nil
           }
         }
 
