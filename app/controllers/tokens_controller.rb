@@ -112,7 +112,7 @@ class TokensController < ApplicationController
             img: "#{qs[i].uid}/#{vers[i]}",
             imgspan: qs[i].answer_key_span?,
             scans: w.billed ? atts.where(q_selection_id: qsel.id).map(&:scan).join(',') : nil,
-            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+),
+            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+): nil,
             outof: qs[i].marks,
             examiner: w.billed ? atts.where(q_selection_id: qsel.id).map(&:examiner_id).first : nil
           }
