@@ -15,7 +15,8 @@ jQuery ->
     url = settings.url
     json = $.parseJSON xhr.responseText
 
-    if url.match('quiz/preview') 
+    if url.match(/quiz\/preview/)
+      overlay.detach()
       preview.loadJson json # mint
     else if url.match(/exam\/layout/) or url.match(/load\/samples/)
       # load student scans 
