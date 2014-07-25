@@ -112,7 +112,7 @@ class TokensController < ApplicationController
             img: "#{qs[i].uid}/#{vers[i]}",
             imgspan: qs[i].answer_key_span?,
             scans: w.billed ? atts.where(q_selection_id: qsel.id).map(&:scan).join(',') : nil,
-            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+):-1.0,
+            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+),
             outof: qs[i].marks,
             examiner: w.billed ? atts.where(q_selection_id: qsel.id).map(&:examiner_id).first : nil
           }
@@ -120,7 +120,7 @@ class TokensController < ApplicationController
 
         remarks = Remark.where(attempt_id: atts.map(&:id))
         worksheets << {
-          quizId: quiz.id,
+          quizId: w.id,
           quiz: quiz.name,
           price: 20, # Quiz.Price?
           locn: "#{quiz.uid}/#{w.uid}",
