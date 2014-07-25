@@ -114,7 +114,7 @@ class TokensController < ApplicationController
             scans: w.billed ? atts.where(q_selection_id: qsel.id).map(&:scan).join(',') : nil,
             marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+):-1.0,
             outof: qs[i].marks,
-            examiner: w.billed ? atts.where(q_selection_id: qsel.id).map(&:examiner_id).join(',') : nil
+            examiner: w.billed ? atts.where(q_selection_id: qsel.id).map(&:examiner_id).first : nil
           }
         }
 
