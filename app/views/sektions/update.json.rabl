@@ -1,3 +1,3 @@
 
 object false
-  node(:hide) { @removed }
+  node(:remove) { @removed }

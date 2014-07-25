@@ -144,9 +144,8 @@ window.lines = {
   columnify : (here, json, menu, buttons = null) ->
     # json = array of N objects 
     here = if typeof here is 'string' then $(here) else here
-    columns = here.find '.column'
-    $(m).empty() for m in columns
 
+    columns = here.find '.column'
     nColumns = columns.length
     perColumn = if nColumns > 0 then ((json.length / nColumns ) + 1) else json.length
     perColumn = parseInt perColumn
@@ -203,6 +202,13 @@ window.lines = {
       for k in json[m]
         l = j.filter("[marker=#{k}]")[0]
         $(l).addClass(m) if l?
+
+    # Remove any .line specified in json.remove
+    if json.remove?
+      j = target.find '.line'
+      for k in json.remove 
+        l = j.filter("[marker=#{k}]")[0]
+        $(l).remove() if l?
 
     if json.download?
       j = target.find('.line')
