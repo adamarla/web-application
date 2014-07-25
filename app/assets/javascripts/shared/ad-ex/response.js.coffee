@@ -13,7 +13,7 @@ jQuery ->
     buttons = null
 
     if url.match(/untagged\/list/)
-      target = $('#pane-tag-pending')
+      target = $('#pane-untagged-1')
       key = 'pending'
     else if url.match(/vertical\/topics/)
       id = "##{json.context}-common-pane"

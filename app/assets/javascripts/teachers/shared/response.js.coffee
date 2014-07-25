@@ -29,13 +29,15 @@ jQuery ->
         menu = "per-quiz"
       karo.empty target
     else if url.match(/qzb\/echo/)
+      return false if json.error?
       if json.context is 'qzb'
-        next = 'tab-qzb-2'
+        next = 'tab-buildqz-2'
       else
         next = 'tab-editqz-3'
         lesson = 'editqz-milestone-5'
 
-      karo.tab.enable next
+      return false unless next? # no topics returned => can't create leftTabs
+      karo.tab.enable(next)
 
       root = "##{json.context}-questions"
       leftTabs.create root, json, {
@@ -46,7 +48,8 @@ jQuery ->
         },
         data : {
           url : "questions/on?id=:id&context=#{json.context}",
-          'url-panel' : "question/preview?id=:id&context=#{json.context}"
+          'url-panel' : "question/preview?id=:id&context=#{json.context}",
+          ping : 'button' 
         },
         id : {
           div : "#{json.context}-pick",

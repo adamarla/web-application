@@ -313,7 +313,6 @@ jQuery ->
 
     if reload 
       pane = karo.find.pane this 
-      $(pane).addClass 'precious'
       karo.empty $(pane) 
     else 
       loaded = this.getAttribute('data-loaded') is 'true'
@@ -322,8 +321,13 @@ jQuery ->
     sideTab = $(this).closest('.tabbable')[0]
     unless sideTab? 
       $(li).removeClass('hide')
-      for m in $(li).nextAll('li')
-        $(m).addClass 'disabled' unless karo.checkWhether(m, 'always-on')
+      unless $(ul).hasClass 'always-on'
+        for m in $(li).nextAll('li')
+          $(m).addClass 'disabled'
+    else
+      solo = ul.getAttribute('data-solo') is 'true'
+      if solo # removes pings from siblings side-tabs
+        leftTabs.ping.unset(j) for j in $(ul).find('a')
         
     # Issue AJAX request * after * taking care of any :prev or :id in data-url
     # Enable / disable paginator accordingly 
@@ -465,11 +469,11 @@ jQuery ->
       if clickedObj.hasClass('active')
         clickedObj.removeClass 'active'
         $(cbx).prop('checked', false) if cbx?
-        leftTabs.ping.down(tab)
+        leftTabs.ping.down(tab) if leftTabs.ping.condition(tab) is 'button' 
       else
         clickedObj.addClass 'active'
         $(cbx).prop('checked', true) if cbx?
-        leftTabs.ping.up(tab)
+        leftTabs.ping.up(tab) if leftTabs.ping.condition(tab) is 'button' 
 
       return clickedObj.hasClass 'video'
 
@@ -487,18 +491,16 @@ jQuery ->
       parent = $(this).parent()
       # multiOk = if hasButton then false else parent.hasClass('multi-select') # parent = .content / .tab-pane / form
       multiOk = parent.hasClass('multi-select') # parent = .content / .tab-pane / form
-      reissueAjax = parent.hasClass 'reissue-ajax'
-      activeTab = $(this).closest('.tab-content').prev().children('li.active')[0]
-      
+
       badge = $(this).find('.badge').eq(0)
-      isClicked = if reissueAjax then false else $(this).hasClass('selected') # issues 55 and 112
+      isClicked = $(this).hasClass('selected') # issues 55 and 112
 
       hdnCbx = line.hiddenCbx(this) 
       if isClicked
         if multiOk # only in multi-select mode should a line be deselected on second click
           $(this).removeClass 'selected'
           badge.removeClass 'badge-warning'
-          $(hdnCbx).prop('checked', false) if hdbCbx?
+          $(hdnCbx).prop('checked', false) if hdnCbx?
       else
         $(this).addClass('selected')
         badge.addClass 'badge-warning'
@@ -514,8 +516,10 @@ jQuery ->
             $(l).prop('checked', false) if l?
 
       # Set line's marker on parent-tab - unless tab is locked - ie. not open to updation
-      if not $(activeTab).parent().hasClass 'lock'
-        $(activeTab).attr 'marker', $(this).attr('marker')
+      activeTab = karo.find.tab this
+      if activeTab?
+        isLocked = $(activeTab).closest('ul')[0].getAttribute('data-lock') is 'true'
+        $(activeTab).attr 'marker', $(this).attr('marker') unless isLocked
 
       # 2. Close any previously open menus - perhaps belonging to a sibling 
       for m in $(this).parent().find('.dropdown-menu') # ideally, there should be atmost one open
@@ -532,7 +536,8 @@ jQuery ->
         # Update pings on the side-tab showing number of selections
         sideTab = $(this).closest('.tabbable')[0]
         if sideTab?
-          if $(this).hasClass('selected') then leftTabs.ping.up(tab) else leftTabs.ping.down(tab)
+          if leftTabs.ping.condition(tab) is 'line' 
+            if $(this).hasClass('selected') then leftTabs.ping.up(tab) else leftTabs.ping.down(tab)
           
         if ajax?
           pgnOn = tab.getAttribute('data-paginate-on')
@@ -544,10 +549,7 @@ jQuery ->
 
       # 4. Switch to next-tab - if so specified
       if activeTab?
-        # activeTab is a <li> and what we are looking for is in the <a> within it
-        a = $(activeTab).children('a')[0]
-        # next = a.dataset.autoclickTab
-        next = a.getAttribute('data-autoclick-tab')
+        next = activeTab.getAttribute('data-autoclick-tab')
         karo.tab.enable next if next?
 
     # End of method 

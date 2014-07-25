@@ -120,6 +120,7 @@ Webapp::Application.routes.draw do
   match 'audit/close' => 'question#audit_close', via: :get
   match 'questions/without_video' => 'question#without_video', via: :get
   match 'question/add_video' => 'question#add_video', via: :post
+  match 'set/topic' => 'question#set_topic', via: :get
 
   # Quiz
   resource :quiz, :only => [:show]

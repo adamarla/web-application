@@ -1,16 +1,15 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link for: "Question", href: '#pane-tag-pending', id: 'tab-tag-pending'
+    = simple_link for: "Question", href: '#pane-untagged-1', id: 'tab-untagged-1', reload: true
   %li
-    = simple_link for: "On Topic", href: '#pane-tag-topic', id: 'tab-tag-topic'
+    = simple_link for: "On Topic", href: '#pane-untagged-2', id: 'tab-untagged-2'
   %li
-    = simple_link for: "Misc", href: '#pane-tag-misc', id: 'tab-tag-misc'
+    = simple_link for: "Misc", href: '#pane-untagged-3', id: 'tab-untagged-3'
 
 .tab-content
-  #pane-tag-pending.tab-pane
-  #pane-tag-topic.tab-pane
-    -#= render :partial => 'examiners/tag-verticals'
+  #pane-untagged-1.tab-pane
+  #pane-untagged-2.tab-pane
     = render partial: 'topics/selector', locals: { context: :tag, onepane: true }
-  #pane-tag-misc.tab-pane
+  #pane-untagged-3.tab-pane
     = render :partial => 'examiners/tag-misc'

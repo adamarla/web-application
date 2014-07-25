@@ -1,14 +1,13 @@
 
 - reload = onepane ? true : false 
-- show_pings = (context == :tag || context == :audit ) ? false : true 
+- ping_on = ( context != :qzb ) ? :never : :line
 
 %div.tabbable.tabs-left{ id: "#{context}-verticals" }
-  %ul.nav.nav-tabs.span4{ id: "ul-#{context}", data: { ping: "#{show_pings}" } } 
+  %ul.nav.nav-tabs.span4{ id: "ul-#{context}", data: { ping: "#{ping_on}", lock: :true } } 
     - Vertical.all.each do |m|
       %li{ marker: "#{m.id}" }
         = simple_link for: "#{m.name}", toggle: :tab, id: "tab-#{context}-#{m.id}",
-        href: "#{ onepane ? "##{context}-common-pane" : "##{context}-#{m.id}" }",
-        url: { self: "vertical/topics.json?id=:id&context=#{context}" }, reload: reload
+        href: "#{ onepane ? "##{context}-common-pane" : "##{context}-#{m.id}" }", reload: reload
 
   .tab-content.span7{ id: "#{context}-topics" }
     - if onepane 

@@ -127,14 +127,22 @@ lnk-wb-tagging :
     left : left-3
     wide : wide-X
   autoclick :
-    tab : tab-tag-pending
+    tab : tab-untagged-1
 
-tab-tag-pending :
+tab-untagged-1 :
   url : 
     self : untagged/list
-    panel : question/preview.json?id=:id
+    panel : question/preview?id=:id
   autoclick :
-    tab : tab-tag-topic
+    tab : tab-untagged-2
+
+tab-tag-* : 
+  url : 
+    self : vertical/topics?id=:id&context=tag
+    panel : set/topic?q=:prev&t=:id
+  prev : tab-untagged-1
+  autoclick : 
+    tab : tab-untagged-3
 
 lnk-wb-typeset :
   show : 
@@ -199,6 +207,11 @@ tab-audit-2 :
   url : 
     self : audit/review
     panel : question/preview.json?id=:id
+
+tab-addhints-* : 
+  url : 
+    self : vertical/topics?id=:id
+    panel : questions/on?id=:id&self=true 
 
 tab-resolution-pending :
   url : 

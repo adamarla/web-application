@@ -24,24 +24,18 @@ window.karo = {
     node = if typeof node is 'string' then $(node) else node
 
     csrf = if node.is 'form' then node.children().eq(0) else null
-    csrf = csrf.detach() if csrf?
+    csrf.detach() if csrf?
     
-    children = node.children() 
-    isLeaf = node.hasClass('leaf') || children.length is 0
-
-    if isLeaf
-      precious = node.hasClass('precious') || node.hasClass('tab-pane')
-      node.remove() unless precious
-      return true 
+    if karo.check.precious(node) 
+      karo.empty( $(j) ) for j in node.children()
     else 
-      trash = children.filter(":not([class~='precious'])")
-      karo.empty( $(j) ) for j in trash
+      node.remove() 
     csrf.prependTo(node) if csrf?
     return true
 
   unhide : (child, panel) -> # hide / unhide children in a panel
     for m in panel.children()
-      if karo.checkWhether m, 'paginator'
+      if $(m).hasClass('paginator') 
         paginator.disable $(m)
         continue
       id = $(m).attr 'id'
@@ -54,6 +48,13 @@ window.karo = {
     return true if $(node).attr(klass) is 'true'
     return true if node.getAttribute("data-#{klass}") is 'true'
     return false
+
+  check : { 
+    precious : (node) ->
+      for k in ['line', 'criterion']
+        return false if node.hasClass(k)
+      return true
+  } 
 
   checkWhether : (node, klass) ->
     # 'node' could be anything but is generally expected to be ul > li > a in a .nav-tabs. 

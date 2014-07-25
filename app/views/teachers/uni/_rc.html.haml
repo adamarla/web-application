@@ -6,12 +6,12 @@
   %li
     = simple_link for: "Overall", href: '#pane-tc-rc-2', id: 'tab-tc-rc-2', reload: true
   %li
-    = simple_link icon: 'icon-search', href: '#pane-tc-rc-3', id: 'tab-tc-rc-3'
+    = simple_link icon: 'icon-search', href: '#pane-tc-rc-3', id: 'tab-tc-rc-3', reload: true
 
 .tab-content
   #pane-tc-rc-1.tab-pane.scroll
   #pane-tc-rc-2.tab-pane.scroll
-    .row-fluid.navbar.precious
+    .row-fluid.navbar
       = simple_link for: 'Download', id: 'lnk-rc-download', class: 'btn btn-inverse pull-right', 
         url: { self: "ws/report_card?id=:a&format=csv" }
   #pane-tc-rc-3.tab-pane

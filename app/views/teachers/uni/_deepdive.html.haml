@@ -12,14 +12,5 @@
 
   #pane-dive-2.tab-pane
     = render partial: 'topics/selector', locals: { context: :deepdive, onepane: true }
-  -#
-    .tabbable.tabs-left
-      %ul.nav.nav-tabs.span4.purge-skip.lock
-        - Vertical.all.each do |m|
-          %li{ marker: "#{m.id}" }
-            = simple_link for: "#{m.name}", href: "#deepdive-topics", id: "tab-deepdive-#{m.id}"
-      .tab-content
-        #deepdive-topics
-
   #pane-dive-3.tab-pane
 

@@ -119,10 +119,14 @@ class TeachersController < ApplicationController
   end
 
   def qzb_echo
-    tids = params[:checked].keys.map(&:to_i)
-    @topics = Topic.where(id: tids)
-    @filters = params[:filter].blank? ? [] : params[:filter].keys
-    @context = params[:context]
+    unless params[:checked].blank? 
+      tids = params[:checked].keys.map(&:to_i)
+      @topics = Topic.where(id: tids)
+      @filters = params[:filter].blank? ? [] : params[:filter].keys
+      @context = params[:context]
+    else
+      render json: { error: :no_topics, context: params[:context] }, status: :ok 
+    end 
   end
 
   def prefabricate

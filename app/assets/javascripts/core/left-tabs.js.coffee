@@ -27,9 +27,10 @@
         root : ... ,
         < others > ...
       } , 
-      data : { => data-* attributes set on ul > li > a ( data-toggle="tab" is implicit )
-        prev :
-        url :
+      data : {
+        prev : # set on ul > li > a
+        url : # set on ul > li > a
+        ping : # set on ul
       } 
 
     }
@@ -69,7 +70,8 @@ window.leftTabs = {
 
     # <ul> and <div class='tab-content'> 
     html.appendTo root
-    ul = $("<ul class='nav nav-tabs #{options.klass.ul}' id='#{options.id.ul}'></ul>")
+    ping = if options.data.ping? then options.data.ping else false
+    ul = $("<ul class='nav nav-tabs #{options.klass.ul}' id='#{options.id.ul}' data-ping=#{ping}></ul>")
     content = $("<div class='tab-content #{options.klass.content}' id='#{options.id.content}'></div>")
 
     ul.appendTo html
@@ -166,10 +168,13 @@ window.leftTabs = {
   ping : { 
     # tab = <a data-toggle='tab'></a>
 
-    set : (tab, n, large = false) ->
-      allowed = $(tab).closest('ul')[0].getAttribute('data-ping') is 'true'
-      return false unless allowed 
+    condition : (tab) ->
+      ul = $(tab).closest('ul')[0]
+      return 'never' unless ul? 
+      ret = ul.getAttribute 'data-ping'
+      return ( if ret? then ret else 'never' ) 
 
+    set : (tab, n, large = false) ->
       return false unless n?
       klass = if large then 'ping right' else 'ping'
       leftTabs.ping.unset tab
@@ -197,9 +202,6 @@ window.leftTabs = {
       return n
 
     up : (tab, large = false) -> 
-      allowed = $(tab).closest('ul')[0].getAttribute('data-ping') is 'true'
-      return false unless allowed 
-
       val = leftTabs.ping.get tab
       if val? 
         return false if typeof(val) is 'string'
@@ -209,9 +211,6 @@ window.leftTabs = {
       return true
 
     down : (tab, large = false) ->
-      allowed = $(tab).closest('ul')[0].getAttribute('data-ping') is 'true'
-      return false unless allowed 
-
       val = leftTabs.ping.get tab
       if val? 
         return false if typeof(val) is 'string'
