@@ -22,6 +22,7 @@ jQuery ->
       karo.empty target
       key = 'exams'
       fdb.detach()
+
     else if url.match(/grade\/pending/)
       target = $('#pane-grd-questions')
       karo.empty target
@@ -29,10 +30,11 @@ jQuery ->
       fdb.detach()
       rubric.initialize '#div-rubric-criteria'
       rubric.render json.criteria
+
     else if url.match(/scans\/pending/)
       fdb.attach()
       fdb.initialize json
-      # gp.show()
+
     else if url.match(/audit\/open/) or url.match(/close\/apprentice\/audit/)
       isQuestion = if url.match(/audit\/open/)? then true else false
 
@@ -47,13 +49,27 @@ jQuery ->
       $(m).prop 'checked', false for m in auditForm.find("input[type='checkbox']")
       auditForm.find('textarea').eq(0).val null
       auditForm.modal 'hide'
+
+    else if url.match(/questions\/on/)
+      key = 'questions'
+      menu = 'per-question'
+      if json.context isnt 'addhints'
+        topic = json.topic
+        target = $("##{json.context}-pick-#{topic}")
+        buttons = [{ icon: 'icon-plus-sign', cbx: 'q' }]
+      else
+        karo.tab.enable 'tab-audit-4'
+        target = $("#pane-audit-4")
+
     else if url.match(/load\/dispute/)
       preview.loadJson json
       if json.comments?
         overlay.over $(preview.root)
         overlay.loadJson json.comments
+
     else if url.match(/dispute\/reason/)
       notifier.show 'n-dispute-reason', json
+
     else
       matched = false
 

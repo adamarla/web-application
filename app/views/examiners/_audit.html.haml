@@ -1,17 +1,17 @@
 
 %ul.nav.nav-tabs.always-on
   %li
-    = simple_link for: "To Do", id: 'tab-audit-1', href: '#pane-audit-1'
+    = simple_link for: "To-do", id: 'tab-audit-1', href: '#pane-audit-1'
   %li
-    = simple_link for: "Review", id: 'tab-audit-2', href: '#pane-audit-2'
+    = simple_link for: "Accept/reject", id: 'tab-audit-2', href: '#pane-audit-2'
   %li
-    = simple_link for: "On topic(s)", id: 'tab-audit-3', href: '#pane-audit-3'
+    = simple_link for: 'Selfies', id: 'tab-audit-3', href: '#pane-audit-3'
   %li
-    = simple_link for: "... By me", id: 'tab-audit-4', href: '#pane-audit-4'
+    = simple_link for: 'Add hints', id: 'tab-audit-4', href: '#pane-audit-4', reload: true
 
 .tab-content
   #pane-audit-1.tab-pane
-    .row-fluid.no-remove
+    .row-fluid
       .btn-group.pull-left
         = simple_link for: 'Oldest', class: 'btn btn-inverse', 
           id: 'lnk-audit-oldest', href: "#{audit_todo_path}?t=oldest", remote: true

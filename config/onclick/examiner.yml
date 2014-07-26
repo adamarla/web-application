@@ -197,10 +197,14 @@ tab-audit-2 :
     self : audit/review
     panel : question/preview.json?id=:id
 
+tab-audit-4 : 
+  url : 
+    panel : question/preview?id=:id
+
 tab-addhints-* : 
   url : 
-    self : vertical/topics?id=:id
-    panel : questions/on?id=:id&self=true 
+    self : vertical/topics?id=:id&context=addhints
+    panel : questions/on?id=:id&self=true&context=addhints
 
 tab-resolution-pending :
   url : 

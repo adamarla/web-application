@@ -5,7 +5,7 @@ object false
       {
         name: m.simple_uid,
         id: m.id,
-        klass: m.set_filter_classes(current_account.loggable),
+        klass: m.set_filter_classes(current_account),
         video: (m.video.nil? ? nil : m.video.uid)
       }
     }
