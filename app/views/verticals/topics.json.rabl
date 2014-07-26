@@ -2,12 +2,14 @@
 object false 
   node(:topics) {
     @topics.map{ |m|
-      tag = @is_admin ? "#{Question.where(:topic_id => m.id).count} ques" : nil
-      { 
-        :name => m.name, 
-        :id => m.id,
-        :tag => tag 
-      }
+      if @show_n
+        q = Question.where(topic_id: m.id)
+        n = @eid.nil? ? q.count : q.where(examiner_id: @eid).count  
+        tag = "#{n} ques" 
+      else 
+        tag = nil
+      end 
+      { name: m.name, id: m.id, tag: tag }
     }
   } 
 
