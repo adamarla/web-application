@@ -79,17 +79,6 @@ lnk-wb-receive :
   url : 
     self : receive/scans
 
-lnk-mng-topics : 
-  show : 
-    left : left-2
-  autoclick :
-    tab : tab-mng-topics-1
-
-tab-mng-topics-1 :
-  url : 
-    self : verticals/list
-    panel : vertical/topics?id=:id
-
 lnk-wb-apprentices : 
   show : 
     left : left-9
