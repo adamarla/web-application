@@ -218,11 +218,13 @@ class Question < ActiveRecord::Base
     return teacher.favourites.map(&:question_id).include? self.id
   end
 
-  def set_filter_classes(teacher)
-    # Called when list of questions is rendered for a teacher. 
-    # Returns the classes to be set on the .single-line. 
-    # These classes are used to filter questions 
-    klass = self.fav(teacher) ? "fav" : ""
+  def set_filter_classes(account)
+    return nil unless account.loggable_type == 'Teacher'
+    # The class attributes returned from here are set on the .line 
+    # and used for filtering. For example, teachers can filter 
+    # for questions that have been picked, favourited ( by her ), 
+    # favourited by others etc. etc.
+    klass = self.fav(account.loggable) ? "fav" : ""
     klass += (self.video.nil? ? "" : " video")
     return klass
   end
