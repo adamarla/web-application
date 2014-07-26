@@ -2,15 +2,14 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link for: 'Topics', href: '#pane-qzb-1', 
-      id: 'tab-qzb-1', class: 'nopurge-on-inactive nopurge-on-show'
+    = simple_link for: 'Topics', href: '#pane-buildqz-1', id: 'tab-buildqz-1'
   %li
-    = simple_link for: 'Questions', href: '#pane-qzb-2', id: 'tab-qzb-2'
+    = simple_link for: 'Questions', href: '#pane-buildqz-2', id: 'tab-buildqz-2'
 
 .tab-content
-  #pane-qzb-1.tab-pane
+  #pane-buildqz-1.tab-pane
     = render partial: 'teachers/shared/qzb-topics', locals: { context: :qzb }
-  #pane-qzb-2.tab-pane
+  #pane-buildqz-2.tab-pane
     = render partial: 'teachers/shared/form-qzb', locals: { context: :qzb }
 
     

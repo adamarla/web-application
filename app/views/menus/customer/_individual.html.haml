@@ -3,16 +3,16 @@
 
 %ul#customer-main.dropdown-menu.pull-right{ :role => :menu }
   %li
-    = simple_link :for => "Buy", :id => "lnk-buy-credits", :icon => 'icon-shopping-cart'
+    = simple_link for: "Buy", id: "lnk-buy-credits", :icon => 'icon-shopping-cart'
   - unless customer.nil?
     %li
-      = simple_link :for => "Use", :id => "lnk-course-list", :icon => 'icon-pencil'
+      = simple_link for: "Use", id: "lnk-course-list", :icon => 'icon-pencil'
     %li
-      = simple_link :for => "Transfer", :id => "lnk-xfer-credits", :icon => 'icon-gift'
+      = simple_link for: "Transfer", id: "lnk-xfer-credits", :icon => 'icon-gift'
     %li
-      = simple_link :for => "Refund", :id => "lnk-refund-credits", :icon => 'icon-circle-arrow-left'
+      = simple_link for: "Refund", id: "lnk-refund-credits", :icon => 'icon-circle-arrow-left'
     %li.divider
     %li
-      -#= simple_link :for => "See Activity", :id => 'lnk-see-activity', :icon => 'icon-list', :href => "customer/activity?id=#{customer.id}", remote: true
-      = simple_link :for => "See Activity", :id => 'lnk-see-activity', :icon => 'icon-list'
+      -#= simple_link for: "See Activity", id: 'lnk-see-activity', :icon => 'icon-list', href: "customer/activity?id=#{customer.id}", remote: true
+      = simple_link for: "See Activity", id: 'lnk-see-activity', :icon => 'icon-list'
 

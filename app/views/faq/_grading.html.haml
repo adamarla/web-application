@@ -2,13 +2,13 @@
 #faq-grading.row-fluid
   %h3.orange= "On Grading"
   .span8
-    .accordion{ :id => 'fgr' }
+    .accordion{ id: 'fgr' }
       .accordion-group
 
         .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#fgr', :toggle => 'collapse' }, :href => '#fgr-2' }
+          %a.accordion-toggle{ data: { parent: '#fgr', toggle: 'collapse' }, href: '#fgr-2' }
             I know my students and I grade accordingly. Why should I trust your grading?
-        .accordion-body.collapse{ :id => 'fgr-2' }
+        .accordion-body.collapse{ id: 'fgr-2' }
           .accordion-inner
             %p
               True. We do not know your students and its unlikely we will ever
@@ -24,18 +24,18 @@
               sound in one place is mathematically sound everywhere else too
 
         .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#fgr', :toggle => 'collapse' }, :href => '#fgr-3' }
+          %a.accordion-toggle{ data: { parent: '#fgr', toggle: 'collapse' }, href: '#fgr-3' }
             Who does the grading?
-        .accordion-body.collapse{ :id => 'fgr-3' }
+        .accordion-body.collapse{ id: 'fgr-3' }
           .accordion-inner
             As of now, our engineers do. For the subjects we are targetting, we feel our engineers 
             are amply qualified to assess student work - given that they have all 
             studied advanced maths and science at university level
 
         .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#fgr', :toggle => 'collapse' }, :href => '#fgr-4' }
+          %a.accordion-toggle{ data: { parent: '#fgr', toggle: 'collapse' }, href: '#fgr-4' }
             Do your graders give marks?
-        .accordion-body.collapse{ :id => 'fgr-4' }
+        .accordion-body.collapse{ id: 'fgr-4' }
           .accordion-inner
             Not directly. For each question, our graders give structured and free-flowing 
             feedback that the system then uses to calculate a numerical score. If two 
@@ -43,9 +43,9 @@
             of who the graders were
 
         .accordion-heading
-          %a.accordion-toggle{ :data => { :parent => '#fgr', :toggle => 'collapse' }, :href => '#fgr-5' }
+          %a.accordion-toggle{ data: { parent: '#fgr', toggle: 'collapse' }, href: '#fgr-5' }
             How long would it take to grade an assigment?
-        .accordion-body.collapse{ :id => 'fgr-5' }
+        .accordion-body.collapse{ id: 'fgr-5' }
           .accordion-inner
             %p
               If the work of all students has been scanned together and sent in one set, then 

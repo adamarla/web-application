@@ -29,29 +29,32 @@ jQuery ->
         menu = "per-quiz"
       karo.empty target
     else if url.match(/qzb\/echo/)
+      return false if json.error?
       if json.context is 'qzb'
-        next = 'tab-qzb-2'
+        next = 'tab-buildqz-2'
       else
         next = 'tab-editqz-3'
         lesson = 'editqz-milestone-5'
 
-      karo.tab.enable next
+      return false unless next? # no topics returned => can't create leftTabs
+      karo.tab.enable(next)
 
       root = "##{json.context}-questions"
       leftTabs.create root, json, {
         klass : {
           ul : "span4",
           content : "span7 scroll",
-          div : "multi-select paginator"
+          div : "paginator"
         },
         data : {
           url : "questions/on?id=:id&context=#{json.context}",
-          'url-panel' : "question/preview?id=:id&context=#{json.context}"
+          'url-panel' : "question/preview?id=:id&context=#{json.context}",
+          ping : 'button' 
         },
         id : {
           div : "#{json.context}-pick",
-          ul : "#{json.context}-ul-milestone-4",
-          root : "#{json.context}-div-milestone-5"
+          ul : "#{json.context}-ul-4",
+          root : "#{json.context}-div-5"
         }
       }
 
@@ -63,7 +66,7 @@ jQuery ->
       target = $("##{json.context}-pick-#{topic}")
       key = 'questions'
       menu = 'per-question'
-      lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
+      # lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
       buttons = [{ icon: 'icon-plus-sign', cbx: 'q' }]
 
     else if url.match(/vertical\/topics/)
@@ -72,7 +75,7 @@ jQuery ->
         milestone = if json.context is 'qzb' then 3 else 4
         lesson = "#{json.context}-milestone-#{milestone}"
       else
-        target = $('#deepdive-topics')
+        target = $('#deepdive-common-pane')
       key = 'topics'
 
     else if url.match(/quiz\/questions/)

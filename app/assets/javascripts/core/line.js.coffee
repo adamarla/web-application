@@ -40,7 +40,7 @@ window.line = {
     isVideo = json.video?
 
     obj = $('#toolbox').children('.line').eq(0).clone()
-    remaining = 12
+    remaining = 11
 
     # 1. Do the easiest first 
     if json.klass?
@@ -73,7 +73,6 @@ window.line = {
 
       unless isVideo
         children.filter(".badge").eq(0).remove() unless json.badge? # no badge if menu and badge.empty?
-      remaining -= 1
     else
       $(m).parent().remove()
 
@@ -111,6 +110,7 @@ window.line = {
         $("<i class='icon-white #{b.icon}'></i>").appendTo(btn) if b.icon?
         $("<input class='hide' type='checkbox' name=#{b.cbx}[#{json.id}]></input>").appendTo(btn) if b.cbx?
         btn.appendTo obj
+        remaining -= 1 unless btn.hasClass('hide')
 
     # Stopwatch 
     watch = children.filter(".stopwatch")[0]
@@ -123,7 +123,7 @@ window.line = {
 #      $(watch).remove()
 
     # Whatever span remains, give to 'label'
-    remaining = if remaining > 8 then 8 else remaining
+    remaining = if remaining > 9 then 9 else remaining
     label.addClass("span#{remaining}") if remaining > 0
 
     # Done !!!
@@ -144,9 +144,8 @@ window.lines = {
   columnify : (here, json, menu, buttons = null) ->
     # json = array of N objects 
     here = if typeof here is 'string' then $(here) else here
-    columns = here.find '.column'
-    $(m).empty() for m in columns
 
+    columns = here.find '.column'
     nColumns = columns.length
     perColumn = if nColumns > 0 then ((json.length / nColumns ) + 1) else json.length
     perColumn = parseInt perColumn
@@ -185,7 +184,7 @@ window.lines = {
       if target.hasClass 'paginator'
         if json.pg?
           page = target.children("div[page='#{json.pg}']")
-          $("<div page=#{json.pg} class='multi-select purge-skip'></div>").appendTo target if page.length is 0
+          $("<div page=#{json.pg}></div>").appendTo target if page.length is 0
           target = target.children("div[page='#{json.pg}']").eq(0)
           $(m).addClass 'hide' for m in target.siblings()
           target.removeClass 'hide'
@@ -203,6 +202,13 @@ window.lines = {
       for k in json[m]
         l = j.filter("[marker=#{k}]")[0]
         $(l).addClass(m) if l?
+
+    # Remove any .line specified in json.remove
+    if json.remove?
+      j = target.find '.line'
+      for k in json.remove 
+        l = j.filter("[marker=#{k}]")[0]
+        $(l).remove() if l?
 
     if json.download?
       j = target.find('.line')

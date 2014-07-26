@@ -1,9 +1,9 @@
 
 #m-edit-account.modal.fade.hide.slim
   .modal-body
-    = simple_form_for :updated, :remote => true, 
-    :defaults => { :label => false, :required => false }, :url => account_path,
-    :html => { :id => 'f-edit-account' } do |f| 
+    = simple_form_for :updated, remote: true, 
+    :defaults => { :label => false, :required => false }, url: account_path,
+    :html => { id: 'f-edit-account' } do |f| 
       = f.input :email, :hint => "new e-mail"
       = f.input :password, :hint => "new password"
       = f.input :password_confirmation, :hint => "Re-enter password"

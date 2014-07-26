@@ -3360,17 +3360,9 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
     }
     .active > a {
       color: white ;
-      // background-color: #ffffff;
-      background-color: $deep-blue ;
       border: 1px solid #ddd;
       border-bottom-color: transparent;
       cursor: default;
-      &:hover {
-        background-color: darken($deep-blue, 10%) ;
-        border: 1px solid #ddd;
-        border-bottom-color: transparent;
-        cursor: default;
-      }
     }
   }
 }

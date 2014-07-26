@@ -16,6 +16,12 @@ class QuestionController < ApplicationController
                                        : @questions.difficulty(p[:difficulty].to_i)
   end 
 
+  def set_topic
+    q = Question.find params[:q]
+    q.update_attributes(topic_id: params[:t], available: false) unless q.blank?
+    render json: { status: :done }, status: :ok
+  end 
+  
   def tag
     question = Question.find params[:id]
 
@@ -38,7 +44,6 @@ class QuestionController < ApplicationController
           # because it really depends on how the solution was written for this question
 
           span = manifest[:image].count
-          topic = params[:topic]
           calculator = misc[:calculator] == "false" ? 0 : 1 
           level = misc[:level]
 
@@ -49,7 +54,7 @@ class QuestionController < ApplicationController
             auditor = question.auditor
           end
 
-          question.update_attributes topic_id: topic, difficulty: level, answer_key_span: span, 
+          question.update_attributes difficulty: level, answer_key_span: span, 
                                      calculation_aid: calculator, auditor: auditor
 
           # If the question was sent by a teacher, then update the corresponding 
@@ -57,7 +62,7 @@ class QuestionController < ApplicationController
           # same suggestion form. And so, send mail to teacher only when all questions have 
           # been typeset and tagged 
 
-          m = question.suggestion_id.nil? ? nil : Suggestion.where(:id => question.suggestion_id).first
+          m = question.suggestion_id.nil? ? nil : Suggestion.where(id: question.suggestion_id).first
           m.check_for_completeness unless m.nil?
 
           if question.update_subpart_info lengths, marks
@@ -92,7 +97,7 @@ class QuestionController < ApplicationController
     teacher = current_account.loggable
     qid = params[:id].to_i
     teacher.favourites.create question_id: qid
-    render json: { :favourite => { :id => qid } }, status: :ok
+    render json: { favourite: { id: qid } }, status: :ok
   end
 
   def audit_open

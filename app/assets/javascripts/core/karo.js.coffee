@@ -24,30 +24,18 @@ window.karo = {
     node = if typeof node is 'string' then $(node) else node
 
     csrf = if node.is 'form' then node.children().eq(0) else null
-    csrf = csrf.detach() if csrf?
+    csrf.detach() if csrf?
     
-    children = node.children()
-
-    if node.hasClass 'purge-blind'
-      node.empty()
-    else if node.hasClass 'purge-destroy'
-      node.remove()
-      return true
-    else if node.hasClass 'leaf' || children.length is 0
-      node.remove()
-      return true
-    else if node.hasClass 'purge-skip'
-      csrf.prependTo node if csrf?
-      return true
-    else
-      karo.empty $(m) for m in children
-
-    csrf.prependTo node if csrf?
+    if karo.check.precious(node) 
+      karo.empty( $(j) ) for j in node.children()
+    else 
+      node.remove() 
+    csrf.prependTo(node) if csrf?
     return true
 
   unhide : (child, panel) -> # hide / unhide children in a panel
     for m in panel.children()
-      if karo.checkWhether m, 'paginator'
+      if $(m).hasClass('paginator') 
         paginator.disable $(m)
         continue
       id = $(m).attr 'id'
@@ -60,6 +48,13 @@ window.karo = {
     return true if $(node).attr(klass) is 'true'
     return true if node.getAttribute("data-#{klass}") is 'true'
     return false
+
+  check : { 
+    precious : (node) ->
+      for k in ['line', 'criterion']
+        return false if node.hasClass(k)
+      return true
+  } 
 
   checkWhether : (node, klass) ->
     # 'node' could be anything but is generally expected to be ul > li > a in a .nav-tabs. 
@@ -92,13 +87,22 @@ window.karo = {
       $(m).tab 'show'
       trigger.click(m)
       return true
-
-    find : (node) -> # the closest active tab within which - presumably - the node is
-      pane = $(node).closest('.tab-content').eq(0)
-      return null if pane.length is 0
-      ul = pane.prev()
-      return ul.children('li.active')[0]
   }
+
+  find : { 
+    tab : (node) -> # closest active tab within which - presumably - the node is 
+      pane = $(node).closest('.tab-content')[0]
+      return null unless pane?
+      ul = $(pane).prev() 
+      return ul.children('li.active').eq(0).children('a')[0]
+
+    pane : (tab) -> # pane corresponding to passed tab
+      return null unless tab.getAttribute('data-toggle') is 'tab'
+      href = $(tab).attr('href').slice(1) # get rid of leading #
+      ul = $(tab).closest('.nav-tabs')
+      lookIn = ul.next() # should be a .tab-content
+      return lookIn.find("[id=#{href}]")[0]
+  } 
 
   link : {
     disable : (a) -> 

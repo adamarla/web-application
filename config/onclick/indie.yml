@@ -36,6 +36,10 @@
 ## Indi(pendent) Teachers 
 ##############################################################################
 
+tab-qzb-* :
+  url : 
+    self : vertical/topics?id=:id&context=qzb
+
 a-cp-1: 
   show : 
     menu: m-1
@@ -71,7 +75,7 @@ tab-course-stats :
 
 a-new-quiz :
   autoclick : 
-    tab : tab-qzb-1
+    tab : tab-buildqz-1
   show : 
     left : left-3
     wide : wide-wait

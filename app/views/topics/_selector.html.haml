@@ -1,0 +1,17 @@
+
+- reload = onepane ? true : false 
+- ping_on = ( context != :qzb ) ? :never : :line
+
+%div.tabbable.tabs-left{ id: "#{context}-verticals" }
+  %ul.nav.nav-tabs.span4{ id: "ul-#{context}", data: { ping: "#{ping_on}", lock: :true } } 
+    - Vertical.all.each do |m|
+      %li{ marker: "#{m.id}" }
+        = simple_link for: "#{m.name}", toggle: :tab, id: "tab-#{context}-#{m.id}",
+        href: "#{ onepane ? "##{context}-common-pane" : "##{context}-#{m.id}" }", reload: reload
+
+  .tab-content.span7{ id: "#{context}-topics" }
+    - if onepane 
+      %div.tab-pane{ id: "#{context}-common-pane" }
+    - unless onepane 
+      - Vertical.all.each do |m|
+        %div.tab-pane.multi-select{ id: "#{context}-#{m.id}" }

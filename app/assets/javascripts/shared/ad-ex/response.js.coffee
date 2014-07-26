@@ -13,10 +13,11 @@ jQuery ->
     buttons = null
 
     if url.match(/untagged\/list/)
-      target = $('#pane-tag-pending')
+      target = $('#pane-untagged-1')
       key = 'pending'
     else if url.match(/vertical\/topics/)
-      target = $('#pane-vertical-topics')
+      id = "##{json.context}-common-pane"
+      target = $(id)
       key = 'topics'
     else if url.match(/typeset\/new/)
       target = $('#pane-typeset-new')
@@ -55,25 +56,25 @@ jQuery ->
       entries.eq(0).click()
       return true
     else if url.match(/audit\/review/)
-      target = $('#pane-audit-review')
+      target = $('#pane-audit-2')
       clickFirst = true
       key = 'audit'
       menu = 'm-audit'
       karo.empty target
     else if url.match(/audit\/todo/)
-      target = $('#pane-audit-todo')
+      target = $('#pane-audit-1')
       clickFirst = true
       key = 'audit'
       karo.empty target
     else if url.match(/audit\/open/)
-      target = $('#pane-audit-todo')
+      target = $('#pane-audit-1')
       form = $('#m-audit-form').find('form').eq(0)
       $(m).prop('checked', false) for m in form.find("input[type='checkbox']")
       form.find("textarea").eq(0).val null
       $('#m-audit-form').modal 'hide'
       rubric.typing = false
     else if url.match(/audit\/close/)
-      target = $('#pane-audit-review')
+      target = $('#pane-audit-2')
     else if url.match(/questions\/without_video/)
       target = $('#pane-video-pending')
       key = 'unwatchable'

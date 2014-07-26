@@ -63,3 +63,20 @@ a-activate-rubric :
   update-on : rubric/load
   url : 
     self : activate/rubric?id=:a
+
+lnk-mng-topics : 
+  show : 
+    left : left-2
+  autoclick :
+    tab : tab-mng-topics-1
+
+tab-mng-topics-1 :
+  url : 
+    self : verticals/list
+  autoclick : 
+    tab : tab-mng-topics-2
+
+tab-mng-topics-2 : 
+  url : 
+    self : vertical/topics?id=:prev&context=edit
+  prev : tab-mng-topics-1

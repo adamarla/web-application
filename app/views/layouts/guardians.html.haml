@@ -29,7 +29,7 @@
 %html{html_attrs}
   %head 
     = javascript_include_tag "application", "guardians", "welcome"
-    %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
+    -#%script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
     %script{ :type => "text/x-mathjax-config" } 
       MathJax.Hub.Config({
       "HTML-CSS" : {
@@ -52,28 +52,28 @@
 
   %body 
     #spinner.spinner
-      = image_tag "loading.gif", :id => 'img-spinner'
+      = image_tag "loading.gif", id: 'img-spinner'
     .container-fluid 
-      #control-panel.g-panel.row-fluid{ :marker => "#{guardian.id}" } 
+      #control-panel.g-panel.row-fluid{ marker: "#{guardian.id}" } 
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span3{ :href => "#"}
+              %a.brand.span3{ href: "#"}
                 = image_tag "logo-mit-beta-2.png"
               %ul.nav.span8.pull-right
                 %li
-                  = simple_link :for => "Purchase", :id => 'lnk-buy-credits'
+                  = simple_link for: "Purchase", id: 'lnk-buy-credits'
                 %li.dropdown
-                  = simple_link :for => "Options", as: :dropdown, :id => 'm-guardian-options'
+                  = simple_link for: "Options", as: :dropdown, id: 'm-guardian-options'
                 %li#cp-account-link.dropdown
-                  = simple_link :for => "Hello, #{guardian.first_name}", :as => :dropdown, :id => 'm-account'
+                  = simple_link for: "Hello, #{guardian.first_name}", as: :dropdown, id: 'm-account'
       #desktop.row-fluid
         #left.g-panel.span4
-          = render partial: 'toolbox/paginator', :locals => { :id => 'left-paginator', :url => '#' }
+          = render partial: 'toolbox/paginator', :locals => { id: 'left-paginator', url: '#' }
           #left-1
             = render partial: 'teachers/rc'
         -#middle.g-panel.span4
-          = render partial: 'toolbox/paginator', :locals => { :id => 'middle-paginator', :url => '#' }
+          = render partial: 'toolbox/paginator', :locals => { id: 'middle-paginator', url: '#' }
           #middle-1
         #wide.g-panel.span8
           #wide-X

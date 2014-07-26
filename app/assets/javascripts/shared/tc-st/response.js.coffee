@@ -14,7 +14,6 @@ jQuery ->
 
     if url.match(/exams\/list/)
       target = if json.user is "Student" then $('#pane-st-rc-1') else $('#pane-tc-rc-1')
-      karo.empty target
       key = 'exams'
     else if url.match(/question\/preview/)
       $('#overlay-preview-carousel').addClass 'hide'

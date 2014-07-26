@@ -4,11 +4,11 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link for: "Quizzes", href: '#pane-exb-quizzes', id: 'tab-exb-quizzes'
+    = simple_link for: "Quizzes", href: '#pane-exb-quizzes', id: 'tab-exb-quizzes', reload: true
   %li
     = simple_link for: 'Assignments', href: '#pane-exb-existing', id: 'tab-exb-existing'
   %li
-    = simple_link for: "Make New", href: '#pane-exb-sektions', id: 'tab-exb-sektions', class: 'nopurge-ever'
+    = simple_link for: "Make New", href: '#pane-exb-sektions', id: 'tab-exb-sektions'
 
 .tab-content
   #pane-exb-quizzes.tab-pane.scroll

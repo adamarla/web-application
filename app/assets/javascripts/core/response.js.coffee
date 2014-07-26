@@ -15,7 +15,8 @@ jQuery ->
     url = settings.url
     json = $.parseJSON xhr.responseText
 
-    if url.match('quiz/preview') 
+    if url.match(/quiz\/preview/)
+      overlay.detach()
       preview.loadJson json # mint
     else if url.match(/exam\/layout/) or url.match(/load\/samples/)
       # load student scans 
@@ -51,8 +52,6 @@ jQuery ->
       karo.empty $(target)
       leftTabs.create target, json, {
         shared : 'q-fdb',
-        split : true,
-        writeBoth : writeBoth,
         klass : {
           root : 'purge-destroy',
           ul : ulKlass,
@@ -61,11 +60,8 @@ jQuery ->
         data : {
           url : "load/fdb?id=:id&sandbox=#{sandbox}&a=#{apprentice}"
         }
-      }
-
-      # load the applicable rubric in the shared tab-pane 
+      } 
       rubric.initialize '#q-fdb-shared'
-      rubric.render json.criteria 
 
       # prep preview. Scans will be loaded on-demand in response to view/fdb 
       $('#overlay-preview-carousel').removeClass 'hide'

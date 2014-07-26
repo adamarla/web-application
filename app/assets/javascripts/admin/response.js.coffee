@@ -16,7 +16,6 @@ jQuery ->
       target = $('#pane-mng-topics-1')
       key = 'verticals'
     else if url.match(/vertical\/topics/)
-      karo.tab.enable 'tab-mng-topics-2'
       target = $('#pane-mng-topics-2')
       key = 'topics'
     else if url.match(/byCountry/)

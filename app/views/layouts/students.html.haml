@@ -48,7 +48,7 @@
 %html{html_attrs}
   %head 
     = javascript_include_tag "application", "students"
-    %script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
+    -#%script{ type: 'text/javascript', src: '//cdn.sublimevideo.net/js/2fya70le.js' }
     %script{ type: "text/x-mathjax-config" } 
       MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready", function() {
       var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT ;
@@ -66,11 +66,11 @@
   %body 
     = render partial: 'toolbox/generic/spinner'
     .container-fluid.hidden
-      #control-panel.g-panel.row-fluid{ :marker => "#{student.id}" } 
+      #control-panel.g-panel.row-fluid{ marker: "#{student.id}" } 
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span3{ :href => "#"}
+              %a.brand.span3{ href: "#"}
                 = image_tag "logo-mit-beta-2.png"
               %ul.nav.span8.pull-right
                 - for l in control_panel 

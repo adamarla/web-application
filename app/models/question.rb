@@ -60,19 +60,19 @@ class Question < ActiveRecord::Base
 
   
   def self.author(id)
-    where(:examiner_id => id)
+    where(examiner_id: id)
   end
 
   def self.difficulty(m)
-    where(:difficulty => m)
+    where(difficulty: m)
   end
 
   def self.on_topic(m)
-    where(:topic_id => m)
+    where(topic_id: m)
   end
 
   def self.available
-    where(:available => true)
+    where(available: true)
   end
 
   def self.audited
@@ -84,7 +84,7 @@ class Question < ActiveRecord::Base
   end
 
   def self.broadly_on(m)
-    where(:topic_id => Vertical.find(m).topic_ids)
+    where(topic_id: Vertical.find(m).topic_ids)
   end
 
   def self.tagged
@@ -104,15 +104,15 @@ class Question < ActiveRecord::Base
   end
 
   def self.needs_graphing_calculator
-    where(:calculation_aid => 2)
+    where(calculation_aid: 2)
   end
 
   def self.needs_log_tables
-    where(:calculation_aid => 3)
+    where(calculation_aid: 3)
   end
 
   def self.needs_scientific_calculator
-    where(:calculation_aid => 1)
+    where(calculation_aid: 1)
   end
 
   def self.needs_calculation_aid
@@ -144,7 +144,7 @@ class Question < ActiveRecord::Base
   end
 
   def mcq? 
-    mcq = Subpart.where(:question_id => self.id).map(&:mcq).inject(:&)
+    mcq = Subpart.where(question_id: self.id).map(&:mcq).inject(:&)
     return mcq
   end 
 
@@ -160,7 +160,7 @@ class Question < ActiveRecord::Base
   def marks? # total marks over all sub-parts
     return self.marks unless self.marks.nil?
 
-    with_marks = Subpart.where(:question_id => self.id).select{ |m| !m.marks.nil? }
+    with_marks = Subpart.where(question_id: self.id).select{ |m| !m.marks.nil? }
     return nil if with_marks.length != self.subparts.length
 
     total = with_marks.map(&:marks).inject(:+)
@@ -171,7 +171,7 @@ class Question < ActiveRecord::Base
   def length? 
     return self.length unless self.length.nil?
 
-    subparts = Subpart.where(:question_id => self.id)
+    subparts = Subpart.where(question_id: self.id)
     mcqs = subparts.select{ |m| m.mcq }.count
     shorts = subparts.select{ |m| m.few_lines }.count
     halves = subparts.select{ |m| m.half_page }.count
@@ -332,7 +332,7 @@ class Question < ActiveRecord::Base
 
       if additional > 0
         [*0...additional].each do |index|
-          s = self.subparts.build :index => (existing + index)
+          s = self.subparts.build index: (existing + index)
           success &= s.save
           break if !success
         end

@@ -164,7 +164,7 @@ lnk-suggestion-form :
 
 lnk-new-quiz :
   autoclick : 
-    tab : tab-qzb-1
+    tab : tab-buildqz-1
   show : 
     left : left-2
     wide : wide-wait
@@ -293,12 +293,12 @@ tab-dive-3 :
   show :
     wide : wide-chart-3
 
-deepdive-* : 
+tab-deepdive-* :
   url : 
-    self : vertical/topics?id=:id&context=deepdive
+    self : vertical/topics?id=:id&context=deepdive 
     panel : sektion/proficiency?of=:prev&in=:id
-  paginate-on : line 
   prev : tab-dive-1
+  paginate-on : line 
 
 lnk-add-sektion :
   show : 
