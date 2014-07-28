@@ -35,4 +35,15 @@ class AttemptsController < ApplicationController
     end 
   end 
 
+  def reupload 
+    a = Attempt.find params[:id]
+    unless a.nil?
+      a.reset(false) # reset for good measure 
+      a.update_attributes scan: nil, mobile: false
+      s = a.student
+      Mailbot.delay.reupload_request(a.id) if s.account.has_email? 
+    end 
+    render json: { status: :ok }, status: :ok
+  end 
+
 end # of class

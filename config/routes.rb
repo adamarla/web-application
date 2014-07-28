@@ -81,6 +81,7 @@ Webapp::Application.routes.draw do
   # Attempt 
   match 'record/fdb' => 'attempts#grade', via: [:put, :post]
   match 'load/fdb' => 'attempts#load_fdb', via: :get
+  match 'reupload' => 'attempts#reupload', via: :get
 
   # Guardian
   resource :guardian, :only => [:show]
