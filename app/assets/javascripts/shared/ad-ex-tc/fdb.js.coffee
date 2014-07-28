@@ -234,6 +234,7 @@ window.fdb = {
     # event.stopImmediatePropagation() here 
 
     key = event.which 
+    # alert key
     switch key
       when 72 # H => hide/unhide controls 
         controls = fdb.controls.children()
@@ -251,6 +252,10 @@ window.fdb = {
           $("<span class='kb'>H</span>").prependTo hideBtn
           shadow.hide()
           $(m).addClass('hide') for m in controls.filter(":not(:first-child)")
+      when 76 # L => re-upload / re-send scan. Also triggers mail to student 
+        fdb.clear()
+        $.get "reupload?id=#{$(fdb.current.response).attr('marker')}"
+        fdb.next.response()
       when 82 # R => restore pristine copy 
         fdb.clear()
         $.get "reset/graded?id=#{$(fdb.current.response).attr 'marker'}" # will also destroy any associated comments
