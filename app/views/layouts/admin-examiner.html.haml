@@ -31,20 +31,20 @@
                      [7, 'examiners/audit'],
                      [8, 'examiners/video-pending'],
                      [9, 'examiners/apprentices'],
-                     [10, 'examiners/disputes']],
+                     [10, 'examiners/disputes'],
+                     [11, 'examiners/rubric/new'] ],
              middle: [],
              right: [],
              wide: [ ['wait', 'toolbox/generic/wait'],
                      ['X', 'toolbox/grading/right/controls'],
-                     ['graph-1', nil] ] } 
+                     ['graph-1', nil],
+                     [3, 'examiners/rubric/details'] ] } 
 
 - if is_admin 
   - layout[:left].push [1, 'admin/system-overview'], 
-                       ['X', nil],
-                       [11, 'admin/rubrics']
+                       ['X', nil]
   - layout[:wide].push [1, nil], 
-                       [2, 'admin/accounts-in-country'],
-                       [3, 'admin/rubric-details']
+                       [2, 'admin/accounts-in-country']
 
 !!!5
 
