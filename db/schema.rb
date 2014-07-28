@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140718071746) do
+ActiveRecord::Schema.define(:version => 20140726194928) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -272,6 +272,14 @@ ActiveRecord::Schema.define(:version => 20140718071746) do
     t.string   "first_name", :limit => 30
     t.string   "last_name",  :limit => 30
   end
+
+  create_table "hints", :force => true do |t|
+    t.text    "text"
+    t.integer "index"
+    t.integer "subpart_id"
+  end
+
+  add_index "hints", ["subpart_id"], :name => "index_hints_on_subpart_id"
 
   create_table "lessons", :force => true do |t|
     t.string   "title",       :limit => 150

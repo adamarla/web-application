@@ -575,7 +575,13 @@ span.btn-shortcut {
     } 
 
     select { font-size: 11px; }
-    input:not([type='submit']) { font-size: 14px ; }
+    input:not([type='submit']) { 
+      font-size: 14px ;
+      &.kompact { 
+        font-size: 11px ;
+        padding: 3px ; 
+      } 
+    }
 
     input[type='file'] {
       font-size: 11px ;

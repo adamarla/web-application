@@ -16,6 +16,29 @@ class QuestionController < ApplicationController
                                        : @questions.difficulty(p[:difficulty].to_i)
   end 
 
+  def hints 
+    obj = params[:sbp].blank? ? Question.find(params[:id]) : Subpart.find(params[:sbp])
+    @hints = obj.hints 
+    @id = params[:sbp].to_i
+  end 
+
+  def store_hints 
+    id = params[:hint].keys.first.to_i # all hints for the same Subpart. Max. 3. 
+    sbp = Subpart.find id 
+
+    # Clear all previous hints. The only reason you're here is because the submit 
+    # button was clicked. If you submit, then we can assume that something has changed 
+    sbp.hints = []
+
+    hints = params[:hint].values.first # another hash
+    hints.each do |k,v| 
+      next if v.blank?
+      index = k.to_i
+      sbp.hints.create text: v, index: index
+    end 
+    render json: { status: :ok }, status: :ok
+  end 
+
   def set_topic
     q = Question.find params[:q]
     q.update_attributes(topic_id: params[:t], available: false) unless q.blank?
@@ -163,5 +186,11 @@ class QuestionController < ApplicationController
       render json: { status: :failed }, status: :ok
     end
   end
+
+  def layout
+    q = Question.find params[:id]
+    @subparts = q.subparts
+    @context = params[:context]
+  end 
 
 end # of class

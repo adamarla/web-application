@@ -1,0 +1,11 @@
+
+%ul.dropdown-menu.dropdown-inverse#per-question{ role: :menu } 
+  - if current_account.loggable_type == 'Teacher'
+    %li
+      = simple_link for: 'Add to Favourites', id: 'lnk-like-question', 
+      icon: 'icon-thumbs-up', remote: true
+  %li
+    = simple_link for: 'Report issue(s)', id: 'lnk-audit-question', icon: 'icon-warning-sign'
+  - if current_account.loggable_type == 'Examiner'
+    %li
+      = simple_link for: 'Add Hints', id: 'a-hints', icon: 'icon-gift'

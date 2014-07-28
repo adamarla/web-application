@@ -26,7 +26,14 @@ class VerticalsController < ApplicationController
   def topics
     @vertical = Vertical.find params[:id]
     @context = params[:context]
-    @is_admin = current_account.role? :admin
+
+    if current_account.loggable_type == 'Examiner'
+      @eid = @context == 'addhints' ? current_account.loggable_id : nil
+      @show_n = true
+    else 
+      @eid = nil
+      @show_n = false
+    end 
 
     unless @vertical.nil?
       @topics = @vertical.topics

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: countries
+# Table name: watan
 #
 #  id           :integer         not null, primary key
 #  name         :string(50)

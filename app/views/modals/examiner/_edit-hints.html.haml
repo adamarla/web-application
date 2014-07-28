@@ -1,0 +1,19 @@
+
+#m-edit-hints.modal.fade.wide
+  .row-fluid
+    .span1
+      -#= image_tag 'notifications/help-38716.png', class: 'big-icon'
+    .span10 
+      .row-fluid{ id: 'hint-btns' }
+        .btn-group{ data: { toggle: 'buttons-radio' } }
+          - [*'A'..'H'].each_with_index do |m,j|
+            %button.btn.btn-inverse{ data: { index: j } }= m
+      .row-fluid.push-down
+        .span2.orange.small-text='Preview'
+        #hint-tex-preview.span9
+
+      .row-fluid.push-down
+        = simple_form_for :hints, url: store_hints_path, remote: true, defaults: { label: false, required: false  } do |f| 
+          - [*0...3].each do |j| 
+            = f.input :tex, as: :string, hint: "Hint ##{j+1}", input_html: { class: :kompact }
+          %button.btn.btn-primary{ type: :submit }= 'Submit'

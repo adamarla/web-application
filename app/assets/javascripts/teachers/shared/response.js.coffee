@@ -61,14 +61,6 @@ jQuery ->
       tutorial.start lesson if lesson?
       return true
 
-    else if url.match(/questions\/on/)
-      topic = json.topic
-      target = $("##{json.context}-pick-#{topic}")
-      key = 'questions'
-      menu = 'per-question'
-      # lesson = if json.context is 'qzb' then 'qzb-milestone-5' else 'editqz-milestone-6'
-      buttons = [{ icon: 'icon-plus-sign', cbx: 'q' }]
-
     else if url.match(/vertical\/topics/)
       if json.context isnt 'deepdive'
         target = $("##{json.context}-#{json.vertical}")
