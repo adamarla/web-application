@@ -16,6 +16,7 @@
 class Subpart < ActiveRecord::Base
   belongs_to :question
   has_many :attempts
+  has_many :hints, dependent: :destroy
 
   def name_if_in?(quiz)
     qsel = QSelection.where(:quiz_id => quiz, :question_id => self.question_id).first
@@ -41,6 +42,10 @@ class Subpart < ActiveRecord::Base
   def length?
     return (self.mcq || self.few_lines ? 0.25 : (self.half_page ? 0.5 : 1))
   end
+
+  def hints 
+    return Hint.where(subpart_id: self.id).order(:index)
+  end 
 
   def self.in_quiz(quiz)
     # Returns the ordered list - by position in the quiz - of subparts in a quiz

@@ -95,6 +95,8 @@ jQuery ->
     else if url.match(/dispute\/(accept|reject)/)
       target = $('#pane-disputes')
       $('#m-reject-dispute').modal 'hide'
+    else if url.match(/question\/layout/)
+      hint.initialize(json) if json.context is 'addhints'
     else
       matched = false
 

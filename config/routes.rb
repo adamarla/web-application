@@ -121,6 +121,9 @@ Webapp::Application.routes.draw do
   match 'questions/without_video' => 'question#without_video', via: :get
   match 'question/add_video' => 'question#add_video', via: :post
   match 'set/topic' => 'question#set_topic', via: :get
+  match 'question/layout' => 'question#layout', via: :get
+  match 'load/hints' => 'question#hints', via: :get
+  match 'store/hints' => 'question#store_hints', via: [:put, :post]
 
   # Quiz
   resource :quiz, :only => [:show]

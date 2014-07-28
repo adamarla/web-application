@@ -143,6 +143,16 @@ class Question < ActiveRecord::Base
     end
   end
 
+  def hints(json = true) 
+    # returns list of hints - ordered by subpart indices 
+    sbp = self.subparts 
+    ret = [] 
+    for j in sbp 
+      ret = json ? ret.push({ "#{j.id}" => j.hints }) : ret.push(j.hints) 
+    end
+    return ret.flatten 
+  end 
+
   def mcq? 
     mcq = Subpart.where(question_id: self.id).map(&:mcq).inject(:&)
     return mcq

@@ -206,6 +206,13 @@ tab-addhints-* :
     self : vertical/topics?id=:id&context=addhints
     panel : questions/on?id=:id&self=true&context=addhints
 
+a-hints : 
+  url : 
+    self : question/layout?id=:a&context=addhints
+  show : 
+    modal : m-edit-hints 
+  update-on : question/preview
+
 tab-resolution-pending :
   url : 
     self : pages/unresolved
