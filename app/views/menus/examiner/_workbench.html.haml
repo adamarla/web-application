@@ -20,16 +20,16 @@
         %li
           = simple_link for: 'Add Videos', id: 'lnk-wb-add-videos', icon: 'icon-facetime-video'
 
-  - if me.internal && me.live? 
-    %li
-      = simple_link for: 'Audit Questions', id: 'lnk-wb-audit', icon: 'icon-search'
-    %li
-      = simple_link for: 'Block DB Slots', id: 'lnk-wb-blockdb', icon: 'icon-lock'
-    %li
-      = simple_link for: 'My Apprentices', id: 'lnk-wb-apprentices', icon: 'icon-user'
-    %li
-      = simple_link for: 'Receive Scans', id: 'lnk-wb-receive', icon: 'icon-download'
-
+  - if me.live?
+    - if me.internal 
+      %li
+        = simple_link for: 'Audit Questions', id: 'lnk-wb-audit', icon: 'icon-search'
+      %li
+        = simple_link for: 'Block DB Slots', id: 'lnk-wb-blockdb', icon: 'icon-lock'
+      %li
+        = simple_link for: 'My Apprentices', id: 'lnk-wb-apprentices', icon: 'icon-user'
+      %li
+        = simple_link for: 'Receive Scans', id: 'lnk-wb-receive', icon: 'icon-download'
     - if admin
       %li
         = simple_link for: 'Add Topics', id: 'lnk-mng-topics', icon: 'icon-plus-sign'
