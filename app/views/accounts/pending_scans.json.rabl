@@ -20,9 +20,6 @@ node(:pending) {
   }
 }
 
-node(:comments){
-  @comments.map(&:text)
-}
-
+node(:comments){ @comments }
 node(:sandbox) { @sandboxed } 
 node(:ping) { @pending.count }
