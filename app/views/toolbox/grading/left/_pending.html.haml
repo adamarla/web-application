@@ -3,14 +3,14 @@
 
 %ul.nav.nav-tabs
   %li
-    = simple_link for: (sandboxed ? 'Sandbox' : 'Exams'), id: 'tab-grd-exams', href: "#pane-grd-exams"
+    = simple_link for: (sandboxed ? 'Sandbox' : 'Exams'), id: 'tab-grade-1', href: "#pane-grade-1", reload: true
   %li
-    = simple_link for: "Questions", id: 'tab-grd-questions', href: '#pane-grd-questions'
+    = simple_link for: "Questions", id: 'tab-grade-2', href: '#pane-grade-2', reload: :true
   %li
-    = simple_link for: 'Grade', id: 'tab-grd-panel', href: '#pane-grd-panel'
+    = simple_link for: 'Grade', id: 'tab-grade-3', href: '#pane-grade-3', reload: :true
 
 .tab-content
-  #pane-grd-exams.tab-pane
-  #pane-grd-questions.tab-pane
-  #pane-grd-panel.tab-pane
+  #pane-grade-1.tab-pane
+  #pane-grade-2.tab-pane
+  #pane-grade-3.tab-pane.precious
     = render partial: 'toolbox/grading/left/rubric'

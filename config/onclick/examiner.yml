@@ -228,3 +228,23 @@ btn-upload-video-solution :
 lnk-add-examiner : 
   show : 
     modal : m-new-examiner
+
+tab-grade-1 :
+  url : 
+    self : exams/pending
+    panel : load/rubric/for?e=:id
+  autoclick :
+    tab : tab-grade-2
+
+tab-grade-2 :
+  prev : tab-grade-1
+  url :
+    self : grade/pending?id=:prev
+  autoclick :
+    tab : tab-grade-3
+
+tab-grade-3 : 
+  prev : tab-grade-1
+  id : tab-grade-2
+  url : 
+    self : scans/pending?q=:id&e=:prev

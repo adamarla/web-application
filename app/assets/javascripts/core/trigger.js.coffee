@@ -313,7 +313,7 @@ jQuery ->
 
     if reload 
       pane = karo.find.pane this 
-      karo.empty $(pane) 
+      karo.empty($(pane)) unless $(pane).hasClass('precious')
     else 
       loaded = this.getAttribute('data-loaded') is 'true'
       return true if loaded
