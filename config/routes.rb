@@ -78,6 +78,8 @@ Webapp::Application.routes.draw do
   match 'aggregate' => 'examiners#aggregate', via: :get
   match 'germane/comments' => 'examiners#germane_comments', via: :get
 
+  match 'load/rubric/for' => 'examiners#load_rubric', via: :get
+
   # Attempt 
   match 'record/fdb' => 'attempts#grade', via: [:put, :post]
   match 'load/fdb' => 'attempts#load_fdb', via: :get

@@ -29,16 +29,19 @@ window.monitor = {
           continue if pinged 
           a = $(j).children('a')[0]
           url = a.getAttribute 'data-url-self'
-          isAtomic = url.indexOf('?') is -1
-          continue unless isAtomic
+          
+          if url?
+            isAtomic = url.indexOf('?') is -1 
+            continue unless isAtomic 
+            # => url is of the form a/b - not a/b?id=x => query can be made w/o any selection
 
-          $.ajax {
-            url: url,
-            context: a, # by far, the most important line in this call
-            data: { ping: true },
-            success: (json) ->
-              monitor.tabs.update this, json.ping
-          }
+            $.ajax {
+              url: url,
+              context: a, # by far, the most important line in this call
+              data: { ping: true },
+              success: (json) ->
+                monitor.tabs.update this, json.ping
+            }
       return true 
 
     update : (tab, value) -> # tab = <a data-toggle='tab'>

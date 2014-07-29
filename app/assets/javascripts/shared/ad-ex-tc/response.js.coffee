@@ -18,19 +18,20 @@ jQuery ->
     buttons = null
 
     if url.match(/exams\/pending/)
-      target = $('#pane-grd-exams')
+      target = $('#pane-grade-1')
       karo.empty target
       key = 'exams'
       fdb.detach()
 
-    else if url.match(/grade\/pending/)
-      target = $('#pane-grd-questions')
-      karo.empty target
-      key = 'questions'
-      fdb.detach()
+    else if url.match(/load\/rubric\/for/)
       rubric.initialize '#div-rubric-criteria'
       rubric.render json.criteria
 
+    else if url.match(/grade\/pending/)
+      target = $('#pane-grade-2')
+      karo.empty target
+      key = 'questions'
+      fdb.detach()
     else if url.match(/scans\/pending/)
       fdb.attach()
       fdb.initialize json

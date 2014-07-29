@@ -51,8 +51,6 @@ class AccountsController < ApplicationController
     @sandboxed = !current_account.live?
     eid = params[:id].to_i
     e = Exam.find eid
-    rubric = Rubric.find e.rubric_id? # whatever rubric was attached to the exam
-    @criteria = rubric.criteria?
     
     if @sandboxed 
       # Only publishable exams are considered for sandboxing. 
@@ -75,7 +73,7 @@ class AccountsController < ApplicationController
     # Given: The question and the exam 
     # Known: The examiner who needs to grade them
 
-    eid = params[:tp]
+    eid = params[:e]
     q = params[:q]
     exid = current_account.loggable_id
     @sandboxed = !current_account.live?

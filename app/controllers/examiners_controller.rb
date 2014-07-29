@@ -276,4 +276,10 @@ class ExaminersController < ApplicationController
     render json: { notify: { msg: reason } }, status: :ok
   end
 
+  def load_rubric
+    e = Exam.find params[:e]
+    r = Rubric.find e.rubric_id?
+    @criteria = r.criteria?
+  end 
+
 end
