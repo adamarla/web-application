@@ -59,6 +59,7 @@ jQuery ->
         target = $("##{json.context}-pick-#{topic}")
         buttons = [{ icon: 'icon-plus-sign', cbx: 'q' }]
       else
+        fdb.detach()
         karo.tab.enable 'tab-audit-4'
         target = $("#pane-audit-4")
 

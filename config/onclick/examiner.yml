@@ -190,16 +190,16 @@ lnk-audit-form :
 tab-audit-1 : 
   url : 
     self : audit/todo
-    panel : question/preview.json?id=:id
+    panel : question/preview.json?id=:id&context=audit
 
 tab-audit-2 : 
   url : 
     self : audit/review
-    panel : question/preview.json?id=:id
+    panel : question/preview.json?id=:id&context=audit
 
 tab-audit-4 : 
   url : 
-    panel : question/preview?id=:id
+    panel : question/preview?id=:id&context=addhints
 
 tab-addhints-* : 
   url : 
