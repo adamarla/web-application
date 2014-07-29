@@ -43,6 +43,15 @@ class Subpart < ActiveRecord::Base
     return (self.mcq || self.few_lines ? 0.25 : (self.half_page ? 0.5 : 1))
   end
 
+  def comments 
+    # Returns every ** non-trivial ** comment ever written by any examiner 
+    # for this subpart in ** any quiz **  
+    cousins = Attempt.graded.where(subpart_id: self.id)
+    remarks = Remark.where(attempt_id: cousins.map(&:id).uniq)
+    tex = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).select{ |m| !m.trivial? }
+    return tex
+  end 
+
   def hints 
     return Hint.where(subpart_id: self.id).order(:index)
   end 

@@ -74,16 +74,14 @@ class AccountsController < ApplicationController
     # Known: The examiner who needs to grade them
 
     eid = params[:e]
-    q = params[:q]
+    q = QSelection.find(params[:q]).question
+    @comments = (q.comments.map(&:text) + q.hints(false).map(&:text)).uniq
+
     exid = current_account.loggable_id
     @sandboxed = !current_account.live?
 
     # { pending: [{ scan: a, student: b, gr: [{ id: 12, name: "Q6.A" }, {id: 13, name: "Q6.B"}]}, { scan: b ... } ] }
-
-    qsel = QSelection.find q
-    @comments = qsel.germane_comments 
-
-    candidates = Attempt.in_exam(eid).where(q_selection_id: q).with_scan
+    candidates = Attempt.in_exam(eid).where(q_selection_id: params[:q]).with_scan
     p = @sandboxed ? candidates.limit(5) : candidates.ungraded.assigned_to(exid)
 
     @pending = p.order(:student_id).order(:subpart_id)
