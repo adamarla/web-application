@@ -2,11 +2,13 @@
 object false
   node(:questions) {
     @questions.map{ |m|
+      n = @context == 'addhints' ? m.hints(false).count : nil
       {
         name: m.simple_uid,
         id: m.id,
         klass: m.set_filter_classes(current_account),
-        video: (m.video.nil? ? nil : m.video.uid)
+        tag: ( n.nil? ? nil : "#{n} hint(s)" )
+        # video: (m.video.nil? ? nil : m.video.uid)
       }
     }
   }
