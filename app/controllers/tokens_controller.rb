@@ -111,6 +111,7 @@ class TokensController < ApplicationController
         items = qsels.each_with_index.map{ |qsel, i|
           {
             id: "#{w.id}.#{i+1}",
+            qid: qs[i],
             subparts: qs[i].subparts.count,
             grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join(',') : nil,
             name: "Q.#{i+1}",
