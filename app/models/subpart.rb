@@ -48,7 +48,10 @@ class Subpart < ActiveRecord::Base
     # for this subpart in ** any quiz **  
     cousins = Attempt.graded.where(subpart_id: self.id)
     remarks = Remark.where(attempt_id: cousins.map(&:id).uniq)
-    tex = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).select{ |m| !m.trivial? }
+   
+    # Show the most used TeX comments first
+    a = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).order(:n_used).reverse_order
+    tex = a.select{ |m| !m.trivial? }
     return tex
   end 
 

@@ -42,6 +42,8 @@ class TexComment < ActiveRecord::Base
       break if chunk.length != 3 # the tex w/ x- and y- coordinates
       tex = TexComment.where(text: chunk[2]).first 
       tex = tex.nil? ? TexComment.create(text: chunk[2], examiner_id: e_id) : tex
+      n = tex.n_used + ( d_id.nil? ? 1 : 0 ) # increment n_used - but only if not used for a doodle
+      tex.update_attribute :n_used, n
       tex.remarks.create(x: chunk[0], y: chunk[1], attempt_id: a_id, doodle_id: d_id)
     end 
     

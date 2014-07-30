@@ -148,7 +148,10 @@ class Question < ActiveRecord::Base
     # for any subpart in any quiz in which this question appeared
     attempts = Attempt.graded.where(subpart_id: self.subpart_ids)
     remarks = Remark.where(attempt_id: attempts.map(&:id))
-    tex = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).select{ |m| !m.trivial? }
+
+    # Show the most used TeX comments first
+    a = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).order(:n_used).reverse_order
+    tex = a.select{ |m| !m.trivial? }
     return tex
   end 
 
