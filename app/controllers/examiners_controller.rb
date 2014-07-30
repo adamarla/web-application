@@ -209,12 +209,13 @@ class ExaminersController < ApplicationController
   end 
 
   def germane_comments
-    g = Attempt.find params[:g]
-    unless g.nil?
-      @comments = g.q_selection.germane_comments
-    else
-      render json: { comments: [] }, status: :ok
-    end
+    # Even though we have a handle on an Attempt, what we need are 
+    # applicable comments and hints for the whole question. The attempt the 
+    # examiner is grading now might only be a subpart of a larger question
+    a = Attempt.find params[:g]
+    q = a.nil? ? nil : a.subpart.question
+    @comments = q.nil? ? [] : ( q.comments.map(&:text) + q.hints(false).map(&:text) ).uniq
+    render json: { comments: @comments }, status: :ok
   end
 
   def aggregate
