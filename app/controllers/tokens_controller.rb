@@ -67,6 +67,11 @@ class TokensController < ApplicationController
     render status: status, json: json
   end
 
+  def view_hints
+    question = Question.find(params[:id])
+    render status: 200, json: question.hints
+  end
+
   def view_fdb
     gr_ids = params[:id].split('-').map{ |id| id.to_i }
     grs = Attempt.where(id: gr_ids)
