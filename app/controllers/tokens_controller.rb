@@ -130,7 +130,7 @@ class TokensController < ApplicationController
             marks: w.billed ? qatts.graded().map(&:marks).inject(:+): nil,
             outof: qs[i].marks,
             examiner: w.billed ? qatts.map(&:examiner_id).first : nil,
-            hintMrkr: qs[i].hints(false).map(&:id).max,
+            hintMrkr: qs[i].hints.map(&:id).max,
             fdbkMrkr: Remark.where(attempt_id: qatts.map(&:id)).order(:id).map(&:id).max
           }
         end
