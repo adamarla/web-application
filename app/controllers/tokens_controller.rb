@@ -69,7 +69,9 @@ class TokensController < ApplicationController
 
   def view_hints
     question = Question.find(params[:id])
-    render status: 200, json: question.hints
+    @hints = question.hints
+    @id = nil
+    render "question/hints"
   end
 
   def view_fdb
