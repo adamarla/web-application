@@ -19,7 +19,12 @@ class QuestionController < ApplicationController
   def hints 
     if params[:sbp].blank? # => question
       q = Question.find params[:id]
-      @hints = q.nil? ? [] : q.hints
+      hints = q.nil? ? [] : q.hints 
+      @render = {} 
+      ids = hints.map(&:subpart_id).uniq
+      ids.each do |j| 
+        @render["#{j}"] = hints.where(subpart_id: j).order(:index).map(&:text)
+      end 
       @id = nil
     else
       sbp = Subpart.find params[:sbp]

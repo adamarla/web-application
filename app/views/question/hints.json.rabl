@@ -4,7 +4,6 @@ object false
     @hints.map{ |j| { index: j.index, text: j.text } } 
   } 
   node(:hints, if: @id.nil?) { # question.hints
-    ids = @hints.map(&:subpart_id).uniq
-    ids.map{ |j| { "#{j}" => @hints.where(subpart_id: j).order(:index).map(&:text)  } } 
+    @render
   } 
-  node(:id){ @id } 
+  node(:id, unless: @id.nil?){ @id } 
