@@ -71,11 +71,11 @@ class TokensController < ApplicationController
     question = Question.find(params[:id])
     hints = question.hints
     ids = hints.map(&:subpart_id).uniq
-    render = {}
+    json = {}
     ids.each do |j|
-       render["#{j}"] = hints.where(subpart_id: j).order(:index).map(&:text)
+       json["#{j}"] = hints.where(subpart_id: j).order(:index).map(&:text)
     end
-    render status: 200, json: render
+    render status: 200, json: json 
   end
 
   def view_fdb
