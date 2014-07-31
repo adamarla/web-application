@@ -155,14 +155,12 @@ class Question < ActiveRecord::Base
     return tex
   end 
 
-  def hints(json = true) 
+  def hints
     # returns list of hints - ordered by subpart indices 
-    sbp = self.subparts 
-    ret = [] 
-    for j in sbp 
-      ret = json ? ret.push({ "#{j.id}" => j.hints }) : ret.push(j.hints) 
-    end
-    return ret.flatten 
+    ids = self.subpart_ids 
+    hints = Hint.where(subpart_id: ids).order(:subpart_id).order(:index)
+    # assuming that db-id of subpart A < db-id of subpart B
+    return hints
   end 
 
   def mcq? 
