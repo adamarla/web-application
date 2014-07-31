@@ -114,6 +114,7 @@ class TokensController < ApplicationController
           items << {
             id: "#{w.id}.#{i+1}",
             qid: qs[i].id,
+            sid: qs[i].subparts.map(&:id).join(','),
             subparts: qs[i].subparts.count,
             grId: w.billed ? qatts.map(&:id).join(',') : nil,
             name: "Q.#{i+1}",
