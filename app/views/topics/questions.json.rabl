@@ -2,7 +2,7 @@
 object false
   node(:questions) {
     @questions.map{ |m|
-      n = @context == 'addhints' ? m.hints(false).count : nil
+      n = @context == 'addhints' ? m.hints.count : nil
       {
         name: m.simple_uid,
         id: m.id,

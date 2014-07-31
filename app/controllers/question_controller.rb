@@ -17,9 +17,15 @@ class QuestionController < ApplicationController
   end 
 
   def hints 
-    obj = params[:sbp].blank? ? Question.find(params[:id]) : Subpart.find(params[:sbp])
-    @hints = obj.hints 
-    @id = params[:sbp].to_i
+    if params[:sbp].blank? # => question
+      q = Question.find params[:id]
+      @hints = q.nil? ? [] : q.hints
+      @id = nil
+    else
+      sbp = Subpart.find params[:sbp]
+      @hints = sbp.hints
+      @id = sbp.id 
+    end
   end 
 
   def store_hints 

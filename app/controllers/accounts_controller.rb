@@ -75,7 +75,7 @@ class AccountsController < ApplicationController
 
     eid = params[:e]
     q = QSelection.find(params[:q]).question
-    @comments = (q.comments.map(&:text) + q.hints(false).map(&:text)).uniq
+    @comments = (q.comments.map(&:text) + q.hints.map(&:text)).uniq
 
     exid = current_account.loggable_id
     @sandboxed = !current_account.live?
