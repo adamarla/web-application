@@ -67,6 +67,11 @@ class TokensController < ApplicationController
     render status: status, json: json
   end
 
+  def view_hints
+    question = Question.find(params[:id])
+    render status: 200, json: question.hints
+  end
+
   def view_fdb
     gr_ids = params[:id].split('-').map{ |id| id.to_i }
     grs = Attempt.where(id: gr_ids)
@@ -103,20 +108,26 @@ class TokensController < ApplicationController
         atts = w.attempts
         vers = w.signature.split(',')
 
-        items = qsels.each_with_index.map{ |qsel, i|
-          {
+        items = []
+        qsels.each_with_index do |qsel, i|
+          qatts = atts.where(q_selection_id: qsel.id)
+          items << {
             id: "#{w.id}.#{i+1}",
+            qid: qs[i].id,
+            sid: qs[i].subparts.map(&:id).join(','),
             subparts: qs[i].subparts.count,
-            grId: w.billed ? atts.where(q_selection_id: qsel.id).map(&:id).join(',') : nil,
+            grId: w.billed ? qatts.map(&:id).join(',') : nil,
             name: "Q.#{i+1}",
             img: "#{qs[i].uid}/#{vers[i]}",
             imgspan: qs[i].answer_key_span?,
-            scans: w.billed ? atts.where(q_selection_id: qsel.id).map(&:scan).join(',') : nil,
-            marks: w.billed ? atts.where(q_selection_id: qsel.id).graded().map(&:marks).inject(:+): nil,
+            scans: w.billed ? qatts.map(&:scan).join(',') : nil,
+            marks: w.billed ? qatts.graded().map(&:marks).inject(:+): nil,
             outof: qs[i].marks,
-            examiner: w.billed ? atts.where(q_selection_id: qsel.id).map(&:examiner_id).first : nil
+            examiner: w.billed ? qatts.map(&:examiner_id).first : nil,
+            hintMrkr: qs[i].hints(false).map(&:id).max,
+            fdbkMrkr: Remark.where(attempt_id: qatts.map(&:id)).order(:id).map(&:id).max
           }
-        }
+        end
 
         remarks = Remark.where(attempt_id: atts.map(&:id))
         worksheets << {
