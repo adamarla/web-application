@@ -15,6 +15,10 @@ $green: #347235 ; // rgb(87,188,32)
 $deep-blue: #01537d ; // rgb(1,83,125)
 $lightblue: lighten($deep-blue, 23%) ; // rgb(56,188,255) 
 
+.bold { font-weight: 500; } 
+.orange { color: $orange ; }
+.blue { color: $deep-blue ;} 
+.white { color: white }
 
 ul {
   > li {
@@ -238,6 +242,15 @@ span.btn-shortcut {
   font-weight: 300 ;
 } 
 
+#m-founders {   
+  font-size: 11px ;
+  text-align: justify ;
+  .title { 
+    &.large { font-size: 20px ; }
+    font: { size: 14px ; weight: 400 ; }
+  } 
+} 
+
 #badge {
   margin-top: 90px ;
   img { z-index: 6 ; }
@@ -356,7 +369,6 @@ span.btn-shortcut {
   } 
 }
 
-.white { color: white }
 
 .navbar-inverse, .dropdown-menu {
   li { 
@@ -469,14 +481,6 @@ span.btn-shortcut {
     background-color: $deep-blue ;
   }
 }
-
-.orange { 
-  color: $orange ;
-} 
-
-.blue { 
-  color: $deep-blue ;
-} 
 
 .modal { 
   line-height: 15px ;

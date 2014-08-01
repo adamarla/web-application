@@ -6,6 +6,7 @@
     = render partial: 'toolbox/generic/line'
   #modals
     = render partial: 'modals/guest/register'
+    = render partial: 'modals/guest/founders'
     = render partial: 'notifications/shared/old-browser'
   #notifications
     = render partial: 'notifications/student/enrollment-blocked'
@@ -47,9 +48,9 @@
           .span5.offset3
             %p= 'Grades will happen.'
           .span4
-            = simple_link for: "Register", id: 'btn-register', class: 'btn btn-primary btn-large pull-right'
-            = simple_link for: "Learn More", icon: 'icon-question-sign', 
-              class: 'btn btn-large btn-inverse', href: faq_path 
+            .btn-group.pull-right
+              = simple_link for: "Register", id: 'btn-register', class: 'btn btn-primary'
+              = simple_link for: 'About Us', id: 'btn-founders', class: 'btn btn-primary btn-inverse'
         .row-fluid
           .span11
             .span11.offset1{ id: 'carousel' }

@@ -11,3 +11,6 @@ btn-register :
   show : 
     modal : m-register
 
+btn-founders :
+  show :
+    modal : m-founders
