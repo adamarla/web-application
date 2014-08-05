@@ -43,6 +43,7 @@ jQuery ->
         bd.appendTo grp
     else if url.match(/pages\/unresolved/)
       target = $('#unresolved-scans')
+      buttons = [ { cbx: 'checked' } ]
       key = 'unresolved'
       clickFirst = true
     else if url.match(/unresolved\/preview/)
