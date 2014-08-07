@@ -108,6 +108,9 @@ class TokensController < ApplicationController
       ws = Worksheet.where(student_id: student.id)
       worksheets = []
       ws.each do |w|
+
+        if (!w.exam.takehome && w.received?(:none)) next
+
         quiz = w.exam.quiz
         qsels = quiz.q_selections.order(:index)
         qs = qsels.map(&:question)
@@ -141,7 +144,6 @@ class TokensController < ApplicationController
           quiz: quiz.name,
           price: 20, # Quiz.Price?
           locn: "#{quiz.uid}/#{w.uid}",
-          fdbkMrkr: remarks.count == 0 ? 0 : remarks.order(:id).map(&:id).last,
           layout: w.exam.takehome ? nil : quiz.page_breaks_after,
           questions: items
 	}
