@@ -61,6 +61,7 @@ class Worksheet < ActiveRecord::Base
     # Returns true if scans have been received for some or all 
     # of the responses  
 
+    return false unless self.billed # an unbilled worksheet could not have been received!
     return ( extent == :none ? false : true ) if self.received
 
     gr = Attempt.where(worksheet_id: self.id)
