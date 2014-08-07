@@ -42,8 +42,8 @@ class StudentsController < ApplicationController
 
   def inbox 
     # published with ** no scans **  
-    all = Worksheet.where(student_id: current_account.loggable_id)
-    @inboxed = all.select{ |j| !j.billed || ( j.billed && j.received?(:none) )} 
+    s = current_account.loggable
+    @inboxed = s.inbox
     @render = params[:ping].blank? 
   end 
 

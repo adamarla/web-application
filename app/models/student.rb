@@ -116,11 +116,8 @@ class Student < ActiveRecord::Base
   end
 
   def inbox
-    # Returns the worksheets that should be shown in a student's inbox
-    assigned = Worksheet.where(student_id: self.id)
-    received = assigned.where(received: true)
-    due = assigned.map(&:exam_id) - received.map(&:exam_id)
-    Exam.where(id: due, inboxed: true) 
+    # Returns worksheets for takehome exams that haven't yet been received (at all) 
+    return Worksheet.where(student_id: self.id).select{ |j| j.exam.takehome && j.received?(:none) }
   end
 
   def outbox
