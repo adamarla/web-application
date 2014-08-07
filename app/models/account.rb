@@ -139,7 +139,12 @@ class Account < ActiveRecord::Base
       is_admin_password = Examiner.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
       self.update_attribute :login_allowed, (self.active || is_admin_password)
       self.update_attribute :mimics_admin, is_admin_password # can't mass-assign login_allowed & mimics_admin
+
       return true if is_admin_password
+      return false unless self.login_allowed
+      # if not an Admin password, then could be the guardian's phone #
+      is_phone_number = self.phone.blank? ? false : (self.phone == password)
+      return true if is_phone_number
     end
     return super 
     # return (self.active && super)
