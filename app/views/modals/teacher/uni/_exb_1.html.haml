@@ -1,26 +1,28 @@
 
 #m-exbopts-1.modal.fade.wide{ role: :dialog } 
   .row-fluid
-    %h1.span8.offset1= "Who will do the printing?" 
+    %h1.span8.offset1= "This quiz will be done ..."
     .span3
       = simple_button for: 'Make PDF', icon: 'icon-cog'
       
   .row-fluid.exbopt{ id: 'as-classwork' }
     .span2.offset1
-      = image_tag 'quick-trial/printer.png'
+      = image_tag 'notifications/classroom.png'
     .span7
-      %h2= "I will"
+      %h2= "... in Class"
       %p
         A single downloadable PDF - containing personalized worksheets for each student - will be created. 
-        You will have to print it out and distribute amongst students
+        %span.orange= "Printing & scanning will be done by you."
 
   .row-fluid.exbopt{ id: 'as-homework' }
     .span2.offset1
       = image_tag "notifications/home.png"
     .span7
-      %h2= "Students will"
+      %h2= "... at Home"
       %p
-        Each student will get a downloadble PDF in their account - which they will 
-        have to print at home or in school. No downloadable PDF 
-        will be created in your account
+        %span.orange= 'No printing or scanning required.' 
+        Students will use our mobile app - Scanbot - to see questions 
+        on their Android phones and 
+        %span.orange= 'write their solutions on plain paper.'
+        They will also upload their work using the app.
         
