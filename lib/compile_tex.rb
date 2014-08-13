@@ -42,7 +42,7 @@ class CompileTex < Struct.new(:id, :type)
     if obj.class.name == "Worksheet"
       e = obj.exam
       takehome = (e.takehome || e.quiz.teacher.online)
-      Mailbot.delay.quiz_assigned obj.id 
+      Mailbot.delay.quiz_assigned(obj.id) if takehome 
     end
   end
 
