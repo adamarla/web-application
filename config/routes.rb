@@ -114,6 +114,11 @@ Webapp::Application.routes.draw do
   match 'topics/list' => 'topics#list', via: :get
   match 'questions/on' => 'topics#questions', via: :get
 
+  # Puzzle 
+  match 'puzzle/add' => 'puzzles#create', via: :post 
+  match 'puzzle/load' => 'puzzles#load', via: :get 
+  match 'puzzle/next' => 'puzzles#next', via: :get 
+
   # Question
   match 'tag/question' => 'question#tag', via: :post
   match 'questions/list' => 'question#list', via: :get

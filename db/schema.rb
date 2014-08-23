@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140729202746) do
+ActiveRecord::Schema.define(:version => 20140821073505) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -305,6 +305,18 @@ ActiveRecord::Schema.define(:version => 20140729202746) do
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
   end
+
+  create_table "puzzles", :force => true do |t|
+    t.text     "text"
+    t.integer  "question_id"
+    t.integer  "version",     :default => 0
+    t.integer  "n_picked",    :default => 0
+    t.boolean  "active",      :default => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "puzzles", ["question_id"], :name => "index_puzzles_on_question_id"
 
   create_table "q_selections", :force => true do |t|
     t.integer  "quiz_id"
