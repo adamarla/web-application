@@ -355,12 +355,15 @@ jQuery ->
     $("##{autoLink}").click() if autoLink?
 
     ###
-      If corresponding tab-pane has statically rendered .tabs-left, 
-      then autoclick the first tab
+      If corresponding tab-pane has statically rendered .tabs-left then: 
+         1. reset childtabs (conditional)
+         2. auto-click the first tab (always)
     ###
     pane = $($(this).attr('href'))
+    resetTabs = this.getAttribute('data-childtabs-reset') is 'true'
     for m in pane.find('.tabs-left')
       tabs = $(m).find('ul > li')
+      $(j).removeClass('active') for j in tabs if resetTabs
       firstTab = tabs.eq(0).children('a').eq(0)
       firstTab.click()
 

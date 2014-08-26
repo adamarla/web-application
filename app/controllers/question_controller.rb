@@ -83,12 +83,12 @@ class QuestionController < ApplicationController
 
           # [#108]: New question? Remember to send it for auditing by another examiner
           if question.auditor.nil?
-            auditor = Examiner.where{ id != question.examiner_id }.available.map(&:id).sample(1).first
+            auditor = Examiner.internal.where{ id != question.examiner_id }.available.map(&:id).sample(1).first
           else
             auditor = question.auditor
           end
 
-          question.update_attributes difficulty: level, answer_key_span: span, 
+          question.update_attributes difficulty: level, answer_key_span: span, available: true,
                                      calculation_aid: calculator, auditor: auditor
 
           # If the question was sent by a teacher, then update the corresponding 

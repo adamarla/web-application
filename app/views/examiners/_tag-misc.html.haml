@@ -4,9 +4,7 @@
   -# Use this fact to your advantage by specifying the requisite data-* attributes
 
   = simple_form_for :misc, remote: true, defaults: { label: false },
-    :html => { 'data-action' => 'tag/question?id=:id', 
-               'data-id' => 'tab-tag-pending', 
-               'data-prev' => 'tab-tag-topic'} do |f|
+    html: { 'data-action' => 'tag/question?id=:id', 'data-id' => 'tab-untagged-1' } do |f| 
     .row-fluid
       .span4
         = f.input :level, hint: 'target level', selected: '3',
