@@ -67,6 +67,19 @@ class TokensController < ApplicationController
     render status: status, json: json
   end
 
+  def validate
+    account = Account.find_by_email(params[:email].downcase)
+    valid = params[:group_code].nil? || !Sektion.where(uid: "#{params[:group_code]}".upcase).first.nil?
+           
+    message = "OK"
+    if !account.nil?
+      message = "EMAIL" 
+    elsif !valid
+      message = "GROUP_CODE"
+    end
+    render status: 200, json: message
+  end
+
   def view_hints
     question = Question.find(params[:id])
     hints = question.hints
@@ -99,6 +112,30 @@ class TokensController < ApplicationController
       grs.where(q_selection_id: qsel.id).map(&:id).join('-')
     }
     render status:200, json: { gr_ids: grIds }
+  end
+
+  def match_name
+    account = Account.find_by_email(params[:email].downcase)
+    sk = Sektion.where(uid: "#{params[:sektion]}".upcase).first
+    candidates = []
+    if sk.nil?
+      message = "Invalid Group Code"
+      render status:500, json: message
+    else
+      gold = account.loggable
+      unmatched = sk.students.where(shell: true)
+      candidates = unmatched.select{ |s| Student.min_levenshtein_distance(s, gold) < 6 }
+      render status:200, json: candidates
+    end
+  end
+
+  def claim_account
+    account = Account.find_by_email(params[:email].downcase)
+    target_id = params[:target_id]
+    target = Student.find target_id
+    src = account.loggable
+    merged = Student.merge target, src
+    render json: { success: merged }, status: :ok
   end
 
   private
