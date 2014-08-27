@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140726194928) do
+ActiveRecord::Schema.define(:version => 20140827121930) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -427,17 +427,16 @@ ActiveRecord::Schema.define(:version => 20140726194928) do
   create_table "stabs", :force => true do |t|
     t.integer  "student_id"
     t.integer  "examiner_id"
-    t.integer  "question_id"
     t.integer  "puzzle_id"
     t.integer  "strength",                  :default => -1
     t.string   "scan",        :limit => 40
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
+    t.integer  "subpart_id"
   end
 
   add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"
   add_index "stabs", ["puzzle_id"], :name => "index_stabs_on_puzzle_id"
-  add_index "stabs", ["question_id"], :name => "index_stabs_on_question_id"
   add_index "stabs", ["student_id"], :name => "index_stabs_on_student_id"
 
   create_table "student_rosters", :force => true do |t|
@@ -506,8 +505,9 @@ ActiveRecord::Schema.define(:version => 20140726194928) do
     t.text     "text"
     t.integer  "examiner_id"
     t.boolean  "trivial"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.integer  "n_used",      :default => 0
   end
 
   create_table "topics", :force => true do |t|
