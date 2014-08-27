@@ -251,81 +251,81 @@ span.btn-shortcut {
   } 
 } 
 
-#badge {
-  margin-top: 90px ;
-  img { z-index: 6 ; }
-}
-
-#shopfront { 
-  margin-top: -100px ;
-  color: white ;
-
-  #carousel { 
-    padding-top: 5px ;
+#tagline { 
+  text-align: center ;
+  font: { 
+    size: 22px ;
+    weight: 400 ;
   } 
-
-  .row-fluid { 
-    padding-bottom: 20px ;
-    margin-bottom: 15px ;
+  min-height: 50px ;
+  background-color: #01537d ;
+  padding-top: 18px ;
+  z-index: 6 ;
+  border: { 
+    top-left-radius: 20px ;
+    top-right-radius: 20px ;
   } 
+} 
 
-  .carousel-control { 
-    top: 60% ; 
-    font-size: 50px ;
-    &.right { 
-      top: 80% ;
-      right: 0px ;
-      left: 15px ;
+#potd { 
+  margin-top: -70px ;
+  .small-text {
+    font: { 
+      size: 12px ;
     } 
   } 
+  > div { 
+    padding: { 
+      top: 20px ;
+      bottom: 20px ;
+    } 
 
-  .carousel-caption { 
-    color: white ;
-    top: 0px ;
-    min-height: 300px ;
-    background: transparent ; 
+    .title { 
+      color: $orange ;
+    } 
 
-    p { 
-      line-height: 19px ;
-      margin-bottom: 10px ;
-      font-size: 14px ;
-      &.title { 
-        font: { 
-          size: 20px ;
-          weight: 500 ;
-        } 
-        line-height: 30px ;
-        border-bottom: 2px solid $deep-blue ;
+    img { 
+      padding: 10px 15px ;
+      border-radius: 7px ;
+      &.blue {
+        background-color: #01537d ;
+      } 
+      &.gray { 
+        background-color: $panel-color; 
       } 
     } 
 
-    img, .number { 
-      border: 2px solid $deep-blue ; 
-      background: $deep-blue ;
-    }
-
-    img {
-      padding: 5px ;
-      border-radius: 6px ;
+    &:first-child { 
+      padding: { 
+        left: 30px ;
+        right: 10px ;
+      } 
     } 
 
-    .number { 
-      max-width: 45px ;
-      margin-bottom: 15px ;
-      padding: 12px 4px;
-      text-align: center ;
-      vertical-align: middle ;
-      font-size: 25px ;
-      font-weight: 400 ;
-      border-radius: 8px ;
+    &:last-child { 
     } 
-
-    &+ img { 
-      max-height: 300px ;
-    } 
-
-
   } 
+} 
+
+#next-steps { 
+  border-top: 1px solid white ; 
+  > div { 
+    border-radius: 5px ;
+    &:hover { 
+      background-color: $panel-color;
+    } 
+    > a { 
+      cursor: pointer ;
+      font-size: 15px ;
+      text-decoration: none ;
+      color: white ;
+    } 
+  } 
+} 
+
+#pzl-daily { 
+  min-height: 200px ;
+  .MathJax { background: transparent ; }
 } 
 
 .small-text {
@@ -871,6 +871,10 @@ button[data-toggle='button'] {
       color: $orange ; 
     } 
   }
+
+  &+ div { 
+    margin-top: 100px ;
+  } 
 } 
 
 #desktop { 

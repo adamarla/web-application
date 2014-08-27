@@ -1,0 +1,29 @@
+
+#potd.row-fluid.hero-unit
+  .row-fluid
+    .span6 
+      .row-fluid
+        .span3
+          = image_tag 'landing/puzzle-27479.png', size: '40x40', class: :blue 
+          .small-text= 'Problem of the Day'
+        .span8
+          #pzl-daily
+    .span6
+      .row-fluid
+        .span3
+          = image_tag 'landing/grader-14894.png', size: '40x40', class: :blue 
+          .small-text= 'Get it checked?'
+        .span9
+  .row-fluid{ id: 'next-steps' }
+    .span2.offset2
+      %a{ id: 'btn-register'}
+        = image_tag 'landing/backpack.png', size: '30x30'
+        Register
+    .span3
+      %a{ id: 'btn-register'}
+        = image_tag 'scanbot-trans.png', size: '25x25'
+        Download Mobile App
+    .span2
+      %a{ id: 'btn-register'}
+        = image_tag 'landing/group-3359.png', size: '30x30'
+        About Us

@@ -21,6 +21,17 @@
     = stylesheet_link_tag "application" 
     = javascript_include_tag "application", "welcome"
     = javascript_include_tag "external" if Rails.env == "production"
+    %script{ type: "text/x-mathjax-config" } 
+      MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready", function() {
+      var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT ;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif") ;
+      }) ;
+      MathJax.Hub.Config({
+      styles: {
+      "span" : { "font-size" : "14px" , "font-weight" : "100" }
+      }
+      }) ;
+    = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = csrf_meta_tag
   %body 
     = render partial: 'toolbox/generic/spinner'
@@ -40,6 +51,13 @@
                         %input.input-medium{ type: :password, name: "account[password]", placeholder: "Password" }
                         %button.btn.btn-large.btn-primary{ type: :submit }= "Sign In"
 
+      .row-fluid 
+        #badge.span2
+          = image_tag 'landing/finalist.png'
+        #tagline.span5.offset1= 'Grades will happen'
+      = render partial: 'puzzles/daily'
+
+    -#
       .row-fluid{ id: 'badge' }
         .span2
           = image_tag "landing/finalist.png"

@@ -3,9 +3,10 @@ class PuzzlesController < ApplicationController
   respond_to :json
 
   def create 
-    p = Puzzle.new question_id: params[:id], text: params[:text]
-    if p.save
-      render json: { status: :saved }, status: :ok
+    p = params[:puzzle]
+    pzl = Puzzle.new question_id: p[:id], text: p[:text]
+    if pzl.save
+      render json: { id: pzl.id }, status: :ok
     else
       render json: { status: :error }, status: :ok
     end 

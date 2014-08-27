@@ -166,6 +166,9 @@ jQuery ->
     # Start monitoring progress of any pending Delayed::Jobs
     monitor.add response, true
 
+    # Initialize and/or render puzzles 
+    puzzle.initialize response
+
     # Monitor horizontal tabs rendered within .g-panels  
     # monitor.tabs.start()
 

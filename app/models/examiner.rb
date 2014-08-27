@@ -25,6 +25,7 @@ class Examiner < ActiveRecord::Base
   has_many :suggestions
   has_many :doodles, dependent: :destroy # will destroy associated remarks 
   has_many :remarks # choosing not to destroy 'live' remarks  
+  has_many :stabs
 
   validates_associated :account
 
