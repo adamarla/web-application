@@ -80,3 +80,7 @@ tab-mng-topics-2 :
   url : 
     self : vertical/topics?id=:prev&context=edit
   prev : tab-mng-topics-1
+
+lnk-add-puzzle : 
+  show : 
+    modal : m-new-puzzle

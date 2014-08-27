@@ -21,7 +21,9 @@
         = render partial: 'toolbox/rubric/buttons'
         = render partial: 'toolbox/rubric/criterion'
       - if j == :modals
-        = render partial: 'modals/admin/new-criterion' if is_admin
+        - if is_admin
+          = render partial: 'modals/admin/new-criterion' 
+          = render partial: 'modals/admin/new-puzzle' 
 
 - layout = { left: [ [2, 'admin/mng-topics'],
                      [3, 'examiners/tag-pending'],
@@ -58,7 +60,7 @@
       }) ;
       MathJax.Hub.Config({
       styles: {
-      "span.mtext" : { "font-size" : "14px" , "font-weight" : 300 }
+      "span.mtext" : { "font-size" : "14px" , "font-weight" : '300' }
       }
       }) ;
     = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"

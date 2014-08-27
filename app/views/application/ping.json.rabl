@@ -2,6 +2,7 @@
 object false 
   node(:deployment) { @dep }
   node(:type, unless: @type.nil? ) { @type }
+  node(:admin){ @admin }
   node(:blocked) { @blocked }
   node(:new) { @newbie }
   node(:monitor) {
@@ -11,6 +12,7 @@ object false
     }
   }
 
-  # node(:demos, unless: @demos.blank?) {
-  #  @demos.map{ |m| { id: m.parent_id, path: m.download_pdf? } }
-  #}
+  node(:puzzle, unless: @puzzle.nil?) { 
+    { id: @puzzle.id, text: @puzzle.text }
+  } 
+

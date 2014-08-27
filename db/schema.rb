@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140729202746) do
+ActiveRecord::Schema.define(:version => 20140825052858) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -306,6 +306,18 @@ ActiveRecord::Schema.define(:version => 20140729202746) do
     t.datetime "updated_at",                     :null => false
   end
 
+  create_table "puzzles", :force => true do |t|
+    t.text     "text"
+    t.integer  "question_id"
+    t.integer  "version",     :default => 0
+    t.integer  "n_picked",    :default => 0
+    t.boolean  "active",      :default => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "puzzles", ["question_id"], :name => "index_puzzles_on_question_id"
+
   create_table "q_selections", :force => true do |t|
     t.integer  "quiz_id"
     t.integer  "question_id"
@@ -411,6 +423,22 @@ ActiveRecord::Schema.define(:version => 20140729202746) do
     t.boolean  "active"
     t.boolean  "auto_renew_immediate",               :default => false
   end
+
+  create_table "stabs", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "examiner_id"
+    t.integer  "question_id"
+    t.integer  "puzzle_id"
+    t.integer  "strength",                  :default => -1
+    t.string   "scan",        :limit => 40
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"
+  add_index "stabs", ["puzzle_id"], :name => "index_stabs_on_puzzle_id"
+  add_index "stabs", ["question_id"], :name => "index_stabs_on_question_id"
+  add_index "stabs", ["student_id"], :name => "index_stabs_on_student_id"
 
   create_table "student_rosters", :force => true do |t|
     t.integer "student_id"

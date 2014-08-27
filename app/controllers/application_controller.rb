@@ -11,22 +11,26 @@ class ApplicationController < ActionController::Base
 
   def ping
     @dep = Rails.env
+    @puzzle = nil
 
     unless current_account.nil?
       obj = current_account.loggable 
       @blocked = current_account.login_allowed.nil? ? false : !current_account.login_allowed
-    else
+    else # main landing page
       obj = nil 
       @blocked = false
+      @puzzle = Puzzle.of_the_day
     end 
 
     @type = obj.nil? ? nil : obj.class.name
     @q = nil
     @e = nil
+    @admin = false
     
     case @type
       when "Student"
         @newbie = current_account.sign_in_count < 4 #StudentRoster.where(student_id: obj.id).count < 1
+        @puzzle = Puzzle.of_the_day
       when "Teacher"
         @newbie = obj.new_to_the_site?
 
@@ -41,6 +45,7 @@ class ApplicationController < ActionController::Base
         end
       when "Examiner"
         @newbie = !obj.live? 
+        @admin = obj.is_admin
       else
         @newbie = false
     end

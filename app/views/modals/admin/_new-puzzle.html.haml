@@ -1,0 +1,12 @@
+
+#m-new-puzzle.modal.fade.lateral-slide{ role: :dialog }
+  .row-fluid
+    .span2
+    .span4
+      = simple_form_for :puzzle, remote: true, url: puzzle_add_path, defaults: { label: false } do |f| 
+        = f.input :id, as: :string, hint: 'Question ID'
+        = f.input :text, as: :text, hint: 'LaTeX. Use $\\\\$ for newlines', input_html: { rows: 10, id: 'pzl-tex', class: 'span11' }
+        = simple_button for: 'Submit', class: 'btn-primary', type: :submit
+    .span6
+      #pzl-tex-preview
+

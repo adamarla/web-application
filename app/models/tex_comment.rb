@@ -8,6 +8,7 @@
 #  trivial     :boolean
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  n_used      :integer         default(0)
 #
 
 class TexComment < ActiveRecord::Base

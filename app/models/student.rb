@@ -29,6 +29,8 @@ class Student < ActiveRecord::Base
   has_many :exams, through: :worksheets
   has_many :disputes, dependent: :destroy
 
+  has_many :stabs, dependent: :destroy 
+
   validates :name, presence: true
   before_save :ensure_account, unless: :shell
   validates_associated :account
