@@ -27,7 +27,8 @@
         -#= render partial: 'modals/customer/transfer', locals: { customer: customer }
         -#= render partial: 'modals/customer/refund', locals: { customer: customer }
 
-- control_panel = [ {for: 'Assignments', id: 'a-st-main'},
+- control_panel = [ {for: 'Daily Puzzle', id: 'a-daily-puzzle'},
+                    {for: 'Assignments', id: 'a-st-main'},
                     {for: 'Lessons', id: 'a-courses', class: (current_account.mimics_admin ? nil : 'hidden' )},
                     {for: 'Enroll', id: 'lnk-enroll-self'},
                     {for: "Hello, #{student.first_name}", id: 'm-account'} ]
@@ -41,7 +42,8 @@
                      ['X', nil],
                      [1, 'course/view/tiles'],
                      [2, 'course/view/exploded'], 
-                     [3, 'customers/transactions'] ] }
+                     [3, 'customers/transactions'] ],
+             superwide: [ [1, 'puzzles/daily'] ]}
 
 !!!5
 
@@ -79,7 +81,7 @@
 
       #desktop.row-fluid
         - layout.each do |pnl, child|
-          - width = pnl != :wide ? 'span4' : 'span7'
+          - width = pnl == :wide ? 'span7' : ( pnl == :superwide ? 'span11' : 'span4' )
           %div{ id: "#{pnl}", class: "g-panel #{width}" }
             -# Add paginator 
             = render partial: 'toolbox/custom/paginator', locals: { id: "#{pnl}-paginator", url: '#' }
