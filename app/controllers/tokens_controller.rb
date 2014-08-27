@@ -27,7 +27,8 @@ class TokensController < ApplicationController
         :token => @account.authentication_token, 
         :email => @account.email,
         :name  => name,
-        :ws    => worksheets
+        :ws    => worksheets,
+        :count => worksheets.count
       }
     end
     render status: status, json: json
@@ -42,6 +43,25 @@ class TokensController < ApplicationController
       @account.reset_authentication_token!
       status = 200 
       json = { :token => params[:id] }
+    end
+    render status: status, json: json
+  end
+
+  def refresh
+    account = Account.find_by_email(params[:email].downcase)
+    if account.nil?
+      status = 401 
+      json = { :message => "Invalid email" }
+    elsif account.authentication_token != params[:token]
+      status = 404 
+      json = { :message => "Not Authorized" }
+    else 
+      status = 200
+      json = { 
+        :name   => account.loggable.first_name,
+        :pzl_id => 1000, # today's puzzle id?
+        :count  => get_worksheets(account).count
+      }
     end
     render status: status, json: json
   end
