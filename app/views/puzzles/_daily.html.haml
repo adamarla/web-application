@@ -29,28 +29,16 @@
               Don't forget to <span class='orange'>register</span> first. Its the only 
               way we will know who you are.
   .row-fluid{ id: 'next-steps' }
+    .span3{ class: (current_account.nil? ? 'offset2' : 'offset3') }
+      %a{ id: 'a-scanbot', href: 'https://play.google.com/store/apps/details?id=com.gradians.collect&hl=en', target: '_blank' }
+        = image_tag 'scanbot-trans.png', size: '25x25'
+        Download Mobile App
+    .span2
+      %a{ id: 'a-founders'}
+        = image_tag 'landing/group-3359.png', size: '30x30'
+        About Us
     - if current_account.nil?
-      .span2.offset2
+      .span2
         %a{ id: 'a-register', data: { 'no-touch' => :true }, href: '#' }
           = image_tag 'landing/backpack.png', size: '30x30'
           Register
-      .span3
-        %a{ id: 'a-register', href: 'https://play.google.com/store/apps/details?id=com.gradians.collect&hl=en', target: '_blank' }
-          = image_tag 'scanbot-trans.png', size: '25x25'
-          Download Mobile App
-      .span2
-        %a{ id: 'a-founders'}
-          = image_tag 'landing/group-3359.png', size: '30x30'
-          About Us
-
-    - unless current_account.nil?
-      .span3.offset3
-        %a{ id: 'a-register', href: 'https://play.google.com/store/apps/details?id=com.gradians.collect&hl=en', 
-        target: '_blank', data: { 'no-touch' => :true  } }
-          = image_tag 'scanbot-trans.png', size: '25x25'
-          Download Mobile App
-      .span2
-        %a{ id: 'a-founders', data: {'no-touch' => :true } }
-          = image_tag 'landing/group-3359.png', size: '30x30'
-          About Us
-
