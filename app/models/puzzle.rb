@@ -27,10 +27,15 @@ class Puzzle < ActiveRecord::Base
     where(active: true).first
   end 
 
+  def self.days_ago(n)
+    d = n.days.ago.to_date
+    Puzzle.where(last_picked_on: d).first
+  end 
+
   def pick 
     a = Puzzle.where(active: true).first 
     a.update_attribute(:active, false) unless a.nil?
-    self.update_attributes active: true, n_picked: (self.n_picked + 1)
+    self.update_attributes active: true, n_picked: (self.n_picked + 1), last_picked_on: Date.today
   end 
 
   def expires_in?
