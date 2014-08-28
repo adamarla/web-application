@@ -20,6 +20,8 @@ class Stab < ActiveRecord::Base
   belongs_to :subpart 
   belongs_to :puzzle 
 
+  has_many :remarks, dependent: :destroy
+
   # Should we - or should we not - allow students to take multiple stabs at the same question?
   validates :student_id, uniqueness: { scope: :subpart_id }
 
@@ -29,6 +31,15 @@ class Stab < ActiveRecord::Base
 
   def self.ungraded 
     where('strength IS ?', -1) 
+  end 
+
+  def self.with_scan 
+    where('scan IS NOT ?', nil)
+  end 
+
+  def self.dated(d) # d = date as a string, like 'Dec 27,2001'
+    select{ |j| j.created_at.to_date == Date.parse(d) } 
+    # Could be expensive. Try calling last in a call chain
   end 
 
   def self.by(id) 

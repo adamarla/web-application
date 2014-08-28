@@ -16,8 +16,9 @@
 class Remark < ActiveRecord::Base
   # attr_accessible :attempt_id, :tex, :x, :y
   belongs_to :attempt
-  belongs_to :tex_comment
   belongs_to :doodle
+  belongs_to :stab
+  belongs_to :tex_comment
   belongs_to :examiner # if doodle then doodle's author else the examiner who graded the attempt
 
   after_create :seal 
