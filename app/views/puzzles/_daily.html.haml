@@ -20,18 +20,14 @@
         .span6
           .title.orange= 'Wanna get it checked?'
           %p 
-            Give the problem a shot and send your solution over. We would be happy 
-            to give it a look.
+            Solve the problem on paper and <span class='orange'>use our mobile app</span> 
+            to take a snap of your solution. Then upload it using the same app. Its that simple! 
+          %p 
+            We would be more than happy to give your solution a look over.
           - if current_account.nil?
             %p
-              %span.orange= 'Register first' 
-              so that we know who you are. 
-          - unless current_account.nil?
-            %p
-              %span.orange= 'You will need our mobile app.'
-          %p
-            Then, solve the problem on paper and use our mobile app to take a 
-            snap of your solution and upload it. Its that simple!
+              Don't forget to <span class='orange'>register</span> first. Its the only 
+              way we will know who you are.
   .row-fluid{ id: 'next-steps' }
     - if current_account.nil?
       .span2.offset2
