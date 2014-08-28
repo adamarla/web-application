@@ -5,15 +5,20 @@
       .row-fluid
         .span3
           = image_tag 'landing/puzzle-27479.png', size: '40x40', class: :blue 
-          .stopwatch.push-down{ id: 'puzzle-expiry' }
+          #puzzle-stopwatch.push-down
+            .small-text
+              %i.icon-time.icon-white
+              Submit in
+            .stopwatch{ id: 'puzzle-expiry' }
         .span8
+          .title.orange= 'Problem of the Day'
           #pzl-daily
     .span6
       .row-fluid
         .span3
           = image_tag 'landing/grader-14894.png', size: '40x40', class: :blue 
-          .small-text= 'Get it checked?'
         .span6
+          .title.orange= 'Wanna get it checked?'
           %p 
             Give the problem a shot and send your solution over. We would be happy 
             to give it a look.
