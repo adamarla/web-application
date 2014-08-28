@@ -35,6 +35,11 @@
 ## Students 
 ##############################################################################
 
+a-daily-puzzle : 
+  show : 
+    superwide: superwide-1
+  default : true
+
 a-courses :
   show : 
     left: left-3
@@ -48,7 +53,6 @@ a-st-main :
   show : 
     left : left-1
     wide : wide-X
-  default : true
 
 tab-st-rc-1 :
   url : 

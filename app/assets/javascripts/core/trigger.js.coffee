@@ -76,7 +76,7 @@ window.trigger = {
     noTouch = if noTouch? then (noTouch is 'true') else false
 
     unless noTouch
-      for j in ['left', 'right', 'middle', 'wide']
+      for j in ['left', 'right', 'middle', 'wide', 'superwide']
         show = link.getAttribute("data-show-#{j}")
         if typeof show is 'string'
           continue if show is 'as-is'
@@ -199,18 +199,6 @@ jQuery ->
   	async: false
 
   $.ajax pingArgs
-
-  $('#how-it-works').carousel({
-    interval : 10000
-  })
-
-
-  ###
-    Add and initialize all stopwatches 
-  ###
-  for m in $('.stopwatch')
-    stopWatch.add m
-  stopWatch.initialize()
 
   ###
     HUGELY IMPORTANT: Detect whether or not client browser supports the HTML5 

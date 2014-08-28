@@ -33,4 +33,9 @@ class Puzzle < ActiveRecord::Base
     self.update_attributes active: true, n_picked: (self.n_picked + 1)
   end 
 
+  def expires_in?
+    return nil unless self.active 
+    return ( 86400 - Time.now.seconds_since_midnight ).floor
+  end 
+
 end

@@ -4,7 +4,7 @@ window.puzzle = {
   target : null, 
 
   initialize : (json) -> # json as return by /ping 
-    unless json.puzzle?
+    unless json.puzzle? # null for everyone other than guests and students 
       if json.type is 'Examiner'
         if json.admin
           puzzle.target = $('#pzl-tex-preview')[0]
@@ -18,6 +18,13 @@ window.puzzle = {
           $('#m-new-puzzle form').submit ->
             return puzzle.submit() 
       return false
+
+    # Start the stopwatch showing remaining time 
+    if json.puzzle.expiry? 
+      stopWatch.initialize()
+      watch = $('#puzzle-expiry')[0]
+      stopWatch.add watch
+      stopWatch.start watch, json.puzzle.expiry
 
     puzzle.source = null 
     puzzle.target = $('#pzl-daily')[0]

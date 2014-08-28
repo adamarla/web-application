@@ -44,7 +44,7 @@ module ApplicationHelper
         spec = onclick[k]
         spec.is_a?(Hash) ? spec.keys.each { |j| data["#{k}-#{j}"] = spec[j] } : (data[k] = spec)
         if k == 'show'
-          ['left', 'middle', 'right', 'wide'].each do |v|
+          ['left', 'middle', 'right', 'wide', 'superwide'].each do |v|
             is_no_touch &= spec[v].blank?
             break unless is_no_touch 
           end 

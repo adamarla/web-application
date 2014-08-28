@@ -17,11 +17,11 @@ class Stab < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :student 
   belongs_to :examiner 
-  belongs_to :question 
+  belongs_to :subpart 
   belongs_to :puzzle 
 
   # Should we - or should we not - allow students to take multiple stabs at the same question?
-  validates :student_id, uniqueness: { scope: :question_id }
+  validates :student_id, uniqueness: { scope: :subpart_id }
 
   def self.graded
     where('strength > ?', -1) 
@@ -64,7 +64,7 @@ class Stab < ActiveRecord::Base
   end
 
   def question? 
-    return (self.question_id.nil? ? self.puzzle.question : self.question) 
+    return (self.subpart_id.nil? ? self.puzzle.question : self.subpart.question) 
   end
 
 end

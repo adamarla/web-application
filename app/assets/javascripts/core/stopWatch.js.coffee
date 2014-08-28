@@ -58,7 +58,7 @@ window.stopWatch = {
   display : (time) ->
     # Returns stored seconds in hh:mm:ss format
     hours = Math.floor(time / 3600)
-    minutes = Math.floor(time / 60)
+    minutes = Math.floor((time % 3600) / 60)
     seconds = time % 60
 
     h = if hours > 9 then "#{hours}" else "0#{hours}"

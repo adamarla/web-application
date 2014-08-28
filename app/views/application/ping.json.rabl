@@ -13,6 +13,6 @@ object false
   }
 
   node(:puzzle, unless: @puzzle.nil?) { 
-    { id: @puzzle.id, text: @puzzle.text }
+    { id: @puzzle.id, text: @puzzle.text, expiry: @puzzle.expires_in? }
   } 
 
