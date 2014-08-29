@@ -171,7 +171,7 @@ path            ( common to all )
         else
           pzl_id = nil
         end 
-        stb = Stab.new(student_id: student, scan: path, subpart_id: j, puzzle_id: pzl_id)
+        Stab.create(student_id: student, scan: path, subpart_id: j, puzzle_id: pzl_id)
       end 
     else # is a stab
       ids = type == 'GR' ? params[:id].split('-') : Worksheet.unmangle_qrcode(params[:id])
