@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140828103226) do
+ActiveRecord::Schema.define(:version => 20140829062226) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -431,7 +431,7 @@ ActiveRecord::Schema.define(:version => 20140828103226) do
     t.integer  "student_id"
     t.integer  "examiner_id"
     t.integer  "puzzle_id"
-    t.integer  "strength",                  :default => -1
+    t.integer  "quality",                   :default => -1
     t.string   "scan",        :limit => 40
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
