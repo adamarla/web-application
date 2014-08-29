@@ -145,45 +145,58 @@ class ExaminersController < ApplicationController
     render json: { status: status }, status: :ok
   end
 
+###
+               Puzzle    Question    Quiz(takehome)    Quiz(in-class)
+               ------    --------    --------------    --------------
+type            PZL       QSN         GR                  QR 
+id              sbp_ids   sbp_ids     attempt_ids         mangled QR-code 
+student_id         +        +            nil              nil 
+path            ( common to all )
+###
+
   def receive_single_scan
     ret = true
     path = params[:path]
-    qrc = params[:id]
-    mobile = params[:type] == "GR" 
-    old_style = mobile ? false : (qrc.length == 11)
+    type = params[:type]
+    g = nil
+    student = params[:student_id].blank? ? nil : params[:student_id].to_i
 
-    if mobile
-      ids = qrc.split('-').map(&:to_i)
+    if type == 'PZL' || type == 'QSN' # stab at a puzzle or question (mobile only) 
+      ids = params[:id].split('-')
+      is_puzzle = (type == 'PZL')
+      for j in ids 
+        if is_puzzle 
+          qid = Subpart.where(id: j).map(&:question_id).first
+          pzl_id = Puzzle.where(question_id: qid).map(&:id).first
+        else
+          pzl_id = nil
+        end 
+        stb = Stab.new(student_id: student, scan: path, subpart_id: j, puzzle_id: pzl_id)
+      end 
+    else # is a stab
+      ids = type == 'GR' ? params[:id].split('-') : Worksheet.unmangle_qrcode(params[:id])
       g = Attempt.where(id: ids)
-    elsif old_style # can be, and should be, deprecated by March 2014
-      ws_id = decrypt qrc[0..6]
-      rel_index = decrypt qrc[7..9]
-      page = qrc[10].to_i(36)
-      student_id = Worksheet.where(exam_id: ws_id).map(&:student_id).sort[rel_index]
-      g = Attempt.in_exam(ws_id).of_student(student_id).on_page(page)
-    else
-      ids = Worksheet.unmangle_qrcode qrc
-      g = Attempt.where(id: ids)
-    end
+      mobile = (type == 'GR')
 
-    # Do NOT receive scan under the following conditions 
-    #   1. if the attempts already have an associated scan 
-    #   2. if its past the submission deadline 
+      # Do NOT receive scan under the following conditions 
+      #   1. if the attempts already have an associated scan 
+      #   2. if its past the submission deadline 
 
-    exam = g.first.worksheet.exam
-    if exam.receptive? 
-      j = g.without_scan
-      proceed = mobile ? true : (j.count == g.count) # all or nothing if !mobile
-      if proceed
-        j.map{ |x| x.update_attributes(scan: path, mobile: mobile) }
-        exam.update_attribute :publishable, false
-        # Sometimes, the scans come in batches. And if the new ones come 
-        # after the old ones have been graded, then a mail is triggered 
-        # with each new student's work being graded. To avoid this, we 
-        # simply reset the exam to its initial unpublished state and leave 
-        # it to the grading process to set it back to publishable state
-      end
-    end
+      exam = g.first.worksheet.exam
+      if exam.receptive? 
+        j = g.without_scan
+        proceed = mobile ? true : (j.count == g.count) # all or nothing if !mobile
+        if proceed
+          j.map{ |x| x.update_attributes(scan: path, mobile: mobile) }
+          exam.update_attribute :publishable, false
+          # Sometimes, the scans come in batches. And if the new ones come 
+          # after the old ones have been graded, then a mail is triggered 
+          # with each new student's work being graded. To avoid this, we 
+          # simply reset the exam to its initial unpublished state and leave 
+          # it to the grading process to set it back to publishable state
+        end # proceed
+      end # receptive? 
+    end # if not a stab 
     render json: { status: :ok }, status: :ok 
   end
 
