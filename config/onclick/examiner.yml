@@ -36,6 +36,21 @@
 ## Admin / Examiner specific  
 ##############################################################################
 
+a-grade-stabs : 
+  default : true 
+  show : 
+    left : left-12 
+    wide : wide-X 
+  autoclick : 
+    tab : tab-stabs-1
+
+a-grade-exams :
+  show : 
+    left : left-4
+    wide : wide-X
+  autoclick :
+    tab : tab-grade-1
+
 lnk-dispute-reason : 
   url :
     self : dispute/reason?id=:a
@@ -228,6 +243,15 @@ btn-upload-video-solution :
 lnk-add-examiner : 
   show : 
     modal : m-new-examiner
+
+tab-stabs-1 : 
+  url : 
+    self : stab/dates 
+  autoclick : 
+    tab : tab-stabs-2
+
+tab-stabs-2 : 
+  
 
 tab-grade-1 :
   url : 

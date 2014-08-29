@@ -108,7 +108,7 @@ class Attempt < ActiveRecord::Base
   end
 
   def self.received_on(date) # Ex: date = '16th Dec 2013'
-    where('scan LIKE ?', "#{Date.parse(date).strftime('%d.%B.%Y')}%")
+    where('scan IS NOT ? AND scan LIKE ?', nil, "#{Date.parse(date).strftime('%d.%B.%Y')}%")
   end
 
   def self.disputed 

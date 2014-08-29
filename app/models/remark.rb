@@ -11,6 +11,7 @@
 #  tex_comment_id :integer
 #  doodle_id      :integer
 #  examiner_id    :integer
+#  stab_id        :integer
 #
 
 class Remark < ActiveRecord::Base

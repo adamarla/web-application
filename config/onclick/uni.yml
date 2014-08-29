@@ -169,14 +169,6 @@ lnk-new-quiz :
     left : left-2
     wide : wide-wait
 
-lnk-wb-pending : 
-  default : true
-  show : 
-    left : left-4
-    wide : wide-X
-  autoclick :
-    tab : tab-grade-1
-
 m-teacher-quizzes :
   show : 
     menu : teacher-quiz
