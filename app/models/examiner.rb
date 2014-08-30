@@ -90,10 +90,10 @@ class Examiner < ActiveRecord::Base
     return Attempt.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
 
-###
+=begin
     Distribution methods - one of Stabs and one for Attempts
     Hopefully, the one for Attempts (institutional environment) will die out soon.
-###
+=end
 
   def self.distribute_stabs 
     stabs = Stab.unassigned.with_scan.order(:student_id) # ug = ungraded
