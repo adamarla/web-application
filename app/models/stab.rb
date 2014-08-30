@@ -93,4 +93,28 @@ class Stab < ActiveRecord::Base
     self.subpart.question
   end
 
+  def num_credits?
+    # number of credits to deduct 
+    return 0
+  end 
+
+  def assign_to(exm) # exm = Examiner object - not ID
+    self.update_attribute :examiner_id, exm.id
+    exm.update_attribute(:n_assigned, exm.n_assigned + 1)
+
+    # Update payment information
+    #   1. reduce gredits in student account 
+    #   2. add to accounts receivable (AR) of the grader from whom stab taken away.
+  end 
+
+  def unassign
+    exm = Examiner.find self.examiner_id
+    self.update_attribute(:examiner_id, nil) 
+    exm.update_attribute :n_assigned, exm.n_assigned - 1
+
+    # Update payment information
+    #   1. add back credits to student account 
+    #   2. reduce accounts receivable (AR) of the grader from whom stab taken away.
+  end 
+
 end

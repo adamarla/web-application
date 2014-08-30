@@ -73,8 +73,9 @@ class ExaminersController < ApplicationController
   end
 
   def distribute_scans
-    ws_ids = Examiner.distribute_scans
-    render json: ws_ids, status: :ok
+    Examiner.distribute_stabs 
+    Examiner.distribute_scans
+    render json: { status: :distributed }, status: :ok
   end
 
   def rotate_scan
