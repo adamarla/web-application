@@ -34,7 +34,8 @@
                      [8, 'examiners/video-pending'],
                      [9, 'examiners/apprentices'],
                      [10, 'examiners/disputes'],
-                     [11, 'examiners/rubric/new'] ],
+                     [11, 'examiners/rubric/new'],
+                     [12, 'toolbox/grading/left/stabs'] ],
              middle: [],
              right: [],
              wide: [ ['wait', 'toolbox/generic/wait'],
@@ -78,13 +79,12 @@
                 = image_tag "logo-mit-beta-2.png"
                 .tagline.span10.offset1= "Grades will happen"
               %ul.nav.span8.pull-right
-                - if is_admin
-                  %li.dropdown
-                    = simple_link for: 'System Monitor', id: 'lnk-admin-console'
-                  -#%li.dropdown
-                    = simple_link for: "Customer", as: :dropdown, id: 'm-admin-cust'
+                %li
+                  = simple_link for: 'Indie', icon: 'icon-star', id: 'a-grade-stabs' 
+                %li
+                  = simple_link for: 'Schools', icon: 'icon-bell', id: 'a-grade-exams'
                 %li.dropdown
-                  = simple_link for: "Workbench", as: :dropdown, id: 'm-admin-wb'
+                  = simple_link for: 'Workbench', as: :dropdown, id: 'm-admin-wb'
                 - if user.mentor_is_teacher
                   %li
                     = simple_button for: 'Sandbox Off', toggle: :button, class: 'btn btn-primary', id: 'btn-sandbox-toggle'

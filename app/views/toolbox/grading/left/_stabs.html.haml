@@ -1,0 +1,11 @@
+
+- sandboxed = !current_account.live?
+%ul.nav.nav-tabs
+  %li
+    = simple_link for: (sandboxed ? 'Sandbox' : 'Stabs'), id: 'tab-stabs-1', href: "#pane-stabs-1", reload: true
+  %li
+    = simple_link for: 'Grade', id: 'tab-stabs-2', href: '#pane-stabs-2', reload: :true
+
+.tab-content
+  #pane-stabs-1.tab-pane
+  #pane-stabs-2.tab-pane

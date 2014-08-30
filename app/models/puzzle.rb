@@ -2,14 +2,15 @@
 #
 # Table name: puzzles
 #
-#  id          :integer         not null, primary key
-#  text        :text
-#  question_id :integer
-#  version     :integer         default(0)
-#  n_picked    :integer         default(0)
-#  active      :boolean         default(FALSE)
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
+#  id             :integer         not null, primary key
+#  text           :text
+#  question_id    :integer
+#  version        :integer         default(0)
+#  n_picked       :integer         default(0)
+#  active         :boolean         default(FALSE)
+#  created_at     :datetime        not null
+#  updated_at     :datetime        not null
+#  last_picked_on :date
 #
 
 class Puzzle < ActiveRecord::Base
@@ -27,10 +28,15 @@ class Puzzle < ActiveRecord::Base
     where(active: true).first
   end 
 
+  def self.days_ago(n)
+    d = n.days.ago.to_date
+    Puzzle.where(last_picked_on: d).first
+  end 
+
   def pick 
     a = Puzzle.where(active: true).first 
     a.update_attribute(:active, false) unless a.nil?
-    self.update_attributes active: true, n_picked: (self.n_picked + 1)
+    self.update_attributes active: true, n_picked: (self.n_picked + 1), last_picked_on: Date.today
   end 
 
   def expires_in?

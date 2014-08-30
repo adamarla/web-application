@@ -85,6 +85,9 @@ Webapp::Application.routes.draw do
   match 'load/fdb' => 'attempts#load_fdb', via: :get
   match 'reupload' => 'attempts#reupload', via: :get
 
+  # Stab
+  match 'stab/dates' => 'stabs#dates', via: :get
+
   # Guardian
   resource :guardian, :only => [:show]
   match 'register/guardian' => 'guardians#create', via: :post

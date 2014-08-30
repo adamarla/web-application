@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140827121930) do
+ActiveRecord::Schema.define(:version => 20140829062226) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -309,11 +309,12 @@ ActiveRecord::Schema.define(:version => 20140827121930) do
   create_table "puzzles", :force => true do |t|
     t.text     "text"
     t.integer  "question_id"
-    t.integer  "version",     :default => 0
-    t.integer  "n_picked",    :default => 0
-    t.boolean  "active",      :default => false
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.integer  "version",        :default => 0
+    t.integer  "n_picked",       :default => 0
+    t.boolean  "active",         :default => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.date     "last_picked_on"
   end
 
   add_index "puzzles", ["question_id"], :name => "index_puzzles_on_question_id"
@@ -389,9 +390,11 @@ ActiveRecord::Schema.define(:version => 20140827121930) do
     t.integer  "tex_comment_id"
     t.integer  "doodle_id"
     t.integer  "examiner_id"
+    t.integer  "stab_id"
   end
 
   add_index "remarks", ["examiner_id"], :name => "index_remarks_on_examiner_id"
+  add_index "remarks", ["stab_id"], :name => "index_remarks_on_stab_id"
 
   create_table "rubrics", :force => true do |t|
     t.string   "name",       :limit => 100
@@ -428,7 +431,7 @@ ActiveRecord::Schema.define(:version => 20140827121930) do
     t.integer  "student_id"
     t.integer  "examiner_id"
     t.integer  "puzzle_id"
-    t.integer  "strength",                  :default => -1
+    t.integer  "quality",                   :default => -1
     t.string   "scan",        :limit => 40
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
