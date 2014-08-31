@@ -146,14 +146,15 @@ class ExaminersController < ApplicationController
     render json: { status: status }, status: :ok
   end
 
-###
+=begin
                Puzzle    Question    Quiz(takehome)    Quiz(in-class)
                ------    --------    --------------    --------------
 type            PZL       QSN         GR                  QR 
 id              sbp_ids   sbp_ids     attempt_ids         mangled QR-code 
 student_id         +        +            nil              nil 
 path            ( common to all )
-###
+
+=end
 
   def receive_single_scan
     ret = true
