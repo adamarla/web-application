@@ -21,6 +21,14 @@ class Rubric < ActiveRecord::Base
     where(standard: true)
   end 
 
+  def available_shortcuts
+    all = [*'0'..'9'] + [*'A'..'Z'] 
+    reserved = ['H','R','W','U','F','S','L']
+    used = Checklist.where(rubric_id: self.id).where('shortcut IS NOT ?', nil).map(&:shortcut) 
+    return (all - reserved - used)
+  end 
+
+
   def update_criteria(ids)
     # ids = array of criterion IDs 
     # A criterion, once added, is never deleted from the join table ( checklists ). 

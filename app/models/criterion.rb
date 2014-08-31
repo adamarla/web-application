@@ -18,7 +18,6 @@ class Criterion < ActiveRecord::Base
   # attr_accessible :title, :body
   validates :text, presence: true
   validates :penalty, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
-  validates :shortcut, uniqueness: true, if: :has_shortcut
 
   has_many :checklists, dependent: :destroy
 
@@ -29,13 +28,6 @@ class Criterion < ActiveRecord::Base
 
   def self.standard
     where(standard: true)
-  end 
-
-  def self.available_shortcuts
-    all = [*'0'..'9'] + [*'A'..'Z'] 
-    reserved = ['H','R','W','U','F','S','L']
-    used = Criterion.where(standard: true).map(&:shortcut).select{ |k| !k.nil? }
-    return all - reserved - used 
   end 
 
   def reward? 
@@ -50,14 +42,7 @@ class Criterion < ActiveRecord::Base
     return (self.red_flag ? :red : (self.orange_flag ? :orange : :green))
   end 
 
-  def shortcut? 
-    self.shortcut.nil? ? '' : self.shortcut
-  end 
-
   private 
-      def has_shortcut
-        return !shortcut.blank?
-      end 
 
       def no_red
         return true unless orange_flag # no problem if orange_flag is being set to false

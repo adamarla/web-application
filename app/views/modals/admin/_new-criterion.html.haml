@@ -12,6 +12,4 @@
           hint: 'Red Flag?', include_blank: false
         = f.input :orange_flag, as: :select, collection: [false, true], wrapper_html: { class: 'span4' },
           hint: 'Orange Flag?', include_blank: false
-        = f.input(:shortcut, as: :select, collection: Criterion.available_shortcuts, wrapper_html: { class: 'span4'},
-          hint: 'Shortcut') if current_account.admin?
         = simple_button for: 'Submit', class: 'btn-primary', type: :submit
