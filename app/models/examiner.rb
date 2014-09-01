@@ -90,6 +90,36 @@ class Examiner < ActiveRecord::Base
     return Attempt.where(:examiner_id => self.id).where('grade_id IS NULL').count
   end
 
+=begin
+    Distribution methods - one of Stabs and one for Attempts
+    Hopefully, the one for Attempts (institutional environment) will die out soon.
+=end
+
+  def self.distribute_stabs 
+    stabs = Stab.unassigned.with_scan.order(:student_id) # ug = ungraded
+    examiners = Examiner.where(mentor_is_teacher: false).available # registered, non-TA graders 
+
+    are_puzzles = [true, false]
+
+    are_puzzles.each do |is_puzzle|
+      graders = examiners.order(:n_assigned)
+
+      if is_puzzle 
+        graders = graders.internal
+        work = stabs.at_puzzles 
+      else
+        work = stabs.at_questions 
+      end 
+
+      work.map(&:student_id).uniq.each_slice(5) do |m| 
+        exm = graders.shift # pop from front
+        work.by(m).map{ |n| n.assign_to(exm) }
+        graders.push exm
+      end # each_slice
+    end # of each  
+
+  end # of method
+
   def self.distribute_scans
     ug = Attempt.unassigned.with_scan # ug = ungraded
     exams = ug.map(&:worksheet).uniq.map(&:exam).uniq 
@@ -105,7 +135,7 @@ class Examiner < ActiveRecord::Base
         p = pending.where(q_selection_id: q) # same question, same quiz, all students
 
         if ta_ids.blank? # no TAs 
-          examiners = Examiner.where(mentor_is_teacher: false).order(:n_assigned).available # Gradians.com graders
+          examiners = Examiner.where(mentor_is_teacher: false).order(:n_assigned).available # registered, non-TA graders 
         else # has TAs 
           eid = scheme.blank? ? nil : scheme[q] # examiners for given q_selection
           j = eid.blank? ? ta_ids : (ta_ids & eid)
