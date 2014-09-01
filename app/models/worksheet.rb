@@ -193,17 +193,12 @@ class Worksheet < ActiveRecord::Base
     # 2. update account balance 
   end 
 
-  def write(abridged = false) 
+  def write
     e = self.exam
-
-    if abridged 
-      mangled_qrcs = 'null,null'
-    else 
-      span = e.quiz.span?
-      g = Attempt.in_worksheet(self.id) 
-      ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
-      mangled_qrcs = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
-    end 
+    span = e.quiz.span?
+    g = Attempt.in_worksheet(self.id) 
+    ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
+    mangled_qrcs = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
 
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
     response = SavonClient.request :wsdl, :writeTex do
