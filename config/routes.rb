@@ -227,9 +227,12 @@ Webapp::Application.routes.draw do
   # Token
   resources :tokens, :only => [:create, :destroy]
   match 'tokens/verify' => 'tokens#verify', via: :get
+  match 'tokens/validate' => 'tokens#validate', via: :get
   match 'tokens/view_fdb' => 'tokens#view_fdb', via: :get
   match 'tokens/view_hints' => 'tokens#view_hints', via: :get
   match 'tokens/bill_ws' => 'tokens#bill_ws', via: :get
+  match 'tokens/match' => 'tokens#match_name', via: :get
+  match 'tokens/claim' => 'tokens#claim_account', via: :get
   
   root :to => "welcome#index"
 

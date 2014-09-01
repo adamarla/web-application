@@ -32,8 +32,18 @@ class StudentsController < ApplicationController
                                       postal_code: zip,
                                       country: country
       if student.save
-        sign_in account
-        redirect_to student_path
+        if d[:mobile].nil?
+          sign_in account
+          redirect_to student_path
+        else
+          account.ensure_authentication_token!
+          json = {
+            :token => account.authentication_token,
+            :email => account.email,
+            :name  => student.name
+          }
+          render json: json, status: 200
+        end
       end # no reason for else.. if client side validations worked
     else # registration data probably entered by a bot
       render json: { notify: { text: "Bot?" } }, status: :bad_request
