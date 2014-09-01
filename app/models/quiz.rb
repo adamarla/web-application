@@ -137,7 +137,7 @@ class Quiz < ActiveRecord::Base
     e.update_attribute(:open, false) 
 
     unless take_home 
-      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name, false)
+      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
       job = Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
       e.update_attribute :job_id, job.id
       return e.id, job.id 
