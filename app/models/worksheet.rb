@@ -204,7 +204,7 @@ class Worksheet < ActiveRecord::Base
     response = SavonClient.request :wsdl, :writeTex do
       soap.body = { 
         target: self.path?,
-        mode: ( abridged ? 'worksheet abridged' : 'worksheet' ),
+        mode: 'worksheet', 
         imports: "#{e.quiz.uid}",
         author: self.student.name, 
         wFlags: { versions: self.signature, responses: mangled_qrcs } 
