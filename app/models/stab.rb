@@ -7,21 +7,22 @@
 #  examiner_id :integer
 #  puzzle_id   :integer
 #  quality     :integer         default(-1)
-#  scan        :string(40)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
-#  subpart_id  :integer
 #  uid         :integer
+#  question_id :integer
+#  version     :integer
 #
 
 class Stab < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :student 
   belongs_to :examiner 
-  belongs_to :subpart 
+  belongs_to :question 
   belongs_to :puzzle 
 
-  has_many :remarks, dependent: :destroy
+  has_many :kaagaz, dependent: :destroy 
+
   validates :quality, numericality: { only_integer: true, less_than: 7 } # quality = [-1,6]
 
   def self.graded
@@ -45,8 +46,7 @@ class Stab < ActiveRecord::Base
   end 
 
   def self.at_question(id) 
-    ids = Question.find(id).subpart_ids
-    where(subpart_id: ids)
+    where(question_id: id)
   end 
 
   def self.at_puzzle(id) 
@@ -82,7 +82,7 @@ class Stab < ActiveRecord::Base
   end 
 
   def self.on_topic(id)
-    select{ |j| j.question?.topic_id == id }
+    select{ |j| j.question.topic_id == id }
   end
 
   def self.date_to_uid(date)
@@ -106,12 +106,20 @@ class Stab < ActiveRecord::Base
   end 
 
   def question 
-    self.subpart.question
+    self.puzzle_id.nil? ? self.question : self.puzzle.question
   end
 
   def num_credits?
     # number of credits to deduct 
     return 0
+  end 
+
+  def add_scan(path)
+    # Gotcha! Scans will be added in the order in which they are received. 
+    # There is no guarantee, therefore, that the order in which scans are seen 
+    # also captures the order in which the subparts are
+
+    self.kaagaz.create path: path
   end 
 
   def assign_to(exm) # exm = Examiner object - not ID

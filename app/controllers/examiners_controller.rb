@@ -164,19 +164,29 @@ path            ( common to all )
     student = params[:student_id].blank? ? nil : params[:student_id].to_i
 
     if type == 'PZL' || type == 'QSN' # stab at a puzzle or question (mobile only) 
-      ids = params[:id].split('-')
+      ids = params[:id].split('-').map(&:to_i) # subpart IDs 
+      qid = Subpart.where(id: ids).map(&:question_id).first 
       is_puzzle = (type == 'PZL')
       uid = Stab.date_to_uid path.split('/').first  
 
-      for j in ids 
-        if is_puzzle 
-          qid = Subpart.where(id: j).map(&:question_id).first
-          pzl_id = Puzzle.where(question_id: qid).map(&:id).first
-        else
-          pzl_id = nil
-        end 
-        Stab.create(student_id: student, scan: path, subpart_id: j, puzzle_id: pzl_id, uid: uid)
+      if is_puzzle 
+        pzl_id = Puzzle.where(question_id: qid).map(&:id).first 
+        stab = Stab.where(student_id: student, puzzle_id: pzl_id).first
+        qsn_id = nil
+        version = 0
+      else
+        pzl_id = nil
+        stab = Stab.where(student_id: student, question_id: qid).first
+        qsn_id = qid
+        version = params[:version].blank? ? 0 : params[:version].to_i
       end 
+      
+      # Check for any existing record and create one if none exists
+      stab = stab.nil? ? Stab.create(student_id: student, puzzle_id: pzl_id, question_id: qsn_id, uid: uid, version: version) : stab
+
+      # Now, bind the passed scan to the stab
+      stab.add_scan(path) 
+
     else # is a stab
       ids = type == 'GR' ? params[:id].split('-') : Worksheet.unmangle_qrcode(params[:id])
       g = Attempt.where(id: ids)

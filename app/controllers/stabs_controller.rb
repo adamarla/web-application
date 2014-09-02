@@ -14,4 +14,9 @@ class StabsController < ApplicationController
     @dates = a.map(&:uid).uniq
   end 
 
+  def dated
+    uid = param[:uid].to_i
+    @stabs = Stab.where(uid: uid).order(:student_id)
+  end 
+
 end

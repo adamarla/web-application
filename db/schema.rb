@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140902064223) do
+ActiveRecord::Schema.define(:version => 20140902095915) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -281,6 +281,13 @@ ActiveRecord::Schema.define(:version => 20140902064223) do
 
   add_index "hints", ["subpart_id"], :name => "index_hints_on_subpart_id"
 
+  create_table "kaagaz", :force => true do |t|
+    t.string  "path",    :limit => 40
+    t.integer "stab_id"
+  end
+
+  add_index "kaagaz", ["stab_id"], :name => "index_kaagaz_on_stab_id"
+
   create_table "lessons", :force => true do |t|
     t.string   "title",       :limit => 150
     t.text     "description"
@@ -390,11 +397,11 @@ ActiveRecord::Schema.define(:version => 20140902064223) do
     t.integer  "tex_comment_id"
     t.integer  "doodle_id"
     t.integer  "examiner_id"
-    t.integer  "stab_id"
+    t.integer  "kaagaz_id"
   end
 
   add_index "remarks", ["examiner_id"], :name => "index_remarks_on_examiner_id"
-  add_index "remarks", ["stab_id"], :name => "index_remarks_on_stab_id"
+  add_index "remarks", ["kaagaz_id"], :name => "index_remarks_on_stab_id"
 
   create_table "rubrics", :force => true do |t|
     t.string   "name",       :limit => 100
@@ -431,16 +438,17 @@ ActiveRecord::Schema.define(:version => 20140902064223) do
     t.integer  "student_id"
     t.integer  "examiner_id"
     t.integer  "puzzle_id"
-    t.integer  "quality",                   :default => -1
-    t.string   "scan",        :limit => 40
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
-    t.integer  "subpart_id"
+    t.integer  "quality",     :default => -1
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.integer  "uid"
+    t.integer  "question_id"
+    t.integer  "version"
   end
 
   add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"
   add_index "stabs", ["puzzle_id"], :name => "index_stabs_on_puzzle_id"
+  add_index "stabs", ["question_id"], :name => "index_stabs_on_question_id"
   add_index "stabs", ["student_id"], :name => "index_stabs_on_student_id"
   add_index "stabs", ["uid"], :name => "index_stabs_on_uid"
 

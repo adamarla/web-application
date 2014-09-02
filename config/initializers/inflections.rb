@@ -13,4 +13,5 @@
    inflect.irregular 'freebie', 'freebies'
    inflect.irregular 'criterion', 'criteria'
    inflect.irregular 'watan', 'watan'
+   inflect.irregular 'kaagaz', 'kaagaz'
  end
