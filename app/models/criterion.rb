@@ -42,6 +42,14 @@ class Criterion < ActiveRecord::Base
     return (self.red_flag ? :red : (self.orange_flag ? :orange : :green))
   end 
 
+  def self.available_shortcuts
+    all = [*'0'..'9'] + [*'A'..'Z'] 
+    reserved = ['H','R','W','U','F','S','L']
+    used = Criterion.where('shortcut IS NOT ?', nil).map(&:shortcut)
+    return (all - reserved - used)
+  end 
+
+
   private 
 
       def no_red
