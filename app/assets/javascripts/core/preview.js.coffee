@@ -2,7 +2,6 @@
 jQuery ->
   
   window.preview = {
-    blockKeyPress: false,
     root: null,
     template: null,
     defaultLocation: null,

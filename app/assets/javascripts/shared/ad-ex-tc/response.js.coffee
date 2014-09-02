@@ -105,10 +105,3 @@ jQuery ->
     e.stopImmediatePropagation() if matched
     return true
   
-  ########################################################
-  # Other .... 
-  ########################################################
-
-  $('#grading-canvas').on 'click', (event) ->
-    return canvas.record event
-
