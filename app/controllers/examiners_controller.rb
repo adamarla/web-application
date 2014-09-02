@@ -166,6 +166,8 @@ path            ( common to all )
     if type == 'PZL' || type == 'QSN' # stab at a puzzle or question (mobile only) 
       ids = params[:id].split('-')
       is_puzzle = (type == 'PZL')
+      uid = Stab.date_to_uid path.split('/').first  
+
       for j in ids 
         if is_puzzle 
           qid = Subpart.where(id: j).map(&:question_id).first
@@ -173,7 +175,7 @@ path            ( common to all )
         else
           pzl_id = nil
         end 
-        Stab.create(student_id: student, scan: path, subpart_id: j, puzzle_id: pzl_id)
+        Stab.create(student_id: student, scan: path, subpart_id: j, puzzle_id: pzl_id, uid: uid)
       end 
     else # is a stab
       ids = type == 'GR' ? params[:id].split('-') : Worksheet.unmangle_qrcode(params[:id])

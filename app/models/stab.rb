@@ -11,6 +11,7 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  subpart_id  :integer
+#  uid         :integer
 #
 
 class Stab < ActiveRecord::Base
@@ -37,11 +38,6 @@ class Stab < ActiveRecord::Base
 
   def self.with_scan 
     where('scan IS NOT ?', nil)
-  end 
-
-  def self.received_on(d) # d = date as a string, like 'Dec 27,2001'
-    where('scan IS NOT ? AND scan LIKE ?', nil, "#{Date.parse(date).strftime('%d.%B.%Y')}%")
-    # Looks expensive. Try calling last in a call chain
   end 
 
   def self.by(id) 
@@ -88,6 +84,26 @@ class Stab < ActiveRecord::Base
   def self.on_topic(id)
     select{ |j| j.question?.topic_id == id }
   end
+
+  def self.date_to_uid(date)
+    # date = any valid string that represents a date and can be passed to Date.parse 
+    return nil if date.blank?
+    d = Date.parse(date)
+    return d.strftime('%d%m%y').to_i
+  end 
+
+  def self.uid_to_date(uid)
+    return 'Unknown' if uid.blank?
+    year = uid % 100 
+    month = (uid / 100) % 100 
+    day = uid / 10000
+    return Date.strptime("#{day}/#{month}/#{year}", "%d/%m/%y")
+  end 
+
+  def self.received_on(d) # d = date as a string, like 'Dec 27,2001'
+    uid = Stab.date_to_uid(d) 
+    where(uid: uid)
+  end 
 
   def question 
     self.subpart.question

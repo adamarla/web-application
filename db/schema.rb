@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140829062226) do
+ActiveRecord::Schema.define(:version => 20140902064223) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -436,11 +436,13 @@ ActiveRecord::Schema.define(:version => 20140829062226) do
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
     t.integer  "subpart_id"
+    t.integer  "uid"
   end
 
   add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"
   add_index "stabs", ["puzzle_id"], :name => "index_stabs_on_puzzle_id"
   add_index "stabs", ["student_id"], :name => "index_stabs_on_student_id"
+  add_index "stabs", ["uid"], :name => "index_stabs_on_uid"
 
   create_table "student_rosters", :force => true do |t|
     t.integer "student_id"
