@@ -38,7 +38,7 @@ class Stab < ActiveRecord::Base
   end 
 
   def self.with_scan 
-    where('scan IS NOT ?', nil)
+    where('uid IS NOT ?', nil)
   end 
 
   def self.by(id) 
