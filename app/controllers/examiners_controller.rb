@@ -171,8 +171,8 @@ path            ( common to all )
       uid = Stab.date_to_uid path.split('/').first  
 
       # Check for any existing record and create one if none exists
-      stab = Stab.where(student_id: sid, question_id: qid, is_puzzle: is_puzzle).first
-      stab = stab.nil? ? Stab.create(student_id: sid, is_puzzle: is_puzzle, question_id: qid, uid: uid, version: version) : stab 
+      stab = Stab.where(student_id: sid, question_id: qid, puzzle: is_puzzle).first
+      stab = stab.nil? ? Stab.create(student_id: sid, puzzle: is_puzzle, question_id: qid, uid: uid, version: version) : stab 
 
       # Now, bind the passed scan to the stab
       stab.add_scan(path) 
