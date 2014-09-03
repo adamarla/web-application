@@ -161,28 +161,18 @@ path            ( common to all )
     path = params[:path]
     type = params[:type]
     g = nil
-    student = params[:student_id].blank? ? nil : params[:student_id].to_i
+    sid = params[:student_id].blank? ? nil : params[:student_id].to_i
 
     if type == 'PZL' || type == 'QSN' # stab at a puzzle or question (mobile only) 
       ids = params[:id].split('-').map(&:to_i) # subpart IDs 
       qid = Subpart.where(id: ids).map(&:question_id).first 
       is_puzzle = (type == 'PZL')
+      version = is_puzzle ? 0 : (params[:version].blank? ? 0 : params[:version].to_i)
       uid = Stab.date_to_uid path.split('/').first  
 
-      if is_puzzle 
-        pzl_id = Puzzle.where(question_id: qid).map(&:id).first 
-        stab = Stab.where(student_id: student, puzzle_id: pzl_id).first
-        qsn_id = nil
-        version = 0
-      else
-        pzl_id = nil
-        stab = Stab.where(student_id: student, question_id: qid).first
-        qsn_id = qid
-        version = params[:version].blank? ? 0 : params[:version].to_i
-      end 
-      
       # Check for any existing record and create one if none exists
-      stab = stab.nil? ? Stab.create(student_id: student, puzzle_id: pzl_id, question_id: qsn_id, uid: uid, version: version) : stab
+      stab = Stab.where(student_id: sid, question_id: qid, is_puzzle: is_puzzle).first
+      stab = stab.nil? ? Stab.create(student_id: sid, is_puzzle: is_puzzle, question_id: qid, uid: uid, version: version) : stab 
 
       # Now, bind the passed scan to the stab
       stab.add_scan(path) 

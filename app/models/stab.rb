@@ -5,13 +5,13 @@
 #  id          :integer         not null, primary key
 #  student_id  :integer
 #  examiner_id :integer
-#  puzzle_id   :integer
 #  quality     :integer         default(-1)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  uid         :integer
 #  question_id :integer
 #  version     :integer
+#  puzzle      :boolean         default(TRUE)
 #
 
 class Stab < ActiveRecord::Base
@@ -19,7 +19,6 @@ class Stab < ActiveRecord::Base
   belongs_to :student 
   belongs_to :examiner 
   belongs_to :question 
-  belongs_to :puzzle 
 
   has_many :kaagaz, dependent: :destroy 
 
@@ -41,24 +40,9 @@ class Stab < ActiveRecord::Base
     where('uid IS NOT ?', nil)
   end 
 
-  def self.by(id) 
-    where(student_id: id)
-  end 
-
-  def self.at_question(id) 
-    where(question_id: id)
-  end 
-
   def self.at_puzzle(id) 
-    where(puzzle_id: id)
-  end 
-
-  def self.at_puzzles 
-    where('puzzle_id IS NOT ?', nil)
-  end 
-
-  def self.at_questions
-    where(puzzle_id: nil)
+    qid = Puzzle.where(id: id).map(&:question_id).first 
+    where(question_id: qid, puzzle: true)
   end 
 
   def self.blank 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140902095915) do
+ActiveRecord::Schema.define(:version => 20140903132715) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -437,17 +437,16 @@ ActiveRecord::Schema.define(:version => 20140902095915) do
   create_table "stabs", :force => true do |t|
     t.integer  "student_id"
     t.integer  "examiner_id"
-    t.integer  "puzzle_id"
     t.integer  "quality",     :default => -1
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "uid"
     t.integer  "question_id"
     t.integer  "version"
+    t.boolean  "puzzle",      :default => true
   end
 
   add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"
-  add_index "stabs", ["puzzle_id"], :name => "index_stabs_on_puzzle_id"
   add_index "stabs", ["question_id"], :name => "index_stabs_on_question_id"
   add_index "stabs", ["student_id"], :name => "index_stabs_on_student_id"
   add_index "stabs", ["uid"], :name => "index_stabs_on_uid"
