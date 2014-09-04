@@ -7,6 +7,7 @@ window.rubric = {
   typing : false, # false => writing a comment
   form : null,
   buttons : null,
+  locked : false,
 
   initialize : (node) ->
     rubric.root = if typeof node is 'string' then $(node)[0] else node
@@ -17,9 +18,14 @@ window.rubric = {
     if rubric.audience is 'Examiner'
       rubric.form = $(rubric.root).closest('form')[0]
       $(rubric.form).submit rubric.submitFdb
-      $(rubric.form).on 'ajaxSuccess', rubric.postSubmitCallBk
-      $('body').on 'keyup', rubric.pressKey 
-      $('body').on 'click', rubric.mouseClick 
+
+      # An examiner sees two rubrics - this one (will go in time) and one for 
+      # stabs (will stay). As both share keyboard shortcuts, we must ensure 
+      # that only the last initialized one processes key-presses and mouse-clicks 
+
+      stabs.lock()
+      rubric.unlock() 
+
     else 
       rubric.form = null
       $('body').off 'keyup', rubric.pressKey 
@@ -38,6 +44,25 @@ window.rubric = {
     $(rubric.buttons).on 'click', 'button', rubric.clickBtn 
     $(rubric.buttons).on 'ajaxSuccess', rubric.processJson
     return true 
+
+  lock : () ->
+    rubric.locked = true 
+    overlay.detach()
+    fdb.detach() 
+    $('body').off 'keyup', rubric.pressKey 
+    $('body').off 'click', rubric.mouseClick 
+
+    if rubric.form? 
+      $(rubric.form).off 'ajaxSuccess', rubric.postSubmitCallBk
+    return true 
+
+  unlock : () ->
+    rubric.locked = false 
+    $('body').on 'keyup', rubric.pressKey 
+    $('body').on 'click', rubric.mouseClick 
+    if rubric.form? 
+      $(rubric.form).on 'ajaxSuccess', rubric.postSubmitCallBk
+    return true
 
   reset : () ->
     # unselect all criteria 
@@ -66,7 +91,7 @@ window.rubric = {
       if json.preview? 
         preview.loadJson json
         if json.comments?
-          overlay.over $(preview.root)
+          overlay.attach $(preview.root)
           overlay.loadJson json.comments
 
       # enable / disable buttons as needed 
@@ -132,13 +157,13 @@ window.rubric = {
     return !sandbox.enabled
 
   pressKey : (event) -> 
-    return true if rubric.typing 
+    return true if (rubric.locked || rubric.typing)
     event.stopImmediatePropagation() 
     # The keypress is either of a key that is reserved for the rubric or 
     # for a key reserved by fdb-controls
 
     key = String.fromCharCode(event.which)
-    # alert "#{event.which} --> #{key}"
+    # alert "rubric --> #{event.which} --> #{key}"
 
     nd = $(rubric.root).children().filter("[data-kb='#{key}']")[0]
     if nd? 
@@ -148,7 +173,7 @@ window.rubric = {
       return true 
 
   mouseClick : (event) ->
-    return true if rubric.typing 
+    return true if (rubric.locked || rubric.typing)
     tex = $(shadow.commentBox).val()
     return true if /^\s*$/.test(tex) # empty string 
 

@@ -66,7 +66,7 @@ jQuery ->
     else if url.match(/load\/dispute/)
       preview.loadJson json
       if json.comments?
-        overlay.over $(preview.root)
+        overlay.attach $(preview.root)
         overlay.loadJson json.comments
 
     else if url.match(/dispute\/reason/)
@@ -105,10 +105,3 @@ jQuery ->
     e.stopImmediatePropagation() if matched
     return true
   
-  ########################################################
-  # Other .... 
-  ########################################################
-
-  $('#grading-canvas').on 'click', (event) ->
-    return canvas.record event
-

@@ -52,9 +52,9 @@ class Question < ActiveRecord::Base
   belongs_to :suggestion # non-nil if question came from a teacher
 
   has_many :q_selections
-  has_many :quizzes, :through => :q_selections
+  has_many :quizzes, through: :q_selections
   has_many :attempts
-  has_many :subparts, :dependent => :destroy
+  has_many :subparts, dependent: :destroy
 
   has_one :video, as: :watchable
 
@@ -312,35 +312,6 @@ class Question < ActiveRecord::Base
     n = self.n_picked 
     self.update_attribute :n_picked, n + 1
   end
-
-=begin
-  ************** LEGACY ONLY 
-  The next 2 methods were written when support for subparts was being added.
-  They are to be called ONLY from within a migration file and nowhere else.
-
-  The first takes us from question -> subpart (up) and the second reverses the process
-  and takes us from subpart to question (down)
-
-  def split_into_subparts 
-    return false if self.subparts.length > 0 # if subparts exist, then transition has probably already happened
-    return false if self.topic_id.nil? # ignore untagged questions. Subparts will be created during tagging
-
-    self.resize_subparts_list_to 1
-    s = self.subparts.first
-    s.update_attributes :mcq => self.mcq, :half_page => self.half_page,
-                        :full_page => self.full_page, :marks => self.marks, :relative_page => 0
-  end
-
-  def rebuild_from_subparts
-    return false if self.subparts.length != 1
-    return false if self.topic_id.nil? 
-
-    s = self.subparts.first
-    self.update_attributes :mcq => s.mcq, :half_page => s.half_page,
-                        :full_page => s.full_page, :marks => s.marks,
-                        :multi_correct => false, :num_parts => 0
-  end
-=end
 
   private 
     def resize_subparts_list_to( nparts ) # nparts = 0 for a stand-alone question

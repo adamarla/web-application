@@ -84,8 +84,8 @@ window.fdb = {
   attach : () ->
     p = $(fdb.root).find('#fdb-preview-area').eq(0)
 
-    preview.create(p)
-    overlay.over $(preview.root)
+    preview.attach(p)
+    overlay.attach $(preview.root)
     shadow.over $(overlay.root)
 
     $(fdb.root).removeClass 'hide'
@@ -97,7 +97,7 @@ window.fdb = {
     return true
 
   detach : () ->
-    preview.create() # within wide-X
+    preview.attach() # within wide-X
     $(fdb.root).addClass 'hide'
 
     if fdb.ticker?

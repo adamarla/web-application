@@ -15,6 +15,8 @@ jQuery ->
     if url.match(/untagged\/list/)
       target = $('#pane-untagged-1')
       key = 'pending'
+    else if url.match(/stab\/dates/)
+      stabs.initialize()
     else if url.match(/vertical\/topics/)
       id = "##{json.context}-common-pane"
       target = $(id)

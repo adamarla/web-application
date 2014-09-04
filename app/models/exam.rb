@@ -202,7 +202,7 @@ class Exam < ActiveRecord::Base
     return ret
   end
 
-  def write(abridged = false) 
+  def write
     response = {} 
     
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 

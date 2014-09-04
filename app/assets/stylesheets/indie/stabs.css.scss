@@ -1,0 +1,40 @@
+
+$orange: #ffa500 ;
+$background: lighten(black, 17%) ;
+
+#stab-grader { 
+  .btn-group { 
+    margin-bottom: 10px ;
+  } 
+
+  input[type='text'] { 
+    background: transparent ; 
+    color: white ; 
+    margin: { 
+      top: 10px ; 
+      bottom: 20px ;
+    } 
+    border: { 
+      radius: 0px ; 
+      style: dotted ; 
+      width: 1px ;
+    } 
+    padding: 8px 8px ; 
+    box-shadow: none ;
+    height: 35px ;
+    line-height: 15px ;
+    font: { 
+      size: 12px ;
+    } 
+  } 
+
+  > .row-fluid { 
+    &:not(:first-child) { margin-top: 10px ; }
+  } 
+} 
+
+#wide-Y { 
+  .overlay, .carousel { 
+    position: relative ;
+  } 
+} 

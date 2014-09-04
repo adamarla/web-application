@@ -21,6 +21,7 @@ class Rubric < ActiveRecord::Base
     where(standard: true)
   end 
 
+
   def update_criteria(ids)
     # ids = array of criterion IDs 
     # A criterion, once added, is never deleted from the join table ( checklists ). 

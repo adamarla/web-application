@@ -97,8 +97,8 @@ class Quiz < ActiveRecord::Base
     ----------      ------      --------    ------        --------
        no             no        in-class      full           no
        no             yes       non-sense      -             -
-       yes            no        takehome     abridged        yes
-       yes            yes       takehome     abridged        yes
+       yes            no        takehome       no           yes
+       yes            yes       takehome       no           no 
 =end
 
   def assign_to(sid, take_home = false)
@@ -107,11 +107,13 @@ class Quiz < ActiveRecord::Base
 
     indie = self.teacher.indie 
     w.bill unless indie # for indie quizzes, block slots only on payment
-    Delayed::Job.enqueue WriteTex.new(w.id, w.class.name, take_home)
-    job = take_home ? Delayed::Job.enqueue(CompileTex.new(w.id, w.class.name)) : nil
 
-    unless job.nil?
+    unless take_home 
+      Delayed::Job.enqueue WriteTex.new(w.id, w.class.name)
+      job = Delayed::Job.enqueue(CompileTex.new(w.id, w.class.name))
       w.update_attribute(:job_id, job.id) if indie
+    else 
+      Mailbot.delay.quiz_assigned(w.id)
     end
     return w
   end
@@ -135,7 +137,7 @@ class Quiz < ActiveRecord::Base
     e.update_attribute(:open, false) 
 
     unless take_home 
-      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name, false)
+      Delayed::Job.enqueue WriteTex.new(e.id, e.class.name)
       job = Delayed::Job.enqueue CompileTex.new(e.id, e.class.name)
       e.update_attribute :job_id, job.id
       return e.id, job.id 
@@ -254,7 +256,7 @@ class Quiz < ActiveRecord::Base
     return !(self.page_breaks_after.blank? || self.switch_versions_after.blank?)
   end
 
-  def write(abridged = false)
+  def write
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['write_tex']}" 
 
     # Write TeX for the quiz 
