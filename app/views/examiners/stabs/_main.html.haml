@@ -1,6 +1,6 @@
 
 - sandboxed = !current_account.live?
-%ul.nav.nav-tabs
+%ul.nav.nav-tabs.always-on
   %li
     = simple_link for: (sandboxed ? 'Sandbox' : 'Stabs'), id: 'tab-stabs-1', href: "#pane-stabs-1", reload: true
   %li
@@ -9,3 +9,4 @@
 .tab-content
   #pane-stabs-1.tab-pane
   #pane-stabs-2.tab-pane
+    = render partial: 'examiners/stabs/grader'

@@ -66,7 +66,7 @@ jQuery ->
     else if url.match(/load\/dispute/)
       preview.loadJson json
       if json.comments?
-        overlay.over $(preview.root)
+        overlay.attach $(preview.root)
         overlay.loadJson json.comments
 
     else if url.match(/dispute\/reason/)

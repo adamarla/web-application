@@ -6,7 +6,7 @@ jQuery ->
     template: null,
     defaultLocation: null,
 
-    create : (here) ->
+    attach : (here) ->
       preview.defaultLocation = $('#wide-X')[0] unless preview.defaultLocation?
       preview.template = $('#toolbox > #preview-carousel')[0] unless preview.template?
 
@@ -27,9 +27,16 @@ jQuery ->
 
       $(preview.root).removeClass 'hide'
       return true
+    
+    detach : () -> 
+      return false unless preview.root? 
+      # $(preview.root).carousel 'destroy'
+      $(preview.root).remove() 
+      preview.root = null
+      return true
       
     preCheck: () ->
-      if preview.clear() then return true else return preview.create()
+      if preview.clear() then return true else return preview.attach()
 
     execute : () ->
       inner = $(preview.root).children('.carousel-inner').eq(0)

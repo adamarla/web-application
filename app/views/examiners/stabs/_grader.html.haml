@@ -1,0 +1,26 @@
+
+#stab-grader 
+  #stabs-pending.hide
+  .row-fluid
+    .span5
+      .btn-group.btn-group-vertical.span12
+        = simple_button for: 'Question', kb: 'Q', class: 'btn-inverse'
+        = simple_button for: 'Report Issue', kb: 'A', class: 'btn-inverse'
+    .span3
+      .btn-group.btn-group-vertical.span12
+        = simple_button for: 'Write', kb: 'W', class: 'btn-inverse' 
+        = simple_button for: 'Undo', kb: 'U', class: 'btn-inverse'
+    .span4
+      .btn-group.btn-group-vertical.span12
+        = simple_button for: 'Flip Scan', kb: 'F', class: 'btn-inverse'
+        = simple_button for: 'Reupload', kb: 'R', class: 'btn-inverse'
+
+  .row-fluid
+    %span.orange.small-text= 'Write comments below. Then click on scan. Write LaTeX within $ ... $'
+    %input.span12{ id: 'stab-typeahead', type: :text }
+
+  .row-fluid
+    .btn-group.span12
+      = simple_button for: 'Prev', kb: '<', class: 'btn-inverse span6'
+      = simple_button for: 'Next', kb: '>', class: 'btn-inverse span6'
+  .row-fluid.disabled

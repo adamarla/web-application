@@ -87,6 +87,7 @@ Webapp::Application.routes.draw do
 
   # Stab
   match 'stab/dates' => 'stabs#dates', via: :get
+  match 'stabs/dated' => 'stabs#dated', via: :get
 
   # Guardian
   resource :guardian, :only => [:show]

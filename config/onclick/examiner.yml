@@ -40,7 +40,7 @@ a-grade-stabs :
   default : true 
   show : 
     left : left-12 
-    wide : wide-X 
+    wide : wide-Y 
   autoclick : 
     tab : tab-stabs-1
 
@@ -247,6 +247,7 @@ lnk-add-examiner :
 tab-stabs-1 : 
   url : 
     self : stab/dates 
+    panel : stabs/dated?uid=:id
   autoclick : 
     tab : tab-stabs-2
 

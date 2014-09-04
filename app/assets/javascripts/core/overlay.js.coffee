@@ -8,13 +8,14 @@ window.overlay = {
   yp: null, # specified as style attribute ( left: xp, top: yp )
   tex: null,
 
-  over : (obj) ->
+  attach : (obj, within = false) ->
     obj = if typeof obj is 'string' then $(obj) else obj 
     id = obj.attr('id')
     id = if id? then "overlay-#{id}" else "overlay-X"
 
     $(overlay.root).remove() if overlay.root? 
-    transparentObj = $("<div id=#{id} class='overlay'></div>").insertAfter obj
+    html = "<div id=#{id} class='overlay'></div>"
+    transparentObj = if within then $(html).appendTo(obj) else $(html).insertAfter(obj)
 
     overlay.root = transparentObj
     overlay.nComments = 0
