@@ -226,7 +226,7 @@ Webapp::Application.routes.draw do
 
   # Token
   resources :tokens, :only => [:create, :destroy]
-  match 'tokens/refresh/home' => 'tokens#refresh_home', via: :get
+  match 'tokens/refresh/qsns' => 'tokens#refresh_qsns', via: :get
   match 'tokens/refresh/stab' => 'tokens#refresh_stab', via: :get
   match 'tokens/refresh/ws' => 'tokens#refresh_ws', via: :get
   match 'tokens/verify' => 'tokens#verify', via: :get

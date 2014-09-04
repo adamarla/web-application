@@ -25,6 +25,7 @@ class TokensController < ApplicationController
         :token => account.authentication_token, 
         :email => account.email,
         :name  => name,
+        :id    => account.loggable.id,
         :ws    => worksheets, # to be depracated
         :count => Worksheet.of_student(account.loggable.id).count
       }
@@ -41,25 +42,6 @@ class TokensController < ApplicationController
       @account.reset_authentication_token!
       status = 200 
       json = { :token => params[:id] }
-    end
-    render status: status, json: json
-  end
-
-  def refresh_home
-    account = Account.find_by_email(params[:email].downcase)
-    if account.nil?
-      status = 401 
-      json = { :message => "Invalid email" }
-    elsif account.authentication_token != params[:token]
-      status = 404 
-      json = { :message => "Not Authorized" }
-    else 
-      status = 200
-      json = { 
-        :name  => account.loggable.first_name,
-        :qotd  => 1000, # today's puzzle id?
-        :count => Worksheet.of_student(account.loggable.id).count
-      }
     end
     render status: status, json: json
   end
@@ -97,8 +79,7 @@ class TokensController < ApplicationController
       name = Student.find_by_id(account.loggable_id).first_name
       status = 200
       json = {
-        :name  => name,
-        :ws    => get_worksheets(account)
+        :ws => get_worksheets(account)
       }
     end
     render status: status, json: json
@@ -116,10 +97,28 @@ class TokensController < ApplicationController
       student = account.loggable
       status = 200
       json = {
-        :name => student.name,
-        :ws   => get_stabs(student)
+        :ws => get_stabs(student)
       }
     end
+    render status: status, json: json
+  end
+
+  def refresh_qsns
+    id_type = params[:type]
+    ids = params[:ids].nil? ? nil : params[:ids].split(',')
+    questions = []
+    if id_type == "id"
+      questions = Question.where(id: ids)
+    elsif id_type == "topic_id"
+      questions = Question.where(topic_id: ids)
+    elsif id_type = "pzl"
+      questions = Question.where(id: Puzzle.of_the_day.question_id)
+    end
+
+    status = 200
+    json = {
+      :ws => get_questions(questions)
+    }
     render status: status, json: json
   end
 
@@ -196,6 +195,25 @@ class TokensController < ApplicationController
 
   private
 
+    def get_questions(questions)
+      pzl = Puzzle.of_the_day
+      items = questions.map{ |q|
+        {
+          id: "#{q.topic_id}.#{q.id}",
+          qid: q.id,
+          sid: q.subparts.map(&:id).join(','),
+          pzlId: pzl.question_id == q.id ? pzl.id : nil,
+          name: q.created_at.to_s(:db).split(' ').first,
+          img: "#{q.uid}/#{rand(4)}",
+          imgspan: q.answer_key_span?,
+          outof: q.marks,
+          examiner: q.examiner_id,
+          hintMrkr: q.hints.map(&:id).max
+        }
+      }
+      return items
+    end
+
     def get_stabs(student)
       items = []
       item = nil
@@ -207,26 +225,25 @@ class TokensController < ApplicationController
           items << item unless item.nil?
           last_id = qsn.id
           item = {
-            id: "#{qsn.topic_id}.#{qsn.id}",
+            id: "#{student.id}.#{qsn.id}",
             qid: qsn.id,
-            sid: s.subpart_id,
-            grId: s.id, # replace with Stab.id
+            sid: "#{s.subpart_id}",
+            grId: "#{s.id}", # replace with Stab.id
             pzlId: nil, # replace with Stab.puzzle_id
             name: s.created_at.to_s(:db).split(' ').first,
-            img: "#{qsn.uid}/0",
+            img: "#{qsn.uid}/0", # get version from stab
             imgspan: qsn.answer_key_span?, 
             scans: s.scan,
-            marks: s.marks.to_i, # replace with Stab.strength?
+            marks: s.marks, # replace with Stab.quality?
             outof: qsn.marks,
             examiner: s.examiner_id,
-            hintsMrkr: qsn.hints.map(&:id).max,
             fdbkMrkr: Remark.where(attempt_id: s.id).order(:id).map(&:id).max
           } 
         else
           item[:sid] = "#{item[:sid]},#{s.subpart.id}"
           item[:grId] = "#{item[:grId]},#{s.id}" # replace with Stab.id
           item[:scans] = "#{item[:scans]},#{s.scan}"
-          item[:marks] += s.marks.to_i
+          item[:marks] += s.marks
           fdbk = Remark.where(attempt_id: s.id).order(:id).map(&:id).max 
           if fdbk > item[:fdbkMrkr]
             item[:fdbkMrkr] = fdbk
@@ -253,7 +270,7 @@ class TokensController < ApplicationController
 
         items = []
         qsels.each_with_index do |qsel, i|
-          qatts = atts.where(q_selection_id: qsel.id)
+          qatts = atts.where(q_selection_id: qsel.id).order(:page)
           items << {
             id: "#{w.id}.#{i+1}",
             qid: qs[i].id,
