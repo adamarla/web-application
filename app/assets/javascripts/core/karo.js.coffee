@@ -200,8 +200,14 @@ window.karo = {
   }
 
   sanitize : (comment) ->
-    ret = comment.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
-    # ret = ret.replace /(\\frac)/g, "\\dfrac" # \dfrac looks better on annotation
+    # Remove whitespace from front and back => trim()  
+    j = comment.replace(/^\s+|\s+$/g,'')
+
+    # Replace > 1 continuous spaces with a single space 
+    k = j.replace(/\s\s+/g,' ')
+
+    # Replace any continous occurrences of $ - like $$ - with a single $
+    ret = k.replace /[\$]+/g, '$' # -> all TeX within $..$ (inlined)
 
     # Make sure that all $'s are paired. Remember, the value this function returns 
     # is what will be typeset remotely. Can't have LaTeX barf there
@@ -256,8 +262,8 @@ window.karo = {
       else
         ret = ret.replace(bit,'') if bit is '\\text{'
 
-    ret = ret.trim()
     ret = ret.replace /}$/, ''
+    ret = karo.sanitize ret
     return ret
 
 }
