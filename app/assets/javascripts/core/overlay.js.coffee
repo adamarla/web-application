@@ -51,6 +51,17 @@ window.overlay = {
     overlay.add(m.comment, null, m.x, m.y) for m in json
     return true
 
+  offsets : (event) ->
+    return [] unless event? 
+    offset = $(overlay.ref).offset()
+    x = event.pageX - offset.left 
+    y = event.pageY - offset.top - 50 # bit of a hack
+
+    return false if (x < 0 || y < 0) # click outside of overlay
+    xp = Math.round (x / 6)
+    yp = Math.round (y / 8)
+    return [xp, yp]
+
   add : (comment, event = null, xp = null, yp = null) ->
     # Do nothing if overlay is hidden as it (the overlay) is not intended to be used
     return false if $(overlay.root).hasClass 'hide'
@@ -66,13 +77,10 @@ window.overlay = {
       if $(event.target).hasClass 'shadow'
         event.stopImmediatePropagation()
         return true
-      offset = $(overlay.ref).offset()
-      x = event.pageX - offset.left 
-      y = event.pageY - offset.top - 50 # bit of a hack
 
-      return false if (x < 0 || y < 0) # click outside of overlay
-      xp = Math.round (x / 6)
-      yp = Math.round (y / 8)
+      offsets = overlay.offsets(event) 
+      xp = offsets[0]
+      yp = offsets[1]
 
       # Store the x- and y- offset percentages. These are more for other modules to use
       overlay.xp = xp
