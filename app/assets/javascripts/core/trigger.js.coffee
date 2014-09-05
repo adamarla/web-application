@@ -489,7 +489,7 @@ jQuery ->
       badge = $(this).find('.badge').eq(0)
       isClicked = $(this).hasClass('selected') # issues 55 and 112
 
-      hdnCbx = line.hiddenCbx(this) 
+      hdnCbx = sngLine.hiddenCbx(this) 
       if isClicked
         if multiOk # only in multi-select mode should a line be deselected on second click
           $(this).removeClass 'selected'
@@ -506,7 +506,7 @@ jQuery ->
           for k in otherLines
             $(k).removeClass 'selected'
             $(k).find('.badge').eq(0).removeClass 'badge-warning'
-            l = line.hiddenCbx(k)
+            l = sngLine.hiddenCbx(k)
             $(l).prop('checked', false) if l?
 
       # Set line's marker on parent-tab - unless tab is locked - ie. not open to updation

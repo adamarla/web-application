@@ -15,7 +15,7 @@ jQuery ->
 
     if url.match(/course\/new/)
       $('#m-new-course').modal 'hide'
-      return line.write('#pane-courses', json)
+      return sngLine.write('#pane-courses', json)
 
     else if url.match(/teacher\/courses/)
       target = $('#pane-courses')

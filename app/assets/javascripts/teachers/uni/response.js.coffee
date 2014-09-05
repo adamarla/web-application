@@ -110,7 +110,7 @@ jQuery ->
       lines.columnify target, json.names, null, buttons
       for m in target.find '.line'
         # $(m).addClass 'disabled'
-        cbx = line.hiddenCbx(m)
+        cbx = sngLine.hiddenCbx(m)
         if cbx? 
           $(cbx).prop('checked', true) 
           $(cbx).attr 'value', $(cbx).parent().siblings('.text').eq(0).text()
