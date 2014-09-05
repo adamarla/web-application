@@ -78,9 +78,7 @@ window.overlay = {
         event.stopImmediatePropagation()
         return true
 
-      offsets = overlay.offsets(event) 
-      xp = offsets[0]
-      yp = offsets[1]
+      [xp, yp] = overlay.offsets(event) 
 
       # Store the x- and y- offset percentages. These are more for other modules to use
       overlay.xp = xp
