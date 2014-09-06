@@ -76,9 +76,9 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span3{ href: "#"}
+              %a.brand.span4{ href: "#"}
                 = image_tag "logo-mit-beta-2.png"
-                .tagline.span10.offset1= "Grades will happen"
+                #tagline= 'Grades will happen'
               %ul.nav.span8.pull-right
                 %li
                   = simple_link for: 'Indie', icon: 'icon-star', id: 'a-grade-stabs' 

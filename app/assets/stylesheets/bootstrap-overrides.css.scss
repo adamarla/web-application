@@ -253,18 +253,10 @@ span.btn-shortcut {
 
 #tagline { 
   text-align: center ;
-  font: { 
-    size: 22px ;
-    weight: 400 ;
-  } 
-  min-height: 50px ;
-  background-color: #01537d ;
-  padding-top: 18px ;
-  z-index: 6 ;
-  border: { 
-    top-left-radius: 20px ;
-    top-right-radius: 20px ;
-  } 
+  font-size: 12px ;
+  color: white ;
+  max-width: 70% ;
+  margin-top: -10px ;
 } 
 
 #potd { 
@@ -881,7 +873,7 @@ button[data-toggle='button'] {
   }
 
   &+ div { 
-    margin-top: 100px ;
+    margin-top: 120px ;
   } 
 } 
 
