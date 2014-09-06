@@ -27,7 +27,8 @@ class TokensController < ApplicationController
         :name  => name,
         :id    => account.loggable.id,
         :ws    => worksheets, # to be depracated
-        :count => Worksheet.of_student(account.loggable.id).count
+        :count => Worksheet.of_student(account.loggable.id).count,
+        :topics=> get_topics()
       }
     end
     render status: status, json: json
@@ -193,6 +194,18 @@ class TokensController < ApplicationController
     render json: { success: merged }, status: :ok
   end
 
+  def get_topics
+    topics = Topic.all.map{ |t|
+      {
+        id: t.id,
+        name: t.name,
+        v_id: t.vertical.id,
+        v_name: t.vertical.name
+      }
+    }
+    return topics
+  end
+
   private
 
     def get_questions(questions)
@@ -202,9 +215,9 @@ class TokensController < ApplicationController
           id: "#{q.topic_id}.#{q.id}",
           qid: q.id,
           sid: q.subparts.map(&:id).join(','),
-          pzlId: pzl.question_id == q.id ? pzl.id : nil,
+          pzl: pzl.question_id == q.id ,
           name: q.created_at.to_s(:db).split(' ').first,
-          img: pzl.question_id == q.id ? "#{q.uid}/0" : "#{q.uid}/#{rand(4)}",
+          img: pzl.question_id == q.id ? "#{q.uid}/0":"#{q.uid}/#{rand(4)}",
           imgspan: q.answer_key_span?,
           outof: q.marks,
           examiner: q.examiner_id,
