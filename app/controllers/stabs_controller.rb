@@ -15,7 +15,7 @@ class StabsController < ApplicationController
   end 
 
   def dated
-    uid = param[:uid].to_i
+    uid = params[:uid].to_i
     @stabs = Stab.where(uid: uid, examiner_id: current_account.loggable_id).order(:question_id, :version)
   end 
 

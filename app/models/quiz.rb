@@ -210,7 +210,7 @@ class Quiz < ActiveRecord::Base
     else # teacher sharing quiz with someone else. Take care of demo quizzes
       t = tid 
       n = self.name
-      pid = PREFAB_QUIZ_IDS.include?(self.id) ? self.id :  nil 
+      pid = PREFAB_QUIZ_IDS.include?(self.id) ? nil : self.id 
     end
 
     c = Quiz.create teacher_id: t, question_ids: qids, num_questions: qids.count, parent_id: pid, name: n

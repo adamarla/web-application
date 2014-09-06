@@ -97,6 +97,10 @@ class Examiner < ActiveRecord::Base
 
   def self.distribute_stabs 
     stabs = Stab.unassigned.with_scan.order(:student_id) # ug = ungraded
+    stabs.each do |s|
+      s.update_attribute :examiner_id, 2
+    end
+=begin
     examiners = Examiner.where(mentor_is_teacher: false).available # registered, non-TA graders 
 
     are_puzzles = [true, false]
@@ -117,7 +121,7 @@ class Examiner < ActiveRecord::Base
         graders.push exm
       end # each_slice
     end # of each  
-
+=end
   end # of method
 
   def self.distribute_scans
