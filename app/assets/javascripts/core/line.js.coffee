@@ -13,12 +13,9 @@ renderTextAndEqnsOn = (obj, text, marker) ->
     obj.text text
   return hasTex
 
-### 
-  Single line 
-###
+# Single line 
 
-window.line = {
-
+window.sngLine = {
   write : (here, json, menu = null, buttons = null) ->
     return false if not json.id? or not json.name?
     here = if typeof here is 'string' then $(here) else here
@@ -130,8 +127,8 @@ window.line = {
     obj.appendTo here
     return true
 
-  hiddenCbx : (line) ->
-    cbx = $(line).children('.btn.default')[0]
+  hiddenCbx : (l) ->
+    cbx = $(l).children('.btn.default')[0]
     return ( if cbx? then $(cbx).children("input[type='checkbox']")[0] else null )
 }
 
@@ -159,7 +156,7 @@ window.lines = {
         currIndex += 1
         currColumn = columns.eq(currIndex)
         nAdded = 0
-      line.write currColumn, m, menu, buttons
+      sngLine.write currColumn, m, menu, buttons
       nAdded += 1
     return true
 

@@ -23,4 +23,7 @@
     .btn-group.span12
       = simple_button for: 'Prev', kb: '<', class: 'btn-inverse span6'
       = simple_button for: 'Next', kb: '>', class: 'btn-inverse span6'
-  .row-fluid.disabled
+  .row-fluid
+    = simple_form_for :doodles, remote: true, html: { id: 'stab-form' } do |f| 
+      .hide
+      = simple_button for: 'Submit', kb: 'S', class: 'btn-primary offset3 span5', type: :submit

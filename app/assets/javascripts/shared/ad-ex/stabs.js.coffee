@@ -1,4 +1,11 @@
 
+# <div q=a v=b marker=c> --> stab 
+#   <div p=d marker=e> --> scan
+
+TeX = (x,y,tex) ->
+  this.x = x 
+  this.y = y 
+  this.tex = tex 
 
 window.stabs = { 
   root: null, 
@@ -6,12 +13,20 @@ window.stabs = {
   locked : false, 
   typing : false,
 
+  ######## Current Stab and Scan ######### 
+
+  current : { 
+    stab : null, 
+    scan : null
+  }
+
   ######## Setting Up ######### 
 
   initialize : () ->
     unless stabs.root?
       stabs.root = $('#stabs-grader')[0] 
       stabs.pending.list = $(stabs.root).children('#stabs-pending')[0]
+      stabs.form = $(stabs.root).find('form')[0]
 
     # An examiner sees two rubrics - this one (will stay) and one for 
     # schools (will go in time). As both share keyboard shortcuts, we must ensure 
@@ -37,50 +52,94 @@ window.stabs = {
     overlay.attach('#wide-Y', true)
     return true
 
-  loadScan : (obj) ->
-    img = obj.getAttribute 'p'
+  showScan : (scan) ->
+    img = scan.getAttribute 'p'
+    overlay.clear() 
     preview.load img, 'locker'
+    comments = stabs.notepad.comments scan 
+    if comments? 
+      overlay.add(j.tex, null, j.x, j.y) for j in comments 
     return true  
-
-  ######## Form ######### 
-
-  form : {
-    clear : () -> 
-      return true 
-
-    add : (name = null) ->
-      return true 
-  } 
-
 
   ######## Typeahead ######### 
 
   typeahead : { 
-    clear : () -> 
+    list : new Array(), # only *** unjaxified *** comments 
+
+    add : (comment) -> # with duplicity checks  
+      unique = true
+      for j in stabs.typeahead.list 
+        unique = not j is comment
+        break unless unique 
+      stabs.typeahead.list.push(comment) if unique
       return true 
 
     ping : () -> 
+      # Call everytime the stab changes 
       return true 
 
     load : (json) -> 
+      # Call from within ping() only 
       return true 
+
+    clear : () -> 
+      # Call from within load() only
+      stabs.typeahead.list.length = 0
+      return true 
+
   } 
 
   ######## Notepad - for just added comments  ######### 
   notepad : { 
-    stuff  : new Array(), 
+    stuff  : new Object(), 
+    # key = scan-db-id, value = array of hashes = [{ :x, :y, :tex }]
+    # TeX = *** unjaxified *** only
 
     clear : () -> 
-      stabs.notepad.stuff.length = 0 
+      delete stabs.notepad.stuff[k] for k in stabs.notepad.stuff.keys()
+      overlay.clear()
       return true 
 
-    notesOn : (scan) ->
-      return null 
-  }
+    push : (comment, event) ->
+      # comment = TeX as entered by the grader => unjaxified 
+      return false unless event? 
+      scan = stabs.current.scan 
+      return false unless scan? 
 
-  ######## History - for comments added historically  ######### 
-  history : { 
-  } 
+      cmts = stabs.notepad.comments(scan) 
+      id = scan.getAttribute('marker') 
+
+      unless cmts? 
+        cmts = new Array() 
+        stabs.notepad.stuff[id] = cmts 
+
+      [xp, yp] = overlay.offsets(event) 
+
+      sntz = karo.sanitize comment
+      jxf = karo.jaxify c 
+
+      n = cmts.length() # number of elements till now 
+      cmts.push TeX.new(xp, yp, sntz)
+      overlay.add jxf, null, xp, yp 
+      return true 
+
+    pop : () -> # remove last added TeX comment from current scan
+      scan = stabs.current.scan 
+      return false unless scan?
+      comments = stabs.notepad.comments(scan)
+      return false unless comments?
+
+      last = comments.pop() 
+      if last?
+        destroy last 
+        overlay.pop()
+      return true
+
+    comments : (scan) -> # scan = HTML obj as created by stabs.pending.load 
+      k = scan.getAttribute 'marker'
+      onScan = stabs.notepad.stuff[k] # an array of TeX comments on scan with marker=k 
+      return onScan
+  }
 
   ######## Pending ######### 
 
@@ -109,24 +168,17 @@ window.stabs = {
       n = $(stabs.current.scan).next()[0]
       if n? 
         stabs.current.scan = n 
-        stabs.loadScan(n)
+        stabs.showScan(n)
       return n 
 
     prevScan : () ->
       p = $(stabs.current.scan).prev()[0]
       if p? 
         stabs.current.scan = p 
-        stabs.loadScan(p)
+        stabs.showScan(p)
       return p
 
   } 
-
-  ######## Current Stab and Scan ######### 
-
-  current : { 
-    stab : null, 
-    scan : null
-  }
 
   ######## Key-presses and Mouse clicks  ######### 
 
