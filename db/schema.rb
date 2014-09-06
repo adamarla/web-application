@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140903132715) do
+ActiveRecord::Schema.define(:version => 20140906163707) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -103,6 +103,14 @@ ActiveRecord::Schema.define(:version => 20140903132715) do
 
   add_index "checklists", ["criterion_id"], :name => "index_checklists_on_criterion_id"
   add_index "checklists", ["rubric_id"], :name => "index_checklists_on_rubric_id"
+
+  create_table "commentaries", :force => true do |t|
+    t.integer "question_id"
+    t.integer "tex_comment_id"
+  end
+
+  add_index "commentaries", ["question_id"], :name => "index_commentaries_on_question_id"
+  add_index "commentaries", ["tex_comment_id"], :name => "index_commentaries_on_tex_comment_id"
 
   create_table "contracts", :force => true do |t|
     t.integer  "customer_id"

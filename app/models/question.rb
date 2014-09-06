@@ -56,6 +56,9 @@ class Question < ActiveRecord::Base
   has_many :attempts
   has_many :subparts, dependent: :destroy
 
+  has_many :commentaries, dependent: :destroy 
+  has_many :tex_comments, through: :commentaries
+
   has_one :video, as: :watchable
 
   
