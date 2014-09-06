@@ -150,8 +150,9 @@ class ExaminersController < ApplicationController
                Puzzle    Question    Quiz(takehome)    Quiz(in-class)
                ------    --------    --------------    --------------
 type            PZL       QSN         GR                  QR 
-id              sbp_ids   sbp_ids     attempt_ids         mangled QR-code 
+id              sbp_ids   sbp_ids     attempt_ids      mangled QR-code 
 student_id         +        +            nil              nil 
+vers               +        nil          nil              nil
 path            ( common to all )
 
 =end
@@ -167,8 +168,8 @@ path            ( common to all )
       ids = params[:id].split('-').map(&:to_i) # subpart IDs 
       qid = Subpart.where(id: ids).map(&:question_id).first 
       is_puzzle = (type == 'PZL')
-      version = is_puzzle ? 0 : (params[:version].blank? ? 0 : params[:version].to_i)
-      uid = Stab.date_to_uid path.split('/').first  
+      version = is_puzzle ? 0 : params[:version].to_i
+      uid = Stab.date_to_uid path.split('/').first
 
       # Check for any existing record and create one if none exists
       stab = Stab.where(student_id: sid, question_id: qid, puzzle: is_puzzle).first
@@ -177,7 +178,7 @@ path            ( common to all )
       # Now, bind the passed scan to the stab
       stab.add_scan(path) 
 
-    else # is a stab
+    else # is not a stab
       ids = type == 'GR' ? params[:id].split('-') : Worksheet.unmangle_qrcode(params[:id])
       g = Attempt.where(id: ids)
       mobile = (type == 'GR')

@@ -204,7 +204,7 @@ class TokensController < ApplicationController
           sid: q.subparts.map(&:id).join(','),
           pzlId: pzl.question_id == q.id ? pzl.id : nil,
           name: q.created_at.to_s(:db).split(' ').first,
-          img: "#{q.uid}/#{rand(4)}",
+          img: pzl.question_id == q.id ? "#{q.uid}/0" : "#{q.uid}/#{rand(4)}",
           imgspan: q.answer_key_span?,
           outof: q.marks,
           examiner: q.examiner_id,
@@ -215,42 +215,22 @@ class TokensController < ApplicationController
     end
 
     def get_stabs(student)
-      items = []
-      item = nil
-      last_id = 0
-      # TO DO - change Attempt to Stab
-      stabs = Attempt.of_student(student.id).graded.each do |s|
-        qsn = s.subpart.question 
-        if last_id != qsn.id
-          items << item unless item.nil?
-          last_id = qsn.id
-          item = {
-            id: "#{student.id}.#{qsn.id}",
-            qid: qsn.id,
-            sid: "#{s.subpart_id}",
-            grId: "#{s.id}", # replace with Stab.id
-            pzlId: nil, # replace with Stab.puzzle_id
-            name: s.created_at.to_s(:db).split(' ').first,
-            img: "#{qsn.uid}/0", # get version from stab
-            imgspan: qsn.answer_key_span?, 
-            scans: s.scan,
-            marks: s.marks, # replace with Stab.quality?
-            outof: qsn.marks,
-            examiner: s.examiner_id,
-            fdbkMrkr: Remark.where(attempt_id: s.id).order(:id).map(&:id).max
-          } 
-        else
-          item[:sid] = "#{item[:sid]},#{s.subpart.id}"
-          item[:grId] = "#{item[:grId]},#{s.id}" # replace with Stab.id
-          item[:scans] = "#{item[:scans]},#{s.scan}"
-          item[:marks] += s.marks
-          fdbk = Remark.where(attempt_id: s.id).order(:id).map(&:id).max 
-          if fdbk > item[:fdbkMrkr]
-            item[:fdbkMrkr] = fdbk
-          end
-        end
+      items = Stab.where(student_id: student.id).graded.each do |s|
+        {
+          id: "#{student.id}.#{qsn.id}",
+          qid: s.question.id,
+          sid: s.question.subparts.map(&:id).join(','),
+          pzl: s.puzzle,
+          name: s.created_at.to_s(:db).split(' ').first,
+          img: "#{s.question.uid}/#{s.version}",
+          imgspan: s.question.answer_key_span?, 
+          scans: s.scan,
+          marks: s.quality,
+          outof: q.question.marks,
+          examiner: s.examiner_id,
+          fdbkMrkr: 0 # Remark.where(attempt_id: s.id).order(:id).map(&:id).max
+        } 
       end
-      items << item unless item.nil?
       return items
     end
 
