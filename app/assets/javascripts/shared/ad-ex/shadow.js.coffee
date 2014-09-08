@@ -58,5 +58,4 @@ window.shadow = {
 jQuery ->
   $('.shadow').on 'click', (event) ->
     event.stopImmediatePropagation()
-    alert '1'
     return true
