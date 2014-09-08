@@ -149,13 +149,10 @@ class Question < ActiveRecord::Base
   def comments 
     # Returns any ** non-trivial ** comments written by any examiner, 
     # for any subpart in any quiz in which this question appeared
-    attempts = Attempt.graded.where(subpart_id: self.subpart_ids)
-    remarks = Remark.where(attempt_id: attempts.map(&:id))
 
-    # Show the most used TeX comments first
-    a = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).order(:n_used).reverse_order
-    tex = a.select{ |m| !m.trivial? }
-    return tex
+    # First hints, because they are non-trivial and detailed
+    tex = self.hints.map(&:text) + Commentary.where(question_id: self.id).map(&:tex_comment).map(&:text) 
+    return tex.uniq
   end 
 
   def hints

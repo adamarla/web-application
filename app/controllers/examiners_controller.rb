@@ -232,7 +232,7 @@ path            ( common to all )
     # examiner is grading now might only be a subpart of a larger question
     a = Attempt.find params[:g]
     q = a.nil? ? nil : a.subpart.question
-    @comments = q.nil? ? [] : ( q.comments.map(&:text) + q.hints.map(&:text) ).uniq
+    @comments = q.nil? ? [] : q.comments 
     render json: { comments: @comments }, status: :ok
   end
 

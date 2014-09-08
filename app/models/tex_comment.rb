@@ -33,10 +33,12 @@ class TexComment < ActiveRecord::Base
     # comments -> an array of TeX comments with x- and y- coordinates 
     # eid -> examiner id 
  
-    # A TexComment stores the TeX to be rendered 
-    # A Remark adds positional information (x,y) to 
+    # TexComment = only the TeX  
+    # Remark = TeX + positional information + attempt_id  
     # A Doodle is a collection of remarks for a question attempt by a non-live examiner 
     # - perhaps as part of the training / vetting process 
+
+    q = d_id.nil? ? Attempt.find(a_id).subpart.question : nil 
 
     # Each chunk is of the form --> [x, y, TeX]
     for chunk in comments.each_slice(3).to_a 
@@ -46,6 +48,9 @@ class TexComment < ActiveRecord::Base
       n = tex.n_used + ( d_id.nil? ? 1 : 0 ) # increment n_used - but only if not used for a doodle
       tex.update_attribute :n_used, n
       tex.remarks.create(x: chunk[0], y: chunk[1], attempt_id: a_id, doodle_id: d_id)
+      
+      # For non-doodles, track which TexComments map to which question
+      q.commentaries.create(tex_comment_id: tex.id) unless q.nil?
     end 
     
   end 
