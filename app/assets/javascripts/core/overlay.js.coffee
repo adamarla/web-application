@@ -52,12 +52,12 @@ window.overlay = {
     return true
 
   offsets : (event) ->
-    return [] unless event? 
+    return [null, null] unless event? 
     offset = $(overlay.ref).offset()
     x = event.pageX - offset.left 
-    y = event.pageY - offset.top - 50 # bit of a hack
+    y = event.pageY - offset.top - (stabs.locked ? 50 : 0) # bit of a hack
 
-    return false if (x < 0 || y < 0) # click outside of overlay
+    return [null, null] if (x < 0 || y < 0) # click outside of overlay
     xp = Math.round (x / 6)
     yp = Math.round (y / 8)
     return [xp, yp]
@@ -79,6 +79,9 @@ window.overlay = {
         return true
 
       [xp, yp] = overlay.offsets(event) 
+      if xp is null or yp is null
+        event.stopImmediatePropagation() 
+        return false
 
       # Store the x- and y- offset percentages. These are more for other modules to use
       overlay.xp = xp
