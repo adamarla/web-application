@@ -89,10 +89,6 @@ class Stab < ActiveRecord::Base
     where(uid: uid)
   end 
 
-  def question 
-    self.puzzle_id.nil? ? self.question : self.puzzle.question
-  end
-
   def num_credits?
     # number of credits to deduct 
     return 0
