@@ -94,7 +94,7 @@ class Suggestion < ActiveRecord::Base
     return "0-#{self.teacher_id}/#{self.signature}"
   end
 
-  def preview_images(restricted = false)
+  def preview_images
     from = self.teacher_id
     sig = self.signature
     return [*1..self.pages].map{ |pg| "0-#{from}/#{sig}/page-#{pg}.jpeg" }

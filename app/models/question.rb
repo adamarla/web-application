@@ -249,8 +249,8 @@ class Question < ActiveRecord::Base
     return klass
   end
 
-  def preview_images(restricted = false, version = 0)
-    versions = restricted ? [version] : [*0..3]
+  def preview_images(versions = 0)
+    versions = versions.is_a?(Array) ? versions : [versions]
     span = self.answer_key_span?
     uid = self.uid 
     list = [] 

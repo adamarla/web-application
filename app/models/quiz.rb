@@ -146,7 +146,7 @@ class Quiz < ActiveRecord::Base
     end
   end
 
-  def preview_images(restricted = false)
+  def preview_images
     path = self.path?
     return [*1..self.span?].map{ |pg| "#{path}/pg-#{pg}.jpg" }
   end
