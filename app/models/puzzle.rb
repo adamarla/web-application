@@ -41,7 +41,7 @@ class Puzzle < ActiveRecord::Base
 
   def expires_in?
     return nil unless self.active 
-    return ( 86400 - Time.now.seconds_since_midnight ).floor
+    return ( 86400 - Time.now.in_time_zone('Kolkata').seconds_since_midnight ).floor
   end 
 
 end
