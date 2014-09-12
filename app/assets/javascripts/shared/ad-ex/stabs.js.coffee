@@ -1,6 +1,6 @@
 
-# <div q=a v=b marker=c> --> stab 
-#   <div p=d marker=e> --> scan
+# <div q=a v=b stb=c> --> stab 
+#   <div p=d kgz=e> --> kaagaz
 
 TeX = (x,y,tex) ->
   this.x = x 
@@ -10,8 +10,10 @@ TeX = (x,y,tex) ->
 window.stabs = { 
   root: null, 
   form: null, 
+  cmntBox : null,
   locked : false, 
   typing : false,
+  buttons : null, 
 
   ######## Current Stab and Scan ######### 
 
@@ -26,7 +28,26 @@ window.stabs = {
     unless stabs.root?
       stabs.root = $('#stabs-grader')[0] 
       stabs.pending.list = $(stabs.root).children('#stabs-pending')[0]
+
       stabs.form = $(stabs.root).find('form')[0]
+      $(stabs.form).submit ->
+        isFull = stabs.notepad.isFull() 
+        if isFull 
+          stabs.notepad.buildForm() 
+        else 
+          notifier.show 'n-missing-comments'
+        return isFull
+
+      # where TeX is written 
+      stabs.cmntBox = $(stabs.root).find("input[id='stab-typeahead']")[0]
+      $(stabs.cmntBox).typeahead { source: stabs.typeahead.list }
+
+      # All buttons in the grading panel  
+      stabs.buttons = $(stabs.root).find('button[data-kb], div[data-kb]')
+
+      # Slider 
+      stabs.slider.obj = $(stabs.root).find('#stabs-slider')[0]
+      $(stabs.slider.obj).children('[title]').tooltipster( { autoClose: false })
 
     # An examiner sees two rubrics - this one (will stay) and one for 
     # schools (will go in time). As both share keyboard shortcuts, we must ensure 
@@ -52,34 +73,64 @@ window.stabs = {
     overlay.attach('#wide-Y', true)
     return true
 
-  showScan : (scan) ->
-    img = scan.getAttribute 'p'
-    overlay.clear() 
-    preview.load img, 'locker'
-    comments = stabs.notepad.comments scan 
-    if comments? 
-      overlay.add(j.tex, null, j.x, j.y) for j in comments 
-    return true  
+  show : { 
+    stab : (stb) -> 
+      # Shows the first scan 
+      scans = $(stb).children()
+      stabs.show.scan scans[0]
+      # Disables next / previous buttons - if only one scan
+      if scans.length is 1 
+        $(btn).addClass('disabled') for btn in stabs.buttons.filter("[data-kb='>'],[data-kb='<']")
+      return true  
+
+    scan : (kgz) ->
+      img = kgz.getAttribute 'p'
+      overlay.clear() 
+      preview.load img, 'locker'
+      comments = stabs.notepad.comments kgz 
+      if comments? 
+        for j in comments 
+          jxf = karo.jaxify j.tex 
+          overlay.add(jxf, null, j.x, j.y) 
+      return true  
+
+    solution : () -> # always to the current stab
+      stb = stabs.current.stab
+      return false unless stb? 
+      overlay.clear()
+      q = stb.getAttribute 'q'
+      v = stb.getAttribute 'v'
+      $.get "question/preview?id=#{q}&v=#{v}", (json) ->
+        preview.loadJson json
+      return true 
+  } 
 
   ######## Typeahead ######### 
 
   typeahead : { 
     list : new Array(), # only *** unjaxified *** comments 
 
-    add : (comment) -> # with duplicity checks  
-      unique = true
+    push : (comment) -> # with duplicity checks  
+      already = false
       for j in stabs.typeahead.list 
-        unique = not j is comment
-        break unless unique 
-      stabs.typeahead.list.push(comment) if unique
+        already |= (j is comment) 
+        break if already
+      stabs.typeahead.list.push(comment) unless already 
       return true 
 
-    ping : () -> 
+    ping : (stab) -> 
       # Call everytime the stab changes 
+      q = stab.getAttribute 'q'
+      $.get "question/commentary?id=#{q}", (json) -> 
+        stabs.typeahead.load json
       return true 
 
     load : (json) -> 
       # Call from within ping() only 
+      stabs.typeahead.clear()
+      for j in json.comments 
+        unjxf = karo.unjaxify j
+        stabs.typeahead.push unjxf
       return true 
 
     clear : () -> 
@@ -91,55 +142,117 @@ window.stabs = {
 
   ######## Notepad - for just added comments  ######### 
   notepad : { 
-    stuff  : new Object(), 
-    # key = scan-db-id, value = array of hashes = [{ :x, :y, :tex }]
+    list  : new Object(), 
+    # key = kaagaz-db-id, value = array of hashes = [{ :x, :y, :tex }]
     # TeX = *** unjaxified *** only
 
     clear : () -> 
-      delete stabs.notepad.stuff[k] for k in stabs.notepad.stuff.keys()
+      delete stabs.notepad.list[k] for k in Object.keys(stabs.notepad.list)
       overlay.clear()
+      head = $(stabs.form).children('.hide')[0]
+      $(head).empty() 
       return true 
 
     push : (comment, event) ->
       # comment = TeX as entered by the grader => unjaxified 
       return false unless event? 
-      scan = stabs.current.scan 
-      return false unless scan? 
+      [xp, yp] = overlay.offsets(event) 
+      return false if xp is null or yp is null # click outside overlay
 
-      cmts = stabs.notepad.comments(scan) 
-      id = scan.getAttribute('marker') 
+      kgz = stabs.current.scan 
+      return false unless kgz? 
+
+      cmts = stabs.notepad.comments(kgz) 
+      id = kgz.getAttribute('kgz') 
 
       unless cmts? 
-        cmts = new Array() 
-        stabs.notepad.stuff[id] = cmts 
-
-      [xp, yp] = overlay.offsets(event) 
+        stabs.notepad.list[id] = new Array() 
+        cmts = stabs.notepad.list[id]
 
       sntz = karo.sanitize comment
-      jxf = karo.jaxify c 
+      return false unless sntz.length # ignore blank comments 
+      cmts.push(new TeX(xp, yp, sntz))
 
-      n = cmts.length() # number of elements till now 
-      cmts.push TeX.new(xp, yp, sntz)
+      jxf = karo.jaxify sntz 
       overlay.add jxf, null, xp, yp 
       return true 
 
     pop : () -> # remove last added TeX comment from current scan
-      scan = stabs.current.scan 
-      return false unless scan?
-      comments = stabs.notepad.comments(scan)
+      kgz = stabs.current.scan 
+      return false unless kgz?
+      comments = stabs.notepad.comments(kgz)
       return false unless comments?
 
       last = comments.pop() 
-      if last?
-        destroy last 
-        overlay.pop()
+      overlay.pop() if last?
       return true
 
-    comments : (scan) -> # scan = HTML obj as created by stabs.pending.load 
-      k = scan.getAttribute 'marker'
-      onScan = stabs.notepad.stuff[k] # an array of TeX comments on scan with marker=k 
+    comments : (kgz) -> # kgz = HTML obj as created by stabs.pending.load 
+      k = kgz.getAttribute 'kgz'
+      onScan = stabs.notepad.list[k] # an array of TeX comments on kaagaz with kgz=k 
       return onScan
+
+    isFull : () ->
+      # returns true if every scan of the stab has > 1 comments. Else false 
+      nKgz = $(stabs.current.stab).children().length
+      pgs = Object.keys(stabs.notepad.list)
+      return false if (nKgz > pgs) # => not all Scan annotated 
+
+      # Or, the annotations could all have been popped leaving nothing 
+      allDone = true 
+      for k in pgs 
+        allDone &= (stabs.notepad.list[k].length > 0)
+        break unless allDone
+      return allDone
+
+    buildForm : () ->
+      # Low on sanity checks. Assumes you know when you're calling it.
+      head = $(stabs.form).children('.hide')[0]
+      list = stabs.notepad.list 
+      keys = Object.keys(list)
+
+      for kgzId in Object.keys(list) 
+        for cmnt,n in list[kgzId] 
+          for field in Object.keys(cmnt) 
+            if field isnt 'tex'
+              $("<input type='number' value='#{cmnt[field]}' name='kgz[#{kgzId}][#{n}][#{field}]'>").appendTo $(head)
+            else
+              tex = karo.jaxify cmnt[field]
+              # tex = encodeURIComponent(tex)
+              $("<input type='text' value=\"#{tex}\" name='kgz[#{kgzId}][#{n}][#{field}]'>").appendTo $(head)
+      return true
   }
+
+
+  ######## Slider ######### 
+
+  slider : { 
+    obj : null, 
+    tooltips : ['Not at all',
+                'Hardly', 
+                'Mildly impressed', 
+                'Reasonably impressed', 
+                'Quite impressed', 
+                'Very impressed']
+
+    select : (key) ->
+      return false unless stabs.slider.obj?
+      bbl = $(stabs.slider.obj).children("[data-kb='#{key}']")[0]
+      if bbl?
+        others = $(bbl).siblings('[data-kb]')
+        for d in others 
+          $(d).removeClass 'active'
+          $(d).children('input').prop 'checked', false
+          $(d).tooltipster 'hide'
+
+        index = parseInt(key) - 1
+        tip = stabs.slider.tooltips[index]
+
+        $(bbl).addClass 'active'
+        $(bbl).children('input').prop 'checked', true
+        $(bbl).tooltipster('content', tip).tooltipster('show')
+      return true 
+  } 
 
   ######## Pending ######### 
 
@@ -148,49 +261,118 @@ window.stabs = {
 
     clear : () -> 
       $(stabs.pending.list).empty() if stabs.pending.list?
+      stabs.current.stab = null 
+      stabs.current.scan = null
       return true 
 
     load : (json) -> 
       return false unless stabs.pending.list?
-      return false unless json.dated?
+      return false unless json.stabs?
 
       stabs.pending.clear() 
-      for j in json.dated 
-        stb = $("#<div q=#{j.q} v=#{j.v} marker=#{j.id}></div>").appendTo $(stabs.pending.list)
+      for j in json.stabs 
+        stb = $("<div q=#{j.q} v=#{j.v} stb=#{j.id}></div>").appendTo $(stabs.pending.list)
         for kgz in j.scans
-          $("<div p=#{kgz.path} marker=#{kgz.id}></div>").appendTo(stb) 
+          $("<div p=#{kgz.path} kgz=#{kgz.id}></div>").appendTo(stb) # kgz = Kaagaz model
 
-      stabs.current.stab = $(stabs.pending.list).children()[0]
-      stabs.current.scan = $(stabs.current.stab).children()[0]
+      stabs.pending.next.stab() 
       return true 
 
-    nextScan : () -> 
-      n = $(stabs.current.scan).next()[0]
-      if n? 
-        stabs.current.scan = n 
-        stabs.showScan(n)
-      return n 
+    next : { 
+      stab : () ->
+        stabs.notepad.clear() 
+        curr = stabs.current.stab
+        if curr?
+          nextStb = $(curr).next()[0]
+          $(curr).remove()
+        else 
+          nextStb = $(stabs.pending.list).children()[0] 
 
-    prevScan : () ->
-      p = $(stabs.current.scan).prev()[0]
-      if p? 
-        stabs.current.scan = p 
-        stabs.showScan(p)
-      return p
+        if nextStb? 
+          nextScn = $(nextStb).children()[0]
+          stabs.typeahead.ping nextStb
+          stabs.show.stab nextStb
+          stabs.slider.select '3'
+        else 
+          # last stab => show modal
+          nextScn = null
 
+        stabs.current.stab = nextStb 
+        stabs.current.scan = nextScn
+        return true
+
+      scan : () ->
+        n = $(stabs.current.scan).next()[0]
+        if n? 
+          stabs.current.scan = n 
+          stabs.show.scan(n)
+        return n 
+    } 
+
+    prev : { 
+      scan : () ->
+        p = $(stabs.current.scan).prev()[0]
+        if p? 
+          stabs.current.scan = p 
+          stabs.show.scan(p)
+        return p
+    } 
   } 
 
   ######## Key-presses and Mouse clicks  ######### 
 
   pressKey : (event) ->
     return true if (stabs.locked || stabs.typing)
-
     event.stopImmediatePropagation() 
-    key = String.fromCharCode(event.which)
-    # alert "stabs --> #{event.which} --> #{key}"
+
+    return true unless stabs.current.stab? # no stab => no point doing anything 
+    key = String.fromCharCode(event.which).toLowerCase()
+
+    btn = stabs.buttons.filter("[data-kb=#{key}]")[0]
+    return false unless (btn? and not $(btn).hasClass('disabled'))
+
+    switch event.which 
+      when 81 # Q
+        rest = stabs.buttons.filter(":not([data-kb='q'],[data-kb='s'])")
+        if $(btn).hasClass 'active'
+          $(btn).removeClass 'active' 
+          $(b).removeClass('disabled') for b in rest
+          stabs.show.stab(stabs.current.stab)
+        else 
+          $(btn).addClass 'active'
+          $(b).addClass('disabled') for b in rest
+          stabs.show.solution()
+      when 65 # A
+        return true
+      when 87 # W 
+        $(stabs.cmntBox).focus()
+        stabs.typing = true
+      when 85 # U
+        stabs.notepad.pop()
+      when 70 # F
+        scn = stabs.current.scan
+        pth = if scn? then scn.getAttribute('p') else null 
+        if pth?
+          $(btn).addClass 'active'
+          $.get "rotate_scan?id=#{pth}", (json) ->
+            $(btn).removeClass 'active'
+            stabs.pending.next.stab()
+      when 82 # R
+        return true
+      when 83 # S => submit form 
+        $(stabs.form).submit()
+      else 
+        stabs.slider.select(key) if (event.which > 48 and event.which < 55) # 1-6
+
     return true 
 
   mouseClick : (event) ->
     return true if stabs.locked 
+    tex = $(stabs.cmntBox).val() 
+
+    $(stabs.cmntBox).val ''
+    if stabs.notepad.push(tex, event) # to be stored in the DB 
+      stabs.typeahead.push tex # locally stored to help with auto-completion 
+    stabs.typing = false
     return true 
 } 

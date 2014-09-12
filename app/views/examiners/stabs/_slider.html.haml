@@ -1,0 +1,8 @@
+
+#stabs-slider.slider.span11
+  .track.white 
+  - [*1..6].each do |j| 
+    .bbl{ data: { kb: j }, title: 'description' }
+      #{j}
+      %input{ type: :checkbox, class: :hide, name: 'stab[quality]', value: j }
+  

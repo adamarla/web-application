@@ -88,6 +88,7 @@ Webapp::Application.routes.draw do
   # Stab
   match 'stab/dates' => 'stabs#dates', via: :get
   match 'stabs/dated' => 'stabs#dated', via: :get
+  match 'grade/stab' => 'stabs#grade', via: [:put, :post]
 
   # Guardian
   resource :guardian, :only => [:show]
@@ -136,6 +137,7 @@ Webapp::Application.routes.draw do
   match 'question/layout' => 'question#layout', via: :get
   match 'load/hints' => 'question#hints', via: :get
   match 'store/hints' => 'question#store_hints', via: [:put, :post]
+  match 'question/commentary' => 'question#commentary', via: :get
 
   # Quiz
   resource :quiz, :only => [:show]

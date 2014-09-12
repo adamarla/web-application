@@ -2,7 +2,7 @@
 $orange: #ffa500 ;
 $background: lighten(black, 17%) ;
 
-#stab-grader { 
+#stabs-grader { 
   .btn-group { 
     margin-bottom: 10px ;
   } 
@@ -33,8 +33,48 @@ $background: lighten(black, 17%) ;
   } 
 } 
 
+.slider { 
+  margin: { 
+    top: 50px ;
+    bottom: 20px ;
+  } 
+  min-height: 20px ;
+  > .track { 
+    min-height: 2px ;
+    background-color: white ;
+    z-index: 0 ;
+    max-width: 90% ;
+  } 
+
+  .bbl { 
+    width: 26px;
+    height: 21px;
+    text-align: center ;
+    margin-right: 7.6% ;
+    float: left ; 
+    margin-top: -14px ;
+    padding-top: 5px ;
+    border: { 
+      style: none ; 
+      radius: 13px ;
+    } 
+    z-index: 3 ;
+    &:not([class~='active']){ 
+      background-color: white ;
+      color: $background ;
+    }
+    &.active { 
+      color: white ; 
+      background-color: #01537d ;
+      font-weight: bold ;
+    } 
+  } 
+
+} 
+
 #wide-Y { 
+  position: relative ; 
   .overlay, .carousel { 
-    position: relative ;
+    position: absolute ; 
   } 
 } 

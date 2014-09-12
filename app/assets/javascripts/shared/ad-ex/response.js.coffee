@@ -19,6 +19,8 @@ jQuery ->
       target = $('#pane-stabs-1')
       key = 'dates'
       stabs.initialize()
+    else if url.match(/stabs\/dated/)
+      stabs.pending.load json
     else if url.match(/vertical\/topics/)
       id = "##{json.context}-common-pane"
       target = $(id)

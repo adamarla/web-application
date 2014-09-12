@@ -19,4 +19,14 @@ class StabsController < ApplicationController
     @stabs = Stab.where(uid: uid, examiner_id: current_account.loggable_id).order(:question_id, :version)
   end 
 
+  def grade 
+    # We get the stab from the kaagaz-IDs
+    kgz_ids  = params[:kgz].keys.map(&:to_i)
+    stab_id = Kaagaz.where(id: kgz_ids).map(&:stab_id).first # should be the same stab_id for all!
+    stab = Stab.find stab_id 
+    
+    all_good = Kaagaz.annotate params[:kgz]
+    render json: { status: (all_good ? :success : :failed) }, status: :ok
+  end 
+
 end

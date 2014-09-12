@@ -1,10 +1,10 @@
 
-#stab-grader 
+#stabs-grader 
   #stabs-pending.hide
   .row-fluid
     .span5
       .btn-group.btn-group-vertical.span12
-        = simple_button for: 'Question', kb: 'Q', class: 'btn-inverse'
+        = simple_button for: 'See Solution', kb: 'Q', class: 'btn-inverse'
         = simple_button for: 'Report Issue', kb: 'A', class: 'btn-inverse'
     .span3
       .btn-group.btn-group-vertical.span12
@@ -24,6 +24,7 @@
       = simple_button for: 'Prev', kb: '<', class: 'btn-inverse span6'
       = simple_button for: 'Next', kb: '>', class: 'btn-inverse span6'
   .row-fluid
-    = simple_form_for :doodles, remote: true, html: { id: 'stab-form' } do |f| 
+    = simple_form_for :stabs, url: grade_stab_path, remote: true, html: { id: 'stab-form' } do |f| 
       .hide
+      = render partial: 'examiners/stabs/slider'
       = simple_button for: 'Submit', kb: 'S', class: 'btn-primary offset3 span5', type: :submit

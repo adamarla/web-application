@@ -116,13 +116,14 @@ class QuestionController < ApplicationController
   end # of method 
 
   def preview
-    if params[:type] == 'g'
+    if params[:type] == 'g' # teacher/student viewing solution
       g = Attempt.find params[:id]
       @question = g.subpart.question
       @version = g.version
-    else 
+    else # students should never get here 
+      is_teacher = current_account.loggable_type == 'Teacher'
       @question = Question.find params[:id]
-      @version = "0"
+      @version = params[:v].blank? ? (is_teacher ? "0" : [*0..3]) : params[:v]
     end 
     @context = params[:context] || "unknown" 
   end
@@ -133,6 +134,11 @@ class QuestionController < ApplicationController
     teacher.favourites.create question_id: qid
     render json: { favourite: { id: qid } }, status: :ok
   end
+
+  def commentary 
+    q = Question.find params[:id]
+    @comments = q.comments 
+  end 
 
   def audit_open
     if params[:type] == 'g'

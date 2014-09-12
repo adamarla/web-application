@@ -3,4 +3,5 @@
 *= require indie/assets.css.scss
 *= require rubric.css.scss
 *= require indie/stabs.css.scss
+*= require_directory ../../../vendor/assets/stylesheets/tooltipster
 */

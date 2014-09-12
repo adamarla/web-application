@@ -37,13 +37,18 @@ class Remark < ActiveRecord::Base
     where('doodle_id IS NOT ?', nil)
   end
 
-  def examiner_id? 
-    self.doodle_id.nil? ? self.attempt.examiner_id : self.doodle.examiner_id
-  end 
-
   private 
+      def examiner_id? 
+        kaagaz_id.nil? ? (doodle_id.nil? ? attempt.examiner_id : doodle.examiner_id) : kaagaz.stab.examiner_id   
+      end 
+
       def seal 
         update_attribute :examiner_id, examiner_id?  
+        if doodle_id.nil? # for attempt or kaagaz
+          tex_comment.up_used_count() 
+          q = attempt_id.nil? ? kaagaz.stab.question : attempt.subpart.question
+          q.commentaries.create(tex_comment_id: tex_comment_id) unless q.nil?
+        end
       end 
 
 end
