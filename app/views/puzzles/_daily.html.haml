@@ -1,16 +1,16 @@
 
 #potd.row-fluid.hero-unit
   .row-fluid
-    .span6 
+    .span6.offset1 
       .row-fluid
-        .span3
+        .span2
           = image_tag 'landing/puzzle-27479.png', size: '40x40', class: :blue 
           #puzzle-stopwatch.push-down
             .small-text
               %i.icon-time.icon-white
               Submit in
             .stopwatch{ id: 'puzzle-expiry' }
-        .span8
+        .span9
           .title.orange= 'Problem of the Day'
           #pzl-daily
     .span5

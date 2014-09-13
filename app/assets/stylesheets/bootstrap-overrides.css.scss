@@ -296,12 +296,12 @@ span.btn-shortcut {
     } 
 
     &:first-child { // .row-fluid where potd is displayed 
-      padding: { 
-        left: 30px ;
-        right: 10px ;
+      > div:last-child { // instructions to student
+        font-size: 12px ;
       } 
-      > div:first-child { 
-        margin-right: 20px ;
+
+      > div:first-child { // problem text
+        .span2 { margin-left: -10px ; margin-right: 10px ; }
       } 
     } 
 
