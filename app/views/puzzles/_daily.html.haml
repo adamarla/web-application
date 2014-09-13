@@ -13,17 +13,17 @@
         .span8
           .title.orange= 'Problem of the Day'
           #pzl-daily
-    .span5.offset1
+    .span5
       .row-fluid
         .span3
           = image_tag 'landing/grader-14894.png', size: '40x40', class: :blue 
-        .span6
+        .span7
           .title.orange= 'Want to get it checked?'
           %p 
             Solve the problem on paper and <span class='orange'>use our mobile app</span> 
             to take a snap of your solution. Then upload it using the same app. Its that simple! 
           %p 
-            We would be more than happy to give your solution a look over.
+            We would be more than happy to look at your work and give our feedback. 
           - if current_account.nil?
             %p
               Don't forget to <span class='orange'>register</span> first. Its the only 

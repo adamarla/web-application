@@ -261,11 +261,11 @@ span.btn-shortcut {
 
 #potd { 
   margin-top: -20px ;
-  font-size: 13px ;
+  font-size: 12px ;
   line-height: 16px ;
 
   .stopwatch { 
-    font: { size: 18px ; } 
+    font: { size: 17px ; } 
     margin-top: 4px ;
   } 
 
@@ -295,14 +295,18 @@ span.btn-shortcut {
       } 
     } 
 
-    &:first-child { 
+    &:first-child { // .row-fluid where potd is displayed 
       padding: { 
         left: 30px ;
         right: 10px ;
       } 
+      > div:first-child { 
+        margin-right: 20px ;
+      } 
     } 
 
     &:last-child { 
+      
     } 
   } 
 } 
