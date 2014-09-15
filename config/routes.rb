@@ -141,6 +141,7 @@ Webapp::Application.routes.draw do
 
   # Quiz
   resource :quiz, :only => [:show]
+  match 'quiz/daily' => 'quizzes#daily', via: :get 
   match 'quizzes/list' => 'quizzes#list', via: :get
   match 'quiz/preview' => 'quizzes#preview', via: :get
   match 'quiz/mass_assign' => 'quizzes#mass_assign_to', via: [:put, :post]

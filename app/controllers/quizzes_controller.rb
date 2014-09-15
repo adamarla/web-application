@@ -1,7 +1,11 @@
 class QuizzesController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!
+  before_filter :authenticate_account!, except: [ :daily ]
   respond_to :json
+
+  def daily 
+    DailyQuiz.next 
+  end 
 
   def build
     t = current_account.loggable
