@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140914072721) do
+ActiveRecord::Schema.define(:version => 20140915091246) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -177,6 +177,12 @@ ActiveRecord::Schema.define(:version => 20140914072721) do
   end
 
   add_index "customers", ["account_id"], :name => "index_customers_on_account_id"
+
+  create_table "daily_quizzes", :force => true do |t|
+    t.string   "qids"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
