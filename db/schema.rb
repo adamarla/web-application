@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140908022858) do
+ActiveRecord::Schema.define(:version => 20140914072721) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -93,6 +93,13 @@ ActiveRecord::Schema.define(:version => 20140908022858) do
   add_index "attempts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
   add_index "attempts", ["student_id"], :name => "index_graded_responses_on_student_id"
   add_index "attempts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
+
+  create_table "behaviours", :force => true do |t|
+    t.integer "student_id"
+    t.integer "n_stabs",    :default => 0
+    t.integer "n_reccos",   :default => 0
+    t.integer "n_puzzles",  :default => 0
+  end
 
   create_table "checklists", :force => true do |t|
     t.integer "rubric_id"
