@@ -24,6 +24,8 @@ class Stab < ActiveRecord::Base
 
   validates :quality, numericality: { only_integer: true, less_than: 7 } # quality = [-1,6]
 
+  after_create :update_student_behaviour 
+
   def self.graded
     where('quality > ?', -1) 
   end 
@@ -131,5 +133,14 @@ class Stab < ActiveRecord::Base
     self.update_attribute :quality, -1 
     self.remarks.map(&:destroy) unless soft
   end 
+
+  private 
+        
+        def update_student_behaviour
+          b = student.behaviour 
+          b = b.nil? ? student.create_behaviour : b
+          field = puzzle ? :n_puzzles : :n_stabs 
+          b.up_count field
+        end 
 
 end

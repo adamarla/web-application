@@ -12,4 +12,10 @@
 class Behaviour < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :student
+
+  def up_count(field) # field = [:n_puzzles | :n_stabs | :n_reccos ] 
+    n = self[field] + 1
+    self.update_attribute field, n
+  end 
+
 end

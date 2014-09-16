@@ -16,13 +16,15 @@ include ApplicationUtil
 
 class Student < ActiveRecord::Base
   before_save :ensure_account, unless: :shell
+  after_create :track_behaviour 
   before_destroy :destroyable? 
   belongs_to :guardian
 
+  has_one :account, as: :loggable, dependent: :destroy
+  has_one :behaviour, dependent: :destroy 
+
   has_many :student_rosters, dependent: :destroy 
   has_many :sektions, through: :student_rosters
-
-  has_one :account, as: :loggable, dependent: :destroy
 
   has_many :attempts, dependent: :destroy
   has_many :quizzes, through: :attempts
@@ -247,6 +249,10 @@ class Student < ActiveRecord::Base
 
     def ensure_account
       return account.blank?
+    end 
+
+    def track_behaviour 
+      create_behaviour       
     end 
 
 end # of class 
