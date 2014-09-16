@@ -92,14 +92,15 @@ class StudentsController < ApplicationController
       target = Student.find target_id 
       src = current_account.loggable
       merged = Student.merge target, src
-      sign_in current_account, bypass: true if merged 
+      if merged 
+        sign_in current_account, bypass: true 
+        redirect_to student_path
+      end 
       render json: { success: merged }, status: :ok
     else 
       render json: { notify: { title: "No account specified for merging" } }, status: :ok
     end 
   end 
-
-
 
   def dispute 
     g = Attempt.find params[:id]

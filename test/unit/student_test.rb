@@ -10,6 +10,7 @@
 #  updated_at  :datetime
 #  shell       :boolean         default(FALSE)
 #  phone       :string(15)
+#  indie       :boolean
 #
 
 require 'test_helper'
