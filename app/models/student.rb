@@ -15,6 +15,8 @@
 include ApplicationUtil
 
 class Student < ActiveRecord::Base
+  before_save :ensure_account, unless: :shell
+  before_destroy :destroyable? 
   belongs_to :guardian
 
   has_many :student_rosters, dependent: :destroy 
@@ -32,10 +34,8 @@ class Student < ActiveRecord::Base
   has_many :stabs, dependent: :destroy 
 
   validates :name, presence: true
-  before_save :ensure_account, unless: :shell
   validates_associated :account
 
-  before_destroy :destroyable? 
 
   attr_accessor :code
   accepts_nested_attributes_for :account # simple_form_for needs this 
@@ -237,16 +237,16 @@ class Student < ActiveRecord::Base
     def destroyable?
       # A student can be destroyed if there is no associated data for it
       is_empty = true 
-      [Worksheet, Attempt, StudentRoster].each do |m|
-        is_empty = m.where(student_id: self.id).empty?
+      [Stab, Worksheet, Attempt, StudentRoster].each do |m|
+        is_empty = m.where(student_id: id).empty?
         break unless is_empty
       end
-      # puts " ++++ Can be destroyed [#{self.id}]" if is_empty
+      # puts " ++++ Cannot be destroyed [#{id}]" unless is_empty
       return is_empty
     end 
 
     def ensure_account
-      return !self.account.blank?
+      return account.blank?
     end 
 
 end # of class 
