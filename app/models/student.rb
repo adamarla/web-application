@@ -15,7 +15,6 @@
 include ApplicationUtil
 
 class Student < ActiveRecord::Base
-  before_save :ensure_account, unless: :shell
   after_create :track_behaviour 
   before_destroy :destroyable? 
   belongs_to :guardian
@@ -245,10 +244,6 @@ class Student < ActiveRecord::Base
       end
       # puts " ++++ Cannot be destroyed [#{id}]" unless is_empty
       return is_empty
-    end 
-
-    def ensure_account
-      return account.blank?
     end 
 
     def track_behaviour 
