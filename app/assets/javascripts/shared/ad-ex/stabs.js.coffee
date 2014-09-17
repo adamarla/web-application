@@ -47,7 +47,7 @@ window.stabs = {
 
       # Slider 
       stabs.slider.obj = $(stabs.root).find('#stabs-slider')[0]
-      $(stabs.slider.obj).children('[title]').tooltipster( { autoClose: false })
+      $(stabs.slider.obj).children('[title]').tooltipster( { trigger: 'custom', autoClose: false })
 
     # An examiner sees two rubrics - this one (will stay) and one for 
     # schools (will go in time). As both share keyboard shortcuts, we must ensure 
