@@ -134,7 +134,7 @@ class TokensController < ApplicationController
      
       marker = params[:marker].nil? ? 0 : params[:marker].to_i 
       # questions = Question.tagged.where("id > ? and available = true", marker)
-      questions = DailyQuiz.load
+      questions = DailyQuiz.load << Puzzle.of_the_day.question
       stabs = Stab.where("student_id = ? and examiner_id IS NOT NULL", student.id)
       json = {
         :ws     => get_questions(questions) + get_stabs(stabs),
