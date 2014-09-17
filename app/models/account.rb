@@ -39,6 +39,7 @@ class Account < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :login
+  attr_accessor :login
 
   # email
   validates :email, presence: true
