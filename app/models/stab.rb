@@ -34,6 +34,10 @@ class Stab < ActiveRecord::Base
     where('quality = ?', -1) 
   end 
 
+  def self.assigned_to(id) 
+    where(examiner_id: id)
+  end 
+
   def self.unassigned 
     where(examiner_id: nil)
   end 
@@ -132,6 +136,28 @@ class Stab < ActiveRecord::Base
     #     2. de-bugging 
     self.update_attribute :quality, -1 
     self.remarks.map(&:destroy) unless soft
+  end 
+
+  def remarks 
+    Remark.where(kaagaz_id: self.kaagaz_ids)
+  end 
+
+  #########################################
+  # Remove later: Clones stabs. Added to create dummy data for de-bugging
+  #########################################
+  def self.clone(id = nil) 
+    master = id.nil? ? Stab.last : Stab.find(id)
+    return false if master.nil?
+
+    # Stabs always made for student-ID = 1920 (unhygienix2014@gmail.com) and 
+    # always assigned to examiner-ID = 17 (haddock@drona.com)
+    stb = Stab.create student_id: 1920, examiner_id: 17, question_id: master.question_id, 
+                      version: rand(4), uid: master.uid, puzzle: [true,false].sample 
+
+    # Clone associated scans too
+    for kgz in master.kaagaz
+      stb.kaagaz.create path: kgz.path 
+    end 
   end 
 
   private 

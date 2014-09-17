@@ -23,10 +23,26 @@ class StabsController < ApplicationController
     # We get the stab from the kaagaz-IDs
     kgz_ids  = params[:kgz].keys.map(&:to_i)
     stab_id = Kaagaz.where(id: kgz_ids).map(&:stab_id).first # should be the same stab_id for all!
-    stab = Stab.find stab_id 
     
     all_good = Kaagaz.annotate params[:kgz]
+    if all_good 
+      stab = Stab.find stab_id 
+      qlt = params[:stab][:quality].to_i
+      stab.update_attribute :quality, qlt
+    end 
     render json: { status: (all_good ? :success : :failed) }, status: :ok
+  end 
+
+  def graded
+    # by default, graded stabs for the currently logged in student.
+    # Else, stabs graded by passed examiner
+    
+    unless params[:e].blank?
+      @stabs = Stab.graded.where(student_id: current_account.loggable_id)
+    else
+      @stabs = Stab.graded.assigned_to params[:e].to_i
+    end 
+    @uids = @stabs.map(&:uid).sort.uniq
   end 
 
 end

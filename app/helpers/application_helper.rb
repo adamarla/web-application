@@ -138,6 +138,13 @@ module ApplicationHelper
     end
   end
 
+  def partial_path(pth)
+    x = pth.sub /.*views\//, '' # remove everything upto app/views/
+    y = x.split('.')[0] # remove .html.haml
+    z = y.sub /_/, ''
+    return z
+  end
+
   def html_attrs(lang = 'en-US')
     {:xmlns => "http://www.w3.org/1999/xhtml", 'xml:lang' => lang, :lang => lang}
   end 
@@ -176,16 +183,6 @@ module ApplicationHelper
           end 
     end 
     return c 
-  end 
-
-########################################################
-  def get_list_of( what )
-    case what 
-      when :boards then return Board.where('id IS NOT NULL')
-      when :topics then return Topic.where('id IS NOT NULL').order(:name)
-      when :verticals then return Vertical.where('id IS NOT NULL').order(:name)
-      else return []
-    end 
   end 
 
 end # of helper class

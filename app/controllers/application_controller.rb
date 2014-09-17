@@ -29,7 +29,8 @@ class ApplicationController < ActionController::Base
     
     case @type
       when "Student"
-        @newbie = current_account.sign_in_count < 4 #StudentRoster.where(student_id: obj.id).count < 1
+        indie = current_account.loggable.indie?
+        @newbie = !indie && (current_account.sign_in_count < 4) 
         @puzzle = Puzzle.of_the_day
       when "Teacher"
         @newbie = obj.new_to_the_site?

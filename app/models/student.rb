@@ -10,6 +10,7 @@
 #  updated_at  :datetime
 #  shell       :boolean         default(FALSE)
 #  phone       :string(15)
+#  indie       :boolean
 #
 
 include ApplicationUtil
@@ -65,6 +66,8 @@ class Student < ActiveRecord::Base
         neu.account.update_attribute :phone, old.phone
       end
     end 
+
+    new.update_attribute :indie, nil
     old.destroy # the shell account, that is 
     return true
   end 
@@ -87,6 +90,13 @@ class Student < ActiveRecord::Base
     # 
     score = Levenshtein.distance(x_f, y_l) + Levenshtein.distance(x_l, y_f)
     return score 
+  end 
+
+  def indie? 
+    return self.indie unless self.indie.nil?
+    indie = !StudentRoster.all.map(&:student_id).uniq.include?(self.id)
+    self.update_attribute :indie, indie
+    return indie
   end 
 
   def username?

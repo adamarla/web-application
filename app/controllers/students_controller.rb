@@ -12,25 +12,25 @@ class StudentsController < ApplicationController
     if d[:jaal].blank? # => human entered registration data
       student = Student.new name: d[:name]
 
-      location = request.location
-      city = state = country = zip = nil
-
-      unless location.nil?
-         city = location.city
-         state = location.state
-         zip = location.postal_code
-         country = Watan.where{ name =~ location.country }.first
-         country = country.id unless country.blank?
-      end
+      # Collect Geocoding information from IP request
+      lcn = request.location
+      gps = {} 
+      [:city, :state, :postal_code].each do |k| 
+        gps[k] = lcn.nil? ? nil : lcn.send(k)
+      end 
+      country = lcn.nil? ? nil : Watan.where{ name =~ lcn.country }.first 
+      gps[:country] = country.blank? ? nil : country.id 
 
       login = d[:account_attributes]
       account = student.build_account email: login[:email], 
                                       password: login[:password],
-                                      password_confirmation: login[:password],
-                                      city: city,
-                                      state: state, 
-                                      postal_code: zip,
-                                      country: country
+                                      password_confirmation: login[:password]
+
+      # Protected attributes => cannot be mass-assigned => must be individually assigned
+      [:city, :state, :postal_code, :country].each do |k| 
+        account[k] = gps[k]
+      end 
+
       if student.save
         if d[:mobile].nil?
           sign_in account
@@ -92,14 +92,15 @@ class StudentsController < ApplicationController
       target = Student.find target_id 
       src = current_account.loggable
       merged = Student.merge target, src
-      sign_in current_account, bypass: true if merged 
+      if merged 
+        sign_in current_account, bypass: true 
+        redirect_to student_path
+      end 
       render json: { success: merged }, status: :ok
     else 
       render json: { notify: { title: "No account specified for merging" } }, status: :ok
     end 
   end 
-
-
 
   def dispute 
     g = Attempt.find params[:id]

@@ -8,12 +8,11 @@
 - for j in [:toolbox, :menus, :modals, :notifications]
   - content_for j do 
     - klass = (j == :toolbox) ? 'hidden' : ''
-    -  m = (j == :toolbox) ? ['generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['student','shared'].map{ |a| "#{j}/#{a}" }
-    - partials_f = m.map{ |b| "app/views/#{b}" }
+    - partials_f = (j == :toolbox) ? ['generic', 'preview'].map{ |a| "toolbox/#{a}" } : ['student','shared'].map{ |a| "#{j}/#{a}" }
     %div{ id: j, class: klass }
       - for f in partials_f
-        - Dir["#{f}/*.haml"].each do |p| 
-          = render file: Rails.root.join(p), locals: { server: s }
+        - Dir["app/views/#{f}/*.haml"].map{ |x| partial_path(x) }.each do |p| 
+          = render partial: p, locals: { server: s }
       -# render exceptions here 
       - if j == :menus 
         = render partial: 'menus/user/account'
@@ -28,18 +27,20 @@
         -#= render partial: 'modals/customer/refund', locals: { customer: customer }
 
 - control_panel = [ {for: 'Daily Puzzle', id: 'a-daily-puzzle'},
-                    {for: 'Assignments', id: 'a-st-main'},
+                    {for: 'My Work', id: 'a-st-main'},
                     {for: 'Lessons', id: 'a-courses', class: (current_account.mimics_admin ? nil : 'hidden' )},
                     {for: 'Enroll', id: 'lnk-enroll-self'},
                     {for: "Hello, #{student.first_name}", id: 'm-account'} ]
 
 - layout = { left: [ [1, 'students/main'],
                      [3, 'course/view/filters'],
-                     [4, 'customers/activity'] ],
+                     [4, 'customers/activity'],
+                     [5, 'students/stabs'] ],
              middle: [],
              right: [],
              wide: [ ['wait', 'toolbox/generic/wait'],
                      ['X', nil],
+                     ['Y', nil],
                      [1, 'course/view/tiles'],
                      [2, 'course/view/exploded'], 
                      [3, 'customers/transactions'] ],

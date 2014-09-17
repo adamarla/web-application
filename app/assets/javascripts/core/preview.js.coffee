@@ -76,7 +76,7 @@ jQuery ->
       ###
         json.preview = {
           source : [ vault | mint | minthril | scantray | scan-ashtray ],
-          images : [ .... ], #  an N-element array of fully-delineated relative paths to the image
+          images : [ .... ], #  an N-element array of relative paths OR hashes = { path: xyz, id: <marker> } 
           captions : [ ..... ] # (optional) one caption per image 
         }
 
@@ -92,7 +92,16 @@ jQuery ->
 
       for img,i in json.preview.images
         item = $("<div class=item></div>").appendTo target
-        $("<img alt='' src=#{server}/#{json.preview.source}/#{img}>").appendTo $(item)
+
+        if typeof(img) is 'string'
+          pth = img
+          n = null
+        else
+          pth = img.path 
+          n = img.id
+
+        imgTag = $("<img alt='' src=#{server}/#{json.preview.source}/#{pth}>").appendTo $(item)
+        imgTag[0].setAttribute('marker', n) if n?
 
         caption = if json.captions? then json.captions[i] else null
         $("<div class='carousel-caption top'><div>#{caption}</div></div>").appendTo($(item)) if caption?

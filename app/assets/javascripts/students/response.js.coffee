@@ -27,6 +27,10 @@ jQuery ->
       karo.empty target
       key = 'inbox'
       clickFirst = true
+    else if url.match(/stabs\/graded/)
+      key = 'stabs'
+      target = $('#pane-st-stabs-1')
+      clickFirst = true
     else if url.match(/worksheet\/preview/) or url.match(/worksheet\/scans/)
       overlay.detach()
       preview.loadJson json
