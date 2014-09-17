@@ -280,6 +280,8 @@ window.stabs = {
 
     next : { 
       stab : () ->
+        # Grader can't move from one stab to the next without grading the first one!
+        # However, he can move from one scan to the next within the same stab
         stabs.notepad.clear() 
         curr = stabs.current.stab
         if curr?
@@ -294,8 +296,9 @@ window.stabs = {
           stabs.show.stab nextStb
           stabs.slider.select '3'
         else 
-          # last stab => show modal
+          # last stab
           nextScn = null
+          notifier.show 'n-last-scan'
 
         stabs.current.stab = nextStb 
         stabs.current.scan = nextScn

@@ -21,6 +21,9 @@ jQuery ->
       stabs.initialize()
     else if url.match(/stabs\/dated/)
       stabs.pending.load json
+    else if url.match(/grade\/stab/)
+      if json.status is 'success'
+        stabs.pending.next.stab()
     else if url.match(/vertical\/topics/)
       id = "##{json.context}-common-pane"
       target = $(id)
