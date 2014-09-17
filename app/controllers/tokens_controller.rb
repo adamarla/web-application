@@ -14,21 +14,24 @@ class TokensController < ApplicationController
       status = 200 
       case account.loggable_type
         when "Student"
-          name = account.loggable.first_name
-          worksheets = get_worksheets(account)
+          student = account.loggable
+          ws = Worksheet.of_student(student.id)
+          name = student.first_name
+          worksheets = get_worksheets(ws)
         when "Teacher"
           name = Teacher.find_by_id(id).first_name
         when "Examiner"
           name = Examiner.find_by_id(id).first_name
       end
+      potd = Puzzle.of_the_day.question
       json = { 
         :token => account.authentication_token, 
         :email => account.email,
         :name  => name,
         :id    => account.loggable.id,
         :ws    => worksheets, # to be depracated
-        :count => Worksheet.of_student(account.loggable.id).count,
-        :topics=> get_topics()
+        :topics=> get_topics(),
+        :pzl   => "#{potd.topic_id}.#{potd.id}"
       }
     end
     render status: status, json: json
@@ -47,22 +50,27 @@ class TokensController < ApplicationController
     render status: status, json: json
   end
 
-  def verify # to be deprecated, replaced by refresh_ws
-    @account = Account.find_by_email(params[:email].downcase)
-    if @account.nil?
+  def verify
+    account = Account.find_by_email(params[:email].downcase)
+    if account.nil?
       status = 401 
       json = { :message => "Invalid email" }
-    elsif @account.authentication_token != params[:token]
+    elsif account.authentication_token != params[:token]
       status = 404 
       json = { :message => "Not Authorized" }
     else 
-      name = Student.find_by_id(@account.loggable_id).first_name
+      potd = Puzzle.of_the_day.question
+      student = account.loggable
+      ws = Worksheet.of_student(student.id)
       status = 200
       json = { 
-        :token => @account.authentication_token, 
-        :email => @account.email,
-        :name  => name,
-        :ws    => get_worksheets(@account)
+        :token => account.authentication_token, 
+        :email => account.email,
+        :name  => student.first_name,
+        :id    => account.loggable.id,
+        :ws    => get_worksheets(ws), # to be deprecated
+        :topics=> get_topics(),
+        :pzl   => "#{potd.topic_id}.#{potd.id}"
       }
     end
     render status: status, json: json
@@ -77,10 +85,14 @@ class TokensController < ApplicationController
       status = 404
       json = { :message => "Not Authorized" }
     else
-      name = Student.find_by_id(account.loggable_id).first_name
+      student = Student.find_by_id(account.loggable_id)
       status = 200
+
+      marker = params[:marker].nil? ? 0 : params[:marker].to_i
+      ws = Worksheet.where("student_id = ? and id > ?", student.id, marker)
       json = {
-        :ws => get_worksheets(account)
+        :ws     => get_worksheets(ws),
+        :marker => 0
       }
     end
     render status: status, json: json
@@ -97,29 +109,39 @@ class TokensController < ApplicationController
     else
       student = account.loggable
       status = 200
+
+      marker = params[:marker].nil? ? 0 : params[:marker].to_i
+      stabs = Stab.where("student_id = ? and id > ?", student.id, marker).each
       json = {
-        :ws => get_stabs(student)
+        :ws     => get_stabs(stabs),
+        :marker => 0
       }
     end
     render status: status, json: json
   end
 
   def refresh_qsns
-    id_type = params[:type]
-    ids = params[:ids].nil? ? nil : params[:ids].split(',')
-    questions = []
-    if id_type == "id"
-      questions = Question.where(id: ids)
-    elsif id_type == "topic_id"
-      questions = Question.where(topic_id: ids)
-    elsif id_type = "pzl"
-      questions = Question.where(id: Puzzle.of_the_day.question_id)
-    end
+    account = Account.find_by_email(params[:email].downcase)
+    if account.nil?
+      status = 401
+      json = { :message => "Invalid email" }
+    elsif account.authentication_token != params[:token]
+      status = 404
+      json = { :message => "Not Authorized" }
+    else
+      student = account.loggable
+      status = 200
+     
+      marker = params[:marker].nil? ? 0 : params[:marker].to_i 
+      # questions = Question.tagged.where("id > ? and available = true", marker)
+      questions = DailyQuiz.load
+      stabs = Stab.where("student_id = ? and examiner_id IS NOT NULL", student.id)
+      json = {
+        :ws     => get_questions(questions) + get_stabs(stabs),
+        :marker => 0
+      }
 
-    status = 200
-    json = {
-      :ws => get_questions(questions)
-    }
+    end
     render status: status, json: json
   end
 
@@ -195,61 +217,61 @@ class TokensController < ApplicationController
   end
 
   def get_topics
-    topics = Topic.all.map{ |t|
-      {
+    topics = []
+    Topic.all.each do |t|
+      # count = Question.where(topic_id: t.id).count
+      # next if count == 0 
+      topics << {
         id: t.id,
         name: t.name,
         v_id: t.vertical.id,
         v_name: t.vertical.name
       }
-    }
+    end
     return topics
   end
 
   private
 
     def get_questions(questions)
-      pzl = Puzzle.of_the_day
-      items = questions.map{ |q|
-        {
+      items = []
+      questions.each do |q|
+        items << {
           id: "#{q.topic_id}.#{q.id}",
           qid: q.id,
           sid: q.subparts.map(&:id).join(','),
-          pzl: pzl.question_id == q.id ,
           name: q.created_at.to_s(:db).split(' ').first,
-          img: pzl.question_id == q.id ? "#{q.uid}/0":"#{q.uid}/#{rand(4)}",
+          img: "#{q.uid}/#{rand(4)}",
           imgspan: q.answer_key_span?,
           outof: q.marks,
-          examiner: q.examiner_id,
-          hintMrkr: q.hints.map(&:id).max
+          examiner: q.examiner_id
         }
-      }
+      end
       return items
     end
 
-    def get_stabs(student)
-      items = Stab.where(student_id: student.id).graded.each do |s|
-        {
-          id: "#{student.id}.#{qsn.id}",
-          qid: s.question.id,
+    def get_stabs(stabs)
+      items = []
+      stabs.each do |s|
+        q = s.question
+        items << {
+          id: "#{q.topic_id}.#{q.id}",
+          qid: q.id,
           sid: s.question.subparts.map(&:id).join(','),
           pzl: s.puzzle,
           name: s.created_at.to_s(:db).split(' ').first,
           img: "#{s.question.uid}/#{s.version}",
           imgspan: s.question.answer_key_span?, 
-          scans: s.scan,
+          scans: s.kaagaz.map(&:path).join(','),
           marks: s.quality,
-          outof: q.question.marks,
-          examiner: s.examiner_id,
-          fdbkMrkr: 0 # Remark.where(attempt_id: s.id).order(:id).map(&:id).max
+          outof: q.marks,
+          examiner: s.examiner_id
         } 
       end
       return items
     end
 
-    def get_worksheets(account)
-      student = Student.find_by_id(account.loggable_id)
-      ws = Worksheet.where(student_id: student.id)
+    def get_worksheets(ws)
       worksheets = []
       ws.each do |w|
 
@@ -273,7 +295,7 @@ class TokensController < ApplicationController
             img: "#{qs[i].uid}/#{vers[i]}",
             imgspan: qs[i].answer_key_span?,
             scans: w.billed ? qatts.map(&:scan).join(',') : nil,
-            marks: w.billed ? qatts.graded().map(&:marks).inject(:+): nil,
+            marks: w.billed ? qatts.graded().map(&:marks).inject(:+): -1,
             outof: qs[i].marks,
             examiner: w.billed ? qatts.map(&:examiner_id).first : nil,
             hintMrkr: qs[i].hints.map(&:id).max,
