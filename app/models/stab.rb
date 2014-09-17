@@ -34,6 +34,10 @@ class Stab < ActiveRecord::Base
     where('quality = ?', -1) 
   end 
 
+  def self.assigned_to(id) 
+    where(examiner_id: id)
+  end 
+
   def self.unassigned 
     where(examiner_id: nil)
   end 

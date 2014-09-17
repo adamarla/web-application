@@ -47,7 +47,22 @@ a-courses :
   url: 
     self: course/list
 
-a-st-main :
+a-st-main : 
+  show : 
+    menu : m-st-work 
+
+a-st-selfwork : 
+  autoclick : 
+    tab : tab-st-stabs-1
+  show : 
+    left: left-5 
+    wide: wide-Y
+
+tab-st-stabs-1 : 
+  url : 
+    self : stabs/graded 
+
+a-st-schoolwork :
   autoclick :
     tab : tab-st-rc-1
   show : 

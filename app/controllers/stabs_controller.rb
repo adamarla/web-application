@@ -29,4 +29,16 @@ class StabsController < ApplicationController
     render json: { status: (all_good ? :success : :failed) }, status: :ok
   end 
 
+  def graded
+    # by default, graded stabs for the currently logged in student.
+    # Else, stabs graded by passed examiner
+    
+    unless params[:e].blank?
+      @stabs = Stab.graded.where(student_id: current_account.loggable_id)
+    else
+      @stabs = Stab.graded.assigned_to params[:e].to_i
+    end 
+    @uids = @stabs.map(&:uid).sort.uniq
+  end 
+
 end
