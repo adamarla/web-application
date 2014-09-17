@@ -138,6 +138,24 @@ class Stab < ActiveRecord::Base
     self.remarks.map(&:destroy) unless soft
   end 
 
+  #########################################
+  # Remove later: Clones stabs. Added to create dummy data for de-bugging
+  #########################################
+  def self.clone(id = nil) 
+    master = id.nil? ? Stab.last : Stab.find(id)
+    return false if master.nil?
+
+    # Stabs always made for student-ID = 1920 (unhygienix2014@gmail.com) and 
+    # always assigned to examiner-ID = 17 (haddock@drona.com)
+    stb = Stab.create student_id: 1920, examiner_id: 17, question_id: master.question_id, 
+                      version: rand(4), uid: master.uid, puzzle: [true,false].sample 
+
+    # Clone associated scans too
+    for kgz in master.kaagaz
+      stb.kaagaz.create path: kgz.path 
+    end 
+  end 
+
   private 
         
         def update_student_behaviour
