@@ -98,7 +98,7 @@ class Examiner < ActiveRecord::Base
   def self.distribute_stabs 
     stabs = Stab.unassigned.with_scan.order(:student_id) # ug = ungraded
     stabs.each do |s|
-      s.update_attribute :examiner_id, 2
+      s.update_attribute :examiner_id, 17 # 17 = James Haddock. 
     end
 =begin
     examiners = Examiner.where(mentor_is_teacher: false).available # registered, non-TA graders 
