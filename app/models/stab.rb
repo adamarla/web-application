@@ -138,6 +138,10 @@ class Stab < ActiveRecord::Base
     self.remarks.map(&:destroy) unless soft
   end 
 
+  def remarks 
+    Remark.where(kaagaz_id: self.kaagaz_ids)
+  end 
+
   #########################################
   # Remove later: Clones stabs. Added to create dummy data for de-bugging
   #########################################
