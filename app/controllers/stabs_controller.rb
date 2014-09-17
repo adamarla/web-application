@@ -16,7 +16,10 @@ class StabsController < ApplicationController
 
   def dated
     uid = params[:uid].to_i
-    @stabs = Stab.where(uid: uid, examiner_id: current_account.loggable_id).order(:question_id, :version)
+    eid = current_account.loggable_id 
+    @stabs = Stab.where(uid: uid).assigned_to(eid)
+    @stabs = params[:type].blank? ? @stabs.ungraded : (params[:type] == 'graded' ? @stabs.graded : @stabs)
+    @stabs = @stabs.order(:question_id, :version)
   end 
 
   def grade 
