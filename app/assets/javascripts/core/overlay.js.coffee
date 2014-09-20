@@ -55,7 +55,8 @@ window.overlay = {
     return [null, null] unless event? 
     offset = $(overlay.ref).offset()
     x = event.pageX - offset.left 
-    y = event.pageY - offset.top - (stabs.locked ? 50 : 0) # bit of a hack
+    y = event.pageY - offset.top
+    y -= 50 if stabs.locked # bit of a hack 
 
     return [null, null] if (x < 0 || y < 0) # click outside of overlay
     xp = Math.round (x / 6)
