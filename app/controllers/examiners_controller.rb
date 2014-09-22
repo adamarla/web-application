@@ -168,7 +168,7 @@ path            ( common to all )
       ids = params[:id].split('-').map(&:to_i) # subpart IDs 
       qid = Subpart.where(id: ids).map(&:question_id).first 
       is_puzzle = (type == 'PZL')
-      version = is_puzzle ? 0 : params[:version].to_i
+      version = is_puzzle ? 0 : params[:vers].to_i
       uid = Stab.date_to_uid path.split('/').first
 
       # Check for any existing record and create one if none exists
