@@ -171,7 +171,8 @@ class TokensController < ApplicationController
 
   def view_fdb
     gr_ids = params[:id].split('-').map{ |id| id.to_i }
-    if params[:type] == 'GR'
+    type = params[:type].blank? ? 'GR' : params[:type]
+    if type == 'GR'
       grs = Attempt.where(id: gr_ids).map(&:id)
       @comments = Remark.where(attempt_id: grs)
     else
@@ -180,7 +181,10 @@ class TokensController < ApplicationController
     end
     json = {
       comments: @comments.map{ |c| 
-        { id: c.attempt_id, x: c.x, y: c.y, comment: c.tex_comment.text } 
+        { 
+          id: type == 'GR' ? c.attempt_id : c.kaagaz_id,
+          x: c.x, y: c.y, comment: c.tex_comment.text 
+        } 
       }
     }
     render status: 200, json: json
