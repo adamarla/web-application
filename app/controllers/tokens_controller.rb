@@ -171,8 +171,13 @@ class TokensController < ApplicationController
 
   def view_fdb
     gr_ids = params[:id].split('-').map{ |id| id.to_i }
-    grs = Attempt.where(id: gr_ids)
-    @comments = Remark.where(attempt_id: grs)
+    if params[:type] == 'GR'
+      grs = Attempt.where(id: gr_ids).map(&:id)
+      @comments = Remark.where(attempt_id: grs)
+    else
+      kaagazs = Kaagaz.where(stab_id: gr_ids).map(&:id)
+      @comments = Remark.where(kaagaz_id: kaagazs)
+    end
     json = {
       comments: @comments.map{ |c| 
         { id: c.attempt_id, x: c.x, y: c.y, comment: c.tex_comment.text } 
@@ -258,6 +263,7 @@ class TokensController < ApplicationController
           id: "#{q.topic_id}.#{q.id}",
           qid: q.id,
           sid: s.question.subparts.map(&:id).join(','),
+          grId: s.id,
           pzl: s.puzzle,
           name: s.created_at.to_s(:db).split(' ').first,
           img: "#{s.question.uid}/#{s.version}",
