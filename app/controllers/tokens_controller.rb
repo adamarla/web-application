@@ -305,7 +305,8 @@ class TokensController < ApplicationController
             img: "#{qs[i].uid}/#{vers[i]}",
             imgspan: qs[i].answer_key_span?,
             scans: w.billed ? qatts.map(&:scan).join(',') : nil,
-            marks: w.billed ? qatts.graded().map(&:marks).inject(:+): -1,
+            marks: w.billed ? ((qatts[0].feedback > 0 ? 
+              qatts.graded().map(&:marks).inject(:+) : -1) : -1),
             outof: qs[i].marks,
             examiner: w.billed ? qatts.map(&:examiner_id).first : nil,
             hintMrkr: qs[i].hints.map(&:id).max,
