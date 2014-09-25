@@ -228,12 +228,12 @@ window.stabs = {
 
   slider : { 
     obj : null, 
-    tooltips : ['Not at all',
-                'Hardly', 
+    tooltips : ['Blank / little done', 
+                'Unimpressed', 
                 'Mildly impressed', 
                 'Reasonably impressed', 
                 'Quite impressed', 
-                'Very impressed']
+                'Very impressed / Perfect']
 
     select : (key) ->
       return false unless stabs.slider.obj?
