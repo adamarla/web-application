@@ -142,6 +142,17 @@ class Stab < ActiveRecord::Base
     Remark.where(kaagaz_id: self.kaagaz_ids)
   end 
 
+  def quality? 
+    return 'Not graded' if self.quality == -1
+    j = ['Blank / little done', 
+         'Unimpressed', 
+         'Mildly impressed', 
+         'Reasonably impressed', 
+         'Quite impressed', 
+         'Very impressed / Perfect']
+    return j[self.quality]
+  end 
+
   #########################################
   # Remove later: Clones stabs. Added to create dummy data for de-bugging
   #########################################
