@@ -1,7 +1,11 @@
 
 %ul.nav.nav-tabs.always-on
   %li
-    = simple_link for: 'Graded', id: 'tab-st-stabs-1', href: '#pane-st-stabs-1'
+    = simple_link for: 'Submitted on', id: 'tab-st-stabs-1', href: '#pane-st-stabs-1'
+  %li
+    = simple_link icon: 'icon-search', id: 'tab-st-stabs-2', href: '#pane-st-stabs-2'
 
 .tab-content
   #pane-st-stabs-1.tab-pane
+  #pane-st-stabs-2.tab-pane
+    = render partial: 'students/scalpel'

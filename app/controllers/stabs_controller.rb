@@ -16,10 +16,16 @@ class StabsController < ApplicationController
 
   def dated
     uid = params[:uid].to_i
-    eid = current_account.loggable_id 
-    @stabs = Stab.where(uid: uid).assigned_to(eid)
-    @stabs = params[:type].blank? ? @stabs.ungraded : (params[:type] == 'graded' ? @stabs.graded : @stabs)
-    @stabs = @stabs.order(:question_id, :version)
+    lgid = current_account.loggable_id
+    @is_examiner = current_account.loggable_type == 'Examiner'
+
+    if @is_examiner
+      @stabs = Stab.where(uid: uid).assigned_to(lgid)
+      @stabs = params[:type].blank? ? @stabs.ungraded : (params[:type] == 'graded' ? @stabs.graded : @stabs)
+      @stabs = @stabs.order(:question_id, :version)
+    else 
+      @stabs = Stab.where(uid: uid, student_id: lgid).graded.order(:question_id)
+    end 
   end 
 
   def grade 
@@ -40,12 +46,23 @@ class StabsController < ApplicationController
     # by default, graded stabs for the currently logged in student.
     # Else, stabs graded by passed examiner
     
-    unless params[:e].blank?
+    if params[:e].blank?
       @stabs = Stab.graded.where(student_id: current_account.loggable_id)
     else
       @stabs = Stab.graded.assigned_to params[:e].to_i
     end 
     @uids = @stabs.map(&:uid).sort.uniq
+  end 
+
+  def load 
+    @stb = Stab.find params[:id] 
+    @kgz = @stb.kaagaz
+  end 
+
+  def bell_curve
+    stb = Stab.find params[:id]
+    qid = stb.question_id 
+    render json: { bell: Stab.bell_curve(qid), rating: Stab.quality_defn(stb.quality) }, status: :ok
   end 
 
 end

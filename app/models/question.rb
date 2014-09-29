@@ -126,6 +126,20 @@ class Question < ActiveRecord::Base
     select{ |m| m.num_parts? == 0 }
   end
 
+  def stab_quality
+    # Returns a hash representing the percentage of stabs at various 
+    # quality levels for this question. 
+    stabs = Stab.graded.where(question_id: self.id)
+    n = stabs.count 
+    ret = {} 
+
+    [*0...7].each do |q|
+      j = stabs.where(quality: q) 
+      ret[q] = j.blank? ? 0 : (j.count.to_f * 100/ n).round(1) # if j is not blank, then n > 0
+    end 
+    return ret
+  end 
+
   def subparts
     Subpart.where(question_id: self.id).order(:index)
   end

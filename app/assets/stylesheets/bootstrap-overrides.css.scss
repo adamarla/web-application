@@ -769,13 +769,10 @@ span.btn-shortcut {
 
 } 
 
-#wide-X {
+#wide-X, #wide-Y {
   position: relative ;
   > div { 
     position: absolute ; 
-    top: 0px ;
-    left: 0px ;
-    // background: rgba(43,43,43,0.5) ;
   }
 
   .carousel { 

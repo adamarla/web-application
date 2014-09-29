@@ -61,6 +61,13 @@ a-st-selfwork :
 tab-st-stabs-1 : 
   url : 
     self : stabs/graded 
+    panel : stabs/dated?uid=:id
+  autoclick :
+    tab : tab-st-stabs-2
+
+tab-st-stabs-2 : 
+  url : 
+    panel : stab/load?id=:id
 
 a-st-schoolwork :
   autoclick :

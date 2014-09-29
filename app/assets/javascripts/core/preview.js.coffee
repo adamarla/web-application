@@ -23,7 +23,10 @@ jQuery ->
       preview.root = p
 
       # Bind the forward and back buttons to the new carousel
-      $(a).attr('href',"##{id}") for a in $(preview.root).children('a')
+      # and ensure that their z-index is high enough so that they are always clickable
+      for a in $(preview.root).children('a')
+        $(a).attr('href',"##{id}") 
+        $(a).css 'z-index', '10'
 
       $(preview.root).removeClass 'hide'
       return true
@@ -92,16 +95,15 @@ jQuery ->
 
       for img,i in json.preview.images
         item = $("<div class=item></div>").appendTo target
-
-        if typeof(img) is 'string'
-          pth = img
-          n = null
-        else
-          pth = img.path 
-          n = img.id
-
+        
+        isHash = typeof(img) isnt 'string' 
+        pth = if isHash then img.path else img
         imgTag = $("<img alt='' src=#{server}/#{json.preview.source}/#{pth}>").appendTo $(item)
-        imgTag[0].setAttribute('marker', n) if n?
+
+        if isHash 
+          for k in Object.keys(img) 
+            continue if k is 'path'
+            imgTag[0].setAttribute(k, img[k])
 
         caption = if json.captions? then json.captions[i] else null
         $("<div class='carousel-caption top'><div>#{caption}</div></div>").appendTo($(item)) if caption?
