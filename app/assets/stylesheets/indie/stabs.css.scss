@@ -72,3 +72,6 @@ $background: lighten(black, 17%) ;
 
 } 
 
+.scalpel {
+  > button { z-index: 3 ; }
+} 

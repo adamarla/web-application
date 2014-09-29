@@ -12,5 +12,5 @@ object false
                       q: j.question_id, 
                       v: j.version, 
                       name: j.question.topic.name, 
-                      tag: j.quality? } }
+                      tag: Stab.quality_defn(j.quality) } }
   }

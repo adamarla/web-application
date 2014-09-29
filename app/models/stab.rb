@@ -71,6 +71,30 @@ class Stab < ActiveRecord::Base
     where(quality: 6)
   end 
 
+  def self.bell_curve(qid)
+    graded = Stab.where(question_id: qid).graded
+    n = graded.count 
+
+    ret = [] 
+    [*0...6].each do |j|
+      m = graded.where(quality: j).count
+      p = n > 0 ?  (m.to_f * 100/n).round(2) : 0 
+      tag = Stab.quality_defn(j)
+      ret.push({ tag: tag, p: p })
+    end 
+    return ret
+  end 
+
+  def self.quality_defn(n)
+    return 'Not graded' if n < 0
+    return ['Blank / little done', 
+            'Unimpressed', 
+            'Mildly impressed', 
+            'Reasonably impressed', 
+            'Quite impressed', 
+            'Very impressed / Perfect'][n]
+  end 
+
   def self.on_topic(id)
     select{ |j| j.question.topic_id == id }
   end
@@ -140,17 +164,6 @@ class Stab < ActiveRecord::Base
 
   def remarks 
     Remark.where(kaagaz_id: self.kaagaz_ids)
-  end 
-
-  def quality? 
-    return 'Not graded' if self.quality == -1
-    j = ['Blank / little done', 
-         'Unimpressed', 
-         'Mildly impressed', 
-         'Reasonably impressed', 
-         'Quite impressed', 
-         'Very impressed / Perfect']
-    return j[self.quality]
   end 
 
   #########################################

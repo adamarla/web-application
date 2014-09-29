@@ -54,4 +54,15 @@ class StabsController < ApplicationController
     @uids = @stabs.map(&:uid).sort.uniq
   end 
 
+  def load 
+    @stb = Stab.find params[:id] 
+    @kgz = @stb.kaagaz
+  end 
+
+  def bell_curve
+    stb = Stab.find params[:id]
+    qid = stb.question_id 
+    render json: { bell: Stab.bell_curve(qid), rating: Stab.quality_defn(stb.quality) }, status: :ok
+  end 
+
 end
