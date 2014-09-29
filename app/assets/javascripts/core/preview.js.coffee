@@ -23,7 +23,10 @@ jQuery ->
       preview.root = p
 
       # Bind the forward and back buttons to the new carousel
-      $(a).attr('href',"##{id}") for a in $(preview.root).children('a')
+      # and ensure that their z-index is high enough so that they are always clickable
+      for a in $(preview.root).children('a')
+        $(a).attr('href',"##{id}") 
+        $(a).css 'z-index', '10'
 
       $(preview.root).removeClass 'hide'
       return true
