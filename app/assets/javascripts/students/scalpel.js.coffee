@@ -20,7 +20,7 @@ window.scalpel = {
     return true
 
   detach : () ->
-    # alert 'Calling scalpel.detach()'
+    alert 'Calling scalpel.detach()'
     preview.detach() 
     overlay.detach()
     return true
@@ -35,12 +35,22 @@ window.scalpel = {
   buttonClick : (event) ->
     event.stopImmediatePropagation()
     id = $(this).attr 'id' 
+    stbId = $(this).closest('#scalpel-btns').attr 'marker'
+
     switch id 
       when 'scalpel-quality'
-        stbId = $(this).closest('#scalpel-btns').attr 'marker'
         $.get "stab/bell-curve?id=#{stbId}"
       #when 'scalpel-rate'
-      #when 'scalpel-solution'
+      when 'scalpel-solution'
+        active = $(this).hasClass 'active'
+        if active 
+          $(this).removeClass 'active'
+          $.get "stab/load?id=#{stbId}"
+        else
+          $(this).addClass 'active'
+          $.get "question/preview?id=#{stbId}&type=stb", (json) ->
+            overlay.clear() 
+            preview.loadJson json
       
     return true
 
