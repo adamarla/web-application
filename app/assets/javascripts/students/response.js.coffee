@@ -21,7 +21,6 @@ jQuery ->
     menu = null # ID of contextual menu to attach w/ each .line
     clickFirst = false # whether or not to auto-click the first .line
     buttons = null
-    detachScalpel = true
 
     if url.match(/inbox$/)
       target = $('#pane-st-inbox')
@@ -29,11 +28,8 @@ jQuery ->
       key = 'inbox'
       clickFirst = true
     else if url.match(/stab\/load/)
-      detachScalpel = false 
       scalpel.load json
-      # preview.loadJson json
     else if url.match(/stab\/bell-curve/)
-      detachScalpel = false
       notifier.show 'n-stab-bell'
       scalpel.bell.render json
     else if url.match(/stabs/)
@@ -42,7 +38,6 @@ jQuery ->
       if url.match(/dated/) #stabs/dated
         target = $('#pane-st-stabs-2') 
         karo.empty target
-        detachScalpel = false 
         scalpel.attach 'wide-Y'
       else # => stabs/graded 
         target = $('#pane-st-stabs-1')
@@ -100,9 +95,6 @@ jQuery ->
       m.modal 'hide'
     else
       matched = false
-
-    # Whether or not to show scalpel (show if reviewing stabs) 
-    scalpel.detach() if detachScalpel
 
     ############################################################
     ## Common actions in response to JSON

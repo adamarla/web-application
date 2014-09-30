@@ -120,6 +120,10 @@ class QuestionController < ApplicationController
       g = Attempt.find params[:id]
       @question = g.subpart.question
       @version = g.version
+    elsif params[:type] == 'stb' # student viewing solution to a stab
+      stb = Stab.find params[:id]
+      @question = stb.question 
+      @version = stb.version
     else # students should never get here 
       is_teacher = current_account.loggable_type == 'Teacher'
       @question = Question.find params[:id]
