@@ -14,4 +14,5 @@
    inflect.irregular 'criterion', 'criteria'
    inflect.irregular 'watan', 'watan'
    inflect.irregular 'kaagaz', 'kaagaz'
+   inflect.irregular 'codex', 'codices'
  end

@@ -2,11 +2,13 @@
 #
 # Table name: behaviours
 #
-#  id         :integer         not null, primary key
-#  student_id :integer
-#  n_stabs    :integer         default(0)
-#  n_reccos   :integer         default(0)
-#  n_puzzles  :integer         default(0)
+#  id          :integer         not null, primary key
+#  student_id  :integer
+#  n_stabs     :integer         default(0)
+#  n_reccos    :integer         default(0)
+#  n_puzzles   :integer         default(0)
+#  n_answers   :integer         default(0)
+#  n_solutions :integer         default(0)
 #
 
 class Behaviour < ActiveRecord::Base
