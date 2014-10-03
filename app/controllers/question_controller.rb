@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:insert_new, :update_span]
+  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation]
   respond_to :json
 
   def list
@@ -214,7 +214,7 @@ class QuestionController < ApplicationController
     @context = params[:context]
   end 
 
-  def update_span 
+  def post_compile_updation 
     # The exact answer key span is what pdfinfo returns during make. 
     # That is the value that should be stored. 
     q = Question.where(uid: params[:q]).first 

@@ -141,7 +141,7 @@ Webapp::Application.routes.draw do
   match 'load/hints' => 'question#hints', via: :get
   match 'store/hints' => 'question#store_hints', via: [:put, :post]
   match 'question/commentary' => 'question#commentary', via: :get
-  match 'update/span' => 'question#update_span', via: :get
+  match 'update/on_make' => 'question#post_compile_updation', via: :get
 
   # Quiz
   resource :quiz, :only => [:show]
