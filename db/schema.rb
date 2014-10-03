@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141001045911) do
+ActiveRecord::Schema.define(:version => 20141003200839) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -378,6 +378,8 @@ ActiveRecord::Schema.define(:version => 20141001045911) do
     t.integer  "auditor"
     t.datetime "audited_on"
     t.boolean  "available",                     :default => true
+    t.integer  "n_codices",                     :default => 0
+    t.string   "codices",         :limit => 5
   end
 
   add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"

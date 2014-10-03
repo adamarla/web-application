@@ -18,6 +18,8 @@
 #  auditor         :integer
 #  audited_on      :datetime
 #  available       :boolean         default(TRUE)
+#  n_codices       :integer         default(0)
+#  codices         :string(5)
 #
 
 require 'test_helper'
