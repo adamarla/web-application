@@ -18,6 +18,8 @@
 #  auditor         :integer
 #  audited_on      :datetime
 #  available       :boolean         default(TRUE)
+#  n_codices       :integer         default(0)
+#  codices         :string(5)
 #
 
 #     __:has_many____      ____:has_many___    ____:has_many__
@@ -158,6 +160,18 @@ class Question < ActiveRecord::Base
     else
       return self.suggestion_id.nil? ? "" : "#{self.suggestion.signature}"
     end
+  end
+
+  def has_codex?
+    return self.n_codices > 2
+    # anything less than 3 options is as good as not having a codex
+    # => do not enable 'Show Answers' option in mobile app.
+  end
+
+  def codex_for(version)
+    return nil if (version < 0 || version > 3)
+    return nil unless (self.n_codices > 2)
+    return "#{self.uid}/#{self.codices[version]}/codex.jpg"
   end
 
   def comments 
