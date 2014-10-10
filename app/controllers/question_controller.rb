@@ -220,17 +220,20 @@ class QuestionController < ApplicationController
     # That is the value that should be stored. 
     q = Question.where(uid: params[:q]).first 
     unless q.nil?
-      q.revisions.create(latex: true) if q.update_attribute(:answer_key_span, params[:n].to_i) 
-      unless params[:codex] == 'blank'
-        codices = params[:codex].values
-        uniques = codices.uniq
-        n_codices = uniques.count
-        sign = ""
-        for m in uniques 
-          sign += "#{uniques.index m}"
-        end 
-        q.update_attributes n_codices: n_codices, codices: sign
-      end
+      if q.tagged? 
+        q.update_attribute(:answer_key_span, params[:n].to_i)
+        q.revisions.create(latex: true) 
+        unless params[:codex] == 'blank'
+          codices = params[:codex].values
+          uniques = codices.uniq
+          n_codices = uniques.count
+          sign = ""
+          for m in uniques 
+            sign += "#{uniques.index m}"
+          end 
+          q.update_attributes n_codices: n_codices, codices: sign
+        end # unless 
+      end # if .. else
     end
     render json: { status: :ok }, status: :ok
   end 

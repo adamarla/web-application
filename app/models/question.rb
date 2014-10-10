@@ -129,6 +129,10 @@ class Question < ActiveRecord::Base
     select{ |m| m.num_parts? == 0 }
   end
 
+  def tagged? 
+    return self.topic_id != nil
+  end
+
   def stab_quality
     # Returns a hash representing the percentage of stabs at various 
     # quality levels for this question. 
