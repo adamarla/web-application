@@ -47,6 +47,7 @@ class QuestionController < ApplicationController
       index = k.to_i
       sbp.hints.create text: v, index: index
     end 
+    sbp.question.revisions.create(hints: true)
     render json: { status: :ok }, status: :ok
   end 
 
@@ -219,7 +220,7 @@ class QuestionController < ApplicationController
     # That is the value that should be stored. 
     q = Question.where(uid: params[:q]).first 
     unless q.nil?
-      q.update_attribute(:answer_key_span, params[:n].to_i) 
+      q.revisions.create(latex: true) if q.update_attribute(:answer_key_span, params[:n].to_i) 
       unless params[:codex] == 'blank'
         codices = params[:codex].values
         uniques = codices.uniq

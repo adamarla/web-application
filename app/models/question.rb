@@ -57,6 +57,7 @@ class Question < ActiveRecord::Base
   has_many :quizzes, through: :q_selections
   has_many :attempts
   has_many :subparts, dependent: :destroy
+  has_many :revisions, dependent: :destroy
 
   has_many :commentaries, dependent: :destroy 
   has_many :tex_comments, through: :commentaries

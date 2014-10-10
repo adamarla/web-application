@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141003200839) do
+ActiveRecord::Schema.define(:version => 20141010074305) do
 
   create_table "accounting_docs", :force => true do |t|
     t.integer  "doc_type"
@@ -427,6 +427,12 @@ ActiveRecord::Schema.define(:version => 20141003200839) do
 
   add_index "remarks", ["examiner_id"], :name => "index_remarks_on_examiner_id"
   add_index "remarks", ["kaagaz_id"], :name => "index_remarks_on_stab_id"
+
+  create_table "revisions", :force => true do |t|
+    t.integer "question_id"
+    t.boolean "latex",       :default => false
+    t.boolean "hints",       :default => false
+  end
 
   create_table "rubrics", :force => true do |t|
     t.string   "name",       :limit => 100
