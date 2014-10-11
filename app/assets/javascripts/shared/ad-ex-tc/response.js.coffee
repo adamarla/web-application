@@ -121,5 +121,6 @@ jQuery ->
       $.get "load/dispute?id=#{id}"
     else
       $(this).addClass 'active'
+      overlay.clear()
       $.get "question/preview?id=#{id}&type=g"
     return true 
