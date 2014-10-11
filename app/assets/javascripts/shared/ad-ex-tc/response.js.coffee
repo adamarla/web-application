@@ -65,6 +65,7 @@ jQuery ->
 
     else if url.match(/load\/dispute/)
       preview.loadJson json
+      $('#btn-dispute-soln').attr 'marker', json.a
       if json.comments?
         overlay.attach $(preview.root)
         overlay.loadJson json.comments
@@ -105,3 +106,20 @@ jQuery ->
     e.stopImmediatePropagation() if matched
     return true
   
+  ########################################################
+  # Other Stuff ...  
+  ########################################################
+
+  $('#btn-dispute-soln').on 'click', (event) ->
+    event.stopImmediatePropagation() 
+    isActive = $(this).hasClass 'active' 
+    id = $(this).attr 'marker'
+    return false unless id?
+
+    if isActive 
+      $(this).removeClass 'active'
+      $.get "load/dispute?id=#{id}"
+    else
+      $(this).addClass 'active'
+      $.get "question/preview?id=#{id}&type=g"
+    return true 
