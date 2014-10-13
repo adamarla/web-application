@@ -125,10 +125,65 @@ class Stab < ActiveRecord::Base
     where(uid: uid)
   end 
 
-  def num_credits?
-    # number of credits to deduct 
-    return 0
+  ###############################################################################
+  ##
+  ##      QUERY METHODS ON INDIVIDUAL STABS 
+  ##
+  ###############################################################################
+
+  def cracked_it?(n) # n = version number = [ 0 | 1 | 2 | 3 ]
+    return self.cracked_it unless self.cracked_it.nil?
+    r = n == self.version 
+    self.update_attribute :cracked_it, r
+    return r
   end 
+
+  def self_checked_answer? 
+    return !self.cracked_it.nil?
+  end 
+
+  def uploaded?
+    return !self.uid.blank?
+  end 
+
+  def paid_to_see_answer? # paid 
+    return self.answer_deduct > 0 
+  end 
+
+  def paid_to_see_solution? # paid 
+    return self.solution_deduct > 0
+  end 
+
+  # If a student correctly identifies and reports an error in either 
+  # our answer or solution, then he/she must be rewarded for it. For now, 
+  # we give 20 Gredits to them 
+
+  def give_proofreading_reward 
+    s = self.student 
+    n = s.gredits + 20 
+    s.update_attribute :gredits, n
+  end 
+
+  # BIG ONE: Returns the enabled/disabled state for the various menu-entries 
+  # in the mobile app for this stab 
+
+  def menu_state 
+    s = self.student 
+    n = s.gredits 
+    return { 
+      check: !self.self_checked_answer?,
+      grade: !self.uploaded?,
+      answer: (!self.paid_to_see_answer? && n >= self.question.price_to_see_answer?),
+      solution: (!self.paid_to_see_solution? && n >= self.question.price_to_see_solution?),
+      proofread: true
+    } 
+  end 
+
+  ###############################################################################
+  ##
+  ##      END OF QUERY METHODS 
+  ##
+  ###############################################################################
 
   def add_scan(path)
     # Gotcha! Scans will be added in the order in which they are received. 

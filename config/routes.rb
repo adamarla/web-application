@@ -77,6 +77,7 @@ Webapp::Application.routes.draw do
   match 'reupload' => 'attempts#reupload', via: :get
 
   # Stab
+  match 'stab/ping' => 'stabs#ping', via: :get
   match 'stab/dates' => 'stabs#dates', via: :get
   match 'stabs/dated' => 'stabs#dated', via: :get
   match 'grade/stab' => 'stabs#grade', via: [:put, :post]

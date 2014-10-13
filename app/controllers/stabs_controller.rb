@@ -2,6 +2,48 @@ class StabsController < ApplicationController
   before_filter :authenticate_account!
   respond_to :json
 
+  def ping 
+    # params[:op] = check, grade, answer, solution, proofread or nil 
+    s = params[:s].to_i 
+    q = params[:q].to_i 
+    v = params[:v].to_i 
+
+    stab = Stab.where(question_id: q, student_id: s, version: v).first
+    response = nil 
+    balance = Student.find(s).gredits
+    menu_state = nil 
+
+    unless params[:op].blank? 
+      stab = stab.nil? ? Stab.create(student_id: s, question_id: q, version: v) : stab
+      response = { menu: stab.menu_state, gredits: balance, stab: stab.id }
+      case params[:op]
+        when 'check' 
+          response[:correct] = stab.cracked_it?(params[:n].to_i)
+        when 'answer'
+          response[:codex] = stab.version
+        when 'solution' 
+          response[:version] = stab.version
+      end 
+    else # options button clicked in mobile app
+      # Do NOT create a stab IF just the Options button clicked. 
+      # Create a stab only if the student engages by clicking on a menu option
+      if stab.nil?
+        ques = Question.find q
+        menu_state = {
+          check: true, 
+          grade: true, 
+          answer: (balance >= ques.price_to_see_answer?), 
+          solution: (balance >= ques.price_to_see_solution?), 
+          proofread: true
+        } 
+      else
+        menu_state = stab.menu_state 
+      end 
+      response = { menu: menu_state, gredits: balance } 
+    end # of else 
+    render json: response, status: :ok
+  end 
+
   def dates
     # Render the list of unique dates (oldest first) for
     # which there are stabs (for puzzles or questions). 

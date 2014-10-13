@@ -133,6 +133,25 @@ class Question < ActiveRecord::Base
     return self.topic_id != nil
   end
 
+  ####################################################################
+  ##              PRICING
+  # The next two methods return the price - in Gredits - to be charged 
+  # for seeing the answer or seeing the solution. 
+  # Going forward, the price could be a function of 
+  #    1. type of question ( multi-part | single-part | competitive exam etc..) 
+  #    2. time of year ( charge more near exam time ) 
+
+  def price_to_see_answer? 
+    return 10
+  end 
+
+  def price_to_see_solution? 
+    return 15
+  end 
+
+  ##              END PRICING
+  ####################################################################
+
   def stab_quality
     # Returns a hash representing the percentage of stabs at various 
     # quality levels for this question. 
