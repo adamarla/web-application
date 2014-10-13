@@ -146,12 +146,14 @@ class Stab < ActiveRecord::Base
     return !self.uid.blank?
   end 
 
-  def paid_to_see_answer? # paid 
-    return self.answer_deduct > 0 
-  end 
-
-  def paid_to_see_solution? # paid 
-    return self.solution_deduct > 0
+  def paid_to_see(what) # what = :answer | :solution
+    if what == :answer 
+      return self.answer_deduct > 0 if self.question.has_codex?
+      return true
+    elsif what == :solution
+      return self.solution_deduct > 0
+    end 
+    return true
   end 
 
   # If a student correctly identifies and reports an error in either 
@@ -170,11 +172,12 @@ class Stab < ActiveRecord::Base
   def menu_state 
     s = self.student 
     n = s.gredits 
+    q = self.question 
     return { 
       check: !self.self_checked_answer?,
       grade: !self.uploaded?,
-      answer: (!self.paid_to_see_answer? && n >= self.question.price_to_see_answer?),
-      solution: (!self.paid_to_see_solution? && n >= self.question.price_to_see_solution?),
+      answer: (!self.paid_to_see(:answer) && n >= q.price_to_see(:answer)),
+      solution: (!self.paid_to_see(:solution) && n >= q.price_to_see(:solution)),
       proofread: true
     } 
   end 
