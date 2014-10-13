@@ -90,6 +90,11 @@ class Student < ActiveRecord::Base
     return score 
   end 
 
+  def charge(n_gredits)
+    n = self.gredits - n_gredits 
+    self.update_attribute :gredits, n
+  end 
+
   def indie? 
     return self.indie unless self.indie.nil?
     indie = !StudentRoster.all.map(&:student_id).uniq.include?(self.id)
