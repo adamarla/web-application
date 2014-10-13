@@ -173,11 +173,14 @@ class Stab < ActiveRecord::Base
     s = self.student 
     n = s.gredits 
     q = self.question 
+    codex = q.has_codex? 
+
     return { 
-      check: !self.self_checked_answer?,
+      check: (codex && !self.self_checked_answer?),
       grade: !self.uploaded?,
       answer: (!self.paid_to_see(:answer) && n >= q.price_to_see(:answer)),
-      solution: (!self.paid_to_see(:solution) && n >= q.price_to_see(:solution)),
+      answer: (codex && n >= q.price_to_see(:answer)),
+      solution: (n >= q.price_to_see(:solution)),
       proofread: true
     } 
   end 
@@ -188,11 +191,13 @@ class Stab < ActiveRecord::Base
   ##
   ###############################################################################
 
-  def charge( what = nil ) # what = :answer | :solution 
-    return false unless ( what == :answer || what == :solution )
+  def charge( what ) # what = :answer | :solution 
+    db_column = "#{what.to_s}_deduct" 
+    return false if self[db_column] > 0 # already charged. Do NOT double-charge
+
     price = self.question.price_to_see( what )
     self.student.charge price
-    self.update_attribute("#{what.to_s}_deduct", price)
+    self.update_attribute(db_column, price)
     return price
   end 
 
