@@ -9,24 +9,28 @@ class StabsController < ApplicationController
     v = params[:v].to_i 
 
     stab = Stab.where(question_id: q, student_id: s, version: v).first
-    response = nil 
-    balance = Student.find(s).gredits
-    menu_state = nil 
+    response = {} 
 
     unless params[:op].blank? 
       stab = stab.nil? ? Stab.create(student_id: s, question_id: q, version: v) : stab
-      response = { menu: stab.menu_state, gredits: balance, stab: stab.id }
       case params[:op]
-        when 'check' 
-          response[:correct] = stab.cracked_it?(params[:n].to_i)
         when 'answer'
+          stab.student.charge stab.question.price_to_see_answer? 
           response[:codex] = stab.version
         when 'solution' 
+          stab.student.charge stab.question.price_to_see_solution? 
           response[:version] = stab.version
       end 
+      # return menu_state AFTER applying any charges 
+      response[:menu] = stab.menu_state 
+      response[:gredits] = stab.student.gredits 
+      response[:stab] = stab.id 
     else # options button clicked in mobile app
       # Do NOT create a stab IF just the Options button clicked. 
       # Create a stab only if the student engages by clicking on a menu option
+      balance = Student.find(s).gredits
+      menu_state = nil 
+
       if stab.nil?
         ques = Question.find q
         menu_state = {
