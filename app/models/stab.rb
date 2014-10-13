@@ -2,16 +2,20 @@
 #
 # Table name: stabs
 #
-#  id          :integer         not null, primary key
-#  student_id  :integer
-#  examiner_id :integer
-#  quality     :integer         default(-1)
-#  created_at  :datetime        not null
-#  updated_at  :datetime        not null
-#  uid         :integer
-#  question_id :integer
-#  version     :integer
-#  puzzle      :boolean         default(TRUE)
+#  id               :integer         not null, primary key
+#  student_id       :integer
+#  examiner_id      :integer
+#  quality          :integer         default(-1)
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  uid              :integer
+#  question_id      :integer
+#  version          :integer
+#  puzzle           :boolean         default(TRUE)
+#  cracked_it       :boolean
+#  answer_deduct    :integer         default(0)
+#  solution_deduct  :integer         default(0)
+#  proofread_credit :integer         default(0)
 #
 
 class Stab < ActiveRecord::Base
@@ -41,6 +45,10 @@ class Stab < ActiveRecord::Base
   end 
 
   def self.with_scan 
+    where('uid IS NOT ?', nil)
+  end 
+
+  def self.uploaded # synonym of with_scan
     where('uid IS NOT ?', nil)
   end 
 

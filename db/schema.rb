@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141013080014) do
+ActiveRecord::Schema.define(:version => 20141013085030) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -391,13 +391,17 @@ ActiveRecord::Schema.define(:version => 20141013080014) do
   create_table "stabs", :force => true do |t|
     t.integer  "student_id"
     t.integer  "examiner_id"
-    t.integer  "quality",     :default => -1
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.integer  "quality",          :default => -1
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.integer  "uid"
     t.integer  "question_id"
     t.integer  "version"
-    t.boolean  "puzzle",      :default => true
+    t.boolean  "puzzle",           :default => true
+    t.boolean  "cracked_it"
+    t.integer  "answer_deduct",    :default => 0
+    t.integer  "solution_deduct",  :default => 0
+    t.integer  "proofread_credit", :default => 0
   end
 
   add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"
@@ -419,6 +423,7 @@ ActiveRecord::Schema.define(:version => 20141013080014) do
     t.boolean  "shell",                     :default => false
     t.string   "phone",       :limit => 15
     t.boolean  "indie"
+    t.integer  "gredits",                   :default => 0
   end
 
   create_table "subjects", :force => true do |t|

@@ -11,6 +11,7 @@
 #  shell       :boolean         default(FALSE)
 #  phone       :string(15)
 #  indie       :boolean
+#  gredits     :integer         default(0)
 #
 
 include ApplicationUtil
