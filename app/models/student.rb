@@ -16,12 +16,10 @@
 include ApplicationUtil
 
 class Student < ActiveRecord::Base
-  after_create :track_behaviour 
   before_destroy :destroyable? 
   belongs_to :guardian
 
   has_one :account, as: :loggable, dependent: :destroy
-  has_one :behaviour, dependent: :destroy 
 
   has_many :student_rosters, dependent: :destroy 
   has_many :sektions, through: :student_rosters
@@ -32,7 +30,6 @@ class Student < ActiveRecord::Base
   has_many :worksheets, dependent: :destroy
   has_many :exams, through: :worksheets
   has_many :disputes, dependent: :destroy
-
   has_many :stabs, dependent: :destroy 
 
   validates :name, presence: true
@@ -249,10 +246,6 @@ class Student < ActiveRecord::Base
       end
       # puts " ++++ Cannot be destroyed [#{id}]" unless is_empty
       return is_empty
-    end 
-
-    def track_behaviour 
-      create_behaviour       
     end 
 
 end # of class 
