@@ -135,18 +135,14 @@ class Question < ActiveRecord::Base
 
   ####################################################################
   ##              PRICING
-  # The next two methods return the price - in Gredits - to be charged 
+  # The next method returns the price - in Gredits - to be charged 
   # for seeing the answer or seeing the solution. 
   # Going forward, the price could be a function of 
   #    1. type of question ( multi-part | single-part | competitive exam etc..) 
   #    2. time of year ( charge more near exam time ) 
 
-  def price_to_see_answer? 
-    return 10
-  end 
-
-  def price_to_see_solution? 
-    return 15
+  def price_to_see(what) # what = :answer | :solution 
+    return (what == :answer ? 10 : 20)
   end 
 
   ##              END PRICING

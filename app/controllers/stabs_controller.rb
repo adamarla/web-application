@@ -15,10 +15,10 @@ class StabsController < ApplicationController
       stab = stab.nil? ? Stab.create(student_id: s, question_id: q, version: v) : stab
       case params[:op]
         when 'answer'
-          stab.student.charge stab.question.price_to_see_answer? 
+          stab.charge :answer 
           response[:codex] = stab.version
         when 'solution' 
-          stab.student.charge stab.question.price_to_see_solution? 
+          stab.charge :solution 
           response[:version] = stab.version
       end 
       # return menu_state AFTER applying any charges 

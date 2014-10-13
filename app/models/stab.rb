@@ -185,6 +185,14 @@ class Stab < ActiveRecord::Base
   ##
   ###############################################################################
 
+  def charge( what = nil ) # what = :answer | :solution 
+    return false unless ( what == :answer || what == :solution )
+    price = self.question.price_to_see( what )
+    self.student.charge price
+    self.update_attribute("#{what.to_s}_deduct", price)
+    return price
+  end 
+
   def add_scan(path)
     # Gotcha! Scans will be added in the order in which they are received. 
     # There is no guarantee, therefore, that the order in which scans are seen 
