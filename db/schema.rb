@@ -11,18 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141010074305) do
-
-  create_table "accounting_docs", :force => true do |t|
-    t.integer  "doc_type"
-    t.integer  "customer_id"
-    t.date     "doc_date"
-    t.boolean  "open",        :default => true
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-  end
-
-  add_index "accounting_docs", ["customer_id"], :name => "index_accounting_docs_on_customer_id"
+ActiveRecord::Schema.define(:version => 20141013065007) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -121,29 +110,6 @@ ActiveRecord::Schema.define(:version => 20141010074305) do
   add_index "commentaries", ["question_id"], :name => "index_commentaries_on_question_id"
   add_index "commentaries", ["tex_comment_id"], :name => "index_commentaries_on_tex_comment_id"
 
-  create_table "contracts", :force => true do |t|
-    t.integer  "customer_id"
-    t.date     "start_date"
-    t.integer  "duration"
-    t.integer  "bill_cycle"
-    t.integer  "bill_day_of_month"
-    t.integer  "rate_code_id"
-    t.integer  "num_students"
-    t.integer  "subject_id"
-    t.string   "title",             :limit => 30
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-  end
-
-  add_index "contracts", ["customer_id"], :name => "index_contracts_on_customer_id"
-
-  create_table "cost_codes", :force => true do |t|
-    t.text     "description"
-    t.boolean  "subscription"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
   create_table "courses", :force => true do |t|
     t.string   "title",       :limit => 150
     t.text     "description"
@@ -168,17 +134,6 @@ ActiveRecord::Schema.define(:version => 20141010074305) do
   end
 
   add_index "criteria", ["account_id"], :name => "index_criteria_on_account_id"
-
-  create_table "customers", :force => true do |t|
-    t.integer  "account_id"
-    t.integer  "credit_balance",              :default => 0
-    t.integer  "cash_balance",                :default => 0
-    t.string   "currency",       :limit => 3
-    t.datetime "created_at",                                 :null => false
-    t.datetime "updated_at",                                 :null => false
-  end
-
-  add_index "customers", ["account_id"], :name => "index_customers_on_account_id"
 
   create_table "daily_quizzes", :force => true do |t|
     t.string   "qids"
@@ -321,21 +276,6 @@ ActiveRecord::Schema.define(:version => 20141010074305) do
 
   add_index "lessons", ["teacher_id"], :name => "index_lessons_on_teacher_id"
 
-  create_table "payments", :force => true do |t|
-    t.integer  "invoice_id"
-    t.string   "ip_address",       :limit => 16
-    t.string   "name",             :limit => 60
-    t.string   "source",           :limit => 30
-    t.integer  "cash_value"
-    t.string   "currency",         :limit => 3
-    t.integer  "credits"
-    t.boolean  "success"
-    t.string   "response_message"
-    t.text     "response_params"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
-  end
-
   create_table "puzzles", :force => true do |t|
     t.text     "text"
     t.integer  "question_id"
@@ -404,14 +344,6 @@ ActiveRecord::Schema.define(:version => 20141010074305) do
 
   add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
   add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
-
-  create_table "rate_codes", :force => true do |t|
-    t.integer  "cost_code_id"
-    t.integer  "value"
-    t.string   "currency",     :limit => 3
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
 
   create_table "remarks", :force => true do |t|
     t.integer  "x"
@@ -560,20 +492,6 @@ ActiveRecord::Schema.define(:version => 20141010074305) do
     t.datetime "updated_at"
     t.integer  "vertical_id"
   end
-
-  create_table "transactions", :force => true do |t|
-    t.integer  "accounting_doc_id"
-    t.integer  "account_id"
-    t.integer  "quantity"
-    t.integer  "rate_code_id"
-    t.integer  "reference_id"
-    t.string   "memo"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-  end
-
-  add_index "transactions", ["accounting_doc_id"], :name => "index_transactions_on_accounting_doc_id"
-  add_index "transactions", ["reference_id"], :name => "index_transactions_on_reference_id"
 
   create_table "verticals", :force => true do |t|
     t.string   "name",       :limit => 30

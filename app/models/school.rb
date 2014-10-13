@@ -67,18 +67,6 @@ class School < ActiveRecord::Base
     return student.save
   end
 
-  def customer
-    return self.account.customer
-  end
-
-  def contracts
-    unless self.account.nil?
-      unless self.customer.nil?
-        self.customer.contracts
-      end
-    end
-  end
-
   def assign_uid
     uid = "#{self.id.to_s(36)}#{rand(99999).to_s(20)}"
     uid = uid.upcase

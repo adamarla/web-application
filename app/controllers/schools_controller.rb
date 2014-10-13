@@ -10,12 +10,9 @@ class SchoolsController < ApplicationController
     username = username_for @school, :school 
     email = email || "#{username}@drona.com"
 
-    @school.build_account :email => email, :username => username, 
-                          :password => "gradians", :password_confirmation => "gradians"
-    if @school.save
-      @school.account.build_customer currency: currency
-    end
-    @school.account.save ? respond_with(@school) : head(:bad_request) 
+    @school.build_account email: email, username: username, 
+                          password: "gradians", password_confirmation: "gradians"
+    @school.save ? respond_with(@school) : head(:bad_request)
   end 
 
   def show 

@@ -2,7 +2,6 @@
 -# Customized markers 
 - s = "#{Gutenberg['server']}"
 - student = current_account.loggable
--# customer = student.customer
 
 -# Define contents_for 
 - for j in [:toolbox, :menus, :modals, :notifications]
@@ -16,15 +15,10 @@
       -# render exceptions here 
       - if j == :menus 
         = render partial: 'menus/user/account'
-        -#= render partial: 'menus/customer/individual', locals: { customer: customer }
       - if j == :toolbox
         = render partial: 'toolbox/grading/left/q-fdb'
         = render partial: 'toolbox/rubric/buttons'
         = render partial: 'toolbox/rubric/criterion'
-      - if j == :modals
-        = render partial: 'modals/customer/purchase'
-        -#= render partial: 'modals/customer/transfer', locals: { customer: customer }
-        -#= render partial: 'modals/customer/refund', locals: { customer: customer }
 
 - control_panel = [ {for: 'Daily Puzzle', id: 'a-daily-puzzle'},
                     {for: 'My Work', id: 'a-st-main'},
@@ -34,7 +28,6 @@
 
 - layout = { left: [ [1, 'students/main'],
                      [3, 'course/view/filters'],
-                     [4, 'customers/activity'],
                      [5, 'students/stabs'] ],
              middle: [],
              right: [],
@@ -42,8 +35,7 @@
                      ['X', nil],
                      ['Y', nil],
                      [1, 'course/view/tiles'],
-                     [2, 'course/view/exploded'], 
-                     [3, 'customers/transactions'] ],
+                     [2, 'course/view/exploded'] ], 
              superwide: [ [1, 'puzzles/daily'] ]}
 
 !!!5

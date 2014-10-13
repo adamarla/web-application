@@ -123,11 +123,6 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def customer
-    return self.guardian.account.customer unless self.guardian.nil?
-    return self.account.customer
-  end
-
   def inbox
     # Returns worksheets for takehome exams that haven't yet been received (at all) 
     return Worksheet.where(student_id: self.id).select{ |j| j.exam.takehome && j.received?(:none) }
