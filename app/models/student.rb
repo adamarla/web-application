@@ -92,6 +92,11 @@ class Student < ActiveRecord::Base
 
   def charge(n_gredits)
     n = self.gredits - n_gredits 
+    unless self.indie?
+      # for the few non-indie students at DPS, auto top-up gredits 
+      # if the post-charge balance < cost of seeing solution (the more expensive option)
+      n += 100 if (n < 20) 
+    end 
     self.update_attribute :gredits, n
   end 
 
