@@ -97,7 +97,7 @@ class Student < ActiveRecord::Base
 
   def indie? 
     return self.indie unless self.indie.nil?
-    indie = !StudentRoster.all.map(&:student_id).uniq.include?(self.id)
+    indie = StudentRoster.where(student_id: self.id).count == 0
     self.update_attribute :indie, indie
     return indie
   end 
