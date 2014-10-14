@@ -178,7 +178,6 @@ class Stab < ActiveRecord::Base
     return { 
       check: (codex && !self.self_checked_answer?),
       grade: !self.uploaded?,
-      answer: (!self.paid_to_see(:answer) && n >= q.price_to_see(:answer)),
       answer: (codex && n >= q.price_to_see(:answer)),
       solution: (n >= q.price_to_see(:solution)),
       proofread: true
