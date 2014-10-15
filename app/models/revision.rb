@@ -24,11 +24,11 @@ class Revision < ActiveRecord::Base
     where(question_id: qid)
   end 
 
-  def self.to_latex
+  def self.latex
     where(latex: true)
   end 
 
-  def self.to_hints 
+  def self.hints 
     where(hints: true)
   end 
 
