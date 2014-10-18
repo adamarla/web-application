@@ -29,7 +29,7 @@ class TokensController < ApplicationController
         :email => account.email,
         :name  => name,
         :id    => account.loggable.id,
-        :ws    => worksheets, # to be depracated
+        :bal   => student.gredits,
         :topics=> get_topics(),
         :pzl   => "#{potd.topic_id}.#{potd.id}"
       }
@@ -68,10 +68,84 @@ class TokensController < ApplicationController
         :email => account.email,
         :name  => student.first_name,
         :id    => account.loggable.id,
-        :ws    => get_worksheets(ws), # to be deprecated
+        :bal   => student.gredits,
         :topics=> get_topics(),
         :pzl   => "#{potd.topic_id}.#{potd.id}"
       }
+    end
+    render status: status, json: json
+  end
+
+  def refresh_qs
+    account = Account.find_by_email(params[:email].downcase)
+    if account.nil?
+      status = 401
+      json = { :message => "Invalid email" }
+    elsif account.authentication_token != params[:token]
+      status = 404
+      json = { :message => "Not Authorized" }
+    elsif account.loggable_type != "Student"
+      status = 404
+      json = { :message => "Invalid Account Type" }
+    else
+      student = account.loggable
+      status = 200
+
+      marker = params[:marker].nil? ? 0 : params[:marker].to_i
+      qsns = []
+      if marker > 0
+        qids = Revision.after(marker).map(&:question_id)
+      else
+        qids = Question.where(available: true).map(&:id)
+      end
+      marker = Revision.all.count > 0 ? Revision.maximum(:id).to_i : 0
+
+      # identify and remove question id already tried
+      stabdqids = Stab.where(student_id: student.id).map(&:question_id)
+      qids = qids - stabdqids
+
+      # collect the questions
+      qsns = Question.where(id: qids)
+
+      # identify and mark questions assigned by teacher as unavailable
+      wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
+      qsns.map{|q| q.available = !(wsqids.include? q.id)}
+
+      # include question id for Puzzle of the day in case it got removed?
+      qsns << Puzzle.of_the_day.question
+      
+      # include stabs (already tried questions)
+      stabs = Stab.where(student_id: student.id)
+
+      json = {
+        :ws => get_questions(qsns) + get_stabs(stabs),
+        :marker => marker
+      }
+    end
+    render status: status, json: json
+  end
+
+  def refresh_qsns # to be depracated once everyone has vers 4.5
+    account = Account.find_by_email(params[:email].downcase)
+    if account.nil?
+      status = 401
+      json = { :message => "Invalid email" }
+    elsif account.authentication_token != params[:token]
+      status = 404
+      json = { :message => "Not Authorized" }
+    else
+      student = account.loggable
+      status = 200
+     
+      marker = params[:marker].nil? ? 0 : params[:marker].to_i 
+      # questions = Question.tagged.where("id > ? and available = true", marker)
+      questions = DailyQuiz.load << Puzzle.of_the_day.question
+      stabs = Stab.where("student_id = ? and examiner_id IS NOT NULL", student.id)
+      json = {
+        :ws     => get_questions(questions) + get_stabs(stabs),
+        :marker => 0
+      }
+
     end
     render status: status, json: json
   end
@@ -98,51 +172,41 @@ class TokensController < ApplicationController
     render status: status, json: json
   end
 
-  def refresh_stab
-    account = Account.find_by_email(params[:email].downcase)
-    if account.nil?
-      status = 401
-      json = { :message => "Invalid email" }
-    elsif account.authentication_token != params[:token]
-      status = 404
-      json = { :message => "Not Authorized" }
-    else
-      student = account.loggable
-      status = 200
+  def record_action
+    # s - student_id, q - question_id, v - qsn version, 
+    # params[:op] = guess_r, guess_w, grade, answer, solution, proofread
+    s = params[:s].to_i
+    q = params[:q].to_i
+    v = params[:v].to_i
 
-      marker = params[:marker].nil? ? 0 : params[:marker].to_i
-      stabs = Stab.where("student_id = ? and id > ?", student.id, marker).each
-      json = {
-        :ws     => get_stabs(stabs),
-        :marker => 0
+    stab = Stab.where(question_id: q, student_id: s, version: v).first
+    response = {}
+
+    unless params[:op].blank?
+      stab = stab.nil? ? 
+        Stab.create(student_id: s, question_id: q, version: v) : stab
+      stab.update_attribute :puzzle, false 
+      case params[:op]
+        when 'guess_r'
+          stab.update_attribute :cracked_it, true
+        when 'guess_w'
+          stab.update_attribute :cracked_it, false
+        when 'answer'
+          stab.charge :answer
+        when 'solution'
+          stab.charge :solution
+      end
+
+      status = :ok 
+      response = {
+        stab_id: stab.id,
+        op:      params[:op],
+        bal:     Student.find(s).gredits
       }
+    else # of else
+      status = 500  
     end
-    render status: status, json: json
-  end
-
-  def refresh_qsns
-    account = Account.find_by_email(params[:email].downcase)
-    if account.nil?
-      status = 401
-      json = { :message => "Invalid email" }
-    elsif account.authentication_token != params[:token]
-      status = 404
-      json = { :message => "Not Authorized" }
-    else
-      student = account.loggable
-      status = 200
-     
-      marker = params[:marker].nil? ? 0 : params[:marker].to_i 
-      # questions = Question.tagged.where("id > ? and available = true", marker)
-      questions = DailyQuiz.load << Puzzle.of_the_day.question
-      stabs = Stab.where("student_id = ? and examiner_id IS NOT NULL", student.id)
-      json = {
-        :ws     => get_questions(questions) + get_stabs(stabs),
-        :marker => 0
-      }
-
-    end
-    render status: status, json: json
+    render json: response, status: status
   end
 
   def validate
@@ -253,7 +317,9 @@ class TokensController < ApplicationController
           img: "#{q.uid}/#{rand(4)}",
           imgspan: q.answer_key_span?,
           outof: q.marks,
-          examiner: q.examiner_id
+          examiner: q.examiner_id,
+          codex: q.has_codex?,
+          available: q.available
         }
       end
       return items
@@ -272,10 +338,14 @@ class TokensController < ApplicationController
           name: s.created_at.to_s(:db).split(' ').first,
           img: "#{s.question.uid}/#{s.version}",
           imgspan: s.question.answer_key_span?, 
-          scans: s.kaagaz.map(&:path).join(','),
-          marks: s.quality,
+          scans: s.uploaded? ? s.kaagaz.map(&:path).join(',') : nil,
           outof: q.marks,
-          examiner: s.examiner_id
+          marks: s.quality,
+          examiner: s.examiner_id,
+          codex: q.has_codex?,
+          guesst: s.self_checked_answer?,
+          bot_ans: s.paid_to_see(:answer),
+          bot_soln: s.paid_to_see(:solution)
         } 
       end
       return items
