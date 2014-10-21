@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141013085030) do
+ActiveRecord::Schema.define(:version => 20141021075413) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20141013085030) do
     t.boolean  "weak"
     t.boolean  "medium"
     t.boolean  "strong"
+    t.integer  "first_shot"
   end
 
   add_index "attempts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
@@ -398,10 +399,10 @@ ActiveRecord::Schema.define(:version => 20141013085030) do
     t.integer  "question_id"
     t.integer  "version"
     t.boolean  "puzzle",           :default => true
-    t.boolean  "cracked_it"
     t.integer  "answer_deduct",    :default => 0
     t.integer  "solution_deduct",  :default => 0
     t.integer  "proofread_credit", :default => 0
+    t.integer  "first_shot"
   end
 
   add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"

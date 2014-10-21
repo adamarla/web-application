@@ -12,10 +12,10 @@
 #  question_id      :integer
 #  version          :integer
 #  puzzle           :boolean         default(TRUE)
-#  cracked_it       :boolean
 #  answer_deduct    :integer         default(0)
 #  solution_deduct  :integer         default(0)
 #  proofread_credit :integer         default(0)
+#  first_shot       :integer
 #
 
 class Stab < ActiveRecord::Base
@@ -131,15 +131,13 @@ class Stab < ActiveRecord::Base
   ##
   ###############################################################################
 
-  def cracked_it?(n) # n = version number = [ 0 | 1 | 2 | 3 ]
-    return self.cracked_it unless self.cracked_it.nil?
-    r = n == self.version 
-    self.update_attribute :cracked_it, r
-    return r
+  def bullseye?
+    return nil if self.first_shot.nil?
+    return self.first_shot == self.version
   end 
 
-  def self_checked_answer? 
-    return !self.cracked_it.nil?
+  def self_checked?
+    return !self.first_shot.nil?
   end 
 
   def uploaded?
@@ -176,7 +174,7 @@ class Stab < ActiveRecord::Base
     codex = q.has_codex? 
 
     return { 
-      check: (codex && !self.self_checked_answer?),
+      check: (codex && !self.self_checked?),
       grade: !self.uploaded?,
       answer: (codex && n >= q.price_to_see(:answer)),
       solution: (n >= q.price_to_see(:solution)),

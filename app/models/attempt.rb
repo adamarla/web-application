@@ -22,6 +22,7 @@
 #  weak           :boolean
 #  medium         :boolean
 #  strong         :boolean
+#  first_shot     :integer
 #
 
 # Scan ID to send via Savon : scanId = quizId-examId-studentId-page#
@@ -121,6 +122,17 @@ class Attempt < ActiveRecord::Base
 
   def self.unresolved
     where(disputed: true, resolved: false)
+  end 
+
+  def bullseye? 
+    # Returns true if student's pick during self-check was correct. 
+    # Else false ( or nil if not self-checked )
+    return nil if self.first_shot.nil?
+    return (self.first_shot == self.version.to_i)
+  end
+
+  def self_checked?
+    return !self.first_shot.nil?
   end 
 
   def shadow?

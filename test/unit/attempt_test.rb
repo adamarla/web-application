@@ -22,6 +22,7 @@
 #  weak           :boolean
 #  medium         :boolean
 #  strong         :boolean
+#  first_shot     :integer
 #
 
 require 'test_helper'
