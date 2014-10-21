@@ -147,11 +147,11 @@ class Stab < ActiveRecord::Base
   def paid_to_see(what) # what = :answer | :solution
     if what == :answer 
       return self.answer_deduct > 0 if self.question.has_codex?
-      return true
+      return false
     elsif what == :solution
       return self.solution_deduct > 0
     end 
-    return true
+    return false
   end 
 
   # If a student correctly identifies and reports an error in either 
