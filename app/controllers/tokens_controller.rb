@@ -93,10 +93,10 @@ class TokensController < ApplicationController
 
       marker = params[:marker].nil? ? 0 : params[:marker].to_i
       qsns = []
-      if marker > 0
-        qids = Revision.after(marker).map(&:question_id)
-      else
+      if marker < 0
         qids = Question.where(available: true).map(&:id)
+      else
+        qids = Revision.after(marker).map(&:question_id)
       end
       marker = Revision.all.count > 0 ? Revision.maximum(:id).to_i : 0
 
@@ -105,7 +105,7 @@ class TokensController < ApplicationController
       qids = qids - stabdqids
 
       # collect the questions
-      qsns = Question.where(id: qids)
+      qsns = Question.where(id: qids, available: true)
 
       # identify and mark questions assigned by teacher as unavailable
       wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
@@ -343,7 +343,7 @@ class TokensController < ApplicationController
           marks: s.quality,
           examiner: s.examiner_id,
           codex: q.has_codex?,
-          guesst: s.self_checked_answer?,
+          guesst: s.first_shot,
           bot_ans: s.paid_to_see(:answer),
           bot_soln: s.paid_to_see(:solution)
         } 
