@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141021075413) do
+ActiveRecord::Schema.define(:version => 20141023114522) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20141021075413) do
     t.boolean  "login_allowed"
     t.boolean  "mimics_admin",                          :default => false
     t.string   "phone",                  :limit => 15
+    t.string   "mobile"
   end
 
   add_index "accounts", ["authentication_token"], :name => "index_accounts_on_authentication_token"

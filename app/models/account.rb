@@ -29,6 +29,7 @@
 #  login_allowed          :boolean
 #  mimics_admin           :boolean         default(FALSE)
 #  phone                  :string(15)
+#  mobile                 :string(255)
 #
 
 class Account < ActiveRecord::Base
