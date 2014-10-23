@@ -93,10 +93,10 @@ class TokensController < ApplicationController
 
       marker = params[:marker].nil? ? 0 : params[:marker].to_i
       qsns = []
-      if marker > 0
-        qids = Revision.after(marker).map(&:question_id)
-      else
+      if marker < 0
         qids = Question.where(available: true).map(&:id)
+      else
+        qids = Revision.after(marker).map(&:question_id)
       end
       marker = Revision.all.count > 0 ? Revision.maximum(:id).to_i : 0
 
@@ -105,7 +105,7 @@ class TokensController < ApplicationController
       qids = qids - stabdqids
 
       # collect the questions
-      qsns = Question.where(id: qids)
+      qsns = Question.where(id: qids, available: true)
 
       # identify and mark questions assigned by teacher as unavailable
       wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
@@ -174,10 +174,11 @@ class TokensController < ApplicationController
 
   def record_action
     # s - student_id, q - question_id, v - qsn version, 
-    # params[:op] = guess_r, guess_w, grade, answer, solution, proofread
+    # params[:op] = guess, grade, answer, solution, proofread
     s = params[:s].to_i
     q = params[:q].to_i
     v = params[:v].to_i
+    g = params[:g].to_i
 
     stab = Stab.where(question_id: q, student_id: s, version: v).first
     response = {}
@@ -187,10 +188,8 @@ class TokensController < ApplicationController
         Stab.create(student_id: s, question_id: q, version: v) : stab
       stab.update_attribute :puzzle, false 
       case params[:op]
-        when 'guess_r'
-          stab.update_attribute :cracked_it, true
-        when 'guess_w'
-          stab.update_attribute :cracked_it, false
+        when 'guess'
+          stab.update_attribute :first_shot, g
         when 'answer'
           stab.charge :answer
         when 'solution'
@@ -200,8 +199,8 @@ class TokensController < ApplicationController
       status = :ok 
       response = {
         stab_id: stab.id,
-        op:      params[:op],
-        bal:     Student.find(s).gredits
+        op: params[:op],
+        bal: Student.find(s).gredits
       }
     else # of else
       status = 500  
@@ -343,7 +342,7 @@ class TokensController < ApplicationController
           marks: s.quality,
           examiner: s.examiner_id,
           codex: q.has_codex?,
-          guesst: s.self_checked_answer?,
+          guesst: s.first_shot,
           bot_ans: s.paid_to_see(:answer),
           bot_soln: s.paid_to_see(:solution)
         } 
