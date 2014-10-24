@@ -23,6 +23,8 @@ class TokensController < ApplicationController
         when "Examiner"
           name = Examiner.find_by_id(id).first_name
       end
+      account.update_attribute :mobile, params[:signature]
+
       potd = Puzzle.of_the_day.question
       json = { 
         :token => account.authentication_token, 
