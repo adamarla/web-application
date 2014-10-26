@@ -146,8 +146,7 @@ class Stab < ActiveRecord::Base
 
   def paid_to_see(what) # what = :answer | :solution
     if what == :answer 
-      return self.answer_deduct > 0 if self.question.has_codex?
-      return false
+      return self.answer_deduct > 0
     elsif what == :solution
       return self.solution_deduct > 0
     end 
@@ -171,13 +170,16 @@ class Stab < ActiveRecord::Base
     s = self.student 
     n = s.gredits 
     q = self.question 
-    codex = q.has_codex? 
+
+    enable_self_check = q.has_codex? && !self.self_checked?
+    enable_answer = self.paid_to_see(:answer) || (q.has_answer? && n >= q.price_to_see(:answer))
+    enable_solution = self.paid_to_see(:solution) || (n >= q.price_to_see(:solution))
 
     return { 
-      check: (codex && !self.self_checked?),
+      check: enable_self_check, 
       grade: !self.uploaded?,
-      answer: (codex && n >= q.price_to_see(:answer)),
-      solution: (n >= q.price_to_see(:solution)),
+      answer: enable_answer, 
+      solution: enable_solution, 
       proofread: true
     } 
   end 

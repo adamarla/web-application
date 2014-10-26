@@ -188,10 +188,13 @@ class Question < ActiveRecord::Base
     # => do not enable 'Show Answers' option in mobile app.
   end
 
+  def has_answer?
+    return !self.codices.blank?
+  end 
+
   def codex_for(version)
-    return nil if (version < 0 || version > 3)
-    return nil unless (self.n_codices > 2)
-    return "#{self.uid}/#{self.codices[version]}/codex.jpg"
+    return nil if (version < 0 || version > 3 || self.codices.blank?)
+    return "#{self.uid}/#{version}/codex.png"
   end
 
   def comments 
