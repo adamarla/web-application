@@ -184,9 +184,8 @@ class TokensController < ApplicationController
 
       records = Stab.where(student_id: s, question_id: q, version: v)
       if records.count == 0
-        stab = Stab.create(student_id: s, question_id: q, version: v) 
-        stab.update_attribute :puzzle, false 
-        records << stab
+        stab = Stab.create(student_id: s, question_id: q, version: v, puzzle: false) 
+        records = Stab.where(student_id: s, question_id: q, version: v)
       end
     else
       # id - attempt_id
