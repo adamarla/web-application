@@ -364,7 +364,8 @@ class TokensController < ApplicationController
       worksheets = []
       ws.each do |w|
 
-        next unless (w.exam.takehome || !w.received?(:none) || w.billed)
+        next unless (w.billed)
+        next unless (w.exam.takehome || !w.received?(:none))
 
         quiz = w.exam.quiz
         qsels = quiz.q_selections.order(:index)
