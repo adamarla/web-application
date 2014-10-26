@@ -175,7 +175,6 @@ class TokensController < ApplicationController
   end
 
   def record_action
-
     # params[:op] = guess, grade, answer, solution, proofread
     if params[:id].nil? 
       # s - student_id, q - question_id, v - qsn version, 
@@ -184,7 +183,7 @@ class TokensController < ApplicationController
       v = params[:v].to_i
 
       records = Stab.where(student_id: s, question_id: q, version: v)
-      if records.nil?
+      if records.count == 0
         stab = Stab.create(student_id: s, question_id: q, version: v) 
         stab.update_attribute :puzzle, false 
         records << stab
