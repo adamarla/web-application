@@ -171,13 +171,15 @@ class Stab < ActiveRecord::Base
     n = s.gredits 
     q = self.question 
 
-    enable_self_check = q.has_codex? && !self.self_checked?
-    enable_answer = self.paid_to_see(:answer) || (q.has_answer? && n >= q.price_to_see(:answer))
-    enable_solution = self.paid_to_see(:solution) || (n >= q.price_to_see(:solution))
+    seen_solution = self.paid_to_see(:solution)
+    enable_self_check = self.self_checked? || (!seen_solution && q.has_codex?)
+    enable_upload = !(seen_solution || self.uploaded?)
+    enable_answer = self.paid_to_see(:answer) || (!seen_solution && q.has_answer? && n >= q.price_to_see(:answer))
+    enable_solution = seen_solution || (n >= q.price_to_see(:solution))
 
     return { 
       check: enable_self_check, 
-      grade: !self.uploaded?,
+      grade: enable_upload,
       answer: enable_answer, 
       solution: enable_solution, 
       proofread: true
