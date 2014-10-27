@@ -175,38 +175,44 @@ class TokensController < ApplicationController
   end
 
   def record_action
-    # s - student_id, q - question_id, v - qsn version, 
     # params[:op] = guess, grade, answer, solution, proofread
-    s = params[:s].to_i
-    q = params[:q].to_i
-    v = params[:v].to_i
-    g = params[:g].to_i
+    if params[:id].nil? 
+      # s - student_id, q - question_id, v - qsn version, 
+      s = params[:s].to_i
+      q = params[:q].to_i
+      v = params[:v].to_i
 
-    stab = Stab.where(question_id: q, student_id: s, version: v).first
-    response = {}
+      records = Stab.where(student_id: s, question_id: q, version: v)
+      if records.count == 0
+        stab = Stab.create(student_id: s, question_id: q, version: v, puzzle: false) 
+        records = Stab.where(student_id: s, question_id: q, version: v)
+      end
+    else
+      # id - attempt_id
+      ids = params[:id].split(',')
 
-    unless params[:op].blank?
-      stab = stab.nil? ? 
-        Stab.create(student_id: s, question_id: q, version: v) : stab
-      stab.update_attribute :puzzle, false 
+      records = Attempt.where(id: ids)
+      s = records[0].student_id
+    end
+
+    records.each do |r|
       case params[:op]
         when 'guess'
-          stab.update_attribute :first_shot, g
+          g = params[:g].to_i
+          r.update_attribute :first_shot, g
         when 'answer'
-          stab.charge :answer
+          r.charge :answer
         when 'solution'
-          stab.charge :solution
+          r.charge :solution
       end
-
-      status = :ok 
-      response = {
-        stab_id: stab.id,
-        op: params[:op],
-        bal: Student.find(s).gredits
-      }
-    else # of else
-      status = 500  
     end
+
+    status = :ok 
+    response = {
+      stab_id: records[0].id,
+      op: params[:op],
+      bal: Student.find(s).gredits
+    }
     render json: response, status: status
   end
 
@@ -320,6 +326,7 @@ class TokensController < ApplicationController
           outof: q.marks,
           examiner: q.examiner_id,
           codex: q.has_codex?,
+          ans: q.has_answer?,
           available: q.available
         }
       end
@@ -344,6 +351,7 @@ class TokensController < ApplicationController
           marks: s.quality,
           examiner: s.examiner_id,
           codex: q.has_codex?,
+          ans: q.has_answer?,
           guesst: s.first_shot,
           bot_ans: s.paid_to_see(:answer),
           bot_soln: s.paid_to_see(:solution)
@@ -356,6 +364,7 @@ class TokensController < ApplicationController
       worksheets = []
       ws.each do |w|
 
+        next unless (w.billed)
         next unless (w.exam.takehome || !w.received?(:none))
 
         quiz = w.exam.quiz
@@ -380,6 +389,9 @@ class TokensController < ApplicationController
               qatts.graded().map(&:marks).inject(:+) : -1.0)) : -1.0,
             outof: qs[i].marks,
             examiner: w.billed ? qatts.map(&:examiner_id).first : nil,
+            codex: qs[i].has_codex?,
+            ans: qs[i].has_answer?,
+            guesst: qatts[0].first_shot,
             hintMrkr: qs[i].hints.map(&:id).max,
             fdbkMrkr: Remark.where(attempt_id: qatts.map(&:id)).order(:id).map(&:id).max
           }
