@@ -32,6 +32,7 @@ class TokensController < ApplicationController
         :name  => name,
         :id    => account.loggable.id,
         :bal   => student.gredits,
+        :enrl  => student.sektions.count > 0,
         :topics=> get_topics(),
         :pzl   => "#{potd.topic_id}.#{potd.id}"
       }
@@ -71,6 +72,7 @@ class TokensController < ApplicationController
         :name  => student.first_name,
         :id    => account.loggable.id,
         :bal   => student.gredits,
+        :enrl  => student.sektions.count > 0,
         :topics=> get_topics(),
         :pzl   => "#{potd.topic_id}.#{potd.id}"
       }
@@ -107,7 +109,7 @@ class TokensController < ApplicationController
       qids = qids - stabdqids
 
       # collect the questions
-      qsns = Question.where(id: qids, available: true)
+      qsns = Question.where(id: qids)
 
       # identify and mark questions assigned by teacher as unavailable
       wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
