@@ -96,7 +96,6 @@ class TokensController < ApplicationController
       status = 200
 
       marker = params[:marker].nil? ? 0 : params[:marker].to_i
-      qsns = []
       if marker < 0
         qids = Question.where(available: true).map(&:id)
       else
@@ -115,14 +114,16 @@ class TokensController < ApplicationController
       wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
       qsns.map{|q| q.available = !(wsqids.include? q.id)}
 
-      # include question id for Puzzle of the day in case it got removed?
-      qsns << Puzzle.of_the_day.question
-      
       # include stabs (already tried questions)
       stabs = Stab.where(student_id: student.id)
+      stabs.map{|s| s[:available] = !(wsqids.include? s.question_id)}
 
+      # include question_id for Puzzle of the day in case it got removed?
+      potd = []
+      potd << Puzzle.of_the_day.question
+      
       json = {
-        :ws => get_questions(qsns) + get_stabs(stabs),
+        :ws => get_questions(qsns) + get_stabs(stabs) + get_questions(potd),
         :marker => marker
       }
     end
@@ -354,6 +355,7 @@ class TokensController < ApplicationController
           examiner: s.examiner_id,
           codex: q.has_codex?,
           ans: q.has_answer?,
+          available: s.available,
           guesst: s.first_shot,
           bot_ans: s.paid_to_see(:answer),
           bot_soln: s.paid_to_see(:solution)
