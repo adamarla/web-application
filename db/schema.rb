@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141023114522) do
+ActiveRecord::Schema.define(:version => 20141105075039) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -425,7 +425,7 @@ ActiveRecord::Schema.define(:version => 20141023114522) do
     t.boolean  "shell",                     :default => false
     t.string   "phone",       :limit => 15
     t.boolean  "indie"
-    t.integer  "gredits",                   :default => 0
+    t.integer  "gredits",                   :default => 100
   end
 
   create_table "subjects", :force => true do |t|
