@@ -28,6 +28,18 @@ class Stab < ActiveRecord::Base
 
   validates :quality, numericality: { only_integer: true, less_than: 7 } # quality = [-1,6]
 
+  def self.bought_answer 
+    where('answer_deduct > ?', 0) 
+  end 
+
+  def self.bought_solution 
+    where('solution_deduct > ?', 0) 
+  end 
+
+  def self.self_checked 
+    where('first_shot <> ?', nil)
+  end 
+
   def self.graded
     where('quality > ?', -1) 
   end 
@@ -260,6 +272,13 @@ class Stab < ActiveRecord::Base
     for kgz in master.kaagaz
       stb.kaagaz.create path: kgz.path 
     end 
+  end 
+
+  def self.from_school(id)
+    tids = School.find(id).teachers.map(&:id)
+    sk_ids = Sektion.where(teacher_id: tids).map(&:id).uniq
+    s_ids = StudentRoster.where(sektion_id: sk_ids).map(&:student_id).uniq 
+    Stab.where(student_id: s_ids).order(:student_id)
   end 
 
 end # of class
