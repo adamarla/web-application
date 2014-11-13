@@ -396,7 +396,6 @@ class TokensController < ApplicationController
             codex: qs[i].has_codex?,
             ans: qs[i].has_answer?,
             guesst: qatts[0].first_shot,
-            hintMrkr: qs[i].hints.map(&:id).max,
             fdbkMrkr: Remark.where(attempt_id: qatts.map(&:id)).order(:id).map(&:id).max
           }
         end
