@@ -223,8 +223,6 @@ Webapp::Application.routes.draw do
   resources :tokens, :only => [:create, :destroy]
   match 'tokens/record' => 'tokens#record_action', via: :get
   match 'tokens/refresh/qs' => 'tokens#refresh_qs', via: :get
-  match 'tokens/refresh/qsns' => 'tokens#refresh_qsns', via: :get # tbd
-  match 'tokens/refresh/stab' => 'tokens#refresh_stab', via: :get # tbd
   match 'tokens/refresh/ws' => 'tokens#refresh_ws', via: :get
   match 'tokens/verify' => 'tokens#verify', via: :get
   match 'tokens/validate' => 'tokens#validate', via: :get

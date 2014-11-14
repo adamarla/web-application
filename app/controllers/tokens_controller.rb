@@ -118,12 +118,8 @@ class TokensController < ApplicationController
       stabs = Stab.where(student_id: student.id)
       stabs.map{|s| s[:available] = !(wsqids.include? s.question_id)}
 
-      # include question_id for Puzzle of the day in case it got removed?
-      potd = []
-      potd << Puzzle.of_the_day.question
-      
       json = {
-        :ws => get_questions(qsns) + get_stabs(stabs) + get_questions(potd),
+        :ws => get_questions(qsns) + get_stabs(stabs),
         :marker => marker
       }
     end
