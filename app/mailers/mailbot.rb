@@ -150,4 +150,10 @@ class Mailbot < ActionMailer::Base
     mail to: @s.account.email, subject: "(Re-upload): #{@question} of #{@quiz}"
   end 
 
+  def password_reset(account, new_passwd)
+    @name = account.loggable.first_name
+    @passwd = new_passwd
+    mail to: account.email, subject: "Gradians.com: Password reset" 
+  end
+
 end

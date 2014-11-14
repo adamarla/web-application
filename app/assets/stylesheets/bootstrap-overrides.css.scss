@@ -574,12 +574,8 @@ span.btn-shortcut {
       color: white ; 
       border: { style: none ; radius: 0px ; }
       border-bottom: 1px dotted white ; 
-      padding: {
-        top: 3px ;
-        bottom: 8px ;
-        left: 6px ;
-        right: 6px ;
-      }
+      padding: 4px 6px; 
+      height: 15px ;
     } 
 
     select { font-size: 11px; }
@@ -863,7 +859,20 @@ button[data-toggle='button'] {
     margin-top: 15px ;
     > li:last-child {
       float: right ;
-      > a { color: $orange ; font-weight: 500 ;}
+      > a:not([id='a-reset-passwd']) { color: $orange ; font-weight: 500 ;}
+      > a[id='a-reset-passwd']{
+        font: {
+          weight: 300; 
+          size: 12px ;
+        }
+        margin: {
+          top: -10px ;
+          bottom: 5px ;
+          right: 0px ;
+        }
+        float: right ;
+        cursor: pointer ;
+      }
     }
   }
 

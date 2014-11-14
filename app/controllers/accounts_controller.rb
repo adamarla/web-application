@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:ask_question]
+  before_filter :authenticate_account!, :except => [:ask_question, :reset_password]
   respond_to :json
 
   def update 
@@ -31,6 +31,22 @@ class AccountsController < ApplicationController
     end
     render json: { notify: {text: msg} }, status: :ok
   end 
+
+  def reset_password
+    e = params[:account][:email]
+    unless e.blank?
+      @a = Account.where(email: e).first
+      @pw = @a.nil? ? nil : @a.reset_password
+      unless @pw.nil?
+        Mailbot.delay.password_reset(@a, @pw) unless @pw.nil?
+        render json: { notify: { title: 'Password updated', 
+                                 msg: 'Please check your e-mail for the new password.' } }, status: :ok 
+      else
+        render json: { notify: { title: 'Invalid E-mail?',
+                                 msg: 'We do not have this e-mail in our records. Please try again.' } }, status: :ok 
+      end
+    end # client side validation should preclude the case with blank e-mail.
+  end
 
   def exams 
     @exams = current_account.exams

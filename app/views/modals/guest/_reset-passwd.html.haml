@@ -1,0 +1,12 @@
+
+#m-reset-passwd.modal.regular.fade.row-fluid
+  .span3
+    = image_tag 'landing/unlock-62672.png', class: 'big-icon'
+  .span8
+    = simple_form_for :account, url: reset_password_path, remote: true,
+    defaults: { required: true, label: false }, html: { id: 'fm-reset-passwd' } do |f| 
+      .title= "Password Recovery"
+      .small-text.orange= "Enter the e-mail you registered with"
+      = f.input :email, hint: 'E-mail', wrapper_html: { class: 'push-down' }
+      %div  
+        %button.btn.btn-primary.btn-large{ type: :submit, id: 'btn-register'}= 'Re-send password'

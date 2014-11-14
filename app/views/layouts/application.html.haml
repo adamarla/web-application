@@ -7,8 +7,10 @@
   #modals
     = render partial: 'modals/guest/register'
     = render partial: 'modals/guest/founders'
-    = render partial: 'notifications/shared/old-browser'
+    = render partial: 'modals/guest/reset-passwd'
   #notifications
+    = render partial: 'notifications/shared/old-browser'
+    = render partial: 'notifications/shared/reset-passwd'
     = render partial: 'notifications/student/enrollment-blocked'
     = render partial: 'notifications/student/enrolled-already'
     = render partial: 'notifications/student/sektion-not-found'
@@ -51,6 +53,7 @@
                       .input-append
                         %input.input-medium{ type: :password, name: "account[password]", placeholder: "Password" }
                         %button.btn.btn-large.btn-primary{ type: :submit }= "Sign In"
+                  = simple_link for: 'Forgot password?', id: 'a-reset-passwd'
 
       = render partial: 'puzzles/daily'
 
