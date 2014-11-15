@@ -95,7 +95,7 @@ class Student < ActiveRecord::Base
     unless self.indie?
       # for the few non-indie students at DPS, auto top-up gredits 
       # if the post-charge balance < cost of seeing solution (the more expensive option)
-      n += 100 if (n < 20) 
+      n += 50 if (n < 5) 
     end 
     self.update_attribute :gredits, n
   end 

@@ -26,6 +26,7 @@ Webapp::Application.routes.draw do
   match 'byCountry' => 'accounts#by_country', via: :get
   match 'inCountry' => 'accounts#in_country', via: :get
   match 'ask/question' => 'accounts#ask_question', via: :post
+  match 'reset/password' => 'accounts#reset_password', via: :post
 
   # Admin 
   resource :admin, :controller => :admin 

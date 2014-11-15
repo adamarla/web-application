@@ -150,6 +150,26 @@ class Account < ActiveRecord::Base
     # return (self.active && super)
   end
 
+  def reset_password  
+    # Should be called only from within the Controller (reset/password). Do *not* to call manually! 
+    e = self.email
+    # Create a string = name with randomly characterized letters. Set this as the new password.
+    lg = self.loggable 
+    if lg.last_name.blank? 
+      passwd = lg.first_name.downcase
+    else
+      y = lg.last_name.split(" ").last
+      passwd = "#{lg.first_name}.#{y}".downcase
+    end
+
+    l = passwd.length
+    n = (l / 3).ceil
+    i = [*0...l].sample(n)
+    i.map{ |j| passwd[j] = passwd[j].upcase }
+    self.update_attributes password: passwd, password_confirmation: passwd
+    return passwd
+  end 
+
   def has_email?
     # Previously, we generated e-mails of the form xyz@drona.com for new users. 
     # This is really not needed - as long as we handle nil emails

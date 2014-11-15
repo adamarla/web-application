@@ -87,6 +87,10 @@ jQuery ->
       json = $.parseJSON xhr.responseText
       $('#m-ask-a-question').modal 'hide'
       notifier.show 'n-question-received', json
+    else if url.match(/reset\/password/)
+      $('#m-reset-passwd').modal 'hide'
+      json = $.parseJSON(xhr.responseText) 
+      notifier.show('n-reset-passwd', json) if json.notify?
     else
       matched = false
 

@@ -142,7 +142,7 @@ class Question < ActiveRecord::Base
   #    2. time of year ( charge more near exam time ) 
 
   def price_to_see(what) # what = :answer | :solution 
-    return (what == :answer ? 5 : 20)
+    return (what == :answer ? 2 : 5)
   end 
 
   ##              END PRICING
