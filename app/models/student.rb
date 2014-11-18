@@ -2,16 +2,17 @@
 #
 # Table name: students
 #
-#  id          :integer         not null, primary key
-#  guardian_id :integer
-#  first_name  :string(30)
-#  last_name   :string(30)
-#  created_at  :datetime
-#  updated_at  :datetime
-#  shell       :boolean         default(FALSE)
-#  phone       :string(15)
-#  indie       :boolean
-#  gredits     :integer         default(100)
+#  id             :integer         not null, primary key
+#  guardian_id    :integer
+#  first_name     :string(30)
+#  last_name      :string(30)
+#  created_at     :datetime
+#  updated_at     :datetime
+#  shell          :boolean         default(FALSE)
+#  phone          :string(15)
+#  indie          :boolean
+#  reward_gredits :integer         default(100)
+#  paid_gredits   :integer         default(0)
 #
 
 include ApplicationUtil
@@ -90,14 +91,29 @@ class Student < ActiveRecord::Base
     return score 
   end 
 
+  def gredits 
+    return (self.reward_gredits + self.paid_gredits)
+  end 
+
   def charge(n_gredits)
-    n = self.gredits - n_gredits 
+    # Use the paid_gredits first and then the reward_gredits.
+    # Note: This method intentionally does not check whether available gredits >= n_gredits. 
+    # If there wasn't enough balance, then the transaction shouldn't have been triggered. 
+
+    balance = self.paid_gredits - n_gredits 
+    if balance < 0 
+      rwd = self.reward_gredits + balance  
+      paid = 0
+    else
+      paid = balance 
+      rwd = self.reward_gredits
+    end
     unless self.indie?
       # for the few non-indie students at DPS, auto top-up gredits 
       # if the post-charge balance < cost of seeing solution (the more expensive option)
-      n += 50 if (n < 5) 
+      rwd += 50 if (rwd < 5) 
     end 
-    self.update_attribute :gredits, n
+    self.update_attributes paid_gredits: paid, reward_gredits: rwd
   end 
 
   def indie? 
