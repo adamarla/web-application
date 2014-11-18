@@ -167,12 +167,12 @@ class Stab < ActiveRecord::Base
 
   # If a student correctly identifies and reports an error in either 
   # our answer or solution, then he/she must be rewarded for it. For now, 
-  # we give 20 Gredits to them 
+  # we give 3 reward_gredits to them 
 
   def give_proofreading_reward 
     s = self.student 
-    n = s.gredits + 20 
-    s.update_attribute :gredits, n
+    n = s.reward_gredits + 3 
+    s.update_attribute :reward_gredits, n
   end 
 
   # BIG ONE: Returns the enabled/disabled state for the various menu-entries 
