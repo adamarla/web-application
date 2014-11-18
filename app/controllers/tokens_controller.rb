@@ -99,7 +99,7 @@ class TokensController < ApplicationController
       if marker < 0
         qids = Question.where(available: true).map(&:id)
       else
-        qids = Revision.after(marker).map(&:question_id)
+        qids = Revision.after(marker).map(&:question_id).uniq
       end
       marker = Revision.all.count > 0 ? Revision.maximum(:id).to_i : 0
 
@@ -121,11 +121,12 @@ class TokensController < ApplicationController
       # include question_id for Puzzle of the day in case it got removed?
       potd = []
       potd << Puzzle.of_the_day.question
-      
+
       json = {
         :ws => get_questions(qsns) + get_stabs(stabs) + get_questions(potd),
         :marker => marker
       }
+
     end
     render status: status, json: json
   end
