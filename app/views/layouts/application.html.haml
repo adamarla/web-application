@@ -23,17 +23,6 @@
     = stylesheet_link_tag "application" 
     = javascript_include_tag "application", "welcome"
     = javascript_include_tag "external" if Rails.env == "production"
-    %script{ type: "text/x-mathjax-config" } 
-      MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready", function() {
-      var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT ;
-      VARIANT["normal"].fonts.unshift("MathJax_SansSerif") ;
-      }) ;
-      MathJax.Hub.Config({
-      styles: {
-      "span.MathJax span" : { "font-size" : "14px" , "font-weight" : "100" }
-      }
-      }) ;
-    = javascript_include_tag "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"
     = csrf_meta_tag
   %body 
     = render partial: 'toolbox/generic/spinner'
@@ -45,17 +34,20 @@
               %a.brand.span4{ href: "#"}
                 = image_tag "logo-mit-beta-2.png"
                 #tagline= 'Grades will happen'
-              %ul.nav.span7
-                %li.pull-right
+              %ul.nav.span6
+                %li.pull-left
                   #signin-form
                     %form.form-inline{ action: session_path(:account), method: :post }
                       %input.input-medium{ type: :text, name: "account[login]", placeholder: "Email"}
                       .input-append
                         %input.input-medium{ type: :password, name: "account[password]", placeholder: "Password" }
                         %button.btn.btn-large.btn-primary{ type: :submit }= "Sign In"
-                  = simple_link for: 'Forgot password?', id: 'a-reset-passwd'
+              .span2{ id: 'misc-a'}
+                = simple_link for: 'Register', id: 'a-register'
+                = simple_link for: 'Forgot password?', id: 'a-reset-passwd', class: 'pull-right'
 
-      = render partial: 'puzzles/daily'
+      -#= render partial: 'puzzles/daily'
+      = render partial: 'mobile/intro'
 
     = yield :toolbox
 
