@@ -35,7 +35,7 @@
 ## Students 
 ##############################################################################
 
-a-daily-puzzle : 
+a-mobile-intro :
   show : 
     superwide: superwide-1
   default : true

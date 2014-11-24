@@ -1,0 +1,47 @@
+
+#mobile-intro.hero-unit.row-fluid 
+  #live-phone.span3
+    = image_tag 'landing-2/iphone-5765.png'
+    #screens.carousel.slide
+      .carousel-inner
+        .item.active
+          = image_tag "landing-2/screenshots/topic-list.png", size: '168x253'
+        - for j in ['question-list', 'question-preview','options', 'solution','review']
+          .item 
+            = image_tag "landing-2/screenshots/#{j}.png", size: '168x253'
+  .span8
+    .row-fluid 
+      %h1.white.text-center= 'Practice with us'
+    .row-fluid.push-down-30{ id: 'mktg-spiel'}
+      %p  
+        Turn your Android phone into your <b class='orange'>personal practice partner.</b> 
+      .span8
+        %ul
+          %li
+            .heading= 'Attempt'
+            .subtext
+              Browse through our bank of questions on Class XI and XII Maths. 
+              Our questions are free to see - and always will be.
+          %li
+            .heading= 'Self Check'
+            .subtext
+              Find out instantly if you got the right answer. 
+          %li
+            .heading= 'Stuck still?'
+            .subtext
+              Either view the solution (paid) or upload your solution to us for review (free). We will help 
+              you understand any gaps in your solution.
+          %li
+            .heading= 'Pay as you go'
+            .subtext
+              No 1-year or 2-year plans for us. Pay only for what you need. 
+    .row-fluid.push-down{ id: 'next-steps' }
+      .span4.offset2
+        %a{ id: 'a-scanbot', href: 'https://play.google.com/store/apps/details?id=com.gradians.collect&hl=en', 
+            target: '_blank', data: { 'no-touch' => :true } }
+          = image_tag 'scanbot-trans.png', size: '25x25'
+          Download Mobile App
+      .span3
+        %a{ id: 'a-founders', data: { 'no-touch' => :true } }
+          = image_tag 'landing/group-3359.png', size: '30x30'
+          About Us

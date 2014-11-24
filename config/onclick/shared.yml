@@ -16,3 +16,7 @@ lnk-upload :
 a-reset-passwd : 
   show : 
     modal : m-reset-passwd
+
+a-register : 
+  show : 
+    modal: m-register
