@@ -11,28 +11,33 @@
             = image_tag "landing-2/screenshots/#{j}.png", size: '168x253'
   .span8
     .row-fluid 
-      %h3.white= '1 Smartphone + 1 Gradians.com = 1 Personal Practice Partner'
+      %h3.white= 'Turn your smartphone into your own personal practice partner.'
     .row-fluid.push-down-30{ id: 'mktg-spiel'}
-      .span6
+      .span5
         .li
-          .heading= 'Attempt'
+          .heading.orange= 'Attempt'
           .subtext
             Browse through our bank of questions on Class XI and XII Maths. 
-            Our questions are free to see - and always will be.
+            All of our questions are free to see - and always will be.
         .li
-          .heading= 'Self Check'
+          .heading.orange= 'Self Check'
           .subtext
             Find out instantly if you got the right answer. 
-      .span6
         .li
-          .heading= 'Stuck still?'
+          .heading.orange= 'Stuck?'
           .subtext
-            Either view the solution (paid) or upload your solution to us for review (free). We will help 
+            View our solution <span class='bubble orange'>paid</span> or send your work to us for review 
+            <span class='bubble'>free</span>. We will help 
             you understand any gaps in your solution.
+      .span5.offset1
         .li
-          .heading= 'Pay as you go'
+          .heading.orange= 'Pay as you go'
           .subtext
-            No 1-year or 2-year plans for us. Pay only for what you need. 
+            We do not believe in 1-year or 2-year plans. You pay by the question and only for what you need.
+        .li
+          .heading.orange= 'Register now ...'
+          .subtext
+            \... and we will give you <span class='bubble'>100 free credit points</span> to spend on the mobile app. 
     .row-fluid{ id: 'next-steps' }
       .span4.offset2
         %a{ id: 'a-scanbot', href: 'https://play.google.com/store/apps/details?id=com.gradians.collect&hl=en', 
