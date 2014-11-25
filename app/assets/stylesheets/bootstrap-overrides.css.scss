@@ -343,21 +343,32 @@ span.btn-shortcut {
 #mktg-spiel { 
   .li { 
     color: white ;
+    text-align: justified ;
     > .heading { 
-      font: { size: 16px ; weight: 400 ; }
+      font: { size: 16px ; weight: 300 ; }
     } 
     > .subtext { 
-      font: { size: 13px ; weight: 300 ; variant: normal ; }
+      font: { size: 12px ; weight: 300 ; variant: normal ; }
       color: white ;
       line-height: 15px ;
     }
     text-align: justified ;
     margin-top: 10px ;
   } 
+  span { 
+    &.bubble { 
+      font: { size: 11px ; weight: 400 ; }
+      padding: 0px 4px 1px 4px; 
+      border-radius: 4px ;
+      background-color: $deep-blue ; 
+      color: white ;
+      &.orange { background-color: $orange ; color: $panel-color ; } 
+    } 
+  } 
 } 
 
 #next-steps { 
-  margin-top: 100px ;
+  margin-top: 35px ;
   border-top: 1px solid white ; 
   > div { 
     border-radius: 5px ;
