@@ -31,7 +31,7 @@
         .span12
           .navbar.navbar-inverse
             .navbar-inner
-              %a.brand.span4{ href: "#"}
+              %a.brand.span3{ href: "#"}
                 = image_tag "logo-mit-beta-2.png"
                 #tagline= 'Partners in Practice'
               %ul.nav.span6
@@ -43,8 +43,10 @@
                         %input.input-medium{ type: :password, name: "account[password]", placeholder: "Password" }
                         %button.btn.btn-large.btn-primary{ type: :submit }= "Sign In"
               .span2{ id: 'misc-a'}
-                = simple_link for: 'Register', id: 'a-register'
-                = simple_link for: 'Forgot password?', id: 'a-reset-passwd', class: 'pull-right'
+                %div
+                  = simple_link for: 'Register', id: 'a-register'
+                %div
+                  = simple_link for: 'Forgot password?', id: 'a-reset-passwd'
 
       -#= render partial: 'puzzles/daily'
       = render partial: 'mobile/intro'
