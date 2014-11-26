@@ -924,13 +924,18 @@ button[data-toggle='button'] {
   }
 
   #misc-a { 
-    margin-top: 35px ;
-    > a { 
-      color: white ;
-      padding-bottom: 4px ;
-      &:hover { 
-        border-bottom: 1px solid $orange ;
-        text-decoration: none ;
+    margin-top: 25px ;
+    > div { 
+      margin-bottom: 5px ;
+      padding-bottom: 2px ;
+      > a { 
+        color: white ;
+        padding-bottom: 2px ;
+        font-size: 12px ;
+        &:hover { 
+          border-bottom: 1px solid $orange ;
+          text-decoration: none ;
+        } 
       } 
     } 
   } 
