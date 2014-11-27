@@ -5,10 +5,10 @@
     #screens.carousel.slide
       .carousel-inner
         .item.active
-          = image_tag "landing-2/screenshots/topic-list.png", size: '168x253'
+          = image_tag "landing-2/screenshots/topic-list.png"
         - for j in ['question-list', 'question-preview','options', 'solution','review']
           .item 
-            = image_tag "landing-2/screenshots/#{j}.png", size: '168x253'
+            = image_tag "landing-2/screenshots/#{j}.png"
   .span8
     .row-fluid 
       %h3.white= 'Turn your smartphone into your own personal practice partner.'
@@ -42,9 +42,9 @@
       .span4.offset2
         %a{ id: 'a-scanbot', href: 'https://play.google.com/store/apps/details?id=com.gradians.collect&hl=en', 
             target: '_blank', data: { 'no-touch' => :true } }
-          = image_tag 'scanbot-trans.png', size: '25x25'
+          = image_tag 'scanbot-trans.png'
           Download Mobile App
       .span3
         %a{ id: 'a-founders', data: { 'no-touch' => :true } }
-          = image_tag 'landing/group-3359.png', size: '30x30'
+          = image_tag 'landing/group-3359.png'
           About Us
