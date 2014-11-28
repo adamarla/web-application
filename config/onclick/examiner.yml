@@ -136,7 +136,7 @@ lnk-wb-tagging :
 tab-untagged-1 :
   url : 
     self : untagged/list
-    panel : question/preview?id=:id
+    panel : question/preview?id=:id&context=tag
   autoclick :
     tab : tab-untagged-2
 
