@@ -82,9 +82,8 @@ window.fdb = {
     return ret
 
   attach : () ->
-    p = $(fdb.root).find('#fdb-preview-area').eq(0)
-
-    preview.attach(p)
+    # p = $(fdb.root).find('#fdb-preview-area').eq(0)
+    preview.attach $(fdb.root)
     overlay.attach $(preview.root)
     shadow.over $(overlay.root)
 
