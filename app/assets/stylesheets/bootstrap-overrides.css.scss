@@ -360,9 +360,9 @@ span.btn-shortcut {
       font: { size: 11px ; weight: 400 ; }
       padding: 0px 4px 1px 4px; 
       border-radius: 4px ;
-      background-color: $deep-blue ; 
-      color: white ;
-      &.orange { background-color: $orange ; color: $panel-color ; } 
+      background-color: lighten($lightgray, 40%) ; 
+      color: black ; 
+      //&.orange { background-color: $orange ; color: $panel-color ; } 
     } 
   } 
 } 
