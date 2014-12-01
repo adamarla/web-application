@@ -123,7 +123,7 @@ class TokensController < ApplicationController
       stabs = Stab.where(student_id: student.id)
       stabs.map{|s| s[:available] = !(wsqids.include? s.question_id)}
       if revisions
-        stabs.map{|s| s[:dirty] = (qids.include? q.qid)}
+        stabs.map{|s| s[:dirty] = (qids.include? s.question_id)}
       end
 
       json = {
