@@ -37,7 +37,6 @@ class Student < ActiveRecord::Base
   validates :name, presence: true
   validates_associated :account
 
-
   attr_accessor :code
   accepts_nested_attributes_for :account # simple_form_for needs this 
 
@@ -100,10 +99,10 @@ class Student < ActiveRecord::Base
     # Note: This method intentionally does not check whether available gredits >= n_gredits. 
     # If there wasn't enough balance, then the transaction shouldn't have been triggered. 
 
+    paid = rwd = 0
     balance = self.paid_gredits - n_gredits 
     if balance < 0 
       rwd = self.reward_gredits + balance  
-      paid = 0
     else
       paid = balance 
       rwd = self.reward_gredits
@@ -113,7 +112,11 @@ class Student < ActiveRecord::Base
       # if the post-charge balance < cost of seeing solution (the more expensive option)
       rwd += 50 if (rwd < 5) 
     end 
-    self.update_attributes paid_gredits: paid, reward_gredits: rwd
+    # Do NOT replace with update_attributes as that triggers validations on Account. 
+    # We could make these columns attr_accessible. But then, we are opening ourselves to mass-assignment
+    # attacks. And these are 'money' columns. So, we don't want anyone changing them willy-nilly.
+    self.update_attribute :paid_gredits, paid 
+    self.update_attribute :reward_gredits, rwd
   end 
 
   def indie? 

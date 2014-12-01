@@ -167,7 +167,7 @@ jQuery ->
     monitor.add response, true
 
     # Initialize and/or render puzzles 
-    puzzle.initialize response
+    # puzzle.initialize response
 
     # Monitor horizontal tabs rendered within .g-panels  
     # monitor.tabs.start()
@@ -627,11 +627,6 @@ jQuery ->
   $('#next-steps').on 'click', 'a', (event) ->
     event.stopImmediatePropagation(event) 
     id = $(this).attr 'id' 
-
-    mdl = null
-    switch id 
-      when 'a-register' then mdl = '#m-register' 
-      when 'a-founders' then mdl = '#m-founders'
-
+    mdl = if id is 'a-founders' then '#m-founders' else null
     $(mdl).modal('show') if mdl?
     return true

@@ -256,7 +256,36 @@ span.btn-shortcut {
   font-size: 12px ;
   color: white ;
   max-width: 70% ;
-  margin-top: -10px ;
+  margin: { top: -10px ; left: 20% ; }
+} 
+
+#mobile-intro { 
+  padding: {
+    bottom: 20px ;
+  } 
+  min-height: 400px ;
+  h1 { 
+    font: { 
+      size: 55px ;
+      weight: 300 ;
+    } 
+  } 
+  h3 { 
+    font-size: 22px ;
+  } 
+
+  > #live-phone { 
+    margin-left: 50px ;
+
+    > #screens { 
+      margin-left: 18px ;
+      position: relative ;
+      width: 167px ;
+      max-height: 251px ;
+      margin-top: -325px ;
+      img { height: 253px ; width: 168px ; } 
+    } 
+  } 
 } 
 
 #potd { 
@@ -311,18 +340,49 @@ span.btn-shortcut {
   } 
 } 
 
+#mktg-spiel { 
+  .li { 
+    color: white ;
+    text-align: justified ;
+    > .heading { 
+      font: { size: 16px ; weight: 300 ; }
+    } 
+    > .subtext { 
+      font: { size: 12px ; weight: 300 ; variant: normal ; }
+      color: white ;
+      line-height: 15px ;
+    }
+    text-align: justified ;
+    margin-top: 10px ;
+  } 
+  span { 
+    &.bubble { 
+      font: { size: 11px ; weight: 400 ; }
+      padding: 0px 4px 1px 4px; 
+      border-radius: 4px ;
+      background-color: lighten($lightgray, 40%) ; 
+      color: black ; 
+      //&.orange { background-color: $orange ; color: $panel-color ; } 
+    } 
+  } 
+} 
+
 #next-steps { 
+  margin-top: 35px ;
   border-top: 1px solid white ; 
   > div { 
     border-radius: 5px ;
+    padding: 10px ;
+    min-height: 40px ;
     &:hover { 
       background-color: $panel-color;
     } 
     > a { 
       cursor: pointer ;
-      font-size: 15px ;
+      font-size: 13px ;
       text-decoration: none ;
       color: white ;
+      > img { height: 33px ; width: 30px ; margin-right: 7px ; }
     } 
   } 
 } 
@@ -540,7 +600,7 @@ span.btn-shortcut {
   } 
 
   h1 { font-size: 24px ; }
-  h2 { font-size: 16px ; }
+  h2 { font-size: 22px ; }
   h3 { font-size: 14px ; }
   h4 { font-size: 14px ; }
   h5 { font-size: 14px ; }
@@ -860,21 +920,25 @@ button[data-toggle='button'] {
     > li:last-child {
       float: right ;
       > a:not([id='a-reset-passwd']) { color: $orange ; font-weight: 500 ;}
-      > a[id='a-reset-passwd']{
-        font: {
-          weight: 300; 
-          size: 12px ;
-        }
-        margin: {
-          top: -10px ;
-          bottom: 5px ;
-          right: 0px ;
-        }
-        float: right ;
-        cursor: pointer ;
-      }
     }
   }
+
+  #misc-a { 
+    margin-top: 25px ;
+    > div { 
+      margin-bottom: 5px ;
+      padding-bottom: 2px ;
+      > a { 
+        color: white ;
+        padding-bottom: 2px ;
+        font-size: 12px ;
+        &:hover { 
+          border-bottom: 1px solid $orange ;
+          text-decoration: none ;
+        } 
+      } 
+    } 
+  } 
 
   a { 
     &.selected { 

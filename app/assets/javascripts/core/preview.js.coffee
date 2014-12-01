@@ -4,17 +4,32 @@ jQuery ->
   window.preview = {
     root: null,
     template: null,
-    defaultLocation: null,
+    fallback: null,
 
-    attach : (here) ->
-      preview.defaultLocation = $('#wide-X')[0] unless preview.defaultLocation?
-      preview.template = $('#toolbox > #preview-carousel')[0] unless preview.template?
+    attach : (here = null) ->
+      unless preview.fallback? 
+        preview.fallback = $('#wide-X')[0]
+      unless preview.template? 
+        preview.template = $('#toolbox > #preview-carousel')[0] 
+      
+      if here?
+        here = if typeof here is 'string' then $(here) else here
+      else
+        here = $(preview.fallback)
 
-      here = if here? then (if typeof here is 'string' then $(here) else here) else $(preview.defaultLocation)
+      # $(here) is going to be within #wide. Hide all siblings of 'here' 
+      # and un-hide it only.
+      $(sb).addClass('hide') for sb in here.siblings() 
+      here.removeClass('hide')
 
-      if preview.root? # remove old preview
-        $(preview.root).remove()
-        preview.root = null
+      if preview.root? 
+        p = $(preview.root).parent()
+        if p.attr('id') is here.attr('id')
+          preview.clear()
+          return true
+        else
+          $(preview.root).remove()
+          preview.root = null
 
       p = $(preview.template).clone().appendTo(here)[0]
       id = here.attr 'id'
@@ -38,9 +53,6 @@ jQuery ->
       preview.root = null
       return true
       
-    preCheck: () ->
-      if preview.clear() then return true else return preview.attach()
-
     execute : () ->
       inner = $(preview.root).children('.carousel-inner').eq(0)
       first = inner.children('.item').eq(0)
@@ -64,7 +76,7 @@ jQuery ->
       img = if typeof img is 'string' then img else img.attr('name')
       return false unless img?
 
-      preview.preCheck()
+      preview.attach()
       target = $(preview.root).children('.carousel-inner').eq(0)
       server = gutenberg.server 
 
@@ -75,7 +87,7 @@ jQuery ->
       preview.execute()
       return true
 
-    loadJson : (json) ->
+    loadJson : (json, here = null) ->
       ###
         json.preview = {
           source : [ vault | mint | minthril | scantray | scan-ashtray ],
@@ -88,7 +100,7 @@ jQuery ->
       ###
       return false unless json.preview?
 
-      preview.preCheck()
+      preview.attach(here)
 
       target = $(preview.root).children('.carousel-inner').eq(0)
       server = gutenberg.server 

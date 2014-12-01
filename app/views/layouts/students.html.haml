@@ -20,7 +20,7 @@
         = render partial: 'toolbox/rubric/buttons'
         = render partial: 'toolbox/rubric/criterion'
 
-- control_panel = [ {for: 'Daily Puzzle', id: 'a-daily-puzzle'},
+- control_panel = [ {for: 'Main', id: 'a-mobile-intro'},
                     {for: 'My Work', id: 'a-st-main'},
                     {for: 'Lessons', id: 'a-courses', class: (current_account.mimics_admin ? nil : 'hidden' )},
                     {for: 'Enroll', id: 'lnk-enroll-self'},
@@ -36,7 +36,7 @@
                      ['Y', nil],
                      [1, 'course/view/tiles'],
                      [2, 'course/view/exploded'] ], 
-             superwide: [ [1, 'puzzles/daily'] ]}
+             superwide: [ [1, 'mobile/intro'] ]}
 
 !!!5
 
@@ -68,7 +68,7 @@
             .navbar-inner
               %a.brand.span4{ href: "#"}
                 = image_tag "logo-mit-beta-2.png"
-                #tagline= 'Grades will happen'
+                #tagline= 'Partners in Practice'
               %ul.nav.span8.pull-right
                 - for l in control_panel 
                   %li{ class: ( l[:class].blank? ? 'dropdown' : 'dropdown hidden' ) } 
