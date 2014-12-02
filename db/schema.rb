@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141118140137) do
+ActiveRecord::Schema.define(:version => 20141201070325) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -169,6 +169,19 @@ ActiveRecord::Schema.define(:version => 20141118140137) do
   end
 
   add_index "doodles", ["examiner_id"], :name => "index_doodles_on_examiner_id"
+
+  create_table "doubts", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "examiner_id"
+    t.string   "scan",        :limit => 30
+    t.string   "solution",    :limit => 30
+    t.string   "tags"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "doubts", ["examiner_id"], :name => "index_doubts_on_examiner_id"
+  add_index "doubts", ["student_id"], :name => "index_doubts_on_student_id"
 
   create_table "examiners", :force => true do |t|
     t.datetime "created_at"
