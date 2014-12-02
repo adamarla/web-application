@@ -33,6 +33,7 @@ class Student < ActiveRecord::Base
   has_many :exams, through: :worksheets
   has_many :disputes, dependent: :destroy
   has_many :stabs, dependent: :destroy 
+  has_many :doubts, dependent: :destroy 
 
   validates :name, presence: true
   validates_associated :account
