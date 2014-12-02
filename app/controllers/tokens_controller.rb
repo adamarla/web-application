@@ -117,7 +117,11 @@ class TokensController < ApplicationController
 
       # identify and mark questions assigned by teacher as unavailable
       wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
-      qsns.map{|q| q.available = !(wsqids.include? q.id)}
+      qsns.map{|q| 
+        if q.available
+          q[:available] = !(wsqids.include? q.id)
+        end
+      }
 
       # include stabs (already tried questions)
       stabs = Stab.where(student_id: student.id)
