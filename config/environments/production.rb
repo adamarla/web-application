@@ -67,7 +67,7 @@ Webapp::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true 
 
-  config.assets.precompile += ['admin.js', 
+  config.assets.precompile += ['ad-ex.js', 
                                'indie.js', 
                                'uni.js', 
                                'students.js', 
