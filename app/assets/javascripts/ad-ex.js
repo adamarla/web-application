@@ -10,3 +10,4 @@
 //= require_directory ./customers
 //= require_directory ../../../vendor/assets/javascripts/tag-it
 //= require_directory ../../../vendor/assets/javascripts/tooltipster
+//= require_directory ../../../vendor/assets/javascripts/uploader

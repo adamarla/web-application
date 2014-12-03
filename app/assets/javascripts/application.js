@@ -7,6 +7,5 @@
 //= require bootstrap 
 //= require_directory ./core
 //= require_directory ../../../vendor/assets/javascripts/joyride
-//= require_directory ../../../vendor/assets/javascripts/uploader
 //= require_directory ../../../vendor/assets/javascripts/spinner
 //= require_directory ../../../vendor/assets/javascripts/client-side-validations
