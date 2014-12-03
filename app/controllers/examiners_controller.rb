@@ -178,7 +178,7 @@ path            ( common to all )
       # Now, bind the passed scan to the stab
       stab.add_scan(path) 
 
-    elsif type == 'DBT' # a doubt (mobile only) 
+    else if type == 'DBT' # a doubt (mobile only) 
       Doubt.create(student_id: sid, scan: path)
     else if type == 'SOLN' # solution to a doubt 
       dbt = Doubt.find params[:id].to_i
