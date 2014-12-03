@@ -10,6 +10,7 @@ gem 'haml-rails' # use haml as he default view generator
 
 gem 'haml'
 gem 'devise', "2.0.1"
+gem 'acts-as-taggable-on', '~> 3.4'
 
 group :development do
   gem 'annotate', '2.4.0' 
