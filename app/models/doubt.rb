@@ -10,6 +10,7 @@
 #  tags        :string(255)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
+#  in_db       :boolean         default(FALSE)
 #
 
 class Doubt < ActiveRecord::Base
