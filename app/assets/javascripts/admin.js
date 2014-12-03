@@ -2,6 +2,8 @@
 // in a manifest file - like this one. Instead, split JS code 
 // in other .js files and require them as needed
 
+//= require jquery.ui.autocomplete 
+//= require jquery.ui.effect-blind
 //= require_directory ./shared/ad-ex
 //= require_directory ./shared/ad-ex-tc
 //= require_directory ./admin 
