@@ -17,6 +17,8 @@ class Doubt < ActiveRecord::Base
   belongs_to :student 
   belongs_to :examiner 
 
+  validates :scan, presence: true
+
   after_create :assign_to_examiner
   after_update :send_mail, if: :solution_changed?
 
@@ -42,6 +44,8 @@ class Doubt < ActiveRecord::Base
         # for now, assign doubts only to internal examiners
         eid = Examiner.internal.available.sample(1).map(&:id).first 
         update_attribute :examiner_id, eid
+        # send an acknowledgement mail to the student saying that a written solution 
+        # would be made available within 24 hours.
       end 
 
       def send_mail
