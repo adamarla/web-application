@@ -11,6 +11,8 @@
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  in_db       :boolean         default(FALSE)
+#  refunded    :boolean         default(FALSE)
+#  price       :integer
 #
 
 class Doubt < ActiveRecord::Base
@@ -39,12 +41,37 @@ class Doubt < ActiveRecord::Base
     where(examiner_id: id)
   end 
 
+  def self.refunded 
+    where(refunded: true)
+  end 
+
+  def self.price? 
+    return 4 
+    # going forward, this method could return a different price 
+    # for different users depending on where they are from and when 
+    # they are asking for their doubts to be cleared ( closed to exams => higher price )
+  end 
+
+  def refund
+    s = self.student 
+    refund = self.price * -1 # amounts < 0 => refunds
+    s.charge refund 
+    self.update_attribute :refunded, true
+    # send mail to student saying that the question couldn't be
+    # solved by us and hence gredits have been refunded.
+  end 
+
   private 
       
       def assign_to_examiner
         # for now, assign doubts only to internal examiners
         eid = Examiner.internal.available.sample(1).map(&:id).first 
         update_attribute :examiner_id, eid
+        # store the price charged for clearing this doubt. 
+        # Do NOT assume its a constant price! Price = f( student, time, workload ). 
+        # This is also the price one should refund.
+        price = Doubt.price? 
+        update_attribute :price, price 
         # send an acknowledgement mail to the student saying that a written solution 
         # would be made available within 24 hours.
       end 
