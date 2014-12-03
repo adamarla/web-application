@@ -74,6 +74,7 @@ Webapp::Application.configure do
                                'welcome.js', 
                                'external.js', 
                                'faq.js',
+                               'ad-ex.css',
                                'indie.css',
                                'uni.css',
                                'students.css']
