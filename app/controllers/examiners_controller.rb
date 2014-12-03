@@ -180,7 +180,7 @@ path            ( common to all )
 
     elsif type == 'DBT' # a doubt (mobile only) 
       Doubt.create(student_id: sid, scan: path)
-    else if type == 'SOLN' # solution to a doubt 
+    elsif type == 'SOLN' # solution to a doubt 
       dbt = Doubt.find params[:id].to_i
       dbt.update_attribute(:solution, path) unless dbt.nil?
     else # is not a stab

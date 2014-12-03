@@ -95,60 +95,44 @@ class TokensController < ApplicationController
       student = account.loggable
       status = 200
 
+      revisions = false
       marker = params[:marker].nil? ? 0 : params[:marker].to_i
       if marker < 0
         qids = Question.where(available: true).map(&:id)
       else
-        qids = Revision.after(marker).map(&:question_id)
+        qids = Revision.after(marker).map(&:question_id).uniq
+        revisions = true
       end
       marker = Revision.all.count > 0 ? Revision.maximum(:id).to_i : 0
 
       # identify and remove question id already tried
       stabdqids = Stab.where(student_id: student.id).map(&:question_id)
-      qids = qids - stabdqids
+      untried_qids = qids - stabdqids
 
       # collect the questions
-      qsns = Question.where(id: qids)
+      qsns = Question.where(id: untried_qids)
+      if revisions
+        qsns.map{|q| q[:dirty] = true}
+      end
 
       # identify and mark questions assigned by teacher as unavailable
       wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
-      qsns.map{|q| q.available = !(wsqids.include? q.id)}
+      qsns.map{|q| 
+        if q.available
+          q[:available] = !(wsqids.include? q.id)
+        end
+      }
 
       # include stabs (already tried questions)
       stabs = Stab.where(student_id: student.id)
       stabs.map{|s| s[:available] = !(wsqids.include? s.question_id)}
+      if revisions
+        stabs.map{|s| s[:dirty] = (qids.include? s.question_id)}
+      end
 
-      # include question_id for Puzzle of the day in case it got removed?
-      potd = []
-      potd << Puzzle.of_the_day.question
-      
       json = {
-        :ws => get_questions(qsns) + get_stabs(stabs) + get_questions(potd),
+        :ws => get_questions(qsns) + get_stabs(stabs), 
         :marker => marker
-      }
-    end
-    render status: status, json: json
-  end
-
-  def refresh_qsns # to be depracated once everyone has vers 4.5
-    account = Account.find_by_email(params[:email].downcase)
-    if account.nil?
-      status = 401
-      json = { :message => "Invalid email" }
-    elsif account.authentication_token != params[:token]
-      status = 404
-      json = { :message => "Not Authorized" }
-    else
-      student = account.loggable
-      status = 200
-     
-      marker = params[:marker].nil? ? 0 : params[:marker].to_i 
-      # questions = Question.tagged.where("id > ? and available = true", marker)
-      questions = DailyQuiz.load << Puzzle.of_the_day.question
-      stabs = Stab.where("student_id = ? and examiner_id IS NOT NULL", student.id)
-      json = {
-        :ws     => get_questions(questions) + get_stabs(stabs),
-        :marker => 0
       }
 
     end
@@ -396,7 +380,6 @@ class TokensController < ApplicationController
             codex: qs[i].has_codex?,
             ans: qs[i].has_answer?,
             guesst: qatts[0].first_shot,
-            hintMrkr: qs[i].hints.map(&:id).max,
             fdbkMrkr: Remark.where(attempt_id: qatts.map(&:id)).order(:id).map(&:id).max
           }
         end
