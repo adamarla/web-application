@@ -149,10 +149,10 @@ class ExaminersController < ApplicationController
 =begin
                Puzzle    Question    Quiz(takehome)    Quiz(in-class)
                ------    --------    --------------    --------------
-type            PZL       QSN         GR                  QR 
-id              sbp_ids   sbp_ids     attempt_ids      mangled QR-code 
-student_id         +        +            nil              nil 
-vers               +        nil          nil              nil
+type            PZL       QSN         GR                  QR               DBT      SOLN 
+id              sbp_ids   sbp_ids     attempt_ids      mangled QR-code     nil      doubt-id  
+student_id         +        +            nil              nil               +       nil 
+vers               +        nil          nil              nil              nil      nil 
 path            ( common to all )
 
 =end
@@ -178,6 +178,11 @@ path            ( common to all )
       # Now, bind the passed scan to the stab
       stab.add_scan(path) 
 
+    elsif type == 'DBT' # a doubt (mobile only) 
+      Doubt.create(student_id: sid, scan: path)
+    else if type == 'SOLN' # solution to a doubt 
+      dbt = Doubt.find params[:id].to_i
+      dbt.update_attribute(:solution, path) unless dbt.nil?
     else # is not a stab
       ids = type == 'GR' ? params[:id].split('-') : Worksheet.unmangle_qrcode(params[:id])
       g = Attempt.where(id: ids)
