@@ -96,6 +96,14 @@ class Student < ActiveRecord::Base
   end 
 
   def charge(n_gredits)
+    # A refund? 
+    if n_gredits < 0 
+      rwd = self.reward_gredits - n_gredits 
+      self.update_attribute :reward_gredits, rwd 
+      return true
+    end 
+
+    # Else ... 
     # Use the paid_gredits first and then the reward_gredits.
     # Note: This method intentionally does not check whether available gredits >= n_gredits. 
     # If there wasn't enough balance, then the transaction shouldn't have been triggered. 
