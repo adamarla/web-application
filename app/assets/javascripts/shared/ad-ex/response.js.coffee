@@ -15,6 +15,12 @@ jQuery ->
     if url.match(/untagged\/list/)
       target = $('#pane-untagged-1')
       key = 'pending'
+    else if url.match(/doubts\/pending/)
+      target = $('#pane-doubts-1')
+      key = 'doubts'
+      menu = 'm-doubt'
+    else if url.match(/doubt\/preview/)
+      preview.loadJson json
     else if url.match(/stab\/dates/)
       target = $('#pane-stabs-1')
       key = 'dates'

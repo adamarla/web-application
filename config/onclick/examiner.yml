@@ -248,10 +248,10 @@ tab-doubts-1 :
   url :
     self : doubts/pending
     panel : doubt/preview?id=:id
-  show : 
-    menu : m-doubt
 
-a-*-doubt : 
+a-refund-doubt : 
+  url : 
+    self : doubt/refund?id=:a
   update-on: doubt/preview
 
 a-solve-doubt : 
