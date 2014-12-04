@@ -18,8 +18,6 @@ class Doubt < ActiveRecord::Base
   belongs_to :student 
   belongs_to :examiner 
 
-  validates :scan, presence: true
-
   after_create :assign_to_examiner
   after_update :send_mail, if: :solution_changed?
 
@@ -38,6 +36,12 @@ class Doubt < ActiveRecord::Base
   def self.assigned_to(id)
     where(examiner_id: id)
   end 
+
+  def charge
+    price = 5
+    self.student.charge price
+    return price
+  end
 
   private 
       
