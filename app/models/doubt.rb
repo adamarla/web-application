@@ -7,7 +7,6 @@
 #  examiner_id :integer
 #  scan        :string(30)
 #  solution    :string(30)
-#  tags        :string(255)
 #  created_at  :datetime        not null
 #  updated_at  :datetime        not null
 #  in_db       :boolean         default(FALSE)
@@ -50,6 +49,11 @@ class Doubt < ActiveRecord::Base
     # going forward, this method could return a different price 
     # for different users depending on where they are from and when 
     # they are asking for their doubts to be cleared ( closed to exams => higher price )
+  end 
+
+  def name? 
+    # should factor in any tags set on it.
+    return self.created_at.strftime("%b %d, %Y")
   end 
 
   def refund
