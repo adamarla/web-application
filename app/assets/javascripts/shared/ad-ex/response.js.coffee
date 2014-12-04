@@ -19,6 +19,7 @@ jQuery ->
       target = $('#pane-doubts-1')
       key = 'doubts'
       menu = 'm-doubt'
+      clickFirst = true
     else if url.match(/doubt\/preview/)
       preview.loadJson json
     else if url.match(/stab\/dates/)
