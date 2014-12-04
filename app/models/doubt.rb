@@ -24,12 +24,16 @@ class Doubt < ActiveRecord::Base
   after_create :assign_to_examiner
   after_update :send_mail, if: :solution_changed?
 
-  def self.resolved 
+  def self.solved 
     where('solution IS NOT ?', nil)
   end 
 
-  def self.unresolved 
+  def self.unsolved 
     where(solution: nil)
+  end 
+
+  def pending 
+    where(solution: nil, refunded: false)
   end 
 
   def self.by_student(id)
@@ -57,6 +61,7 @@ class Doubt < ActiveRecord::Base
   end 
 
   def refund
+    return false if self.refunded # do NOT double refund !! 
     s = self.student 
     refund = self.price * -1 # amounts < 0 => refunds
     s.charge refund 
