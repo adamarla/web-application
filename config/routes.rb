@@ -40,6 +40,11 @@ Webapp::Application.routes.draw do
   match 'ping/course' => 'course#ping', via: :get
   match 'load/course' => 'course#load', via: :get
 
+  # Doubts 
+  match 'doubts/pending' => 'doubts#pending', via: :get
+  match 'doubt/preview' => 'doubts#preview', via: :get
+  match 'doubt/refund' => 'doubts#refund', via: :get
+
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'untagged/list' => 'examiners#untagged', via: :get
