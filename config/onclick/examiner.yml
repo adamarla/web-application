@@ -36,13 +36,13 @@
 ## Admin / Examiner specific  
 ##############################################################################
 
-a-grade-stabs : 
+a-indie-main :
   default : true 
   show : 
     left : left-12 
     wide : wide-Y 
   autoclick : 
-    tab : tab-stabs-1
+    tab : tab-doubts-1
 
 a-grade-exams :
   show : 
