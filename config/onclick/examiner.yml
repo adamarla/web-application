@@ -244,6 +244,20 @@ lnk-add-examiner :
   show : 
     modal : m-new-examiner
 
+tab-doubts-1 : 
+  url :
+    self : doubts/pending
+    panel : doubt/preview?id=:id
+  show : 
+    menu : m-doubt
+
+a-*-doubt : 
+  update-on: doubt/preview
+
+a-solve-doubt : 
+  show : 
+    modal : m-upload-solution
+
 tab-stabs-1 : 
   url : 
     self : stab/dates 

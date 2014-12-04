@@ -1,0 +1,9 @@
+
+%ul.dropdown-menu.dropdown-inverse.slim{ id: 'm-doubt', role: :menu }
+  %li
+    = simple_link for: 'Tag', id: 'a-tag-doubt', icon: 'icon-tags'
+  %li
+    = simple_link for: 'Refund', id: 'a-refund-doubt', icon: 'icon-minus', remote: true, 
+    url: "#{doubt_refund_path}?id=:a"
+  %li
+    = simple_link for: 'Upload Solution', id: 'a-solve-doubt', icon: 'icon-arrow-up'
