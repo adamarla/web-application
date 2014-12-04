@@ -32,7 +32,7 @@ class Doubt < ActiveRecord::Base
     where(solution: nil)
   end 
 
-  def pending 
+  def self.pending 
     where(solution: nil, refunded: false)
   end 
 
