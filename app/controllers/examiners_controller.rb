@@ -179,7 +179,8 @@ path            ( common to all )
       stab.add_scan(path) 
 
     elsif type == 'DBT' # a doubt (mobile only) 
-      Doubt.create(student_id: sid, scan: path)
+      dbt = Doubt.find params[:id].to_i
+      dbt.update_attribute(:scan, path) unless dbt.nil?
     elsif type == 'SOLN' # solution to a doubt 
       dbt = Doubt.find params[:id].to_i
       dbt.update_attribute(:solution, path) unless dbt.nil?

@@ -225,6 +225,7 @@ Webapp::Application.routes.draw do
   match 'tokens/record' => 'tokens#record_action', via: :get
   match 'tokens/refresh/qs' => 'tokens#refresh_qs', via: :get
   match 'tokens/refresh/ws' => 'tokens#refresh_ws', via: :get
+  match 'tokens/refresh/dbt' => 'tokens#refresh_dbt', via: :get
   match 'tokens/verify' => 'tokens#verify', via: :get
   match 'tokens/validate' => 'tokens#validate', via: :get
   match 'tokens/view_fdb' => 'tokens#view_fdb', via: :get
