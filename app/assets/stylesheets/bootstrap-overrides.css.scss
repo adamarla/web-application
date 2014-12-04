@@ -1579,3 +1579,14 @@ span {
   } 
 } 
 
+.tagit { 
+  &.ui-widget { font: inherit ; } 
+  &.ui-widget-content { 
+    background: none ; 
+    border: { 
+      radius: 0px ; 
+      style: none ; 
+      bottom: 1px dotted $orange ;
+    } 
+  } 
+} 

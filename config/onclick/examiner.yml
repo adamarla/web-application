@@ -252,11 +252,20 @@ tab-doubts-1 :
 a-refund-doubt : 
   url : 
     self : doubt/refund?id=:a
-  update-on: doubt/preview
+  update-on: doubt/preview tag/doubt
+  disable-unless : tagged
 
 a-solve-doubt : 
   show : 
     modal : m-upload-solution
+  update-on : doubt/preview tag/doubt
+  disable-unless : tagged
+
+a-tag-doubt : 
+  show : 
+    modal : m-tag-doubt 
+  update-on: doubt/preview tag/doubt
+  disable-if : tagged
 
 tab-stabs-1 : 
   url : 

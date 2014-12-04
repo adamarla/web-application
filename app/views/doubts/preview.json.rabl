@@ -8,3 +8,4 @@ object false
   } 
 
   node(:a){ @dbt.id }
+  node(:tagged){ @dbt.tagged? }

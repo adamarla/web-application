@@ -1,0 +1,10 @@
+
+#m-tag-doubt.modal.fade.wide
+  .row-fluid
+    .span1
+      -#= image_tag 'notifications/help-38716.png', class: 'big-icon'
+    .span10 
+      = simple_form_for :doubt, remote: true, defaults: { label: false },
+      html: { data: { action: "#{tag_doubt_path}?id=:id", id: 'tab-doubts-1' } }do |f| 
+        = f.input :tags, hint: 'Comma separated tags', input_html: { id: 'i-doubt-tags' }
+        %button.btn.btn-primary.pull-right{ type: :submit }= 'Submit'

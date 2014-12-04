@@ -24,6 +24,8 @@ class Doubt < ActiveRecord::Base
   after_create :assign_to_examiner
   after_update :send_mail, if: :solution_changed?
 
+  acts_as_taggable_on :tags
+
   def self.solved 
     where('solution IS NOT ?', nil)
   end 
@@ -68,6 +70,10 @@ class Doubt < ActiveRecord::Base
     self.update_attribute :refunded, true
     # send mail to student saying that the question couldn't be
     # solved by us and hence gredits have been refunded.
+  end 
+
+  def tagged? 
+    !self.tag_list.empty?
   end 
 
   private 

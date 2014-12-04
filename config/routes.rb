@@ -44,6 +44,7 @@ Webapp::Application.routes.draw do
   match 'doubts/pending' => 'doubts#pending', via: :get
   match 'doubt/preview' => 'doubts#preview', via: :get
   match 'doubt/refund' => 'doubts#refund', via: :get
+  match 'tag/doubt' => 'doubts#tag', via: :post 
 
   # Examiner 
   resource :examiner, :except => [:new, :destroy]

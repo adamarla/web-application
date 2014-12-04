@@ -15,4 +15,17 @@ class DoubtsController < ApplicationController
     @dbt = Doubt.find params[:id]
   end 
 
+  def tag 
+    dbt = Doubt.find params[:id]
+    tags = params[:doubt][:tags]
+    is_tagged = false 
+    unless dbt.nil?
+      unless tags.blank?
+        dbt.tag_list.add(tags, parse: true) 
+        is_tagged = dbt.save 
+      end 
+    end
+    render json: { tagged: is_tagged }, status: :ok 
+  end 
+
 end
