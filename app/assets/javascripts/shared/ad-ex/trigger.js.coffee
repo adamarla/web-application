@@ -16,6 +16,10 @@ previewSg = (json) ->
   return true
 
 jQuery ->
+
+  upload.button.add('btn-upload-solution', "#{gutenberg.server}/Upload/scan", 'tab-doubts-1')
+
+  # REVIEW AND DELETE CODE BELOW !!!! 
   
   $('#pane-vertical-topics').on 'click', '.line', (event) ->
     # pane-vertical-topics is the the .tab-pane for a left-tab that in 
