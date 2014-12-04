@@ -19,8 +19,6 @@ class Doubt < ActiveRecord::Base
   belongs_to :student 
   belongs_to :examiner 
 
-  validates :scan, presence: true
-
   after_create :assign_to_examiner
   after_update :send_mail, if: :solution_changed?
 
@@ -75,6 +73,10 @@ class Doubt < ActiveRecord::Base
   def tagged? 
     !self.tag_list.empty?
   end 
+
+  def charge
+    self.student.charge Doubt.price? 
+  end
 
   private 
       

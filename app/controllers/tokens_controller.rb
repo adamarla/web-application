@@ -161,25 +161,64 @@ class TokensController < ApplicationController
     render status: status, json: json
   end
 
-  def record_action
-    # params[:op] = guess, grade, answer, solution, proofread
-    if params[:id].nil? 
-      # s - student_id, q - question_id, v - qsn version, 
-      s = params[:s].to_i
-      q = params[:q].to_i
-      v = params[:v].to_i
-
-      records = Stab.where(student_id: s, question_id: q, version: v)
-      if records.count == 0
-        stab = Stab.create(student_id: s, question_id: q, version: v, puzzle: false) 
-        records = Stab.where(student_id: s, question_id: q, version: v)
-      end
+  def refresh_dbt
+    account = Account.find_by_email(params[:email].downcase)
+    if account.nil?
+      status = 401
+      json = { :message => "Invalid email" }
+    elsif account.authentication_token != params[:token]
+      status = 404
+      json = { :message => "Not Authorized" }
     else
-      # id - attempt_id
-      ids = params[:id].split(',')
+      student = Student.find_by_id(account.loggable_id)
+      status = 200
 
-      records = Attempt.where(id: ids)
-      s = records[0].student_id
+      doubts = Doubt.by_student(student.id).map{ |d|
+        {
+          id: "#{d.id}",
+          img: d.scan,
+          scan: d.solution,
+          tags: d.tags,
+          name: d.created_at.to_s(:db),
+          ans: d.in_db,
+          examiner: d.examiner_id
+        }
+      }
+      
+      json = {
+        :ws => doubts,
+        :marker => 0
+      }
+    end
+    render status: status, json: json
+  end
+
+  def record_action
+    # params[:op] = guess, grade, answer, solution, proofread, ask
+    if params[:op] == 'ask'
+      s = params[:s].to_i  
+      d = Doubt.create(student_id: s)
+      records = Doubt.where(id: d.id)
+    else
+      if params[:id].nil? 
+        # s - student_id, q - question_id, v - qsn version, 
+        s = params[:s].to_i
+        q = params[:q].to_i
+        v = params[:v].to_i
+
+        records = Stab.where(student_id: s, question_id: q, version: v)
+        if records.count == 0
+          stab = Stab.create(student_id: s, question_id: q, version: v, puzzle: false) 
+          records = Stab.where(student_id: s, question_id: q, version: v)
+        end
+      else
+        # id - attempt_id
+        ids = params[:id].split(',')
+
+        records = Attempt.where(id: ids)
+        s = records[0].student_id
+      end
+
     end
 
     records.each do |r|
@@ -191,12 +230,14 @@ class TokensController < ApplicationController
           r.charge :answer
         when 'solution'
           r.charge :solution
+        when 'doubt'
+          r.charge
       end
     end
 
     status = :ok 
     response = {
-      stab_id: records[0].id,
+      id: records[0].id,
       op: params[:op],
       bal: Student.find(s).gredits
     }
