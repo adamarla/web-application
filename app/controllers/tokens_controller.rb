@@ -179,7 +179,7 @@ class TokensController < ApplicationController
           img: d.scan,
           scan: d.solution,
           tags: d.tags,
-          name: d.created_at.to_s(:db),
+          name: d.name?,
           ans: d.in_db,
           examiner: d.examiner_id
         }
@@ -238,6 +238,7 @@ class TokensController < ApplicationController
     status = :ok 
     response = {
       id: records[0].id,
+      name: params[:op] == 'doubt' ? records[0].name? : nil,
       op: params[:op],
       bal: Student.find(s).gredits
     }
