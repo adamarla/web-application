@@ -10,7 +10,7 @@ window.upload = {
         return b if $(b.button).attr('id') is btnId 
       return null 
 
-    add : (btnId, url, refNd = null) -> 
+    add : (btnId, url, refNd = null, params = null) -> 
       upload.buttons = new Array() unless upload.buttons?
       nd = upload.button.find btnId 
       return false if nd?
@@ -22,10 +22,10 @@ window.upload = {
         button : btn, 
         action : url,
         ref : ref,
+        params : if params? then $.extend({}, params) else {} # copy an common params
 
         onSubmit : (id, filename) ->
-          if this.ref?
-            this.params = { id: $(this.ref).attr('marker') }
+          this.params.id = $(this.ref).attr('marker') if this.ref?
           return upload.tracking.start(this.button)
 
         onProgress : (id, filename, loaded, total) ->

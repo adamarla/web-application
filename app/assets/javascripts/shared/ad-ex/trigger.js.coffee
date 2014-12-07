@@ -17,7 +17,7 @@ previewSg = (json) ->
 
 jQuery ->
 
-  upload.button.add('btn-upload-solution', "#{gutenberg.server}/Upload/scan", 'tab-doubts-1')
+  upload.button.add('btn-upload-solution', "#{gutenberg.server}/Upload/scan", 'tab-doubts-1', { type: 'SOLN', student_id: 0, vers: 0 })
   tagger.add $('#i-doubt-tags')[0]
 
   # REVIEW AND DELETE CODE BELOW !!!! 
