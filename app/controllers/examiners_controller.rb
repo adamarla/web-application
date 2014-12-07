@@ -32,7 +32,7 @@ class ExaminersController < ApplicationController
   end
 
   def show
-    render nothing: true, layout: 'admin-examiner'
+    render nothing: true, layout: 'ad-ex'
   end
 
   def list 
