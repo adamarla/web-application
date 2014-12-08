@@ -356,7 +356,8 @@ class TokensController < ApplicationController
           examiner: q.examiner_id,
           codex: q.has_codex?,
           ans: q.has_answer?,
-          available: q.available
+          available: q.available,
+          dirty: q[:dirty]
         }
       end
       return items
@@ -382,6 +383,7 @@ class TokensController < ApplicationController
           codex: q.has_codex?,
           ans: q.has_answer?,
           available: s.available,
+          dirty: s[:dirty],
           guesst: s.first_shot,
           bot_ans: s.paid_to_see(:answer),
           bot_soln: s.paid_to_see(:solution)
