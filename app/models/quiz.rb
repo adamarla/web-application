@@ -148,7 +148,8 @@ class Quiz < ActiveRecord::Base
 
   def preview_images
     path = self.path?
-    return [*1..self.span?].map{ |pg| "#{path}/pg-#{pg}.jpg" }
+    type = self.id > 751 ? "png" : "jpg" # hack 
+    return [*1..self.span?].map{ |pg| "#{path}/pg-#{pg}.#{type}" }
   end
 
   def teacher 
