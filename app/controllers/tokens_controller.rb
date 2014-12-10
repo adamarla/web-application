@@ -62,6 +62,9 @@ class TokensController < ApplicationController
       status = 404 
       json = { :message => "Not Authorized" }
     else 
+      unless params[:signature].nil?
+        account.update_attribute :mobile, params[:signature]
+      end
       potd = Puzzle.of_the_day.question
       student = account.loggable
       ws = Worksheet.of_student(student.id)
