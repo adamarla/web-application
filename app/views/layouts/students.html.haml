@@ -76,7 +76,7 @@
 
       #desktop.row-fluid
         - layout.each do |pnl, child|
-          - width = pnl == :wide ? 'span7' : ( pnl == :superwide ? 'span11' : 'span4' )
+          - width = pnl == :wide ? 'span7' : ( pnl == :superwide ? 'span12' : 'span4' )
           %div{ id: "#{pnl}", class: "g-panel #{width}" }
             -# Add paginator 
             = render partial: 'toolbox/custom/paginator', locals: { id: "#{pnl}-paginator", url: '#' }
