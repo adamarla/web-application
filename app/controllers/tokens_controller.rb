@@ -62,6 +62,7 @@ class TokensController < ApplicationController
       status = 404 
       json = { :message => "Not Authorized" }
     else 
+      account.touch
       unless params[:signature].nil?
         account.update_attribute :mobile, params[:signature]
       end
