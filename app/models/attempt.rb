@@ -108,9 +108,20 @@ class Attempt < ActiveRecord::Base
     select{ |m| m.q_selection.question.num_parts? == 0 }
   end
 
-  def self.received_on(date) # Ex: date = '16th Dec 2013'
-    where('scan IS NOT ? AND scan LIKE ?', nil, "#{Date.parse(date).strftime('%d.%B.%Y')}%")
+  def self.received_on(date = :today) # Ex: date = '16th Dec 2013'
+    dt = date == :today ? Date.today : Date.parse(date)
+    date_str = dt.strftime('%d.%B.%Y') 
+    where('scan IS NOT ? AND scan LIKE ?', nil, "#{date_str}%")
   end
+
+  def self.received_in_last(n, ending = nil) # search range = [ ending-n.days, ending ]
+    end_date = ending.nil? ? Date.today : Date.parse(ending)
+    mid_dates = [*0..n].map{ |j| end_date - j.days }
+    a = mid_dates.map{ |j| j.strftime('%B.%d.%Y') } 
+    b = [] 
+    b += a.map{ |d| Attempt.received_on(d) } 
+    return b.flatten
+  end 
 
   def self.disputed 
     where(disputed: true)
@@ -168,20 +179,10 @@ class Attempt < ActiveRecord::Base
         n_graded = e.n_graded + 1
         e.update_attribute :n_graded, n_graded
 
-        # Time to send mails 
-        exam = Exam.where(id: self.worksheet.exam_id).first
-        ws = Worksheet.where(student_id: self.student_id).where(exam_id: self.worksheet.exam_id).first
-
-        if exam.publishable? # to the teacher - once all worksheets are graded
-          # Time to inform the teacher. You can do this only if teacher has provided 
-          # an e-mail address. The default we assign will not work
-          teacher = exam.quiz.teacher 
-          Mailbot.delay.grading_done(exam) if teacher.account.has_email?
-        end 
-
-        if ws.publishable? # to the student if his/her worksheet has been graded
-          Mailbot.delay.worksheet_graded(ws) unless self.student.shell # shell-account 
-        end
+        # Previously, when submissions for all students came together, 
+        # it made sense to send a mail when the last attempt was graded. 
+        # Now, because of mobile uploads, scans can come in anytime. 
+        # Hence, its best to give a weekly and monthly synopsis only.
       else # previously graded, but disputed now 
         self.update_attribute(:resolved, true)
       end

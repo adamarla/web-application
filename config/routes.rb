@@ -193,6 +193,7 @@ Webapp::Application.routes.draw do
   match 'set/dist/scheme' => 'teachers#set_distribution_scheme', via: [:put, :post]
   match 'lessons/list' => 'teachers#lessons', via: :get
   match 'teacher/courses' => 'teachers#courses', via: :get
+  match 'teacher/digest' => 'teachers#send_digest', via: :get
 
   # Exam
   match 'exam/summary' => 'exams#summary', via: :get
