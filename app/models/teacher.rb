@@ -145,11 +145,10 @@ class Teacher < ActiveRecord::Base
       exams.select{ |k| k.quiz_id == q.id }.each do |e|
         h[:e] = e.sektion.name 
         w = e.worksheets 
-        h[:total] = w.count 
         for k in [:none, :partially, :fully]
           h[k] = w.map{ |v| v.received?(k)}.count(true)
         end 
-        h[:mean] = e.mean?
+        h[:mean] = "#{e.mean?}/#{q.total?}"
       end 
       ret.push h
     end 
