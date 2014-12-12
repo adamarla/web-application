@@ -1,5 +1,5 @@
 class TeachersController < ApplicationController
-  before_filter :authenticate_account!, :except => [:create]
+  before_filter :authenticate_account!, :except => [:create, :send_digest]
   respond_to :json
 
   def create
@@ -197,6 +197,20 @@ class TeachersController < ApplicationController
     end
     render json: { msg: :ok }, status: :ok
   end
+
+  def send_digest
+    n = params[:n].blank? ? 7 : params[:n].to_i
+    attempts = Attempt.received_in_last(n)
+    unless attempts.blank?
+      e = attempts.map{ |j| j.worksheet.exam }.uniq 
+      q = Exam.where(id: e.map(&:id)).map(&:quiz).uniq 
+      t = Quiz.where(id: q.map(&:id)).map(&:teacher).uniq 
+      t.each do |m| 
+        m.send_digest(n,e,q)
+      end 
+    end 
+    render json: { status: :ok }, status: :ok
+  end 
 
 
 end # of class

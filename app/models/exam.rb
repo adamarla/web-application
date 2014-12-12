@@ -138,6 +138,14 @@ class Exam < ActiveRecord::Base
     Student.where(id: ids)
   end
 
+  def sektion 
+    tid = self.quiz.teacher_id 
+    name = self.name.split('_').first 
+    similarly_named = Sektion.where(teacher_id: tid, name: name)
+    likely = similarly_named.where('created_at <= ?', self.created_at).order(:created_at)
+    return likely.last
+  end 
+
   def closed_on?
     # Returns the approximate date when grading for this exam / worksheet was finished
     last = Worksheet.where(exam_id: self.id).order(:updated_at).last.updated_at

@@ -1,0 +1,30 @@
+
+%h4= "Dear #{@name}," 
+%p
+  Below is the synopsis of all assignments which saw submissions in the past #{@n} days.
+%p
+  %table 
+    %tr 
+      %th= "Start date" 
+      %th= "End date" 
+    %tr 
+      %td= "#{@start_date}"
+      %td= "#{@end_date}"
+%p
+  %table 
+    %tr
+      %th= "Quiz"
+      %th= "Section" 
+      %th= "Full submissions"
+      %th= "Partial submissions"
+      %th= "No submissions" 
+      %th= "Average"
+    - for j in @details 
+      %tr
+        %td= "#{j[:q]}"
+        %td= "#{j[:e]}"
+        %td= "#{j[:fully]}"
+        %td= "#{j[:partially]}"
+        %td= "#{j[:none]}"
+        %td= "#{j[:mean]}"
+  

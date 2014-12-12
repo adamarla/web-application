@@ -17,16 +17,6 @@ class Mailbot < ActionMailer::Base
     mail to: a.email, subject: 'Welcome to Gradians.com'
   end
 
-  def grading_done(exam)
-    @exam = exam # need a object variable to pass to view
-    @quiz = @exam.quiz
-    @mean = @exam.mean?
-    @max = @quiz.total?
-    @submitters = @exam.submitters.count
-    teacher = @quiz.teacher
-    mail(to:  teacher.account.email, subject:  "(gradians.com) Assignment graded") unless teacher.account.email.nil?
-  end
-  
   def new_suggestion(sg)
     @sg = sg 
     deadline = 3.business_days.from_now.in_time_zone('Kolkata') 
@@ -131,6 +121,17 @@ class Mailbot < ActionMailer::Base
     @tbd_d = tbd_disputes
     mail to: email, subject: "( Gradians.com ) - Pending work as of #{Date.today.strftime('%B %d, %Y')}"
   end
+
+  def teacher_digest(t, n_days, details)
+    @name = t.first_name 
+    today = Date.today 
+    @n = n_days
+    @start_date = (today - n_days.days).strftime('%b %d, %Y')
+    @end_date = today.strftime('%b %d, %Y')
+    @details = details
+    subj = n_days == 7 ? "Weekly synopsis" : "Monthly synopsis" 
+    mail to: t.account.email, subject: "(Gradians.com): #{subj}"
+  end 
 
   def reject_dispute(id, eid, reason)
     a = Attempt.find id

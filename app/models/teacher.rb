@@ -137,6 +137,25 @@ class Teacher < ActiveRecord::Base
     (self_made_quizzes.count < 1)
   end
 
+  def send_digest(n, exams, quizzes)
+    ret = [] 
+    quizzes.select{ |j| j.teacher_id == self.id }.each do |q|
+      h = {} 
+      h[:q] = q.name 
+      exams.select{ |k| k.quiz_id == q.id }.each do |e|
+        h[:e] = e.sektion.name 
+        w = e.worksheets 
+        h[:total] = w.count 
+        for k in [:none, :partially, :fully]
+          h[k] = w.map{ |v| v.received?(k)}.count(true)
+        end 
+        h[:mean] = e.mean?
+      end 
+      ret.push h
+    end 
+    Mailbot.delay.teacher_digest(self, n, ret)
+  end 
+
 #####  PRIVATE ######################
 
   private 
