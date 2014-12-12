@@ -177,7 +177,7 @@ class Sektion < ActiveRecord::Base
   private 
       def seal 
         uid = "#{self.teacher_id.to_s(36)}#{rand(99999).to_s(20)}".upcase
-        self.update_attributes uid: uid, name: self.name.titleize
+        self.update_attributes uid: uid, name: self.name.squish.titleize
         # Let the teacher know  
         Mailbot.delay.new_sektion(self) unless self.teacher.indie
       end 
