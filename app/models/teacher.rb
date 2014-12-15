@@ -172,7 +172,7 @@ class Teacher < ActiveRecord::Base
             h[:e] = exm.sektion.name 
           end 
           h[:s] = ws.student.name 
-          h[:uploads] = attempts.select{ |j| j.worksheet_id == ws.id }.map(&:name?).join(',')
+          h[:uploads] = attempts.select{ |j| j.worksheet_id == ws.id }.sort_by{ |n| n.id }.map(&:name?).join(',')
           ret.push h
         end # worksheets 
       end # exams 
