@@ -137,6 +137,50 @@ class Teacher < ActiveRecord::Base
     (self_made_quizzes.count < 1)
   end
 
+  def send_digest(n, exams, quizzes)
+    ret = [] 
+    quizzes.select{ |j| j.teacher_id == self.id }.each do |q|
+      h = {} 
+      h[:q] = q.name 
+      exams.select{ |k| k.quiz_id == q.id }.each do |e|
+        h[:e] = e.sektion.name 
+        w = e.worksheets 
+        for k in [:none, :partially, :fully]
+          h[k] = w.map{ |v| v.received?(k)}.count(true)
+        end 
+        h[:mean] = "#{e.mean?}/#{q.total?}"
+      end 
+      ret.push h
+    end 
+    Mailbot.delay.teacher_digest(self, n, ret)
+  end 
+
+  def send_upload_summary(q,e,w,attempts) # come from controller::send_digest. Uniquified
+    q = q.select{ |j| j.teacher_id == self.id }
+
+    # Now, we need to build the array that will be passed to the mailer to render as a table.
+    ret = [] 
+    q.each_with_index do |qz, a|
+      e.select{ |j| j.quiz_id == qz.id }.each_with_index do |exm, b| 
+        w.select{ |j| j.exam_id == exm.id }.each_with_index do |ws, c| 
+          h = {} 
+          if c > 0 # not the first student => quiz, sektion same as first listed classmate! 
+            h[:q] = "" 
+            h[:e] = "" 
+          else
+            h[:q] = b > 0 ? "" : qz.name 
+            h[:e] = exm.sektion.name 
+          end 
+          h[:s] = ws.student.name 
+          h[:uploads] = attempts.select{ |j| j.worksheet_id == ws.id }.map(&:name?).join(',')
+          ret.push h
+        end # worksheets 
+      end # exams 
+    end # quizzes
+    Mailbot.delay.upload_summary(self, ret) 
+    #Mailbot.upload_summary(self, ret).deliver
+  end 
+
 #####  PRIVATE ######################
 
   private 
