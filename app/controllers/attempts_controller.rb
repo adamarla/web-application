@@ -39,7 +39,7 @@ class AttemptsController < ApplicationController
     a = Attempt.find params[:id]
     unless a.nil?
       a.reset(false) # reset for good measure 
-      a.update_attributes scan: nil, mobile: false
+      a.update_attribute(:scan, nil)
       s = a.student
       Mailbot.delay.reupload_request(a.id) if s.account.has_email? 
     end 

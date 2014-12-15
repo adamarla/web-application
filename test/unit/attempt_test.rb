@@ -14,7 +14,7 @@
 #  page           :integer
 #  feedback       :integer         default(0)
 #  worksheet_id   :integer
-#  mobile         :boolean         default(FALSE)
+#  mobile         :boolean         default(TRUE)
 #  disputed       :boolean         default(FALSE)
 #  resolved       :boolean         default(FALSE)
 #  orange_flag    :boolean
