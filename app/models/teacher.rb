@@ -161,9 +161,9 @@ class Teacher < ActiveRecord::Base
     # Now, we need to build the array that will be passed to the mailer to render as a table.
     ret = [] 
     q.each_with_index do |qz, a|
-      h = {} 
       e.select{ |j| j.quiz_id == qz.id }.each_with_index do |exm, b| 
         w.select{ |j| j.exam_id == exm.id }.each_with_index do |ws, c| 
+          h = {} 
           if c > 0 # not the first student => quiz, sektion same as first listed classmate! 
             h[:q] = "" 
             h[:e] = "" 
@@ -173,11 +173,12 @@ class Teacher < ActiveRecord::Base
           end 
           h[:s] = ws.student.name 
           h[:uploads] = attempts.select{ |j| j.worksheet_id == ws.id }.map(&:name?).join(',')
+          ret.push h
         end # worksheets 
       end # exams 
-      ret.push h
     end # quizzes
     Mailbot.delay.upload_summary(self, ret) 
+    #Mailbot.upload_summary(self, ret).deliver
   end 
 
 #####  PRIVATE ######################
