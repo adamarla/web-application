@@ -182,6 +182,7 @@ class TokensController < ApplicationController
           id: "#{d.id}",
           img: d.scan,
           scan: d.solution,
+          scans: d.solution,
           tags: d.tags,
           name: d.name?,
           ans: d.in_db,
