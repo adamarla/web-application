@@ -1,0 +1,17 @@
+
+%h4= "Dear #{@name}," 
+%p
+  Below is summary of scans uploaded by your students in the last 24 hours.  
+%p
+  %table 
+    %tr{ style: 'text-align: center;' }
+      %th= "Quiz"
+      %th= "Section" 
+      %th= "Student"
+      %th= "Uploaded Questions"
+    - for j in @details 
+      %tr{ style: 'text-align: center ;' }
+        %td= "#{j[:q]}"
+        %td= "#{j[:e]}"
+        %td= "#{j[:s]}"
+        %td= "#{j[:uploads]}"

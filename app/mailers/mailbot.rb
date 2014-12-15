@@ -77,12 +77,6 @@ class Mailbot < ActionMailer::Base
     mail to: to.account.email, subject: "( Gradians.com ): #{@from_name} has shared a quiz with you"
   end
 
-  def scans_received(id)
-    @teacher = Teacher.find id
-    @deadline = 3.business_days.from_now # in GMT to external parties
-    mail to: @teacher.account.email, subject: "( Gradians.com ): Scans received for grading"
-  end
-
   def worksheet_graded(ws)
     @student = ws.student
     @quiz = ws.exam.quiz
@@ -131,6 +125,12 @@ class Mailbot < ActionMailer::Base
     @details = details
     subj = n_days == 7 ? "Weekly synopsis" : "Monthly synopsis" 
     mail to: t.account.email, subject: "(Gradians.com): #{subj}"
+  end 
+
+  def upload_summary(t, details)
+    @name = t.first_name 
+    @details = details 
+    mail to: t.account.email, subject: "(Gradians.com): Scans uploaded in last 24 hours"
   end 
 
   def reject_dispute(id, eid, reason)

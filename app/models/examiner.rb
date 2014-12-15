@@ -169,12 +169,6 @@ class Examiner < ActiveRecord::Base
       deadline = ta_ids.blank? ? 3.business_days.from_now : 5.business_days.from_now
       e.update_attribute :grade_by, deadline
     end 
-
-    # Let the (offline) teacher know that scans have been received
-    # No need to inform graders / TAs as they will get one daily digest mail at 11:55pm IST 
-    for t in offline.uniq
-      Mailbot.delay.scans_received(t)
-    end
   end
 
   def live?
