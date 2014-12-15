@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141204060924) do
+ActiveRecord::Schema.define(:version => 20141215150857) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(:version => 20141204060924) do
     t.integer  "page"
     t.integer  "feedback",                     :default => 0
     t.integer  "worksheet_id"
-    t.boolean  "mobile",                       :default => false
+    t.boolean  "mobile",                       :default => true
     t.boolean  "disputed",                     :default => false
     t.boolean  "resolved",                     :default => false
     t.boolean  "orange_flag"
