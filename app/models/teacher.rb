@@ -164,11 +164,11 @@ class Teacher < ActiveRecord::Base
       h = {} 
       e.select{ |j| j.quiz_id == qz.id }.each_with_index do |exm, b| 
         w.select{ |j| j.exam_id == exm.id }.each_with_index do |ws, c| 
-          if c > 0 
+          if c > 0 # not the first student => quiz, sektion same as first listed classmate! 
             h[:q] = "" 
             h[:e] = "" 
           else
-            h[:q] = qz.name 
+            h[:q] = b > 0 ? "" : qz.name 
             h[:e] = exm.sektion.name 
           end 
           h[:s] = ws.student.name 
