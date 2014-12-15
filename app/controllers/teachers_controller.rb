@@ -200,13 +200,15 @@ class TeachersController < ApplicationController
 
   def send_digest
     n = params[:n].blank? ? 7 : params[:n].to_i
+    type = params[:type] == 'uploads' ? :uploads : :summary
     attempts = Attempt.received_in_last(n)
     unless attempts.blank?
-      e = attempts.map{ |j| j.worksheet.exam }.uniq 
+      w = attempts.map(&:worksheet).uniq 
+      e = w.map(&:exam).uniq  
       q = Exam.where(id: e.map(&:id)).map(&:quiz).uniq 
       t = Quiz.where(id: q.map(&:id)).map(&:teacher).uniq 
       t.each do |m| 
-        m.send_digest(n,e,q)
+        type == :summary ? m.send_digest(n,e,q) : m.send_upload_summary(q,e,w,attempts)
       end 
     end 
     render json: { status: :ok }, status: :ok

@@ -155,6 +155,31 @@ class Teacher < ActiveRecord::Base
     Mailbot.delay.teacher_digest(self, n, ret)
   end 
 
+  def send_upload_summary(q,e,w,attempts) # come from controller::send_digest. Uniquified
+    q = q.select{ |j| j.teacher_id == self.id }
+
+    # Now, we need to build the array that will be passed to the mailer to render as a table.
+    ret = [] 
+    q.each_with_index do |qz, a|
+      h = {} 
+      e.select{ |j| j.quiz_id == qz.id }.each_with_index do |exm, b| 
+        w.select{ |j| j.exam_id == exm.id }.each_with_index do |ws, c| 
+          if c > 0 
+            h[:q] = "" 
+            h[:e] = "" 
+          else
+            h[:q] = qz.name 
+            h[:e] = exm.sektion.name 
+          end 
+          h[:s] = ws.student.name 
+          h[:uploads] = attempts.select{ |j| j.worksheet_id == ws.id }.map(&:name?).join(',')
+        end # worksheets 
+      end # exams 
+      ret.push h
+    end # quizzes
+    Mailbot.delay.upload_summary(self, ret) 
+  end 
+
 #####  PRIVATE ######################
 
   private 
