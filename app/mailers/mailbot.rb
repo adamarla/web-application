@@ -143,11 +143,12 @@ class Mailbot < ActionMailer::Base
     mail to: a.student.account.email, subject: "(Dispute Rejected): #{ques} of '#{quiz}'"
   end
 
-  def reupload_request(aid)
+  def reupload_request(aid, reasons)
     a = Attempt.find aid 
     @s = a.student 
     @quiz = a.worksheet.exam.quiz.name 
     @question = a.name?
+    @reasons = reasons
     mail to: @s.account.email, subject: "(Re-upload): #{@question} of #{@quiz}"
   end 
 

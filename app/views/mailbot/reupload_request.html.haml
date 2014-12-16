@@ -2,19 +2,26 @@
 %p
   Dear #{@s.first_name},
 %p
-  The scan for the following question is hard to read. Hence, please <b>re-upload</b> 
-  your solution <b>using our mobile app - Scanbot</b>.
+  Please <b>re-upload</b> your solution to the following problem
   %ul
     %li
       <b>Quiz</b>: #{@quiz}
       <b>Question</b>: #{@question}
 %p
-  As far as possible, try and 
+  The image you uploaded earlier has the following issue(s):
+  %ul
+    - for reason in @reasons 
+      %li= "#{reason}"
+%p
+  <b>Tips for taking a clear image</b>
   %ul
     %li
-      Capture just the page, and nothing else, while photographing your solution. 
+      Place the sheet of paper on some surface, like a table. Do <b>not</b> hold it in your hand while 
+      taking a photograph.
     %li
-      Keep your mobile phone steady as you do. 
+      As far as possible, capture only the sheet of paper and nothing around it. 
+    %li
+      Keep your mobile phone steady as you do.
 %p
   Thanks,
 %p

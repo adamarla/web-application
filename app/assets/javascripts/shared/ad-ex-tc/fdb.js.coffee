@@ -253,8 +253,10 @@ window.fdb = {
           $(m).addClass('hide') for m in controls.filter(":not(:first-child)")
       when 76 # L => re-upload / re-send scan. Also triggers mail to student 
         fdb.clear()
-        $.get "reupload?id=#{$(fdb.current.response).attr('marker')}"
-        fdb.next.response()
+        mdl = $('#m-reupload')
+        aid = $(fdb.current.response).attr 'marker'
+        mdl.find('form').eq(0).attr 'action', "reupload?id=#{aid}"
+        mdl.modal 'show'
       when 82 # R => restore pristine copy 
         fdb.clear()
         $.get "reset/graded?id=#{$(fdb.current.response).attr 'marker'}" # will also destroy any associated comments
@@ -294,5 +296,10 @@ jQuery ->
       $(this).stop().fadeTo('slow', 0)
     , () ->
       $(this).stop().fadeTo('slow', 1)
-
-
+  
+  $('#m-reupload form').on 'submit', -> 
+    chkd = false 
+    for cbx in $(this).find("input[type='checkbox']")
+      chkd ||= $(cbx).prop('checked')
+      break if chkd 
+    return chkd
