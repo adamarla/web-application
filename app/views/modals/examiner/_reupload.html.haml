@@ -1,0 +1,13 @@
+
+#m-reupload.modal.fade.regular
+  .row-fluid
+    .span3
+      = image_tag 'notifications/trash.png', class: 'big-icon'
+    .span8
+      = simple_form_for :reupload, remote: true, defaults: { label: false } do |f|
+        = f.input :reasons, as: :check_boxes, 
+        collection: ['Image not clear / hard to read',
+                     'Uploaded solution not for this problem',
+                     'Image oriented horizontally',
+                     'Solution not contained in one page']
+        %button.btn.btn-primary.btn-large.pull-left{ type: :submit }= "Submit"

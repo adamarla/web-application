@@ -41,6 +41,8 @@ class AttemptsController < ApplicationController
       a.reset(false) # reset for good measure 
       a.update_attribute(:scan, nil)
       s = a.student
+      reasons = params[:reupload][:reasons].select{ |j| !j.blank? }
+      # Mailbot.reupload_request(a.id, reasons).deliver if s.account.has_email?
       Mailbot.delay.reupload_request(a.id) if s.account.has_email? 
     end 
     render json: { status: :ok }, status: :ok

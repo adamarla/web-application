@@ -40,6 +40,11 @@ jQuery ->
       key = 'typeset'
       clickFirst = true
       menu = 'blockdb-slots'
+    else if url.match(/reupload/)
+      mdl = $('#m-reupload')
+      $(cbx).prop('checked', false) for cbx in mdl.find("input[type='checkbox']")
+      mdl.modal 'hide'
+      fdb.next.response()
     else if url.match(/typeset\/ongoing/)
       grp = $('#sg-ongoing').children().eq(0) # accordion-group
       grp.empty() # remove any previous data
