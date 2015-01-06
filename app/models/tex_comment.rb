@@ -50,8 +50,9 @@ class TexComment < ActiveRecord::Base
     # Each chunk is of the form --> [x, y, TeX]
     for chunk in comments.each_slice(3).to_a 
       break if chunk.length != 3 # the tex w/ x- and y- coordinates
-      tex = TexComment.where(text: chunk[2]).first 
-      tex = tex.nil? ? TexComment.create(text: chunk[2], examiner_id: e_id) : tex
+      written = chunk[2].squish
+      tex = TexComment.where(text: written).first 
+      tex = tex.nil? ? TexComment.create(text: written, examiner_id: e_id) : tex
       tex.remarks.create(x: chunk[0], y: chunk[1], attempt_id: a_id, doodle_id: d_id)
     end 
   end 
