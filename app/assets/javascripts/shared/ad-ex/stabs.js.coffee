@@ -69,8 +69,8 @@ window.stabs = {
     stabs.locked = false 
     $('body').on 'keyup', stabs.pressKey 
     $('body').on 'click', stabs.mouseClick 
-    preview.attach '#wide-Y'
-    overlay.attach('#wide-Y', true)
+    preview.attach '#wide-X'
+    overlay.attach('#wide-X', true)
     return true
 
   show : { 
