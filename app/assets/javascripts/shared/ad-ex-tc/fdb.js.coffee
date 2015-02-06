@@ -96,7 +96,7 @@ window.fdb = {
     return true
 
   detach : () ->
-    preview.attach() # within wide-X
+    preview.detach() # within wide-X
     $(fdb.root).addClass 'hide'
 
     if fdb.ticker?

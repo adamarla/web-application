@@ -76,7 +76,7 @@ jQuery ->
       img = if typeof img is 'string' then img else img.attr('name')
       return false unless img?
 
-      preview.attach()
+      # preview.attach()
       target = $(preview.root).children('.carousel-inner').eq(0)
       server = gutenberg.server 
 
