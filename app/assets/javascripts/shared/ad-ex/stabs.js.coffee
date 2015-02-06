@@ -69,8 +69,8 @@ window.stabs = {
     stabs.locked = false 
     $('body').on 'keyup', stabs.pressKey 
     $('body').on 'click', stabs.mouseClick 
-    preview.attach '#wide-X'
-    overlay.attach('#wide-X', true)
+    preview.attach '#wide-Y'
+    overlay.attach('#wide-Y', true)
     return true
 
   show : { 
@@ -86,7 +86,7 @@ window.stabs = {
     scan : (kgz) ->
       img = kgz.getAttribute 'p'
       overlay.clear() 
-      preview.load img, 'locker'
+      preview.load img, 'locker', '#wide-Y'
       comments = stabs.notepad.comments kgz 
       if comments? 
         for j in comments 
@@ -101,7 +101,7 @@ window.stabs = {
       q = stb.getAttribute 'q'
       v = stb.getAttribute 'v'
       $.get "question/preview?id=#{q}&v=#{v}", (json) ->
-        preview.loadJson json
+        preview.loadJson json, '#wide-Y'
       return true 
   } 
 
