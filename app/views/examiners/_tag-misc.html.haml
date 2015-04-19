@@ -1,11 +1,33 @@
+- packages = Package.non_default
+- pbundles = packages.map{|p| {pid: p.id, bndls: p.bundles } }
 
 #tag-misc-properties.no-remove
   -# 'action' for <form> within .tab-pane are evaluated just before submission
   -# Use this fact to your advantage by specifying the requisite data-* attributes
 
   = simple_form_for :misc, remote: true, defaults: { label: false },
-    html: { 'data-action' => 'tag/question?id=:id', 'data-id' => 'tab-untagged-1' } do |f| 
+    html: { 'data-action' => 'bundle/question?id=:id', 'data-id' => 'tab-untagged-1' } do |f| 
     .row-fluid
+      .span12
+        = f.input :package, hint: 'course package',
+          collection: packages.map{|p| [p.title, p.id]}, selected: 0
+    .row-fluid{ id: 'btn-bundle-new-old' }
+      .btn-group{ data: { toggle: 'buttons-radio' } }
+        %button.btn.btn-inverse.active{ data: { index: 0 }, id: 'btn-use-old' , type: 'button' }= "Existing Bundle"
+        %button.btn.btn-inverse{ data: { index: 0 }, id: 'btn-use-new', type: 'button'  }= "New Bundle"
+    .row-fluid
+      .span8
+        = f.input :list, hint: 'existing bundles',
+          collection: pbundles[0][:bndls].map{|b| [b.title, b.id]}, selected: 0,
+          input_html: { autocomplete: 'off' }
+    .row-fluid
+      .span8
+        = f.input :new, hint: 'e.g. NCERT Class XI Ch.4',
+          input_html: { disabled: true, autocomplete: 'off' }
+    .row-fluid
+      .span2
+        = f.button :submit, class: 'btn-primary', value: 'Add to Bundle'
+    -#.row-fluid
       .span4
         = f.input :level, hint: 'target level', selected: '3',
           collection: { 'Grd < 9' => 1, '9-10' => 2, '11-12' => 3, 'University' => 4 } 
@@ -15,7 +37,7 @@
         = f.input :calculator, collection: { yes: true, no: false }, hint: 'calculator?', selected: :false
       .span2
         = f.button :submit, class: 'btn-primary', value: 'Tag' 
-    - [*1..7].each do |k|
+    -#- [*1..7].each do |k|
       .row-fluid.subpart-tagging
         .span1.offset1.label= "##{k}"
         .span5
@@ -23,5 +45,5 @@
             collection: { mcq: 1, short: 4, half: 2, full: 3 }, selected: 2
         .span3
           = f.input :marks, input_html: { name: "subpart[#{k}][marks]" }, 
-                    collection: [*1..6], selected: 3
+            collection: [*1..6], selected: 3
 

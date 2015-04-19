@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation]
+  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation, :post_revision_updation]
   respond_to :json
 
   def list
@@ -56,6 +56,29 @@ class QuestionController < ApplicationController
     q.update_attributes(topic_id: params[:t], available: false) unless q.blank?
     render json: { status: :done }, status: :ok
   end 
+
+  def bundle
+    question = Question.find params[:id]
+    unless question.nil?
+      misc = params[:misc]
+      package = Package.find(misc[:package])
+
+      if misc[:list].nil?
+        bundle = Bundle.create(title: misc[:new], package_id: package.id, 
+          uid: rand(36**20).to_s(36))
+      else
+        bundle = Bundle.find(misc[:list])
+      end
+
+      if bundle.add_questions([question.id])
+        render json: { notify: { text: "#{question.uid} bundled" } }, status: :ok
+      else
+        render json: { notify: { text: "#{question.uid} bundling failed" } }, status: :ok
+      end 
+    else
+      render json: { notify: { text: "Question not found!" } }, status: :bad_request
+    end 
+  end
   
   def tag
     question = Question.find params[:id]
@@ -214,6 +237,18 @@ class QuestionController < ApplicationController
     @subparts = q.subparts
     @context = params[:context]
   end 
+
+  def post_revision_updation
+    q = Question.where(uid: params[:q]).first 
+    unless q.nil?
+      if q.not_in_any_pkg?
+	q.update_attribute :package_id, Package.default.id 
+      else
+        q.revisions.create(latex: true)
+      end
+    end
+    render json: { status: :ok }, status: :ok
+  end
 
   def post_compile_updation 
     # The exact answer key span is what pdfinfo returns during make. 
