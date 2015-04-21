@@ -20,7 +20,6 @@
 #  available       :boolean         default(TRUE)
 #  n_codices       :integer         default(0)
 #  codices         :string(5)
-#  package_id      :integer
 #
 
 #     __:has_many____      ____:has_many___    ____:has_many__
@@ -53,7 +52,6 @@ class Question < ActiveRecord::Base
   belongs_to :examiner
   belongs_to :topic
   belongs_to :suggestion # non-nil if question came from a teacher
-  belongs_to :package
 
   has_many :q_selections
   has_many :quizzes, through: :q_selections
@@ -129,14 +127,6 @@ class Question < ActiveRecord::Base
 
   def self.standalone
     select{ |m| m.num_parts? == 0 }
-  end
-
-  def self.in_default_pkg
-    where(package_id: Package.default.id)
-  end
-
-  def not_in_any_pkg?
-    return self.package_id == nil
   end
 
   def tagged? 

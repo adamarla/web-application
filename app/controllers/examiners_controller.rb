@@ -63,8 +63,7 @@ class ExaminersController < ApplicationController
   end
 
   def untagged
-    # @questions = Question.author(current_account.loggable_id).untagged
-    @questions = Question.author(current_account.loggable_id).in_default_pkg
+    @questions = Question.author(current_account.loggable_id).untagged
   end
 
   def block_db_slots

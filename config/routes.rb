@@ -49,7 +49,6 @@ Webapp::Application.routes.draw do
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'untagged/list' => 'examiners#untagged', via: :get
-  match 'unpkgd/list' => 'examiners#unpkgd', via: :get
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
   match 'distribute/scans' => 'examiners#distribute_scans', via: :get
   match 'examiners/list' => 'examiners#list', via: :get
@@ -138,7 +137,6 @@ Webapp::Application.routes.draw do
   match 'store/hints' => 'question#store_hints', via: [:put, :post]
   match 'question/commentary' => 'question#commentary', via: :get
   match 'update/on_make' => 'question#post_compile_updation', via: :get
-  match 'update/on_revise' => 'question#post_revision_updation', via: :get
 
   # Quiz
   resource :quiz, :only => [:show]

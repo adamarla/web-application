@@ -33,26 +33,6 @@ jQuery ->
     return true
 
   ###
-    Create new / use existing bundle during question tagging
-  ###
-  $('#tag-misc-properties form #btn-bundle-new-old').on 'click', (event) ->
-    event.stopPropagation()
-    if event.target.id == 'btn-use-old'
-      btn = $(this).find('#btn-use-old').eq(0)
-      unbtn = $(this).find('#btn-use-new').eq(0)
-      input = $('#misc_list').eq(0)
-      uninput = $('#misc_new').eq(0)
-    else
-      btn = $(this).find('#btn-use-new').eq(0)
-      unbtn = $(this).find('#btn-use-old').eq(0)
-      input = $('#misc_new').eq(0)
-      uninput = $('#misc_list').eq(0)
-    btn.addClass 'active'
-    unbtn.removeClass 'active'
-    input.removeAttr 'disabled'
-    uninput.attr 'disabled', 'true'
-
-  ###
     Hide/unhide rows in .subpart-tagging
   ###
   $('#tag-misc-properties > form #num-subparts').change (event) ->

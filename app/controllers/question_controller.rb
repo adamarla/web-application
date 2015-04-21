@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation, :post_revision_updation]
+  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation]
   respond_to :json
 
   def list
@@ -237,18 +237,6 @@ class QuestionController < ApplicationController
     @subparts = q.subparts
     @context = params[:context]
   end 
-
-  def post_revision_updation
-    q = Question.where(uid: params[:q]).first 
-    unless q.nil?
-      if q.not_in_any_pkg?
-	q.update_attribute :package_id, Package.default.id 
-      else
-        q.revisions.create(latex: true)
-      end
-    end
-    render json: { status: :ok }, status: :ok
-  end
 
   def post_compile_updation 
     # The exact answer key span is what pdfinfo returns during make. 

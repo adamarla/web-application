@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150415065000) do
+ActiveRecord::Schema.define(:version => 20150413122939) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -301,12 +301,6 @@ ActiveRecord::Schema.define(:version => 20150415065000) do
 
   add_index "lessons", ["teacher_id"], :name => "index_lessons_on_teacher_id"
 
-  create_table "packages", :force => true do |t|
-    t.string   "title",      :limit => 150
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
-
   create_table "puzzles", :force => true do |t|
     t.text     "text"
     t.integer  "question_id"
@@ -351,7 +345,6 @@ ActiveRecord::Schema.define(:version => 20150415065000) do
     t.boolean  "available",                     :default => true
     t.integer  "n_codices",                     :default => 0
     t.string   "codices",         :limit => 5
-    t.integer  "package_id"
   end
 
   add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"
@@ -486,13 +479,6 @@ ActiveRecord::Schema.define(:version => 20150415065000) do
   end
 
   add_index "subparts", ["question_id"], :name => "index_subparts_on_question_id"
-
-  create_table "subscriptions", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "package_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "suggestions", :force => true do |t|
     t.integer  "teacher_id"
