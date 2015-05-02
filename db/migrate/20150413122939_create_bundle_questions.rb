@@ -3,6 +3,7 @@ class CreateBundleQuestions < ActiveRecord::Migration
     create_table :bundle_questions do |t|
       t.integer :bundle_id
       t.integer :question_id
+      t.string :label, limit: 8
 
       t.timestamps
     end

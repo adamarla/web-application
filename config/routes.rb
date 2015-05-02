@@ -123,7 +123,6 @@ Webapp::Application.routes.draw do
 
   # Question
   match 'tag/question' => 'question#tag', via: :post
-  match 'bundle/question' => 'question#bundle', via: :post
   match 'questions/list' => 'question#list', via: :get
   match 'question/preview' => 'question#preview', via: :get
   match 'like' => 'question#like', via: :get
