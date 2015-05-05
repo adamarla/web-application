@@ -24,15 +24,10 @@ class Bundle < ActiveRecord::Base
     response = SavonClient.request :wsdl, :addToBundle do
       soap.body = {
         bundleId: self.uid,
-        questions: bqs.map{ |bq|"#{bq.question.uid}|#{bq.label}" }
+        questions: bqs.map{ |bq| "#{bq.question_id}|#{bq.question.uid}|#{bq.label}" }
       }
     end
-    manifest = response[:add_to_bundle_response][:manifest]
-    unless manifest.nil?
-      return true
-    else
-      return false
-    end
+    return !response[:add_to_bundle_response][:manifest].nil?
   end
 
 end
