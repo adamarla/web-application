@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation]
+  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation, :tag]
   respond_to :json
 
   def list
@@ -56,8 +56,45 @@ class QuestionController < ApplicationController
     q.update_attributes(topic_id: params[:t], available: false) unless q.blank?
     render json: { status: :done }, status: :ok
   end 
-  
+
   def tag
+    qsn = params[:question]
+    question = Question.where(uid: qsn[:uid]).first
+
+    unless question.nil?
+      # add to appropriate bundle(s)
+      bundles = qsn[:bundles]
+      unless bundles.nil?
+        bundles.each{ |b|
+          uid, label = b.split('|')
+          bundle = Bundle.where(uid: uid).first
+          if bundle.nil?
+            bundle = Bundle.create uid: uid
+          end
+          bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
+          if bq.nil?
+            bq = BundleQuestion.new question_id: question.id, label: label
+            bundle.bundle_questions << bq
+          else
+            bq.update_attribute :label, label
+          end
+          bundle.update_zip([bq])
+        }
+      end
+
+      concepts = qsn[:concepts]
+      unless concepts.nil?
+        question.concept_list = concepts.join(',')
+        question.save()
+      end
+      render json: { status: :ok, message: 'tagged' }
+    else
+      render json: { status: :error, message: 'question not found' }
+    end
+
+  end
+  
+  def tag_old
     question = Question.find params[:id]
 
     unless question.nil?
