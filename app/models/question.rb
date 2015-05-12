@@ -49,6 +49,8 @@ class Question < ActiveRecord::Base
   # which the folder was created in the 'vault'
   validates :uid, :uniqueness => true, :presence => true
 
+  acts_as_taggable_on :concept
+
   belongs_to :examiner
   belongs_to :topic
   belongs_to :suggestion # non-nil if question came from a teacher

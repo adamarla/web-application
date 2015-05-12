@@ -85,6 +85,22 @@ ActiveRecord::Schema.define(:version => 20150430061601) do
   add_index "attempts", ["student_id"], :name => "index_graded_responses_on_student_id"
   add_index "attempts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
 
+  create_table "bundle_questions", :force => true do |t|
+    t.integer  "bundle_id"
+    t.integer  "question_id"
+    t.string   "label",       :limit => 8
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
+  add_index "bundle_questions", ["bundle_id"], :name => "index_bundle_questions_on_bundle_id"
+
+  create_table "bundles", :force => true do |t|
+    t.string   "uid",        :limit => 50
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
+
   create_table "checklists", :force => true do |t|
     t.integer "rubric_id"
     t.integer "criterion_id"
