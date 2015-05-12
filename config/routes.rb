@@ -15,6 +15,9 @@ Webapp::Application.routes.draw do
 
   match 'ping' => 'application#ping', via: :get
 
+  # Prepwell Pupils 
+  match 'pupil/update' => 'pupils#create_or_update', via: :put
+
   # Account 
   match 'account' => 'accounts#update', via: :post
   match 'exams/list' => 'accounts#exams', via: :get
