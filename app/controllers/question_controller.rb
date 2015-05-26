@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation, :tag]
+  before_filter :authenticate_account!, except: [:post_compile_updation, :tag]
   respond_to :json
 
   def list
@@ -63,23 +63,21 @@ class QuestionController < ApplicationController
 
     unless question.nil?
       # add to appropriate bundle(s)
-      bundles = qsn[:bundles]
-      unless bundles.nil?
-        bundles.each{ |b|
-          uid, label = b.split('|')
-          bundle = Bundle.where(uid: uid).first
-          if bundle.nil?
-            bundle = Bundle.create uid: uid
-          end
-          bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
-          if bq.nil?
-            bq = BundleQuestion.new question_id: question.id, label: label
-            bundle.bundle_questions << bq
-          else
-            bq.update_attribute :label, label
-          end
-          bundle.update_zip([bq])
-        }
+      b = qsn[:bundle]
+      unless b.nil?
+        uid, label = b.split('|')
+        bundle = Bundle.where(uid: uid).first
+        if bundle.nil?
+          bundle = Bundle.create uid: uid
+        end
+        bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
+        if bq.nil?
+          bq = BundleQuestion.new question_id: question.id, label: label
+          bundle.bundle_questions << bq
+        else
+          bq.update_attribute :label, label
+        end
+        bundle.update_zip([bq])
       end
 
       concepts = qsn[:concepts]
