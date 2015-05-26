@@ -125,6 +125,7 @@ Webapp::Application.routes.draw do
   match 'puzzle/next' => 'puzzles#next', via: :get 
 
   # Question
+  match 'bundle/which' => 'question#bundle_which', via: :get
   match 'tag/question' => 'question#tag', via: :post
   match 'questions/list' => 'question#list', via: :get
   match 'question/preview' => 'question#preview', via: :get

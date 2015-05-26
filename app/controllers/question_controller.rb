@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:post_compile_updation, :tag]
+  before_filter :authenticate_account!, except: [:post_compile_updation, :tag, :bundle_which]
   respond_to :json
 
   def list
@@ -56,6 +56,19 @@ class QuestionController < ApplicationController
     q.update_attributes(topic_id: params[:t], available: false) unless q.blank?
     render json: { status: :done }, status: :ok
   end 
+
+  def bundle_which
+    uid = params[:uid]
+    qsn = Question.where(uid: uid).first
+    bundleId = ""
+    unless qsn.nil?
+      bq = BundleQuestion.where(question_id: qsn.id).first
+      unless bq.nil?
+        bundleId = "#{bq.bundle.uid}|#{bq.label}"
+      end
+    end
+    render json: { bundleId: "#{bundleId}" }, status: :ok
+  end
 
   def tag
     qsn = params[:question]
