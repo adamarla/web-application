@@ -30,6 +30,11 @@ class Bundle < ActiveRecord::Base
     return !response[:add_to_bundle_response][:manifest].nil?
   end
 
+  def refresh() {
+    self.update_zips(self.bundle_questions)
+  }
+
+
 end
 
 
