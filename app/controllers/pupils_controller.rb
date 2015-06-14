@@ -1,7 +1,7 @@
 class PupilsController < ApplicationController
   respond_to :json
 
-  def create_or_update 
+  def ping 
     pupil = Pupil.where(email: params[:email]).first 
 
     if pupil.nil?
