@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:insert_new, :post_compile_updation, :tag]
+  before_filter :authenticate_account!, except: [:post_compile_updation, :tag, :bundle_which]
   respond_to :json
 
   def list
@@ -57,29 +57,40 @@ class QuestionController < ApplicationController
     render json: { status: :done }, status: :ok
   end 
 
+  def bundle_which
+    uid = params[:uid]
+    qsn = Question.where(uid: uid).first
+    bundleId = ""
+    unless qsn.nil?
+      bq = BundleQuestion.where(question_id: qsn.id).first
+      unless bq.nil?
+        bundleId = "#{bq.bundle.uid}|#{bq.label}"
+      end
+    end
+    render json: { bundleId: "#{bundleId}" }, status: :ok
+  end
+
   def tag
     qsn = params[:question]
     question = Question.where(uid: qsn[:uid]).first
 
     unless question.nil?
       # add to appropriate bundle(s)
-      bundles = qsn[:bundles]
-      unless bundles.nil?
-        bundles.each{ |b|
-          uid, label = b.split('|')
-          bundle = Bundle.where(uid: uid).first
-          if bundle.nil?
-            bundle = Bundle.create uid: uid
-          end
-          bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
-          if bq.nil?
-            bq = BundleQuestion.new question_id: question.id, label: label
-            bundle.bundle_questions << bq
-          else
-            bq.update_attribute :label, label
-          end
-          bundle.update_zip([bq])
-        }
+      b = qsn[:bundle]
+      unless b.nil?
+        uid, label = b.split('|')
+        bundle = Bundle.where(uid: uid).first
+        if bundle.nil?
+          bundle = Bundle.create uid: uid
+        end
+        bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
+        if bq.nil?
+          bq = BundleQuestion.new question_id: question.id, label: label
+          bundle.bundle_questions << bq
+        else
+          bq.update_attribute :label, label
+        end
+        bundle.update_zip([bq])
       end
 
       concepts = qsn[:concepts]

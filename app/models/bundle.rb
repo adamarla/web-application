@@ -18,7 +18,7 @@ class Bundle < ActiveRecord::Base
     return self.description || "No description"
   end
 
-  def update_zip(bqs = [])
+  def update_zip(bqs)
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['add_to_bundle']}"
     puts SavonClient.wsdl.endpoint
     response = SavonClient.request :wsdl, :addToBundle do
@@ -29,6 +29,11 @@ class Bundle < ActiveRecord::Base
     end
     return !response[:add_to_bundle_response][:manifest].nil?
   end
+
+  def refresh()
+    self.update_zip(self.bundle_questions)
+  end
+
 
 end
 
