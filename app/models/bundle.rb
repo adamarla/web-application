@@ -12,6 +12,9 @@
 class Bundle < ActiveRecord::Base
   # attr_accessible :title, :uid
 
+  validates :uid, presence: true 
+  validates :uid, uniqueness: true
+
   has_many :bundle_questions, dependent: :destroy
   has_many :questions, through: :bundle_questions
 
