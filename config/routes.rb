@@ -18,6 +18,10 @@ Webapp::Application.routes.draw do
   # Prepwell Pupils 
   match 'pupil/ping' => 'pupils#ping', via: [:get, :post]
 
+  # Prepwell Bundles 
+  match 'bundle/ping' => 'bundles#ping', via: :get
+  match 'bundle/update' => 'bundles#update', via: [:put, :post]
+
   # Account 
   match 'account' => 'accounts#update', via: :post
   match 'exams/list' => 'accounts#exams', via: :get
