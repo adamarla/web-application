@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150430061601) do
+ActiveRecord::Schema.define(:version => 20150615071116) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20150430061601) do
     t.string   "uid",        :limit => 50
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.string   "signature",  :limit => 20
   end
 
   create_table "checklists", :force => true do |t|
