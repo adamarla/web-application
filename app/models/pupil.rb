@@ -16,4 +16,6 @@ class Pupil < ActiveRecord::Base
   # attr_accessible :title, :body
   validates :email, presence: true
   validates :email, uniqueness: true 
+
+  has_many :koshishein, dependent: :destroy
 end

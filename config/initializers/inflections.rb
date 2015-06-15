@@ -15,4 +15,5 @@
    inflect.irregular 'watan', 'watan'
    inflect.irregular 'kaagaz', 'kaagaz'
    inflect.irregular 'codex', 'codices'
+   inflect.irregular 'koshish', 'koshishein'
  end

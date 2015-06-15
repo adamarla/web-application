@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150615071116) do
+ActiveRecord::Schema.define(:version => 20150615075347) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -290,6 +290,21 @@ ActiveRecord::Schema.define(:version => 20150615071116) do
   end
 
   add_index "kaagaz", ["stab_id"], :name => "index_kaagaz_on_stab_id"
+
+  create_table "koshishein", :force => true do |t|
+    t.integer  "pupil_id"
+    t.integer  "question_id"
+    t.boolean  "seen_options", :default => false
+    t.integer  "num_wrong",    :default => 0
+    t.boolean  "got_right"
+    t.integer  "max_opened",   :default => 0
+    t.integer  "max_time"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "koshishein", ["pupil_id"], :name => "index_koshishein_on_pupil_id"
+  add_index "koshishein", ["question_id"], :name => "index_koshishein_on_question_id"
 
   create_table "lessons", :force => true do |t|
     t.string   "title",       :limit => 150
