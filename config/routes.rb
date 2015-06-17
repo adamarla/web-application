@@ -19,7 +19,7 @@ Webapp::Application.routes.draw do
   match 'pupil/ping' => 'pupils#ping', via: [:get, :post]
 
   # Prepwell Bundles 
-  match 'bundle/ping' => 'bundles#ping', via: :get
+  match 'bundle/ping' => 'bundles#ping', via: [:get, :post]
   match 'bundle/update' => 'bundles#update', via: [:put, :post]
 
   # Account 

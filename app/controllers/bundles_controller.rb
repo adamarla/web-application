@@ -2,7 +2,12 @@ class BundlesController < ApplicationController
   respond_to :json
 
   def ping 
-    @bundles = Bundle.where(uid: params[:id])
+    ids = params.values
+    response = {} 
+    Bundle.where(uid: ids).each do |zip|
+      response[zip.uid] = zip.signature 
+    end 
+    render json: response, status: :ok
     # response goes to mobile-app 
   end 
 
