@@ -64,7 +64,7 @@ class Examiner < ActiveRecord::Base
     end
   end
 
-  def block_db_slots( n = 6 )
+  def block_db_slots( n = 10 )
     slots = []
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['create_question']}" 
     
