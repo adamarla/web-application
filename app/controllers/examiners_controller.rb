@@ -1,6 +1,7 @@
 class ExaminersController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:distribute_scans, :receive_single_scan, :aggregate, :daily_digest]
+  before_filter :authenticate_account!, 
+  except: [:block_db_slots, :distribute_scans, :receive_single_scan, :aggregate, :daily_digest]
   respond_to :json
 
   def create
@@ -68,8 +69,12 @@ class ExaminersController < ApplicationController
 
   def block_db_slots
     examiner = Examiner.find params[:id]
-    slots = examiner.block_db_slots
-    render json: {notify: { text: "6 slots blocked", :subtext => "Do 'git fetch origin/master'"} }, status: :ok
+    unless examiner.nil? 
+      slots = examiner.block_db_slots
+      render json: { notify: { text: "10 slots blocked" } }, status: :ok 
+    else 
+      render json: { notify: { text: "No such examiner" } }, status: :ok
+    end 
   end
 
   def distribute_scans

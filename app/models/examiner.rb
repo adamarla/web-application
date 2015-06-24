@@ -80,14 +80,14 @@ class Examiner < ActiveRecord::Base
 
     # Now, make the DB entries for the slots that were created 
     slots.each do |s|
-      q = Question.new :uid => s, :examiner_id => self.id
+      q = Question.new uid:  s, examiner_id: self.id
       slots.delete s unless q.save # return only those slots that got created
     end
     return slots
   end
 
   def pending_workload
-    return Attempt.where(:examiner_id => self.id).where('grade_id IS NULL').count
+    return Attempt.where(examiner_id: self.id).where('grade_id IS NULL').count
   end
 
 =begin
