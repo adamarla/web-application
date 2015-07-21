@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150615075347) do
+ActiveRecord::Schema.define(:version => 20150721115935) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -59,31 +59,19 @@ ActiveRecord::Schema.define(:version => 20150615075347) do
   end
 
   create_table "attempts", :force => true do |t|
-    t.integer  "student_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "examiner_id"
-    t.integer  "q_selection_id"
-    t.float    "marks"
-    t.string   "scan",           :limit => 40
-    t.integer  "subpart_id"
-    t.integer  "page"
-    t.integer  "feedback",                     :default => 0
-    t.integer  "worksheet_id"
-    t.boolean  "mobile",                       :default => true
-    t.boolean  "disputed",                     :default => false
-    t.boolean  "resolved",                     :default => false
-    t.boolean  "orange_flag"
-    t.boolean  "red_flag"
-    t.boolean  "weak"
-    t.boolean  "medium"
-    t.boolean  "strong"
-    t.integer  "first_shot"
+    t.integer  "pupil_id"
+    t.integer  "question_id"
+    t.boolean  "seen_options", :default => false
+    t.integer  "num_wrong",    :default => 0
+    t.boolean  "got_right"
+    t.integer  "max_opened",   :default => 0
+    t.integer  "max_time"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
-  add_index "attempts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
-  add_index "attempts", ["student_id"], :name => "index_graded_responses_on_student_id"
-  add_index "attempts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
+  add_index "attempts", ["pupil_id"], :name => "index_koshishein_on_pupil_id"
+  add_index "attempts", ["question_id"], :name => "index_koshishein_on_question_id"
 
   create_table "bundle_questions", :force => true do |t|
     t.integer  "bundle_id"
@@ -169,7 +157,7 @@ ActiveRecord::Schema.define(:version => 20150615075347) do
 
   create_table "disputes", :force => true do |t|
     t.integer  "student_id"
-    t.integer  "attempt_id"
+    t.integer  "tryout_id"
     t.text     "text"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
@@ -182,7 +170,7 @@ ActiveRecord::Schema.define(:version => 20150615075347) do
     t.integer  "feedback",    :default => 0
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
-    t.integer  "attempt_id"
+    t.integer  "tryout_id"
   end
 
   add_index "doodles", ["examiner_id"], :name => "index_doodles_on_examiner_id"
@@ -291,21 +279,6 @@ ActiveRecord::Schema.define(:version => 20150615075347) do
 
   add_index "kaagaz", ["stab_id"], :name => "index_kaagaz_on_stab_id"
 
-  create_table "koshishein", :force => true do |t|
-    t.integer  "pupil_id"
-    t.integer  "question_id"
-    t.boolean  "seen_options", :default => false
-    t.integer  "num_wrong",    :default => 0
-    t.boolean  "got_right"
-    t.integer  "max_opened",   :default => 0
-    t.integer  "max_time"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-  end
-
-  add_index "koshishein", ["pupil_id"], :name => "index_koshishein_on_pupil_id"
-  add_index "koshishein", ["question_id"], :name => "index_koshishein_on_question_id"
-
   create_table "lessons", :force => true do |t|
     t.string   "title",       :limit => 150
     t.text     "description"
@@ -400,7 +373,7 @@ ActiveRecord::Schema.define(:version => 20150615075347) do
   create_table "remarks", :force => true do |t|
     t.integer  "x"
     t.integer  "y"
-    t.integer  "attempt_id"
+    t.integer  "tryout_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.integer  "tex_comment_id"
@@ -570,6 +543,33 @@ ActiveRecord::Schema.define(:version => 20150615075347) do
     t.datetime "updated_at"
     t.integer  "vertical_id"
   end
+
+  create_table "tryouts", :force => true do |t|
+    t.integer  "student_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "examiner_id"
+    t.integer  "q_selection_id"
+    t.float    "marks"
+    t.string   "scan",           :limit => 40
+    t.integer  "subpart_id"
+    t.integer  "page"
+    t.integer  "feedback",                     :default => 0
+    t.integer  "worksheet_id"
+    t.boolean  "mobile",                       :default => true
+    t.boolean  "disputed",                     :default => false
+    t.boolean  "resolved",                     :default => false
+    t.boolean  "orange_flag"
+    t.boolean  "red_flag"
+    t.boolean  "weak"
+    t.boolean  "medium"
+    t.boolean  "strong"
+    t.integer  "first_shot"
+  end
+
+  add_index "tryouts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
+  add_index "tryouts", ["student_id"], :name => "index_graded_responses_on_student_id"
+  add_index "tryouts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
 
   create_table "verticals", :force => true do |t|
     t.string   "name",       :limit => 30

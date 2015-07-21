@@ -60,7 +60,7 @@ class ExaminersController < ApplicationController
   def load_samples
     @apprentice = params[:id].to_i
     doodles = Doodle.where(examiner_id: @apprentice)
-    @gids = doodles.map(&:attempt_id).uniq 
+    @gids = doodles.map(&:tryout_id).uniq 
   end
 
   def untagged
@@ -155,7 +155,7 @@ class ExaminersController < ApplicationController
                Puzzle    Question    Quiz(takehome)    Quiz(in-class)
                ------    --------    --------------    --------------
 type            PZL       QSN         GR                  QR               DBT      SOLN 
-id              sbp_ids   sbp_ids     attempt_ids      mangled QR-code     nil      doubt-id  
+id              sbp_ids   sbp_ids     tryout_ids      mangled QR-code     nil      doubt-id  
 student_id         +        +            nil              nil               +       nil 
 vers               +        nil          nil              nil              nil      nil 
 path            ( common to all )
@@ -191,11 +191,11 @@ path            ( common to all )
       dbt.update_attribute(:solution, path) unless dbt.nil?
     else # is not a stab
       ids = type == 'GR' ? params[:id].split('-') : Worksheet.unmangle_qrcode(params[:id])
-      g = Attempt.where(id: ids)
+      g = Tryout.where(id: ids)
       mobile = (type == 'GR')
 
       # Do NOT receive scan under the following conditions 
-      #   1. if the attempts already have an associated scan 
+      #   1. if the tryouts already have an associated scan 
       #   2. if its past the submission deadline 
 
       exam = g.first.worksheet.exam
@@ -230,7 +230,7 @@ path            ( common to all )
   end 
 
   def reset_graded 
-    g = Attempt.find params[:id]
+    g = Tryout.find params[:id]
     unless g.nil?
       g.reset false # false => non-soft resetting => associated comments also destroyed
     end
@@ -238,10 +238,10 @@ path            ( common to all )
   end 
 
   def germane_comments
-    # Even though we have a handle on an Attempt, what we need are 
-    # applicable comments and hints for the whole question. The attempt the 
+    # Even though we have a handle on an Tryout, what we need are 
+    # applicable comments and hints for the whole question. The tryout the 
     # examiner is grading now might only be a subpart of a larger question
-    a = Attempt.find params[:g]
+    a = Tryout.find params[:g]
     q = a.nil? ? nil : a.subpart.question
     @comments = q.nil? ? [] : q.comments 
     render json: { comments: @comments }, status: :ok
@@ -249,21 +249,21 @@ path            ( common to all )
 
   def aggregate
     # Right now it aggregates by teacher_id, can do by others in future - 01/24/14
-    AggrByTopic.build(Attempt.graded)
+    AggrByTopic.build(Tryout.graded)
     render json: { status: :ok}
   end
 
   def load_dispute 
-    @g = Attempt.find params[:id]
-    @comments = @g.nil? ? nil : Remark.where(attempt_id: @g.id)
+    @g = Tryout.find params[:id]
+    @comments = @g.nil? ? nil : Remark.where(tryout_id: @g.id)
   end 
 
   def disputed 
-    @g = Attempt.assigned_to(current_account.loggable_id).with_scan.unresolved
+    @g = Tryout.assigned_to(current_account.loggable_id).with_scan.unresolved
   end 
 
   def reject_dispute
-    a = Attempt.find params[:id]
+    a = Tryout.find params[:id]
     unless a.nil?
       a.update_attribute :resolved, true
       Mailbot.delay.reject_dispute a.id, a.examiner_id, params[:reject][:reason]
@@ -274,7 +274,7 @@ path            ( common to all )
   end 
 
   def accept_dispute
-    g = Attempt.find params[:id]
+    g = Tryout.find params[:id]
     unless g.nil?
       g.reset false
       render json: { disabled: [g.id] }, status: :ok
@@ -284,7 +284,7 @@ path            ( common to all )
   end 
 
   def daily_digest  
-    g = Attempt.with_scan
+    g = Tryout.with_scan
     ug = g.ungraded # ug = ungraded 
     d = g.unresolved # d = disputes 
     e = Examiner.available
@@ -301,7 +301,7 @@ path            ( common to all )
   end 
 
   def load_dispute_reason
-    d = Dispute.where(attempt_id: params[:id]).first
+    d = Dispute.where(tryout_id: params[:id]).first
     reason = (d.nil? || d.text.blank?) ? "No reason provided" : d.text
     render json: { notify: { msg: reason } }, status: :ok
   end

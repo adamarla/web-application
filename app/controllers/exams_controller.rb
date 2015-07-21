@@ -23,7 +23,7 @@ class ExamsController < ApplicationController
     @perceptions = @students.map{ |s| @exam.perception?(s.id) }
     @max = @exam.quiz.total?
     @questions = @exam.quiz.subparts # subparts actually - and index ordered 
-    @g_all = Attempt.in_exam @exam.id
+    @g_all = Tryout.in_exam @exam.id
   end
 
   def load 
@@ -48,7 +48,7 @@ class ExamsController < ApplicationController
         end
       end 
       @qsids = @qsids.page(pg).per(per_pg)
-      @gr = Attempt.where(worksheet_id: w.id)
+      @gr = Tryout.where(worksheet_id: w.id)
       @criteria = Rubric.find(@exam.rubric_id?).criteria?(:all) 
       # include even those criteria that have become inactive since the time the exam was graded
     else
@@ -82,7 +82,7 @@ class ExamsController < ApplicationController
 
   def pending_disputes
     eid = params[:id]
-    @g = Attempt.in_exam(eid).unresolved.order(:student_id).order(:q_selection_id)
+    @g = Tryout.in_exam(eid).unresolved.order(:student_id).order(:q_selection_id)
     n = @g.count 
     per_pg, @last = pagination_layout_details(n, 30)
     page = params[:page].blank? ? 1 : params[:page].to_i
@@ -91,7 +91,7 @@ class ExamsController < ApplicationController
 
   def resolved_disputes
     eid = params[:id]
-    @g = Attempt.in_exam(eid).resolved.order(:student_id).order(:q_selection_id)
+    @g = Tryout.in_exam(eid).resolved.order(:student_id).order(:q_selection_id)
     n = @g.count 
     per_pg, @last = pagination_layout_details(n, 30)
     page = params[:page].blank? ? 1 : params[:page].to_i

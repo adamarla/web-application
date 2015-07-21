@@ -86,9 +86,9 @@ Webapp::Application.routes.draw do
   match 'load/rubric/for' => 'examiners#load_rubric', via: :get
 
   # Attempt 
-  match 'record/fdb' => 'attempts#grade', via: [:put, :post]
-  match 'load/fdb' => 'attempts#load_fdb', via: :get
-  match 'reupload' => 'attempts#reupload', via: :post
+  match 'record/fdb' => 'tryouts#grade', via: [:put, :post]
+  match 'load/fdb' => 'tryouts#load_fdb', via: :get
+  match 'reupload' => 'tryouts#reupload', via: :post
 
   # Stab
   match 'stab/ping' => 'stabs#ping', via: :get

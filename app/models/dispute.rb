@@ -4,7 +4,7 @@
 #
 #  id         :integer         not null, primary key
 #  student_id :integer
-#  attempt_id :integer
+#  tryout_id  :integer
 #  text       :text
 #  created_at :datetime        not null
 #  updated_at :datetime        not null
@@ -19,8 +19,8 @@ class Dispute < ActiveRecord::Base
   end 
 
   def self.in_exam(id)
-    gids = Attempt.in_exam(id).map(&:id)
-    where(attempt_id: gids)
+    gids = Tryout.in_exam(id).map(&:id)
+    where(tryout_id: gids)
   end
 
 end

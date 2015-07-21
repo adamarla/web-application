@@ -21,7 +21,7 @@ include GeneralQueries
 
 class Examiner < ActiveRecord::Base
   has_one :account, as: :loggable
-  has_many :attempts
+  has_many :tryouts
   has_many :suggestions
   has_many :doodles, dependent: :destroy # will destroy associated remarks 
   has_many :remarks # choosing not to destroy 'live' remarks  
@@ -87,12 +87,12 @@ class Examiner < ActiveRecord::Base
   end
 
   def pending_workload
-    return Attempt.where(examiner_id: self.id).where('grade_id IS NULL').count
+    return Tryout.where(examiner_id: self.id).where('grade_id IS NULL').count
   end
 
 =begin
-    Distribution methods - one of Stabs and one for Attempts
-    Hopefully, the one for Attempts (institutional environment) will die out soon.
+    Distribution methods - one of Stabs and one for Tryouts
+    Hopefully, the one for Tryouts (institutional environment) will die out soon.
 =end
 
   def self.distribute_stabs 
@@ -125,7 +125,7 @@ class Examiner < ActiveRecord::Base
   end # of method
 
   def self.distribute_scans
-    ug = Attempt.unassigned.with_scan # ug = ungraded
+    ug = Tryout.unassigned.with_scan # ug = ungraded
     exams = ug.map(&:worksheet).uniq.map(&:exam).uniq 
     offline = exams.map(&:quiz).uniq.map(&:teacher).select{ |t| !t.indie }
 
@@ -154,7 +154,7 @@ class Examiner < ActiveRecord::Base
 
         sids.each_slice(per).each do |k|
           # ignore student if scans for all subparts not in
-          is_complete = Attempt.where(student_id: k, q_selection_id: q).without_scan.count == 0
+          is_complete = Tryout.where(student_id: k, q_selection_id: q).without_scan.count == 0
           next unless is_complete
 
           exm = examiners.shift # pop from front 

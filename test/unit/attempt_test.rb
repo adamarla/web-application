@@ -2,27 +2,16 @@
 #
 # Table name: attempts
 #
-#  id             :integer         not null, primary key
-#  student_id     :integer
-#  created_at     :datetime
-#  updated_at     :datetime
-#  examiner_id    :integer
-#  q_selection_id :integer
-#  marks          :float
-#  scan           :string(40)
-#  subpart_id     :integer
-#  page           :integer
-#  feedback       :integer         default(0)
-#  worksheet_id   :integer
-#  mobile         :boolean         default(TRUE)
-#  disputed       :boolean         default(FALSE)
-#  resolved       :boolean         default(FALSE)
-#  orange_flag    :boolean
-#  red_flag       :boolean
-#  weak           :boolean
-#  medium         :boolean
-#  strong         :boolean
-#  first_shot     :integer
+#  id           :integer         not null, primary key
+#  pupil_id     :integer
+#  question_id  :integer
+#  seen_options :boolean         default(FALSE)
+#  num_wrong    :integer         default(0)
+#  got_right    :boolean
+#  max_opened   :integer         default(0)
+#  max_time     :integer
+#  created_at   :datetime        not null
+#  updated_at   :datetime        not null
 #
 
 require 'test_helper'

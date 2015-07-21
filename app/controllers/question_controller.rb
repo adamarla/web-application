@@ -166,7 +166,7 @@ class QuestionController < ApplicationController
 
   def preview
     if params[:type] == 'g' # teacher/student viewing solution
-      g = Attempt.find params[:id]
+      g = Tryout.find params[:id]
       @question = g.subpart.question
       @version = g.version
     elsif params[:type] == 'stb' # student viewing solution to a stab
@@ -195,7 +195,7 @@ class QuestionController < ApplicationController
 
   def audit_open
     if params[:type] == 'g'
-      g = Attempt.find params[:id]
+      g = Tryout.find params[:id]
       subpart_index = g.subpart.index 
       @question = g.subpart.question
     else 

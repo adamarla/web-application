@@ -61,7 +61,7 @@ class StudentsController < ApplicationController
     # some/all scans received - not graded 
     all = Worksheet.where(student_id: current_account.loggable_id, billed: true)
     some_scans = all.select{ |j| !j.received?(:none) } 
-    @outboxed = some_scans.select{ |j| j.attempts.graded.count == 0 } 
+    @outboxed = some_scans.select{ |j| j.tryouts.graded.count == 0 } 
     @render = params[:ping].blank? 
   end
 
@@ -103,12 +103,12 @@ class StudentsController < ApplicationController
   end 
 
   def dispute 
-    g = Attempt.find params[:id]
+    g = Tryout.find params[:id]
     unless g.nil?
       reason = params[:dispute][:reason]
       unless reason.blank?
         r = reason.gsub("\r\n", " ").strip # remove carriage returns
-        d = current_account.loggable.disputes.build(attempt_id: g.id, text: r)
+        d = current_account.loggable.disputes.build(tryout_id: g.id, text: r)
       else
         d = nil
       end 

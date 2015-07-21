@@ -75,7 +75,7 @@ class AccountsController < ApplicationController
       @last_pg = nil
     else 
       by = current_account.loggable_id
-      @pending = Attempt.in_exam(eid).with_scan.ungraded.assigned_to(by)
+      @pending = Tryout.in_exam(eid).with_scan.ungraded.assigned_to(by)
       sel = @pending.map(&:q_selection_id).uniq
       @indices = QSelection.where(id: sel).order(:index)
       n = @indices.count
@@ -97,7 +97,7 @@ class AccountsController < ApplicationController
     @sandboxed = !current_account.live?
 
     # { pending: [{ scan: a, student: b, gr: [{ id: 12, name: "Q6.A" }, {id: 13, name: "Q6.B"}]}, { scan: b ... } ] }
-    candidates = Attempt.in_exam(eid).where(q_selection_id: params[:q]).with_scan
+    candidates = Tryout.in_exam(eid).where(q_selection_id: params[:q]).with_scan
     p = @sandboxed ? candidates.limit(5) : candidates.ungraded.assigned_to(exid)
 
     @pending = p.order(:student_id).order(:subpart_id)
@@ -112,7 +112,7 @@ class AccountsController < ApplicationController
     @gr = []
 
     if (who == "Teacher" || who == "Examiner")
-      @gr = Attempt.in_exam(@ws_id).ungraded.with_scan
+      @gr = Tryout.in_exam(@ws_id).ungraded.with_scan
       @gr = ( who == 'Examiner' ) ? @gr.assigned_to(current_account.loggable_id) : @gr 
       @gr = @gr.on_page(page)
     end

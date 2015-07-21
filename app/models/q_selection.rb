@@ -23,7 +23,7 @@ class QSelection < ActiveRecord::Base
   belongs_to :quiz
   belongs_to :question
 
-  has_many :attempts, dependent: :destroy
+  has_many :tryouts, dependent: :destroy
 
   # [:all] ~> [:admin, :teacher]
   #attr_accessible 

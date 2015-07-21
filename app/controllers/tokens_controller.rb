@@ -120,7 +120,7 @@ class TokensController < ApplicationController
       end
 
       # identify and mark questions assigned by teacher as unavailable
-      wsqids = Attempt.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
+      wsqids = Tryout.where(student_id: student.id).map(&:q_selection).map(&:question_id).uniq
       qsns.map{|q| 
         if q.available
           q[:available] = !(wsqids.include? q.id)
@@ -217,10 +217,10 @@ class TokensController < ApplicationController
           records = Stab.where(student_id: s, question_id: q, version: v)
         end
       else
-        # id - attempt_id
+        # id - tryout_id
         ids = params[:id].split(',')
 
-        records = Attempt.where(id: ids)
+        records = Tryout.where(id: ids)
         s = records[0].student_id
       end
 
@@ -278,8 +278,8 @@ class TokensController < ApplicationController
     gr_ids = params[:id].split('-').map{ |id| id.to_i }
     type = params[:type].blank? ? 'GR' : params[:type]
     if type == 'GR'
-      grs = Attempt.where(id: gr_ids).map(&:id)
-      @comments = Remark.where(attempt_id: grs)
+      grs = Tryout.where(id: gr_ids).map(&:id)
+      @comments = Remark.where(tryout_id: grs)
     else
       kaagazs = Kaagaz.where(stab_id: gr_ids).map(&:id)
       @comments = Remark.where(kaagaz_id: kaagazs)
@@ -287,7 +287,7 @@ class TokensController < ApplicationController
     json = {
       comments: @comments.map{ |c| 
         { 
-          id: type == 'GR' ? c.attempt_id : c.kaagaz_id,
+          id: type == 'GR' ? c.tryout_id : c.kaagaz_id,
           x: c.x, y: c.y, comment: c.tex_comment.text 
         } 
       }
@@ -298,7 +298,7 @@ class TokensController < ApplicationController
   def bill_ws
     ws = Worksheet.find(params[:id])
     ws.bill
-    grs = ws.attempts
+    grs = ws.tryouts
     qsels = ws.exam.quiz.q_selections.order(:index)
     grIds = qsels.each_with_index.map{ |qsel, i|
       grs.where(q_selection_id: qsel.id).map(&:id).join('-')
@@ -407,7 +407,7 @@ class TokensController < ApplicationController
         quiz = w.exam.quiz
         qsels = quiz.q_selections.order(:index)
         qs = qsels.map(&:question)
-        atts = w.attempts
+        atts = w.tryouts
         vers = w.signature.split(',')
 
         items = []
@@ -429,11 +429,11 @@ class TokensController < ApplicationController
             codex: qs[i].has_codex?,
             ans: qs[i].has_answer?,
             guesst: qatts[0].first_shot,
-            fdbkMrkr: Remark.where(attempt_id: qatts.map(&:id)).order(:id).map(&:id).max
+            fdbkMrkr: Remark.where(tryout_id: qatts.map(&:id)).order(:id).map(&:id).max
           }
         end
 
-        remarks = Remark.where(attempt_id: atts.map(&:id))
+        remarks = Remark.where(tryout_id: atts.map(&:id))
         worksheets << {
           quizId: w.id,
           quiz: quiz.name,

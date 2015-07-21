@@ -26,8 +26,8 @@ class Student < ActiveRecord::Base
   has_many :student_rosters, dependent: :destroy 
   has_many :sektions, through: :student_rosters
 
-  has_many :attempts, dependent: :destroy
-  has_many :quizzes, through: :attempts
+  has_many :tryouts, dependent: :destroy
+  has_many :quizzes, through: :tryouts
 
   has_many :worksheets, dependent: :destroy
   has_many :exams, through: :worksheets
@@ -51,8 +51,8 @@ class Student < ActiveRecord::Base
     neu = a.shell ? (b.shell ? nil : b) : a 
     return false if neu.nil?
 
-    # Transfer worksheets and attempts from old -> neu 
-    [Attempt, Worksheet, StudentRoster].each do |k|
+    # Transfer worksheets and tryouts from old -> neu 
+    [Tryout, Worksheet, StudentRoster].each do |k|
       k.where(student_id: old.id).each do |j|
         j.update_attribute :student_id, neu.id
       end 
@@ -177,7 +177,7 @@ class Student < ActiveRecord::Base
 
     a = a.select{ |m| m.graded?(:none) } # --> (1) --> only those not graded at all
     eids = a.map(&:exam_id)
-    without_scans = Attempt.in_exam(eids).of_student(self.id).without_scan.map(&:exam_id).uniq
+    without_scans = Tryout.in_exam(eids).of_student(self.id).without_scan.map(&:exam_id).uniq
     ungraded_with_scans = eids - without_scans
     return Exam.where(id: ungraded_with_scans)
   end
@@ -185,7 +185,7 @@ class Student < ActiveRecord::Base
   def pending
     # Any student worksheet - without scans
     assigned = self.exams.map(&:id) 
-    g = Attempt.in_exam(assigned).of_student(self.id).without_scan
+    g = Tryout.in_exam(assigned).of_student(self.id).without_scan
   end
 
   def teachers
@@ -200,7 +200,7 @@ class Student < ActiveRecord::Base
 
   def score_in?(exam_id)
     w = Worksheet.where(student_id: self.id, exam_id: exam_id).first
-    g = w.nil? ? [] : Attempt.where(worksheet_id: w.id)
+    g = w.nil? ? [] : Tryout.where(worksheet_id: w.id)
 
     return 0 if g.blank?
     return -1 if g.with_scan.count == 0 # absent perhaps?
@@ -214,7 +214,7 @@ class Student < ActiveRecord::Base
   end
 
   def responses(exam_id)
-    a = Attempt.of_student(self.id).in_exam(exam_id).with_scan
+    a = Tryout.of_student(self.id).in_exam(exam_id).with_scan
     return a.sort{ |m,n| m.q_selection.index <=> n.q_selection.index }
   end
 
@@ -222,7 +222,7 @@ class Student < ActiveRecord::Base
     # Returns the weighted average percentage earned by a student on
     # a given topic on the questions his/her teacher set
     # Returns: a number in [0,1]
-    g = Attempt.of_student(self.id).graded.on_topic(topic_id)
+    g = Tryout.of_student(self.id).graded.on_topic(topic_id)
     sids = g.map(&:subpart_id).uniq
 
     earned = 0 
@@ -242,17 +242,17 @@ class Student < ActiveRecord::Base
     took_test = qids.include? quiz_id 
     return true if !took_test
 
-    g = Attempt.of_student(self.id).in_quiz(quiz_id).with_scan
+    g = Tryout.of_student(self.id).in_quiz(quiz_id).with_scan
     return g.count == 0
   end
 
   def absent_for_test?(exam_id)
-    g = Attempt.of_student(self.id).in_exam(exam_id).with_scan
+    g = Tryout.of_student(self.id).in_exam(exam_id).with_scan
     return g.count == 0
   end
 
   def proficiency_chart_for(tid)
-    g = Attempt.of_student(self.id).graded
+    g = Tryout.of_student(self.id).graded
     aggr = AggrByTopic.for_teacher tid
     topics = aggr.map(&:topic_id).uniq
     topics = Topic.where(id: topics).sort{ |m,n| m.name <=> n.name }
@@ -263,7 +263,7 @@ class Student < ActiveRecord::Base
       on_topic = g.on_topic t.id
       next if on_topic.count == 0
       marks = on_topic.map(&:subpart).map(&:marks)
-      n_attempted = marks.count
+      n_tryouted = marks.count
       total = marks.inject(:+)
       scored = on_topic.map(&:marks).inject(:+)
 
@@ -279,7 +279,7 @@ class Student < ActiveRecord::Base
     def destroyable?
       # A student can be destroyed if there is no associated data for it
       is_empty = true 
-      [Stab, Worksheet, Attempt, StudentRoster].each do |m|
+      [Stab, Worksheet, Tryout, StudentRoster].each do |m|
         is_empty = m.where(student_id: id).empty?
         break unless is_empty
       end

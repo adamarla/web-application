@@ -35,17 +35,17 @@ class TexComment < ActiveRecord::Base
 
 
 
-  # Doodles and Attempts only. Will deprecate in time 
+  # Doodles and Tryouts only. Will deprecate in time 
   def self.record(comments, e_id, a_id, d_id = nil)
     # comments -> an array of TeX comments with x- and y- coordinates 
     # eid -> examiner id 
  
     # TexComment = only the TeX  
-    # Remark = TeX + positional information + attempt_id  
-    # A Doodle is a collection of remarks for a question attempt by a non-live examiner 
+    # Remark = TeX + positional information + tryout_id  
+    # A Doodle is a collection of remarks for a question tryout by a non-live examiner 
     # - perhaps as part of the training / vetting process 
 
-    q = d_id.nil? ? Attempt.find(a_id).subpart.question : nil 
+    q = d_id.nil? ? Tryout.find(a_id).subpart.question : nil 
 
     # Each chunk is of the form --> [x, y, TeX]
     for chunk in comments.each_slice(3).to_a 
@@ -53,7 +53,7 @@ class TexComment < ActiveRecord::Base
       written = chunk[2].squish
       tex = TexComment.where(text: written).first 
       tex = tex.nil? ? TexComment.create(text: written, examiner_id: e_id) : tex
-      tex.remarks.create(x: chunk[0], y: chunk[1], attempt_id: a_id, doodle_id: d_id)
+      tex.remarks.create(x: chunk[0], y: chunk[1], tryout_id: a_id, doodle_id: d_id)
     end 
   end 
 

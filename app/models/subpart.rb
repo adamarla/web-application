@@ -15,7 +15,7 @@
 
 class Subpart < ActiveRecord::Base
   belongs_to :question
-  has_many :attempts
+  has_many :tryouts
   has_many :hints, dependent: :destroy
 
   def name_if_in?(quiz)
@@ -46,8 +46,8 @@ class Subpart < ActiveRecord::Base
   def comments 
     # Returns every ** non-trivial ** comment ever written by any examiner 
     # for this subpart in ** any quiz **  
-    cousins = Attempt.graded.where(subpart_id: self.id)
-    remarks = Remark.where(attempt_id: cousins.map(&:id).uniq)
+    cousins = Tryout.graded.where(subpart_id: self.id)
+    remarks = Remark.where(tryout_id: cousins.map(&:id).uniq)
    
     # Show the most used TeX comments first
     a = TexComment.where(id: remarks.map(&:tex_comment_id).uniq).order(:n_used).reverse_order

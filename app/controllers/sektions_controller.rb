@@ -97,7 +97,7 @@ class SektionsController < ApplicationController
     quizzes = quizzes.blank? ? Quiz.where(:id => 318) : quizzes # 318 = "A Demo Quiz" 
 
     selections = QSelection.where(:quiz_id => quizzes.map(&:id)).on_topic(@topic.id) # all questions on topic
-    responses = Attempt.where(:q_selection_id => selections.map(&:id).uniq).graded # all responses to those questions
+    responses = Tryout.where(:q_selection_id => selections.map(&:id).uniq).graded # all responses to those questions
 
     subparts = Subpart.where(:question_id => selections.map(&:question_id).uniq)
     @avg = (subparts.map(&:marks).inject(:+) / subparts.count.to_f).round(2)

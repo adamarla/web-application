@@ -24,7 +24,7 @@
 class Worksheet < ActiveRecord::Base
   belongs_to :student
   belongs_to :exam  
-  has_many :attempts, dependent: :destroy
+  has_many :tryouts, dependent: :destroy
 
   before_update :reset_marks_color, if: :graded_changed?
   after_create :seal
@@ -64,7 +64,7 @@ class Worksheet < ActiveRecord::Base
     return false unless self.billed # an unbilled worksheet could not have been received!
     return ( extent == :none ? false : true ) if self.received
 
-    gr = Attempt.where(worksheet_id: self.id)
+    gr = Tryout.where(worksheet_id: self.id)
     n_total = gr.count 
     n_with_scan = gr.with_scan.count 
     self.update_attribute :received, true if (n_with_scan == n_total)
@@ -87,21 +87,21 @@ class Worksheet < ActiveRecord::Base
 
   def publishable?
     # A student's answer sheet becomes publishable as soon as the 
-    # last of the attempts has been graded
+    # last of the tryouts has been graded
 
-    submitted = Attempt.where(worksheet_id: self.id).with_scan
+    submitted = Tryout.where(worksheet_id: self.id).with_scan
     return false if submitted.count == 0
     return submitted.ungraded.count == 0
   end
 
   def perception? 
     # Returns either [:red | :orange | :green | :blank ] depending on 
-    # what flags were set on the Attempts
+    # what flags were set on the Tryouts
 
     return :red if self.red_flag
     return :orange if self.orange_flag
 
-    m = self.attempts.map(&:perception?)
+    m = self.tryouts.map(&:perception?)
     n = :blank 
 
     if m.include? :red 
@@ -119,7 +119,7 @@ class Worksheet < ActiveRecord::Base
 
   def spectrum?
     sbp_ids = self.exam.quiz.subparts.map(&:id)
-    g = Attempt.where(worksheet_id: self.id).sort{ |m,n| sbp_ids.index(m.subpart_id) <=> sbp_ids.index(n.subpart_id) }
+    g = Tryout.where(worksheet_id: self.id).sort{ |m,n| sbp_ids.index(m.subpart_id) <=> sbp_ids.index(n.subpart_id) }
     return g.map(&:quality?)
   end
 
@@ -131,7 +131,7 @@ class Worksheet < ActiveRecord::Base
       ret = ( extent == :none ) ? false : true
       self.update_attribute :graded, true unless (extent == :none)
     else
-      gr = Attempt.where(worksheet_id: self.id)
+      gr = Tryout.where(worksheet_id: self.id)
       case extent
         when :fully 
           ret = gr.count ? (gr.graded.count == gr.count) : false 
@@ -148,7 +148,7 @@ class Worksheet < ActiveRecord::Base
   def marks?
     return self.marks unless self.marks.nil?
 
-    g = Attempt.where(worksheet_id: self.id)
+    g = Tryout.where(worksheet_id: self.id)
     marks = g.graded.map(&:marks?).select{ |m| !m.nil? }.inject(:+)
     self.update_attributes(marks: marks, graded: true) if g.ungraded.count == 0
     return marks.nil? ? 0 : marks.round(2)
@@ -159,14 +159,14 @@ class Worksheet < ActiveRecord::Base
     # and more of the student's exam is graded 
     return self.exam.quiz.total? if self.graded?
 
-    g = Attempt.where(worksheet_id: self.id)
+    g = Tryout.where(worksheet_id: self.id)
     thus_far = g.graded.map(&:subpart).map(&:marks).select{ |m| !m.nil? }.inject(:+)
     return thus_far.nil? ? 0 : thus_far # will always be an integer!
   end
 
   def graded_thus_far_as_str
     # Returns a string of the form "marks / graded_thus_far" - where marks are whats been earned till now
-    absent = Attempt.of_student(self.student_id).in_exam(self.exam_id).with_scan.count == 0
+    absent = Tryout.of_student(self.student_id).in_exam(self.exam_id).with_scan.count == 0
     marks = absent ? -1 : self.marks?
     return (absent ? "no scans" : "#{marks} / #{self.graded_thus_far?}")
   end
@@ -177,7 +177,7 @@ class Worksheet < ActiveRecord::Base
 
   def bill
     return false if self.billed # do not bill a quiz again
-    # 1. allot attempt slots for this worksheet 
+    # 1. allot tryout slots for this worksheet 
     q = self.exam.quiz
     qsel = QSelection.where(quiz_id: q.id).order(:index)
     sid = self.student_id
@@ -185,8 +185,8 @@ class Worksheet < ActiveRecord::Base
     qsel.each do |y|
       sbp = y.question.subparts
       sbp.each do |s|
-        g = self.attempts.build student_id: sid, q_selection_id: y.id, subpart_id: s.id
-        self.attempts << g
+        g = self.tryouts.build student_id: sid, q_selection_id: y.id, subpart_id: s.id
+        self.tryouts << g
       end
     end
     self.update_attribute :billed, true
@@ -196,7 +196,7 @@ class Worksheet < ActiveRecord::Base
   def write
     e = self.exam
     span = e.quiz.span?
-    g = Attempt.in_worksheet(self.id) 
+    g = Tryout.in_worksheet(self.id) 
     ids = [*1..span].map{ |pg| g.on_page(pg).map(&:id) }
     mangled_qrcs = ids.map{ |i| Worksheet.qrcode i }.join(',').upcase 
 

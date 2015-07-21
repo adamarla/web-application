@@ -134,7 +134,7 @@ class Mailbot < ActionMailer::Base
   end 
 
   def reject_dispute(id, eid, reason)
-    a = Attempt.find id
+    a = Tryout.find id
     quiz = a.worksheet.exam.quiz.name 
     ques = a.name?
     e = Examiner.find eid
@@ -144,7 +144,7 @@ class Mailbot < ActionMailer::Base
   end
 
   def reupload_request(aid, reasons)
-    a = Attempt.find aid 
+    a = Tryout.find aid 
     @s = a.student 
     @quiz = a.worksheet.exam.quiz.name 
     @question = a.name?

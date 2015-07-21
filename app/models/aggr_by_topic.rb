@@ -29,9 +29,9 @@ class AggrByTopic < ActiveRecord::Base
     where(topic_id: topic_id)
   end
   
-  def self.build(attempts)
+  def self.build(tryouts)
     vals = {}
-    attempts.each do |gr|
+    tryouts.each do |gr|
       next if gr.feedback == 0 # make sure it is in fact a "graded" response
       q_selection = gr.q_selection
       teacher_id  = q_selection.quiz.teacher_id
@@ -61,7 +61,7 @@ class AggrByTopic < ActiveRecord::Base
       end
       att[:benchmark] = benchmark
       att[:average] = average
-      att[:attempts] = count
+      att[:tryouts] = count
       att.save
     end
   end

@@ -194,7 +194,7 @@ class Account < ActiveRecord::Base
     case self.role
       when :student
         # ids = Worksheet.where(student_id: me).select{ |m| m.publishable? }.map(&:exam_id)
-        ids = Worksheet.where(student_id: me, billed: true).select{ |j| j.attempts.graded.count > 0 }.map(&:exam_id)
+        ids = Worksheet.where(student_id: me, billed: true).select{ |j| j.tryouts.graded.count > 0 }.map(&:exam_id)
         @exams = Exam.where(id: ids)
       when :teacher 
         ids = Quiz.where(teacher_id: me).map(&:id)
@@ -206,7 +206,7 @@ class Account < ActiveRecord::Base
           e = Exam.where('id > ?', 342).select{ |j| j.publishable? }.sample(5)
           ids = e.map(&:id)
         else
-          g = Attempt.assigned_to(me).with_scan.ungraded
+          g = Tryout.assigned_to(me).with_scan.ungraded
           ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
         end
         @exams = Exam.where(id: ids)
