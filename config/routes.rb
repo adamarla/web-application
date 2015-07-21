@@ -22,6 +22,9 @@ Webapp::Application.routes.draw do
   match 'bundle/ping' => 'bundles#ping', via: [:get, :post]
   match 'bundle/update' => 'bundles#update', via: [:put, :post]
 
+  # Prewell Attempts 
+  match 'update/attempt' => 'attempts#update', via: [:put, :post]
+
   # Account 
   match 'account' => 'accounts#update', via: :post
   match 'exams/list' => 'accounts#exams', via: :get
