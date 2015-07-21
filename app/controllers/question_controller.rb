@@ -90,6 +90,14 @@ class QuestionController < ApplicationController
         else
           bq.update_attribute :label, label
         end
+
+        # delete this question from other bundles
+        BundleQuestion.where(question_id: question.id).map { |bq|
+          if bq.bundle_id != bundle.id
+            bq.delete
+          end
+        }
+        
         bundle.update_zip([bq])
       end
 
