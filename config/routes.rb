@@ -21,6 +21,7 @@ Webapp::Application.routes.draw do
   # Prepwell Bundles 
   match 'bundle/ping' => 'bundles#ping', via: [:get, :post]
   match 'bundle/update' => 'bundles#update', via: [:put, :post]
+  match 'bundle/questions' => 'bundles#questions', via: [:get]
 
   # Prewell Attempts 
   match 'update/attempt' => 'attempts#update', via: [:put, :post]
