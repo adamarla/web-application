@@ -85,7 +85,7 @@ class QuestionController < ApplicationController
         end
 
         bq = BundleQuestion.where(bundle_id: bundle.id, label: label).first
-        unless bq.nil? # if this qsn has not been tagged already
+        if bq.nil? # if this qsn has not been tagged already
           bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
           if bq.nil?
             bq = BundleQuestion.new question_id: question.id, label: label
