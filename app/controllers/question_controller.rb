@@ -76,7 +76,6 @@ class QuestionController < ApplicationController
 
     unless question.nil?
       # add question to appropriate bundle(s)
-      bq # bundle_question
       b = qsn[:bundle]
       unless b.nil?
         uid, label = b.split('|')
