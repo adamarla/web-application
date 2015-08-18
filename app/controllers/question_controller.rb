@@ -75,7 +75,7 @@ class QuestionController < ApplicationController
     question = Question.where(uid: qsn[:uid]).first
 
     unless question.nil?
-      # add to appropriate bundle(s)
+      # add question to appropriate bundle(s)
       b = qsn[:bundle]
       unless b.nil?
         uid, label = b.split('|')
@@ -83,22 +83,26 @@ class QuestionController < ApplicationController
         if bundle.nil?
           bundle = Bundle.create uid: uid
         end
-        bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
-        if bq.nil?
-          bq = BundleQuestion.new question_id: question.id, label: label
-          bundle.bundle_questions << bq
-        else
-          bq.update_attribute :label, label
-        end
 
-        # delete this question from other bundles
-        BundleQuestion.where(question_id: question.id).map { |bq|
-          if bq.bundle_id != bundle.id
-            bq.delete
+        bq = BundleQuestion.where(bundle_id: bundle.id, label: label).first
+        if bq.nil? # if this qsn has not been tagged already
+          bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
+          if bq.nil?
+            bq = BundleQuestion.new question_id: question.id, label: label
+            bundle.bundle_questions << bq
+          else
+            bq.update_attribute :label, label
           end
-        }
-        
-        bundle.update_zip([bq])
+  
+          # delete this question from other bundles
+          BundleQuestion.where(question_id: question.id).map { |bqd|
+            if bqd.bundle_id != bundle.id
+              bqd.delete
+            end
+          }
+          
+          bundle.update_zip([bq])
+        end
       end
 
       concepts = qsn[:concepts]
@@ -106,7 +110,7 @@ class QuestionController < ApplicationController
         question.concept_list = concepts.join(',')
         question.save()
       end
-      render json: { status: :ok, message: 'tagged' }
+      render json: { status: :ok, message: 'tagged', uid: bq.question.uid }
     else
       render json: { status: :error, message: 'question not found' }
     end

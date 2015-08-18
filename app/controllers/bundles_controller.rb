@@ -28,7 +28,10 @@ class BundlesController < ApplicationController
     else
       @bqs = []
     end
-    
+  end
+
+  def fetch_all
+    @bundles = Bundle.all
   end
 
 end
