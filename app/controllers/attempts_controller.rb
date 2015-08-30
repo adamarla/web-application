@@ -16,11 +16,17 @@ class AttemptsController < ApplicationController
     unless attempt.nil?
       attempt.update_attributes num_attempts: params[:num_attempts], 
                           total_time: params[:total_time], 
-                          max_time: params[:max_time], 
                           max_opened: params[:max_opened], 
                           checked_answer: params[:checked_answer], 
                           got_right: params[:got_right],
                           seen_summary: params[:seen_summary]
+
+      # While everyone is not on version >= 1.08 of the app 
+      [:max_time, :time_to_answer, :time_on_cards, :time_in_activity].each do |k| 
+        next if params[k].nil?
+        attempt.update_attribute k, params[k]
+      end
+
       render json: { id: attempt.id }, status: :ok
     else
       render json: { id: 0 }, status: :ok

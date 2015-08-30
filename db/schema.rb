@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150721122357) do
+ActiveRecord::Schema.define(:version => 20150830083815) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -61,15 +61,18 @@ ActiveRecord::Schema.define(:version => 20150721122357) do
   create_table "attempts", :force => true do |t|
     t.integer  "pupil_id"
     t.integer  "question_id"
-    t.boolean  "checked_answer", :default => false
-    t.integer  "num_attempts",   :default => 0
+    t.boolean  "checked_answer",                 :default => false
+    t.integer  "num_attempts",                   :default => 0
     t.boolean  "got_right"
-    t.integer  "max_opened",     :default => 0
+    t.integer  "max_opened",                     :default => 0
     t.integer  "max_time"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
     t.integer  "total_time"
-    t.boolean  "seen_summary",   :default => false
+    t.boolean  "seen_summary",                   :default => false
+    t.integer  "time_to_answer"
+    t.string   "time_on_cards",    :limit => 40
+    t.integer  "time_in_activity"
   end
 
   add_index "attempts", ["pupil_id"], :name => "index_koshishein_on_pupil_id"
