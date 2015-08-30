@@ -20,4 +20,18 @@ class BundlesController < ApplicationController
     render json: { status: :ok }, status: :ok
     # response goes to Linode 
   end 
+
+  def questions
+    b = Bundle.where(uid: params["bundle_id"]).first
+    unless b.nil?
+      @bqs = b.bundle_questions
+    else
+      @bqs = []
+    end
+  end
+
+  def fetch_all
+    @bundles = Bundle.all
+  end
+
 end
