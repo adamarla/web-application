@@ -26,6 +26,6 @@ class Attempt < ActiveRecord::Base
 
   def total_time_on_cards 
     return 0 if time_on_cards.blank? 
-    return time_on_cards.split(',').map(&:to_i).inject(&:+)
+    return time_on_cards.delete("[]").split(',').map(&:to_i).inject(&:+)
   end 
 end

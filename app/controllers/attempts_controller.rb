@@ -22,11 +22,13 @@ class AttemptsController < ApplicationController
                           seen_summary: params[:seen_summary]
 
       # While everyone is not on version >= 1.08 of the app 
-      [:max_time, :time_to_answer, :time_on_cards, :time_in_activity].each do |k| 
-        next if params[k].nil?
-        attempt.update_attribute k, params[k]
-      end
-
+      if params[:max_time].blank? # >= 1.08 
+        attempt.update_attributes time_to_answer: params[:time_to_answer], 
+                                  time_on_cards: params[:time_on_cards],
+                                  time_in_activity: params[:time_in_activity]
+      else 
+        attempt.update_attributes max_time: params[:max_time]
+      end 
       render json: { id: attempt.id }, status: :ok
     else
       render json: { id: 0 }, status: :ok
