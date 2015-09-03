@@ -24,7 +24,7 @@ class Bundle < ActiveRecord::Base
 
   def update_zip(bqs)
     SavonClient.http.headers["SOAPAction"] = "#{Gutenberg['action']['add_to_bundle']}"
-    puts SavonClient.wsdl.endpoint
+    # puts SavonClient.wsdl.endpoint
     response = SavonClient.request :wsdl, :addToBundle do
       soap.body = {
         bundleId: self.uid,
@@ -34,9 +34,18 @@ class Bundle < ActiveRecord::Base
     return !response[:add_to_bundle_response][:manifest].nil?
   end
 
-  def refresh()
+  def refresh
     self.update_zip(self.bundle_questions)
   end
+
+  def attempts(pid)
+    # Returns the attempts by given student for the questions 
+    # in this bundle (sorted by label).
+
+    qids = self.bundle_questions.sort{ |a,b| a.label <=> b.label }.map(&:question_id)
+    a = Attempt.where(pupil_id: pid, question_id: qids).sort{ |x,y| qids.index(x.question_id) <=> qids.index(y.question_id) }
+    return a 
+  end 
 
 
 end
