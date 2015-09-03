@@ -47,6 +47,13 @@ class Bundle < ActiveRecord::Base
     return a 
   end 
 
+  def identify(attempts) 
+    # Returns labels for attempts in the same order as the passed array is
+    qids = attempts.map(&:question_id) 
+    entries = BundleQuestion.where(bundle_id: self.id, question_id: qids).sort{ |x,y| qids.index(x) <=> qids.index(y) }
+    return entries.map(&:label)
+  end 
+
 
 end
 
