@@ -17,6 +17,7 @@
 #  time_to_answer   :integer
 #  time_on_cards    :string(40)
 #  time_in_activity :integer
+#  num_surrender    :integer
 #
 
 require 'test_helper'
