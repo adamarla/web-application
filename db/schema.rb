@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151022070749) do
+ActiveRecord::Schema.define(:version => 20151031092216) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -160,6 +160,15 @@ ActiveRecord::Schema.define(:version => 20151022070749) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "devices", :force => true do |t|
+    t.integer  "pupil_id"
+    t.string   "gcm_token"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "devices", ["pupil_id"], :name => "index_devices_on_pupil_id"
 
   create_table "disputes", :force => true do |t|
     t.integer  "student_id"

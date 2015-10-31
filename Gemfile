@@ -58,6 +58,7 @@ group :production do
 end
 
 gem 'dalli' # for caching
+gem 'gcm' # Google cloud messaging
 
 # Use unicorn as the web server
 # gem 'unicorn'
