@@ -17,5 +17,6 @@ class Pupil < ActiveRecord::Base
   validates :email, presence: true
   validates :email, uniqueness: true 
 
-  has_many :koshishein, dependent: :destroy
+  has_many :attempts, dependent: :destroy
+  has_many :devices, dependent: :destroy
 end
