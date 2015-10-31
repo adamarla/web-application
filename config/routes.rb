@@ -27,6 +27,9 @@ Webapp::Application.routes.draw do
   # Prewell Attempts 
   match 'update/attempt' => 'attempts#update', via: [:put, :post]
 
+  # Prepwell Devices (GCM) 
+  match 'device/add' => 'devices#create', via: [:put, :post]
+
   # Account 
   match 'account' => 'accounts#update', via: :post
   match 'exams/list' => 'accounts#exams', via: :get
