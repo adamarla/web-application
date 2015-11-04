@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151103070203) do
+ActiveRecord::Schema.define(:version => 20151104141807) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -361,6 +361,8 @@ ActiveRecord::Schema.define(:version => 20151103070203) do
     t.boolean  "available",                     :default => true
     t.integer  "n_codices",                     :default => 0
     t.string   "codices",         :limit => 5
+    t.boolean  "potd",                          :default => false
+    t.integer  "num_potd",                      :default => 0
   end
 
   add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"

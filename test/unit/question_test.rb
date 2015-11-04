@@ -20,6 +20,8 @@
 #  available       :boolean         default(TRUE)
 #  n_codices       :integer         default(0)
 #  codices         :string(5)
+#  potd            :boolean         default(FALSE)
+#  num_potd        :integer         default(0)
 #
 
 require 'test_helper'

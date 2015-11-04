@@ -20,6 +20,8 @@
 #  available       :boolean         default(TRUE)
 #  n_codices       :integer         default(0)
 #  codices         :string(5)
+#  potd            :boolean         default(FALSE)
+#  num_potd        :integer         default(0)
 #
 
 #     __:has_many____      ____:has_many___    ____:has_many__
