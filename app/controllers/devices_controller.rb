@@ -11,8 +11,8 @@ class DevicesController < ApplicationController
   end 
 
   def post_potd
-    api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
-    # api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
+    #api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
+    api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
 
     # Ensure there is someone to send notifications to
     reg_ids = Device.where(live: true).map(&:gcm_token)
