@@ -19,7 +19,7 @@ class BundleQuestion < ActiveRecord::Base
     bundle_uid = self.bundle.uid 
     return "" unless bundle_uid.starts_with?("cbse")
     year = bundle_uid.split('-')[3] 
-    return "CBSE Board #{year} Q.#{self.label}"
+    return "CBSE #{year} Q.#{self.label}"
   end 
 
 end
