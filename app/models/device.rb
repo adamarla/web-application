@@ -13,6 +13,7 @@
 class Device < ActiveRecord::Base
   # attr_accessible :title, :body
   validates :gcm_token, presence: true 
+  validates :gcm_token, uniqueness: true 
   belongs_to :pupil 
 
   def invalidate
