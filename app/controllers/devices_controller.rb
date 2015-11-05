@@ -11,22 +11,22 @@ class DevicesController < ApplicationController
   end 
 
   def post_potd
-    # api_key = "AIzaSyDN5sSLkuo6Rv6NoDDnpuSZxNroYumG-_Y"
     api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
     # api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
 
+    # Pick a question of the day 
+    q = Question.where(potd: true).order(:num_potd).first 
+    b = BundleQuestion.where(question_id: q.id).first 
+    q.update_attribute(:num_potd, q.num_potd + 1)
+
+    # Send GCM call 
 
     gcm = GCM.new(api_key)
     reg_ids = Device.where(live: true).map(&:gcm_token)
     payload = {
-#      notification: {
-#        body: 'Tuesday @ 11:40am', 
-#        title: 'GCM development', 
-#        icon: "@mipmap/think"
-#      }, 
       collapse_key: 'potd', 
       time_to_live: 86400, # a single day
-      data: { message: "Hello Dude!" }
+      data: { packet: { label: b.name, uid: q.uid, id: q.id } }
     }
     response = gcm.send reg_ids, payload 
 
