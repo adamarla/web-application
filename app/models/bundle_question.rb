@@ -14,4 +14,12 @@ class BundleQuestion < ActiveRecord::Base
   # attr_accessible :bundle_id, :question_id
   belongs_to :bundle
   belongs_to :question
+
+  def name 
+    bundle_uid = self.bundle.uid 
+    return "" unless bundle_uid.starts_with?("cbse")
+    year = bundle_uid.split('-')[3] 
+    return "CBSE Board #{year} Q.#{self.label}"
+  end 
+
 end
