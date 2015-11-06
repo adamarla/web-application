@@ -27,8 +27,8 @@ class DevicesController < ApplicationController
       gcm = GCM.new(api_key)
       payload = {
         collapse_key: 'potd', 
-        time_to_live: 86400, # a single day
-        data: { packet: { label: b.name, uid: q.uid, id: q.id } }
+        time_to_live: 86390, # 10 seconds less than a single day
+        data: { packet: { label: b.name, uid: q.uid, id: q.id, notification_id: Date.today.strftime("%b %d, %Y") } }
       }
       response = gcm.send reg_ids, payload 
 
