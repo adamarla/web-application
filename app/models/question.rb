@@ -66,6 +66,8 @@ class Question < ActiveRecord::Base
   has_many :commentaries, dependent: :destroy 
   has_many :tex_comments, through: :commentaries
 
+  has_many :notifications, dependent: :destroy
+
   has_one :video, as: :watchable
 
   
