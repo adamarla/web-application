@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
 
   def received 
     uid = params[:notification_id]
-    qid = params[:question_id] 
+    qid = params[:id] 
 
     n = Notification.where(uid: uid).first
     if n.nil?
@@ -19,7 +19,7 @@ class NotificationsController < ApplicationController
     # What happens if the ping for receiving notification got dropped
     # but the ping for opening comes through? 
     if n.nil? 
-      n = Notification.create(uid: uid, question_id: params[:question_id], num_received: 1, num_opened: 1) 
+      n = Notification.create(uid: uid, question_id: params[:id], num_received: 1, num_opened: 1) 
     else 
       n.update_attribute(:num_opened, n.num_opened + 1)
     end 
