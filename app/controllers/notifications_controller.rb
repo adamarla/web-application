@@ -2,7 +2,7 @@ class NotificationsController < ApplicationController
   respond_to :json
 
   def received 
-    uid = params[:uid]
+    uid = params[:notification_id]
     qid = params[:question_id] 
 
     n = Notification.where(uid: uid).first
@@ -15,7 +15,7 @@ class NotificationsController < ApplicationController
   end 
 
   def opened
-    n = Notification.where(uid: params[:uid]).first 
+    n = Notification.where(uid: params[:notification_id]).first 
     # What happens if the ping for receiving notification got dropped
     # but the ping for opening comes through? 
     if n.nil? 
@@ -25,4 +25,4 @@ class NotificationsController < ApplicationController
     end 
     render nothing: true, status: :ok
   end 
-end
+end # of class 
