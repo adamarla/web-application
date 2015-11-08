@@ -31,9 +31,8 @@ Webapp::Application.routes.draw do
   match 'device/add' => 'devices#create', via: [:put, :post]
   match 'device/potd' => 'devices#post_potd', via: :get
 
-  # Prepwell Notifications 
-  match 'notification/received' => 'notifications#received', via: [:put, :post]
-  match 'notification/opened' => 'notifications#opened', via: [:put, :post]
+  # Prepwell POTD  
+  match 'potd/update' => 'potd#update', via: [:put, :post]
 
   # Account 
   match 'account' => 'accounts#update', via: :post
