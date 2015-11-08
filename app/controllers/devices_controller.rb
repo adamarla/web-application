@@ -14,13 +14,14 @@ class DevicesController < ApplicationController
     #api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
     api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
 
-    # Ensure there is someone to send notifications to
+    # Ensure there is someone to send POTDs to
     reg_ids = Device.where(live: true).map(&:gcm_token)
 
     unless reg_ids.blank?
       # Pick a question of the day 
       q = Question.where(potd: true).order(:num_potd).first 
       b = BundleQuestion.where(question_id: q.id).first 
+      potd_id = Date.today.strftime("%b %d, %Y")
       q.update_attribute(:num_potd, q.num_potd + 1)
 
       # Send GCM call 
@@ -28,9 +29,10 @@ class DevicesController < ApplicationController
       payload = {
         collapse_key: 'potd', 
         time_to_live: 86390, # 10 seconds less than a single day
-        data: { packet: { label: b.name, uid: q.uid, id: q.id, notification_id: Date.today.strftime("%b %d, %Y") } }
+        data: { packet: { label: b.name, uid: q.uid, id: q.id, notification_id: potd_id } } 
       }
       response = gcm.send reg_ids, payload 
+      Potd.create(uid: potd_id, question_id: q.id)
 
       # Any tokens the GCM server says are invalid should be invalidated here too.
       unless response[:not_registered_ids].blank?
