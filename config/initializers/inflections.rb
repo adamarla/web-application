@@ -16,4 +16,5 @@
    inflect.irregular 'kaagaz', 'kaagaz'
    inflect.irregular 'codex', 'codices'
    inflect.irregular 'koshish', 'koshishein'
+   inflect.irregular 'potd', 'potd'
  end
