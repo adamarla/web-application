@@ -21,25 +21,27 @@ class DevicesController < ApplicationController
       # Pick a question of the day 
       q = Question.where(potd: true).order(:num_potd).first 
       b = BundleQuestion.where(question_id: q.id).first 
-      potd_id = Date.today.strftime("%b %d, %Y")
       q.update_attribute(:num_potd, q.num_potd + 1)
+      potd_id = Date.today.strftime("%b %d, %Y")
 
       # Send GCM call 
       gcm = GCM.new(api_key)
       payload = {
         collapse_key: 'potd', 
         time_to_live: 86390, # 10 seconds less than a single day
-        data: { packet: { label: b.name, uid: q.uid, id: q.id, notification_id: potd_id } } 
+        data: { packet: { label: b.name, uid: q.uid, id: q.id, notification_id: potd_id } } # release 
+        # data: { packet: { label: "Monday blues", uid: "1/5di/pugih", id: 1081, notification_id: potd_id } } # dev 
       }
       response = gcm.send reg_ids, payload 
-      Potd.create(uid: potd_id, question_id: q.id)
+      Potd.create(uid: potd_id, question_id: q.id) # release 
+      # Potd.create(uid: potd_id, question_id: 1081) # dev 
 
       # Any tokens the GCM server says are invalid should be invalidated here too.
       unless response[:not_registered_ids].blank?
         Device.where(gcm_token: response[:not_registered_ids]).map(&:invalidate)
       end 
     end 
-    render nothing: true, status: :ok
+    render json: { posted: true }, status: :ok
   end 
 
 end
