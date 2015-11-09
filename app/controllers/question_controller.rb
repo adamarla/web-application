@@ -1,6 +1,6 @@
 class QuestionController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, except: [:post_compile_updation, :tag, :bundle_which]
+  before_filter :authenticate_account!, except: [:post_compile_updation, :tag, :bundle_which, :set_potd_flag]
   respond_to :json
 
   def set_potd_flag
