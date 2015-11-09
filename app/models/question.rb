@@ -141,7 +141,7 @@ class Question < ActiveRecord::Base
       b_uids = Bundle.where(id: b_ids).map(&:uid) 
       can_be_potd = !b_uids.select{ |b| b.starts_with? "cbse"}.blank?
     end 
-    return can_be_potd
+    self.update_attribute :potd, (can_be_potd == true)
   end 
 
   def tagged? 
