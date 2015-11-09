@@ -54,11 +54,11 @@ class Bundle < ActiveRecord::Base
     return entries.map(&:label)
   end 
 
-  def self.mark_potd_candidates
+  def self.set_potd_flag(is_potd)
     bundles = Bundle.select{ |b| b.uid.starts_with? "cbse" }
     qids = BundleQuestion.where(bundle_id: bundles.map(&:id)).map(&:question_id) 
     Question.where(id: qids).each do |q| 
-      q.update_attribute :potd, true
+      q.update_attribute :potd, is_potd
     end 
   end 
 
