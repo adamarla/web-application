@@ -3,6 +3,12 @@ class QuestionController < ApplicationController
   before_filter :authenticate_account!, except: [:post_compile_updation, :tag, :bundle_which]
   respond_to :json
 
+  def set_potd_flag
+    q = Question.find params[:id]
+    q.set_potd_flag 
+    render nothing: true, status: :ok
+  end 
+
   def list
     p = params[:qsearch] 
     p = p.blank? ? {} : p 

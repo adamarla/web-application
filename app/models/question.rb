@@ -135,6 +135,15 @@ class Question < ActiveRecord::Base
     select{ |m| m.num_parts? == 0 }
   end
 
+  def set_potd_flag 
+    b_ids = BundleQuestion.where(question_id: self.id).map(&:bundle_id) # can belong to >= 1 bundle 
+    unless b_ids.blank? 
+      b_uids = Bundle.where(id: b_ids).map(&:uid) 
+      can_be_potd = !b_uids.select{ |b| b.starts_with? "cbse"}.blank?
+    end 
+    return can_be_potd
+  end 
+
   def tagged? 
     return self.topic_id != nil
   end
