@@ -141,7 +141,7 @@ Webapp::Application.routes.draw do
   match 'puzzle/next' => 'puzzles#next', via: :get 
 
   # Question
-  match 'question/set_potd_flag' => 'questions#set_potd_flag', via: :get
+  match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
   match 'bundle/which' => 'question#bundle_which', via: :get
   match 'tag/question' => 'question#tag', via: :post
   match 'questions/list' => 'question#list', via: :get
