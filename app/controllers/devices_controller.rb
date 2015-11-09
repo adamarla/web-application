@@ -16,8 +16,8 @@ class DevicesController < ApplicationController
 
     # Ensure there is someone to send POTDs to
     devices = Device.where(live: true)
-    test_mode = !params[:test].blank?
-    send_to = test_mode ? devices.where(pupil_id: 1)  : devices
+    test_mode = !params[:pupil].blank?
+    send_to = test_mode ? devices.where(pupil_id: params[:pupil])  : devices
     reg_ids = send_to.map(&:gcm_token) 
 
     unless reg_ids.blank?
