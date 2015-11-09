@@ -7,7 +7,7 @@ class PotdController < ApplicationController
       target = params[:opened] ? :num_opened : :num_received
       potd.update_attribute(target, potd[target] + 1)
     end 
-    render nothing: true, status: :ok
+    render json: { updated: true }, status: :ok 
   end 
 
 end # of class 
