@@ -6,7 +6,7 @@ class QuestionController < ApplicationController
   def set_potd_flag
     q = Question.find params[:id]
     q.set_potd_flag 
-    render nothing: true, status: :ok
+    render json: { id: params[:id] }, status: :ok 
   end 
 
   def list
