@@ -15,13 +15,16 @@ class DevicesController < ApplicationController
     api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
 
     # Ensure there is someone to send POTDs to
-    reg_ids = Device.where(live: true).map(&:gcm_token)
+    devices = Device.where(live: true)
+    test_mode = !params[:test].blank?
+    send_to = test_mode ? devices.where(pupil_id: 1)  : devices
+    reg_ids = send_to.map(&:gcm_token) 
 
     unless reg_ids.blank?
       # Pick a question of the day 
       q = Question.where(potd: true).order(:num_potd).first 
       b = BundleQuestion.where(question_id: q.id).first 
-      q.update_attribute(:num_potd, q.num_potd + 1)
+      q.update_attribute(:num_potd, q.num_potd + 1) unless test_mode 
       potd_id = Date.today.strftime("%b %d, %Y")
 
       # Send GCM call 
@@ -33,7 +36,7 @@ class DevicesController < ApplicationController
         # data: { packet: { label: "Monday blues", uid: "1/5di/pugih", id: 1081, notification_id: potd_id } } # dev 
       }
       response = gcm.send reg_ids, payload 
-      Potd.create(uid: potd_id, question_id: q.id) # release 
+      Potd.create(uid: potd_id, question_id: q.id) unless test_mode # release 
       # Potd.create(uid: potd_id, question_id: 1081) # dev 
 
       # Any tokens the GCM server says are invalid should be invalidated here too.
