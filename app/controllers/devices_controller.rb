@@ -11,40 +11,55 @@ class DevicesController < ApplicationController
   end 
 
   def post_potd
-    #api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
-    api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
+    dev_mode = params[:mode] == "dev" 
+    test_mode = !params[:id].blank?
+    potd_id = Date.today.strftime("%b %d, %Y")
+
+    if dev_mode 
+      api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
+    else 
+      api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
+    end 
 
     # Ensure there is someone to send POTDs to
     devices = Device.where(live: true)
-    test_mode = !params[:pupil].blank?
-    send_to = test_mode ? devices.where(pupil_id: params[:pupil])  : devices
+    send_to = test_mode ? devices.where(pupil_id: params[:id])  : devices
     reg_ids = send_to.map(&:gcm_token) 
 
     unless reg_ids.blank?
       # Pick a question of the day 
-      q = Question.where(potd: true).order(:num_potd).first 
-      b = BundleQuestion.where(question_id: q.id).first 
-      q.update_attribute(:num_potd, q.num_potd + 1) unless test_mode 
-      potd_id = Date.today.strftime("%b %d, %Y")
+      if dev_mode 
+        qid = 1098 
+        quid = "1/7di/z92ua" 
+        label = "Dev mode testing"
+      else 
+        q = Question.where(potd: true).order(:num_potd).first 
+        b = BundleQuestion.where(question_id: q.id).first 
+        q.update_attribute(:num_potd, q.num_potd + 1) unless test_mode 
+        label = b.name 
+        qid = q.id 
+        quid = q.uid 
+      end 
 
       # Send GCM call 
       gcm = GCM.new(api_key)
       payload = {
         collapse_key: 'potd', 
         time_to_live: 86390, # 10 seconds less than a single day
-        data: { packet: { label: b.name, uid: q.uid, id: q.id, notification_id: potd_id } } # release 
-        # data: { packet: { label: "Monday blues", uid: "1/5di/pugih", id: 1081, notification_id: potd_id } } # dev 
+        data: { packet: { label: label, uid: quid, id: qid, notification_id: potd_id } }
       }
+
       response = gcm.send reg_ids, payload 
-      Potd.create(uid: potd_id, question_id: q.id) unless test_mode # release 
-      # Potd.create(uid: potd_id, question_id: 1081) # dev 
+      Potd.create(uid: potd_id, question_id: qid) unless test_mode 
 
       # Any tokens the GCM server says are invalid should be invalidated here too.
-      unless response[:not_registered_ids].blank?
-        Device.where(gcm_token: response[:not_registered_ids]).map(&:invalidate)
-      end 
+      unregistered = response[:not_registered_ids]
+      Device.where(gcm_token: unregistered).map(&:invalidate)
+      num_posted = reg_ids.count - unregistered.count 
+    else 
+      num_posted = 0 
     end 
-    render json: { posted: true }, status: :ok
+    render json: { posted: num_posted }, status: :ok
   end 
 
 end
