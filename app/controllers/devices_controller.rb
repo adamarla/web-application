@@ -3,8 +3,13 @@ class DevicesController < ApplicationController
   require 'gcm'
 
   def create 
-    device = Device.new(gcm_token: params[:gcm_token], pupil_id: params[:pupil_id])
-    status = device.save ? :ok : :internal_server_error 
+    device = Device.where(gcm_token: params[:gcm_token]).first 
+    if device.nil? 
+      device = Device.new(gcm_token: params[:gcm_token], pupil_id: params[:pupil_id])
+      status = device.save ? :ok : :internal_server_error 
+    else 
+      status = :ok
+    end 
     # send some JSON back in response. Otherwise, Response.ErrorListener
     # will get called in Android even when everything went ok.
     render json: { pupil_id: params[:pupil_id] }, status: status 
