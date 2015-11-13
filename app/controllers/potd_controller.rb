@@ -4,7 +4,7 @@ class PotdController < ApplicationController
   def update 
     potd = Potd.where(uid: params[:potd_id]).first
     unless potd.nil?
-      target = params[:opened] ? :num_opened : :num_received
+      target = params[:opened] ? :num_opened : (params[:dismissed] ? :num_dismissed : :num_received)
       potd.update_attribute(target, potd[target] + 1)
     end 
     render json: { updated: true }, status: :ok 
