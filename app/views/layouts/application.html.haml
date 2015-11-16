@@ -30,25 +30,12 @@
       #control-panel.g-panel.row-fluid
         .span12
           .navbar.navbar-inverse
-            .navbar-inner
-              %a.brand.span3{ href: "#"}
-                = image_tag "logo-mit-beta-2.png"
-                #tagline= 'Partners in Practice'
-              %ul.nav.span6
-                %li.pull-left
-                  #signin-form
-                    %form.form-inline{ action: session_path(:account), method: :post }
-                      %input.input-medium{ type: :text, name: "account[login]", placeholder: "Email"}
-                      .input-append
-                        %input.input-medium{ type: :password, name: "account[password]", placeholder: "Password" }
-                        %button.btn.btn-large.btn-primary{ type: :submit }= "Sign In"
-              .span2{ id: 'misc-a'}
-                %div
-                  = simple_link for: 'Register', id: 'a-register'
-                %div
-                  = simple_link for: 'Forgot password?', id: 'a-reset-passwd'
+            #top-bar.navbar-inner
+              = image_tag "prepwell/logo-prepwell.png", size: "50x50", class: :span1
+              .span3
+                %h1= 'Prepwell'
+                %h5= 'Partners in Practice'
 
-      -#= render partial: 'puzzles/daily'
       = render partial: 'mobile/intro'
 
     = yield :toolbox

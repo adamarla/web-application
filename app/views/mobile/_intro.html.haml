@@ -1,50 +1,13 @@
 
-#mobile-intro.hero-unit.row-fluid 
-  #live-phone.span3
-    = image_tag 'landing-2/iphone-5765.png'
+#mobile-intro.row-fluid 
+  %h1.span6.offset3
+    Turn your smartphone into your practice partner 
+  #live-phone.span3.offset4
+    = image_tag 'prepwell/phone.png'
     #screens.carousel.slide
       .carousel-inner
         .item.active
-          = image_tag "landing-2/screenshots/topic-list.png"
-        - for j in ['question-list', 'question-preview','options', 'solution','review']
+          = image_tag "prepwell/1.png"
+        - for j in [2,3,5,8,9] 
           .item 
-            = image_tag "landing-2/screenshots/#{j}.png"
-  .span8
-    .row-fluid 
-      %h3.white= 'Turn your smartphone into your own personal practice partner.'
-    .row-fluid.push-down-30{ id: 'mktg-spiel'}
-      .span5
-        .li
-          .heading.orange= 'Attempt'
-          .subtext
-            Browse through our bank of questions on Class XI and XII Maths. 
-            All of our questions are free to see - and always will be.
-        .li
-          .heading.orange= 'Self Check'
-          .subtext
-            Find out instantly if you got the right answer. 
-        .li
-          .heading.orange= 'Stuck?'
-          .subtext
-            View our solution <span class='bubble'>paid</span> or send your work to us for review 
-            <span class='bubble'>free</span>. We will help 
-            you understand any gaps in your solution.
-      .span5.offset1
-        .li
-          .heading.orange= 'Pay as you go'
-          .subtext
-            We do not believe in 1-year or 2-year plans. You pay by the question and only for what you need.
-        .li
-          .heading.orange= 'Register now ...'
-          .subtext
-            \... and we will give you <span class='bubble'>100 free credit points</span> to spend on the mobile app. 
-    .row-fluid{ id: 'next-steps' }
-      .span5.offset1
-        %a{ id: 'a-scanbot', href: 'https://play.google.com/store/apps/details?id=com.gradians.collect&hl=en', 
-            target: '_blank', data: { 'no-touch' => :true } }
-          = image_tag 'landing-2/prepwell-orange.png'
-          download <span class='orange'>PrepWell</span> mobile app 
-      .span3.offset1
-        %a{ id: 'a-founders', data: { 'no-touch' => :true } }
-          = image_tag 'landing/group-3359.png'
-          about us
+            = image_tag "prepwell/#{j}.png"

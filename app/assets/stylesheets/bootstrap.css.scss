@@ -11,7 +11,7 @@
 $panel-color: lighten(black, 17%) ;
 $gradians-blue : #6ca7ab ;
 $orange : #fda500 ;
-$background: darken($panel-color, 12%) ;
+$background: #FFFFFF ; 
 $gray: #191919 ; // rgb(25,25,25)
 $deep-blue: #01537d ; // rgb(1,83,125)
 
@@ -4035,15 +4035,13 @@ button.btn.btn-mini, input[type="submit"].btn.btn-mini {
 .navbar-inverse {
   color: #999999;
   .navbar-inner {
-    background-color: #1b1b1b;
-    background-image: -moz-linear-gradient(top, #222222, #111111);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
-    background-image: -webkit-linear-gradient(top, #222222, #111111);
-    background-image: -o-linear-gradient(top, #222222, #111111);
-    background-image: linear-gradient(to bottom, #222222, #111111);
-    background-repeat: repeat-x;
+    background-color: #9F9E8F ;
+    # background-image: -moz-linear-gradient(top, #222222, #111111);
+    # background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
+    # background-image: -webkit-linear-gradient(top, #222222, #111111);
+    # background-image: -o-linear-gradient(top, #222222, #111111);
+    # background-image: linear-gradient(to bottom, #222222, #111111);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
-    border-color: #252525;
   }
   .brand, .nav > li > a {
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
@@ -4739,8 +4737,7 @@ a.thumbnail:hover {
   font-weight: 200;
   line-height: 21px;
   color: inherit;
-  // background-color: #eeeeee;
-  background-color: rgba(25,25,25,0.7) ;
+  background-color: #9F9E8F ; 
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
