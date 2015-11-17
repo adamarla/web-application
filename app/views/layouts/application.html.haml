@@ -35,6 +35,10 @@
               .span3
                 %h1= 'Prepwell'
                 %h5= 'Partners in Practice'
+              .span1.pull-right
+              = simple_link id: 'small-download-btn', for: 'Download', href: "https://play.google.com/store/apps/details?id=com.gradians.prepwell",
+              class: "btn pull-right", target: :blank
+              = simple_link id: 'a-founders', for: 'About Us', class: 'pull-right span2'
 
       = render partial: 'mobile/intro'
 

@@ -243,7 +243,7 @@ span.btn-shortcut {
 } 
 
 #m-founders {   
-  font-size: 11px ;
+  font-size: 12px ;
   text-align: justify ;
   .title { 
     &.large { font-size: 20px ; }
@@ -258,35 +258,59 @@ span.btn-shortcut {
   max-width: 70% ;
 } 
 
-#mobile-intro { 
-  padding: {
-    bottom: 20px ;
-  } 
-  min-height: 400px ;
-  h1 { 
+#big-banner { 
+  color: #4d4d47 ;
+  > h1 { 
     font: { 
-      size: 40px ;
+      size: 40px ; 
       weight: 300 ;
-    } 
-		color: #4D4D47 ;
-		line-height: 45px ;
-		margin-bottom:50px ;
-		text-align:center ;
-  } 
-  h3 { 
-    font-size: 22px ;
-  } 
+    }
+    text-align: center ;
+    line-height: 45px ;
+  }
+  margin: {
+    bottom: 25px ;
+  }
+} 
 
-  > #live-phone { 
-    > #screens { 
-      margin-left: 10px ;
-      position: relative ;
-			width: 221px ;
-			height: 332px ;
-			margin-top: -394px;
-      img { height: 332px ; width: 222px ; } 
+#product-pitch { 
+  color: #4d4d47 ;
+  font: { 
+    size: 12px ;
+    weight: 300 ;
+  } 
+  line-height: 17px ;
+  > div:first-child, >div:last-child { 
+    margin-top: 30px ;
+  } 
+} 
+
+#live-phone { 
+  > .carousel { 
+    position: relative ;
+    width: 221px ;
+    height: 332px ;
+    margin: { 
+      left: 9px ; 
+      top: -394px ;
+    }
+    img { 
+      width: 221px;
+      height: 332px ;
     } 
   } 
+} 
+
+a#small-download-btn, a#big-download-btn { 
+  background : { 
+    color: #769cb9 ; 
+    image: none ;
+  } 
+  margin : { 
+    top: 25px ; 
+  } 
+  font-weight: 400 ;
+  &:hover { color: white ; }
 } 
 
 #top-bar {
@@ -308,6 +332,16 @@ span.btn-shortcut {
 	h1 { 
 		margin-top: 11px ;
 	} 
+
+  > a#a-founders { 
+    margin-top: 30px ;
+    font: {
+      size: 14px ; 
+      weight: 400 ;
+    } 
+    color: #4d4d47 ;
+    text-align: center ;
+  } 
 } 
 
 #mktg-spiel { 
@@ -917,7 +951,7 @@ button[data-toggle='button'] {
   }
 
   &+ div { 
-    margin-top: 120px ;
+    margin-top: 100px ;
   } 
 } 
 

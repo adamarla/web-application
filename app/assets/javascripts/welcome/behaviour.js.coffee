@@ -7,4 +7,4 @@ jQuery ->
     $(honeyPot).addClass('chuppa-hua') if honeyPot?
     return true
 
-  $('#mobile-intro #screens').carousel()
+  $('#live-phone > .carousel').carousel { interval: 2200 }

@@ -624,7 +624,7 @@ jQuery ->
     $(ClientSideValidations.selectors.forms).validate()
     return true
   
-  $('#next-steps').on 'click', 'a', (event) ->
+  $('#top-bar').on 'click', 'a', (event) ->
     event.stopImmediatePropagation(event) 
     id = $(this).attr 'id' 
     mdl = if id is 'a-founders' then '#m-founders' else null
