@@ -27,8 +27,10 @@ class DevicesController < ApplicationController
     end 
 
     # Ensure there is someone to send POTDs to
-    devices = Device.where(live: true)
-    send_to = test_mode ? devices.where(pupil_id: params[:id])  : devices
+
+    live_devices = Device.where(live: true)
+    dnc_list = live_devices.where(pupil_id: [1,3,4,7,18,116]) # dnc = do-not-call
+    send_to = test_mode ? live_devices.where(pupil_id: params[:id])  : live_devices - dnc_list
     reg_ids = send_to.map(&:gcm_token) 
 
     unless reg_ids.blank?
