@@ -2,10 +2,14 @@ class BundlesController < ApplicationController
   respond_to :json
 
   def ping 
-    ids = params.values
     response = {} 
-    Bundle.where(uid: ids).each do |zip|
-      response[zip.uid] = zip.signature 
+
+    bundles = params[:type].blank? ? 
+        Bundle.where(uid: params.values) : 
+        Bundle.where('auto_download = ? AND signature IS NOT ?', true, nil)
+   
+    bundles.each do |b|
+      response[b.uid] = b.signature 
     end 
     render json: response, status: :ok
     # response goes to mobile-app 
