@@ -85,10 +85,7 @@ class QuestionController < ApplicationController
       b = qsn[:bundle]
       unless b.nil?
         uid, label = b.split('|')
-        bundle = Bundle.where(uid: uid).first
-        if bundle.nil?
-          bundle = Bundle.create uid: uid
-        end
+        bundle = Bundle.where(uid: uid).first || Bundle.create(uid: uid, auto_download: uid.starts_with?("cbse"))
 
         bq = BundleQuestion.where(bundle_id: bundle.id, label: label).first
         if bq.nil? # if this qsn has not been tagged already

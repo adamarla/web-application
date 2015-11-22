@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151117184227) do
+ActiveRecord::Schema.define(:version => 20151122091811) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -90,10 +90,11 @@ ActiveRecord::Schema.define(:version => 20151117184227) do
   add_index "bundle_questions", ["bundle_id"], :name => "index_bundle_questions_on_bundle_id"
 
   create_table "bundles", :force => true do |t|
-    t.string   "uid",        :limit => 50
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
-    t.string   "signature",  :limit => 20
+    t.string   "uid",           :limit => 50
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
+    t.string   "signature",     :limit => 20
+    t.boolean  "auto_download",               :default => false
   end
 
   create_table "checklists", :force => true do |t|
