@@ -9,6 +9,7 @@
 #  num_opened    :integer         default(0)
 #  num_dismissed :integer         default(0)
 #  num_failed    :integer         default(0)
+#  num_sent      :integer         default(0)
 #
 
 class Potd < ActiveRecord::Base

@@ -57,7 +57,7 @@ class DevicesController < ApplicationController
       }
 
       response = gcm.send reg_ids, payload 
-      problem = test_mode ? nil : Potd.create(uid: potd_id, question_id: qid) 
+      problem = test_mode ? nil : Potd.create(uid: potd_id, question_id: qid, num_sent: reg_ids.count) 
 
       # Any tokens the GCM server says are invalid should be invalidated here too.
       unregistered = response[:not_registered_ids]
