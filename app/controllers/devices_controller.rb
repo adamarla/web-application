@@ -15,10 +15,11 @@ class DevicesController < ApplicationController
     render json: { pupil_id: params[:pupil_id] }, status: status 
   end 
 
-  def post_potd
+  def post
     dev_mode = params[:mode] == "dev" 
     test_mode = !params[:id].blank?
-    potd_id = Date.today.strftime("%b %d, %Y")
+    notif_uid = Date.today.strftime("%b %d, %Y")
+    is_math = params[:type] != "joke"
 
     if dev_mode 
       api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
@@ -36,35 +37,49 @@ class DevicesController < ApplicationController
     unless reg_ids.blank?
       # Pick a question of the day 
       if dev_mode 
-        qid = 1098 
-        quid = "1/7di/z92ua" 
+        q = Question.where(uid: '1/7di/z92ua').first
         label = "Dev mode testing"
-      else 
+      elsif is_math  
         q = Question.where(potd: true).order(:num_potd).first 
         b = BundleQuestion.where(question_id: q.id).first 
         q.update_attribute(:num_potd, q.num_potd + 1) unless test_mode 
         label = b.name 
-        qid = q.id 
-        quid = q.uid 
+      else # jotd 
+        j = Joke.where(disabled: false).order(:num_jotd).first
+        j.update_attribute(:num_jotd, j.num_jotd + 1) unless test_mode
       end 
 
       # Send GCM call 
       gcm = GCM.new(api_key)
-      payload = {
-        collapse_key: 'potd', 
-        time_to_live: 86390, # 10 seconds less than a single day
-        data: { packet: { label: label, uid: quid, id: qid, notification_id: potd_id } }
-      }
+
+      if is_math
+        payload = {
+          collapse_key: 'potd', 
+          time_to_live: 86390, # 10 seconds less than a single day
+          data: { packet: { label: label, uid: q.uid, id: q.id, notification_id: notif_uid } }
+        }
+      else 
+        payload = {
+          collapse_key: 'jotd',
+          data: { packet: { uid: j.uid, image: j.image, notification_id: notif_uid } }
+        } 
+      end 
 
       response = gcm.send reg_ids, payload 
-      problem = test_mode ? nil : Potd.create(uid: potd_id, question_id: qid, num_sent: reg_ids.count) 
+
+      unless test_mode 
+        db_entry = is_math ? Potd.create(uid: notif_uid, question_id: q.id, num_sent: reg_ids.count) 
+                           : Jotd.create(uid: notif_uid, joke_id: j.id, num_sent: reg_ids.count) 
+      else 
+        db_entry = nil 
+      end 
 
       # Any tokens the GCM server says are invalid should be invalidated here too.
       unregistered = response[:not_registered_ids]
 
       unless unregistered.blank?
         Device.where(gcm_token: unregistered).map(&:invalidate)
-        problem.update_attribute(:num_failed, unregistered.count) unless problem.nil?
+        db_entry.update_attribute(:num_failed, unregistered.count) unless db_entry.nil?
       end 
 
       num_posted = reg_ids.count - unregistered.count 

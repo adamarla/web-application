@@ -29,7 +29,7 @@ Webapp::Application.routes.draw do
 
   # Prepwell Devices (GCM) 
   match 'device/add' => 'devices#create', via: [:put, :post]
-  match 'device/potd' => 'devices#post_potd', via: :get
+  match 'device/post' => 'devices#post', via: :get
 
   # Prepwell POTD  
   match 'potd/update' => 'potd#update', via: [:put, :post]
