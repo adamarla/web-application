@@ -6,6 +6,7 @@
 #  uid      :string(15)
 #  image    :boolean         default(FALSE)
 #  num_jotd :integer
+#  disabled :boolean         default(FALSE)
 #
 
 class Joke < ActiveRecord::Base

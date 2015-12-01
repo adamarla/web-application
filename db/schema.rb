@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151201100903) do
+ActiveRecord::Schema.define(:version => 20151201182150) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(:version => 20151201100903) do
     t.string  "uid",      :limit => 15
     t.boolean "image",                  :default => false
     t.integer "num_jotd"
+    t.boolean "disabled",               :default => false
   end
 
   create_table "jotd", :force => true do |t|
