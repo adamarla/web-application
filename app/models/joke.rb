@@ -10,4 +10,6 @@
 
 class Joke < ActiveRecord::Base
   # attr_accessible :title, :body
+  validates :uid, presence: true 
+  validates :uid, uniqueness: true 
 end
