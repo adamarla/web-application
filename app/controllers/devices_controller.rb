@@ -56,12 +56,12 @@ class DevicesController < ApplicationController
         payload = {
           collapse_key: 'potd', 
           time_to_live: 86390, # 10 seconds less than a single day
-          data: { packet: { label: label, uid: q.uid, id: q.id, notification_id: notif_uid } }
+          data: { packet: { label: label, uid: q.uid, id: q.id, notification_id: notif_uid , type: :potd } }
         }
       else 
         payload = {
           collapse_key: 'jotd',
-          data: { packet: { uid: j.uid, image: j.image, notification_id: notif_uid } }
+          data: { packet: { uid: j.uid, image: j.image, notification_id: notif_uid, type: :jotd } }
         } 
       end 
 
