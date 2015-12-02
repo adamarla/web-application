@@ -19,7 +19,7 @@ class DevicesController < ApplicationController
     dev_mode = params[:mode] == "dev" 
     test_mode = !params[:id].blank?
     notif_uid = Date.today.strftime("%b %d, %Y")
-    is_math = params[:type] != "joke"
+    is_math = params[:type] != "humor"
 
     if dev_mode 
       api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
@@ -44,34 +44,36 @@ class DevicesController < ApplicationController
         b = BundleQuestion.where(question_id: q.id).first 
         q.update_attribute(:num_potd, q.num_potd + 1) unless test_mode 
         label = b.name 
-      else # jotd 
-        j = Joke.where(disabled: false).order(:num_jotd).first
-        j.update_attribute(:num_jotd, j.num_jotd + 1) unless test_mode
+      else # humor 
+        j = Joke.where(disabled: false).order(:num_shown).first
+        j.update_attribute(:num_shown, j.num_shown + 1) unless test_mode
       end 
 
       # Send GCM call 
       gcm = GCM.new(api_key)
 
       if is_math
+        parent_id = q.id 
         payload = {
           collapse_key: 'potd', 
           time_to_live: 86390, # 10 seconds less than a single day
           data: { packet: { label: label, uid: q.uid, id: q.id, notification_id: notif_uid , type: :potd } }
         }
       else 
+        parent_id = j.id 
         payload = {
-          collapse_key: 'jotd',
-          data: { packet: { uid: j.uid, image: j.image, notification_id: notif_uid, type: :jotd } }
+          collapse_key: 'humor',
+          data: { packet: { uid: j.uid, image: j.image, notification_id: notif_uid, type: :humor } }
         } 
       end 
 
       response = gcm.send reg_ids, payload 
 
       unless test_mode 
-        db_entry = is_math ? Potd.create(uid: notif_uid, question_id: q.id, num_sent: reg_ids.count) 
-                           : Jotd.create(uid: notif_uid, joke_id: j.id, num_sent: reg_ids.count) 
+        type = params[:type] || "potd"
+        record = NotifResponse.create(category: type, uid: notif_uid, parent_id: parent_id, num_sent: reg_ids.count) 
       else 
-        db_entry = nil 
+        record = nil 
       end 
 
       # Any tokens the GCM server says are invalid should be invalidated here too.
@@ -79,7 +81,7 @@ class DevicesController < ApplicationController
 
       unless unregistered.blank?
         Device.where(gcm_token: unregistered).map(&:invalidate)
-        db_entry.update_attribute(:num_failed, unregistered.count) unless db_entry.nil?
+        record.update_attribute(:num_failed, unregistered.count) unless record.nil?
       end 
 
       num_posted = reg_ids.count - unregistered.count 
