@@ -60,7 +60,7 @@ class DevicesController < ApplicationController
         # GCM payload 
         payload = {
           collapse_key: 'humor',
-          data: { packet: { uid: j.uid, image: j.image, notification_id: notif_uid, type: :humor } }
+          data: { packet: { uid: parent.uid, image: parent.image, notification_id: notif_uid, type: :humor } }
         } 
       end 
 
