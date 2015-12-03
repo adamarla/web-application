@@ -35,43 +35,42 @@ class DevicesController < ApplicationController
     reg_ids = send_to.map(&:gcm_token) 
 
     unless reg_ids.blank?
-      # Pick a question of the day 
-      if dev_mode 
-        q = Question.where(uid: '1/7di/z92ua').first
-        label = "Dev mode testing"
-      elsif is_math  
-        q = Question.where(potd: true).order(:num_potd).first 
-        b = BundleQuestion.where(question_id: q.id).first 
-        q.update_attribute(:num_potd, q.num_potd + 1) unless test_mode 
-        label = b.name 
-      else # humor 
-        j = Joke.where(disabled: false).order(:num_shown).first
-        j.update_attribute(:num_shown, j.num_shown + 1) unless test_mode
-      end 
 
-      # Send GCM call 
-      gcm = GCM.new(api_key)
+      if is_math # POTD  
+        if dev_mode 
+          parent = Question.where(uid: '1/7di/z92ua').first 
+          label = "Dev mode testing"
+        else 
+          parent = Question.where(potd: true).order(:num_potd).first 
+          b = BundleQuestion.where(question_id: parent.id).first 
+          parent.update_attribute(:num_potd, parent.num_potd + 1) unless test_mode 
+          label = b.name 
+        end 
 
-      if is_math
-        parent_id = q.id 
+        # GCM payload 
         payload = {
           collapse_key: 'potd', 
           time_to_live: 86390, # 10 seconds less than a single day
-          data: { packet: { label: label, uid: q.uid, id: q.id, notification_id: notif_uid , type: :potd } }
+          data: { packet: { label: label, uid: parent.uid, id: parent.id, notification_id: notif_uid , type: :potd } }
         }
-      else 
-        parent_id = j.id 
+      else # Humor  
+        parent = Joke.where(disabled: false).order(:num_shown).first 
+        parent.update_attribute(:num_shown, parent.num_shown + 1) unless test_mode 
+
+        # GCM payload 
         payload = {
           collapse_key: 'humor',
           data: { packet: { uid: j.uid, image: j.image, notification_id: notif_uid, type: :humor } }
         } 
       end 
 
+      # Send GCM call 
+      gcm = GCM.new(api_key)
       response = gcm.send reg_ids, payload 
 
       unless test_mode 
         type = params[:type] || "potd"
-        record = NotifResponse.create(category: type, uid: notif_uid, parent_id: parent_id, num_sent: reg_ids.count) 
+        record = NotifResponse.create(category: type, uid: notif_uid, parent_id: parent.id, num_sent: reg_ids.count) 
       else 
         record = nil 
       end 
