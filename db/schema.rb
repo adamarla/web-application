@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151202165743) do
+ActiveRecord::Schema.define(:version => 20151204200411) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -56,6 +56,13 @@ ActiveRecord::Schema.define(:version => 20151202165743) do
     t.integer  "attempts"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
+  end
+
+  create_table "analgesics", :force => true do |t|
+    t.string  "uid",       :limit => 20
+    t.integer "num_shown",               :default => 0
+    t.boolean "disabled",                :default => false
+    t.string  "category",  :limit => 20
   end
 
   create_table "attempts", :force => true do |t|
@@ -288,13 +295,6 @@ ActiveRecord::Schema.define(:version => 20151202165743) do
   end
 
   add_index "hints", ["subpart_id"], :name => "index_hints_on_subpart_id"
-
-  create_table "jokes", :force => true do |t|
-    t.string  "uid",       :limit => 20
-    t.boolean "image",                   :default => false
-    t.integer "num_shown",               :default => 0
-    t.boolean "disabled",                :default => false
-  end
 
   create_table "kaagaz", :force => true do |t|
     t.string  "path",    :limit => 40

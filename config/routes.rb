@@ -34,8 +34,8 @@ Webapp::Application.routes.draw do
   # Prepwell POTD  
   match 'potd/update' => 'potd#update', via: [:put, :post]
 
-  # Prepwell Humor  
-  match 'joke/add' => 'jokes#create', via: [:put, :post]
+  # Prepwell Analgesics 
+  match 'analgesics/add' => 'analgesics#create', via: [:put, :post]
 
   # Prepwell NotifResponse 
   match 'notif/update' => 'notif_responses#update', via: [:put, :post]

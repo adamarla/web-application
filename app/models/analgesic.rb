@@ -1,15 +1,15 @@
 # == Schema Information
 #
-# Table name: jokes
+# Table name: analgesics
 #
 #  id        :integer         not null, primary key
 #  uid       :string(20)
-#  image     :boolean         default(FALSE)
 #  num_shown :integer         default(0)
 #  disabled  :boolean         default(FALSE)
+#  category  :string(20)
 #
 
-class Joke < ActiveRecord::Base
+class Analgesic < ActiveRecord::Base
   # attr_accessible :title, :body
   validates :uid, presence: true 
   validates :uid, uniqueness: true 

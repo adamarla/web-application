@@ -54,7 +54,7 @@ class DevicesController < ApplicationController
           data: { packet: { label: label, uid: parent.uid, id: parent.id, notification_id: notif_uid , type: :potd } }
         }
       else # Humor  
-        parent = Joke.where(disabled: false).order(:num_shown).first 
+        parent = Analgesic.where(disabled: false).order(:num_shown).first 
         parent.update_attribute(:num_shown, parent.num_shown + 1) unless test_mode 
 
         # GCM payload 
