@@ -38,7 +38,7 @@ Webapp::Application.routes.draw do
   match 'analgesics/add' => 'analgesics#create', via: [:put, :post]
 
   # Prepwell NotifResponse 
-  match 'notif/update' => 'notif_responses#update', via: [:put, :post]
+  match 'notif/update' => 'notif_response#update', via: [:put, :post]
 
   # Account 
   match 'account' => 'accounts#update', via: :post
