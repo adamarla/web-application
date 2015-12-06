@@ -18,8 +18,8 @@ class DevicesController < ApplicationController
   def post
     dev_mode = params[:mode] == "dev" 
     test_mode = !params[:id].blank?
-    notif_uid = Date.today.strftime("%b %d, %Y")
-    is_math = params[:type] != "humor"
+    notif_uid = Date.today.strftime("%a %b %d, %Y")
+    is_potd = params[:type] != "analgesic"
 
     if dev_mode 
       api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
@@ -36,7 +36,7 @@ class DevicesController < ApplicationController
 
     unless reg_ids.blank?
 
-      if is_math # POTD  
+      if is_potd # POTD  
         if dev_mode 
           parent = Question.where(uid: '1/7di/z92ua').first 
           label = "Dev mode testing"
@@ -59,8 +59,8 @@ class DevicesController < ApplicationController
 
         # GCM payload 
         payload = {
-          collapse_key: 'humor',
-          data: { packet: { uid: parent.uid, image: parent.image, notification_id: notif_uid, type: :humor } }
+          collapse_key: parent.category,
+          data: { packet: { uid: parent.uid, notification_id: notif_uid, type: parent.category } }
         } 
       end 
 
@@ -69,7 +69,7 @@ class DevicesController < ApplicationController
       response = gcm.send reg_ids, payload 
 
       unless test_mode 
-        type = params[:type] || "potd"
+        type = parent.category || "potd"
         record = NotifResponse.create(category: type, uid: notif_uid, parent_id: parent.id, num_sent: reg_ids.count) 
       else 
         record = nil 
