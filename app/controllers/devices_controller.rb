@@ -69,7 +69,7 @@ class DevicesController < ApplicationController
       response = gcm.send reg_ids, payload 
 
       unless test_mode 
-        type = parent.category || "potd"
+        type = parent[:category] || "potd"
         record = NotifResponse.create(category: type, uid: notif_uid, parent_id: parent.id, num_sent: reg_ids.count) 
       else 
         record = nil 
