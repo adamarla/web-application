@@ -24,8 +24,7 @@ class AttemptsController < ApplicationController
       # While everyone is not on version >= 1.08 of the app 
       if params[:max_time].blank? # >= 1.08 
         attempt.update_attributes time_to_answer: params[:time_to_answer], 
-                                  time_on_cards: params[:time_on_cards],
-                                  time_in_activity: params[:time_in_activity]
+                                  time_on_cards: params[:time_on_cards]
       else 
         attempt.update_attributes max_time: params[:max_time]
       end 
