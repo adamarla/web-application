@@ -51,7 +51,8 @@ class DevicesController < ApplicationController
         payload = {
           collapse_key: 'potd', 
           time_to_live: 86390, # 10 seconds less than a single day
-          data: { packet: { label: label, uid: parent.uid, id: parent.id, notification_id: notif_uid , type: :potd } }
+          data: { packet: { label: label, uid: (parent.nil? ? "1/7di/z92ua" : parent.uid), 
+            id: (parent.nil? ? 1098: parent.id), notification_id: notif_uid , type: :potd } }
         }
       else # Humor  
         parent = Analgesic.where(disabled: false).order(:num_shown).first 
