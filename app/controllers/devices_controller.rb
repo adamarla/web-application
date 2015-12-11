@@ -41,7 +41,9 @@ class DevicesController < ApplicationController
           parent = Question.where(uid: '1/7di/z92ua').first 
           label = "Dev mode testing"
         else 
-          parent = Question.where(potd: true).order(:num_potd).first 
+          potds = Question.where(potd: true) 
+          min = potds.map(&:num_potd).min
+          parent = potds.where(num_potd: min).sample(1).first 
           b = BundleQuestion.where(question_id: parent.id).first 
           parent.update_attribute(:num_potd, parent.num_potd + 1) unless test_mode 
           label = b.name 
