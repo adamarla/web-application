@@ -52,7 +52,7 @@ class DevicesController < ApplicationController
         # GCM payload 
         payload = {
           collapse_key: 'potd', 
-          time_to_live: 86390, # 10 seconds less than a single day
+          time_to_live: 172790, # 10 seconds less than two days 
           data: { packet: { label: label, uid: (parent.nil? ? "1/7di/z92ua" : parent.uid), 
             id: (parent.nil? ? 1098: parent.id), notification_id: notif_uid , type: :potd } }
         }
