@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151208114705) do
+ActiveRecord::Schema.define(:version => 20151215141923) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -150,6 +150,12 @@ ActiveRecord::Schema.define(:version => 20151208114705) do
     t.string   "qids"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "daily_streaks", :force => true do |t|
+    t.string  "date",         :limit => 30
+    t.integer "pupil_id"
+    t.integer "streak_total",               :default => 0
   end
 
   create_table "delayed_jobs", :force => true do |t|
