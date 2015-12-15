@@ -14,6 +14,7 @@ Webapp::Application.routes.draw do
   end 
 
   match 'ping' => 'application#ping', via: :get
+  match 'prepwellapp' => 'welcome#index'
 
   # Prepwell Pupils 
   match 'pupil/ping' => 'pupils#ping', via: [:get, :post]
