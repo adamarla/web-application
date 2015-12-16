@@ -55,6 +55,14 @@ class Bundle < ActiveRecord::Base
     return entries.map(&:label)
   end 
 
+  def self.with_uid_like(string) 
+    select{ |b| b.uid.include? string }
+  end 
+
+  def self.not_empty
+    where('signature IS NOT ?', nil)
+  end 
+
   def self.set_potd_flag(is_potd)
     bundles = Bundle.select{ |b| b.uid.starts_with? "cbse" }
     qids = BundleQuestion.where(bundle_id: bundles.map(&:id)).map(&:question_id) 
