@@ -56,7 +56,7 @@ class Bundle < ActiveRecord::Base
   end 
 
   def self.with_uid_like(string) 
-    where('uid LIKE ?', "#{string}")
+    where('uid LIKE ?', "%#{string}%")
   end 
 
   def self.not_empty
