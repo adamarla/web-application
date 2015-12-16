@@ -4,9 +4,13 @@ class BundlesController < ApplicationController
   def ping 
     response = {} 
 
-    bundles = params[:type].blank? ? 
-        Bundle.where(uid: params.values) : 
-        Bundle.where('auto_download = ? AND signature IS NOT ?', true, nil)
+    unless params[:tag].blank?
+      bundles = Bundle.with_uid_like(params[:tag]).not_empty 
+    else 
+      bundles = params[:type].blank? ? 
+          Bundle.where(uid: params.values) : 
+          Bundle.where('auto_download = ? AND signature IS NOT ?', true, nil)
+    end 
    
     bundles.each do |b|
       response[b.uid] = b.signature 
