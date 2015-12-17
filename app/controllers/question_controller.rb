@@ -109,8 +109,7 @@ class QuestionController < ApplicationController
         }
           
         bundle.update_zip([bq])
-        end
-      end
+      end # end bundle nil check
 
       concepts = qsn[:concepts]
       unless concepts.nil?
