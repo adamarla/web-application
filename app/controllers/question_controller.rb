@@ -88,23 +88,27 @@ class QuestionController < ApplicationController
         bundle = Bundle.where(uid: uid).first || Bundle.create(uid: uid, auto_download: uid.starts_with?("cbse"))
 
         bq = BundleQuestion.where(bundle_id: bundle.id, label: label).first
-        if bq.nil? # if this qsn has not been tagged already
-          bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
-          if bq.nil?
-            bq = BundleQuestion.new question_id: question.id, label: label
-            bundle.bundle_questions << bq
-          else
-            bq.update_attribute :label, label
-          end
+        # remove this label from existing bundle
+        unless bq.nil?
+          bq.delete
+        end
+
+        bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
+        if bq.nil?
+          bq = BundleQuestion.new question_id: question.id, label: label
+          bundle.bundle_questions << bq
+        else
+          bq.update_attribute :label, label
+        end
   
-          # delete this question from other bundles
-          BundleQuestion.where(question_id: question.id).map { |bqd|
-            if bqd.bundle_id != bundle.id
-              bqd.delete
-            end
-          }
+        # remove this question from any other bundles (1-1 only for now)
+        BundleQuestion.where(question_id: question.id).map { |bqd|
+          if bqd.bundle_id != bundle.id
+            bqd.delete
+          end
+        }
           
-          bundle.update_zip([bq])
+        bundle.update_zip([bq])
         end
       end
 
