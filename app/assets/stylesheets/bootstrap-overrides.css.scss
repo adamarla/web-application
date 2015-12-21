@@ -276,12 +276,39 @@ span.btn-shortcut {
 #product-pitch { 
   color: #4d4d47 ;
   font: { 
-    size: 12px ;
+    size: 13px ;
     weight: 300 ;
   } 
   line-height: 17px ;
   > div:first-child, >div:last-child { 
     margin-top: 30px ;
+  } 
+} 
+
+#good-samaritan { 
+  margin-top: 100px ;
+  background: #DCDCD3 ; 
+  padding: 10px ;
+  color: #4D4D47 ;
+  border: { 
+    radius: 5px ;
+  } 
+  font: { 
+    size: 14px ; 
+    weight: 300 ;
+  } 
+
+  line-height: 17px ;
+  > #samaritan-text { 
+    margin-top: 40px ;
+  } 
+
+  .tomato { 
+    color: #E9561F ;
+  } 
+
+  a {
+    cursor: pointer ;
   } 
 } 
 
