@@ -17,6 +17,7 @@
 #  time_to_answer :integer
 #  time_on_cards  :string(40)
 #  num_surrender  :integer
+#  time_to_bingo  :integer         default(0)
 #
 
 class Attempt < ActiveRecord::Base

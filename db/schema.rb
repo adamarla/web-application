@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151215141923) do
+ActiveRecord::Schema.define(:version => 20151228052049) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(:version => 20151215141923) do
     t.integer  "time_to_answer"
     t.string   "time_on_cards",  :limit => 40
     t.integer  "num_surrender"
+    t.integer  "time_to_bingo",                :default => 0
   end
 
   add_index "attempts", ["pupil_id"], :name => "index_koshishein_on_pupil_id"
