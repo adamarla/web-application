@@ -19,4 +19,8 @@ class Pupil < ActiveRecord::Base
 
   has_many :attempts, dependent: :destroy
   has_many :devices, dependent: :destroy
+
+  def name 
+    return "#{self.first_name} #{self.last_name}"
+  end 
 end
