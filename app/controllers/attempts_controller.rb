@@ -29,8 +29,15 @@ class AttemptsController < ApplicationController
         attempt.update_attributes max_time: params[:max_time]
       end 
 
-      # num_surrender 
-      attempt.update_attribute(:num_surrender, params[:num_surrender]) unless params[:num_surrender].blank?
+      update = [:num_surrender, :time_to_bingo]
+      columns = {} 
+
+      update.each do |key|
+        next if params[key].blank?
+        columns[key] = params[key]
+      end 
+
+      attempt.update_attributes(columns) unless columns.empty?
       render json: { id: attempt.id }, status: :ok
     else
       render json: { id: 0 }, status: :ok
