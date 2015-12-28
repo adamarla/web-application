@@ -71,12 +71,12 @@ class AttemptsController < ApplicationController
       highlight = (posn == i+1)
       name = highlight ? "You" : a.pupil.name 
       time_to_bingo = a.time_to_bingo
-      list.push { name: name, time: time_to_bingo, posn: i+1, highlight: highlight }
+      list << { name: name, time: time_to_bingo, posn: i+1, highlight: highlight }
     end 
 
     # If user is outside top-5.
     if posn > 6 # => mine != nil => pid > 0
-      list.push { name:  "You", time: mine.time_to_bingo, posn: posn, highlight: true }
+      list << { name:  "You", time: mine.time_to_bingo, posn: posn, highlight: true }
     end 
 
     render json: { leaderboard: list }, status: :ok
