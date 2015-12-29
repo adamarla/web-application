@@ -27,7 +27,9 @@ Webapp::Application.routes.draw do
 
   # Prewell Attempts 
   match 'update/attempt' => 'attempts#update', via: [:put, :post]
-  match 'load/leaderboard' => 'attempts#leaderboard', via: [:put, :post]
+
+  # Prepwell per-attempt Podium
+  match 'podium/ping' => 'podium#ping', via: :get
 
   # Prepwell Devices (GCM) 
   match 'device/add' => 'devices#create', via: [:put, :post]
