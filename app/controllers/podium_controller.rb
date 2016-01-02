@@ -14,6 +14,8 @@ class PodiumController < ApplicationController
       a = Attempt.where(pupil_id: pid, question_id: qid).first
       if a.nil?
         a = Attempt.create(pupil_id: pid, question_id: qid, time_to_bingo: time) # default time_to_bingo = 0 
+      elsif (a.time_to_bingo == 0 && time > 0)
+        a.update_attribute :time_to_bingo, time 
       end 
     end 
 

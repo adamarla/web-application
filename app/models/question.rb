@@ -148,6 +148,11 @@ class Question < ActiveRecord::Base
     return self.topic_id != nil
   end
 
+
+  def fastest_bingo 
+    return Attempt.where(question_id: self.id).where('time_to_bingo > ?', 0).order(:time_to_bingo).first
+  end 
+
   ####################################################################
   ##              PRICING
   # The next method returns the price - in Gredits - to be charged 

@@ -29,7 +29,7 @@ Webapp::Application.routes.draw do
   match 'attempt/by_user' => 'attempts#by_user', via: [:post]
 
   # Prepwell per-attempt Podium
-  match 'podium/ping' => 'podium#ping', via: :get
+  match 'podium/ping' => 'podium#ping', via: :post
 
   # Prepwell Devices (GCM) 
   match 'device/add' => 'devices#create', via: [:put, :post]
