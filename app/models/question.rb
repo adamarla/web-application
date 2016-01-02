@@ -149,7 +149,7 @@ class Question < ActiveRecord::Base
   end
 
 
-  def fastest_attempt 
+  def fastest_bingo 
     return Attempt.where(question_id: self.id).where('time_to_bingo > ?', 0).order(:time_to_bingo).first
   end 
 

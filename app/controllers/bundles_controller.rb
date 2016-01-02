@@ -15,6 +15,21 @@ class BundlesController < ApplicationController
     bundles.each do |b|
       response[b.uid] = b.signature 
     end 
+
+    # From version 2.22 onwards, we also send back the fastest bingo 
+    # for each question in the bundle. 
+    # Format: response[:fastest_bingo] = [{question_id, name, time}, ..... ]
+
+    response[:fastest_bingo] = []
+    bundles.each do |b| 
+      bingos = b.questions.map(&:fastest_bingo).select{ |x| !x.nil }
+      bingos.each do |bingo| 
+        response[:fastest_bingo] << { question_id: bingo.question_id, 
+                                      name: bingo.pupil.name, 
+                                      time: bingo.time_to_bingo }
+      end 
+    end 
+
     render json: response, status: :ok
     # response goes to mobile-app 
   end 
