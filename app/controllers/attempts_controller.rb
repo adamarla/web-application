@@ -44,5 +44,32 @@ class AttemptsController < ApplicationController
     end 
   end # of method 
 
+  def by_user
+    report_for = params[:report]
+    
+    min_threshold = report_for[:threshold].to_i
+    start_date = Date::strptime(report_for[:report_date], "%d/%m/%Y")
+    days = (Date.today - start_date).to_i
+    all_attempts = Attempt.where("created_at > ?", start_date)
+    uniq_pupils = all_attempts.map(&:pupil).uniq
+    
+    by_user = []
+    uniq_pupils.each do |up|
+      attempts = all_attempts.where(pupil_id: up.id).group("attempts.created_at::date").count
+      next if attempts.values.inject(:+) < min_threshold # at least these many attempts
+
+      counts=Array.new(days, 0)
+      attempts.each do |k, v|
+        counts[(Date::strptime(k, "%Y-%m-%d") - start_date).to_i] = v
+      end # of each attempt-day
+
+      by_user << {
+        name: up.name,
+        counts: counts
+      }
+    end # of each pupil
+
+    render json: { data: by_user, date: start_date }, status: :ok
+  end # of method
 
 end

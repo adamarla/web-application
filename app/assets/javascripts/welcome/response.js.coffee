@@ -28,3 +28,19 @@
 #
 #    e.stopPropagation() if matched is true
 #    return true
+
+jQuery ->
+
+  $(document).ajaxSuccess (e, xhr, settings) ->
+    json = $.parseJSON xhr.responseText
+    url = settings.url
+    matched = true
+
+    target = null
+    if url.match(/attempt\/by_user/)
+      target = $('#chart')
+      usageReport.byUser json, target
+
+    e.stopPropagation()
+    return true
+
