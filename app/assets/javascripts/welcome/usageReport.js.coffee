@@ -21,12 +21,10 @@ window.usageReport = {
     margin = { top: 50, right: 0, bottom: 50, left: 140 }
     gridSize = 20 
     width = gridSize * data[0].counts.length - margin.left - margin.right
-    # width = 2960 - margin.left - margin.right
-    height = 430 - margin.top - margin.bottom
+    height = gridSize * data.length
     buckets = 9
     colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"]
     times = []
-    # gridSize = Math.floor(width / data[0].counts.length)
     legendElementWidth = gridSize * 2
 
     # max tries for any student reqd to set color range
@@ -39,8 +37,8 @@ window.usageReport = {
     names = target.find("#names")
     names.empty()
     svgN = d3.select(names[0]).append('svg')
-    .attr('width', margin.left) 
-    .attr('height', height + margin.top + margin.bottom)
+    .attr('width', margin.left)
+    .attr('height', height + margin.top)
     .append('g')
     .attr('transform', "translate(#{margin.left}, #{margin.top})")
 
@@ -58,7 +56,7 @@ window.usageReport = {
     heat.empty()
     svgH = d3.select(heat[0]).append('svg')
     .attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom)
+    .attr('height', height + margin.top)
     .append('g')
     .attr('transform', "translate(0, #{margin.top})")
 
