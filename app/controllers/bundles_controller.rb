@@ -22,7 +22,7 @@ class BundlesController < ApplicationController
 
     response[:fastest_bingo] = []
     bundles.each do |b| 
-      bingos = b.questions.map(&:fastest_bingo).select{ |x| !x.nil }
+      bingos = b.questions.map(&:fastest_bingo).select{ |x| !x.nil? }
       bingos.each do |bingo| 
         response[:fastest_bingo] << { question_id: bingo.question_id, 
                                       name: bingo.pupil.name, 
