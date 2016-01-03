@@ -21,6 +21,7 @@
   %head 
     %title= "Partners in Practice"
     = stylesheet_link_tag "application" 
+    = stylesheet_link_tag "//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" 
     = javascript_include_tag "http://d3js.org/d3.v3.min.js"
     = javascript_include_tag "application", "welcome"
     = javascript_include_tag "external" if Rails.env == "production"
@@ -31,7 +32,8 @@
         .navbar.navbar-inverse
           .navbar-inner
             = simple_form_for :report, remote: true, url: attempt_by_user_path do |f|
-              = f.input :report_date, label: 'Start Date', html5: true
+              = f.input :report_date, label: 'Start Date', html5: true, 
+              input_html: { id: 'datepicker' }
               = f.input :threshold, label: 'Min. Threshold', collection: 0..5
               = f.button :submit, "Go"
       #chart.row-fluid.span12
