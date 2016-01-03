@@ -8,3 +8,8 @@ jQuery ->
     return true
 
   $('#live-phone > .carousel').carousel { interval: 2200 }
+
+  $('#datepicker').datepicker(
+    dateFormat: "dd/mm/yy"
+  )
+

@@ -1,0 +1,42 @@
+
+- server = "#{Gutenberg['server']}"
+-#-content_for :toolbox do
+  #toolbox.hidden 
+    = render partial: 'menus/user/abouts'
+    = render partial: 'toolbox/generic/line'
+  #modals
+    = render partial: 'modals/guest/register'
+    = render partial: 'modals/guest/founders'
+    = render partial: 'modals/guest/reset-passwd'
+  #notifications
+    = render partial: 'notifications/shared/old-browser'
+    = render partial: 'notifications/shared/reset-passwd'
+    = render partial: 'notifications/student/enrollment-blocked'
+    = render partial: 'notifications/student/enrolled-already'
+    = render partial: 'notifications/student/sektion-not-found'
+
+!!!5
+
+%html{html_attrs}
+  %head 
+    %title= "Partners in Practice"
+    = stylesheet_link_tag "application" 
+    = stylesheet_link_tag "//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" 
+    = javascript_include_tag "http://d3js.org/d3.v3.min.js"
+    = javascript_include_tag "application", "welcome"
+    = javascript_include_tag "external" if Rails.env == "production"
+    = csrf_meta_tag
+  %body 
+    .container-fluid 
+      .g-panel.row-fluid.span12
+        .navbar.navbar-inverse
+          .navbar-inner
+            = simple_form_for :report, remote: true, url: attempt_by_user_path do |f|
+              = f.input :report_date, label: 'Start Date', html5: true, 
+              input_html: { id: 'datepicker' }
+              = f.input :threshold, label: 'Min. Threshold', collection: 0..5
+              = f.button :submit, "Go"
+      #chart.row-fluid.span12
+        #names.span2
+        #heat.span10
+

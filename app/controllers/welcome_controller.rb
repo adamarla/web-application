@@ -25,4 +25,8 @@ class WelcomeController < ApplicationController
     render nothing: true, layout: 'faq' 
   end
 
+  def report
+    render nothing: true, layout: 'report'
+  end
+
 end
