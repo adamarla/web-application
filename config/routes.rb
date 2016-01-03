@@ -14,7 +14,6 @@ Webapp::Application.routes.draw do
   end 
 
   match 'ping' => 'application#ping', via: :get
-  match 'prepwellapp' => 'welcome#index'
 
   # Prepwell Pupils 
   match 'pupil/ping' => 'pupils#ping', via: [:get, :post]
@@ -27,6 +26,7 @@ Webapp::Application.routes.draw do
 
   # Prewell Attempts 
   match 'update/attempt' => 'attempts#update', via: [:put, :post]
+  match 'attempt/by_user' => 'attempts#by_user', via: [:post]
 
   # Prepwell per-attempt Podium
   match 'podium/ping' => 'podium#ping', via: :post
@@ -46,6 +46,10 @@ Webapp::Application.routes.draw do
 
   # Prepwell DailyStreaks 
   match 'streak/update' => 'daily_streaks#update', via: [:put, :post]
+
+  # Prepwell Reports
+  match 'prepwellapp' => 'welcome#index'
+  match 'prepwellapp/report' => 'welcome#report'
 
   # Account 
   match 'account' => 'accounts#update', via: :post
