@@ -49,7 +49,7 @@ window.usageReport = {
     .attr("x", 0)
     .attr("y", (d, i) -> i * gridSize )
     .style("text-anchor", "end")
-    .attr("transform", "translate(0," + gridSize / 1.5 + ")")
+    .attr("transform", "translate(0, #{gridSize / 1.5})")
     .attr("class", "black-labels")
 
     heat = target.find("#heat")
@@ -72,7 +72,7 @@ window.usageReport = {
     heatMap = svgH.selectAll(".hour")
     .data(data)
     .enter().append("g")
-    .attr("transform", (d, i) -> "translate(5, #{i * gridSize})")
+    .attr("transform", (d, i) -> "translate(0, #{i * gridSize})")
     .selectAll("rect")
     .data((d) -> d.counts)
     .enter().append("rect")
