@@ -14,10 +14,12 @@ class PupilsController < ApplicationController
       pid = pupil.id 
     end 
 
-    unless params[:id].blank? # updating something else of a previously created record
-      unless params[:gcm_token].blank? 
-        device = Device.where(pupil_id: params[:id], gcm_token: params[:gcm_token]).first 
-        device = Device.create(pupil_id: params[:id], gcm_token: params[:gcm_token]) if device.nil?
+    if pid > 0 # updating something else of a previously created record
+      token = params[:gcm_token] 
+
+      unless token.blank?  
+        device = Device.where(pupil_id: pid, gcm_token: token).first || 
+                 Device.create(pupil_id: pid, gcm_token: token)
       else 
         device = nil 
       end 
