@@ -34,7 +34,7 @@
             = simple_form_for :report, remote: true, url: attempt_by_user_path do |f|
               = f.input :report_date, label: 'Start Date', html5: true, 
               input_html: { id: 'datepicker' }
-              = f.input :threshold, label: 'Min. Threshold', collection: 0..5
+              = f.input :threshold, label: 'Min. Attempts', collection: 0..5
               = f.button :submit, "Go"
       #chart.row-fluid.span12
         #names.span2
