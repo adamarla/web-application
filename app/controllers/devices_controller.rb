@@ -37,13 +37,17 @@ class DevicesController < ApplicationController
     unless reg_ids.blank?
 
       if is_potd # POTD  
+        parent = params[:question_id].blank? ? nil : Question.find(params[:question_id])
+
         if dev_mode 
-          parent = Question.where(uid: '1/7di/z92ua').first 
+          parent = parent || Question.where(uid: '1/7di/z92ua').first 
           label = "Dev mode testing"
         else 
-          potds = Question.where(potd: true) 
-          min = potds.map(&:num_potd).min
-          parent = potds.where(num_potd: min).order(:examiner_id).first 
+          if parent.nil? 
+            potds = Question.where(potd: true) 
+            min = potds.map(&:num_potd).min
+            parent = potds.where(num_potd: min).order(:examiner_id).first 
+          end 
           b = BundleQuestion.where(question_id: parent.id).first 
           parent.update_attribute(:num_potd, parent.num_potd + 1) unless test_mode 
           label = b.name 
