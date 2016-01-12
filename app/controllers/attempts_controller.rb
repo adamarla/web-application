@@ -64,7 +64,7 @@ class AttemptsController < ApplicationController
       end # of each attempt-day
 
       by_user << {
-        name: up.name,
+        name: "#{up.name}(#{up.attempts.count})",
         counts: counts
       }
     end # of each pupil
