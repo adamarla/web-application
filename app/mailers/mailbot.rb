@@ -2,6 +2,11 @@ class Mailbot < ActionMailer::Base
   default from: "mailer-noreply@gradians.com"
   layout 'mailbot'
 
+  def app_dropoffs(pupils)
+    @pupils = pupils 
+    mail to: "help@gradians.com", subject: "Unregistered in the past 2-3 days" 
+  end 
+
   def curious_email(teacherform)
     mail subject:  teacherform[:email], 
       body:  teacherform[:text], to:  "akshay@gradians.com"

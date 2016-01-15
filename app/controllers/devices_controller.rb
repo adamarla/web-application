@@ -17,23 +17,21 @@ class DevicesController < ApplicationController
 
   def post
     dev_mode = params[:mode] == "dev" 
-    test_mode = !params[:id].blank?
+    targetted = !params[:id].blank?
     notif_uid = Date.today.strftime("%a %b %d, %Y")
     is_potd = params[:type] != "analgesic"
 
     if dev_mode 
       api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
+      send_to = Device.where(pupil_id: 1, live: false)
     else 
       api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
+      live_devices = Device.where(live: true)
+      dnc_list = live_devices.where(pupil_id: [3,4,7,18,116]) # dnc = do-not-call
+      send_to = targetted ? live_devices.where(pupil_id: params[:id])  : live_devices - dnc_list
     end 
 
-    # Ensure there is someone to send POTDs to
-
-    live_devices = Device.where(live: true)
-    dnc_list = live_devices.where(pupil_id: [3,4,7,18,116]) # dnc = do-not-call
-    send_to = test_mode ? live_devices.where(pupil_id: params[:id])  : live_devices - dnc_list
     reg_ids = send_to.map(&:gcm_token) 
-
     unless reg_ids.blank?
 
       if is_potd # POTD  
@@ -49,7 +47,7 @@ class DevicesController < ApplicationController
             parent = potds.where(num_potd: min).order(:examiner_id).first 
           end 
           b = BundleQuestion.where(question_id: parent.id).first 
-          parent.update_attribute(:num_potd, parent.num_potd + 1) unless test_mode 
+          parent.update_attribute(:num_potd, parent.num_potd + 1) unless targetted 
           label = b.name 
         end 
 
@@ -62,7 +60,7 @@ class DevicesController < ApplicationController
         }
       else # Humor  
         parent = Analgesic.where(disabled: false).order(:num_shown).first 
-        parent.update_attribute(:num_shown, parent.num_shown + 1) unless test_mode 
+        parent.update_attribute(:num_shown, parent.num_shown + 1) unless targetted 
 
         # GCM payload 
         payload = {
@@ -75,7 +73,7 @@ class DevicesController < ApplicationController
       gcm = GCM.new(api_key)
       response = gcm.send reg_ids, payload 
 
-      unless test_mode 
+      unless targetted 
         type = parent[:category] || "potd"
         record = NotifResponse.create(category: type, uid: notif_uid, parent_id: parent.id, num_sent: reg_ids.count) 
       else 
@@ -86,8 +84,14 @@ class DevicesController < ApplicationController
       unregistered = response[:not_registered_ids]
 
       unless unregistered.blank?
-        Device.where(gcm_token: unregistered).map(&:invalidate)
+        unrgd = Device.where(gcm_token: unregistered)
+
+        unrgd.map(&:invalidate)
         record.update_attribute(:num_failed, unregistered.count) unless record.nil?
+
+        # Send a mail to self with summary of unregistered users 
+        fuckers = Pupil.where(id: unrgd.map(&:pupil_id).uniq)
+        Mailbot.app_dropffs(fuckers).deliver_later
       end 
 
       num_posted = reg_ids.count - unregistered.count 
