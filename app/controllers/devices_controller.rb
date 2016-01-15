@@ -91,7 +91,7 @@ class DevicesController < ApplicationController
 
         # Send a mail to self with summary of unregistered users 
         fuckers = Pupil.where(id: unrgd.map(&:pupil_id).uniq)
-        Mailbot.app_dropffs(fuckers).deliver_later
+        Mailbot.app_dropoffs(fuckers).deliver_later
       end 
 
       num_posted = reg_ids.count - unregistered.count 
