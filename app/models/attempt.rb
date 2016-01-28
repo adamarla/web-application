@@ -29,4 +29,20 @@ class Attempt < ActiveRecord::Base
     return 0 if time_on_cards.blank? 
     return time_on_cards.delete("[]").split(',').map(&:to_i).inject(&:+)
   end 
+
+  def average_time 
+    # Returns average number of seconds
+    return 0 if (total_time.nil? || num_attempts == 0) 
+    return (total_time / num_attempts.to_f).round(2) 
+  end 
+
+  def self.with_times 
+    pids = [*1..Pupil.last.id] - [1,3]
+    where(pupil_id: pids).where('total_time > ?', 0)
+  end 
+
+  def self.outliers 
+    where('total_time > ?', 6000)
+  end 
+
 end
