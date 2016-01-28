@@ -34,7 +34,7 @@ class PodiumController < ApplicationController
     end 
 
     # If user is outside top-5.
-    if posn > 6 # => mine != nil => pid > 0
+    if posn > 5 # => mine != nil => pid > 0
       list << { name:  "You", time: mine.time_to_bingo, posn: posn, highlight: true }
     end 
 

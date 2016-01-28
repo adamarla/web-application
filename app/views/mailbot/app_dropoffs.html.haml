@@ -1,0 +1,18 @@
+
+%p
+  The following users uninstalled the app in the past 2-3 days. 
+  We do not know when the app was uninstalled. Hence, the <b>Active</b> number 
+  is only an estimate of the number of days the user retained the app. 
+%p
+  %table 
+    %tr{ style: 'text-align: center;' }
+      %th= "ID"
+      %th= "Name" 
+      %th= "Email"
+      %th= "Active (days)"
+    - for p in @pupils 
+      %tr{ style: 'text-align: center ;' }
+        %td= "#{p.id}"
+        %td= "#{p.name}"
+        %td= "#{p.email}"
+        %td= "#{(Date.today - p.created_at.to_date).to_i}"

@@ -51,11 +51,12 @@ class AttemptsController < ApplicationController
     start_date = Date::strptime(report_for[:report_date], "%d/%m/%Y")
     days = (Date.today - start_date).to_i
     all_attempts = Attempt.where("created_at > ?", start_date)
-    uniq_pupils = all_attempts.map(&:pupil).uniq
+    pids = all_attempts.map(&:pupil_id).uniq - [1,3] # remove founders from list 
+    pupils = Pupil.where(id: pids).sort{ |x,y| x.first_name <=> y.first_name }  
     
     by_user = []
-    uniq_pupils.each do |up|
-      attempts = all_attempts.where(pupil_id: up.id).group("attempts.created_at::date").count
+    pupils.each do |p|
+      attempts = all_attempts.where(pupil_id: p.id).group("attempts.created_at::date").count
       next if attempts.values.inject(:+) < min_threshold # at least these many attempts
 
       counts=Array.new(days, 0)
@@ -64,7 +65,7 @@ class AttemptsController < ApplicationController
       end # of each attempt-day
 
       by_user << {
-        name: "#{up.name}(#{up.attempts.count})",
+        name: "#{p.name}(#{p.attempts.count})",
         counts: counts
       }
     end # of each pupil
