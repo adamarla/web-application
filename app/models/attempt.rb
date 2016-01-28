@@ -38,11 +38,8 @@ class Attempt < ActiveRecord::Base
 
   def self.with_times 
     pids = [*1..Pupil.last.id] - [1,3]
-    where(pupil_id: pids).where('total_time > ?', 0)
-  end 
-
-  def self.outliers 
-    where('total_time > ?', 6000)
+    # where(pupil_id: pids).where('total_time > ?', 0)
+    where(pupil_id: pids).where('total_time > ?', 0).select{ |a| a.average_time < 1200 }
   end 
 
 end
