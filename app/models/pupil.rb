@@ -37,4 +37,12 @@ class Pupil < ActiveRecord::Base
     return (end_date - start_date).to_i
   end 
 
+  def returning_user? 
+    a = Attempt.where(pupil_id: self.id) 
+    return false if a.empty? 
+    dates = a.map{ |x| x.updated_at.to_date.strftime("%d / %m / %y") }
+    return dates.uniq.count > 1 
+  end 
+
+
 end
