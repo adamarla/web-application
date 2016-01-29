@@ -58,6 +58,13 @@ class Pupil < ActiveRecord::Base
     return (a.empty? ? 0 : a.map(&:num_attempts).inject(&:+))
   end 
 
+  def total_time_solving
+    a = Attempt.where(pupil_id: self.id) 
+    return 0 if a.blank?
+    total_times = a.map(&:total_time).select{ |t| !t.nil? }
+    return (total_times.blank? ? 0 : total_times.inject(&:+))
+  end 
+
   def self.registered_in_last(n)
     select{ |p| p.days_since_registration <= n }
   end 
