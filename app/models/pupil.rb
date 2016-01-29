@@ -38,6 +38,10 @@ class Pupil < ActiveRecord::Base
     return (end_date - start_date).to_i
   end 
 
+  def days_since_registration
+    return (Date.today - self.created_at.to_date).to_i
+  end 
+
   def returning_user? 
     a = Attempt.where(pupil_id: self.id) 
     return false if a.empty? 
@@ -46,6 +50,10 @@ class Pupil < ActiveRecord::Base
     return true if dates.uniq.count > 1 
     signed_up_on = self.created_at.to_date.strftime(format)
     return signed_up_on != dates.first
+  end 
+
+  def self.registered_in_last(n)
+    select{ |p| p.days_since_registration <= n }
   end 
 
 
