@@ -56,5 +56,9 @@ class Pupil < ActiveRecord::Base
     select{ |p| p.days_since_registration <= n }
   end 
 
+  def self.with_min_attempts(n)
+    select{ |p| Attempt.where(pupil_id: p.id).count >= n }
+  end 
+
 
 end
