@@ -36,10 +36,9 @@ class Attempt < ActiveRecord::Base
     return (total_time / num_attempts.to_f).round(2) 
   end 
 
-  def self.with_times 
+  def self.with_times(avg_time_threshold = 1200) 
     pids = [*1..Pupil.last.id] - [1,3]
-    # where(pupil_id: pids).where('total_time > ?', 0)
-    where(pupil_id: pids).where('total_time > ?', 0).select{ |a| a.average_time < 1200 }
+    where(pupil_id: pids).where('total_time > ?', 0).select{ |a| a.average_time < avg_time_threshold }
   end 
 
 end
