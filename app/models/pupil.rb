@@ -52,12 +52,18 @@ class Pupil < ActiveRecord::Base
     return signed_up_on != dates.first
   end 
 
+  def num_attempts(count_retries = true)
+    a = Attempt.where(pupil_id: self.id)
+    return a.count unless count_retries
+    return (a.empty? ? 0 : a.map(&:num_attempts).inject(&:+))
+  end 
+
   def self.registered_in_last(n)
     select{ |p| p.days_since_registration <= n }
   end 
 
   def self.with_min_attempts(n)
-    select{ |p| Attempt.where(pupil_id: p.id).map(&:num_attempts).inject(&:+) >= n }
+    select{ |p| p.num_attempts >= n } 
   end 
 
 
