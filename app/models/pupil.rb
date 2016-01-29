@@ -57,7 +57,7 @@ class Pupil < ActiveRecord::Base
   end 
 
   def self.with_min_attempts(n)
-    select{ |p| Attempt.where(pupil_id: p.id).count >= n }
+    select{ |p| Attempt.where(pupil_id: p.id).map(&:num_attempts).inject(&:+) >= n }
   end 
 
 
