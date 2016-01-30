@@ -65,6 +65,10 @@ class Pupil < ActiveRecord::Base
     return (total_times.blank? ? 0 : total_times.inject(&:+))
   end 
 
+  def days_between_attempts
+    return (self.days_active / self.num_attempts.to_f).round(2)
+  end 
+
   def self.registered_in_last(n)
     select{ |p| p.days_since_registration <= n }
   end 
