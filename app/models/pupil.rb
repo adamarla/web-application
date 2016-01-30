@@ -77,5 +77,15 @@ class Pupil < ActiveRecord::Base
     select{ |p| p.num_attempts >= n } 
   end 
 
+  def self.profile(pids)
+    # returns a hash where each value is an array of values extracted for passed pids
+    p = Pupil.where(id: pids) 
+    ret = {} 
+    [:num_attempts, :days_between_attempts, :days_active, :total_time_solving].each do |k| 
+      ret[k] = p.map(&k)
+    end 
+    return ret
+  end 
+
 
 end
