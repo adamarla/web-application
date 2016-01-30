@@ -42,7 +42,7 @@ window.usageReport = {
     .append('g')
     .attr('transform', "translate(#{margin.left}, #{margin.top})")
 
-    dayLabels = svgN.selectAll(".dayLabel")
+    nameLabels = svgN.selectAll(".nameLabel")
     .data(data)
     .enter().append("text")
     .text((d) -> return d.name)
@@ -51,6 +51,7 @@ window.usageReport = {
     .style("text-anchor", "end")
     .attr("transform", "translate(0, #{gridSize / 1.5})")
     .attr("class", "black-labels")
+    .append("title").text((d) -> "#{d.attempts} problems @ #{d.avg_time} min/problem")
 
     heat = target.find("#heat")
     heat.empty()
@@ -60,7 +61,7 @@ window.usageReport = {
     .append('g')
     .attr('transform', "translate(0, #{margin.top})")
 
-    timeLabels = svgH.selectAll(".timeLabel")
+    dateLabels = svgH.selectAll(".dateLabel")
     .data(data[0].counts)
     .enter().append("text")
     .text((d, i) -> getDate(i))

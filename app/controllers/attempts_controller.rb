@@ -45,28 +45,27 @@ class AttemptsController < ApplicationController
   end # of method 
 
   def by_user
-    report_for = params[:report]
-    
-    min_threshold = report_for[:threshold].to_i
-    start_date = Date::strptime(report_for[:report_date], "%d/%m/%Y")
+    start_date = Date::strptime(params[:report_date], "%d/%m/%Y")
     days = (Date.today - start_date).to_i
     all_attempts = Attempt.where("created_at > ?", start_date)
-    pids = all_attempts.map(&:pupil_id).uniq - [1,3] # remove founders from list 
+    pids = all_attempts.map(&:pupil_id).uniq - Pupil.where(known_associate: true).map(&:id) # remove founders from list 
     pupils = Pupil.where(id: pids).sort{ |x,y| x.first_name <=> y.first_name }  
     
     by_user = []
     pupils.each do |p|
       attempts = all_attempts.where(pupil_id: p.id).group("attempts.created_at::date").count
-      next if attempts.values.inject(:+) < min_threshold # at least these many attempts
 
       counts=Array.new(days, 0)
       attempts.each do |k, v|
         counts[(Date::strptime(k, "%Y-%m-%d") - start_date).to_i] = v
       end # of each attempt-day
-
+      
+      timed_attempts = p.attempts.where("total_time < 1800") # under 20 mins
       by_user << {
-        name: "#{p.name}(#{p.attempts.count})",
-        counts: counts
+        name: p.name,
+        counts: counts,
+        attempts: p.attempts.count,
+        avg_time: timed_attempts.count == 0 ? 0 : timed_attempts.map(&:total_time).inject(:+)/(timed_attempts.count*60)
       }
     end # of each pupil
 

@@ -31,11 +31,11 @@
       .g-panel.row-fluid.span12
         .navbar.navbar-inverse
           .navbar-inner
-            = simple_form_for :report, remote: true, url: attempt_by_user_path do |f|
-              = f.input :report_date, label: 'Start Date', html5: true, 
-              input_html: { id: 'datepicker' }
-              = f.input :threshold, label: 'Min. Attempts', collection: 0..5
-              = f.button :submit, "Go"
+            %button.btn.btn-primary{ id: 'lastWeek', type: :submit }= "Last Week"
+            %button.btn.btn-primary{ id: 'lastMonth', type: :submit }= "Last Month"
+            %button.btn.btn-primary{ id: 'last2Months', type: :submit }= "Last 2 Months"
+            %button.btn.btn-primary{ id: 'allTime', type: :submit }= "All time"
+            %button.btn.btn-inverse{ id: 'summary', type: :submit }= "Summary"
       #chart.row-fluid.span12
         #names.span2
         #heat.span10
