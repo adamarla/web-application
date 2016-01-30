@@ -60,6 +60,9 @@ end
 gem 'dalli' # for caching
 gem 'gcm' # Google cloud messaging
 
+# Basic statistics 
+gem 'descriptive_statistics', '~> 2.4.0', :require => 'descriptive_statistics/safe'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
