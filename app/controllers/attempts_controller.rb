@@ -86,7 +86,7 @@ class AttemptsController < ApplicationController
         name: "#{week_start.strftime('%d/%m')}-#{week_end.strftime('%d/%m')}",
         unique_users: attempts.map(&:pupil_id).uniq.count,
         num_attempts: attempts.count,
-        time_spent: attempts.map{ |a| a.total_time.nil? 0 : (a.total_time > 900 ? 120 : a.total_time) }.inject(:+)
+        time_spent: attempts.map{ |a| a.total_time.nil? ? 0 : (a.total_time > 900 ? 120 : a.total_time) }.inject(:+)
       }
       week_start = week_end + 1
     end
