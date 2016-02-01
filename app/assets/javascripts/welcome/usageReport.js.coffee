@@ -12,14 +12,67 @@ getDate = (offset) ->
     dd + '/' + mm
 
 window.usageReport = {
-  
+
+  byWeek: (json, target) ->
+    chart = target
+    data = json.data
+    
+    barWidth = 75 
+    margin = { top: 50, right: 0, bottom: 50, left: 40}
+    width = (barWidth * data.length) - margin.left - margin.right
+    height = 500 - margin.top - margin.bottom
+
+    x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1)
+    y = d3.scale.linear().range([height, 0])
+
+    xAxis = d3.svg.axis().scale(x).orient("bottom")
+    yAxis = d3.svg.axis().scale(y).orient("left").ticks(10, "")
+
+    target.empty()
+    chart = target[0]
+    svg = d3.select(chart).append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(#{margin.left}, #{margin.top})")
+
+    x.domain(data.map((d) -> d.name ))
+    y.domain([0, d3.max(data, (d) -> d.num_attempts)])
+
+    svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0, #{height})")
+    .call(xAxis)
+
+    svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Attempts")
+    .attr("class", "black-labels")
+
+    svg.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("x", (d) -> x(d.name))
+    .attr("width", x.rangeBand())
+    .attr("y", (d) -> y(d.num_attempts))
+    .attr("height", (d) -> height - y(d.num_attempts))
+
+    return true
+ 
   byUser: (json, target) ->
 
     start_date = json.date
     data = json.data
 
     margin = { top: 50, right: 0, bottom: 50, left: 140 }
-    gridSize = 20 
+    gridSize = 15 
     width = gridSize * data[0].counts.length - margin.left - margin.right
     height = gridSize * data.length
     buckets = 9
@@ -33,7 +86,10 @@ window.usageReport = {
       maxes[i] = valueObj.counts)
 
     colorScale = d3.scale.quantile().domain([0, buckets-1, d3.max(maxes)]).range(colors)
+
+    target.empty()
     
+    target.append("<div id='names' class='span2'/>")
     names = target.find("#names")
     names.empty()
     svgN = d3.select(names[0]).append('svg')
@@ -53,6 +109,7 @@ window.usageReport = {
     .attr("class", "black-labels")
     .append("title").text((d) -> "#{d.attempts} problems @ #{d.avg_time} min/problem")
 
+    target.append("<div id='heat' class='span10'/>")
     heat = target.find("#heat")
     heat.empty()
     svgH = d3.select(heat[0]).append('svg')
