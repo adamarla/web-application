@@ -27,6 +27,7 @@ Webapp::Application.routes.draw do
   # Prewell Attempts 
   match 'update/attempt' => 'attempts#update', via: [:put, :post]
   match 'attempt/by_user' => 'attempts#by_user', via: [:post]
+  match 'attempt/by_week' => 'attempts#by_week', via: [:get]
 
   # Prepwell per-attempt Podium
   match 'podium/ping' => 'podium#ping', via: :post

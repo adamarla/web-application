@@ -40,7 +40,12 @@ jQuery ->
     if url.match(/attempt\/by_user/)
       target = $('#chart')
       usageReport.byUser json, target
+    else if url.match(/attempt\/by_week/)
+      target = $('#chart')
+      usageReport.byWeek json, target
+    else
+      matched = false
 
-    e.stopPropagation()
+    e.stopPropagation() if matched is true
     return true
 

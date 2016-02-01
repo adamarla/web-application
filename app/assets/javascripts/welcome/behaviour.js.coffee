@@ -7,8 +7,6 @@ fetch_report = (offset) ->
 
 jQuery ->
   
-  ## $('input, textarea').placeholder()
-
   $('#m-register').on 'show', (event) ->
     honeyPot = $(this).find("input[id='jaal']")[0]
     $(honeyPot).addClass('chuppa-hua') if honeyPot?
@@ -26,6 +24,9 @@ jQuery ->
     today = new Date()
     epoch = new Date(2015, 10, 16)
     fetch_report(Math.floor((today - epoch)/(1000*3600*24)))
+  $('#weekly').on 'click', (event) ->
+    $.get '../attempt/by_week'
+    return true 
 
   $('#datepicker').datepicker(
     dateFormat: "dd/mm/yy"
