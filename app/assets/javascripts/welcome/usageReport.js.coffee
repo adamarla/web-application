@@ -42,6 +42,21 @@ window.usageReport = {
       .append("g")
       .attr("transform", "translate(#{margin.left}, #{margin.top})")
 
+    svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0, #{height})")
+    .call(xAxis)
+
+    svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Attempts")
+
     data.num_attempts.forEach((v, i) ->
       svg.append("line")
       .attr("x1", 0).attr("y1", maxAttempts - data.num_attempts[i])
@@ -61,11 +76,10 @@ window.usageReport = {
     height = 500 - margin.top - margin.bottom
 
     x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1)
-    yA = d3.scale.linear().range([height, 0])
-    yU = d3.scale.linear().range([height, 0])
+    y = d3.scale.linear().range([height, 0])
 
     xAxis = d3.svg.axis().scale(x).orient("bottom")
-    yAxis = d3.svg.axis().scale(yA).orient("left").ticks(5, "")
+    yAxis = d3.svg.axis().scale(y).orient("left")
 
     target.empty()
     chart = target[0]
@@ -76,8 +90,7 @@ window.usageReport = {
     .attr("transform", "translate(#{margin.left}, #{margin.top})")
 
     x.domain(data.map((d) -> d.name ))
-    yA.domain([0, d3.max(data, (d) -> d.num_attempts)])
-    yU.domain([0, d3.max(data, (d) -> d.unique_users)])
+    y.domain([0, d3.max(data, (d) -> d.num_attempts)])
 
     svg.append("g")
     .attr("class", "x axis")
@@ -107,8 +120,8 @@ window.usageReport = {
     .attr("class", "bar")
     .attr("x", (d, i) -> if i == 0 then 0 else x.rangeBand()/2)
     .attr("width", x.rangeBand()/2)
-    .attr("y", (d, i) -> if i == 0 then yU(d) else yA(d))
-    .attr("height", (d, i) -> if i == 0 then (height - yU(d)) else (height - yA(d)))
+    .attr("y", (d) -> y(d))
+    .attr("height", (d) -> height - y(d))
     .style("fill", (d, i) -> if i == 0 then "#98abc5" else "#8a89a6")
 
     return true
