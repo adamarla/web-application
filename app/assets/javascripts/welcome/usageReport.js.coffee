@@ -123,6 +123,7 @@ window.usageReport = {
     .attr("y", (d) -> y(d))
     .attr("height", (d) -> height - y(d))
     .style("fill", (d, i) -> if i == 0 then "#98abc5" else "#8a89a6")
+    .append("title").text((d) -> d)
 
     return true
  
