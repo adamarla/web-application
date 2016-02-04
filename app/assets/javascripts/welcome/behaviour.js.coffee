@@ -27,6 +27,9 @@ jQuery ->
   $('#weekly').on 'click', (event) ->
     $.get '../attempt/by_week'
     return true 
+  $('#streaks').on 'click', (event) ->
+    $.get '../attempt/by_streak'
+    return true
 
   $('#datepicker').datepicker(
     dateFormat: "dd/mm/yy"

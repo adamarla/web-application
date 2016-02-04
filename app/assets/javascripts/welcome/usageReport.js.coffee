@@ -11,7 +11,45 @@ getDate = (offset) ->
     y = thisDate.getFullYear()
     dd + '/' + mm
 
+getIntensity = (time, num_attempts) ->
+    time/num_attempts > 1800 ? 4 : (time/num_attempts) * 2
+
 window.usageReport = {
+
+  byStreak: (json, target) ->
+    chart = target
+    data = json.data
+
+    maxAttempts = d3.max(data.num_attempts, (d) -> d)
+    maxDaysActive = d3.max(data.days_active, (d) -> d)
+
+    dayWidth = 5 
+    margin = { top: 50, right: 0, bottom: 50, left: 40}
+    width = (dayWidth * maxDaysActive) - margin.left - margin.right
+    height = (dayWidth * maxAttempts) - margin.top - margin.bottom
+
+    x = d3.scale.linear().range(0, [width])
+    y = d3.scale.linear().range([height, 0])
+
+    xAxis = d3.svg.axis().scale(x).orient("bottom")
+    yAxis = d3.svg.axis().scale(y).orient("left").ticks(10, "")
+
+    target.empty()
+    chart = target[0]
+    svg = d3.select(chart).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(#{margin.left}, #{margin.top})")
+
+    data.num_attempts.forEach((v, i) ->
+      svg.append("line")
+      .attr("x1", 0).attr("y1", maxAttempts - data.num_attempts[i])
+      .attr("x2", data.days_active[i] * dayWidth).attr("y2", maxAttempts - data.num_attempts[i])
+      .attr("stroke-width", 2)
+      .attr("stroke-dasharray", Math.floor(data.days_between_attempts[i]), 1))
+
+    return true
 
   byWeek: (json, target) ->
     chart = target
@@ -23,10 +61,11 @@ window.usageReport = {
     height = 500 - margin.top - margin.bottom
 
     x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1)
-    y = d3.scale.linear().range([height, 0])
+    yA = d3.scale.linear().range([height, 0])
+    yU = d3.scale.linear().range([height, 0])
 
     xAxis = d3.svg.axis().scale(x).orient("bottom")
-    yAxis = d3.svg.axis().scale(y).orient("left").ticks(10, "")
+    yAxis = d3.svg.axis().scale(yA).orient("left").ticks(5, "")
 
     target.empty()
     chart = target[0]
@@ -37,7 +76,8 @@ window.usageReport = {
     .attr("transform", "translate(#{margin.left}, #{margin.top})")
 
     x.domain(data.map((d) -> d.name ))
-    y.domain([0, d3.max(data, (d) -> d.num_attempts)])
+    yA.domain([0, d3.max(data, (d) -> d.num_attempts)])
+    yU.domain([0, d3.max(data, (d) -> d.unique_users)])
 
     svg.append("g")
     .attr("class", "x axis")
@@ -52,17 +92,24 @@ window.usageReport = {
     .attr("y", 6)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
-    .text("Attempts")
+    .text("Users | Attempts")
     .attr("class", "black-labels")
 
-    svg.selectAll(".bar")
+    week = svg.selectAll(".week")
     .data(data)
+    .enter().append("g")
+    .attr("class", "week")
+    .attr("transform", (d) -> "translate(#{x(d.name)})")
+ 
+    week.selectAll("rect")
+    .data((d) -> [d.unique_users, d.num_attempts])
     .enter().append("rect")
     .attr("class", "bar")
-    .attr("x", (d) -> x(d.name))
-    .attr("width", x.rangeBand())
-    .attr("y", (d) -> y(d.num_attempts))
-    .attr("height", (d) -> height - y(d.num_attempts))
+    .attr("x", (d, i) -> if i == 0 then 0 else x.rangeBand()/2)
+    .attr("width", x.rangeBand()/2)
+    .attr("y", (d, i) -> if i == 0 then yU(d) else yA(d))
+    .attr("height", (d, i) -> if i == 0 then (height - yU(d)) else (height - yA(d)))
+    .style("fill", (d, i) -> if i == 0 then "#98abc5" else "#8a89a6")
 
     return true
  
