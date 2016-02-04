@@ -94,5 +94,11 @@ class AttemptsController < ApplicationController
     render json: { data: by_week }, status: :ok
   end # of method
 
+  def by_streak
+    pupil_ids = Pupil.where(known_associate: false).map(&:id)
+    profiles = Pupil.profile(pupil_ids)
+    render json: { data: profiles }, status: :ok
+  end # of method
+
 end
 
