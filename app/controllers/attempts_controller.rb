@@ -44,7 +44,7 @@ class AttemptsController < ApplicationController
     end 
   end # of method 
 
-  def by_user
+  def by_day
     start_date = Date::strptime(params[:report_date], "%d/%m/%Y")
     days = (Date.today - start_date).to_i
     all_attempts = Attempt.where("created_at > ?", start_date)
@@ -94,7 +94,7 @@ class AttemptsController < ApplicationController
     render json: { data: by_week }, status: :ok
   end # of method
 
-  def by_streak
+  def by_user
     pupil_ids = Pupil.where(known_associate: false).map(&:id)
     profiles = Pupil.profile(pupil_ids)
     render json: { data: profiles }, status: :ok

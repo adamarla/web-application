@@ -2,7 +2,7 @@
 fetch_report = (offset) ->
   reportDate = new Date()
   reportDate.setDate(new Date().getDate() - offset)
-  $.post '../attempt/by_user', { report_date: "#{reportDate.getDate()}/#{reportDate.getMonth()+1}/#{reportDate.getFullYear()}" }
+  $.get '../attempt/by_day', { report_date: "#{reportDate.getDate()}/#{reportDate.getMonth()+1}/#{reportDate.getFullYear()}" }
   return true 
 
 jQuery ->
@@ -27,8 +27,8 @@ jQuery ->
   $('#weekly').on 'click', (event) ->
     $.get '../attempt/by_week'
     return true 
-  $('#streaks').on 'click', (event) ->
-    $.get '../attempt/by_streak'
+  $('#buckets').on 'click', (event) ->
+    $.get '../attempt/by_user'
     return true
 
   $('#datepicker').datepicker(
