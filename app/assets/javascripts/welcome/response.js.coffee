@@ -37,10 +37,10 @@ jQuery ->
     matched = true
 
     target = $('#chart')
-    if url.match(/attempt\/by_user/)
-      usageReport.byUser json, target
-    else if url.match(/attempt\/by_streak/)
-      usageReport.byStreak json, target
+    if url.match(/attempt\/by_day/)
+      usageReport.byDay json, target
+    else if url.match(/attempt\/by_user/)
+      usageReport.byBucket json, target
     else if url.match(/attempt\/by_week/)
       usageReport.byWeek json, target
     else

@@ -16,7 +16,85 @@ getIntensity = (time, num_attempts) ->
 
 window.usageReport = {
 
-  byStreak: (json, target) ->
+  byBucket: (json, target) ->
+    target.empty()
+    chart = target[0]
+    data = json.data
+    # 6 buckets - 1-3, 4-10, 11-20, 21-30, 31-50, 50+
+    buckets = [[], [], [], [], [], [], []]
+
+    margin = { top: 50, right: 50, bottom: 50, left: 140 }
+    width = 80 * buckets.length - margin.left - margin.right
+    height = 400
+
+    x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1)
+    y = d3.scale.linear().range([height, 0])
+
+    xAxis = d3.svg.axis().scale(x).orient("bottom")
+    yAxis = d3.svg.axis().scale(y).orient("left")
+
+    svg = d3.select(chart).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(#{margin.left}, #{margin.top})")
+
+    data.num_attempts.forEach((v, i) ->
+      switch true
+        when v in [0] then buckets[0].push v 
+        when v in [1..3] then buckets[1].push v
+        when v in [4..10] then buckets[2].push v
+        when v in [11..20] then buckets[3].push v
+        when v in [21..30] then buckets[4].push v
+        when v in [31..50] then buckets[5].push v
+        else buckets[6].push v)
+
+    names = ["0", "1-3", "4-10", "11-20", "21-30", "31-50", " > 50"]
+    x.domain(names)
+    y.domain([0, d3.max(buckets, (d) -> d.length)])
+
+    svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0, #{height})")
+    .call(xAxis)
+    .append("text")
+    .attr("x", width + margin.right)
+    .attr("y", 10)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Attempts")
+
+    svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("x", 15)
+    .attr("y", -20)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Users")
+
+    bucket = svg.selectAll(".bucket")
+    .data(buckets)
+    .enter().append("g")
+    .attr("class", "bucket")
+    .attr("transform", (d, i) -> "translate(#{x(names[i])})")
+
+    bucket.selectAll("rect")
+    .data((d) -> [d.length])
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("x", 0)
+    .attr("width", x.rangeBand())
+    .attr("y", (d) -> y(d))
+    .attr("height", (d) -> height - y(d))
+    .style("fill", "#98abc5")
+    .append("title").text((d) -> d)
+
+    return true
+
+  byUser: (json, target) ->
     chart = target
     data = json.data
 
@@ -127,7 +205,7 @@ window.usageReport = {
 
     return true
  
-  byUser: (json, target) ->
+  byDay: (json, target) ->
 
     start_date = json.date
     data = json.data
