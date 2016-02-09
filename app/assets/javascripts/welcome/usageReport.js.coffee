@@ -20,7 +20,7 @@ window.usageReport = {
     target.empty()
     chart = target[0]
     data = json.data
-    # 6 buckets - 1-3, 4-10, 11-20, 21-30, 31-50, 50+
+    # buckets - 1-3, 4-10, 11-20, 21-30, 31-50, 50+
     buckets = [[], [], [], [], [], [], []]
 
     margin = { top: 50, right: 50, bottom: 50, left: 140 }
@@ -41,15 +41,15 @@ window.usageReport = {
 
     data.num_attempts.forEach((v, i) ->
       switch true
-        when v in [0] then buckets[0].push v 
         when v in [1..3] then buckets[1].push v
         when v in [4..10] then buckets[2].push v
         when v in [11..20] then buckets[3].push v
         when v in [21..30] then buckets[4].push v
         when v in [31..50] then buckets[5].push v
-        else buckets[6].push v)
+        when v > 50 then buckets[0].push v 
+        else )
 
-    names = ["0", "1-3", "4-10", "11-20", "21-30", "31-50", " > 50"]
+    names = ["1-3", "4-10", "11-20", "21-30", "31-50", " > 50"]
     x.domain(names)
     y.domain([0, d3.max(buckets, (d) -> d.length)])
 
@@ -58,7 +58,7 @@ window.usageReport = {
     .attr("transform", "translate(0, #{height})")
     .call(xAxis)
     .append("text")
-    .attr("x", width + margin.right)
+    .attr("x", width + 40)
     .attr("y", 10)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
@@ -68,8 +68,7 @@ window.usageReport = {
     .attr("class", "y axis")
     .call(yAxis)
     .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("x", 15)
+    .attr("x", 0)
     .attr("y", -20)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
