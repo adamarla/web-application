@@ -10,9 +10,12 @@
       %th= "Name" 
       %th= "Email"
       %th= "Active (days)"
+      %th= "Attemps"
     - for p in @pupils 
       %tr{ style: 'text-align: center ;' }
         %td= "#{p.id}"
         %td= "#{p.name}"
         %td= "#{p.email}"
         %td= "#{(Date.today - p.created_at.to_date).to_i}"
+        %td= "#{p.num_attempts}"
+
