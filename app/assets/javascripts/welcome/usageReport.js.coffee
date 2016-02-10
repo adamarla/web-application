@@ -12,7 +12,21 @@ getDate = (offset) ->
     dd + '/' + mm
 
 getIntensity = (time, num_attempts) ->
-    time/num_attempts > 1800 ? 4 : (time/num_attempts) * 2
+  time/num_attempts > 1800 ? 4 : (time/num_attempts) * 2
+
+getBucketDivisions = (counts, idx) ->
+  if idx == 0
+    [(counts.filter (c) -> c == 1), (counts.filter (c) -> c == 2), (counts.filter (c) -> c == 3)] 
+  else if idx == 1
+    [(counts.filter (c) -> c == 4), (counts.filter (c) -> c in [5..7]), (counts.filter (c) -> c in [8..10])] 
+  else if idx == 2
+    [(counts.filter (c) -> c in [11..15]), (counts.filter (c) -> c in [16..20])] 
+  else if idx == 3
+    [(counts.filter (c) -> c in [21..25]), (counts.filter (c) -> c in [26..30])] 
+  else if idx == 4
+    [(counts.filter (c) -> c in [31..40]), (counts.filter (c) -> c in [41..50])] 
+  else 
+    counts
 
 window.usageReport = {
 
@@ -82,15 +96,15 @@ window.usageReport = {
     .attr("transform", (d, i) -> "translate(#{x(names[i])})")
 
     bucket.selectAll("rect")
-    .data((d) -> [d.length])
+    .data((d, i) -> getBucketDivisions(d, i)) # [[1,1,1],[2,2,2],[3,3]] 
     .enter().append("rect")
     .attr("class", "bar")
     .attr("x", 0)
     .attr("width", x.rangeBand())
-    .attr("y", (d) -> y(d))
-    .attr("height", (d) -> height - y(d))
-    .style("fill", "#98abc5")
-    .append("title").text((d) -> d)
+    .attr("y", (d) -> y(d.length + buckets))
+    .attr("height", (d, i) -> if i == 0 then height - y(d.length) else y(d[i-1].length) - y(d[i].length))
+    .style("fill",  (d, i) -> if i%2 == 0 then "#98abc5" else "#8a89a6")
+    .append("title").text((d, i) -> d[i].length)
 
     return true
 
