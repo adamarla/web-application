@@ -96,15 +96,15 @@ window.usageReport = {
     .attr("transform", (d, i) -> "translate(#{x(names[i])})")
 
     bucket.selectAll("rect")
-    .data((d, i) -> getBucketDivisions(d, i)) # [[1,1,1],[2,2,2],[3,3]] 
+    .data((d) -> [d.length]) 
     .enter().append("rect")
     .attr("class", "bar")
     .attr("x", 0)
     .attr("width", x.rangeBand())
-    .attr("y", (d) -> y(d.length + buckets))
-    .attr("height", (d, i) -> if i == 0 then height - y(d.length) else y(d[i-1].length) - y(d[i].length))
-    .style("fill",  (d, i) -> if i%2 == 0 then "#98abc5" else "#8a89a6")
-    .append("title").text((d, i) -> d[i].length)
+    .attr("y", (d) -> y(d))
+    .attr("height", (d) -> height - y(d))
+    .style("fill",  "#98abc5")
+    .append("title").text((d) -> d)
 
     return true
 
