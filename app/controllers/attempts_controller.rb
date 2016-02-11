@@ -79,7 +79,7 @@ class AttemptsController < ApplicationController
     by_week = []
     week_start = epoch
     until Date.today < week_start
-      week_end = week_start + 7
+      week_end = week_start + 6
       attempts = Attempt.where("created_at BETWEEN (?) AND (?) AND pupil_id NOT IN (?)", week_start, week_end, known_assocs)
 
       by_week << {
