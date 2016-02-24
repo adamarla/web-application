@@ -1,7 +1,24 @@
 class AccountsController < ApplicationController
   include GeneralQueries
-  before_filter :authenticate_account!, :except => [:ask_question, :reset_password]
+  before_filter :authenticate_account!, :except => [ :ask_question, :reset_password, :authenticate_for_quill ]
   respond_to :json
+
+  def authenticate_for_quill 
+    a = params[:email].blank? ? nil : Account.where(email: params[:email]).first
+    role = a.nil? ? nil : a.role
+
+    if (role == :examiner || role == :admin)
+      valid = params[:password].blank? ? false : a.valid_password?(params[:password])
+      if (valid)
+        e = a.loggable 
+        render json: { allow: true, id: e.id, role: role, name: e.name }, status: :ok 
+      else 
+        render json: {allow: false }, status: :ok
+      end 
+    else
+      render json: {allow: false}, status: :ok
+    end 
+  end # of method 
 
   def update 
     email_updated = passwd_updated = nil
