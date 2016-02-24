@@ -44,7 +44,7 @@ class AttemptsController < ApplicationController
     end 
   end # of method 
 
-  def by_user
+  def by_day
     start_date = Date::strptime(params[:report_date], "%d/%m/%Y")
     days = (Date.today - start_date).to_i
     all_attempts = Attempt.where("created_at > ?", start_date)
@@ -72,4 +72,33 @@ class AttemptsController < ApplicationController
     render json: { data: by_user, date: start_date }, status: :ok
   end # of method
 
+  def by_week
+    epoch = Date::strptime("16/11/2015", "%d/%m/%Y")
+    known_assocs = Pupil.where(known_associate: true).map(&:id)
+
+    by_week = []
+    week_start = epoch
+    until Date.today < week_start
+      week_end = week_start + 6
+      attempts = Attempt.where("created_at BETWEEN (?) AND (?) AND pupil_id NOT IN (?)", week_start, week_end, known_assocs)
+
+      by_week << {
+        name: "#{week_start.strftime('%d/%m')}-#{week_end.strftime('%d/%m')}",
+        unique_users: attempts.map(&:pupil_id).uniq.count,
+        num_attempts: attempts.count,
+        time_spent: attempts.map{ |a| a.total_time.nil? ? 0 : (a.total_time > 900 ? 120 : a.total_time) }.inject(:+)
+      }
+      week_start = week_end + 1
+    end
+     
+    render json: { data: by_week }, status: :ok
+  end # of method
+
+  def by_user
+    pupil_ids = Pupil.where(known_associate: false).map(&:id)
+    profiles = Pupil.profile(pupil_ids)
+    render json: { data: profiles }, status: :ok
+  end # of method
+
 end
+

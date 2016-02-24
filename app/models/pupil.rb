@@ -66,7 +66,7 @@ class Pupil < ActiveRecord::Base
   end 
 
   def days_between_attempts
-    return (self.days_active / self.num_attempts.to_f).round(2)
+    return self.num_attempts > 0 ? (self.days_active / self.num_attempts.to_f).round(2) : 0
   end 
 
   def self.registered_in_last(n)

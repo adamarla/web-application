@@ -2,13 +2,11 @@
 fetch_report = (offset) ->
   reportDate = new Date()
   reportDate.setDate(new Date().getDate() - offset)
-  $.post '../attempt/by_user', { report_date: "#{reportDate.getDate()}/#{reportDate.getMonth()+1}/#{reportDate.getFullYear()}" }
+  $.get '../attempt/by_day', { report_date: "#{reportDate.getDate()}/#{reportDate.getMonth()+1}/#{reportDate.getFullYear()}" }
   return true 
 
 jQuery ->
   
-  ## $('input, textarea').placeholder()
-
   $('#m-register').on 'show', (event) ->
     honeyPot = $(this).find("input[id='jaal']")[0]
     $(honeyPot).addClass('chuppa-hua') if honeyPot?
@@ -26,6 +24,12 @@ jQuery ->
     today = new Date()
     epoch = new Date(2015, 10, 16)
     fetch_report(Math.floor((today - epoch)/(1000*3600*24)))
+  $('#weekly').on 'click', (event) ->
+    $.get '../attempt/by_week'
+    return true 
+  $('#buckets').on 'click', (event) ->
+    $.get '../attempt/by_user'
+    return true
 
   $('#datepicker').datepicker(
     dateFormat: "dd/mm/yy"

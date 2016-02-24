@@ -36,11 +36,19 @@ jQuery ->
     url = settings.url
     matched = true
 
-    target = null
-    if url.match(/attempt\/by_user/)
-      target = $('#chart')
-      usageReport.byUser json, target
+    target = $('#chart')
+    if url.match(/attempt\/by_day/)
+      usageReport.byDay json, target
+    else if url.match(/attempt\/by_user/)
+      usageReport.byBucket json, target
+    else if url.match(/attempt\/by_week/)
+      usageReport.byWeek json, target
+    else
+      matched = false
 
-    e.stopPropagation()
+    e.stopPropagation() if matched is true
     return true
 
+  $(document).ajaxError (e, xhr, settings) ->
+    url = settings.url
+    return true

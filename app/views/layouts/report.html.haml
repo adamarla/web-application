@@ -22,7 +22,7 @@
     %title= "Partners in Practice"
     = stylesheet_link_tag "application" 
     = stylesheet_link_tag "//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" 
-    = javascript_include_tag "http://d3js.org/d3.v3.min.js"
+    = javascript_include_tag "//d3js.org/d3.v3.min.js"
     = javascript_include_tag "application", "welcome"
     = javascript_include_tag "external" if Rails.env == "production"
     = csrf_meta_tag
@@ -35,8 +35,7 @@
             %button.btn.btn-primary{ id: 'lastMonth', type: :submit }= "Last Month"
             %button.btn.btn-primary{ id: 'last2Months', type: :submit }= "Last 2 Months"
             %button.btn.btn-primary{ id: 'allTime', type: :submit }= "All time"
-            %button.btn.btn-inverse{ id: 'summary', type: :submit }= "Summary"
+            %button.btn.btn-inverse{ id: 'weekly', type: :submit }= "Weekly"
+            %button.btn.btn-inverse{ id: 'buckets', type: :submit }= "Buckets"
       #chart.row-fluid.span12
-        #names.span2
-        #heat.span10
 
