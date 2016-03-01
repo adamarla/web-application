@@ -35,7 +35,7 @@ window.usageReport = {
     chart = target[0]
     data = json.data
     # buckets - 1, 2-5, 6-10, 11-20, 21-30, 31-50, 50+
-    buckets = [[], [], [], [], [], [], [], []]
+    buckets = [[], [], [], [], [], [], []]
 
     margin = { top: 50, right: 50, bottom: 50, left: 140 }
     width = 80 * buckets.length - margin.left - margin.right
@@ -57,12 +57,12 @@ window.usageReport = {
     data.num_attempts.forEach((v, i) ->
       switch true
         when v == 1 then buckets[0].push v
-        when v in [2..5] then buckets[0].push v
-        when v in [6..10] then buckets[1].push v
-        when v in [11..20] then buckets[2].push v
-        when v in [21..30] then buckets[3].push v
-        when v in [31..50] then buckets[4].push v
-        when v > 50 then buckets[5].push v 
+        when v in [2..5] then buckets[1].push v
+        when v in [6..10] then buckets[2].push v
+        when v in [11..20] then buckets[3].push v
+        when v in [21..30] then buckets[4].push v
+        when v in [31..50] then buckets[5].push v
+        when v > 50 then buckets[6].push v 
         else zeros++)
 
     names = ["1", "2-5", "6-10", "11-20", "21-30", "31-50", " > 50"]
