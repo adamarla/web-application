@@ -3,7 +3,7 @@ class QuestionController < ApplicationController
   respond_to :json
 
   def new_location 
-    respose = Question.all.map{ |q| { uid: q.uid, loc: "q/#{q.examiner_id}/#{q.id}" } }
+    response = Question.all.map{ |q| { uid: q.uid, loc: "q/#{q.examiner_id}/#{q.id}" } }
     render json: response, status: :ok
   end 
 
