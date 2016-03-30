@@ -2,12 +2,12 @@
 class QuestionController < ApplicationController
   respond_to :json
 
-  def temp_ping 
-    q = Question.where(uid: params[:uid])
-    unless q.blank? 
-      render json: {id: q.map(&:id).first }, status: :ok
+  def new_location 
+    q = Question.where(uid: params[:uid]).first 
+    unless q.nil? 
+      render json: { location: "q/#{q.examiner_id}/#{q.id}" }, status: :ok
     else 
-      render json: {id: nil }, status: :ok 
+      render json: { location: nil }, status: :ok 
     end 
   end 
 
