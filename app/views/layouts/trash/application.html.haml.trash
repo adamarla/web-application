@@ -5,7 +5,15 @@
     = render partial: 'menus/user/abouts'
     = render partial: 'toolbox/generic/line'
   #modals
+    = render partial: 'modals/guest/register'
     = render partial: 'modals/guest/founders'
+    = render partial: 'modals/guest/reset-passwd'
+  #notifications
+    = render partial: 'notifications/shared/old-browser'
+    = render partial: 'notifications/shared/reset-passwd'
+    = render partial: 'notifications/student/enrollment-blocked'
+    = render partial: 'notifications/student/enrolled-already'
+    = render partial: 'notifications/student/sektion-not-found'
 
 !!!5
 
