@@ -2,6 +2,15 @@
 class QuestionController < ApplicationController
   respond_to :json
 
+  def temp_ping 
+    q = Question.where(uid: params[:uid])
+    unless q.blank? 
+      render json: {id: q.map(&:id).first }, status: :ok
+    else 
+      render json: {id: nil }, status: :ok 
+    end 
+  end 
+
   def set_potd_flag
     q = Question.find params[:id]
     q.set_potd_flag 

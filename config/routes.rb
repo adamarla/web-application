@@ -92,6 +92,8 @@ Webapp::Application.routes.draw do
   match 'bundle/which' => 'question#bundle_which', via: :get
   match 'tag/question' => 'question#tag', via: :post
 
+  match 'q/id' => 'question#temp_ping', via: :get
+
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get
   match 'faq' => 'welcome#faq'
