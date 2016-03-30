@@ -3,7 +3,6 @@
 # Table name: questions
 #
 #  id          :integer         not null, primary key
-#  uid         :string(20)
 #  n_picked    :integer         default(0)
 #  created_at  :datetime
 #  updated_at  :datetime
