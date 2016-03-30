@@ -3,12 +3,8 @@ class QuestionController < ApplicationController
   respond_to :json
 
   def new_location 
-    q = Question.where(uid: params[:uid]).first 
-    unless q.nil? 
-      render json: { location: "q/#{q.examiner_id}/#{q.id}" }, status: :ok
-    else 
-      render json: { location: nil }, status: :ok 
-    end 
+    respose = Question.all.map{ |q| { uid: q.uid, loc: "q/#{q.examiner_id}/#{q.id}" } }
+    render json: response, status: :ok
   end 
 
   def set_potd_flag
