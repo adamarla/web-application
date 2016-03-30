@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160128071159) do
+ActiveRecord::Schema.define(:version => 20160328063602) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -380,25 +380,16 @@ ActiveRecord::Schema.define(:version => 20160128071159) do
   add_index "q_selections", ["quiz_id"], :name => "index_q_selections_on_quiz_id"
 
   create_table "questions", :force => true do |t|
-    t.string   "uid",             :limit => 20
-    t.integer  "n_picked",                      :default => 0
+    t.string   "uid",         :limit => 20
+    t.integer  "n_picked",                  :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
     t.integer  "topic_id"
-    t.integer  "suggestion_id"
-    t.integer  "difficulty",                    :default => 1
-    t.integer  "marks"
-    t.float    "length"
-    t.integer  "answer_key_span"
-    t.integer  "calculation_aid",               :default => 0
-    t.integer  "auditor"
-    t.datetime "audited_on"
-    t.boolean  "available",                     :default => true
-    t.integer  "n_codices",                     :default => 0
-    t.string   "codices",         :limit => 5
-    t.boolean  "potd",                          :default => false
-    t.integer  "num_potd",                      :default => 0
+    t.integer  "difficulty",                :default => 1
+    t.boolean  "available",                 :default => true
+    t.boolean  "potd",                      :default => false
+    t.integer  "num_potd",                  :default => 0
   end
 
   add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"
