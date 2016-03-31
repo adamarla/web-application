@@ -10,10 +10,12 @@
 
 class Subject < ActiveRecord::Base
   validates :name, presence: true 
-  after_create :titleize
+  validates :name, uniqueness: true 
+
+  before_validation :titleize 
 
   def titleize 
-    self.update_attribute :name, self.name.titleize 
+    self.name = self.name.titleize 
   end 
 
 end
