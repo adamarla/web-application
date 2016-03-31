@@ -18,4 +18,9 @@ class Subject < ActiveRecord::Base
     self.name = self.name.titleize 
   end 
 
+  def self.named(name)
+    s = where(name: name.titleize)
+    return (s.empty? ? 0 : s.map(&:id).first)
+  end 
+
 end
