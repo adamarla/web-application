@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160331110126) do
+ActiveRecord::Schema.define(:version => 20160331112618) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -184,6 +184,11 @@ ActiveRecord::Schema.define(:version => 20160331110126) do
   end
 
   add_index "devices", ["pupil_id"], :name => "index_devices_on_pupil_id"
+
+  create_table "difficulties", :force => true do |t|
+    t.string  "name",  :limit => 50
+    t.integer "level"
+  end
 
   create_table "disputes", :force => true do |t|
     t.integer  "student_id"
