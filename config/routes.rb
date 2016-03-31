@@ -56,6 +56,9 @@ Webapp::Application.routes.draw do
   # Subject 
   match 'subject/list' => 'subject#list', via: :get
 
+  # Language 
+  match 'language/list' => 'language#list', via: :get
+
   # Account 
   match 'account' => 'accounts#update', via: :post
   match 'exams/list' => 'accounts#exams', via: :get

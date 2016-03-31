@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160330125459) do
+ActiveRecord::Schema.define(:version => 20160331090435) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -308,6 +308,10 @@ ActiveRecord::Schema.define(:version => 20160330125459) do
   end
 
   add_index "kaagaz", ["stab_id"], :name => "index_kaagaz_on_stab_id"
+
+  create_table "languages", :force => true do |t|
+    t.string "name", :limit => 30
+  end
 
   create_table "lessons", :force => true do |t|
     t.string   "title",       :limit => 150
