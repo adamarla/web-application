@@ -9,5 +9,11 @@
 #
 
 class Subject < ActiveRecord::Base
-  validates :name, :presence => true
+  validates :name, presence: true 
+  after_create :titleize
+
+  def titleize 
+    self.update_attribute :name, self.name.titleize 
+  end 
+
 end
