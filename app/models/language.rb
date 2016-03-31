@@ -1,3 +1,11 @@
+# == Schema Information
+#
+# Table name: languages
+#
+#  id   :integer         not null, primary key
+#  name :string(30)
+#
+
 class Language < ActiveRecord::Base
   validates :name, presence: true 
   validates :name, uniqueness: true 
