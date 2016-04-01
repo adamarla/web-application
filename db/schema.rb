@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160331182426) do
+ActiveRecord::Schema.define(:version => 20160401050829) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -486,6 +486,10 @@ ActiveRecord::Schema.define(:version => 20160331182426) do
     t.boolean  "auto_renew",                         :default => true
     t.boolean  "active"
     t.boolean  "auto_renew_immediate",               :default => false
+  end
+
+  create_table "skills", :force => true do |t|
+    t.integer "chapter_id"
   end
 
   create_table "stabs", :force => true do |t|
