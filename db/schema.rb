@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160401085049) do
+ActiveRecord::Schema.define(:version => 20160401094947) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -415,18 +415,19 @@ ActiveRecord::Schema.define(:version => 20160401085049) do
   add_index "q_selections", ["quiz_id"], :name => "index_q_selections_on_quiz_id"
 
   create_table "questions", :force => true do |t|
-    t.integer  "n_picked",    :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.integer  "topic_id"
     t.integer  "difficulty",  :default => 1
-    t.boolean  "available",   :default => true
+    t.boolean  "live",        :default => false
     t.boolean  "potd",        :default => false
     t.integer  "num_potd",    :default => 0
+    t.integer  "chapter_id"
+    t.integer  "language_id"
   end
 
-  add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"
+  add_index "questions", ["chapter_id"], :name => "index_questions_on_chapter_id"
+  add_index "questions", ["language_id"], :name => "index_questions_on_language_id"
 
   create_table "quizzes", :force => true do |t|
     t.integer  "teacher_id"

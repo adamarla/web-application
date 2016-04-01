@@ -3,15 +3,15 @@
 # Table name: questions
 #
 #  id          :integer         not null, primary key
-#  n_picked    :integer         default(0)
 #  created_at  :datetime
 #  updated_at  :datetime
 #  examiner_id :integer
-#  topic_id    :integer
 #  difficulty  :integer         default(1)
-#  available   :boolean         default(TRUE)
+#  live        :boolean         default(FALSE)
 #  potd        :boolean         default(FALSE)
 #  num_potd    :integer         default(0)
+#  chapter_id  :integer
+#  language_id :integer
 #
 
 require 'test_helper'
