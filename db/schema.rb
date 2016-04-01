@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160401094947) do
+ActiveRecord::Schema.define(:version => 20160401112258) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(:version => 20160401094947) do
   add_index "attempts", ["question_id"], :name => "index_koshishein_on_question_id"
 
   create_table "boxes", :force => true do |t|
-    t.string   "uid",            :limit => 15
+    t.string   "name",           :limit => 15
     t.integer  "chapter_id"
     t.integer  "language_id"
     t.integer  "min_difficulty"
@@ -208,7 +208,8 @@ ActiveRecord::Schema.define(:version => 20160401094947) do
   add_index "devices", ["pupil_id"], :name => "index_devices_on_pupil_id"
 
   create_table "difficulties", :force => true do |t|
-    t.string  "name",  :limit => 50
+    t.string  "name",    :limit => 10
+    t.string  "meaning", :limit => 40
     t.integer "level"
   end
 

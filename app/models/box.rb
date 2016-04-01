@@ -3,7 +3,7 @@
 # Table name: boxes
 #
 #  id             :integer         not null, primary key
-#  uid            :string(15)
+#  name           :string(15)
 #  chapter_id     :integer
 #  language_id    :integer
 #  min_difficulty :integer
@@ -21,4 +21,13 @@ class Box < ActiveRecord::Base
 
   belongs_to :chapter 
   belongs_to :language 
+
+  after_create :set_name 
+
+  private 
+    def set_name 
+      hex_time = Time.now.to_i.to_s(16)
+      self.update_attribute :name, hex_time
+    end 
+
 end
