@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160331112618) do
+ActiveRecord::Schema.define(:version => 20160331182426) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -103,6 +103,15 @@ ActiveRecord::Schema.define(:version => 20160331112618) do
     t.string   "signature",     :limit => 20
     t.boolean  "auto_download",               :default => false
   end
+
+  create_table "chapters", :force => true do |t|
+    t.string  "name",       :limit => 70
+    t.integer "level_id"
+    t.integer "subject_id"
+  end
+
+  add_index "chapters", ["level_id"], :name => "index_chapters_on_level_id"
+  add_index "chapters", ["subject_id"], :name => "index_chapters_on_subject_id"
 
   create_table "checklists", :force => true do |t|
     t.integer "rubric_id"

@@ -53,11 +53,20 @@ Webapp::Application.routes.draw do
   match 'prepwellapp' => 'welcome#index'
   match 'prepwellapp/report' => 'welcome#report'
 
+  # Chapter 
+  match 'chapter/list' => 'chapter#list', via: :get
+
+  # Difficulty 
+  match 'difficulty/list' => 'difficulty#list', via: :get
+
   # Subject 
   match 'subject/list' => 'subject#list', via: :get
 
   # Language 
   match 'language/list' => 'language#list', via: :get
+
+  # Level 
+  match 'level/list' => 'level#list', via: :get
 
   # Account 
   match 'account' => 'accounts#update', via: :post
