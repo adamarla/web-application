@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160401052351) do
+ActiveRecord::Schema.define(:version => 20160401054610) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -490,6 +490,7 @@ ActiveRecord::Schema.define(:version => 20160401052351) do
 
   create_table "skills", :force => true do |t|
     t.integer "chapter_id"
+    t.boolean "generic",    :default => false
   end
 
   create_table "snippets", :force => true do |t|
