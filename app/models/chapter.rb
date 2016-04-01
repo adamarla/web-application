@@ -11,6 +11,7 @@
 class Chapter < ActiveRecord::Base
   belongs_to :level 
   belongs_to :subject 
+  has_many :questions
 
   validates :name, presence: true 
   validates :name, uniqueness: { scope: [:level_id, :subject_id] }
