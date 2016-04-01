@@ -20,4 +20,9 @@ class Chapter < ActiveRecord::Base
   def titleize 
     self.name = self.name.titleize unless self.name.blank?
   end 
+
+  def self.quick_add(name) 
+    Chapter.create name: name, level_id: Level.named('senior'), subject_id: Subject.named('maths') 
+  end 
+
 end
