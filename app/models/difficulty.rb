@@ -15,7 +15,7 @@ class Difficulty < ActiveRecord::Base
 
   def self.named(name)
     l = where(name: name.downcase) 
-    return (l.empty? ? 0 : l.map(&:id).first)
+    return (l.empty? ? 0 : l.map(&:level).first)
   end 
 
 end
