@@ -16,14 +16,12 @@
 
 
 class Question < ActiveRecord::Base
-  validates :uid, presence: true 
-  validates :uid, uniqueness: true 
 
   def fastest_bingo 
     return Attempt.where(question_id: self.id).where('time_to_bingo > ?', 0).order(:time_to_bingo).first
   end 
 
-  def uid 
+  def path 
     return "q/#{self.examiner_id}/#{self.id}"
   end 
 
