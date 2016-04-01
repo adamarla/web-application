@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160401050829) do
+ActiveRecord::Schema.define(:version => 20160401052351) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -491,6 +491,16 @@ ActiveRecord::Schema.define(:version => 20160401050829) do
   create_table "skills", :force => true do |t|
     t.integer "chapter_id"
   end
+
+  create_table "snippets", :force => true do |t|
+    t.integer "examiner_id"
+    t.integer "skill_id"
+    t.integer "num_attempted", :default => 0
+    t.integer "num_correct",   :default => 0
+  end
+
+  add_index "snippets", ["examiner_id"], :name => "index_snippets_on_examiner_id"
+  add_index "snippets", ["skill_id"], :name => "index_snippets_on_skill_id"
 
   create_table "stabs", :force => true do |t|
     t.integer  "student_id"
