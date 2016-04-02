@@ -10,6 +10,7 @@
 #
 
 class Snippet < ActiveRecord::Base
+  belongs_to :skill
 
   def path 
     return "snippets/#{self.id}"
