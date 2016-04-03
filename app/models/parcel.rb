@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: boxes
+# Table name: parcels
 #
 #  id             :integer         not null, primary key
 #  name           :string(15)
@@ -13,7 +13,7 @@
 #  contains       :string(20)
 #
 
-class Box < ActiveRecord::Base
+class Parcel < ActiveRecord::Base
   validates :name, uniqueness: true 
   validates :chapter_id, numericality: { only_integer: true, greater_than: 0 }
   validates :chapter_id, uniqueness: { scope: [:language_id, :min_difficulty, :max_difficulty] }, if: :for_questions?
@@ -63,14 +63,14 @@ class Box < ActiveRecord::Base
 
 
   def self.for_chapter(chapter, language = Language.named('english'))
-    # There can be multiple box of questions for the same chapter. 
+    # There can be multiple parcel of questions for the same chapter. 
     # The difference could be in target language, difficulty levels etc. 
-    # But there can be *only one* box of skills and snippets. 
+    # But there can be *only one* parcel of skills and snippets. 
     
-    # This method creates a box for questions - and any for snippets
+    # This method creates a parcel for questions - and any for snippets
     # and skills.
 
-    b = Box.create(chapter_id: chapter, language_id: language, contains: Question.name) 
+    b = Parcel.create(chapter_id: chapter, language_id: language, contains: Question.name) 
     b.set_difficulty_range Difficulty.named('easy'), Difficulty.named('medium')
   end 
 
@@ -81,8 +81,8 @@ class Box < ActiveRecord::Base
       self.update_attribute :name, "#{prefix}-#{hex_time}"
 
       return unless self.for_questions?
-      Box.create(chapter_id: self.chapter_id, contains: Skill.name) 
-      Box.create(chapter_id: self.chapter_id, contains: Snippet.name)
+      Parcel.create(chapter_id: self.chapter_id, contains: Skill.name) 
+      Parcel.create(chapter_id: self.chapter_id, contains: Snippet.name)
 
     end 
 

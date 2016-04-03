@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160402163023) do
+ActiveRecord::Schema.define(:version => 20160403031819) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -85,17 +85,6 @@ ActiveRecord::Schema.define(:version => 20160402163023) do
 
   add_index "attempts", ["pupil_id"], :name => "index_koshishein_on_pupil_id"
   add_index "attempts", ["question_id"], :name => "index_koshishein_on_question_id"
-
-  create_table "boxes", :force => true do |t|
-    t.string   "name",           :limit => 15
-    t.integer  "chapter_id"
-    t.integer  "language_id"
-    t.integer  "min_difficulty"
-    t.integer  "max_difficulty"
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-    t.string   "contains",       :limit => 20
-  end
 
   create_table "bundle_questions", :force => true do |t|
     t.integer  "bundle_id"
@@ -362,6 +351,17 @@ ActiveRecord::Schema.define(:version => 20160402163023) do
     t.integer "num_failed",                  :default => 0
     t.integer "num_dismissed",               :default => 0
     t.integer "num_opened",                  :default => 0
+  end
+
+  create_table "parcels", :force => true do |t|
+    t.string   "name",           :limit => 15
+    t.integer  "chapter_id"
+    t.integer  "language_id"
+    t.integer  "min_difficulty"
+    t.integer  "max_difficulty"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.string   "contains",       :limit => 20
   end
 
   create_table "potd", :force => true do |t|
