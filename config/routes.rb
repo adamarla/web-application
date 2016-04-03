@@ -89,6 +89,10 @@ Webapp::Application.routes.draw do
   resource :examiner, :except => [:new, :destroy]
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
 
+  match 'db/question' => 'examiners#slot_for_question', via: [:get, :post]
+  match 'db/skill' => 'examiners#slot_for_skill', via: [:get, :post]
+  match 'db/snippet' => 'examiners#slot_for_snippet', via: [:get, :post]
+
   # Verticals 
   resource :vertical, :only => [:create]
   match 'verticals/list' => 'verticals#list', via: :get
