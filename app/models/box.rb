@@ -44,6 +44,23 @@ class Box < ActiveRecord::Base
     self.update_attributes min_difficulty: min, max_difficulty: max
   end 
 
+  def can_accept?(obj) 
+    return false unless (self.contains == obj.class.name)
+    # obj can only be Question, Snippet or Skill now 
+
+    case obj 
+      when Question 
+        return false if (obj.chapter_id != self.chapter_id || obj.language_id != self.language_id)
+        return false if (obj.difficulty < self.min_difficulty || obj.difficulty > self.max_difficulty)
+      when Skill 
+        return (obj.chapter_id == self.chapter_id)
+      when Snippet 
+        return (obj.skill.chapter_id == self.chapter_id)
+    end 
+
+    return true 
+  end 
+
 
   def self.for_chapter(chapter, language = Language.named('english'))
     # There can be multiple box of questions for the same chapter. 
