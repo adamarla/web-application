@@ -96,6 +96,9 @@ Webapp::Application.routes.draw do
   # Snippets 
   match 'snippet/add' => 'snippets#create', via: [:get, :post]
 
+  # Sku 
+  match 'sku/recompiled' => 'sku#recompiled', via: [:get]
+
   # Topic 
   resource :topic, :only => [:create, :update]
   match 'topics/list' => 'topics#list', via: :get
