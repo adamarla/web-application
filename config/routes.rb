@@ -105,7 +105,8 @@ Webapp::Application.routes.draw do
   match 'questions/on' => 'topics#questions', via: :get
 
   # Question
-  match 'question/add' => 'questions#create', via: [:get, :post]
+  match 'question/add' => 'question#create', via: [:get, :post]
+
   match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
   match 'bundle/which' => 'question#bundle_which', via: :get
   match 'tag/question' => 'question#tag', via: :post
