@@ -7,11 +7,17 @@
 #  parcel_id :integer
 #  max_size  :integer         default(-1)
 #  open      :boolean         default(TRUE)
+#  shasum    :string(10)
 #
 
 class Zip < ActiveRecord::Base
   belongs_to :parcel
+  has_many :skus, through: :inventory 
   after_create :seal 
+
+  def path 
+    return "zips/#{self.name}.zip"
+  end 
 
   private 
     def seal 

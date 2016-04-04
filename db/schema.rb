@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160404053814) do
+ActiveRecord::Schema.define(:version => 20160404060149) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -316,6 +316,14 @@ ActiveRecord::Schema.define(:version => 20160404053814) do
   end
 
   add_index "hints", ["subpart_id"], :name => "index_hints_on_subpart_id"
+
+  create_table "inventory", :force => true do |t|
+    t.integer "zip_id"
+    t.integer "sku_id"
+  end
+
+  add_index "inventory", ["sku_id"], :name => "index_inventory_on_sku_id"
+  add_index "inventory", ["zip_id"], :name => "index_inventory_on_zip_id"
 
   create_table "kaagaz", :force => true do |t|
     t.string  "path",    :limit => 40
@@ -720,6 +728,7 @@ ActiveRecord::Schema.define(:version => 20160404053814) do
     t.integer "parcel_id"
     t.integer "max_size",                :default => -1
     t.boolean "open",                    :default => true
+    t.string  "shasum",    :limit => 10
   end
 
   add_index "zips", ["parcel_id"], :name => "index_zips_on_parcel_id"

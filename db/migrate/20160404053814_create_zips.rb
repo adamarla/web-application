@@ -5,6 +5,7 @@ class CreateZips < ActiveRecord::Migration
       t.integer :parcel_id
       t.integer :max_size, default: -1
       t.boolean :open, default: true 
+      t.string :shasum, limit: 10
     end
 
     add_index :zips, :parcel_id 

@@ -17,4 +17,5 @@
    inflect.irregular 'codex', 'codices'
    inflect.irregular 'koshish', 'koshishein'
    inflect.irregular 'potd', 'potd'
+   inflect.irregular 'inventory', 'inventory'
  end
