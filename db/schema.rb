@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160403182638) do
+ActiveRecord::Schema.define(:version => 20160404053814) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -714,5 +714,14 @@ ActiveRecord::Schema.define(:version => 20160403182638) do
 
   add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"
   add_index "worksheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
+
+  create_table "zips", :force => true do |t|
+    t.string  "name",      :limit => 25
+    t.integer "parcel_id"
+    t.integer "max_size",                :default => -1
+    t.boolean "open",                    :default => true
+  end
+
+  add_index "zips", ["parcel_id"], :name => "index_zips_on_parcel_id"
 
 end
