@@ -11,16 +11,16 @@
 class Sku < ActiveRecord::Base
   belongs_to :stockable, polymorphic: true 
 
-  def is_question?
-    return (self.stockable_type == Question.name)
+  def self.questions
+    where(stockable_type: Question.name)
   end 
 
-  def is_skill?
-    return (self.stockable_type == Skill.name)
+  def self.skills
+    where(stockable_type: Skill.name) 
   end 
 
-  def is_snippet?
-    return (self.stockable_type == Snippet.name)
+  def self.snippets
+    where(stockable_type: Snippet.name) 
   end 
 
 end
