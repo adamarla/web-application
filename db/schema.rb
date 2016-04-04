@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160403031819) do
+ActiveRecord::Schema.define(:version => 20160403182638) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -505,6 +505,14 @@ ActiveRecord::Schema.define(:version => 20160403031819) do
     t.integer "chapter_id"
     t.boolean "generic",    :default => false
   end
+
+  create_table "skus", :force => true do |t|
+    t.string  "stockable_type"
+    t.integer "stockable_id"
+    t.string  "path"
+  end
+
+  add_index "skus", ["stockable_id"], :name => "index_skus_on_stockable_id"
 
   create_table "snippets", :force => true do |t|
     t.integer "examiner_id"

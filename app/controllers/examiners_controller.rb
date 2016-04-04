@@ -21,7 +21,7 @@ class ExaminersController < ApplicationController
                           chapter_id: params[:c],
                           language_id: language, 
                           difficulty: difficulty
-      render json: { id: q.id, path: q.path }, status: :created
+      render json: { id: q.id, path: q.sku.path }, status: :created
     else 
       render json: {id: 0 }, status: :bad_request
     end 
@@ -33,7 +33,7 @@ class ExaminersController < ApplicationController
       generic = params[:generic] || false 
       s = Skill.create chapter_id: params[:c], 
                        generic: generic
-      render json: { id: s.id, path: s.path }, status: :created 
+      render json: { id: s.id, path: s.sku.path }, status: :created 
     else 
       render json: { id: 0 }, status: :bad_request 
     end 
@@ -45,7 +45,7 @@ class ExaminersController < ApplicationController
       snip = Snippet.create examiner_id: params[:e], 
                             skill_id: params[:sk]
 
-      render json: { id: snip.id, path: snip.path }, status: :created 
+      render json: { id: snip.id, path: snip.sku.path }, status: :created 
     else 
       render json: { id: 0 }, status: :bad_request 
     end 

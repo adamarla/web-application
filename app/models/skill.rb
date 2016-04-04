@@ -8,9 +8,12 @@
 #
 
 class Skill < ActiveRecord::Base
+  has_one :sku, as: :stockable 
+  after_create :add_sku 
 
-  def path 
-    return "skill/#{self.id}"
-  end 
+  private 
+    def add_sku 
+      self.create_sku path: "skill/#{self.id}"
+    end 
 
 end
