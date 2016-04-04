@@ -90,10 +90,10 @@ Webapp::Application.routes.draw do
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
 
   # Skills 
-  match 'add/skill' => 'skills#slot_for_skill', via: [:get, :post]
+  match 'skill/add' => 'skills#create', via: [:get, :post]
 
   # Snippets 
-  match 'add/snippet' => 'snippets#slot_for_snippet', via: [:get, :post]
+  match 'snippet/add' => 'snippets#create', via: [:get, :post]
 
   # Topic 
   resource :topic, :only => [:create, :update]
@@ -101,7 +101,7 @@ Webapp::Application.routes.draw do
   match 'questions/on' => 'topics#questions', via: :get
 
   # Question
-  match 'add/question' => 'questions#create', via: [:get, :post]
+  match 'question/add' => 'questions#create', via: [:get, :post]
   match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
   match 'bundle/which' => 'question#bundle_which', via: :get
   match 'tag/question' => 'question#tag', via: :post
