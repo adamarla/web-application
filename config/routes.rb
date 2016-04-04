@@ -89,17 +89,11 @@ Webapp::Application.routes.draw do
   resource :examiner, :except => [:new, :destroy]
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
 
-  match 'db/question' => 'examiners#slot_for_question', via: [:get, :post]
-  match 'db/skill' => 'examiners#slot_for_skill', via: [:get, :post]
-  match 'db/snippet' => 'examiners#slot_for_snippet', via: [:get, :post]
+  # Skills 
+  match 'add/skill' => 'skills#slot_for_skill', via: [:get, :post]
 
-  # Verticals 
-  resource :vertical, :only => [:create]
-  match 'verticals/list' => 'verticals#list', via: :get
-  match 'vertical/topics' => 'verticals#topics', via: :get
-
-  # Videos 
-  match 'video/play' => 'videos#play'
+  # Snippets 
+  match 'add/snippet' => 'snippets#slot_for_snippet', via: [:get, :post]
 
   # Topic 
   resource :topic, :only => [:create, :update]
@@ -107,11 +101,14 @@ Webapp::Application.routes.draw do
   match 'questions/on' => 'topics#questions', via: :get
 
   # Question
+  match 'add/question' => 'questions#create', via: [:get, :post]
   match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
   match 'bundle/which' => 'question#bundle_which', via: :get
   match 'tag/question' => 'question#tag', via: :post
-
   match 'q/loc' => 'question#new_location', via: :get
+
+  # Videos 
+  match 'video/play' => 'videos#play'
 
   # Welcome
   match 'welcome/countries' => 'welcome#countries', via: :get

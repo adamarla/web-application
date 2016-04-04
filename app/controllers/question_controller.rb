@@ -2,6 +2,21 @@
 class QuestionController < ApplicationController
   respond_to :json
 
+  def create 
+    proceed = !(params[:e].blank? || params[:c].blank?)
+    if proceed 
+      language = params[:lang] || Language.named('english') 
+      difficulty = params[:d] || Difficulty.named('medium')
+      q = Question.create examiner_id: params[:e], 
+                          chapter_id: params[:c],
+                          language_id: language, 
+                          difficulty: difficulty
+      render json: { id: q.id, path: q.sku.path }, status: :created
+    else 
+      render json: {id: 0 }, status: :bad_request
+    end 
+  end 
+
   def new_location 
     response = Question.all.map{ |q| { uid: q.uid, loc: "q/#{q.examiner_id}/#{q.id}" } }
     render json: response, status: :ok
