@@ -21,6 +21,7 @@ class Parcel < ActiveRecord::Base
 
   belongs_to :chapter 
   belongs_to :language 
+  has_many :zips, dependent: :destroy 
 
   after_create :seal 
 
