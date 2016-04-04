@@ -6,6 +6,7 @@
 #  stockable_type :string(255)
 #  stockable_id   :integer
 #  path           :string(255)
+#  modified       :boolean         default(FALSE)
 #
 
 class Sku < ActiveRecord::Base
@@ -21,6 +22,10 @@ class Sku < ActiveRecord::Base
 
   def self.snippets
     where(stockable_type: Snippet.name) 
+  end 
+
+  def self.modified
+    where(modified: true) 
   end 
 
 end
