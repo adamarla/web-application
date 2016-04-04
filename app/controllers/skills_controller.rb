@@ -14,4 +14,16 @@ class SkillsController < ApplicationController
     end 
   end 
 
+  def update 
+    proceed = !(params[:id].blank? || params[:c].blank?)
+    if proceed 
+      skill = Skill.find params[:id]
+      skill.update_attribute :chapter_id, params[:c]
+      render json: { id: skill.id, path: skill.sku.path }, status: :ok
+    else 
+      render json: { id: 0 }, status: :bad_request 
+    end 
+
+  end 
+
 end 
