@@ -11,7 +11,7 @@
 
 class Snippet < ActiveRecord::Base
   belongs_to :skill
-  has_one :sku, as: :stockable 
+  has_one :sku, as: :stockable, dependent: :destroy 
   after_create :add_sku 
 
   def attempted(correctly = false) 

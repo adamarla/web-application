@@ -18,7 +18,7 @@
 class Question < ActiveRecord::Base
   belongs_to :chapter 
   belongs_to :language
-  has_one :sku, as: :stockable 
+  has_one :sku, as: :stockable, dependent: :destroy
 
   after_create :add_sku 
 

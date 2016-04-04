@@ -8,7 +8,7 @@
 #
 
 class Skill < ActiveRecord::Base
-  has_one :sku, as: :stockable 
+  has_one :sku, as: :stockable, dependent: :destroy
   after_create :add_sku 
 
   private 
