@@ -11,6 +11,7 @@
 
 class Sku < ActiveRecord::Base
   belongs_to :stockable, polymorphic: true 
+  validates :stockable_id, uniqueness: { scope: [:stockable_type] }
 
   def self.questions
     where(stockable_type: Question.name)
