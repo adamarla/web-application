@@ -14,7 +14,7 @@ class Skill < ActiveRecord::Base
 
   private 
     def add_sku 
-      self.create_sku path: "skill/#{self.id}"
+      self.create_sku path: "skills/#{self.id}"
     end 
 
     def set_sku_modified 
