@@ -13,7 +13,7 @@ class Snippet < ActiveRecord::Base
   belongs_to :skill
   has_one :sku, as: :stockable, dependent: :destroy 
   after_create :add_sku 
-  around_update :set_sku_modified, if: :skill_id_changed? 
+  around_update :set_sku_retagged, if: :skill_id_changed? 
 
   def attempted(correctly = false) 
     correctly ? self.update_attributes(num_attempted: self.num_attempted + 1, 
@@ -26,12 +26,12 @@ class Snippet < ActiveRecord::Base
       self.create_sku path: "snippets/#{self.id}"
     end 
 
-    def set_sku_modified
+    def set_sku_retagged
       old_skill = self.skill_id 
       yield 
       new_skill = self.skill_id 
       same_chapter = Skill.where(id: [old_skill, new_skill]).map(&:chapter_id).uniq.count == 1 
-      self.sku.update_attribute(:modified, true) unless same_chapter 
+      self.sku.update_attribute(:tags_changed, true) unless same_chapter 
     end 
 
 end

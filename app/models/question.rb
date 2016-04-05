@@ -20,7 +20,7 @@ class Question < ActiveRecord::Base
   belongs_to :language
   has_one :sku, as: :stockable, dependent: :destroy
 
-  before_update :set_sku_modified, if: :dirty?
+  before_update :set_sku_retagged, if: :retagged?
   after_create :add_sku 
 
   def fastest_bingo 
@@ -32,12 +32,12 @@ class Question < ActiveRecord::Base
       self.create_sku path: "q/#{self.examiner_id}/#{self.id}"
     end 
 
-    def dirty?
+    def retagged?
       return (self.difficulty_changed? || self.chapter_id_changed? || self.language_id_changed?)
     end 
 
-    def set_sku_modified
-      self.sku.update_attribute :modified, true 
+    def set_sku_retagged
+      self.sku.update_attribute :tags_changed, true 
     end 
 
 

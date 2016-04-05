@@ -6,7 +6,8 @@
 #  stockable_type :string(255)
 #  stockable_id   :integer
 #  path           :string(255)
-#  modified       :boolean         default(FALSE)
+#  tags_changed   :boolean         default(FALSE)
+#  svgs_changed   :boolean         default(FALSE)
 #
 
 class Sku < ActiveRecord::Base
@@ -25,8 +26,12 @@ class Sku < ActiveRecord::Base
     where(stockable_type: Snippet.name) 
   end 
 
-  def self.modified
-    where(modified: true) 
+  def self.tags_changed
+    where(tags_changed: true) 
+  end 
+
+  def self.svgs_changed
+    where(svgs_changed: true) 
   end 
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160404072756) do
+ActiveRecord::Schema.define(:version => 20160405074320) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -518,7 +518,8 @@ ActiveRecord::Schema.define(:version => 20160404072756) do
     t.string  "stockable_type"
     t.integer "stockable_id"
     t.string  "path"
-    t.boolean "modified",       :default => false
+    t.boolean "tags_changed",   :default => false
+    t.boolean "svgs_changed",   :default => false
   end
 
   add_index "skus", ["stockable_id"], :name => "index_skus_on_stockable_id"
