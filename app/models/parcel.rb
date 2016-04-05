@@ -107,6 +107,11 @@ class Parcel < ActiveRecord::Base
       prefix = self.for_questions? ? "q" : (self.for_skills? ? "sk" : "sn")
       self.update_attribute :name, "#{prefix}-#{hex_time}"
 
+      # This is a new Parcel. Fill it with any relevant SKUs  
+      Sku.where(virgin: false).each do |sku| 
+        self.add(sku) if self.can_have?(sku)
+      end 
+
       return unless self.for_questions?
       Parcel.create(chapter_id: self.chapter_id, contains: Skill.name) 
       Parcel.create(chapter_id: self.chapter_id, contains: Snippet.name)
