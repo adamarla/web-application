@@ -45,9 +45,14 @@ class Parcel < ActiveRecord::Base
     self.update_attributes min_difficulty: min, max_difficulty: max
   end 
 
-  def can_accept?(obj) 
-    return false unless (self.contains == obj.class.name)
+  def can_have?(sku) 
+    # Is the SKU of the right type to go into this Parcel? 
+    return false unless (self.contains == sku.stockable_type)
+
+    # Does the SKU match the conditions set on the Parcel?
     # obj can only be Question, Snippet or Skill now 
+
+    obj = sku.stockable
 
     case obj 
       when Question 
@@ -58,10 +63,31 @@ class Parcel < ActiveRecord::Base
       when Snippet 
         return (obj.skill.chapter_id == self.chapter_id)
     end 
-
     return true 
   end 
 
+  def parent_zip(sku)
+    self.zips.each do |z|
+      return z if z.has?(sku)
+    end 
+    return nil 
+  end 
+
+  def add(sku)
+    # Method assumes this parcel can_have? passed SKU 
+
+    return false unless self.parent_zip(sku).nil? # if already added 
+    open_zip = Zip.where(parcel_id: self.id, open: true).last || self.zips.create 
+    open_zip << sku 
+  end 
+
+  def remove(sku)
+    # Method assumes that passed SKU has been ascertained to be removed 
+
+    zip = self.parent_zip(sku) 
+    return false if zip.nil? # false alarm. Not in this parcel
+    zip.sku_ids = zip.sku_ids - [sku.id]
+  end 
 
   def self.for_chapter(chapter, language = Language.named('english'))
     # There can be multiple parcel of questions for the same chapter. 

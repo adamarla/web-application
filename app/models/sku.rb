@@ -6,13 +6,33 @@
 #  stockable_type :string(255)
 #  stockable_id   :integer
 #  path           :string(255)
-#  tags_changed   :boolean         default(FALSE)
-#  svgs_changed   :boolean         default(FALSE)
+#  virgin         :boolean         default(TRUE)
 #
 
 class Sku < ActiveRecord::Base
   belongs_to :stockable, polymorphic: true 
   validates :stockable_id, uniqueness: { scope: [:stockable_type] }
+
+  def recompute_ownership
+    return false if self.virgin # => No SVG in vault/ 
+
+    Parcel.all.each do |parcel| 
+      if parcel.can_have?(self) 
+        parcel.add(self)
+      else 
+        parcel.remove(self)
+      end 
+    end # of each loop  
+  end # of method 
+
+  def set_modified_on_zips 
+    return false if self.virgin 
+
+    zip_ids = Inventory.where(sku_id: self.id).map(&:zip_id).uniq 
+    Zip.where(id: zip_ids).each do |zip|
+      zip.update_attribute :modified, true
+    end 
+  end 
 
   def self.questions
     where(stockable_type: Question.name)
@@ -24,14 +44,6 @@ class Sku < ActiveRecord::Base
 
   def self.snippets
     where(stockable_type: Snippet.name) 
-  end 
-
-  def self.tags_changed
-    where(tags_changed: true) 
-  end 
-
-  def self.svgs_changed
-    where(svgs_changed: true) 
   end 
 
 end

@@ -9,7 +9,7 @@
 
 class Skill < ActiveRecord::Base
   has_one :sku, as: :stockable, dependent: :destroy
-  before_update :set_sku_retagged, if: :chapter_id_changed?
+  around_update :set_sku_ownership, if: :chapter_id_changed?
   after_create :add_sku 
 
   private 
@@ -17,8 +17,9 @@ class Skill < ActiveRecord::Base
       self.create_sku path: "skills/#{self.id}"
     end 
 
-    def set_sku_retagged 
-      self.sku.update_attribute :tags_changed, true 
+    def set_sku_ownership 
+      yield
+      self.sku.recompute_ownership
     end 
 
 end

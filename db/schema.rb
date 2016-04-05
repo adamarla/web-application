@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160405074320) do
+ActiveRecord::Schema.define(:version => 20160405094852) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -518,8 +518,7 @@ ActiveRecord::Schema.define(:version => 20160405074320) do
     t.string  "stockable_type"
     t.integer "stockable_id"
     t.string  "path"
-    t.boolean "tags_changed",   :default => false
-    t.boolean "svgs_changed",   :default => false
+    t.boolean "virgin",         :default => true
   end
 
   add_index "skus", ["stockable_id"], :name => "index_skus_on_stockable_id"
@@ -731,6 +730,7 @@ ActiveRecord::Schema.define(:version => 20160405074320) do
     t.integer "max_size",                :default => -1
     t.boolean "open",                    :default => true
     t.string  "shasum",    :limit => 10
+    t.boolean "modified",                :default => false
   end
 
   add_index "zips", ["parcel_id"], :name => "index_zips_on_parcel_id"
