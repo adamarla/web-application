@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160406025636) do
+ActiveRecord::Schema.define(:version => 20160406132113) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(:version => 20160406025636) do
     t.string  "name",       :limit => 70
     t.integer "level_id"
     t.integer "subject_id"
+    t.string  "uid",        :limit => 10
   end
 
   add_index "chapters", ["level_id"], :name => "index_chapters_on_level_id"
@@ -511,7 +512,8 @@ ActiveRecord::Schema.define(:version => 20160406025636) do
 
   create_table "skills", :force => true do |t|
     t.integer "chapter_id"
-    t.boolean "generic",    :default => false
+    t.boolean "generic",                  :default => false
+    t.string  "uid",        :limit => 15
   end
 
   create_table "skus", :force => true do |t|
