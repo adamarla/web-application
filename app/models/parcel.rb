@@ -89,6 +89,13 @@ class Parcel < ActiveRecord::Base
     zip.sku_ids = zip.sku_ids - [sku.id]
   end 
 
+  def modified?
+    # Modified if some zip within has changed 
+    zips = Zip.where(parcel_id: self.id, modified: true) 
+    return (zips.count > 0)
+  end 
+
+
   def self.for_chapter(chapter, language = Language.named('english'))
     # There can be multiple parcel of questions for the same chapter. 
     # The difference could be in target language, difficulty levels etc. 

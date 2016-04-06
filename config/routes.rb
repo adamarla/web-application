@@ -68,6 +68,12 @@ Webapp::Application.routes.draw do
   # Level 
   match 'level/list' => 'level#list', via: :get
 
+  # Parcels 
+  match 'modified/parcels' => 'parcels#list_modified_parcels', via: :get
+  match 'modified/zips' => 'parcels#list_modified_zips', via: :get
+  match 'zip/contents' => 'parcels#list_zip_contents', via: :get
+  match 'update/zip' => 'parcels#update_zip', via: :get
+
   # Account 
   match 'account' => 'accounts#update', via: :post
   match 'exams/list' => 'accounts#exams', via: :get
@@ -106,6 +112,7 @@ Webapp::Application.routes.draw do
 
   # Question
   match 'question/add' => 'question#create', via: [:get, :post]
+  match 'ziptest' => 'question#zip_test', via: :get
 
   match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
   match 'bundle/which' => 'question#bundle_which', via: :get
