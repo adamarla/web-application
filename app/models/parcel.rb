@@ -78,7 +78,7 @@ class Parcel < ActiveRecord::Base
 
     return false unless self.parent_zip(sku).nil? # if already added 
     open_zip = Zip.where(parcel_id: self.id, open: true).last || self.zips.create 
-    open_zip << sku 
+    open_zip.skus << sku 
   end 
 
   def remove(sku)
