@@ -13,9 +13,9 @@
 
 class Zip < ActiveRecord::Base
   belongs_to :parcel
-  has_many :skus, through: :inventory 
+  has_many :inventory
+  has_many :skus, through: :inventory, after_add: :set_modified, after_remove: :set_modified 
 
-  around_update :set_modified, if: :sku_ids_changed?
   after_create :seal 
 
   def path 
@@ -31,20 +31,17 @@ class Zip < ActiveRecord::Base
   end 
 
   private 
+
     def seal 
       p = self.parcel 
       self.update_attribute :name, "#{p.name}-#{self.id}"
       self.update_attribute(:max_size, 10) if p.for_questions?
     end 
 
-    def set_modified
-      self.update_attribute :modified, true 
-      yield 
-
-      unless self.max_size == -1 
-        # A zip once closed for addition CANNOT be opened again
-        self.update_attribute(:open, false) if (self.open && self.sku_ids.count >= self.max_size)
-      end 
+    def set_modified(sku)
+      self.update_attribute(:modified, true) unless self.modified 
+      return if (self.max_size == -1 || !self.open) # zip for snippets / skills  
+      self.update_attribute(:open, false) if (self.sku_ids.count >= self.max_size)
     end 
 
 end # of class 
