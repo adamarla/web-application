@@ -20,7 +20,7 @@ class Question < ActiveRecord::Base
   belongs_to :language
   has_one :sku, as: :stockable, dependent: :destroy
 
-  around_update :set_sku_ownership, if: :retagged?
+  around_update :edit_zips, if: :retagged?
   after_create :add_sku 
 
   def fastest_bingo 
@@ -36,9 +36,9 @@ class Question < ActiveRecord::Base
       return (self.difficulty_changed? || self.chapter_id_changed? || self.language_id_changed?)
     end 
 
-    def set_sku_ownership
+    def edit_zips
       yield 
-      self.sku.recompute_ownership
+      self.sku.edit_zips
     end 
 
 

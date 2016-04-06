@@ -13,7 +13,7 @@ class SkuController < ApplicationController
           sku.set_modified_on_zips
         else 
           sku.update_attribute :has_svgs, true 
-          sku.recompute_ownership 
+          sku.edit_zips 
         end 
         render json: { id: sku.id }, status: :ok 
       else 

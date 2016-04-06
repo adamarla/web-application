@@ -13,7 +13,7 @@ class Sku < ActiveRecord::Base
   belongs_to :stockable, polymorphic: true 
   validates :stockable_id, uniqueness: { scope: [:stockable_type] }
 
-  def recompute_ownership
+  def edit_zips
     return false unless self.has_svgs 
 
     Parcel.all.each do |parcel| 

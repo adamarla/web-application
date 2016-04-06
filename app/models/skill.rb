@@ -19,7 +19,7 @@ class Skill < ActiveRecord::Base
 
     def set_sku_ownership 
       yield
-      self.sku.recompute_ownership
+      self.sku.edit_zips
     end 
 
 end
