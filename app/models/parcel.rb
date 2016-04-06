@@ -108,7 +108,7 @@ class Parcel < ActiveRecord::Base
       self.update_attribute :name, "#{prefix}-#{hex_time}"
 
       # This is a new Parcel. Fill it with any relevant SKUs  
-      Sku.where(virgin: false).each do |sku| 
+      Sku.where(has_svgs: true).each do |sku| 
         self.add(sku) if self.can_have?(sku)
       end 
 

@@ -6,7 +6,7 @@
 #  stockable_type :string(255)
 #  stockable_id   :integer
 #  path           :string(255)
-#  virgin         :boolean         default(TRUE)
+#  has_svgs       :boolean         default(FALSE)
 #
 
 class Sku < ActiveRecord::Base
@@ -14,7 +14,7 @@ class Sku < ActiveRecord::Base
   validates :stockable_id, uniqueness: { scope: [:stockable_type] }
 
   def recompute_ownership
-    return false if self.virgin # => No SVG in vault/ 
+    return false unless self.has_svgs 
 
     Parcel.all.each do |parcel| 
       if parcel.can_have?(self) 
@@ -26,7 +26,7 @@ class Sku < ActiveRecord::Base
   end # of method 
 
   def set_modified_on_zips 
-    return false if self.virgin 
+    return false unless self.has_svgs 
 
     zip_ids = Inventory.where(sku_id: self.id).map(&:zip_id).uniq 
     Zip.where(id: zip_ids).each do |zip|

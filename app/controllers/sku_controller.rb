@@ -9,11 +9,11 @@ class SkuController < ApplicationController
       sku = Sku.where(path: uid).first 
 
       unless sku.nil?
-        if sku.virgin
-          sku.update_attribute :virgin, false 
-          sku.recompute_ownership 
-        else 
+        if sku.has_svgs
           sku.set_modified_on_zips
+        else 
+          sku.update_attribute :has_svgs, true 
+          sku.recompute_ownership 
         end 
         render json: { id: sku.id }, status: :ok 
       else 
