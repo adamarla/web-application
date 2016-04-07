@@ -28,6 +28,10 @@ class Chapter < ActiveRecord::Base
     Chapter.create name: name, level_id: Level.named('senior'), subject_id: Subject.named('maths') 
   end 
 
+  def self.generic
+    return where(name: "generic".titleize).first
+  end 
+
   private 
 
     def set_uid 
