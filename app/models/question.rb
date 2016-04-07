@@ -42,7 +42,7 @@ class Question < ActiveRecord::Base
 
     cids = Skill.where(id: skill_ids).map(&:chapter_id).uniq 
     skills = Skill.where(id: skill_ids).map(&:uid)
-    return Question.where(chapter_id: cids).tagged_with(skills, any: true)
+    return Question.where(chapter_id: cids).tagged_with(skills, any: true, on: :skills)
   end 
 
   private 
