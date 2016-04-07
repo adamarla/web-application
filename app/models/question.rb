@@ -45,6 +45,13 @@ class Question < ActiveRecord::Base
     return Question.where(chapter_id: cids).tagged_with(skills, any: true, on: :skills)
   end 
 
+  def self.replaceTagXWithY(x,y) # 'x' and 'y' are strings 
+    Question.tagged_with(x, on: :skills).each do |q| 
+      q.skills_list.remove(x) 
+      q.skills_list.add(y)
+    end 
+  end 
+
   private 
     def add_sku 
       self.create_sku path: "q/#{self.examiner_id}/#{self.id}"
