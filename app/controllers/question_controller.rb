@@ -17,6 +17,30 @@ class QuestionController < ApplicationController
     end 
   end 
 
+  def set_skills 
+    q = Question.find params[:id] 
+    unless q.nil? 
+      skill_ids = params[:skills].map(&:to_i) 
+      q.set_skills skill_ids 
+      render json: { id: q.id }, status: :ok
+    else 
+      render json: { id: 0 }, status: :bad_request 
+    end 
+  end # of action 
+
+  def find_with_skills 
+    skill_ids = params[:skills].blank? ? [] : params[:skills].map(&:to_i)
+
+    unless skill_ids.blank?
+      ques = Question.with_skills(skill_ids)
+      render json: { response: ques.map{ |q| {id: q.id, path: q.sku.path } } }, status: :ok  
+    else 
+      render json: { response: [] }, status: :bad_request 
+    end 
+  end # of action 
+
+  # ------------
+
   def new_location 
     response = Question.all.map{ |q| { uid: q.uid, loc: "q/#{q.examiner_id}/#{q.id}" } }
     render json: response, status: :ok
