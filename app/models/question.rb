@@ -47,8 +47,9 @@ class Question < ActiveRecord::Base
 
   def self.replaceTagXWithY(x,y) # 'x' and 'y' are strings 
     Question.tagged_with(x, on: :skills).each do |q| 
-      q.skills_list.remove(x) 
-      q.skills_list.add(y)
+      q.skill_list.remove(x) 
+      q.skill_list.add(y)
+      q.save
     end 
   end 
 
