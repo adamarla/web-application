@@ -8,6 +8,12 @@ class SkillsController < ApplicationController
     render json: { id: s.id, path: s.sku.path }, status: :created 
   end 
 
+  def list 
+    cid = params[:c] || Chapter.generic.id 
+    skills = Skill.where(chapter_id: cid) 
+    render json: skills.map{ |s| { id: s.id, path: s.sku.path } }, status: :ok
+  end 
+
   def update 
     proceed = !(params[:id].blank? || params[:c].blank?)
     if proceed 
