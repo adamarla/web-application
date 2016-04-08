@@ -14,6 +14,29 @@ class SnippetsController < ApplicationController
     end 
   end 
 
+  def list 
+    unless params[:c].blank? 
+      skill_ids = params[:skill] || Skill.where(chapter_id: params[:c]).map(&:id) 
+      snippets = Snippet.where(skill_id: skill_ids)
 
+      unless snippets.blank? 
+        # We should also return the minimal set of zips that need 
+        # to be downloaded to get said snippets
+        sku_ids = Sku.where(stockable_id: snippets.map(&:id), stockable_type: Snippet.name).map(&:id)
+        zip_ids = Inventory.where(sku_id: sku_ids).map(&:zip_id).uniq 
 
-end 
+        render json: { 
+                        snippets: snippets.map{ |s| { id: s.id, path: s.sku.path } },
+                        zips: Zip.where(id: zip_ids).map(&:path)
+                     }, status: :ok
+
+      else # no snippets  
+        render json: { snippets: [], zips: [] }, status: :ok
+      end 
+
+    else # no chapter specified 
+      render json: { snippets: [], zips: [] }, status: :bad_request 
+    end 
+  end 
+
+end # of controller  
