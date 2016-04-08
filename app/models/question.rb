@@ -25,6 +25,10 @@ class Question < ActiveRecord::Base
 
   acts_as_taggable_on :skills
 
+  def path 
+    return (self.sku.nil? ? "q/#{self.examiner_id}/#{self.id}" : self.sku.path)
+  end 
+
   def fastest_bingo 
     return Attempt.where(question_id: self.id).where('time_to_bingo > ?', 0).order(:time_to_bingo).first
   end 
@@ -64,6 +68,7 @@ class Question < ActiveRecord::Base
 
     def edit_zips
       yield 
+      add_sku if self.sku.nil?
       self.sku.edit_zips
     end 
 
