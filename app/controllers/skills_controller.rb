@@ -11,7 +11,17 @@ class SkillsController < ApplicationController
   def list 
     cid = params[:c] || Chapter.generic.id 
     skills = Skill.where(chapter_id: cid) 
-    render json: skills.map{ |s| { id: s.id, path: s.sku.path } }, status: :ok
+
+    # Should also return the minimal set of zips that need to be 
+    # downloaded to get said skills 
+
+    sku_ids = Sku.where(stockable_id: skills.map(&:id), stockable_type: Skill.name).map(&:id)
+    zip_ids = Inventory.where(sku_id: sku_ids).map(&:zip_id).uniq
+
+    render json: { 
+                    skills: skills.map{ |s| { id: s.id, path: s.sku.path },
+                    zips: Zip.where(id: zip_ids).map(&:path)
+                 }, status: :ok
   end 
 
   def update 
