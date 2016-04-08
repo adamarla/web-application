@@ -33,9 +33,9 @@ class QuestionController < ApplicationController
 
     unless skill_ids.blank?
       ques = Question.with_skills(skill_ids)
-      render json: { response: ques.map{ |q| {id: q.id, path: q.sku.path } } }, status: :ok  
+      render json: ques.map{ |q| {id: q.id, path: q.sku.path } } , status: :ok  
     else 
-      render json: { response: [] }, status: :bad_request 
+      render json: [], status: :bad_request 
     end 
   end # of action 
 
