@@ -28,15 +28,19 @@ class QuestionController < ApplicationController
     end 
   end # of action 
 
-  def find_with_skills 
+  def list 
     skill_ids = params[:skills].blank? ? [] : params[:skills].map(&:to_i)
 
     unless skill_ids.blank?
-      ques = Question.with_skills(skill_ids)
-      render json: ques.map{ |q| {id: q.id, path: q.sku.path } } , status: :ok  
+      skills = Skill.where(id: skill_ids).map(&:uid) 
+      ques = Question.tagged_with(skills, any: true, on: :skills)
     else 
-      render json: [], status: :bad_request 
+      ques = Question.where('id > ?', 0) # all questions 
     end 
+
+    ques = ques.where(chapter_id: params[:c].to_i) unless params[:c].blank?
+    render json: ques.map{ |q| {id: q.id, path: q.path } } , status: :ok  
+
   end # of action 
 
   # ------------

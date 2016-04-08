@@ -113,7 +113,7 @@ Webapp::Application.routes.draw do
 
   # Question
   match 'question/add' => 'question#create', via: [:get, :post]
-  match 'question/find' => 'question#find_with_skills', via: :get
+  match 'question/list' => 'question#list', via: :get
   match 'question/tag' => 'question#set_skills', via: [:get, :post]
 
   match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
