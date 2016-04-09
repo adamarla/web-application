@@ -23,7 +23,11 @@ class ParcelsController < ApplicationController
   def list_zip_contents
     zip = Zip.find params[:id]
     skus = zip.skus 
-    render json: { name: zip.name, id: zip.id, paths: skus.map(&:path) }, status: :ok
+    # render json: { name: zip.name, id: zip.id, paths: skus.map(&:path) }, status: :ok
+    render json: { 
+                    name: zip.name, id: zip.id, 
+                    skus: skus.map{ |s| { id: s.stockable_id, type: s.stockable_type, path: s.path } } 
+                 }, status: :ok 
   end 
 
   def update_zip
