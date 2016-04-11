@@ -17,7 +17,7 @@ class Chapter < ActiveRecord::Base
   validates :name, presence: true 
   validates :name, uniqueness: { scope: [:level_id, :subject_id] }
 
-  before_validation :titleize 
+  before_validation :titleize, if: :name_changed? 
   after_create :set_uid 
 
   def titleize 
@@ -37,7 +37,6 @@ class Chapter < ActiveRecord::Base
     def set_uid 
       # Remove conjunctions from name 
       x = self.name.downcase.gsub /\s+(a|an|and|the|of|in|on)\s+/, ' '  
-
       code = x.split(' ')[0..1].map{ |tkn| tkn[0..3] }.join.upcase
       self.update_attribute :uid, code
     end 
