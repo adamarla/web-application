@@ -34,7 +34,7 @@ class Zip < ActiveRecord::Base
 
     def seal 
       p = self.parcel 
-      self.update_attribute :name, "#{p.name}-#{self.id}"
+      self.update_attribute :name, "#{p.name}-Z#{self.id}"
       self.update_attribute(:max_size, 10) if p.for_questions?
     end 
 
