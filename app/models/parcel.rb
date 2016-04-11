@@ -95,6 +95,14 @@ class Parcel < ActiveRecord::Base
     return (zips.count > 0)
   end 
 
+  def to_json 
+    ret = { id: self.id, type: self.contains, name: self.name } 
+    if self.contains == Question.name 
+      ret[:min] = self.min_difficulty 
+      ret[:max] = self.max_difficulty
+    end 
+    return ret 
+  end 
 
   def self.for_chapter(chapter, language = Language.named('english'))
     # There can be multiple parcel of questions for the same chapter. 
@@ -110,9 +118,8 @@ class Parcel < ActiveRecord::Base
 
   private 
     def seal 
-      hex_time = Time.now.to_i.to_s(16)
-      prefix = self.for_questions? ? "q" : (self.for_skills? ? "sk" : "sn")
-      self.update_attribute :name, "#{prefix}-#{hex_time}"
+      suffix = self.for_questions? ? "Q#{self.id}" : (self.for_skills? ? "SK#{self.id}" : "SN#{self.id}") 
+      self.update_attribute :name, "C#{self.chapter_id}#{suffix}"
 
       # This is a new Parcel. Fill it with any relevant SKUs  
       Sku.where(has_svgs: true).each do |sku| 
