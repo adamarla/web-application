@@ -10,4 +10,10 @@ class ChapterController < ApplicationController
     render json: response, status: :ok
   end 
 
+  # To be called ** only ** by bash script 
+  def parcels
+    parcels = Parcel.where(chapter_id: params[:c]) 
+    render json: parcels.map(&:to_json), status: :ok
+  end 
+
 end 
