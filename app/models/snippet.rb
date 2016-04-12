@@ -31,7 +31,7 @@ class Snippet < ActiveRecord::Base
       yield 
       new_skill = self.skill_id 
       same_chapter = Skill.where(id: [old_skill, new_skill]).map(&:chapter_id).uniq.count == 1 
-      self.sku.edit_zips unless same_chapter 
+      self.sku.reassign_to_zips unless same_chapter 
     end 
 
 end

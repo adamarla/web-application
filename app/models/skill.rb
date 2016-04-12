@@ -28,7 +28,7 @@ class Skill < ActiveRecord::Base
 
       yield 
 
-      self.sku.edit_zips
+      self.sku.reassign_to_zips
       Question.replaceTagXWithY old_uid, self.uid 
     end 
 

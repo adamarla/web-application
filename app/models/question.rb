@@ -20,7 +20,7 @@ class Question < ActiveRecord::Base
   belongs_to :language
   has_one :sku, as: :stockable, dependent: :destroy
 
-  around_update :edit_zips, if: :retagged?
+  around_update :reassign_to_zips, if: :retagged?
   after_create :add_sku 
 
   acts_as_taggable_on :skills
@@ -66,10 +66,10 @@ class Question < ActiveRecord::Base
       return (self.difficulty_changed? || self.chapter_id_changed? || self.language_id_changed?)
     end 
 
-    def edit_zips
+    def reassign_to_zips
       yield 
       add_sku if self.sku.nil?
-      self.sku.edit_zips
+      self.sku.reassign_to_zips
     end 
 
 

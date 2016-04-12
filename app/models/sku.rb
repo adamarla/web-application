@@ -12,7 +12,15 @@
 class Sku < ActiveRecord::Base
   belongs_to :stockable, polymorphic: true 
   validates :stockable_id, uniqueness: { scope: [:stockable_type] }
-  after_update :edit_zips, if: :has_svgs_changed? 
+  after_update :reassign_to_zips, if: :has_svgs_changed? 
+
+  def reassign_to_zips
+    return false unless self.has_svgs 
+
+    Parcel.all.each do |parcel| 
+      parcel.can_have?(self) ? parcel.add(self) : parcel.remove(self) 
+    end # of each loop  
+  end # of method 
 
   def set_modified_on_zips 
     return false unless self.has_svgs 
@@ -35,18 +43,4 @@ class Sku < ActiveRecord::Base
     where(stockable_type: Snippet.name) 
   end 
 
-  private 
-    def edit_zips
-      return false unless self.has_svgs 
-
-      Parcel.all.each do |parcel| 
-        if parcel.can_have?(self) 
-          parcel.add(self)
-        else 
-          parcel.remove(self)
-        end 
-      end # of each loop  
-    end # of method 
-
-
-end
+end # of class
