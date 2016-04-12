@@ -26,7 +26,7 @@ class ParcelsController < ApplicationController
     # render json: { name: zip.name, id: zip.id, paths: skus.map(&:path) }, status: :ok
     render json: { 
                     name: zip.name, id: zip.id, 
-                    skus: skus.map{ |s| { id: s.stockable_id, type: s.stockable_type, path: s.path } } 
+                    skus: skus.map{ |s| { id: s.id, type: s.stockable_type, path: s.path } } 
                  }, status: :ok 
   end 
 
