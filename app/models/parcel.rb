@@ -95,6 +95,27 @@ class Parcel < ActiveRecord::Base
     return (zips.count > 0)
   end 
 
+  def next_zip(attempted_sku_ids)
+    # We want to return the *next* zip that a user must download 
+    # given the SKUs that he has already attempted 
+
+    # We can assume here that 
+    #   1. this parcel is for Question or Snippets only 
+    #   2. the passed SKU ids match this Parcel's type (Question / Snippet) 
+
+    entries = Inventory.where(zip_id: self.zip_ids)
+    unattempted = entries.where(sku_id: (entries.map(&:sku_id) - attempted_sku_ids))
+
+    zip_ids = unattempted.map(&:zip_id)
+    cnd, others = zips_ids.partition{ |z| zip_ids.count(z) >= 6 }
+
+    # Randomly return one of the eligible zips (>= 6 unattempted SKUs). 
+    # And if no eligible zip, then return one of the others. 
+
+    ret_id = (cnd.blank? ? others.uniq.sample(1).first : cnd.uniq.sample(1).first)
+    return (ret_id.blank? ? nil : Zip.find(ret_id))
+  end 
+
   def to_json 
     ret = { id: self.id, type: self.contains, name: self.name } 
     if self.contains == Question.name 

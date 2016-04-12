@@ -38,4 +38,22 @@ class ParcelsController < ApplicationController
     render json: { id: params[:id] }, status: :ok
   end 
 
-end 
+=begin
+  The logic for when to start downloading the next zip because 
+  the student is close to finishing the ones already on his device 
+  resides in the mobile app. Here, we just do the calculations (given 
+  the attempted SKU IDs) and tell the mobile which Zip to download
+=end 
+
+  def next_zip 
+    p = Parcel.find params[:parcel] # should never be nil
+    zip = p.next_zip( params[:sku_ids] || [] ) 
+
+    unless zip.nil? 
+      render json: { id: zip.id, name: zip.name, shasum: zip.shasum, parcel: zip.parcel_id } , status: :ok
+    else 
+      render json: { id: 0 }, status: :bad_request 
+    end 
+  end 
+
+end # of class 
