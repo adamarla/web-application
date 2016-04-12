@@ -9,12 +9,7 @@ class SkuController < ApplicationController
       sku = Sku.where(path: uid).first 
 
       unless sku.nil?
-        if sku.has_svgs
-          sku.set_modified_on_zips
-        else 
-          sku.update_attribute :has_svgs, true 
-          sku.edit_zips 
-        end 
+        sku.has_svgs ? sku.set_modified_on_zips : sku.update_attribute(:has_svgs, true)
         render json: { id: sku.id }, status: :ok 
       else 
         render json: { id: 0 }, status: :bad_request 
