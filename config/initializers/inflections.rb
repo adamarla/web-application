@@ -18,4 +18,5 @@
    inflect.irregular 'koshish', 'koshishein'
    inflect.irregular 'potd', 'potd'
    inflect.irregular 'inventory', 'inventory'
+   inflect.irregular 'expertise', 'expertise'
  end
