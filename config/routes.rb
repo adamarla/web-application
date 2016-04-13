@@ -60,6 +60,9 @@ Webapp::Application.routes.draw do
   # Difficulty 
   match 'difficulty/list' => 'difficulty#list', via: :get
 
+  # Expertise 
+  match 'expertise/update' => 'expertise#update', via: :post 
+
   # Subject 
   match 'subject/list' => 'subject#list', via: :get
 
