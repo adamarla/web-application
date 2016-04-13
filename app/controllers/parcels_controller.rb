@@ -50,7 +50,7 @@ class ParcelsController < ApplicationController
     zip = (p.contains == Skill.name) ? p.zips.first : p.next_zip( params[:sku_ids] || [] ) 
 
     unless zip.nil? 
-      render json: { id: zip.id, name: zip.name, shasum: zip.shasum, chapter_id: p.chapter_id } , status: :ok
+      render json: { id: zip.id, name: zip.name, shasum: zip.shasum, chapter_id: p.chapter_id, type: p.contains } , status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 
     end 
