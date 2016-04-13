@@ -77,7 +77,7 @@ Webapp::Application.routes.draw do
   match 'next/zip' => 'parcels#next_zip', via: [:get, :post]
 
   # Zip controller 
-  match 'zip/ping' => 'zip/ping', via: [:get, :post] 
+  match 'zip/ping' => 'zip#ping', via: [:get, :post] 
 
   # Account 
   match 'account' => 'accounts#update', via: :post
