@@ -74,7 +74,10 @@ Webapp::Application.routes.draw do
   match 'modified/zips' => 'parcels#list_modified_zips', via: :get
   match 'zip/contents' => 'parcels#list_zip_contents', via: :get
   match 'update/zip' => 'parcels#update_zip', via: :get
-  match 'next/zip' => '#parcels#next_zip', via: :get
+  match 'next/zip' => 'parcels#next_zip', via: [:get, :post]
+
+  # Zip controller 
+  match 'zip/ping' => 'zip/ping', via: [:get, :post] 
 
   # Account 
   match 'account' => 'accounts#update', via: :post
