@@ -47,7 +47,7 @@ class ParcelsController < ApplicationController
 
   def next_zip 
     p = Parcel.find params[:parcel] # should never be nil
-    zip = p.next_zip( params[:sku_ids] || [] ) 
+    zip = (p.contains == Skill.name) ? p.zips.first : p.next_zip( params[:sku_ids] || [] ) 
 
     unless zip.nil? 
       render json: { id: zip.id, name: zip.name, shasum: zip.shasum, parcel: zip.parcel_id } , status: :ok
