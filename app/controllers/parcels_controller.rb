@@ -6,7 +6,8 @@ class ParcelsController < ApplicationController
   The following controller actions are meant to be called from 
   within a bash-script (zippify) *only*
 
-  Plus, they should be called in the order defined below 
+  Plus, they should be called in the order defined below.
+  Also see ZipController for some other actions used in zippify
 =end 
 
   def list_modified_parcels 
@@ -20,23 +21,6 @@ class ParcelsController < ApplicationController
     render json: { id: zips.map(&:id) }, status: :ok
 	end 
 
-  def list_zip_contents
-    zip = Zip.find params[:id]
-    skus = zip.skus 
-    # render json: { name: zip.name, id: zip.id, paths: skus.map(&:path) }, status: :ok
-    render json: { 
-                    name: zip.name, id: zip.id, 
-                    skus: skus.map{ |s| { id: s.id, type: s.stockable_type, path: s.path } } 
-                 }, status: :ok 
-  end 
-
-  def update_zip
-    # Once the zip has been re-generated, update its SHASUM 
-    zip = Zip.find params[:id] 
-    shasum = params[:shasum] 
-    zip.update_attributes(modified: false, shasum: shasum) unless zip.nil? 
-    render json: { id: params[:id] }, status: :ok
-  end 
 
 =begin
   The logic for when to start downloading the next zip because 
