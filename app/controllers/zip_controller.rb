@@ -19,7 +19,8 @@ class ZipController < ApplicationController
                     name: zip.name, 
                     id: zip.id, 
                     chapter: zip.parcel.chapter_id, 
-                    skus: skus.map{ |s| { id: s.id, type: s.stockable_type, path: s.path } } 
+                    type: zip.parcel.contains, 
+                    skus: skus.map{ |s| { id: s.id, path: s.path } } 
                  }, status: :ok 
   end 
 
