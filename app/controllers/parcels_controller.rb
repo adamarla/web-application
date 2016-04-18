@@ -26,12 +26,18 @@ class ParcelsController < ApplicationController
   The logic for when to start downloading the next zip because 
   the student is close to finishing the ones already on his device 
   resides in the mobile app. Here, we just do the calculations (given 
-  the attempted SKU IDs) and tell the mobile which Zip to download
+  the attempted SKU IDs) and tell the mobile app which Zip to download
 =end 
 
   def next_zip 
     p = Parcel.find params[:parcel] # should never be nil
-    zip = (p.contains == Skill.name) ? p.zips.first : p.next_zip( params[:sku_ids] || [] ) 
+
+    if p.contains == Skill.name 
+      zip = p.zips.first 
+    else
+      sku_ids = params[:sku_ids].blank? ? [] : params[:sku_ids].split(",").map(&:to_i)
+      zip = p.next_zip sku_ids  
+    end 
 
     unless zip.nil? 
       render json: { id: zip.id, name: zip.name, shasum: zip.shasum, chapter_id: p.chapter_id, type: p.contains } , status: :ok
