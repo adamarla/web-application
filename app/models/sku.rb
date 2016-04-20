@@ -31,6 +31,16 @@ class Sku < ActiveRecord::Base
     end 
   end 
 
+  def author_id
+    parent = self.stockable 
+    return (parent.instance_of?(Skill) ? 1 : parent.examiner_id)
+  end 
+
+  def chapter 
+    parent = self.stockable 
+    return (parent.instance_of?(Snippet) ? parent.skill.chapter : parent.chapter) 
+  end 
+
   def self.questions
     where(stockable_type: Question.name)
   end 
@@ -41,6 +51,10 @@ class Sku < ActiveRecord::Base
 
   def self.snippets
     where(stockable_type: Snippet.name) 
+  end 
+
+  def self.in_chapter(cid)
+    select{ |sku| sku.chapter.id == cid }
   end 
 
 end # of class
