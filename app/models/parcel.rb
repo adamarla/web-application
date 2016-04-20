@@ -106,8 +106,8 @@ class Parcel < ActiveRecord::Base
     entries = Inventory.where(zip_id: self.zip_ids)
     unattempted = entries.where(sku_id: (entries.map(&:sku_id) - attempted_sku_ids))
 
-    zip_ids = unattempted.map(&:zip_id)
-    cnd, others = zips_ids.partition{ |z| zip_ids.count(z) >= 6 }
+    zips = unattempted.map(&:zip_id)
+    cnd, others = zips.partition{ |z| zips.count(z) >= 6 }
 
     # Randomly return one of the eligible zips (>= 6 unattempted SKUs). 
     # And if no eligible zip, then return one of the others. 

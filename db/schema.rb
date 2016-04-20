@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160407073246) do
+ActiveRecord::Schema.define(:version => 20160413123051) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -270,6 +270,16 @@ ActiveRecord::Schema.define(:version => 20160407073246) do
     t.text     "dist_scheme"
     t.integer  "rubric_id"
   end
+
+  create_table "expertise", :force => true do |t|
+    t.integer "pupil_id"
+    t.integer "skill_id"
+    t.integer "num_tested",  :default => 0
+    t.integer "num_correct", :default => 0
+  end
+
+  add_index "expertise", ["pupil_id"], :name => "index_expertise_on_pupil_id"
+  add_index "expertise", ["skill_id"], :name => "index_expertise_on_skill_id"
 
   create_table "faculty_rosters", :force => true do |t|
     t.integer  "sektion_id"
