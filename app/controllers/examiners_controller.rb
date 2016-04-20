@@ -2,6 +2,11 @@
 class ExaminersController < ApplicationController
   respond_to :json 
 
+  def list
+    examiners = Examiner.order(:id).map{ |e| { id: e.id, name: e.name } }
+    render json: examiners, status: :ok
+  end
+
   def block_db_slots
     examiner = Examiner.find params[:id]
     unless examiner.nil? 

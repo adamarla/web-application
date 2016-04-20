@@ -102,6 +102,7 @@ Webapp::Application.routes.draw do
   # Examiner 
   resource :examiner, :except => [:new, :destroy]
   match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
+  match 'examiner/list' => 'examiners#list', via: :get
 
   # Skills 
   match 'skill/add' => 'skills#create', via: [:get, :post]
@@ -113,6 +114,7 @@ Webapp::Application.routes.draw do
 
   # Sku 
   match 'sku/recompiled' => 'sku#recompiled', via: [:get]
+  match 'sku/list' => 'sku#list', via: [:get]
 
   # Topic 
   resource :topic, :only => [:create, :update]
