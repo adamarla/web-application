@@ -11,6 +11,7 @@
 #  created_at     :datetime        not null
 #  updated_at     :datetime        not null
 #  contains       :string(20)
+#  max_zip_size   :integer         default(-1)
 #
 
 class Parcel < ActiveRecord::Base
@@ -24,6 +25,7 @@ class Parcel < ActiveRecord::Base
   has_many :zips, dependent: :destroy 
 
   after_create :seal 
+  after_update :reset_zip_sizes, if: :max_zip_size_changed? 
 
   def for_questions?
     return self.contains == Question.name 
@@ -138,9 +140,21 @@ class Parcel < ActiveRecord::Base
   end 
 
   private 
+
     def seal 
-      suffix = self.for_questions? ? "Q#{self.id}" : (self.for_skills? ? "SK#{self.id}" : "SN#{self.id}") 
-      self.update_attribute :name, "C#{self.chapter_id}#{suffix}"
+      case self.contains 
+        when Question.name
+          suffix = "Q#{self.id}"
+          max_size = 10 
+        when Skill.name 
+          suffix = "SK#{self.id}" 
+          max_size = -1
+        else 
+          suffix = "SN#{self.id}"
+          max_size = 20 
+      end 
+
+      self.update_attributes name: "C#{self.chapter_id}#{suffix}", max_zip_size: max_size 
 
       # This is a new Parcel. Fill it with any relevant SKUs  
       Sku.where(has_svgs: true).each do |sku| 
@@ -150,7 +164,16 @@ class Parcel < ActiveRecord::Base
       return unless self.for_questions?
       Parcel.create(chapter_id: self.chapter_id, contains: Skill.name) 
       Parcel.create(chapter_id: self.chapter_id, contains: Snippet.name)
+    end 
 
+    def reset_zip_sizes
+      # Zips that were closed will stay closed. 
+      # A zip can only go from open -> closed here. 
+
+      open_zips = Zip.where(parcel_id: self.id, open: true) # there should be only one!
+      open_zips.each do |z| 
+        z.update_attribute :max_size, self.max_zip_size
+      end 
     end 
 
 end
