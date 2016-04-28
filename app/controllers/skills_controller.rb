@@ -19,7 +19,8 @@ class SkillsController < ApplicationController
     zip_ids = Inventory.where(sku_id: sku_ids).map(&:zip_id).uniq
 
     render json: { 
-                    skills: skills.map{ |s| { id: s.id, path: s.sku.path } },
+                    skills: skills.map{ |s| { id: s.id, path: s.sku.path,
+                        authorId: 1, chapterId: cid.to_i, assetClass: "Skill" } },
                     zips: Zip.where(id: zip_ids).map(&:path)
                  }, status: :ok
   end 

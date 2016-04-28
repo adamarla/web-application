@@ -107,6 +107,7 @@ Webapp::Application.routes.draw do
   # Skills 
   match 'skill/add' => 'skills#create', via: [:get, :post]
   match 'skill/update' => 'skills#update', via: [:get, :post]
+  match 'skills/list' => 'skills#list', via: :get
 
   # Snippets 
   match 'snippet/add' => 'snippets#create', via: [:get, :post]
