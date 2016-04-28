@@ -17,6 +17,7 @@ class Zip < ActiveRecord::Base
   has_many :skus, through: :inventory, after_add: :set_modified, after_remove: :set_modified 
 
   after_create :seal 
+  around_update :set_open_boolean, if: :max_size_changed?
 
   def path 
     return "zips/#{self.name}.zip"
@@ -34,14 +35,19 @@ class Zip < ActiveRecord::Base
 
     def seal 
       p = self.parcel 
-      self.update_attribute :name, "#{p.name}-Z#{self.id}"
-      self.update_attribute(:max_size, 10) if p.for_questions?
+      name = "#{p.name}-Z#{self.id}"
+      self.update_attributes name: name, max_size: p.max_zip_size
     end 
 
     def set_modified(sku)
       self.update_attribute(:modified, true) unless self.modified 
       return if (self.max_size == -1 || !self.open) # zip for snippets / skills  
       self.update_attribute(:open, false) if (self.sku_ids.count >= self.max_size)
+    end 
+
+    def set_open_boolean 
+      self.open = (self.max_size == -1) || (self.sku_ids.count < self.max_size) 
+      yield
     end 
 
 end # of class 
