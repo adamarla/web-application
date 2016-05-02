@@ -2,10 +2,11 @@
 #
 # Table name: skills
 #
-#  id         :integer         not null, primary key
-#  chapter_id :integer
-#  generic    :boolean         default(FALSE)
-#  uid        :string(15)
+#  id          :integer         not null, primary key
+#  chapter_id  :integer
+#  generic     :boolean         default(FALSE)
+#  uid         :string(15)
+#  examiner_id :integer
 #
 
 class Skill < ActiveRecord::Base
