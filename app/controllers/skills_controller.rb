@@ -31,7 +31,7 @@ class SkillsController < ApplicationController
 
     render json: { 
                     skills: skills.map{ |s| { id: s.id, path: s.sku.path,
-                        authorId: 1, chapterId: cid.to_i, assetClass: "Skill" } },
+                        authorId: examiner_id, chapterId: cid.to_i, assetClass: "Skill" } },
                     zips: Zip.where(id: zip_ids).map(&:path)
                  }, status: :ok
   end 
