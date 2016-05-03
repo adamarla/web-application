@@ -25,8 +25,9 @@ class ParcelsController < ApplicationController
 =begin
   The logic for when to start downloading the next zip because 
   the student is close to finishing the ones already on his device 
-  resides in the mobile app. Here, we just do the calculations (given 
-  the attempted SKU IDs) and tell the mobile app which Zip to download
+  resides in the mobile app. Here, we just do the calculations 
+  (given the attempted IDs and Parcel type) and tell the
+  mobile app which Zip to download
 =end 
 
   def next_zip 
@@ -35,8 +36,8 @@ class ParcelsController < ApplicationController
     if p.contains == Skill.name 
       zip = p.zips.first 
     else
-      sku_ids = params[:sku_ids].blank? ? [] : params[:sku_ids].split(",").map(&:to_i)
-      zip = p.next_zip sku_ids  
+      ids = params[:ids].blank? ? [] : params[:ids].split(",").map(&:to_i)
+      zip = p.next_zip ids  
     end 
 
     unless zip.nil? 
