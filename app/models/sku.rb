@@ -33,7 +33,7 @@ class Sku < ActiveRecord::Base
 
   def author_id
     parent = self.stockable 
-    return (parent.instance_of?(Skill) ? 1 : parent.examiner_id)
+    return parent.examiner_id
   end 
 
   def chapter 
