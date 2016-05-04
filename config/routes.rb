@@ -46,8 +46,8 @@ Webapp::Application.routes.draw do
   # Prepwell NotifResponse 
   match 'notif/update' => 'notif_response#update', via: [:put, :post]
 
-  # Prepwell DailyStreaks 
-  match 'streak/update' => 'daily_streaks#update', via: [:put, :post]
+  # Prepwell Usage metrics  
+  match 'usage/update' => 'usages#update', via: [:put, :post]
 
   # Prepwell Reports
   match 'prepwellapp' => 'welcome#index'
