@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160504030952) do
+ActiveRecord::Schema.define(:version => 20160504062308) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -161,12 +161,6 @@ ActiveRecord::Schema.define(:version => 20160504030952) do
     t.string   "qids"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "daily_streaks", :force => true do |t|
-    t.string  "date",         :limit => 30
-    t.integer "user_id"
-    t.integer "streak_total",               :default => 0
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -682,6 +676,16 @@ ActiveRecord::Schema.define(:version => 20160504030952) do
   add_index "tryouts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
   add_index "tryouts", ["student_id"], :name => "index_graded_responses_on_student_id"
   add_index "tryouts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
+
+  create_table "usages", :force => true do |t|
+    t.string  "date",               :limit => 30
+    t.integer "user_id"
+    t.string  "time_zone",          :limit => 50
+    t.integer "time_on_snippets",                 :default => 0
+    t.integer "time_on_questions",                :default => 0
+    t.integer "num_snippets_done",                :default => 0
+    t.integer "num_questions_done",               :default => 0
+  end
 
   create_table "users", :force => true do |t|
     t.string   "first_name",      :limit => 50
