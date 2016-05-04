@@ -14,17 +14,13 @@ class UsersController < ApplicationController
       uid = user.id 
     end 
 
-    if uid > 0 # updating something else of a previously created record
-      token = params[:gcm_token] 
-
-      unless token.blank?  
-        device = Device.where(user_id: uid, gcm_token: token).first || 
-                 Device.create(user_id: uid, gcm_token: token)
-      else 
-        device = nil 
-      end 
-      uid = 0 if device.nil? 
+    token = params[:gcm_token] 
+    unless (token.blank? || uid == 0) 
+      device = Device.where(user_id: uid, gcm_token: token).first || 
+               Device.create(user_id: uid, gcm_token: token)
     end 
+
     render json: { id: uid }, status: (uid > 0 ? :ok : :internal_server_error)
-  end 
-end
+  end # of action  
+
+end # of class
