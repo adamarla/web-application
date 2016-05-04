@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160502060357) do
+ActiveRecord::Schema.define(:version => 20160504030952) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(:version => 20160502060357) do
   end
 
   create_table "attempts", :force => true do |t|
-    t.integer  "pupil_id"
+    t.integer  "user_id"
     t.integer  "question_id"
     t.boolean  "checked_answer",               :default => false
     t.integer  "num_attempts",                 :default => 0
@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(:version => 20160502060357) do
     t.integer  "time_to_bingo",                :default => 0
   end
 
-  add_index "attempts", ["pupil_id"], :name => "index_koshishein_on_pupil_id"
   add_index "attempts", ["question_id"], :name => "index_koshishein_on_question_id"
+  add_index "attempts", ["user_id"], :name => "index_koshishein_on_pupil_id"
 
   create_table "bundle_questions", :force => true do |t|
     t.integer  "bundle_id"
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(:version => 20160502060357) do
 
   create_table "daily_streaks", :force => true do |t|
     t.string  "date",         :limit => 30
-    t.integer "pupil_id"
+    t.integer "user_id"
     t.integer "streak_total",               :default => 0
   end
 
@@ -186,14 +186,14 @@ ActiveRecord::Schema.define(:version => 20160502060357) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "devices", :force => true do |t|
-    t.integer  "pupil_id"
+    t.integer  "user_id"
     t.string   "gcm_token"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
     t.boolean  "live",       :default => true
   end
 
-  add_index "devices", ["pupil_id"], :name => "index_devices_on_pupil_id"
+  add_index "devices", ["user_id"], :name => "index_devices_on_pupil_id"
 
   create_table "difficulties", :force => true do |t|
     t.string  "name",    :limit => 10
@@ -272,14 +272,14 @@ ActiveRecord::Schema.define(:version => 20160502060357) do
   end
 
   create_table "expertise", :force => true do |t|
-    t.integer "pupil_id"
+    t.integer "user_id"
     t.integer "skill_id"
     t.integer "num_tested",  :default => 0
     t.integer "num_correct", :default => 0
   end
 
-  add_index "expertise", ["pupil_id"], :name => "index_expertise_on_pupil_id"
   add_index "expertise", ["skill_id"], :name => "index_expertise_on_skill_id"
+  add_index "expertise", ["user_id"], :name => "index_expertise_on_pupil_id"
 
   create_table "faculty_rosters", :force => true do |t|
     t.integer  "sektion_id"
@@ -393,19 +393,6 @@ ActiveRecord::Schema.define(:version => 20160502060357) do
     t.integer "num_failed",                  :default => 0
     t.integer "num_sent",                    :default => 0
   end
-
-  create_table "pupils", :force => true do |t|
-    t.string   "first_name",      :limit => 50
-    t.string   "last_name",       :limit => 50
-    t.string   "email",           :limit => 100
-    t.integer  "gender"
-    t.string   "birthday",        :limit => 50
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
-    t.boolean  "known_associate",                :default => false
-  end
-
-  add_index "pupils", ["email"], :name => "index_pupils_on_email"
 
   create_table "puzzles", :force => true do |t|
     t.text     "text"
@@ -695,6 +682,19 @@ ActiveRecord::Schema.define(:version => 20160502060357) do
   add_index "tryouts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
   add_index "tryouts", ["student_id"], :name => "index_graded_responses_on_student_id"
   add_index "tryouts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
+
+  create_table "users", :force => true do |t|
+    t.string   "first_name",      :limit => 50
+    t.string   "last_name",       :limit => 50
+    t.string   "email",           :limit => 100
+    t.integer  "gender"
+    t.string   "birthday",        :limit => 50
+    t.datetime "created_at",                                        :null => false
+    t.datetime "updated_at",                                        :null => false
+    t.boolean  "known_associate",                :default => false
+  end
+
+  add_index "users", ["email"], :name => "index_pupils_on_email"
 
   create_table "verticals", :force => true do |t|
     t.string   "name",       :limit => 30

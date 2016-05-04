@@ -2,8 +2,8 @@ class DailyStreaksController < ApplicationController
   respond_to :json 
 
   def update 
-    streak = DailyStreak.where(pupil_id: params[:id], date: params[:date]).first || 
-             DailyStreak.new(pupil_id: params[:id], date: params[:date], 
+    streak = DailyStreak.where(user_id: params[:id], date: params[:date]).first || 
+             DailyStreak.new(user_id: params[:id], date: params[:date], 
                                streak_total: params[:total])
 
     saved = streak.new_record? ? 

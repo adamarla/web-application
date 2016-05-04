@@ -15,8 +15,8 @@ Webapp::Application.routes.draw do
 
   match 'ping' => 'application#ping', via: :get
 
-  # Prepwell Pupils 
-  match 'pupil/ping' => 'pupils#ping', via: [:get, :post]
+  # Prepwell Users 
+  match 'user/ping' => 'users#ping', via: [:get, :post]
 
   # Prepwell Bundles 
   match 'bundle/ping' => 'bundles#ping', via: [:get, :post]

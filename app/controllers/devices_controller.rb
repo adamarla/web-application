@@ -5,14 +5,14 @@ class DevicesController < ApplicationController
   def create 
     device = Device.where(gcm_token: params[:gcm_token]).first 
     if device.nil? 
-      device = Device.new(gcm_token: params[:gcm_token], pupil_id: params[:pupil_id])
+      device = Device.new(gcm_token: params[:gcm_token], user_id: params[:user_id])
       status = device.save ? :ok : :internal_server_error 
     else 
       status = :ok
     end 
     # send some JSON back in response. Otherwise, Response.ErrorListener
     # will get called in Android even when everything went ok.
-    render json: { pupil_id: params[:pupil_id] }, status: status 
+    render json: { user_id: params[:user_id] }, status: status 
   end 
 
   def post
@@ -23,12 +23,12 @@ class DevicesController < ApplicationController
 
     if dev_mode 
       api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
-      send_to = Device.where(pupil_id: 1, live: false)
+      send_to = Device.where(user_id: 1, live: false)
     else 
       api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
       live_devices = Device.where(live: true)
-      dnc_list = live_devices.where(pupil_id: [3,4,7,18,116]) # dnc = do-not-call
-      send_to = targetted ? live_devices.where(pupil_id: params[:id])  : live_devices - dnc_list
+      dnc_list = live_devices.where(user_id: [3,4,7,18,116]) # dnc = do-not-call
+      send_to = targetted ? live_devices.where(user_id: params[:id])  : live_devices - dnc_list
     end 
 
     reg_ids = send_to.map(&:gcm_token) 
@@ -90,7 +90,7 @@ class DevicesController < ApplicationController
         record.update_attribute(:num_failed, unregistered.count) unless record.nil?
 
         # Send a mail to self with summary of unregistered users 
-        fuckers = Pupil.where(id: unrgd.map(&:pupil_id).uniq)
+        fuckers = User.where(id: unrgd.map(&:user_id).uniq)
         Mailbot.app_dropoffs(fuckers).deliver
       end 
 

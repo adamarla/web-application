@@ -3,7 +3,7 @@
 # Table name: attempts
 #
 #  id             :integer         not null, primary key
-#  pupil_id       :integer
+#  user_id        :integer
 #  question_id    :integer
 #  checked_answer :boolean         default(FALSE)
 #  num_attempts   :integer         default(0)
