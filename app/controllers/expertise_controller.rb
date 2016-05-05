@@ -12,8 +12,21 @@ class ExpertiseController < ApplicationController
     e = Expertise.where(user_id: uid, skill_id: skill).first 
         || Expertise.create(user_id: uid, skill_id: skill) 
 
-    e.update_attributes(num_tested: params[:num_tested], num_correct: params[:num_correct])
-    render json: { id: e.id }, status: :ok
-  end 
+    was_synced = params[:synced] 
 
-end 
+    if was_synced
+      if params[:num_tested] > e.num_tested 
+        e.update_attributes(num_tested: params[:num_tested], num_correct: params[:num_correct])
+      end 
+    else 
+      # new data from a new source 
+      e.update_attributes( 
+        num_tested: e.num_tested + params[:num_tested], 
+        num_correct: e.num_correct + params[:num_correct] 
+      ) 
+    end 
+
+    render json: { id: e.id, num_tested: e.num_tested, num_correct: e.num_correct }, status: :ok
+  end # of method 
+
+end # of class
