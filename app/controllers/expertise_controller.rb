@@ -9,8 +9,8 @@ class ExpertiseController < ApplicationController
     uid = params[:uid] 
     skill = params[:skill]
 
-    e = Expertise.where(user_id: uid, skill_id: skill).first 
-        || Expertise.create(user_id: uid, skill_id: skill) 
+    e = Expertise.where(user_id: uid, skill_id: skill).first || 
+        Expertise.create(user_id: uid, skill_id: skill) 
 
     was_synced = params[:synced] 
 
