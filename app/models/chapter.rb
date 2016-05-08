@@ -21,7 +21,15 @@ class Chapter < ActiveRecord::Base
   after_create :set_uid 
 
   def titleize 
-    self.name = self.name.titleize unless self.name.blank?
+    return if self.name.blank? 
+
+    tokens = self.name.downcase.split(" ")
+    conjunctions = ["a","an","and","the","of","on","in"] 
+
+    tokens.each_with_index do |t,j| 
+      tokens[j] = conjunctions.include?(t) ? t.downcase : t.titleize
+    end 
+    self.name = tokens.join(" ")
   end 
 
   def self.quick_add(name) 
