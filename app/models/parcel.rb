@@ -97,15 +97,12 @@ class Parcel < ActiveRecord::Base
     return (zips.count > 0)
   end 
 
-  def next_zip(attempted_sku_ids)
+  def next_zip(ids) 
     # We want to return the *next* zip that a user must download 
     # given the SKUs that he has already attempted 
 
-    # We can assume here that 
-    #   1. this parcel is for Question or Snippets only 
-    #   2. the passed SKU ids match this Parcel's type (Question / Snippet) 
-
     entries = Inventory.where(zip_id: self.zip_ids)
+    attempted_sku_ids = Sku.where(stockable_id: ids, stockable_type: self.contains).map(&:id)
     unattempted = entries.where(sku_id: (entries.map(&:sku_id) - attempted_sku_ids))
 
     zips = unattempted.map(&:zip_id)

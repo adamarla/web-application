@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: pupils
+# Table name: users
 #
 #  id              :integer         not null, primary key
 #  first_name      :string(50)
@@ -13,7 +13,7 @@
 #  known_associate :boolean         default(FALSE)
 #
 
-class Pupil < ActiveRecord::Base
+class User < ActiveRecord::Base
   # attr_accessible :title, :body
   validates :email, presence: true
   validates :email, uniqueness: true 
@@ -28,7 +28,7 @@ class Pupil < ActiveRecord::Base
 
   def days_active
     start_date = self.created_at.to_date
-    devices = Device.where(pupil_id: self.id).order(:created_at) 
+    devices = Device.where(user_id: self.id).order(:created_at) 
 
     if devices.blank? 
       end_date = Date.today
@@ -44,7 +44,7 @@ class Pupil < ActiveRecord::Base
   end 
 
   def returning_user? 
-    a = Attempt.where(pupil_id: self.id) 
+    a = Attempt.where(user_id: self.id) 
     return false if a.empty? 
     format = "%d/%m/%y"
     dates = a.map{ |x| x.updated_at.to_date.strftime(format) }
@@ -54,13 +54,13 @@ class Pupil < ActiveRecord::Base
   end 
 
   def num_attempts(count_retries = true)
-    a = Attempt.where(pupil_id: self.id)
+    a = Attempt.where(user_id: self.id)
     return a.count unless count_retries
     return (a.empty? ? 0 : a.map(&:num_attempts).inject(&:+))
   end 
 
   def total_time_solving
-    a = Attempt.where(pupil_id: self.id) 
+    a = Attempt.where(user_id: self.id) 
     return 0 if a.blank?
     total_times = a.map(&:total_time).select{ |t| !t.nil? }
     return (total_times.blank? ? 0 : total_times.inject(&:+))
@@ -78,9 +78,9 @@ class Pupil < ActiveRecord::Base
     select{ |p| p.num_attempts >= n } 
   end 
 
-  def self.profile(pids)
-    # returns a hash where each value is an array of values extracted for passed pids
-    p = Pupil.where(id: pids) 
+  def self.profile(uids)
+    # returns a hash where each value is an array of values extracted for passed uids
+    p = User.where(id: uids) 
     ret = {} 
     [:num_attempts, :days_between_attempts, :days_active, :total_time_solving].each do |k| 
       ret[k] = p.map(&k)

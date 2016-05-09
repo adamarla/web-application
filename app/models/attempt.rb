@@ -3,7 +3,7 @@
 # Table name: attempts
 #
 #  id             :integer         not null, primary key
-#  pupil_id       :integer
+#  user_id        :integer
 #  question_id    :integer
 #  checked_answer :boolean         default(FALSE)
 #  num_attempts   :integer         default(0)
@@ -22,7 +22,7 @@
 
 class Attempt < ActiveRecord::Base
   # attr_accessible :title, :body
-  belongs_to :pupil 
+  belongs_to :user 
   validates :max_opened, numericality: { only_integer: true, less_than: 10 } 
 
   def total_time_on_cards 
@@ -37,8 +37,8 @@ class Attempt < ActiveRecord::Base
   end 
 
   def self.with_times(min_avg = 0, max_avg = 1200)
-    pids = [*1..Pupil.last.id] - [1,3]
-    where(pupil_id: pids).where('total_time > ?', 0).select{ |a| avg = a.average_time ; (avg >= min_avg && avg <= max_avg) }
+    uids = [*1..User.last.id] - [1,3]
+    where(user_id: uids).where('total_time > ?', 0).select{ |a| avg = a.average_time ; (avg >= min_avg && avg <= max_avg) }
   end 
 
 end

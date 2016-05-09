@@ -39,12 +39,12 @@ class Bundle < ActiveRecord::Base
     self.update_zip(self.bundle_questions)
   end
 
-  def attempts(pid)
+  def attempts(uid)
     # Returns the attempts by given student for the questions 
     # in this bundle (sorted by label).
 
     qids = self.bundle_questions.sort{ |a,b| a.label <=> b.label }.map(&:question_id)
-    a = Attempt.where(pupil_id: pid, question_id: qids).sort{ |x,y| qids.index(x.question_id) <=> qids.index(y.question_id) }
+    a = Attempt.where(user_id: uid, question_id: qids).sort{ |x,y| qids.index(x.question_id) <=> qids.index(y.question_id) }
     return a 
   end 
 
