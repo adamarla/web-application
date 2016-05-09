@@ -9,7 +9,7 @@ class SkillsController < ApplicationController
       examiner = Examiner.find params[:e]
       if examiner.is_admin
         cid = params[:c] || Chapter.generic.id 
-        s = Skill.create chapter_id: cid, examiner_id: examiner.id
+        s = Skill.create(chapter_id: cid, examiner_id: examiner.id)
         render json: { id: s.id, path: s.sku.path }, status: :created 
       else
         render json: { id: 0 }, status: :bad_request
