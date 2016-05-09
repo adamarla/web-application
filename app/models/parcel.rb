@@ -124,7 +124,7 @@ class Parcel < ActiveRecord::Base
     return ret 
   end 
 
-  def self.for_chapter(chapter, language = Language.named('english'))
+  def self.for_chapter(cid, language = Language.named('english'))
     # There can be multiple parcel of questions for the same chapter. 
     # The difference could be in target language, difficulty levels etc. 
     # But there can be *only one* parcel of skills and snippets. 
@@ -132,8 +132,8 @@ class Parcel < ActiveRecord::Base
     # This method creates a parcel for questions - and any for snippets
     # and skills.
 
-    b = Parcel.create(chapter_id: chapter, language_id: language, contains: Question.name) 
-    b.set_difficulty_range Difficulty.named('easy'), Difficulty.named('medium')
+    p = Parcel.create(chapter_id: cid, language_id: language, contains: Question.name) 
+    p.set_difficulty_range Difficulty.named('easy'), Difficulty.named('medium')
   end 
 
   private 
