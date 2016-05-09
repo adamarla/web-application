@@ -15,129 +15,146 @@ Webapp::Application.routes.draw do
 
   match 'ping' => 'application#ping', via: :get
 
-  # Prepwell Users 
-  match 'user/ping' => 'users#ping', via: [:get, :post]
+  #### NEEDED IN THE MOBILE APP  
 
-  # Prepwell Bundles 
-  match 'bundle/ping' => 'bundles#ping', via: [:get, :post]
-  match 'bundle/update' => 'bundles#update', via: [:put, :post]
-  match 'bundle/questions' => 'bundles#questions', via: [:get]
-  match 'bundle/fetch_all' => 'bundles#fetch_all', via: [:get]
+    # Users 
+    match 'user/ping' => 'users#ping', via: [:get, :post]
+    match 'pupil/ping' => 'users#ping', via: [:get, :post] # temporary alias for backward compatibility 
 
-  # Prewell Attempts 
-  match 'update/attempt' => 'attempts#update', via: [:put, :post]
-  match 'attempt/by_day' => 'attempts#by_day', via: [:get]
-  match 'attempt/by_week' => 'attempts#by_week', via: [:get]
-  match 'attempt/by_user' => 'attempts#by_user', via: [:get]
+    # Devices (GCM) 
+    match 'device/add' => 'devices#create', via: [:put, :post]
+    match 'device/post' => 'devices#post', via: :get
 
-  # Prepwell per-attempt Podium
-  match 'podium/ping' => 'podium#ping', via: :post
+    # NotifResponse 
+    match 'notif/update' => 'notif_response#update', via: [:put, :post]
 
-  # Prepwell Devices (GCM) 
-  match 'device/add' => 'devices#create', via: [:put, :post]
-  match 'device/post' => 'devices#post', via: :get
+    # Parcels 
+    match 'next/zip' => 'parcels#next_zip', via: [:get, :post]
 
-  # Prepwell POTD  
-  match 'potd/update' => 'potd#update', via: [:put, :post]
+    # Usage metrics  
+    match 'usage/update' => 'usages#update', via: [:put, :post]
 
-  # Prepwell Analgesics 
-  match 'analgesics/add' => 'analgesics#create', via: [:put, :post]
+    # Expertise 
+    match 'expertise/update' => 'expertise#update', via: :post 
 
-  # Prepwell NotifResponse 
-  match 'notif/update' => 'notif_response#update', via: [:put, :post]
+    # Zips
+    match 'zip/ping' => 'zip#ping', via: [:get, :post] 
 
-  # Prepwell Usage metrics  
-  match 'usage/update' => 'usages#update', via: [:put, :post]
+  #### NEEDED IN QUILL   
 
-  # Prepwell Reports
-  match 'prepwellapp' => 'welcome#index'
-  match 'prepwellapp/report' => 'welcome#report'
+    # Account 
+    match 'quill/signin' => 'accounts#authenticate_for_quill', via: :get
 
-  # Chapter 
-  match 'chapter/list' => 'chapter#list', via: :get
-  match 'chapter/parcels' => 'chapter#parcels', via: :get
+    # Chapter 
+    match 'chapter/list' => 'chapter#list', via: :get
+    match 'chapter/parcels' => 'chapter#parcels', via: :get
 
-  # Difficulty 
-  match 'difficulty/list' => 'difficulty#list', via: :get
+    # Difficulty 
+    match 'difficulty/list' => 'difficulty#list', via: :get
 
-  # Expertise 
-  match 'expertise/update' => 'expertise#update', via: :post 
+    # Language 
+    match 'language/list' => 'language#list', via: :get
 
-  # Subject 
-  match 'subject/list' => 'subject#list', via: :get
+    # Level 
+    match 'level/list' => 'level#list', via: :get
 
-  # Language 
-  match 'language/list' => 'language#list', via: :get
+    # Question
+    match 'question/add' => 'question#create', via: [:get, :post]
+    match 'question/list' => 'question#list', via: :get
+    match 'question/tag' => 'question#set_skills', via: [:get, :post]
 
-  # Level 
-  match 'level/list' => 'level#list', via: :get
+    # Skills 
+    match 'skill/add' => 'skills#create', via: [:get, :post]
+    match 'skill/update' => 'skills#update', via: [:get, :post]
+    match 'skills/list' => 'skills#list', via: :get
 
-  # Parcels 
-  match 'modified/parcels' => 'parcels#list_modified_parcels', via: :get
-  match 'modified/zips' => 'parcels#list_modified_zips', via: :get
-  match 'next/zip' => 'parcels#next_zip', via: [:get, :post]
+    # Subject 
+    match 'subject/list' => 'subject#list', via: :get
 
-  # Zip controller 
-  match 'update/zip' => 'zip#update', via: :get
-  match 'zip/ping' => 'zip#ping', via: [:get, :post] 
-  match 'zip/contents' => 'zip#list_contents', via: :get
+    # Snippets 
+    match 'snippet/add' => 'snippets#create', via: [:get, :post]
+    match 'snippets/list' => 'snippets#list', via: :get
 
-  # Account 
-  match 'account' => 'accounts#update', via: :post
-  match 'exams/list' => 'accounts#exams', via: :get
-  match 'exams/pending' => 'accounts#pending_exams', via: :get
-  match 'grade/pending' => 'accounts#to_be_graded', via: :get
-  match 'scans/pending' => 'accounts#pending_scans', via: :get
-  match 'close/apprentice/audit' => 'accounts#audit_apprentice', via: [:put, :post]
-  match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
-  match 'byCountry' => 'accounts#by_country', via: :get
-  match 'inCountry' => 'accounts#in_country', via: :get
-  match 'ask/question' => 'accounts#ask_question', via: :post
-  match 'reset/password' => 'accounts#reset_password', via: :post
-  match 'quill/signin' => 'accounts#authenticate_for_quill', via: :get
 
-  # Admin 
-  resource :admin, :controller => :admin 
+  #### NEEDED IN BASH SCRIPTS / CRON-JOBS 
 
-  # Examiner 
-  resource :examiner, :except => [:new, :destroy]
-  match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
-  match 'examiner/list' => 'examiners#list', via: :get
+    # Parcels 
+    match 'modified/parcels' => 'parcels#list_modified_parcels', via: :get
+    match 'modified/zips' => 'parcels#list_modified_zips', via: :get
 
-  # Skills 
-  match 'skill/add' => 'skills#create', via: [:get, :post]
-  match 'skill/update' => 'skills#update', via: [:get, :post]
-  match 'skills/list' => 'skills#list', via: :get
+    # Sku 
+    match 'sku/recompiled' => 'sku#recompiled', via: [:get]
+    match 'sku/list' => 'sku#list', via: [:get]
 
-  # Snippets 
-  match 'snippet/add' => 'snippets#create', via: [:get, :post]
-  match 'snippets/list' => 'snippets#list', via: :get
+    # Zips 
+    match 'update/zip' => 'zip#update', via: :get
+    match 'zip/contents' => 'zip#list_contents', via: :get
 
-  # Sku 
-  match 'sku/recompiled' => 'sku#recompiled', via: [:get]
-  match 'sku/list' => 'sku#list', via: [:get]
+  #### DEPRECATED (Can be commented out one-by-one) 
 
-  # Topic 
-  resource :topic, :only => [:create, :update]
-  match 'topics/list' => 'topics#list', via: :get
-  match 'questions/on' => 'topics#questions', via: :get
+    # Prepwell Bundles 
+    match 'bundle/ping' => 'bundles#ping', via: [:get, :post]
+    match 'bundle/update' => 'bundles#update', via: [:put, :post]
+    match 'bundle/questions' => 'bundles#questions', via: [:get]
+    match 'bundle/fetch_all' => 'bundles#fetch_all', via: [:get]
 
-  # Question
-  match 'question/add' => 'question#create', via: [:get, :post]
-  match 'question/list' => 'question#list', via: :get
-  match 'question/tag' => 'question#set_skills', via: [:get, :post]
+    # Prewell Attempts 
+    match 'update/attempt' => 'attempts#update', via: [:put, :post]
+    match 'attempt/by_day' => 'attempts#by_day', via: [:get]
+    match 'attempt/by_week' => 'attempts#by_week', via: [:get]
+    match 'attempt/by_user' => 'attempts#by_user', via: [:get]
 
-  match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
-  match 'bundle/which' => 'question#bundle_which', via: :get
-  match 'tag/question' => 'question#tag', via: :post
-  match 'q/loc' => 'question#new_location', via: :get
+    # Prepwell per-attempt Podium
+    match 'podium/ping' => 'podium#ping', via: :post
 
-  # Videos 
-  match 'video/play' => 'videos#play'
+    # Prepwell POTD  
+    match 'potd/update' => 'potd#update', via: [:put, :post]
 
-  # Welcome
-  match 'welcome/countries' => 'welcome#countries', via: :get
-  match 'faq' => 'welcome#faq'
+    # Prepwell Analgesics 
+    match 'analgesics/add' => 'analgesics#create', via: [:put, :post]
+
+
+    # Prepwell Reports
+    match 'prepwellapp' => 'welcome#index'
+    match 'prepwellapp/report' => 'welcome#report'
+
+    # Account 
+    match 'account' => 'accounts#update', via: :post
+    match 'exams/list' => 'accounts#exams', via: :get
+    match 'exams/pending' => 'accounts#pending_exams', via: :get
+    match 'grade/pending' => 'accounts#to_be_graded', via: :get
+    match 'scans/pending' => 'accounts#pending_scans', via: :get
+    match 'close/apprentice/audit' => 'accounts#audit_apprentice', via: [:put, :post]
+    match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
+    match 'byCountry' => 'accounts#by_country', via: :get
+    match 'inCountry' => 'accounts#in_country', via: :get
+    match 'ask/question' => 'accounts#ask_question', via: :post
+    match 'reset/password' => 'accounts#reset_password', via: :post
+
+    # Admin 
+    resource :admin, :controller => :admin 
+
+    # Examiner 
+    resource :examiner, :except => [:new, :destroy]
+    match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
+    match 'examiner/list' => 'examiners#list', via: :get
+
+    # Topic 
+    resource :topic, :only => [:create, :update]
+    match 'topics/list' => 'topics#list', via: :get
+    match 'questions/on' => 'topics#questions', via: :get
+
+    match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
+    match 'bundle/which' => 'question#bundle_which', via: :get
+    match 'tag/question' => 'question#tag', via: :post
+    match 'q/loc' => 'question#new_location', via: :get
+
+    # Videos 
+    match 'video/play' => 'videos#play'
+
+    # Welcome
+    match 'welcome/countries' => 'welcome#countries', via: :get
+    match 'faq' => 'welcome#faq'
   
   root :to => "welcome#index"
 
