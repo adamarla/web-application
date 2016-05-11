@@ -2,11 +2,13 @@
 #
 # Table name: expertise
 #
-#  id          :integer         not null, primary key
-#  user_id     :integer
-#  skill_id    :integer
-#  num_tested  :integer         default(0)
-#  num_correct :integer         default(0)
+#  id               :integer         not null, primary key
+#  user_id          :integer
+#  skill_id         :integer
+#  num_tested       :integer         default(0)
+#  num_correct      :integer         default(0)
+#  weighted_tested  :float           default(0.0)
+#  weighted_correct :float           default(0.0)
 #
 
 class Expertise < ActiveRecord::Base

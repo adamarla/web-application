@@ -16,17 +16,26 @@ class ExpertiseController < ApplicationController
 
     if was_synced
       if params[:num_tested] > e.num_tested 
-        e.update_attributes(num_tested: params[:num_tested], num_correct: params[:num_correct])
+        [:num_tested, :num_correct, :weighted_tested, :weighted_correct].each do |column|
+          e[column] = params[column]
+        end 
+        e.save 
       end 
-    else 
-      # new data from a new source 
-      e.update_attributes( 
-        num_tested: e.num_tested + params[:num_tested], 
-        num_correct: e.num_correct + params[:num_correct] 
-      ) 
+    else # new data from a new source 
+      [:num_tested, :num_correct, :weighted_tested, :weighted_correct].each do |column|
+        e[column] += params[column]
+      end 
+      e.save 
     end 
 
-    render json: { id: e.id, num_tested: e.num_tested, num_correct: e.num_correct }, status: :ok
+    render json: { 
+              id: e.id, 
+              num_tested: e.num_tested, 
+              num_correct: e.num_correct,
+              weighted_tested: e.weighted_tested, 
+              weighted_correct: e.weighted_correct
+            }, status: :ok
+
   end # of method 
 
 end # of class

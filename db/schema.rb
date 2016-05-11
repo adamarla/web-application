@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160511050134) do
+ActiveRecord::Schema.define(:version => 20160511070936) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -268,8 +268,10 @@ ActiveRecord::Schema.define(:version => 20160511050134) do
   create_table "expertise", :force => true do |t|
     t.integer "user_id"
     t.integer "skill_id"
-    t.integer "num_tested",  :default => 0
-    t.integer "num_correct", :default => 0
+    t.integer "num_tested",       :default => 0
+    t.integer "num_correct",      :default => 0
+    t.float   "weighted_tested",  :default => 0.0
+    t.float   "weighted_correct", :default => 0.0
   end
 
   add_index "expertise", ["skill_id"], :name => "index_expertise_on_skill_id"
