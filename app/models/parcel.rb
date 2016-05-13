@@ -60,10 +60,8 @@ class Parcel < ActiveRecord::Base
       when Question 
         return false if (obj.chapter_id != self.chapter_id || obj.language_id != self.language_id)
         return false if (obj.difficulty < self.min_difficulty || obj.difficulty > self.max_difficulty)
-      when Skill 
+      when Snippet, Skill 
         return (obj.chapter_id == self.chapter_id)
-      when Snippet 
-        return (obj.skill.chapter_id == self.chapter_id)
     end 
     return true 
   end 
