@@ -7,11 +7,12 @@ class ExpertiseController < ApplicationController
     # that is properly formed 
 
     uid = params[:uid] 
-    skill = params[:skill]
+    sk_id = params[:skill]
 
-    e = Expertise.where(user_id: uid, skill_id: skill).first || 
-        Expertise.create(user_id: uid, skill_id: skill) 
+    e = Expertise.where(user_id: uid, skill_id: sk_id).first || 
+        Expertise.create(user_id: uid, skill_id: sk_id) 
 
+    skill = e.skill 
     was_synced = params[:synced] 
 
     if was_synced
@@ -29,7 +30,9 @@ class ExpertiseController < ApplicationController
     end 
 
     render json: { 
-              id: e.id, 
+              skill_id: skill.id,  
+              chapter_id: skill.chapter_id, 
+              path: skill.sku.path, 
               num_tested: e.num_tested, 
               num_correct: e.num_correct,
               weighted_tested: e.weighted_tested, 
