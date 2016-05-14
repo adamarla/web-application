@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160511070936) do
+ActiveRecord::Schema.define(:version => 20160514070501) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -687,6 +687,7 @@ ActiveRecord::Schema.define(:version => 20160511070936) do
     t.integer "time_on_questions",                :default => 0
     t.integer "num_snippets_done",                :default => 0
     t.integer "num_questions_done",               :default => 0
+    t.integer "time_on_stats",                    :default => 0
   end
 
   create_table "users", :force => true do |t|

@@ -10,6 +10,7 @@
 #  time_on_questions  :integer         default(0)
 #  num_snippets_done  :integer         default(0)
 #  num_questions_done :integer         default(0)
+#  time_on_stats      :integer         default(0)
 #
 
 class Usage < ActiveRecord::Base

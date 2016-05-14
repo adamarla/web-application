@@ -10,6 +10,7 @@ class UsagesController < ApplicationController
     else 
       saved = usage.update_attributes time_on_snippets: params[:time_on_snippets],
                                       time_on_questions: params[:time_on_questions], 
+                                      time_on_stats: params[:time_on_stats], 
                                       num_snippets_done: params[:num_snippets_done], 
                                       num_questions_done: params[:num_questions_done]
     end 
