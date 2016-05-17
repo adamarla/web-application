@@ -38,7 +38,7 @@ class Sku < ActiveRecord::Base
 
   def chapter 
     parent = self.stockable 
-    return (parent.instance_of?(Snippet) ? parent.skill.chapter : parent.chapter) 
+    return parent.chapter
   end 
 
   def self.questions
