@@ -75,7 +75,7 @@ Webapp::Application.routes.draw do
     # Snippets 
     match 'snippet/add' => 'snippets#create', via: [:get, :post]
     match 'snippets/list' => 'snippets#list', via: :get
-    match 'snippets/tag' => 'snippets#set_skills', via: [:get, :post]
+    match 'snippet/tag' => 'snippets#set_skills', via: [:get, :post]
 
 
   #### NEEDED IN BASH SCRIPTS / CRON-JOBS 
