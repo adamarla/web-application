@@ -36,6 +36,14 @@ class SkillsController < ApplicationController
                  }, status: :ok
   end 
 
+  def all
+    json = Skill.all.map{ |s| {
+      id: s.id, path: s.sku.path, 
+        authorId: s.examiner_id, chapterId: s.chapter_id, assetClass: "Skill" }
+    }
+    render json: json, status: :ok
+  end
+
   def update 
     proceed = !(params[:id].blank? || params[:c].blank?)
     if proceed 

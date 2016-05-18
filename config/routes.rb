@@ -67,6 +67,7 @@ Webapp::Application.routes.draw do
     match 'skill/add' => 'skills#create', via: [:get, :post]
     match 'skill/update' => 'skills#update', via: [:get, :post]
     match 'skills/list' => 'skills#list', via: :get
+    match 'skills/all' => 'skills#all', via: :get
 
     # Subject 
     match 'subject/list' => 'subject#list', via: :get
@@ -74,7 +75,7 @@ Webapp::Application.routes.draw do
     # Snippets 
     match 'snippet/add' => 'snippets#create', via: [:get, :post]
     match 'snippets/list' => 'snippets#list', via: :get
-    match 'snippets/tag' => 'snippets#set_skills', via: [:get, :post]
+    match 'snippet/tag' => 'snippets#set_skills', via: [:get, :post]
 
 
   #### NEEDED IN BASH SCRIPTS / CRON-JOBS 
