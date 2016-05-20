@@ -24,13 +24,15 @@ class Skill < ActiveRecord::Base
 
     def set_sku_ownership 
       self.generic = self.chapter_id == Chapter.generic.id 
+
       old_uid = self.uid 
-      self.uid = "#{self.chapter.uid}-#{self.id}"
+      self.uid = (self.chapter_id == 0 || self.chapter_id.nil?) ? nil : "#{self.chapter.uid}-#{self.id}" 
 
       yield 
 
-      self.sku.reassign_to_zips
+      self.sku.reassign_to_zips 
       Question.replaceTagXWithY old_uid, self.uid 
-    end 
+
+    end # of method  
 
 end
