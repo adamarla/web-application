@@ -20,8 +20,12 @@ class QuestionController < ApplicationController
   def set_skills 
     q = Question.find params[:id] 
     unless q.nil? 
-      skill_ids = params[:skills].map(&:to_i) 
-      q.set_skills skill_ids 
+      if params[:c].nil? 
+        skill_ids = params[:skills].map(&:to_i) 
+        q.set_skills skill_ids 
+      else
+        q.update_attribute :chapter_id, params[:c].to_i
+      end
       render json: { id: q.id }, status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 
