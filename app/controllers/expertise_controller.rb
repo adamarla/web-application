@@ -2,6 +2,28 @@
 class ExpertiseController < ApplicationController 
   respond_to :json 
 
+  def ping 
+    # Request can come only from the mobile app 
+    # Request would be for returning expertise numbers for passed user
+
+    uid = params[:uid]
+    e = Expertise.where(user_id: uid)
+
+    render json: { 
+      e.map{ |x| { 
+          skill_id: x.skill_id, 
+          path: x.skill.sku.path,
+          chapter_id: x.skill.chapter_id, 
+          num_tested: x.num_tested,
+          num_correct: x.num_correct, 
+          weighted_tested: x.weighted_tested, 
+          weighted_correct: x.weighted_correct
+        }
+      }
+    }, status: :ok 
+    
+  end 
+
   def update 
     # Request can come only from mobile app. Hence, we can assume 
     # that is properly formed 

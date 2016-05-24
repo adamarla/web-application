@@ -35,6 +35,7 @@ Webapp::Application.routes.draw do
     match 'usage/update' => 'usages#update', via: [:put, :post]
 
     # Expertise 
+    match 'expertise/ping' => 'expertise#ping', via: [:get, :post]
     match 'expertise/update' => 'expertise#update', via: :post 
 
     # Zips
