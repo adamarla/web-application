@@ -9,8 +9,7 @@ class ExpertiseController < ApplicationController
     uid = params[:uid]
     e = Expertise.where(user_id: uid)
 
-    render json: { 
-      e.map{ |x| { 
+    render json: e.map{ |x| { 
           skill_id: x.skill_id, 
           path: x.skill.sku.path,
           chapter_id: x.skill.chapter_id, 
@@ -19,8 +18,7 @@ class ExpertiseController < ApplicationController
           weighted_tested: x.weighted_tested, 
           weighted_correct: x.weighted_correct
         }
-      }
-    }, status: :ok 
+      }, status: :ok 
     
   end 
 
