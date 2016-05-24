@@ -31,10 +31,22 @@ class SkuController < ApplicationController
           assetClass: sku.stockable_type
         } 
       }
-      render json: response, status: :ok
     else
-      render json: { id: 0 }, status: :bad_request 
+      response = []
+      assetTypes = ["Skill", "Snippet", "Question"]
+      assetTypes.map{ |aType|
+        assetClass = Object.const_get(aType)
+        response += assetClass.where("chapter_id is not null").map{ |s|
+          {
+            id: s.id, 
+            path: s.sku.path, 
+            authorId: s.examiner_id,
+            chapterId: s.chapter_id, 
+            assetClass: aType }
+          }
+      }
     end 
+    render json: response, status: :ok
   end
 
 end 
