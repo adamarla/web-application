@@ -18,14 +18,22 @@ class QuestionController < ApplicationController
   end 
 
   def set_skills 
-    q = Question.find params[:id] 
+    q = Question.find params[:id]
     unless q.nil? 
-      if params[:c].nil? 
-        skill_ids = params[:skills].map(&:to_i) 
-        q.set_skills skill_ids 
-      else
-        q.update_attribute :chapter_id, params[:c].to_i
-      end
+      # Set  skills. If blank, then will result in removal of all skills 
+      q.set_skills( params[:skills].map(&:to_i) ) unless params[:skills].nil?
+
+      # Set the chapter - if specified. Ensure language and difficulty 
+      # of the question are also set - if not already so. 
+
+      unless params[:c].blank? 
+        lang = q.language_id || Language.named('english') 
+        level = q.difficulty || Difficulty.named('medium') 
+
+        q.update_attributes chapter_id: params[:c],
+                            language_id: lang,  
+                            difficulty: level  
+      end 
       render json: { id: q.id }, status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 
@@ -71,52 +79,6 @@ class QuestionController < ApplicationController
       end
     end
     render json: { bundleId: "#{bundleId}" }, status: :ok
-  end
-
-  def tag
-    qsn = params[:question]
-    question = Question.where(uid: qsn[:uid]).first
-
-    unless question.nil?
-      # add question to appropriate bundle(s)
-      b = qsn[:bundle]
-      unless b.nil?
-        uid, label = b.split('|')
-        bundle = Bundle.where(uid: uid).first || Bundle.create(uid: uid, auto_download: uid.starts_with?("cbse"))
-
-        bq = BundleQuestion.where(bundle_id: bundle.id, label: label).first
-        # remove this label from existing bundle
-        unless bq.nil?
-          bq.delete
-        end
-
-        bq = BundleQuestion.where(bundle_id: bundle.id, question_id: question.id).first
-        if bq.nil?
-          bq = BundleQuestion.new question_id: question.id, label: label
-          bundle.bundle_questions << bq
-        else
-          bq.update_attribute :label, label
-        end
-  
-        # remove this question from any other bundles (1-1 only for now)
-        BundleQuestion.where(question_id: question.id).map { |bqd|
-          if bqd.bundle_id != bundle.id
-            bqd.delete
-          end
-        }
-          
-        bundle.update_zip([bq])
-      end # end bundle nil check
-
-      concepts = qsn[:concepts]
-      unless concepts.nil?
-        question.concept_list = concepts.join(',')
-        question.save()
-      end
-      render json: { status: :ok, message: 'tagged', uid: bq.question.uid }
-    else
-      render json: { status: :error, message: 'question not found' }
-    end
   end
 
 end # of class  

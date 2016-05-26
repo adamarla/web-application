@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160514070501) do
+ActiveRecord::Schema.define(:version => 20160526031742) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -420,12 +420,12 @@ ActiveRecord::Schema.define(:version => 20160514070501) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "examiner_id"
-    t.integer  "difficulty",  :default => 1
+    t.integer  "difficulty",  :default => 20
     t.boolean  "live",        :default => false
     t.boolean  "potd",        :default => false
     t.integer  "num_potd",    :default => 0
     t.integer  "chapter_id"
-    t.integer  "language_id"
+    t.integer  "language_id", :default => 1
   end
 
   add_index "questions", ["chapter_id"], :name => "index_questions_on_chapter_id"

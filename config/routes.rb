@@ -35,6 +35,7 @@ Webapp::Application.routes.draw do
     match 'usage/update' => 'usages#update', via: [:put, :post]
 
     # Expertise 
+    match 'expertise/ping' => 'expertise#ping', via: [:get, :post]
     match 'expertise/update' => 'expertise#update', via: :post 
 
     # Zips
@@ -148,7 +149,6 @@ Webapp::Application.routes.draw do
 
     match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
     match 'bundle/which' => 'question#bundle_which', via: :get
-    match 'tag/question' => 'question#tag', via: :post
     match 'q/loc' => 'question#new_location', via: :get
 
     # Videos 
