@@ -18,6 +18,9 @@ class SnippetsController < ApplicationController
     unless snippet.nil? 
       skill_ids = params[:skills].map(&:to_i) 
       snippet.set_skills skill_ids 
+
+      snippet.update_attribute :chapter_id, params[:c]
+
       render json: { id: snippet.id }, status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 
