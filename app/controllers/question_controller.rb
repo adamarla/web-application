@@ -20,12 +20,20 @@ class QuestionController < ApplicationController
   def set_skills 
     q = Question.find params[:id] 
     unless q.nil? 
-      if params[:c].nil? 
-        skill_ids = params[:skills].map(&:to_i) 
-        q.set_skills skill_ids 
-      else
-        q.update_attribute :chapter_id, params[:c].to_i
-      end
+      # Set  skills. If blank, then will result in removal of all skills 
+      q.set_skills( params[:skills].map(&:to_i) )
+
+      # Set the chapter - if specified. Ensure language and difficulty 
+      # of the question are also set - if not already so. 
+
+      unless params[:c].blank? 
+        lang = q.language_id || Language.named('english') 
+        level = q.difficulty || Difficulty.named('medium') 
+
+        q.update_attributes chapter_id: params[:c],
+                            language_id: lang,  
+                            difficulty: level  
+      end 
       render json: { id: q.id }, status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 
