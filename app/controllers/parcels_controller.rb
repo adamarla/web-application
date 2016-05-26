@@ -40,7 +40,7 @@ class ParcelsController < ApplicationController
       zip = p.next_zip ids  
     end 
 
-    unless zip.nil? 
+    unless (zip.nil? || zip.shasum.blank?)
       render json: { id: zip.id, name: zip.name, shasum: zip.shasum, chapter_id: p.chapter_id, type: p.contains } , status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 
