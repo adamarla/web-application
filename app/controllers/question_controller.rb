@@ -18,10 +18,10 @@ class QuestionController < ApplicationController
   end 
 
   def set_skills 
-    q = Question.find params[:id] 
+    q = Question.find params[:id]
     unless q.nil? 
       # Set  skills. If blank, then will result in removal of all skills 
-      q.set_skills( params[:skills].map(&:to_i) )
+      q.set_skills( params[:skills].map(&:to_i) ) unless params[:skills].nil?
 
       # Set the chapter - if specified. Ensure language and difficulty 
       # of the question are also set - if not already so. 
