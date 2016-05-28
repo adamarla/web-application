@@ -39,7 +39,7 @@ class SkuController < ApplicationController
         response += assetClass.all.map{ |s|
           {
             id: s.id, 
-            path: s.sku.path, 
+            path: s.sku.nil? ? s.path : s.sku.path,
             authorId: s.examiner_id,
             chapterId: s.chapter_id.nil? ? 0 : s.chapter_id, 
             assetClass: aType }
