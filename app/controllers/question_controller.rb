@@ -28,7 +28,7 @@ class QuestionController < ApplicationController
 
       unless params[:c].blank? 
         lang = q.language_id || Language.named('english') 
-        level = q.difficulty || Difficulty.named('medium') 
+        level = (q.difficulty.nil? || q.difficulty == 1) ? Difficulty.named('medium') : q.difficulty 
 
         q.update_attributes chapter_id: params[:c],
                             language_id: lang,  
