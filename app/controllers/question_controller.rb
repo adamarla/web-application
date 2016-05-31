@@ -26,14 +26,6 @@ class QuestionController < ApplicationController
       # Set the chapter - if specified. Ensure language and difficulty 
       # of the question are also set - if not already so. 
 
-      unless params[:c].blank? 
-        lang = q.language_id || Language.named('english') 
-        level = (q.difficulty.nil? || q.difficulty == 1) ? Difficulty.named('medium') : q.difficulty 
-
-        q.update_attributes chapter_id: params[:c],
-                            language_id: lang,  
-                            difficulty: level  
-      end 
       render json: { id: q.id }, status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 

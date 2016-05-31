@@ -36,9 +36,20 @@ class Sku < ActiveRecord::Base
     return parent.examiner_id
   end 
 
+  def set_chapter_id(cid) 
+    obj = self.stockable 
+
+    if obj.instance_of? Question 
+      lang = obj.language_id || Language.named('english') 
+      diff = (obj.difficulty.nil? || obj.difficulty == 1) ? Difficulty.named('medium') : obj.difficulty 
+      obj.update_attributes chapter_id: cid, language_id: lang, difficulty: diff 
+    else 
+      obj.update_attribute :chapter_id, cid 
+    end 
+  end 
+
   def chapter 
-    parent = self.stockable 
-    return parent.chapter
+    return self.stockable.chapter 
   end 
 
   def self.questions
@@ -54,7 +65,7 @@ class Sku < ActiveRecord::Base
   end 
 
   def self.in_chapter(cid)
-    select{ |sku| sku.chapter.id == cid }
+    select{ |sku| sku.stockable.chapter_id == cid }
   end 
 
 end # of class

@@ -9,6 +9,10 @@ class SkuController < ApplicationController
       sku = Sku.where(path: uid).first 
 
       unless sku.nil?
+        # Set the chapter_id extracted from the XML 
+        sku.set_chapter_id(params[:c]) unless params[:c].blank?
+
+        # 
         sku.has_svgs ? sku.set_modified_on_zips : sku.update_attribute(:has_svgs, true)
         render json: { id: sku.id }, status: :ok 
       else 
