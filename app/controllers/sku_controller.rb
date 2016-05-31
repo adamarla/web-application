@@ -40,12 +40,12 @@ class SkuController < ApplicationController
       assetTypes = ["Skill", "Snippet", "Question"]
       assetTypes.map{ |aType|
         assetClass = Object.const_get(aType)
-        response += assetClass.where("chapter_id is not null").map{ |s|
+        response += assetClass.all.map{ |s|
           {
             id: s.id, 
-            path: s.sku.path, 
+            path: s.sku.nil? ? s.path : s.sku.path,
             authorId: s.examiner_id,
-            chapterId: s.chapter_id, 
+            chapterId: s.chapter_id.nil? ? 0 : s.chapter_id, 
             assetClass: aType }
           }
       }
