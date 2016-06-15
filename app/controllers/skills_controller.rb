@@ -57,7 +57,7 @@ class SkillsController < ApplicationController
   end 
 
   def missing 
-    ids = params[:ids].split(',').map(&:to_i)
+    ids = params[:ids].delete('[]').split(',').map(&:to_i)
     sku_ids = Sku.where(stockable_type: Skill.name, stockable_id: ids, has_svgs: true).map(&:id)
     zip_ids = Inventory.where(sku_id: sku_ids).map(&:zip_id).uniq
     zips = Zip.where(id: zip_ids).where('shasum IS NOT ?', nil) 
