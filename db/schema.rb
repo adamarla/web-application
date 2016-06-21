@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160526031742) do
+ActiveRecord::Schema.define(:version => 20160621191306) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -699,6 +699,7 @@ ActiveRecord::Schema.define(:version => 20160526031742) do
     t.datetime "created_at",                                        :null => false
     t.datetime "updated_at",                                        :null => false
     t.boolean  "known_associate",                :default => false
+    t.date     "join_date"
   end
 
   add_index "users", ["email"], :name => "index_pupils_on_email"
