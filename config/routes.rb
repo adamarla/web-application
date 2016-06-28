@@ -69,6 +69,7 @@ Webapp::Application.routes.draw do
     match 'skill/update' => 'skills#update', via: [:get, :post]
     match 'skills/list' => 'skills#list', via: :get
     match 'skills/all' => 'skills#all', via: :get
+    match 'missing/skills' => 'skills#missing', via: [:get, :post]
 
     # Subject 
     match 'subject/list' => 'subject#list', via: :get

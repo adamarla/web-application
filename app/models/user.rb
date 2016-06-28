@@ -2,15 +2,15 @@
 #
 # Table name: users
 #
-#  id              :integer         not null, primary key
-#  first_name      :string(50)
-#  last_name       :string(50)
-#  email           :string(100)
-#  gender          :integer
-#  birthday        :string(50)
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#  known_associate :boolean         default(FALSE)
+#  id         :integer         not null, primary key
+#  first_name :string(50)
+#  last_name  :string(50)
+#  email      :string(100)
+#  gender     :integer
+#  birthday   :string(50)
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#  join_date  :date
 #
 
 class User < ActiveRecord::Base
@@ -24,6 +24,21 @@ class User < ActiveRecord::Base
 
   def name 
     return "#{self.first_name} #{self.last_name}"
+  end 
+
+  def joined_on
+    # We consider the user to have joined *not* on the day
+    # he registers but on the day he makes his first attempt
+
+    return self.join_date unless self.join_date.nil? 
+    usages = Usage.where(user_id: self.id) 
+
+    return nil if usages.blank?
+
+    first_use = usages.sort{ |x,y| x.date.to_date <=> y.date.to_date }.first 
+    date = first_use.date.to_date 
+    self.update_attribute(:join_date, date) 
+    return date 
   end 
 
   def days_active

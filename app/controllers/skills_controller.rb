@@ -56,4 +56,20 @@ class SkillsController < ApplicationController
 
   end 
 
-end 
+  def missing 
+    ids = params[:ids].delete('[]').split(',').map(&:to_i)
+    sku_ids = Sku.where(stockable_type: Skill.name, stockable_id: ids, has_svgs: true).map(&:id)
+    zip_ids = Inventory.where(sku_id: sku_ids).map(&:zip_id).uniq
+    zips = Zip.where(id: zip_ids).where('shasum IS NOT ?', nil) 
+
+    render json: zips.map{ |z| { 
+                                 id: z.id, 
+                                 name: z.name, 
+                                 shasum: z.shasum, 
+                                 chapter_id: z.parcel.chapter_id,  
+                                 type: z.parcel.contains 
+                               }
+                          }, status: :ok
+  end # of method  
+
+end # of class 
