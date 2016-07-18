@@ -29,7 +29,7 @@ class DevicesController < ApplicationController
     else 
       # api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" 
 
-      api_key = "AIzaSyCdFetCE2anFwyqaZ-X6VLVF05Eqw_0yLY" # release key 
+      api_key = "AIzaSyBEeZDj8wlLAWtKefAzmQfkzmau_XQKY-w" # release-key
       live_devices = Device.where(live: true)
       dnc_list = live_devices.where(user_id: [3,4,7,18,116]) # dnc = do-not-call
       send_to = targetted ? live_devices.where(user_id: params[:id])  : live_devices - dnc_list
