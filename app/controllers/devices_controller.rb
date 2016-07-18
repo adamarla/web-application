@@ -22,10 +22,14 @@ class DevicesController < ApplicationController
     is_potd = params[:type] != "analgesic"
 
     if dev_mode 
-      api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
+      # api_key = "AIzaSyCuk-OPh2qoB4b9mlAYUeLAJdMlVowk2hY" # dev key 
+
+      api_key = "AIzaSyBJefZMgFWpVOhj2CSJ8eNlwwXtn6czTQM" # dev-key 
       send_to = Device.where(user_id: 1, live: false)
     else 
-      api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" # release key 
+      # api_key = "AIzaSyCFH3hFqMdGP1dyqSkEyZgrpxHJwbKru68" 
+
+      api_key = "AIzaSyCdFetCE2anFwyqaZ-X6VLVF05Eqw_0yLY" # release key 
       live_devices = Device.where(live: true)
       dnc_list = live_devices.where(user_id: [3,4,7,18,116]) # dnc = do-not-call
       send_to = targetted ? live_devices.where(user_id: params[:id])  : live_devices - dnc_list
