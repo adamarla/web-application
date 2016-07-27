@@ -20,4 +20,21 @@ class Usage < ActiveRecord::Base
   
   validates :date, presence: true 
   validates :date, uniqueness: { scope: :user_id } 
+
+  def self.newcomers
+    where('user_id > ?', 537) 
+  end 
+
+  def self.something_done 
+    self.newcomers.where('num_snippets_done > ? OR num_questions_done > ?', 0,0)
+  end 
+
+  def self.something_clicked
+    self.newcomers.where('num_snippets_clicked > ? OR num_questions_clicked > ?', 0,0)
+  end 
+
+  def self.some_time_spent
+    self.newcomers.where('time_on_snippets > ? OR time_on_questions > ? OR time_on_stats > ?', 0,0,0)
+  end 
+
 end
