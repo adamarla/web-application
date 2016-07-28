@@ -23,4 +23,12 @@ class UsersController < ApplicationController
     render json: { id: uid }, status: (uid > 0 ? :ok : :internal_server_error)
   end # of action  
 
+  def csv_list 
+    min_id = params[:id].blank? ? 537 : params[:id]
+    users = User.where('id > ?', min_id)
+    json = users.map{ |c| { one: c.first_name, two: c.last_name, three: c.email } }
+    json.unshift({one: 'firstname', two: 'lastname', three: 'email'})
+    render json: json, status: :ok
+  end 
+
 end # of class

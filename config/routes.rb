@@ -20,6 +20,7 @@ Webapp::Application.routes.draw do
     # Users 
     match 'user/ping' => 'users#ping', via: [:get, :post]
     match 'pupil/ping' => 'users#ping', via: [:get, :post] # temporary alias for backward compatibility 
+    match 'users/csv' => 'users#csv_list', via: :get
 
     # Devices (GCM) 
     match 'device/add' => 'devices#create', via: [:put, :post]
