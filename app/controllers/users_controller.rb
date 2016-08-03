@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 
   def csv_list 
     min_id = params[:id].blank? ? 537 : params[:id]
-    users = User.where('id > ?', min_id).order(&:id)
+    users = User.where('id > ?', min_id).order(:id)
     json = users.map{ |c| { one: c.first_name, two: c.last_name, three: c.email, four: c.id } }
     json.unshift({ one: 'firstname', two: 'lastname', three: 'email', four: 'id' })
     render json: json, status: :ok
