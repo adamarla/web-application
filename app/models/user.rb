@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   end 
 
   def self.newcomers
-    where('id > ?', 537)
+    where('id > ?', 537).order(:id)
   end 
 
   def days_active

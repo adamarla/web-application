@@ -22,7 +22,7 @@ class Usage < ActiveRecord::Base
   validates :date, uniqueness: { scope: :user_id } 
 
   def self.newcomers
-    where('user_id > ?', 537) 
+    where('user_id > ?', 537).order(:id)
   end 
 
   def self.something_done 
