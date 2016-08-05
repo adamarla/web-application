@@ -24,6 +24,11 @@ class UsagesController < ApplicationController
                                         num_questions_clicked: params[:num_questions_clicked]
     end 
 
+    # [1.06+] 
+    unless params[:num_dropped].blank?
+      updated = usage.update_attributes num_dropped: params[:num_dropped]
+    end
+
     render json: { updated: true }, status: (updated ? :ok : :internal_server_error)
   end # of method 
 

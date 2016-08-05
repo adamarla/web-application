@@ -13,6 +13,7 @@
 #  time_on_stats         :integer         default(0)
 #  num_snippets_clicked  :integer         default(0)
 #  num_questions_clicked :integer         default(0)
+#  num_dropped           :integer         default(0)
 #
 
 class Usage < ActiveRecord::Base
@@ -20,6 +21,10 @@ class Usage < ActiveRecord::Base
   
   validates :date, presence: true 
   validates :date, uniqueness: { scope: :user_id } 
+
+  def num_skipped 
+    return (num_questions_clicked - num_questions_done - num_dropped)
+  end 
 
   def self.newcomers
     where('user_id > ?', 537).order(:id)
