@@ -48,7 +48,7 @@ class AttemptsController < ApplicationController
     start_date = Date::strptime(params[:report_date], "%d/%m/%Y")
     days = (Date.today - start_date).to_i
     all_attempts = Attempt.where("created_at > ?", start_date)
-    uids = all_attempts.map(&:user_id).uniq - User.where(known_associate: true).map(&:id) # remove founders from list 
+    uids = all_attempts.map(&:user_id).uniq
     users = User.where(id: uids).sort{ |x,y| x.first_name <=> y.first_name }  
     
     by_user = []
@@ -74,13 +74,12 @@ class AttemptsController < ApplicationController
 
   def by_week
     epoch = Date::strptime("16/11/2015", "%d/%m/%Y")
-    known_assocs = User.where(known_associate: true).map(&:id)
 
     by_week = []
     week_start = epoch
     until Date.today < week_start
       week_end = week_start + 6
-      attempts = Attempt.where("created_at BETWEEN (?) AND (?) AND user_id NOT IN (?)", week_start, week_end, known_assocs)
+      attempts = Attempt.where("created_at BETWEEN (?) AND (?) ", week_start, week_end)
 
       by_week << {
         name: "#{week_start.strftime('%d/%m')}-#{week_end.strftime('%d/%m')}",
@@ -95,7 +94,7 @@ class AttemptsController < ApplicationController
   end # of method
 
   def by_user
-    user_ids = User.where(known_associate: false).map(&:id)
+    user_ids = User.map(&:id)
     profiles = User.profile(user_ids)
     render json: { data: profiles }, status: :ok
   end # of method
