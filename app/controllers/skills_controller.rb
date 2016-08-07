@@ -19,7 +19,8 @@ class SkillsController < ApplicationController
   end 
 
   def ping 
-    skills = Skill.where(id: params[:id]) 
+    ids = params[:ids].delete('[]').split(',').map(&:to_i)
+    skills = Skill.where(id: ids) 
     json = skills.map{ |s| { id: s.id, average_proficiency: s.avg_proficiency } }
     render json: json, status: :ok
   end 
