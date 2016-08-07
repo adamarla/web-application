@@ -24,7 +24,7 @@ class ExpertiseController < ApplicationController
 
   def update 
     # Request can come only from mobile app. Hence, we can assume 
-    # that is properly formed 
+    # that it is properly formed  
 
     uid = params[:uid] 
     sk_id = params[:skill]

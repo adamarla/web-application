@@ -3,7 +3,6 @@ class SkillsController < ApplicationController
   respond_to :json 
 
   def create 
-
     proceed = !(params[:c].blank? || params[:e].blank?)
     if proceed
       examiner = Examiner.find params[:e]
@@ -17,6 +16,12 @@ class SkillsController < ApplicationController
     else
       render json: { id: 0 }, status: :bad_request
     end
+  end 
+
+  def ping 
+    skills = Skill.where(id: params[:id]) 
+    json = skills.map{ |s| { id: s.id, average_proficiency: s.avg_proficiency } }
+    render json: json, status: :ok
   end 
 
   def list 
@@ -71,5 +76,10 @@ class SkillsController < ApplicationController
                                }
                           }, status: :ok
   end # of method  
+
+  def revaluate 
+    Skill.all.map(&:revaluate_proficiency)
+    render json: { done: :ok }, status: :ok
+  end 
 
 end # of class 
