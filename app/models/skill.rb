@@ -27,7 +27,7 @@ class Skill < ActiveRecord::Base
     return if wt_tested == 0 
 
     wt_correct = e.map(&:weighted_correct).inject(:+)
-    score = (wt_correct / wt_tested) * 100 
+    score = ((wt_correct / wt_tested) * 100).round(2)
     self.update_attribute :avg_proficiency, score 
   end 
 
