@@ -2,11 +2,12 @@ class UsersController < ApplicationController
   respond_to :json
 
   def ping 
-    user = User.where(email: params[:email]).first 
-           || User.create first_name: params[:first_name], 
+    user = User.where(email: params[:email]).first || 
+           User.create(first_name: params[:first_name], 
                        last_name: params[:last_name],
                        email: params[:email],
-                       gender: params[:gender] 
+                       gender: params[:gender])
+
     unless user.nil?
       [:num_invites_sent, :app_version].each do |k| 
         user[k] = params[k] unless params[k].blank? 
