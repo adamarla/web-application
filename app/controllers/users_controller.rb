@@ -9,39 +9,17 @@ class UsersController < ApplicationController
                        gender: params[:gender])
 
     unless user.nil?
-      [:num_invites_sent, :app_version].each do |k| 
-        user[k] = params[k] unless params[k].blank? 
-      end 
+      num_invites_sent = params[:num_invites_sent].blank? ? 0 : params[:num_invites_sent] 
+        
+      user[:num_invites_sent] = num_invites_sent if (num_invites_sent > user.num_invites_sent)
+      user[:app_version] = params[:app_version] unless params[:app_version].blank? 
       user.save 
+
       render json: { id: user.id }, status: :ok
     else
       render json: { id: 0 }, status: :internal_server_error 
     end 
   end 
-
-=begin
-  def ping 
-    user = User.where(email: params[:email]).first 
-
-    if user.nil?
-      user = User.new first_name: params[:first_name], 
-                      last_name: params[:last_name], 
-                      email: params[:email],
-                      gender: params[:gender]
-      uid = user.save ? user.id : 0 
-    else
-      uid = user.id 
-    end 
-
-    token = params[:gcm_token] 
-    unless (token.blank? || uid == 0) 
-      device = Device.where(user_id: uid, gcm_token: token).first || 
-               Device.create(user_id: uid, gcm_token: token)
-    end 
-
-    render json: { id: uid }, status: (uid > 0 ? :ok : :internal_server_error)
-  end # of action  
-=end
 
   def csv_list 
     min_id = params[:id].blank? ? 537 : params[:id]
