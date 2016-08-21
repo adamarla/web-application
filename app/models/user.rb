@@ -2,15 +2,17 @@
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  first_name :string(50)
-#  last_name  :string(50)
-#  email      :string(100)
-#  gender     :integer
-#  birthday   :string(50)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
-#  join_date  :date
+#  id               :integer         not null, primary key
+#  first_name       :string(50)
+#  last_name        :string(50)
+#  email            :string(100)
+#  gender           :integer
+#  birthday         :string(50)
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  join_date        :date
+#  num_invites_sent :integer         default(0)
+#  app_version      :string(10)
 #
 
 class User < ActiveRecord::Base

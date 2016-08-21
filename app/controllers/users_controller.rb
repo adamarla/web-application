@@ -2,6 +2,24 @@ class UsersController < ApplicationController
   respond_to :json
 
   def ping 
+    user = User.where(email: params[:email]).first || 
+           User.create first_name: params[:first_name], 
+                       last_name: params[:last_name],
+                       email: params[:email],
+                       gender: params[:gender] 
+    unless user.nil?
+      [:num_invites_sent, :app_version].each do |k| 
+        user[k] = params[k] unless params[k].blank? 
+      end 
+      user.save 
+      render json: { id: user.id }, status: :ok
+    else
+      render json: { id: 0 }, status: :internal_server_error 
+    end 
+  end 
+
+=begin
+  def ping 
     user = User.where(email: params[:email]).first 
 
     if user.nil?
@@ -22,6 +40,7 @@ class UsersController < ApplicationController
 
     render json: { id: uid }, status: (uid > 0 ? :ok : :internal_server_error)
   end # of action  
+=end
 
   def csv_list 
     min_id = params[:id].blank? ? 537 : params[:id]
