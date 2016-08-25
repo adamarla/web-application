@@ -44,7 +44,7 @@ class ChapterController < ApplicationController
       ret.push inv
     end 
 
-    ret.unshift({ one: 'Name', two: 'Chapter ID', three: 'Grade', four: '# Questions', five: '# Snippets', six: '# Skills' })
+    ret.unshift({ one: 'Name', two: 'Chapter ID', three: 'Grade', four: "# Questions", five: "# Snippets", six: "# Skills" })
     render json: ret, status: :ok
 
   end 
