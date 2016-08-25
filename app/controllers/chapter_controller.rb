@@ -34,16 +34,17 @@ class ChapterController < ApplicationController
       chapter = Chapter.find cid 
       parcels = Parcel.where(chapter_id: cid) 
 
-      inv[:name] = chapter.name
-      inv[:id] = cid 
-      inv[:grade] = xii.include?(cid) ? "12" : (xi.include?(cid) ? "11" : "NA")
-      inv[:num_questions] = parcels.where(contains: "Question").first.zips.map(&:sku_ids).flatten.count 
-      inv[:num_snippets] = parcels.where(contains: "Snippet").first.zips.map(&:sku_ids).flatten.count 
-      inv[:num_skills] = parcels.where(contains: "Skill").first.zips.map(&:sku_ids).flatten.count 
+      inv[:one] = chapter.name
+      inv[:two] = cid 
+      inv[:three] = xii.include?(cid) ? "12" : (xi.include?(cid) ? "11" : "NA")
+      inv[:four] = parcels.where(contains: "Question").first.zips.map(&:sku_ids).flatten.count 
+      inv[:five] = parcels.where(contains: "Snippet").first.zips.map(&:sku_ids).flatten.count 
+      inv[:six] = parcels.where(contains: "Skill").first.zips.map(&:sku_ids).flatten.count 
 
       ret.push inv
     end 
 
+    ret.unshift({ one: 'Name', two: 'Chapter ID', three: 'Grade', four: '# Questions', five: '# Snippets', six: '# Skills' })
     render json: ret, status: :ok
 
   end 
