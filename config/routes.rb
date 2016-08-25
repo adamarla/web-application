@@ -50,6 +50,7 @@ Webapp::Application.routes.draw do
     # Chapter 
     match 'chapter/list' => 'chapter#list', via: :get
     match 'chapter/parcels' => 'chapter#parcels', via: :get
+    match 'chapter/inventory' => 'chapter#inventory', via: :get
 
     # Difficulty 
     match 'difficulty/list' => 'difficulty#list', via: :get
