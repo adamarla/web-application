@@ -20,6 +20,13 @@ class Chapter < ActiveRecord::Base
   before_validation :titleize, if: :name_changed? 
   after_create :set_uid 
 
+  def inventory
+    Parcel.where(chapter_id: self.id).each do |p| 
+      num_skus = p.zips.map(&:sku_ids).flatten.count 
+      puts "# #{p.contains} = #{num_skus}"
+    end 
+  end 
+
   def titleize 
     return if self.name.blank? 
 
