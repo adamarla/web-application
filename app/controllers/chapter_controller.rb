@@ -36,7 +36,7 @@ class ChapterController < ApplicationController
 
       inv[:one] = chapter.name
       inv[:two] = cid 
-      inv[:three] = xii.include?(cid) ? "12" : (xi.include?(cid) ? "11" : "NA")
+      inv[:three] = xii.include?(cid) ? 12 : (xi.include?(cid) ? 11 : -1)
       inv[:four] = parcels.where(contains: "Question").first.zips.map(&:sku_ids).flatten.count 
       inv[:five] = parcels.where(contains: "Snippet").first.zips.map(&:sku_ids).flatten.count 
       inv[:six] = parcels.where(contains: "Skill").first.zips.map(&:sku_ids).flatten.count 
