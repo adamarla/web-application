@@ -47,6 +47,10 @@ class User < ActiveRecord::Base
     where('id > ?', 537).order(:id)
   end 
 
+  def self.version(v)
+    self.newcomers.where(app_version: v).order(:id)
+  end 
+
   def days_active
     start_date = self.created_at.to_date
     devices = Device.where(user_id: self.id).order(:created_at) 
