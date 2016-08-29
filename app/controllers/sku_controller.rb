@@ -8,6 +8,13 @@ class SkuController < ApplicationController
       uid = (path =~ /^vault(.*)/).nil? ? path : path.split("/")[1..2].join("/")
       sku = Sku.where(path: uid).first 
 
+      if sku.nil? # it could be a "converted" question, hence no Sku
+        qsn = Question.find path.split("/")[2]
+        unless qsn.nil?
+            sku = qsn.create_sku path: qsn.path
+        end
+      end
+
       unless sku.nil?
         # Set the chapter_id extracted from the XML 
         sku.set_chapter_id(params[:c]) unless params[:c].blank?
