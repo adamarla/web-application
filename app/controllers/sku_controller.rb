@@ -9,7 +9,7 @@ class SkuController < ApplicationController
       sku = Sku.where(path: uid).first 
 
       if sku.nil? # it could be a "converted" question, hence no Sku
-        qsn = Question.where(path: uid).first
+        qsn = Question.find path.split("/")[2]
         unless qsn.nil?
             sku = qsn.create_sku path: qsn.path
         end
