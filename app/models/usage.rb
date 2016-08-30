@@ -54,4 +54,24 @@ class Usage < ActiveRecord::Base
     self.newcomers.where('time_on_snippets > ? OR time_on_questions > ? OR time_on_stats > ?', 0,0,0)
   end 
 
+  def self.probability_questions_y_given_x(x = 1,y = 1) 
+    return 0 if (x < 1 || y < 1) 
+    return 100 if (y <= x) 
+
+    num_y = self.questions_done(y).map(&:user_id).uniq.count 
+    num_x = self.questions_done(x).map(&:user_id).uniq.count 
+
+    return ((num_y.to_f / num_x) * 100).round(2) 
+  end 
+
+  def self.probability_snippets_y_given_x(x = 1,y = 1) 
+    return 0 if (x < 1 || y < 1) 
+    return 100 if (y <= x) 
+
+    num_y = self.snippets_done(y).map(&:user_id).uniq.count 
+    num_x = self.snippets_done(x).map(&:user_id).uniq.count 
+
+    return ((num_y.to_f / num_x) * 100).round(2) 
+  end 
+
 end
