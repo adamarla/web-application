@@ -30,9 +30,12 @@ class Usage < ActiveRecord::Base
     where('user_id > ?', 537).order(:id)
   end 
 
-  def self.on_app_version(min_version = 1) 
-    return self.newcomers if (min_version < 2) 
-    uids = User.where('app_version IS NOT ?', nil).where('app_version >= ?', min_version.to_s).map(&:id) 
+  def self.on_app_version(version = 1) 
+    if (version < 2) 
+      uids = User.where(app_version: nil).map(&:id) 
+    else 
+      uids = User.where('app_version IS NOT ?', nil).where('app_version >= ?', version.to_s).map(&:id)
+    end 
     return self.newcomers.where(user_id: uids)
   end 
 
