@@ -30,55 +30,58 @@ class Usage < ActiveRecord::Base
     where('user_id > ?', 537).order(:id)
   end 
 
-  def self.on_app_version(version = 1) 
-    if (version < 2) 
-      uids = User.where(app_version: nil).map(&:id) 
+  def self.on_app_version(version = 0)
+    newcomers = User.newcomers.map(&:id)
+    if (version < 1) # all users 
+      uids = newcomers 
+    else if  (version < 2) 
+      uids = newcomers & User.where(app_version: nil).map(&:id) 
     else 
-      uids = User.where('app_version IS NOT ?', nil).where('app_version >= ?', version.to_s).map(&:id)
+      uids = newcomers & User.where('app_version IS NOT ?', nil).where('app_version >= ?', version.to_s).map(&:id)
     end 
-    return self.newcomers.where(user_id: uids)
+    return self.where(user_id: uids)
   end 
 
-  def self.questions_done(min = 1) 
-    self.where('num_questions_done >= ?', min) 
+  def self.questions_done(min = 1, app_version = 0) 
+    self.on_app_version(app_version).where('num_questions_done >= ?', min) 
   end 
 
-  def self.snippets_done(min = 1)
-    self.where('num_snippets_done >= ?', min) 
+  def self.snippets_done(min = 1, app_version = 0)
+    self.on_app_version(app_version).where('num_snippets_done >= ?', min) 
   end 
 
-  def self.something_done 
-    self.where('num_snippets_done > ? OR num_questions_done > ?', 0,0)
+  def self.something_done(app_version = 0) 
+    self.on_app_version(app_version).where('num_snippets_done > ? OR num_questions_done > ?', 0,0)
   end 
 
-  def self.something_clicked
-    self.where('num_snippets_clicked > ? OR num_questions_clicked > ?', 0,0)
+  def self.something_clicked(app_version = 0)
+    self.on_app_version(app_version).where('num_snippets_clicked > ? OR num_questions_clicked > ?', 0,0)
   end 
 
-  def self.seen_stats
-    self.where('time_on_stats > ?', 0)
+  def self.seen_stats(app_version = 0)
+    self.on_app_version(app_version).where('time_on_stats > ?', 0)
   end 
 
-  def self.some_time_spent
-    self.where('time_on_snippets > ? OR time_on_questions > ? OR time_on_stats > ?', 0,0,0)
+  def self.some_time_spent(app_version = 0)
+    self.on_app_version(app_version).where('time_on_snippets > ? OR time_on_questions > ? OR time_on_stats > ?', 0,0,0)
   end 
 
-  def self.probability_questions_y_given_x(x = 1,y = 1) 
+  def self.probability_questions_y_given_x(x = 1,y = 1, app_version = 0) 
     return 0 if (x < 1 || y < 1) 
     return 100 if (y <= x) 
 
-    num_y = self.questions_done(y).map(&:user_id).uniq.count
-    num_x = self.questions_done(x).map(&:user_id).uniq.count
+    num_y = self.questions_done(y, app_version).map(&:user_id).uniq.count
+    num_x = self.questions_done(x, app_version).map(&:user_id).uniq.count
 
     return ((num_y.to_f / num_x) * 100).round(2) 
   end 
 
-  def self.probability_snippets_y_given_x(x = 1,y = 1, post_version_two = false) 
+  def self.probability_snippets_y_given_x(x = 1,y = 1, app_version = 0) 
     return 0 if (x < 1 || y < 1) 
     return 100 if (y <= x) 
 
-    num_y = self.snippets_done(y).map(&:user_id).uniq.count 
-    num_x = self.snippets_done(x).map(&:user_id).uniq.count 
+    num_y = self.snippets_done(y, app_version).map(&:user_id).uniq.count 
+    num_x = self.snippets_done(x, app_version).map(&:user_id).uniq.count 
 
     return ((num_y.to_f / num_x) * 100).round(2) 
   end 
