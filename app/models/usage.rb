@@ -90,4 +90,9 @@ class Usage < ActiveRecord::Base
     return ((num_y.to_f / num_x) * 100).round(2) 
   end 
 
+  def self.average_time_solving(app_version = 0) 
+    u = self.something_done(app_version)
+    return (u.map(&:time_solving).inject(:+) / u.map(&:user_id).uniq.count.to_f) 
+  end 
+
 end
