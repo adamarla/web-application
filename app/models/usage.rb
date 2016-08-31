@@ -31,7 +31,7 @@ class Usage < ActiveRecord::Base
   end 
 
   def self.newcomers
-    where('user_id > ? AND user_id IS NOT ?', 537,1409).order(:id)
+    where('user_id > ? AND user_id != ?', 537,1409).order(:id)
   end 
 
   def self.on_app_version(version = 0)
