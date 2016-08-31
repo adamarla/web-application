@@ -26,6 +26,10 @@ class Usage < ActiveRecord::Base
     return (num_questions_clicked - num_questions_done - num_dropped)
   end 
 
+  def time_solving
+    return (time_on_snippets + time_on_questions)
+  end 
+
   def self.newcomers
     where('user_id > ?', 537).order(:id)
   end 
