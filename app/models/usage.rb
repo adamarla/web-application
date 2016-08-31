@@ -34,7 +34,7 @@ class Usage < ActiveRecord::Base
     newcomers = User.newcomers.map(&:id)
     if (version < 1) # all users 
       uids = newcomers 
-    else if  (version < 2) 
+    elsif  (version < 2) 
       uids = newcomers & User.where(app_version: nil).map(&:id) 
     else 
       uids = newcomers & User.where('app_version IS NOT ?', nil).where('app_version >= ?', version.to_s).map(&:id)
