@@ -25,6 +25,7 @@ class QuestionController < ApplicationController
 
       # Set the chapter - if specified. Ensure language and difficulty 
       # of the question are also set - if not already so. 
+      q.update_attribute :chapter_id, params[:c].to_i unless params[:c].nil?
 
       render json: { id: q.id }, status: :ok
     else 
