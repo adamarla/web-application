@@ -19,7 +19,7 @@ class SnippetsController < ApplicationController
       skill_ids = params[:skills].map(&:to_i) 
       snippet.set_skills skill_ids 
 
-      snippet.update_attribute :chapter_id, params[:c]
+      snippet.update_attribute :chapter_id, params[:c].to_i
 
       render json: { id: snippet.id }, status: :ok
     else 
