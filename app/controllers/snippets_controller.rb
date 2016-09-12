@@ -12,23 +12,6 @@ class SnippetsController < ApplicationController
     end 
   end 
   
-=begin
-  def set_skills 
-    snippet = Snippet.find params[:id]
-
-    unless snippet.nil? 
-      skill_ids = params[:skills].map(&:to_i) 
-      snippet.set_skills skill_ids 
-
-      snippet.update_attribute :chapter_id, params[:c].to_i
-
-      render json: { id: snippet.id }, status: :ok
-    else 
-      render json: { id: 0 }, status: :bad_request 
-    end 
-  end # of action 
-=end
-
   def list 
     unless params[:c].blank? 
       snippets = params[:skill].blank? ? 
