@@ -62,6 +62,17 @@ class SkillsController < ApplicationController
 
   end 
 
+  def set_chapter
+    s = Skill.find params[:id]
+    unless s.nil?
+      s.update_attribute :chapter_id, params[:c].to_i unless params[:c].nil?
+
+      render json: { id: s.id }, status: :ok
+    else
+      render json: { id: 0 }, status: :bad_request
+    end
+  end # of action 
+
   def missing 
     ids = params[:ids].delete('[]').split(',').map(&:to_i)
     sku_ids = Sku.where(stockable_type: Skill.name, stockable_id: ids, has_svgs: true).map(&:id)
