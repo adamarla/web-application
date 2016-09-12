@@ -69,7 +69,7 @@ Webapp::Application.routes.draw do
     # Skills 
     match 'skill/add' => 'skills#create', via: [:get, :post]
     match 'skill/update' => 'skills#update', via: [:get, :post]
-    match 'skill/set_chapter' => 'question#set_chapter', via: [:get, :post]
+    match 'skill/set_chapter' => 'skills#set_chapter', via: [:get, :post]
     match 'skills/list' => 'skills#list', via: :get
     match 'skills/all' => 'skills#all', via: :get
     match 'missing/skills' => 'skills#missing', via: [:get, :post]
@@ -82,7 +82,7 @@ Webapp::Application.routes.draw do
     # Snippets 
     match 'snippet/add' => 'snippets#create', via: [:get, :post]
     match 'snippets/list' => 'snippets#list', via: :get
-    match 'question/set_chapter' => 'question#set_chapter', via: [:get, :post]
+    match 'snippet/set_chapter' => 'snippets#set_chapter', via: [:get, :post]
 
 
   #### NEEDED IN BASH SCRIPTS / CRON-JOBS 
