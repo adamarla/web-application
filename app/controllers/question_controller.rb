@@ -17,17 +17,6 @@ class QuestionController < ApplicationController
     end 
   end 
 
-  def set_chapter 
-    q = Question.find params[:id]
-    unless q.nil? 
-      q.update_attribute :chapter_id, params[:c].to_i unless params[:c].nil?
-
-      render json: { id: q.id }, status: :ok
-    else 
-      render json: { id: 0 }, status: :bad_request 
-    end 
-  end # of action 
-
   def list 
     skill_ids = params[:skills].blank? ? [] : params[:skills].map(&:to_i)
 
@@ -41,6 +30,17 @@ class QuestionController < ApplicationController
     ques = ques.where(chapter_id: params[:c].to_i) unless params[:c].blank?
     render json: ques.map{ |q| {id: q.id, path: q.path } } , status: :ok  
 
+  end # of action 
+
+  def set_chapter 
+    q = Question.find params[:id]
+    unless q.nil? 
+      q.update_attribute :chapter_id, params[:c].to_i unless params[:c].nil?
+
+      render json: { id: q.id }, status: :ok
+    else 
+      render json: { id: 0 }, status: :bad_request 
+    end 
   end # of action 
 
 end # of class  
