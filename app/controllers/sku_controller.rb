@@ -18,7 +18,7 @@ class SkuController < ApplicationController
     sku = Sku.with_path params[:path]
 
     unless sku.nil?
-      sids = param[:skills].split(" ").map(&:to_i).uniq 
+      sids = param[:skills].split(",").map(&:to_i).uniq 
       sku.stockable.set_skills(sids) unless sids.blank?
       render json: { id: sku.id } , status: :ok
     else 
