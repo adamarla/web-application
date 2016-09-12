@@ -64,6 +64,7 @@ Webapp::Application.routes.draw do
     # Question
     match 'question/add' => 'question#create', via: [:get, :post]
     match 'question/list' => 'question#list', via: :get
+    match 'question/set_chapter' => 'question#set_chapter', via: [:get, :post]
 
     # Skills 
     match 'skill/add' => 'skills#create', via: [:get, :post]
