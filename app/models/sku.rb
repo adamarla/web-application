@@ -48,8 +48,21 @@ class Sku < ActiveRecord::Base
     end 
   end 
 
+  def set_skills(ids)
+    obj = self.stockable 
+    obj.set_skills(ids) unless obj.nil?
+  end 
+
   def chapter 
     return self.stockable.chapter 
+  end 
+
+  def self.with_path(path) 
+    # path = q/[ex-id]/[q-id] OR vault/[skills|snippets]/[id]
+    return nil if path.blank?
+
+    uid = (path =~ /^vault(.*)/).nil? ? path : path.split("/")[1..2].join("/")
+    return Sku.where(path: uid).first 
   end 
 
   def self.questions

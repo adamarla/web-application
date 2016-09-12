@@ -64,7 +64,6 @@ Webapp::Application.routes.draw do
     # Question
     match 'question/add' => 'question#create', via: [:get, :post]
     match 'question/list' => 'question#list', via: :get
-    match 'question/tag' => 'question#set_skills', via: [:get, :post]
 
     # Skills 
     match 'skill/add' => 'skills#create', via: [:get, :post]
@@ -81,7 +80,6 @@ Webapp::Application.routes.draw do
     # Snippets 
     match 'snippet/add' => 'snippets#create', via: [:get, :post]
     match 'snippets/list' => 'snippets#list', via: :get
-    match 'snippet/tag' => 'snippets#set_skills', via: [:get, :post]
 
 
   #### NEEDED IN BASH SCRIPTS / CRON-JOBS 
@@ -93,6 +91,7 @@ Webapp::Application.routes.draw do
     # Sku 
     match 'sku/recompiled' => 'sku#recompiled', via: [:get]
     match 'sku/list' => 'sku#list', via: [:get]
+    match 'sku/set_skills' => 'sku#set_skills', via: [:get]
 
     # Zips 
     match 'update/zip' => 'zip#update', via: :get
@@ -151,10 +150,6 @@ Webapp::Application.routes.draw do
     resource :topic, :only => [:create, :update]
     match 'topics/list' => 'topics#list', via: :get
     match 'questions/on' => 'topics#questions', via: :get
-
-    match 'question/set_potd_flag' => 'question#set_potd_flag', via: :get
-    match 'bundle/which' => 'question#bundle_which', via: :get
-    match 'q/loc' => 'question#new_location', via: :get
 
     # Videos 
     match 'video/play' => 'videos#play'

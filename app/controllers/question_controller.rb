@@ -20,8 +20,6 @@ class QuestionController < ApplicationController
   def set_chapter 
     q = Question.find params[:id]
     unless q.nil? 
-      # Set the chapter - if specified. Ensure language and difficulty 
-      # of the question are also set - if not already so. 
       q.update_attribute :chapter_id, params[:c].to_i unless params[:c].nil?
 
       render json: { id: q.id }, status: :ok
@@ -44,31 +42,5 @@ class QuestionController < ApplicationController
     render json: ques.map{ |q| {id: q.id, path: q.path } } , status: :ok  
 
   end # of action 
-
-  # ------------
-
-  def new_location 
-    response = Question.all.map{ |q| { uid: q.uid, loc: "q/#{q.examiner_id}/#{q.id}" } }
-    render json: response, status: :ok
-  end 
-
-  def set_potd_flag
-    q = Question.find params[:id]
-    q.set_potd_flag 
-    render json: { id: params[:id] }, status: :ok 
-  end 
-
-  def bundle_which
-    uid = params[:uid]
-    qsn = Question.where(uid: uid).first
-    bundleId = ""
-    unless qsn.nil?
-      bq = BundleQuestion.where(question_id: qsn.id).first
-      unless bq.nil?
-        bundleId = "#{bq.bundle.uid}|#{bq.label}"
-      end
-    end
-    render json: { bundleId: "#{bundleId}" }, status: :ok
-  end
 
 end # of class  
