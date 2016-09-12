@@ -2,23 +2,26 @@
 class SkuController < ApplicationController
 
   def recompiled
-    path = params[:path] 
-    unless path.blank?
-      # path = q/[ex-id]/[q-id] OR vault/[skills|snippets]/[id]
-      uid = (path =~ /^vault(.*)/).nil? ? path : path.split("/")[1..2].join("/")
-      sku = Sku.where(path: uid).first 
+    sku = Sku.with_path params[:path]
 
-      unless sku.nil?
-        # Set the chapter_id extracted from the XML 
-        sku.set_chapter_id(params[:c]) unless params[:c].blank?
+    unless sku.nil?
+      # Set the chapter_id extracted from the XML 
+      sku.set_chapter_id(params[:c]) unless params[:c].blank?
+      sku.has_svgs ? sku.set_modified_on_zips : sku.update_attribute(:has_svgs, true)
+      render json: { id: sku.id }, status: :ok 
+    else 
+      render json: { id: 0 }, status: :bad_request 
+    end 
+  end 
 
-        # 
-        sku.has_svgs ? sku.set_modified_on_zips : sku.update_attribute(:has_svgs, true)
-        render json: { id: sku.id }, status: :ok 
-      else 
-        render json: { id: 0 }, status: :bad_request 
-      end 
-    else
+  def set_skills 
+    sku = Sku.with_path params[:path]
+
+    unless sku.nil?
+      sids = param[:skills].split(" ").map(&:to_i).uniq 
+      sku.stockable.set_skills(sids) unless sids.blank?
+      render json: { id: sku.id } , status: :ok
+    else 
       render json: { id: 0 }, status: :bad_request 
     end 
   end 

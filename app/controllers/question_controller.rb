@@ -17,6 +17,7 @@ class QuestionController < ApplicationController
     end 
   end 
 
+=begin
   def set_skills 
     q = Question.find params[:id]
     unless q.nil? 
@@ -32,6 +33,7 @@ class QuestionController < ApplicationController
       render json: { id: 0 }, status: :bad_request 
     end 
   end # of action 
+=end
 
   def list 
     skill_ids = params[:skills].blank? ? [] : params[:skills].map(&:to_i)
@@ -47,31 +49,5 @@ class QuestionController < ApplicationController
     render json: ques.map{ |q| {id: q.id, path: q.path } } , status: :ok  
 
   end # of action 
-
-  # ------------
-
-  def new_location 
-    response = Question.all.map{ |q| { uid: q.uid, loc: "q/#{q.examiner_id}/#{q.id}" } }
-    render json: response, status: :ok
-  end 
-
-  def set_potd_flag
-    q = Question.find params[:id]
-    q.set_potd_flag 
-    render json: { id: params[:id] }, status: :ok 
-  end 
-
-  def bundle_which
-    uid = params[:uid]
-    qsn = Question.where(uid: uid).first
-    bundleId = ""
-    unless qsn.nil?
-      bq = BundleQuestion.where(question_id: qsn.id).first
-      unless bq.nil?
-        bundleId = "#{bq.bundle.uid}|#{bq.label}"
-      end
-    end
-    render json: { bundleId: "#{bundleId}" }, status: :ok
-  end
 
 end # of class  

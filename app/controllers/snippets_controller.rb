@@ -12,6 +12,7 @@ class SnippetsController < ApplicationController
     end 
   end 
   
+=begin
   def set_skills 
     snippet = Snippet.find params[:id]
 
@@ -26,6 +27,7 @@ class SnippetsController < ApplicationController
       render json: { id: 0 }, status: :bad_request 
     end 
   end # of action 
+=end
 
   def list 
     unless params[:c].blank? 

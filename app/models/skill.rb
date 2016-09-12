@@ -31,6 +31,10 @@ class Skill < ActiveRecord::Base
     self.update_attribute :avg_proficiency, score 
   end 
 
+  def set_skills(ids)
+    return true # do nothing 
+  end 
+
   private 
     def seal 
       self.create_sku path: "skills/#{self.id}"
