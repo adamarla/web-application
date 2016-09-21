@@ -13,6 +13,7 @@
 #  join_date        :date
 #  num_invites_sent :integer         default(0)
 #  app_version      :string(10)
+#  facebook_login   :boolean         default(FALSE)
 #
 
 class User < ActiveRecord::Base

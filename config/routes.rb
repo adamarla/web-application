@@ -34,6 +34,7 @@ Webapp::Application.routes.draw do
 
     # Usage metrics  
     match 'usage/update' => 'usages#update', via: [:put, :post]
+    match 'usage/daily' => 'usages#daily', via: :get
 
     # Expertise 
     match 'expertise/ping' => 'expertise#ping', via: [:get, :post]

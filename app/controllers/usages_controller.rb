@@ -32,4 +32,36 @@ class UsagesController < ApplicationController
     render json: { updated: true }, status: (updated ? :ok : :internal_server_error)
   end # of method 
 
+  def daily 
+    usages = Usage.newcomers  
+    str_dates = usages.map(&:date).sort.uniq # alphabetically sorted  
+    dates = str_dates.sort{ |x,y| x.to_date <=> y.to_date } # chronologically sorted 
+
+    json = [{one: 'DATE', two: 'N_SN', three: 'N_Q', four: 'T_SN', five: 'T_Q', six: 'T_STATS', seven: 'ENGMNT' }]
+
+    dates.each do |d| 
+      u = usages.where(date: d)
+      num_snippets = u.map(&:num_snippets_done).inject(:+) 
+      num_questions = u.map(&:num_questions_done).inject(:+) 
+      time_snippets = u.map(&:time_on_snippets).inject(:+) 
+      time_questions = u.map(&:time_on_questions).inject(:+) 
+      time_stats = u.map(&:time_on_stats).inject(:+) 
+      engagement = "#{u.something_done.count} / #{u.count}"
+
+      j = { one: d, 
+            two: num_snippets, 
+            three: num_questions, 
+            four: time_snippets, 
+            five: time_questions, 
+            six: time_stats, 
+            seven: engagement }
+
+      json.push(j)
+
+    end # of each 
+
+    render json: json, status: :ok
+
+  end # of method 
+
 end # of class
