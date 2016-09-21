@@ -48,7 +48,7 @@ class UsagesController < ApplicationController
       time_stats = u.map(&:time_on_stats).inject(:+) 
       engagement = "#{u.something_done.count} / #{u.count}"
 
-      j = { one: d, 
+      j = { one: d.to_date.strftime("%d/%m/%y"), 
             two: num_snippets, 
             three: num_questions, 
             four: time_snippets, 
