@@ -38,7 +38,8 @@ class UsagesController < ApplicationController
 
     unless params[:last].blank? 
       today = Date.today 
-      str_dates = str_dates.select{ |x| (today - x.to_date).to_i <= params[:last] }
+      n_days = params[:last].to_i
+      str_dates = str_dates.select{ |x| (today - x.to_date).to_i <= n_days } 
     end 
 
     json = [{one: 'DATE', two: 'N_SN', three: 'N_Q', four: 'T_SN', five: 'T_Q', six: 'T_STATS', seven: 'ENGMNT' }]
