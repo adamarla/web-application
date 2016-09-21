@@ -39,4 +39,16 @@ class SnippetsController < ApplicationController
     end 
   end 
 
+  def set_chapter
+    s = Snippet.find params[:id]
+    unless s.nil?
+      s.update_attribute :chapter_id, params[:c].to_i unless params[:c].nil?
+
+      render json: { id: s.id }, status: :ok
+    else
+      render json: { id: 0 }, status: :bad_request
+    end
+  end # of action 
+
 end # of controller  
+

@@ -32,4 +32,15 @@ class QuestionController < ApplicationController
 
   end # of action 
 
+  def set_chapter 
+    q = Question.find params[:id]
+    unless q.nil? 
+      q.update_attribute :chapter_id, params[:c].to_i unless params[:c].nil?
+
+      render json: { id: q.id }, status: :ok
+    else 
+      render json: { id: 0 }, status: :bad_request 
+    end 
+  end # of action 
+
 end # of class  
