@@ -35,10 +35,15 @@ class UsagesController < ApplicationController
   def daily 
     usages = Usage.newcomers  
     str_dates = usages.map(&:date).sort.uniq # alphabetically sorted  
-    dates = str_dates.sort{ |x,y| x.to_date <=> y.to_date } # chronologically sorted 
+
+    unless params[:last].blank? 
+      today = Date.today 
+      str_dates = str_dates.select{ |x| (today - x.to_date).to_i <= params[:last] }
+    end 
 
     json = [{one: 'DATE', two: 'N_SN', three: 'N_Q', four: 'T_SN', five: 'T_Q', six: 'T_STATS', seven: 'ENGMNT' }]
 
+    dates = str_dates.sort{ |x,y| x.to_date <=> y.to_date } # chronologically sorted 
     dates.each do |d| 
       u = usages.where(date: d)
       num_snippets = u.map(&:num_snippets_done).inject(:+) 
