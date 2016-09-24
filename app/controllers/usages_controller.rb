@@ -52,7 +52,9 @@ class UsagesController < ApplicationController
       time_snippets = u.map(&:time_on_snippets).inject(:+) 
       time_questions = u.map(&:time_on_questions).inject(:+) 
       time_stats = u.map(&:time_on_stats).inject(:+) 
-      engagement = "#{u.something_done.count} / #{u.count}"
+
+      # engagement = "#{u.something_done.count} / #{u.count}"
+      engagement = u.average_time_solving.round(2) 
 
       j = { one: d.to_date.strftime("%d/%m/%y"), 
             two: num_snippets, 
