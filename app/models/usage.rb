@@ -92,6 +92,8 @@ class Usage < ActiveRecord::Base
 
   def self.average_time_solving(app_version = 0) 
     u = self.something_done(app_version)
+    return 0 unless u.blank?
+
     return (u.map(&:time_solving).inject(:+) / u.map(&:user_id).uniq.count.to_f) 
   end 
 
