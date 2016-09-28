@@ -64,6 +64,23 @@ class User < ActiveRecord::Base
     return User.where(id: users) 
   end 
 
+  def self.min_active_days(n, app_version = 0) 
+    u = Usage.newcomers.something_done(app_version) 
+    ids = u.map(&:user_id) 
+    uids = ids.uniq 
+    users = []
+
+    uids.each do |j| 
+      users.push(j) if ids.count(j) >= n 
+    end 
+    return User.where(id: users) 
+  end 
+
+  def self.return_probability 
+    p = (User.min_active_days(2).count * 100)/ User.min_active_days(1).count.to_f 
+    return p.round(2) 
+  end 
+
 
   def days_since_registration
     return (Date.today - self.created_at.to_date).to_i
