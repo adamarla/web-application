@@ -30,6 +30,10 @@ class Usage < ActiveRecord::Base
     return (time_on_snippets + time_on_questions)
   end 
 
+  def total_time_spent 
+    return (time_on_stats + time_on_snippets + time_on_questions)
+  end 
+
   def self.newcomers
     where('user_id > ? AND user_id != ?', 537,1409).order(:id)
   end 
@@ -95,6 +99,13 @@ class Usage < ActiveRecord::Base
     return 0 if x.blank?
 
     return (x.map(&:time_solving).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
+  end 
+
+  def self.session_length(app_version = 0)
+    x = self.something_done(app_version) 
+    return 0 if x.blank? 
+
+    return (x.map(&:total_time_spent).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
   end 
 
 end
