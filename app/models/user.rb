@@ -76,8 +76,8 @@ class User < ActiveRecord::Base
     return User.where(id: users) 
   end 
 
-  def self.return_probability 
-    p = (User.min_active_days(2).count * 100)/ User.min_active_days(1).count.to_f 
+  def self.return_probability(app_version = 0)
+    p = (User.min_active_days(2, app_version).count * 100)/ User.min_active_days(1, app_version).count.to_f 
     return p.round(2) 
   end 
 
