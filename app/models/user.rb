@@ -52,18 +52,18 @@ class User < ActiveRecord::Base
     self.newcomers.where(app_version: v).order(:id)
   end 
 
-  def days_active
-    start_date = self.created_at.to_date
-    devices = Device.where(user_id: self.id).order(:created_at) 
+  def self.days_active(n, app_version = 0)
+    u = Usage.newcomers.something_done(app_version) 
+    ids = u.map(&:user_id) 
+    uids = ids.uniq 
+    users = []
 
-    if devices.blank? 
-      end_date = Date.today
-    else
-      live = devices.map(&:live).include?(true) 
-      end_date = live ? Date.today : devices.last.updated_at.to_date
+    uids.each do |j| 
+      users.push(j) if ids.count(j) == n 
     end 
-    return (end_date - start_date).to_i
+    return User.where(id: users) 
   end 
+
 
   def days_since_registration
     return (Date.today - self.created_at.to_date).to_i
