@@ -72,4 +72,17 @@ class UsagesController < ApplicationController
 
   end # of method 
 
+  def by_user
+    json = []
+    User.where('id > 1491').each do |u|
+      usages = Usage.where(user_id: u.id)
+      json.push({
+        id: u.id,
+        ns: usages.sum(:num_snippets_done),
+        nq: usages.sum(:num_questions_done)
+      })
+    end # of each
+    render json: json, status: :ok
+  end # of method
+
 end # of class
