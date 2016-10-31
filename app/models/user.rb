@@ -44,6 +44,10 @@ class User < ActiveRecord::Base
     return date 
   end 
 
+  def total_time_in_app 
+    return Usage.where(user_id: self.id).map(&:total_time_spent).inject(:+)
+  end 
+
   def self.newcomers
     where('id > ?', 537).order(:id)
   end 
