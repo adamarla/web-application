@@ -39,7 +39,7 @@ jQuery ->
     target = $('#chart')
     if url.match(/attempt\/by_day/)
       usageReport.byDay json, target
-    else if url.match(/attempt\/by_user/)
+    else if url.match(/usage\/by_user/)
       usageReport.byBucket json, target
     else if url.match(/attempt\/by_week/)
       usageReport.byWeek json, target

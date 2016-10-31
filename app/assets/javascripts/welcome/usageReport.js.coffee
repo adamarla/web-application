@@ -54,7 +54,8 @@ window.usageReport = {
       .attr("transform", "translate(#{margin.left}, #{margin.top})")
 
     zeros = 0
-    data.num_attempts.forEach((v, i) ->
+    data.forEach((u, i) ->
+      v = u.ns + u.nq
       switch true
         when v == 1 then buckets[0].push v
         when v in [2..5] then buckets[1].push v
