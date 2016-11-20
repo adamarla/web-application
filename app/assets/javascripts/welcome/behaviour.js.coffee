@@ -28,7 +28,7 @@ jQuery ->
     $.get '../attempt/by_week'
     return true 
   $('#buckets').on 'click', (event) ->
-    $.get '../attempt/by_user'
+    $.get '../usage/by_user'
     return true
 
   $('#datepicker').datepicker(
