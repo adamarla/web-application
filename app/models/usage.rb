@@ -104,9 +104,16 @@ class Usage < ActiveRecord::Base
     return (x.map(&:total_time_spent).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
   end 
 
-  def self.min_seconds(n, app_version = 0) 
+  def self.in_time_range(a,b,app_version = 0) 
+    return if (a < 0 || b < 0) 
+    if (a > b) 
+      c = a 
+      a = b 
+      b = c 
+    end 
+
     u = Usage.on_app_version(app_version) 
-    return u.select{ |x| x.total_time_spent >= n }
+    return u.select{ |x| t = x.total_time_spent ; t >= a && t <= b }
   end 
 
 end
