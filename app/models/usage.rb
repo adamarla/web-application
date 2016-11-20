@@ -70,10 +70,6 @@ class Usage < ActiveRecord::Base
     self.on_app_version(app_version).where('time_on_stats > ?', 0)
   end 
 
-  def self.some_time_spent(app_version = 0)
-    self.on_app_version(app_version).where('time_on_snippets > ? OR time_on_questions > ? OR time_on_stats > ?', 0,0,0)
-  end 
-
   def self.probability_questions_y_given_x(x = 1,y = 1, app_version = 0) 
     return 0 if (x < 1 || y < 1) 
     return 100 if (y <= x) 
@@ -106,6 +102,11 @@ class Usage < ActiveRecord::Base
     return 0 if x.blank? 
 
     return (x.map(&:total_time_spent).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
+  end 
+
+  def self.min_seconds(n, app_version = 0) 
+    u = Usage.on_app_version(app_version) 
+    return u.select{ |x| x.total_time_spent >= n }
   end 
 
 end
