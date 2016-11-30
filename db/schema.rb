@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160912115154) do
+ActiveRecord::Schema.define(:version => 20161130105017) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -681,7 +681,6 @@ ActiveRecord::Schema.define(:version => 20160912115154) do
   add_index "tryouts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
 
   create_table "usages", :force => true do |t|
-    t.string  "date",                  :limit => 30
     t.integer "user_id"
     t.string  "time_zone",             :limit => 50
     t.integer "time_on_snippets",                    :default => 0
@@ -692,6 +691,7 @@ ActiveRecord::Schema.define(:version => 20160912115154) do
     t.integer "num_snippets_clicked",                :default => 0
     t.integer "num_questions_clicked",               :default => 0
     t.integer "num_dropped",                         :default => 0
+    t.integer "date",                                :default => 0
   end
 
   create_table "users", :force => true do |t|

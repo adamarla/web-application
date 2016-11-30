@@ -9,8 +9,12 @@ class UsagesController < ApplicationController
     # the app on one phone only and hence the probability 
     # data from one phone over-writing that from another is low 
 
-    usage = Usage.where(user_id: params[:id], date: params[:date]).first || 
-             Usage.create(user_id: params[:id], date: params[:date], time_zone: params[:time_zone])
+    # [2.08+]: Dates stored as integers (eg. 20111227) and not as strings (eg. Dec 27, 2011)
+    day = params[:date]
+    day = day.to_date.to_s.gsub("-","").to_i if day.is_a?(String)
+
+    usage = Usage.where(user_id: params[:id], date: day).first || 
+             Usage.create(user_id: params[:id], date: day, time_zone: params[:time_zone])
 
     updated = usage.update_attributes time_on_snippets: params[:time_on_snippets],
                                     time_on_questions: params[:time_on_questions], 
@@ -34,17 +38,17 @@ class UsagesController < ApplicationController
 
   def daily 
     usages = Usage.newcomers  
-    str_dates = usages.map(&:date).sort.uniq # alphabetically sorted  
+    dates = usages.map(&:date).sort.uniq
 
     unless params[:last].blank? 
       today = Date.today 
-      n_days = params[:last].to_i
-      str_dates = str_dates.select{ |x| (today - x.to_date).to_i <= n_days } 
+      end_date = today.to_s.gsub("-","").to_i
+      start_date = (today - params[:last].to_i.days).to_s.gsub("-","").to_i
+      dates = dates.select{ |x| x >= start_date && x <= end_date }.sort
     end 
 
+    # Prepare the JSON response 
     json = [{one: 'DATE', two: 'N_SN', three: 'N_Q', four: 'T_SN', five: 'T_Q', six: 'T_STATS', seven: 'ENGMNT' }]
-
-    dates = str_dates.sort{ |x,y| x.to_date <=> y.to_date } # chronologically sorted 
     dates.each do |d| 
       u = usages.where(date: d)
       num_snippets = u.map(&:num_snippets_done).inject(:+) 
@@ -56,7 +60,7 @@ class UsagesController < ApplicationController
       # engagement = "#{u.something_done.count} / #{u.count}"
       engagement = "#{u.average_time_solving.round(2)}/#{u.something_done.count}/#{u.count}" 
 
-      j = { one: d.to_date.strftime("%d/%m/%y"), 
+      j = { one: d.to_s.to_date.strftime("%d/%m/%y"), 
             two: num_snippets, 
             three: num_questions, 
             four: time_snippets, 
