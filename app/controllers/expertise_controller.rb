@@ -17,7 +17,8 @@ class ExpertiseController < ApplicationController
           num_tested: x.num_tested,
           num_correct: x.num_correct, 
           weighted_tested: x.weighted_tested, 
-          weighted_correct: x.weighted_correct
+          weighted_correct: x.weighted_correct,
+          avg_proficiency: x.skill.avg_proficiency
         }
       }, status: :ok 
   end # of method  
