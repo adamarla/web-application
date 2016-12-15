@@ -4,14 +4,15 @@ class ExpertiseController < ApplicationController
 
   def ping 
     # Request can come only from the mobile app 
-    # Request would be for returning expertise numbers for passed user
+    # Returns proficiency numbers for given user. Ignores any skills 
+    # in params[:ignore]
 
     uid = params[:uid]
-    e = Expertise.where(user_id: uid)
+    ignore = params[:ignore].blank? ? [] : params[:ignore].delete('[]').split(',').map(&:to_i)
+    e = ignore.empty? ? Expertise.where(user_id: uid) : Expertise.where(user_id: uid).where('skill_id NOT IN (?)', ignore)
 
     render json: e.map{ |x| { 
           skill_id: x.skill_id, 
-          path: x.skill.sku.path,
           chapter_id: x.skill.chapter_id, 
           num_tested: x.num_tested,
           num_correct: x.num_correct, 
@@ -19,8 +20,7 @@ class ExpertiseController < ApplicationController
           weighted_correct: x.weighted_correct
         }
       }, status: :ok 
-    
-  end 
+  end # of method  
 
   def update 
     # Request can come only from mobile app. Hence, we can assume 
