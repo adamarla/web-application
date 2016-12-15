@@ -12,18 +12,6 @@ class ExpertiseController < ApplicationController
     e = ignore.empty? ? Expertise.where(user_id: uid) : Expertise.where(user_id: uid).where('skill_id NOT IN (?)', ignore)
 
     render json: e.map(&:decompile), status: :ok
-=begin
-    render json: e.map{ |x| { 
-          skill_id: x.skill_id, 
-          chapter_id: x.skill.chapter_id, 
-          num_tested: x.num_tested,
-          num_correct: x.num_correct, 
-          weighted_tested: x.weighted_tested, 
-          weighted_correct: x.weighted_correct,
-          avg_proficiency: x.skill.avg_proficiency
-        }
-      }, status: :ok 
-=end
   end # of method  
 
   def update 
@@ -51,16 +39,6 @@ class ExpertiseController < ApplicationController
     end 
 
     render json: e.decompile, status: :ok
-=begin
-    render json: { 
-              skill_id: skill.id,  
-              chapter_id: skill.chapter_id, 
-              num_tested: e.num_tested, 
-              num_correct: e.num_correct,
-              weighted_tested: e.weighted_tested, 
-              weighted_correct: e.weighted_correct
-            }, status: :ok
-=end
   end # of method 
 
 end # of class
