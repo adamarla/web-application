@@ -17,4 +17,18 @@ class Expertise < ActiveRecord::Base
 
   validates :skill_id, uniqueness: { scope: [:user_id] }
 
+  def decompile
+    p = self.skill 
+
+    return { 
+      skill_id: self.skill_id, 
+      chapter_id: p.chapter_id, 
+      avg_proficiency: p.avg_proficiency,
+      num_tested: self.num_tested, 
+      num_correct: self.num_correct, 
+      weighted_tested: self.weighted_tested, 
+      weighted_correct: self.weighted_correct
+    } 
+  end 
+
 end
