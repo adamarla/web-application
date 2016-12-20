@@ -13,7 +13,7 @@
 #  num_invites_sent :integer         default(0)
 #  app_version      :string(10)
 #  facebook_login   :boolean         default(FALSE)
-#  birthday         :string(50)
+#  birthday         :integer         default(0)
 #
 
 class User < ActiveRecord::Base
@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   has_many :attempts, dependent: :destroy
   has_many :devices, dependent: :destroy
   has_many :expertise, dependent: :destroy 
+  has_one :wtp, dependent: :destroy 
 
   def name 
     return "#{self.first_name} #{self.last_name}"
