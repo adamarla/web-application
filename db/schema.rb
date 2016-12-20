@@ -757,8 +757,8 @@ ActiveRecord::Schema.define(:version => 20161219183034) do
     t.integer "price_per_week"
     t.boolean "agreed",         :default => false
     t.integer "num_refusals",   :default => 0
-    t.integer "first_asked_on"
-    t.integer "agreed_on"
+    t.integer "first_asked_on", :default => 0
+    t.integer "agreed_on",      :default => 0
   end
 
   create_table "zips", :force => true do |t|

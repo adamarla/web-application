@@ -7,8 +7,8 @@
 #  price_per_week :integer
 #  agreed         :boolean         default(FALSE)
 #  num_refusals   :integer         default(0)
-#  first_asked_on :integer
-#  agreed_on      :integer
+#  first_asked_on :integer         default(0)
+#  agreed_on      :integer         default(0)
 #
 
 # Wtp = willingness to pay 

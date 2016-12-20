@@ -5,8 +5,8 @@ class CreateWtps < ActiveRecord::Migration
       t.integer :price_per_week
       t.boolean :agreed, default: false
       t.integer :num_refusals, default: 0
-      t.integer :first_asked_on
-      t.integer :agreed_on
+      t.integer :first_asked_on, default: 0
+      t.integer :agreed_on, default: 0
     end
   end
 end
