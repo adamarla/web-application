@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20161219183034) do
+ActiveRecord::Schema.define(:version => 20161220090808) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -754,11 +754,11 @@ ActiveRecord::Schema.define(:version => 20161219183034) do
 
   create_table "wtps", :force => true do |t|
     t.integer "user_id"
-    t.integer "price_per_week"
-    t.boolean "agreed",         :default => false
-    t.integer "num_refusals",   :default => 0
-    t.integer "first_asked_on", :default => 0
-    t.integer "agreed_on",      :default => 0
+    t.integer "price_per_month"
+    t.boolean "agreed",          :default => false
+    t.integer "num_refusals",    :default => 0
+    t.integer "first_asked_on",  :default => 0
+    t.integer "agreed_on",       :default => 0
   end
 
   create_table "zips", :force => true do |t|
