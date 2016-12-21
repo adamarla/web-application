@@ -44,6 +44,9 @@ Webapp::Application.routes.draw do
     # Zips
     match 'zip/ping' => 'zip#ping', via: [:get, :post] 
 
+    # Willingness to Pay (WTP)
+    match 'wtp/update' => 'wtp#update', via: [:get, :post]
+
   #### NEEDED IN QUILL   
 
     # Account 
