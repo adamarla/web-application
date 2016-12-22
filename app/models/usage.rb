@@ -14,6 +14,7 @@
 #  num_questions_clicked :integer         default(0)
 #  num_dropped           :integer         default(0)
 #  date                  :integer         default(0)
+#  num_stats_loaded      :integer         default(0)
 #
 
 class Usage < ActiveRecord::Base

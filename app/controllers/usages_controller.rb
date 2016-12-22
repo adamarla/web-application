@@ -22,17 +22,25 @@ class UsagesController < ApplicationController
                                     num_snippets_done: params[:num_snippets_done], 
                                     num_questions_done: params[:num_questions_done]
 
+    others_to_update = {} 
+
     # [1.0+]: New JSON fields  
     unless params[:num_snippets_clicked].blank? 
-      updated = usage.update_attributes num_snippets_clicked: params[:num_snippets_clicked],
-                                        num_questions_clicked: params[:num_questions_clicked]
+      others_to_update[:num_snippets_clicked] = params[:num_snippets_clicked]
+      others_to_update[:num_questions_clicked] = params[:num_questions_clicked]
     end 
 
     # [1.06+] 
     unless params[:num_dropped].blank?
-      updated = usage.update_attributes num_dropped: params[:num_dropped]
+      others_to_update[:num_dropped] = params[:num_dropped] 
     end
 
+    # [2.10+]
+    unless params[:num_stats_loaded].blank?
+      others_to_update[:num_stats_loaded] = params[:num_stats_loaded]
+    end 
+
+    updated = usage.update_attributes others_to_update
     render json: { updated: true }, status: (updated ? :ok : :internal_server_error)
   end # of method 
 
