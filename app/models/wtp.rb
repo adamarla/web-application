@@ -21,4 +21,9 @@ class Wtp < ActiveRecord::Base
   validates :price_per_month, numericality: { only_integer: true, greater_than: 0 }
   validates :num_refusals, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :agreed_on, numericality: { greater_than_or_equal_to: :first_asked_on }, if: :agreed_on_changed?
-end
+
+  def self.newcomers
+    where('user_id > ?', 537).where('user_id NOT IN (?)', [1409,4260]).order(:id)
+  end 
+
+end # of class
