@@ -36,8 +36,7 @@ class Usage < ActiveRecord::Base
   end 
 
   def self.newcomers
-    uids = User.newcomers.map(&:id)
-    where(user_id: uids) 
+    where('user_id > ?', 537).where('user_id NOT IN (?)', [1409, 4260]).order(:id)
   end 
 
   def self.done_in(version = 0)
