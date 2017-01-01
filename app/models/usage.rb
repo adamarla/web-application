@@ -36,13 +36,13 @@ class Usage < ActiveRecord::Base
   end 
 
   def self.newcomers
-    where('user_id > ?', 537).where('user_id NOT IN (?)', [1409,4260]).order(:id)
+    where(user_id: User.newcomers.map(&:id))
   end 
 
   def self.done_in(version = 0)
-    users = self.newcomers 
-    return users if version < 1 
+    return self.newcomers if version < 1 
 
+    users = User.newcomers 
     exact_match = version.is_a?(Float)
     users = exact_match ? users.where(version: version) : 
                          users.where('version >= ? AND version < ?', version, version + 1)
