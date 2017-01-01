@@ -36,7 +36,8 @@ class Usage < ActiveRecord::Base
   end 
 
   def self.newcomers
-    where(user_id: User.newcomers.map(&:id))
+    uids = User.newcomers.map(&:id)
+    where(user_id: uids) 
   end 
 
   def self.done_in(version = 0)
