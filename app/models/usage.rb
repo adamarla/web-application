@@ -44,7 +44,7 @@ class Usage < ActiveRecord::Base
     return users if version < 1 
 
     exact_match = version.is_a?(Float)
-    users = exact_match ? users.where(version: v) : 
+    users = exact_match ? users.where(version: version) : 
                          users.where('version >= ? AND version < ?', version, version + 1)
     return self.where(user_id: users.map(&:id)) 
   end 
