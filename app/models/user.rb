@@ -11,9 +11,9 @@
 #  updated_at       :datetime        not null
 #  join_date        :date
 #  num_invites_sent :integer         default(0)
-#  app_version      :string(10)
 #  facebook_login   :boolean         default(FALSE)
 #  birthday         :integer         default(0)
+#  version          :float           default(1.0)
 #
 
 class User < ActiveRecord::Base
@@ -54,11 +54,14 @@ class User < ActiveRecord::Base
   end 
 
   def self.version(v)
-    self.newcomers.where(app_version: v).order(:id)
+    exact_match = v.is_a?(Float)
+    users = exact_match ? self.newcomers.where(version: v) : 
+                          self.newcomers.where('version >= ? AND version < ?', v, v + 1)
+    return users.order(:id)
   end 
 
-  def self.days_active(n, app_version = 0)
-    u = Usage.newcomers.something_done(app_version) 
+  def self.days_active(n, version = 0)
+    u = Usage.newcomers.something_done(version) 
     ids = u.map(&:user_id) 
     uids = ids.uniq 
     users = []
@@ -69,8 +72,8 @@ class User < ActiveRecord::Base
     return User.where(id: users) 
   end 
 
-  def self.min_active_days(n, app_version = 0) 
-    u = Usage.newcomers.something_done(app_version) 
+  def self.min_active_days(n, version = 0) 
+    u = Usage.newcomers.something_done(version) 
     ids = u.map(&:user_id) 
     uids = ids.uniq 
     users = []
@@ -81,8 +84,8 @@ class User < ActiveRecord::Base
     return User.where(id: users) 
   end 
 
-  def self.return_probability(app_version = 0)
-    p = (User.min_active_days(2, app_version).count * 100)/ User.min_active_days(1, app_version).count.to_f 
+  def self.return_probability(version = 0)
+    p = (User.min_active_days(2, version).count * 100)/ User.min_active_days(1, version).count.to_f 
     return p.round(2) 
   end 
 

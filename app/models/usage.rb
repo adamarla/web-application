@@ -39,73 +39,71 @@ class Usage < ActiveRecord::Base
     where('user_id > ?', 537).where('user_id NOT IN (?)', [1409,4260]).order(:id)
   end 
 
-  def self.on_app_version(version = 0)
-    return self.newcomers if version < 1 
+  def self.in_version(version = 0)
+    users = self.newcomers 
+    return users if version < 1 
 
-    newcomers = User.newcomers.map(&:id)
-    if  (version < 2) 
-      uids = newcomers & User.where(app_version: nil).map(&:id) 
-    else 
-      uids = newcomers & User.where('app_version IS NOT ?', nil).where('app_version >= ?', version.to_s).map(&:id)
-    end 
-    return self.where(user_id: uids)
+    exact_match = version.is_a?(Float)
+    users = exact_match ? users.where(version: v) : 
+                         users.where('version >= ? AND version < ?', version, version + 1)
+    return self.where(user_id: users.map(&:id)) 
   end 
 
-  def self.questions_done(min = 1, app_version = 0) 
-    self.on_app_version(app_version).where('num_questions_done >= ?', min) 
+  def self.questions_done(min = 1, version = 0) 
+    self.in_version(version).where('num_questions_done >= ?', min) 
   end 
 
-  def self.snippets_done(min = 1, app_version = 0)
-    self.on_app_version(app_version).where('num_snippets_done >= ?', min) 
+  def self.snippets_done(min = 1, version = 0)
+    self.in_version(version).where('num_snippets_done >= ?', min) 
   end 
 
-  def self.something_done(app_version = 0) 
-    self.on_app_version(app_version).where('num_snippets_done > ? OR num_questions_done > ?', 0,0)
+  def self.something_done(version = 0) 
+    self.in_version(version).where('num_snippets_done > ? OR num_questions_done > ?', 0,0)
   end 
 
-  def self.something_clicked(app_version = 0)
-    self.on_app_version(app_version).where('num_snippets_clicked > ? OR num_questions_clicked > ?', 0,0)
+  def self.something_clicked(version = 0)
+    self.in_version(version).where('num_snippets_clicked > ? OR num_questions_clicked > ?', 0,0)
   end 
 
-  def self.seen_stats(app_version = 0)
-    self.on_app_version(app_version).where('time_on_stats > ?', 0)
+  def self.seen_stats(version = 0)
+    self.in_version(version).where('time_on_stats > ?', 0)
   end 
 
-  def self.probability_questions_y_given_x(x = 1,y = 1, app_version = 0) 
+  def self.probability_questions_y_given_x(x = 1,y = 1, version = 0) 
     return 0 if (x < 1 || y < 1) 
     return 100 if (y <= x) 
 
-    num_y = self.questions_done(y, app_version).map(&:user_id).uniq.count
-    num_x = self.questions_done(x, app_version).map(&:user_id).uniq.count
+    num_y = self.questions_done(y, version).map(&:user_id).uniq.count
+    num_x = self.questions_done(x, version).map(&:user_id).uniq.count
 
     return ((num_y.to_f / num_x) * 100).round(2) 
   end 
 
-  def self.probability_snippets_y_given_x(x = 1,y = 1, app_version = 0) 
+  def self.probability_snippets_y_given_x(x = 1,y = 1, version = 0) 
     return 0 if (x < 1 || y < 1) 
     return 100 if (y <= x) 
 
-    num_y = self.snippets_done(y, app_version).map(&:user_id).uniq.count 
-    num_x = self.snippets_done(x, app_version).map(&:user_id).uniq.count 
+    num_y = self.snippets_done(y, version).map(&:user_id).uniq.count 
+    num_x = self.snippets_done(x, version).map(&:user_id).uniq.count 
 
     return ((num_y.to_f / num_x) * 100).round(2) 
   end 
 
-  def self.average_time_solving(app_version = 0) 
-    x = self.something_done(app_version)
+  def self.average_time_solving(version = 0) 
+    x = self.something_done(version)
     return 0 if x.blank?
 
     return (x.map(&:time_solving).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
   end 
 
-  def self.session_length(app_version = 0)
-    x = self.something_done(app_version) 
+  def self.session_length(version = 0)
+    x = self.something_done(version) 
     return 0 if x.blank? 
 
     return (x.map(&:total_time_spent).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
   end 
 
-  def self.in_time_range(a,b,app_version = 0) 
+  def self.in_time_range(a,b,version = 0) 
     return if (a < 0 || b < 0) 
     if (a > b) 
       c = a 
@@ -113,7 +111,7 @@ class Usage < ActiveRecord::Base
       b = c 
     end 
 
-    u = Usage.on_app_version(app_version) 
+    u = Usage.in_version(version) 
     return u.select{ |x| t = x.total_time_spent ; t >= a && t <= b }
   end 
 
