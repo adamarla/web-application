@@ -39,7 +39,7 @@ class Usage < ActiveRecord::Base
     where('user_id > ?', 537).where('user_id NOT IN (?)', [1409,4260]).order(:id)
   end 
 
-  def self.in_version(version = 0)
+  def self.done_in(version = 0)
     users = self.newcomers 
     return users if version < 1 
 
@@ -50,23 +50,23 @@ class Usage < ActiveRecord::Base
   end 
 
   def self.questions_done(min = 1, version = 0) 
-    self.in_version(version).where('num_questions_done >= ?', min) 
+    self.done_in(version).where('num_questions_done >= ?', min) 
   end 
 
   def self.snippets_done(min = 1, version = 0)
-    self.in_version(version).where('num_snippets_done >= ?', min) 
+    self.done_in(version).where('num_snippets_done >= ?', min) 
   end 
 
   def self.something_done(version = 0) 
-    self.in_version(version).where('num_snippets_done > ? OR num_questions_done > ?', 0,0)
+    self.done_in(version).where('num_snippets_done > ? OR num_questions_done > ?', 0,0)
   end 
 
   def self.something_clicked(version = 0)
-    self.in_version(version).where('num_snippets_clicked > ? OR num_questions_clicked > ?', 0,0)
+    self.done_in(version).where('num_snippets_clicked > ? OR num_questions_clicked > ?', 0,0)
   end 
 
   def self.seen_stats(version = 0)
-    self.in_version(version).where('time_on_stats > ?', 0)
+    self.done_in(version).where('time_on_stats > ?', 0)
   end 
 
   def self.probability_questions_y_given_x(x = 1,y = 1, version = 0) 
@@ -111,7 +111,7 @@ class Usage < ActiveRecord::Base
       b = c 
     end 
 
-    u = Usage.in_version(version) 
+    u = Usage.done_in(version) 
     return u.select{ |x| t = x.total_time_spent ; t >= a && t <= b }
   end 
 
