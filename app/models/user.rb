@@ -67,12 +67,12 @@ class User < ActiveRecord::Base
 
   def self.days_active(n, version = 0) 
     u = version == 0 ? self.newcomers : self.newcomers.version(version) 
-    uids = u.map(&:id) 
-    usages = Usage.where(user_id: uids) 
+    ids = u.map(&:id) 
+    doer_ids = Usage.where(user_id: ids).map(&:user_id)
     ret = [] 
 
-    uids.each do |id| 
-      ret.push(id) if usages.where(user_id: id).count == n
+    ids.each do |j| 
+      ret.push(j) if doer_ids.count(j) == n
     end 
 
     where(id: ret)
@@ -80,12 +80,12 @@ class User < ActiveRecord::Base
 
   def self.min_days_active(n, version = 0)
     u = version == 0 ? self.newcomers : self.newcomers.version(version) 
-    uids = u.map(&:id) 
-    usages = Usage.where(user_id: uids) 
+    ids = u.map(&:id) 
+    doer_ids = Usage.where(user_id: ids).map(&:user_id)
     ret = [] 
 
-    uids.each do |id| 
-      ret.push(id) if usages.where(user_id: id).count >= n
+    ids.each do |j| 
+      ret.push(j) if doer_ids.count(j) >= n
     end 
 
     where(id: ret)
