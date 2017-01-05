@@ -49,61 +49,54 @@ class User < ActiveRecord::Base
     return Usage.where(user_id: self.id).map(&:total_time_spent).inject(:+)
   end 
 
-  def self.newcomers
-    where('id > ?', 537).where('id NOT IN (?)', [1409, 4260]).order(:id)
+  def returning_user?
+    return Usage.where(user_id: self.id).count > 1
   end 
-
-  def self.version(v)
-    exact_match = v.is_a?(Float)
-    users = exact_match ? self.newcomers.where(version: v) : 
-                          self.newcomers.where('version >= ? AND version < ?', v, v + 1)
-    return users.order(:id)
-  end 
-
-  def self.days_active(n, version = 0)
-    u = Usage.newcomers.something_done(version) 
-    ids = u.map(&:user_id) 
-    uids = ids.uniq 
-    users = []
-
-    uids.each do |j| 
-      users.push(j) if ids.count(j) == n 
-    end 
-    return User.where(id: users) 
-  end 
-
-  def self.min_active_days(n, version = 0) 
-    u = Usage.newcomers.something_done(version) 
-    ids = u.map(&:user_id) 
-    uids = ids.uniq 
-    users = []
-
-    uids.each do |j| 
-      users.push(j) if ids.count(j) >= n 
-    end 
-    return User.where(id: users) 
-  end 
-
-  def self.return_probability(version = 0)
-    p = (User.min_active_days(2, version).count * 100)/ User.min_active_days(1, version).count.to_f 
-    return p.round(2) 
-  end 
-
 
   def days_since_registration
     return (Date.today - self.created_at.to_date).to_i
   end 
 
-  def returning_user? 
-    a = Attempt.where(user_id: self.id) 
-    return false if a.empty? 
-    format = "%d/%m/%y"
-    dates = a.map{ |x| x.updated_at.to_date.strftime(format) }
-    return true if dates.uniq.count > 1 
-    signed_up_on = self.created_at.to_date.strftime(format)
-    return signed_up_on != dates.first
+  def self.newcomers
+    where('id > ?', 537).where('id NOT IN (?)', [1409, 4260]).order(:id)
   end 
 
+  def self.version(v)
+    v.is_a?(Float) ? where(version: v) : where('version >= ? AND version < ?', v, v + 1)
+  end 
+
+  def self.days_active(n, version = 0) 
+    u = version == 0 ? self.newcomers : self.newcomers.version(version) 
+    uids = u.map(&:id) 
+    usages = Usage.where(user_id: uids) 
+    ret = [] 
+
+    uids.each do |id| 
+      ret.push(id) if usages.where(user_id: id).count == n
+    end 
+
+    where(id: ret)
+  end 
+
+  def self.min_days_active(n, version = 0)
+    u = version == 0 ? self.newcomers : self.newcomers.version(version) 
+    uids = u.map(&:id) 
+    usages = Usage.where(user_id: uids) 
+    ret = [] 
+
+    uids.each do |id| 
+      ret.push(id) if usages.where(user_id: id).count >= n
+    end 
+
+    where(id: ret)
+  end 
+
+  def self.return_probability(version = 0)
+    p = (User.min_days_active(2, version).count * 100)/ User.min_days_active(1, version).count.to_f 
+    return p.round(2) 
+  end 
+
+=begin
   def num_attempts(count_retries = true)
     a = Attempt.where(user_id: self.id)
     return a.count unless count_retries
@@ -138,6 +131,6 @@ class User < ActiveRecord::Base
     end 
     return ret
   end 
+=end
 
-
-end
+end # of model 
