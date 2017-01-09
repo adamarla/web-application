@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   has_many :expertise, dependent: :destroy 
   has_one :wtp, dependent: :destroy 
 
+  before_create :seal
+
   def name 
     return "#{self.first_name} #{self.last_name}"
   end 
@@ -95,6 +97,12 @@ class User < ActiveRecord::Base
     p = (User.min_days_active(2, version).count * 100)/ User.min_days_active(1, version).count.to_f 
     return p.round(2) 
   end 
+
+  private 
+    def seal 
+      self.first_name = self.first_name.strip.titleize 
+      self.last_name = self.last_name.strip.titleize
+    end 
 
 =begin
   def num_attempts(count_retries = true)
