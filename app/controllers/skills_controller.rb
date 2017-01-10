@@ -84,7 +84,8 @@ class SkillsController < ApplicationController
                                  name: z.name, 
                                  shasum: z.shasum, 
                                  chapter_id: z.parcel.chapter_id,  
-                                 type: z.parcel.contains 
+                                 type: z.parcel.contains,
+                                 parcel_id: z.parcel.id
                                }
                           }, status: :ok
   end # of method  
