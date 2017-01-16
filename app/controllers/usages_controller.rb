@@ -38,6 +38,12 @@ class UsagesController < ApplicationController
       others_to_update[:num_stats_loaded] = params[:num_stats_loaded]
     end 
 
+    # [pre-2.71]: Time zone stored in User model - not Usage model 
+    unless params[:time_zone].blank? 
+      user = User.find params[:id]
+      user.update_attribute(:time_zone, params[:time_zone]) if user.time_zone.blank?
+    end 
+
     updated = usage.update_attributes others_to_update
     render json: { updated: true }, status: (updated ? :ok : :internal_server_error)
   end # of method 
