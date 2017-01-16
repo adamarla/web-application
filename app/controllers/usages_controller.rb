@@ -13,9 +13,7 @@ class UsagesController < ApplicationController
     day = params[:date]
     day = day.to_date.to_s.gsub("-","").to_i if day.is_a?(String)
 
-    usage = Usage.where(user_id: params[:id], date: day).first || 
-             Usage.create(user_id: params[:id], date: day, time_zone: params[:time_zone])
-
+    usage = Usage.where(user_id: params[:id], date: day).first || Usage.create(user_id: params[:id], date: day)
     updated = usage.update_attributes time_on_snippets: params[:time_on_snippets],
                                     time_on_questions: params[:time_on_questions], 
                                     time_on_stats: params[:time_on_stats], 

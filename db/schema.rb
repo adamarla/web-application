@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20161230135010) do
+ActiveRecord::Schema.define(:version => 20170116031613) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -682,17 +682,16 @@ ActiveRecord::Schema.define(:version => 20161230135010) do
 
   create_table "usages", :force => true do |t|
     t.integer "user_id"
-    t.string  "time_zone",             :limit => 50
-    t.integer "time_on_snippets",                    :default => 0
-    t.integer "time_on_questions",                   :default => 0
-    t.integer "num_snippets_done",                   :default => 0
-    t.integer "num_questions_done",                  :default => 0
-    t.integer "time_on_stats",                       :default => 0
-    t.integer "num_snippets_clicked",                :default => 0
-    t.integer "num_questions_clicked",               :default => 0
-    t.integer "num_dropped",                         :default => 0
-    t.integer "date",                                :default => 0
-    t.integer "num_stats_loaded",                    :default => 0
+    t.integer "time_on_snippets",      :default => 0
+    t.integer "time_on_questions",     :default => 0
+    t.integer "num_snippets_done",     :default => 0
+    t.integer "num_questions_done",    :default => 0
+    t.integer "time_on_stats",         :default => 0
+    t.integer "num_snippets_clicked",  :default => 0
+    t.integer "num_questions_clicked", :default => 0
+    t.integer "num_dropped",           :default => 0
+    t.integer "date",                  :default => 0
+    t.integer "num_stats_loaded",      :default => 0
   end
 
   create_table "users", :force => true do |t|
@@ -707,6 +706,7 @@ ActiveRecord::Schema.define(:version => 20161230135010) do
     t.boolean  "facebook_login",                  :default => false
     t.integer  "birthday",                        :default => 0
     t.float    "version",                         :default => 1.0
+    t.string   "time_zone",        :limit => 50
   end
 
   add_index "users", ["email"], :name => "index_pupils_on_email"

@@ -13,6 +13,7 @@ class UsersController < ApplicationController
         
       user[:num_invites_sent] = num_invites_sent if (num_invites_sent > user.num_invites_sent)
       user[:version] = params[:app_version].to_f unless params[:app_version].blank? 
+      user[:time_zone] = params[:time_zone] unless params[:time_zone].blank?
       user.save 
 
       render json: { id: user.id }, status: :ok

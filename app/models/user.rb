@@ -14,6 +14,7 @@
 #  facebook_login   :boolean         default(FALSE)
 #  birthday         :integer         default(0)
 #  version          :float           default(1.0)
+#  time_zone        :string(50)
 #
 
 class User < ActiveRecord::Base
