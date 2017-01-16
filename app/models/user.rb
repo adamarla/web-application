@@ -68,6 +68,10 @@ class User < ActiveRecord::Base
     where('time_zone IS NOT ?', nil).where('time_zone <> ? AND time_zone <> ?', "Asia/Kolkata", "Asia/Calcutta")
   end 
 
+  def self.sharers
+    newcomers.where('num_invites_sent > ?', 0)
+  end 
+
   def self.version(v)
     v.is_a?(Float) ? where(version: v) : where('version >= ? AND version < ?', v, v + 1)
   end 
