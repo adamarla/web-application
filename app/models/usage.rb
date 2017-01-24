@@ -89,17 +89,15 @@ class Usage < ActiveRecord::Base
   end 
 
   def self.average_time_solving(version = 0) 
-    x = self.something_done(version)
-    return 0 if x.blank?
-
-    return (x.map(&:time_solving).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
+    u = self.something_done(version)
+    n = u.count 
+    return (n > 0 ? (u.map(&:time_solving).inject(:+) / n.to_f).round(2) : 0)
   end 
 
   def self.session_length(version = 0)
-    x = self.something_done(version) 
-    return 0 if x.blank? 
-
-    return (x.map(&:total_time_spent).inject(:+) / x.map(&:user_id).uniq.count.to_f) 
+    u = self.something_done(version) 
+    n = u.count 
+    return (n > 0 ? (u.map(&:total_time_spent).inject(:+) / n.to_f).round(2) : 0)
   end 
 
   def self.in_time_range(a,b,version = 0) 
