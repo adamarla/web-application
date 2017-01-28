@@ -34,9 +34,6 @@ class User < ActiveRecord::Base
   end 
 
   def joined_on
-    # We consider the user to have joined *not* on the day
-    # he registers but on the day he makes his first attempt
-
     return self.join_date unless self.join_date.nil? 
     usages = Usage.where(user_id: self.id) 
 
