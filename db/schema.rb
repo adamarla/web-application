@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170116031613) do
+ActiveRecord::Schema.define(:version => 20170131193551) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -701,12 +701,12 @@ ActiveRecord::Schema.define(:version => 20170116031613) do
     t.integer  "gender"
     t.datetime "created_at",                                         :null => false
     t.datetime "updated_at",                                         :null => false
-    t.date     "join_date"
     t.integer  "num_invites_sent",                :default => 0
     t.boolean  "facebook_login",                  :default => false
     t.integer  "birthday",                        :default => 0
     t.float    "version",                         :default => 1.0
     t.string   "time_zone",        :limit => 50
+    t.integer  "join_date"
   end
 
   add_index "users", ["email"], :name => "index_pupils_on_email"

@@ -9,12 +9,12 @@
 #  gender           :integer
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
-#  join_date        :date
 #  num_invites_sent :integer         default(0)
 #  facebook_login   :boolean         default(FALSE)
 #  birthday         :integer         default(0)
 #  version          :float           default(1.0)
 #  time_zone        :string(50)
+#  join_date        :integer
 #
 
 class User < ActiveRecord::Base
