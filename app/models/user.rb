@@ -15,6 +15,7 @@
 #  version          :float           default(1.0)
 #  time_zone        :string(50)
 #  join_date        :integer
+#  phone            :string(20)
 #
 
 class User < ActiveRecord::Base
@@ -28,6 +29,7 @@ class User < ActiveRecord::Base
   has_one :wtp, dependent: :destroy 
 
   before_create :seal
+  before_update :set_phone_number, if: :email_changed? 
 
   def name 
     return "#{self.first_name} #{self.last_name}"
@@ -108,43 +110,16 @@ class User < ActiveRecord::Base
     def seal 
       self.first_name = self.first_name.strip.titleize 
       self.last_name = self.last_name.strip.titleize
+      set_phone_number
     end 
 
-=begin
-  def num_attempts(count_retries = true)
-    a = Attempt.where(user_id: self.id)
-    return a.count unless count_retries
-    return (a.empty? ? 0 : a.map(&:num_attempts).inject(&:+))
-  end 
-
-  def total_time_solving
-    a = Attempt.where(user_id: self.id) 
-    return 0 if a.blank?
-    total_times = a.map(&:total_time).select{ |t| !t.nil? }
-    return (total_times.blank? ? 0 : total_times.inject(&:+))
-  end 
-
-  def days_between_attempts
-    return self.num_attempts > 0 ? (self.days_active / self.num_attempts.to_f).round(2) : 0
-  end 
-
-  def self.registered_in_last(n)
-    select{ |p| p.days_since_registration <= n }
-  end 
-
-  def self.with_min_attempts(n)
-    select{ |p| p.num_attempts >= n } 
-  end 
-
-  def self.profile(uids)
-    # returns a hash where each value is an array of values extracted for passed uids
-    p = User.where(id: uids) 
-    ret = {} 
-    [:num_attempts, :days_between_attempts, :days_active, :total_time_solving].each do |k| 
-      ret[k] = p.map(&k)
+    def set_phone_number
+      # We've noticed that many people embed a 10-digit number 
+      # in their e-mail IDs that look remarkably like phone numbers. 
+      # Hence, extract the 10-digits and store as the (tentative) phone # 
+      m = self.email.match(/\d{10}/)
+      ph = m.nil? ? nil : m[0]
+      self.phone = ph unless ph.nil?
     end 
-    return ret
-  end 
-=end
 
 end # of model 

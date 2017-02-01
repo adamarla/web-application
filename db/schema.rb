@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170131193551) do
+ActiveRecord::Schema.define(:version => 20170201054640) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -707,6 +707,7 @@ ActiveRecord::Schema.define(:version => 20170131193551) do
     t.float    "version",                         :default => 1.0
     t.string   "time_zone",        :limit => 50
     t.integer  "join_date"
+    t.string   "phone",            :limit => 20
   end
 
   add_index "users", ["email"], :name => "index_pupils_on_email"
