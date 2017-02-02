@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
   end 
 
   def self.newcomers
-    where('id > ?', 537).where('id NOT IN (?)', [1409, 4260]).order(:id)
+    where('id > ?', 537).where('id NOT IN (?)', [1409, 4260, 6188]).order(:id)
   end 
 
   def self.international
