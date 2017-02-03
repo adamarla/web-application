@@ -108,8 +108,8 @@ class User < ActiveRecord::Base
 
   private 
     def seal 
-      self.first_name = self.first_name.strip.titleize 
-      self.last_name = self.last_name.strip.titleize
+      self.first_name = self.first_name.strip.titleize unless self.first_name.blank?
+      self.last_name = self.last_name.strip.titleize unless self.last_name.blank?
       set_phone_number
     end 
 

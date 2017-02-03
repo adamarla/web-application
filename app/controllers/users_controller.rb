@@ -17,7 +17,12 @@ class UsersController < ApplicationController
       user[:join_date] = params[:join_date] unless params[:join_date].blank?
       user.save 
 
-      render json: { id: user.id }, status: :ok
+      response = {} 
+      response[:first_name] = user.first_name unless user.first_name.blank? 
+      response[:last_name] = user.last_name unless user.last_name.blank? 
+      response[:id] = user.id 
+
+      render json: response, status: :ok
     else
       render json: { id: 0 }, status: :internal_server_error 
     end 
