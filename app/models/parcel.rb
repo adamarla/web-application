@@ -12,6 +12,7 @@
 #  updated_at     :datetime        not null
 #  contains       :string(20)
 #  max_zip_size   :integer         default(-1)
+#  skill_id       :integer         default(0)
 #
 
 class Parcel < ActiveRecord::Base
@@ -33,6 +34,10 @@ class Parcel < ActiveRecord::Base
 
   def for_skills? 
     return self.contains == Skill.name 
+  end 
+
+  def skill_specific?
+    return self.skill_id > 0 
   end 
 
   def set_difficulty_range(min, max) 

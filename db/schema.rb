@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170201054640) do
+ActiveRecord::Schema.define(:version => 20170204080155) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -378,6 +378,7 @@ ActiveRecord::Schema.define(:version => 20170201054640) do
     t.datetime "updated_at",                                   :null => false
     t.string   "contains",       :limit => 20
     t.integer  "max_zip_size",                 :default => -1
+    t.integer  "skill_id",                     :default => 0
   end
 
   create_table "potd", :force => true do |t|
