@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170206082114) do
+ActiveRecord::Schema.define(:version => 20170206095845) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -371,7 +371,7 @@ ActiveRecord::Schema.define(:version => 20170206082114) do
   create_table "parcels", :force => true do |t|
     t.string   "name",           :limit => 15
     t.integer  "chapter_id"
-    t.integer  "language_id"
+    t.integer  "language_id",                  :default => 1
     t.integer  "min_difficulty"
     t.integer  "max_difficulty"
     t.datetime "created_at",                                   :null => false
