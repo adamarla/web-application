@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170206095845) do
+ActiveRecord::Schema.define(:version => 20170206124147) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -369,7 +369,7 @@ ActiveRecord::Schema.define(:version => 20170206095845) do
   end
 
   create_table "parcels", :force => true do |t|
-    t.string   "name",           :limit => 15
+    t.string   "name",           :limit => 50
     t.integer  "chapter_id"
     t.integer  "language_id",                  :default => 1
     t.integer  "min_difficulty"
@@ -767,7 +767,7 @@ ActiveRecord::Schema.define(:version => 20170206095845) do
   end
 
   create_table "zips", :force => true do |t|
-    t.string  "name",      :limit => 25
+    t.string  "name",      :limit => 50
     t.integer "parcel_id"
     t.integer "max_size",                :default => -1
     t.boolean "open",                    :default => true

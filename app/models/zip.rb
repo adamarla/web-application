@@ -3,7 +3,7 @@
 # Table name: zips
 #
 #  id        :integer         not null, primary key
-#  name      :string(25)
+#  name      :string(50)
 #  parcel_id :integer
 #  max_size  :integer         default(-1)
 #  open      :boolean         default(TRUE)

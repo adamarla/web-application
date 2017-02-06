@@ -3,7 +3,7 @@
 # Table name: parcels
 #
 #  id             :integer         not null, primary key
-#  name           :string(15)
+#  name           :string(50)
 #  chapter_id     :integer
 #  language_id    :integer         default(1)
 #  min_difficulty :integer
