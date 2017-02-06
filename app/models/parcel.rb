@@ -5,7 +5,7 @@
 #  id             :integer         not null, primary key
 #  name           :string(15)
 #  chapter_id     :integer
-#  language_id    :integer
+#  language_id    :integer         default(1)
 #  min_difficulty :integer
 #  max_difficulty :integer
 #  created_at     :datetime        not null
@@ -16,10 +16,24 @@
 #
 
 class Parcel < ActiveRecord::Base
+
+=begin
+
+  -----------------------------------------------------------------
+   Parcel Type        Unique by 
+  -----------------------------------------------------------------
+    Any               (name) 
+    Skill             (language, chapter) 
+    Snippet           (language, chapter, skill)
+    Question          (language, chapter, skill, difficulty range)
+  -----------------------------------------------------------------
+
+=end 
   validates :name, uniqueness: true 
   validates :chapter_id, numericality: { only_integer: true, greater_than: 0 }
-  validates :chapter_id, uniqueness: { scope: [:language_id, :min_difficulty, :max_difficulty] }, if: :for_questions?
-  validates :chapter_id, uniqueness: { scope: [:contains] }, unless: :for_questions?
+  validates :language_id, uniqueness: { scope: [:chapter_id] }, if: :for_skills? 
+  validates :skill_id, uniqueness: { scope: [:chapter_id, :language_id] }, if: :for_snippets? 
+  validates :skill_id, uniqueness: { scope: [:chapter_id, :language_id, :min_difficulty, :max_difficulty] }, if: :for_questions? 
 
   belongs_to :chapter 
   belongs_to :language 
@@ -34,6 +48,10 @@ class Parcel < ActiveRecord::Base
 
   def for_skills? 
     return self.contains == Skill.name 
+  end 
+
+  def for_snippets? 
+    return self.contains == Snippet.name 
   end 
 
   def skill_specific?
@@ -56,19 +74,24 @@ class Parcel < ActiveRecord::Base
     # Is the SKU of the right type to go into this Parcel? 
     return false unless (self.contains == sku.stockable_type)
 
-    # Does the SKU match the conditions set on the Parcel?
-    # obj can only be Question, Snippet or Skill now 
-
+    # At the very least, language and chapter must match
     obj = sku.stockable
 
-    case obj 
-      when Question 
-        return false if (obj.chapter_id != self.chapter_id || obj.language_id != self.language_id)
-        return false if (obj.difficulty < self.min_difficulty || obj.difficulty > self.max_difficulty)
-      when Snippet, Skill 
-        return (obj.chapter_id == self.chapter_id)
+    [:chapter_id, :language_id].each do |a| 
+      return false if obj[a] != self[a]
     end 
-    return true 
+
+    # No more checks for Skills 
+    return true if obj.is_a?(Skill)
+
+    # Does this parcel accept only SKUs w/ specific skills 
+    return false if (self.skill_id > 0 && !sku.tests_skill(self.skill_id))
+
+    # No more checks for Snippets 
+    return true if obj.is_a?(Snippet)
+
+    # => Question. Check for difficulty range 
+    return (obj.difficulty >= self.min_difficulty && obj.difficulty <= self.max_difficulty)
   end 
 
   def parent_zip(sku)
@@ -130,7 +153,6 @@ class Parcel < ActiveRecord::Base
   def self.for_chapter(cid, language = Language.named('english'))
     # There can be multiple parcel of questions for the same chapter. 
     # The difference could be in target language, difficulty levels etc. 
-    # But there can be *only one* parcel of skills and snippets. 
     
     # This method creates a parcel for questions - and any for snippets
     # and skills.
@@ -144,13 +166,13 @@ class Parcel < ActiveRecord::Base
     def seal 
       case self.contains 
         when Question.name
-          suffix = "Q#{self.id}"
+          suffix = self.skill_id > 0 ? "SK#{self.skill_id}Q#{self.id}" : "Q#{self.id}"
           max_size = 10 
         when Skill.name 
           suffix = "SK#{self.id}" 
           max_size = -1
         else 
-          suffix = "SN#{self.id}"
+          suffix = self.skill_id > 0 ? "SK#{self.skill_id}SN#{self.id}" : "SN#{self.id}"
           max_size = 20 
       end 
 
@@ -161,9 +183,17 @@ class Parcel < ActiveRecord::Base
         self.add(sku) if self.can_have?(sku)
       end 
 
+      # *Only* a parcel for a question can trigger creation of parcels for snippets & skills 
       return unless self.for_questions?
-      Parcel.create(chapter_id: self.chapter_id, contains: Skill.name) 
-      Parcel.create(chapter_id: self.chapter_id, contains: Snippet.name)
+
+      Parcel.create(chapter_id: self.chapter_id, 
+                    language_id: self.language_id, 
+                    contains: Skill.name) 
+
+      Parcel.create(chapter_id: self.chapter_id, 
+                    language_id: self.language_id, 
+                    skill_id: self.skill_id, 
+                    contains: Snippet.name)
     end 
 
     def reset_zip_sizes
