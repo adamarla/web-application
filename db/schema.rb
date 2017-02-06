@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170204080155) do
+ActiveRecord::Schema.define(:version => 20170206082114) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -511,6 +511,7 @@ ActiveRecord::Schema.define(:version => 20170204080155) do
     t.string  "uid",             :limit => 15
     t.integer "examiner_id"
     t.float   "avg_proficiency",               :default => 0.0
+    t.integer "language_id",                   :default => 1
   end
 
   create_table "skus", :force => true do |t|
@@ -527,6 +528,7 @@ ActiveRecord::Schema.define(:version => 20170204080155) do
     t.integer "num_attempted", :default => 0
     t.integer "num_correct",   :default => 0
     t.integer "chapter_id"
+    t.integer "language_id",   :default => 1
   end
 
   add_index "snippets", ["chapter_id"], :name => "index_snippets_on_chapter_id"

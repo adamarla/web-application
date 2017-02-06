@@ -8,6 +8,7 @@
 #  uid             :string(15)
 #  examiner_id     :integer
 #  avg_proficiency :float           default(0.0)
+#  language_id     :integer         default(1)
 #
 
 class Skill < ActiveRecord::Base
@@ -37,8 +38,10 @@ class Skill < ActiveRecord::Base
 
   private 
     def seal 
+      is_generic = self.chapter_id == Chapter.generic.id 
+
       self.create_sku path: "skills/#{self.id}"
-      self.update_attributes uid: "#{self.chapter.uid}-#{self.id}", generic: (self.chapter_id == Chapter.generic.id)
+      self.update_attributes uid: "#{self.chapter.uid}-#{self.id}", generic: is_generic 
     end 
 
     def set_sku_ownership 

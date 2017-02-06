@@ -7,6 +7,7 @@
 #  num_attempted :integer         default(0)
 #  num_correct   :integer         default(0)
 #  chapter_id    :integer
+#  language_id   :integer         default(1)
 #
 
 class Snippet < ActiveRecord::Base
