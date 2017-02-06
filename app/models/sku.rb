@@ -48,6 +48,13 @@ class Sku < ActiveRecord::Base
     end 
   end 
 
+  def tests_skill?(id) 
+    return false if (id == 0 || self.stockable_type == Skill.name)
+
+    tested = Skill.where(uid: self.stockable.skill_ids).map(&:id)
+    return tested.include? id 
+  end 
+
   def set_skills(ids)
     obj = self.stockable 
     obj.set_skills(ids) unless obj.nil?
