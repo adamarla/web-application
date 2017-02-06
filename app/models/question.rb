@@ -63,12 +63,15 @@ class Question < ActiveRecord::Base
     end 
 
     def retagged?
-      return (self.difficulty_changed? || self.chapter_id_changed? || self.language_id_changed?)
+      return (self.difficulty_changed? || 
+              self.chapter_id_changed? || 
+              self.language_id_changed? || 
+              self.skill_list_changed?)
     end 
 
     def reassign_to_zips
       yield 
-      add_sku if self.sku.nil?
+      add_sku if self.sku.nil? # for questions written before July 2016 
       self.sku.reassign_to_zips
     end 
 

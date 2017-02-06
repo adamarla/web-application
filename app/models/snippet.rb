@@ -15,7 +15,7 @@ class Snippet < ActiveRecord::Base
   has_one :sku, as: :stockable, dependent: :destroy 
 
   after_create :add_sku 
-  around_update :reassign_to_zips, if: :chapter_id_changed?
+  around_update :reassign_to_zips, if: :retagged?
 
   acts_as_taggable_on :skills 
 
@@ -46,15 +46,17 @@ class Snippet < ActiveRecord::Base
       self.create_sku path: "snippets/#{self.id}"
     end 
 
+    def retagged? 
+      return (self.chapter_id_changed? || 
+              self.language_id_changed? || 
+              self.skill_list_changed?)
+    end 
+
     def reassign_to_zips
-      # old_skill = self.skill_id 
 
       yield 
       self.sku.reassign_to_zips 
 
-      # new_skill = self.skill_id 
-      # same_chapter = Skill.where(id: [old_skill, new_skill]).map(&:chapter_id).uniq.count == 1 
-      # self.sku.reassign_to_zips unless same_chapter 
     end 
 
-end
+end # of class 
