@@ -7,9 +7,6 @@
 #  updated_at  :datetime
 #  examiner_id :integer
 #  difficulty  :integer         default(20)
-#  live        :boolean         default(FALSE)
-#  potd        :boolean         default(FALSE)
-#  num_potd    :integer         default(0)
 #  chapter_id  :integer
 #  language_id :integer         default(1)
 #
