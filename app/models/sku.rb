@@ -12,7 +12,9 @@
 class Sku < ActiveRecord::Base
   belongs_to :stockable, polymorphic: true 
   validates :stockable_id, uniqueness: { scope: [:stockable_type] }
+
   after_update :reassign_to_zips, if: :has_svgs_changed? 
+  before_destroy :remove_from_zips 
 
   def reassign_to_zips
     return false unless self.has_svgs 
@@ -90,5 +92,13 @@ class Sku < ActiveRecord::Base
   def self.in_chapter(cid)
     select{ |sku| sku.stockable.chapter_id == cid }
   end 
+
+  private 
+      def remove_from_zips
+        zids = Inventory.where(sku_id: self.id).map(&:zip_id).uniq 
+        Zip.where(id: zids).each do |z|
+          z.sku_ids = z.sku_ids - [self.id] 
+        end 
+      end 
 
 end # of class
