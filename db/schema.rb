@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170206155955) do
+ActiveRecord::Schema.define(:version => 20170209034557) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -289,6 +289,17 @@ ActiveRecord::Schema.define(:version => 20170206155955) do
     t.integer "question_id"
   end
 
+  create_table "fragments", :force => true do |t|
+    t.integer "examiner_id"
+    t.integer "num_attempted", :default => 0
+    t.integer "num_correct",   :default => 0
+    t.integer "chapter_id"
+    t.integer "language_id",   :default => 1
+  end
+
+  add_index "fragments", ["chapter_id"], :name => "index_snippets_on_chapter_id"
+  add_index "fragments", ["examiner_id"], :name => "index_snippets_on_examiner_id"
+
   create_table "freebies", :force => true do |t|
     t.integer  "course_id"
     t.integer  "lesson_id"
@@ -374,11 +385,12 @@ ActiveRecord::Schema.define(:version => 20170206155955) do
     t.integer  "language_id",                  :default => 1
     t.integer  "min_difficulty"
     t.integer  "max_difficulty"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.string   "contains",       :limit => 20
     t.integer  "max_zip_size",                 :default => -1
     t.integer  "skill_id",                     :default => 0
+    t.boolean  "open",                         :default => true
   end
 
   create_table "potd", :force => true do |t|
@@ -390,6 +402,18 @@ ActiveRecord::Schema.define(:version => 20170206155955) do
     t.integer "num_failed",                  :default => 0
     t.integer "num_sent",                    :default => 0
   end
+
+  create_table "problems", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "examiner_id"
+    t.integer  "difficulty",  :default => 20
+    t.integer  "chapter_id"
+    t.integer  "language_id", :default => 1
+  end
+
+  add_index "problems", ["chapter_id"], :name => "index_questions_on_chapter_id"
+  add_index "problems", ["language_id"], :name => "index_questions_on_language_id"
 
   create_table "puzzles", :force => true do |t|
     t.text     "text"
@@ -416,18 +440,6 @@ ActiveRecord::Schema.define(:version => 20170206155955) do
 
   add_index "q_selections", ["question_id"], :name => "index_q_selections_on_question_id"
   add_index "q_selections", ["quiz_id"], :name => "index_q_selections_on_quiz_id"
-
-  create_table "questions", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "examiner_id"
-    t.integer  "difficulty",  :default => 20
-    t.integer  "chapter_id"
-    t.integer  "language_id", :default => 1
-  end
-
-  add_index "questions", ["chapter_id"], :name => "index_questions_on_chapter_id"
-  add_index "questions", ["language_id"], :name => "index_questions_on_language_id"
 
   create_table "quizzes", :force => true do |t|
     t.integer  "teacher_id"
@@ -471,6 +483,23 @@ ActiveRecord::Schema.define(:version => 20170206155955) do
     t.boolean "hints",       :default => false
   end
 
+  create_table "riddles", :force => true do |t|
+    t.string  "type",             :limit => 50
+    t.integer "original_id"
+    t.integer "chapter_id"
+    t.integer "parent_riddle_id"
+    t.integer "language_id",                    :default => 1
+    t.integer "difficulty",                     :default => 20
+    t.integer "num_attempted",                  :default => 0
+    t.integer "num_completed",                  :default => 0
+    t.integer "num_correct",                    :default => 0
+    t.integer "examiner_id"
+    t.boolean "has_svgs",                       :default => false
+  end
+
+  add_index "riddles", ["chapter_id"], :name => "index_riddles_on_chapter_id"
+  add_index "riddles", ["language_id"], :name => "index_riddles_on_language_id"
+
   create_table "rubrics", :force => true do |t|
     t.string   "name",       :limit => 100
     t.integer  "account_id"
@@ -509,27 +538,16 @@ ActiveRecord::Schema.define(:version => 20170206155955) do
     t.integer "examiner_id"
     t.float   "avg_proficiency",               :default => 0.0
     t.integer "language_id",                   :default => 1
+    t.boolean "has_svgs",                      :default => false
   end
 
   create_table "skus", :force => true do |t|
     t.string  "stockable_type"
     t.integer "stockable_id"
     t.string  "path"
-    t.boolean "has_svgs",       :default => false
   end
 
   add_index "skus", ["stockable_id"], :name => "index_skus_on_stockable_id"
-
-  create_table "snippets", :force => true do |t|
-    t.integer "examiner_id"
-    t.integer "num_attempted", :default => 0
-    t.integer "num_correct",   :default => 0
-    t.integer "chapter_id"
-    t.integer "language_id",   :default => 1
-  end
-
-  add_index "snippets", ["chapter_id"], :name => "index_snippets_on_chapter_id"
-  add_index "snippets", ["examiner_id"], :name => "index_snippets_on_examiner_id"
 
   create_table "stabs", :force => true do |t|
     t.integer  "student_id"

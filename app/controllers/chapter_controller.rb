@@ -3,13 +3,8 @@ class ChapterController < ApplicationController
   respond_to :json 
 
   def list 
-    if params[:cmdline]
-      level = Level.named params[:level]
-      subject = Subject.named params[:subject]
-    else 
-      level = params[:level] || Level.named('senior') 
-      subject = params[:subject] || Subject.named('maths') 
-    end 
+    level = params[:level].blank? ? Level.named('senior') : params[:level] 
+    subject = params[:subject].blank? ? Subject.named('maths') : params[:subject]
 
     list = Chapter.where(level_id: level, subject_id: subject).order(:name)
     response = list.blank? ? [] : list.map{ |s| { id: s.id, name: s.name } } 
@@ -19,6 +14,8 @@ class ChapterController < ApplicationController
   # To be called ** only ** by the bash script called 'syllabus'
   def parcels
     parcels = Parcel.where(chapter_id: params[:c]) 
+    parcels = params[:skill] == "true" ? parcels.where('skill_id > ? OR contains = ?', 0, "Skill") : parcels 
+
     render json: parcels.map(&:to_json), status: :ok
   end 
 
@@ -32,7 +29,7 @@ class ChapterController < ApplicationController
     chapter_ids.each do |cid| 
       inv = {} 
       chapter = Chapter.find cid 
-      parcels = Parcel.where(chapter_id: cid) 
+      parcels = Parcel.where(chapter_id: cid, skill_id: 0) 
 
       inv[:one] = chapter.name
       inv[:two] = cid 

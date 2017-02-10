@@ -4,12 +4,12 @@ class SkuController < ApplicationController
   def recompiled
     sku = Sku.with_path params[:path]
 
-    unless sku.nil?
-      # Set the chapter_id extracted from the XML 
-      sku.set_chapter_id(params[:c]) unless params[:c].blank?
-      sku.has_svgs ? sku.set_modified_on_zips : sku.update_attribute(:has_svgs, true)
-      render json: { id: sku.id }, status: :ok 
-    else 
+    unless sku.nil? 
+      obj = sku.stockable 
+      obj.update_attribute(:chapter_id, params[:c]) unless params[:c].blank?
+      obj.has_svgs ? sku.tag_modified_zips : obj.update_attribute(:has_svgs, true)
+      render json: { id: (obj.is_a?(Riddle) ? obj.get_id : obj.id) }, status: :ok
+    else
       render json: { id: 0 }, status: :bad_request 
     end 
   end 
@@ -18,6 +18,16 @@ class SkuController < ApplicationController
     sku = Sku.with_path params[:path]
 
     unless sku.nil?
+      obj = sku.stockable 
+
+      unless obj.is_a?(Skill) 
+        ids = params[:skills].split(",").map(&:to_i).uniq
+        obj.set_skills(ids) unless ids.blank?
+        render json: { id: obj.get_id }, status: :ok
+      else 
+        render json: { id: obj.id }, status: :ok
+      end 
+
       sids = params[:skills].split(",").map(&:to_i).uniq 
       sku.stockable.set_skills(sids) unless sids.blank?
       render json: { id: sku.id } , status: :ok
@@ -26,34 +36,18 @@ class SkuController < ApplicationController
     end 
   end 
   
-  def list
-    unless params[:c].blank? 
-      skus = Sku.in_chapter params[:c].to_i
-      response = skus.map{ |sku| 
-        { 
-          id: sku.stockable_id, 
-          path: sku.path, 
-          authorId: sku.author_id, 
-          chapterId: params[:c].to_i,
-          assetClass: sku.stockable_type
-        } 
-      }
-    else
-      response = []
-      assetTypes = ["Skill", "Snippet", "Question"]
-      assetTypes.map{ |aType|
-        assetClass = Object.const_get(aType)
-        response += assetClass.all.map{ |s|
-          {
-            id: s.id, 
-            path: s.sku.nil? ? s.path : s.sku.path,
-            authorId: s.examiner_id,
-            chapterId: s.chapter_id.nil? ? 0 : s.chapter_id, 
-            assetClass: aType }
-          }
-      }
-    end 
-    render json: response, status: :ok
-  end
+  def list 
+    c = params[:c].blank? ? 0 : params[:c].to_i 
+    listing = Sku.in_chapter(c) 
 
-end 
+    response = listing.map{ |sku| obj = sku.stockable ; 
+                                  { id: obj.is_a?(Skill) ? obj.id : obj.get_id, 
+                                    path: sku.path,
+                                    authorId: obj.examiner_id, 
+                                    chapterId: c, 
+                                    assetClass: obj.class.name } }
+
+    render json: response, status: :ok
+  end 
+
+end # of class 

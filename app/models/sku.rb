@@ -6,25 +6,21 @@
 #  stockable_type :string(255)
 #  stockable_id   :integer
 #  path           :string(255)
-#  has_svgs       :boolean         default(FALSE)
 #
 
 class Sku < ActiveRecord::Base
   belongs_to :stockable, polymorphic: true 
   validates :stockable_id, uniqueness: { scope: [:stockable_type] }
 
-  after_update :reassign_to_zips, if: :has_svgs_changed? 
-  before_destroy :remove_from_zips 
+  has_many :inventory, dependent: :destroy 
 
-  def reassign_to_zips
-    return false unless self.has_svgs 
-
+  def repackage
     Parcel.all.each do |parcel| 
       parcel.can_have?(self) ? parcel.add(self) : parcel.remove(self) 
     end # of each loop  
   end # of method 
 
-  def set_modified_on_zips 
+  def tag_modified_zips 
     return false unless self.has_svgs 
 
     zip_ids = Inventory.where(sku_id: self.id).map(&:zip_id).uniq 
@@ -33,31 +29,16 @@ class Sku < ActiveRecord::Base
     end 
   end 
 
-  def author_id
-    parent = self.stockable 
-    return parent.examiner_id
-  end 
-
-  def set_chapter_id(cid) 
-    obj = self.stockable 
-
-    if obj.instance_of? Question 
-      lang = obj.language_id || Language.named('english') 
-      diff = (obj.difficulty.nil? || obj.difficulty == 1) ? Difficulty.named('medium') : obj.difficulty 
-      obj.update_attributes chapter_id: cid, language_id: lang, difficulty: diff 
-    else 
-      obj.update_attribute :chapter_id, cid 
-    end 
-  end 
-
   def tests_skill?(id) 
     return false if id == 0 
 
     obj = self.stockable
-    return false if obj.is_a?(Skill)
+    return false unless obj.is_a?( Riddle ) 
 
-    tested = Skill.where(uid: obj.skill_ids).map(&:id)
-    return tested.include? id 
+    tested = obj.skill_list 
+    return false if tested.blank?
+
+    return Skill.where(uid: tested).map(&:id).include?(id) 
   end 
 
   def set_skills(ids)
@@ -70,10 +51,11 @@ class Sku < ActiveRecord::Base
   end 
 
   def self.with_path(path) 
-    # path = q/[ex-id]/[q-id] OR vault/[skills|snippets]/[id]
     return nil if path.blank?
 
+    # path = q/[ex-id]/[q-id] OR vault/[skills|snippets]/[id]
     uid = (path =~ /^vault(.*)/).nil? ? path : path.split("/")[1..2].join("/")
+
     return Sku.where(path: uid).first 
   end 
 
@@ -90,15 +72,17 @@ class Sku < ActiveRecord::Base
   end 
 
   def self.in_chapter(cid)
-    select{ |sku| sku.stockable.chapter_id == cid }
-  end 
+    if (cid > 0) 
+      riddles = Riddle.where(chapter_id: cid) 
+      skills = Skill.where(chapter_id: cid) 
+    else 
+      riddles = Riddle.where('id > ?', 0) 
+      skills = Skill.where('id > ?', 0) 
+    end 
 
-  private 
-      def remove_from_zips
-        zids = Inventory.where(sku_id: self.id).map(&:zip_id).uniq 
-        Zip.where(id: zids).each do |z|
-          z.sku_ids = z.sku_ids - [self.id] 
-        end 
-      end 
+    # This will be an Array - not an ActiveRecordRelation 
+    return (Sku.where(stockable_id: riddles.map(&:id), stockable_type: "Riddle") + 
+            Sku.where(stockable_id: skills.map(&:id), stockable_type: "Skill"))
+  end 
 
 end # of class

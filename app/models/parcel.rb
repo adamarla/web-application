@@ -13,6 +13,7 @@
 #  contains       :string(20)
 #  max_zip_size   :integer         default(-1)
 #  skill_id       :integer         default(0)
+#  open           :boolean         default(TRUE)
 #
 
 class Parcel < ActiveRecord::Base
@@ -32,8 +33,16 @@ class Parcel < ActiveRecord::Base
   validates :name, uniqueness: true 
   validates :chapter_id, numericality: { only_integer: true, greater_than: 0 }
   validates :language_id, uniqueness: { scope: [:chapter_id] }, if: :for_skills? 
-  validates :skill_id, uniqueness: { scope: [:chapter_id, :language_id] }, if: :for_snippets? 
-  validates :skill_id, uniqueness: { scope: [:chapter_id, :language_id, :min_difficulty, :max_difficulty] }, if: :for_questions? 
+
+  validates :skill_id, uniqueness: { scope: [ :contains, 
+                                              :chapter_id, 
+                                              :language_id ] }, if: :for_snippets? 
+
+  validates :skill_id, uniqueness: { scope: [ :contains, 
+                                              :chapter_id, 
+                                              :language_id, 
+                                              :min_difficulty, 
+                                              :max_difficulty ] }, if: :for_questions? 
 
   belongs_to :chapter 
   belongs_to :language 
@@ -58,34 +67,32 @@ class Parcel < ActiveRecord::Base
     return self.skill_id > 0 
   end 
 
-  def set_difficulty_range(min, max) 
-    return if (min == 0 || max == 0) 
-    if (min > max) 
-      tmp = min 
-      min = max 
-      max = tmp 
-    end 
-
-    # Set the difficulties
-    self.update_attributes min_difficulty: min, max_difficulty: max
-  end 
-
   def can_have?(sku) 
+    return false unless self.open 
+
     # Is the SKU of the right type to go into this Parcel? 
-    return false unless (self.contains == sku.stockable_type)
+    obj = sku.stockable 
+
+    # To maintain backward compatibility
+    if obj.is_a?(Question)
+      return false if self.contains != "Question"
+    elsif obj.is_a?(Snippet) 
+      return false if self.contains != "Snippet" 
+    elsif obj.is_a?(Skill)
+      return false if self.contains != "Skill"
+    else
+      return false 
+    end 
 
     # At the very least, language and chapter must match
-    obj = sku.stockable
-
-    [:chapter_id, :language_id].each do |a| 
-      return false if obj[a] != self[a]
-    end 
+    return false if obj.chapter_id != self.chapter_id 
+    return false if (!self.language_id.blank? && (self.language_id != obj.language_id)) # nil => english 
 
     # No more checks for Skills 
     return true if obj.is_a?(Skill)
 
     # Does this parcel accept only SKUs w/ specific skills 
-    return false if (self.skill_id > 0 && !sku.tests_skill(self.skill_id))
+    return false if (self.skill_id > 0 && !sku.tests_skill?(self.skill_id))
 
     # No more checks for Snippets 
     return true if obj.is_a?(Snippet)
@@ -94,7 +101,7 @@ class Parcel < ActiveRecord::Base
     return (obj.difficulty >= self.min_difficulty && obj.difficulty <= self.max_difficulty)
   end 
 
-  def parent_zip(sku)
+  def zip_that_has(sku)
     self.zips.each do |z|
       return z if z.has?(sku)
     end 
@@ -104,7 +111,7 @@ class Parcel < ActiveRecord::Base
   def add(sku)
     # Method assumes this parcel can_have? passed SKU 
 
-    return false unless self.parent_zip(sku).nil? # if already added 
+    return false unless self.zip_that_has(sku).nil? # if already added 
     open_zip = Zip.where(parcel_id: self.id, open: true).last || self.zips.create 
     open_zip.skus << sku 
   end 
@@ -112,7 +119,7 @@ class Parcel < ActiveRecord::Base
   def remove(sku)
     # Method assumes that passed SKU has been ascertained to be removed 
 
-    zip = self.parent_zip(sku) 
+    zip = self.zip_that_has(sku) 
     return false if zip.nil? # false alarm. Not in this parcel
     zip.sku_ids = zip.sku_ids - [sku.id]
   end 
@@ -124,76 +131,66 @@ class Parcel < ActiveRecord::Base
   end 
 
   def next_zip(ids) 
+    return self.zips.first if self.contains == "Skill" 
+
     # We want to return the *next* zip that a user must download 
-    # given the SKUs that he has already attempted 
+    # given the Riddles already attempted  
 
-    entries = Inventory.where(zip_id: self.zip_ids)
-    attempted_sku_ids = Sku.where(stockable_id: ids, stockable_type: self.contains).map(&:id)
-    unattempted = entries.where(sku_id: (entries.map(&:sku_id) - attempted_sku_ids))
+    rd = Riddle.where('id IN (?) OR original_id IN (?)', ids, ids).map(&:id)
+    sku_d = Sku.where(stockable_id: rd).map(&:id) 
+    in_parcel = Inventory.where(zip_id: self.zip_ids)
+    tbd = in_parcel.where(sku_id: in_parcel.map(&:sku_id) - sku_d)
 
-    zips = unattempted.map(&:zip_id)
-    cnd, others = zips.partition{ |z| zips.count(z) >= 6 }
+    # Look for the zip with most un-attempted matches 
+    zips = tbd.map(&:zip_id) 
+    good_fits, bad_fits = zips.partition{ |z| zips.count(z) >= 6 }
 
-    # Randomly return one of the eligible zips (>= 6 unattempted SKUs). 
-    # And if no eligible zip, then return one of the others. 
-
-    ret_id = (cnd.blank? ? others.uniq.sample(1).first : cnd.uniq.sample(1).first)
-    return (ret_id.blank? ? nil : Zip.find(ret_id))
+    # Randomly return one of the good-fits else one of the bad-fits 
+    zid = good_fits.blank? ? bad_fits.uniq.sample(1).first : good_fits.uniq.sample(1).first 
+    return (zid.blank? ? nil : Zip.find(zid))
   end 
 
   def to_json 
     ret = { id: self.id, type: self.contains, name: self.name } 
-    if self.contains == Question.name 
-      ret[:min] = self.min_difficulty 
-      ret[:max] = self.max_difficulty
+
+    unless self.contains == "Skill"
+      ret[:skill] = self.skill_id 
+
+      if self.contains == "Question" 
+        ret[:min] = self.min_difficulty 
+        ret[:max] = self.max_difficulty
+      end 
     end 
     return ret 
-  end 
-
-  def self.for_chapter(cid, language = Language.named('english'))
-    # There can be multiple parcel of questions for the same chapter. 
-    # The difference could be in target language, difficulty levels etc. 
-    
-    # This method creates a parcel for questions - and any for snippets
-    # and skills.
-
-    p = Parcel.create(chapter_id: cid, language_id: language, contains: Question.name) 
-    p.set_difficulty_range Difficulty.named('easy'), Difficulty.named('medium')
   end 
 
   private 
 
     def seal 
+      query = { has_svgs: true, chapter_id: self.chapter_id }
+
       case self.contains 
         when Question.name
           suffix = self.skill_id > 0 ? "SK#{self.skill_id}Q#{self.id}" : "Q#{self.id}"
           max_size = 10 
+          list = Question.where(query)
         when Skill.name 
           suffix = "SK#{self.id}" 
           max_size = -1
+          list = Skill.where(query)
         else 
           suffix = self.skill_id > 0 ? "SK#{self.skill_id}SN#{self.id}" : "SN#{self.id}"
           max_size = 20 
+          list = Snippet.where(query)
       end 
 
       self.update_attributes name: "C#{self.chapter_id}#{suffix}", max_zip_size: max_size 
 
-      # This is a new Parcel. Fill it with any relevant SKUs  
-      Sku.where(has_svgs: true).each do |sku| 
+      # This is a new Parcel. Fill it with relevant SKUs
+      list.each do |obj| 
+        sku = obj.stockable 
         self.add(sku) if self.can_have?(sku)
       end 
-
-      # *Only* a parcel for a question can trigger creation of parcels for snippets & skills 
-      return unless self.for_questions?
-
-      Parcel.create(chapter_id: self.chapter_id, 
-                    language_id: self.language_id, 
-                    contains: Skill.name) 
-
-      Parcel.create(chapter_id: self.chapter_id, 
-                    language_id: self.language_id, 
-                    skill_id: self.skill_id, 
-                    contains: Snippet.name)
     end 
 
     def reset_zip_sizes

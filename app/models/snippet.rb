@@ -1,62 +1,28 @@
 # == Schema Information
 #
-# Table name: snippets
+# Table name: riddles
 #
-#  id            :integer         not null, primary key
-#  examiner_id   :integer
-#  num_attempted :integer         default(0)
-#  num_correct   :integer         default(0)
-#  chapter_id    :integer
-#  language_id   :integer         default(1)
+#  id               :integer         not null, primary key
+#  type             :string(50)
+#  original_id      :integer
+#  chapter_id       :integer
+#  parent_riddle_id :integer
+#  language_id      :integer         default(1)
+#  difficulty       :integer         default(20)
+#  num_attempted    :integer         default(0)
+#  num_completed    :integer         default(0)
+#  num_correct      :integer         default(0)
+#  examiner_id      :integer
+#  has_svgs         :boolean         default(FALSE)
 #
 
-class Snippet < ActiveRecord::Base
-  belongs_to :chapter
-  has_one :sku, as: :stockable, dependent: :destroy 
+class Snippet < Riddle
 
-  after_create :add_sku 
-  around_update :reassign_to_zips, if: :retagged?
+  # Snippets are too short to have variable difficuly levels 
+  # Hence, we just stick with the default difficulty (medium)
 
-  acts_as_taggable_on :skills 
-
-  def set_skills(skill_ids) 
-    return false if skill_ids.blank?
-    uids = Skill.where(id: skill_ids).map(&:uid).join(',')
-    self.skill_list = uids 
-    self.save 
+  def set_difficulty(d) 
+    return false 
   end 
 
-  def attempted(correctly = false) 
-    correctly ? self.update_attributes(num_attempted: self.num_attempted + 1, 
-                                       num_correct: self.num_correct + 1)
-              : self.update_attribute(:num_attempted, self.num_attempted + 1)
-  end 
-
-  def self.with_skills(skill_ids)
-    # Only consider Snippets that belong to the same Chapters 
-    # as the passed Skills
-
-    cids = Skill.where(id: skill_ids).map(&:chapter_id).uniq 
-    skills = Skill.where(id: skill_ids).map(&:uid)
-    return Snippet.where(chapter_id: cids).tagged_with(skills, any: true, on: :skills)
-  end 
-
-  private 
-    def add_sku 
-      self.create_sku path: "snippets/#{self.id}"
-    end 
-
-    def retagged? 
-      return (self.chapter_id_changed? || 
-              self.language_id_changed? || 
-              self.skill_list_changed?)
-    end 
-
-    def reassign_to_zips
-
-      yield 
-      self.sku.reassign_to_zips 
-
-    end 
-
-end # of class 
+end

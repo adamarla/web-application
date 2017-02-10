@@ -20,7 +20,6 @@ Webapp::Application.routes.draw do
     # Users 
     match 'user/ping' => 'users#ping', via: [:get, :post]
     match 'pupil/ping' => 'users#ping', via: [:get, :post] # temporary alias for backward compatibility 
-    match 'users/csv' => 'users#csv_list', via: :get
 
     # Devices (GCM) 
     match 'device/add' => 'devices#create', via: [:put, :post]
@@ -54,8 +53,6 @@ Webapp::Application.routes.draw do
 
     # Chapter 
     match 'chapter/list' => 'chapter#list', via: :get
-    match 'chapter/parcels' => 'chapter#parcels', via: :get
-    match 'chapter/inventory' => 'chapter#inventory', via: :get
 
     # Difficulty 
     match 'difficulty/list' => 'difficulty#list', via: :get
@@ -78,8 +75,10 @@ Webapp::Application.routes.draw do
     match 'skills/list' => 'skills#list', via: :get
     match 'skills/all' => 'skills#all', via: :get
     match 'missing/skills' => 'skills#missing', via: [:get, :post]
-    match 'skills/revaluate' => 'skills#revaluate', via: :get
     match 'skills/ping' => 'skills#ping', via: [:get, :post]
+
+    # SKU
+    match 'sku/list' => 'sku#list', via: [:get]
 
     # Subject 
     match 'subject/list' => 'subject#list', via: :get
@@ -92,14 +91,23 @@ Webapp::Application.routes.draw do
 
   #### NEEDED IN BASH SCRIPTS / CRON-JOBS 
 
+    # Chapter 
+    match 'chapter/parcels' => 'chapter#parcels', via: :get
+    match 'chapter/inventory' => 'chapter#inventory', via: :get
+
     # Parcels 
     match 'modified/parcels' => 'parcels#list_modified_parcels', via: :get
     match 'modified/zips' => 'parcels#list_modified_zips', via: :get
 
-    # Sku 
+    # Skills 
+    match 'skills/revaluate' => 'skills#revaluate', via: :get
+
+    # SKU 
     match 'sku/recompiled' => 'sku#recompiled', via: [:get]
-    match 'sku/list' => 'sku#list', via: [:get]
     match 'sku/set_skills' => 'sku#set_skills', via: [:get]
+
+    # User
+    match 'users/csv' => 'users#csv_list', via: :get
 
     # Zips 
     match 'update/zip' => 'zip#update', via: :get

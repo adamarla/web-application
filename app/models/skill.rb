@@ -9,6 +9,7 @@
 #  examiner_id     :integer
 #  avg_proficiency :float           default(0.0)
 #  language_id     :integer         default(1)
+#  has_svgs        :boolean         default(FALSE)
 #
 
 class Skill < ActiveRecord::Base
@@ -16,7 +17,7 @@ class Skill < ActiveRecord::Base
   has_one :sku, as: :stockable, dependent: :destroy
 
   after_create :seal
-  around_update :set_sku_ownership, if: :chapter_id_changed?
+  around_update :repackage, if: :modified?
 
   validates :avg_proficiency, on: :update, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }
 
@@ -44,16 +45,22 @@ class Skill < ActiveRecord::Base
       self.update_attributes uid: "#{self.chapter.uid}-#{self.id}", generic: is_generic 
     end 
 
-    def set_sku_ownership 
-      self.generic = self.chapter_id == Chapter.generic.id 
+    def modified? 
+      return (self.chapter_id_changed? || self.has_svgs_changed? )
+    end 
 
-      old_uid = self.uid 
-      self.uid = (self.chapter_id == 0 || self.chapter_id.nil?) ? nil : "#{self.chapter.uid}-#{self.id}" 
+    def repackage 
+      chapter_changed = self.chapter_id_changed? 
+      if chapter_changed
+        self.generic = self.chapter_id == Chapter.generic.id 
+        old_uid = self.uid 
+        self.uid = (self.chapter_id == 0 || self.chapter_id.nil?) ? nil : "#{self.chapter.uid}-#{self.id}" 
+      end 
 
       yield 
 
-      self.sku.reassign_to_zips 
-      Question.replaceTagXWithY old_uid, self.uid 
+      self.sku.repackage if self.has_svgs 
+      Riddle.replace_skill_x_with_y(old_uid, self.uid) if chapter_changed
 
     end # of method  
 

@@ -13,11 +13,11 @@
 
 class Zip < ActiveRecord::Base
   belongs_to :parcel
-  has_many :inventory
+  has_many :inventory, dependent: :destroy 
   has_many :skus, through: :inventory, after_add: :set_modified, after_remove: :set_modified 
 
   after_create :seal 
-  around_update :set_open_boolean, if: :max_size_changed?
+  around_update :open_or_close, if: :max_size_changed?
 
   def path 
     return "zips/#{self.name}.zip"
@@ -25,10 +25,6 @@ class Zip < ActiveRecord::Base
 
   def has?(sku)
     return self.sku_ids.include? sku.id
-  end 
-
-  def unset_modified
-    self.update_attribute :modified, false
   end 
 
   private 
@@ -53,7 +49,7 @@ class Zip < ActiveRecord::Base
         end 
       end 
 
-      def set_open_boolean 
+      def open_or_close 
         self.open = (self.max_size == -1) || (self.sku_ids.count < self.max_size) 
         yield
       end 
