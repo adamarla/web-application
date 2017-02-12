@@ -21,7 +21,7 @@ class Riddle < ActiveRecord::Base
   belongs_to :language 
   has_one :sku, as: :stockable, dependent: :destroy 
 
-  around_update :repackage, if: :modified?
+  after_update :repackage, if: :modified?
   after_create :add_sku
 
   acts_as_taggable_on :skills
@@ -35,7 +35,7 @@ class Riddle < ActiveRecord::Base
     uids = Skill.where(id: ids).map(&:uid).join(',')
     self.skill_list = uids 
     self.save 
-    self.reload
+    self.reload 
   end 
 
   def set_difficulty(d) 
@@ -52,6 +52,11 @@ class Riddle < ActiveRecord::Base
     return Skill.where(id: all & tested) 
   end 
 
+  def tests_skill?(id)
+    return false if (id == 0 || self.skill_list.blank?)
+    return Skill.where(uid: self.skill_list).map(&:id).include?(id) 
+  end 
+
   def self.replace_skill_x_with_y(x,y) # 'x' and 'y' are strings 
     Riddle.tagged_with(x, on: :skills).each do |r| 
       r.skill_list.remove(x) 
@@ -60,7 +65,6 @@ class Riddle < ActiveRecord::Base
     end 
   end 
 
-
   private 
       def add_sku 
         prefix = self.is_a?(Question) ? "q/#{self.examiner_id}" : "snippets"
@@ -68,8 +72,6 @@ class Riddle < ActiveRecord::Base
       end 
 
       def repackage 
-        yield # save happens 
-
         maxd = self.difficulty.round(-1) # closest multiple of 10 >= difficulty 
         mind = maxd - 10
 
@@ -95,8 +97,11 @@ class Riddle < ActiveRecord::Base
         end 
 
         # Lastly, trigger repackaging 
-        self.sku.repackage if self.has_svgs
-
+        if self.has_svgs
+          Parcel.where(chapter_id: self.chapter_id, contains: self.type).each do |p| 
+            p.can_have?(self) ? p.add(self.sku) : p.remove(self.sku)
+          end 
+        end 
       end # of method 
 
       def modified?

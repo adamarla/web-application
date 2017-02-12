@@ -27,10 +27,6 @@ class SkuController < ApplicationController
       else 
         render json: { id: obj.id }, status: :ok
       end 
-
-      sids = params[:skills].split(",").map(&:to_i).uniq 
-      sku.stockable.set_skills(sids) unless sids.blank?
-      render json: { id: sku.id } , status: :ok
     else 
       render json: { id: 0 }, status: :bad_request 
     end 

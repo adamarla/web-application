@@ -67,22 +67,8 @@ class Parcel < ActiveRecord::Base
     return self.skill_id > 0 
   end 
 
-  def can_have?(sku) 
+  def can_have?(obj) 
     return false unless self.open 
-
-    # Is the SKU of the right type to go into this Parcel? 
-    obj = sku.stockable 
-
-    # To maintain backward compatibility
-    if obj.is_a?(Question)
-      return false if self.contains != "Question"
-    elsif obj.is_a?(Snippet) 
-      return false if self.contains != "Snippet" 
-    elsif obj.is_a?(Skill)
-      return false if self.contains != "Skill"
-    else
-      return false 
-    end 
 
     # At the very least, language and chapter must match
     return false if obj.chapter_id != self.chapter_id 
@@ -92,7 +78,7 @@ class Parcel < ActiveRecord::Base
     return true if obj.is_a?(Skill)
 
     # Does this parcel accept only SKUs w/ specific skills 
-    return false if (self.skill_id > 0 && !sku.tests_skill?(self.skill_id))
+    return false if (self.skill_id > 0 && !obj.tests_skill?(self.skill_id))
 
     # No more checks for Snippets 
     return true if obj.is_a?(Snippet)
@@ -114,6 +100,7 @@ class Parcel < ActiveRecord::Base
     return false unless self.zip_that_has(sku).nil? # if already added 
     open_zip = Zip.where(parcel_id: self.id, open: true).last || self.zips.create 
     open_zip.skus << sku 
+    # puts " ------- Adding #{sku.id} to #{open_zip.id}"
   end 
 
   def remove(sku)
@@ -122,6 +109,7 @@ class Parcel < ActiveRecord::Base
     zip = self.zip_that_has(sku) 
     return false if zip.nil? # false alarm. Not in this parcel
     zip.sku_ids = zip.sku_ids - [sku.id]
+    # puts " ------- Removing #{sku.id} from #{zip.id}"
   end 
 
   def modified?
@@ -188,8 +176,7 @@ class Parcel < ActiveRecord::Base
 
       # This is a new Parcel. Fill it with relevant SKUs
       list.each do |obj| 
-        sku = obj.stockable 
-        self.add(sku) if self.can_have?(sku)
+        self.add(obj.sku) if self.can_have?(obj)
       end 
     end 
 

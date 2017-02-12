@@ -68,9 +68,10 @@ class Fragment < ActiveRecord::Base
                          num_completed: self.num_attempted,
                          num_correct: self.num_correct
  
-      snpt.skill_list = self.reload.skill_list.join(',')
-      snpt.save 
+      # Transfer skills to Question 
+      snpt.set_skills(Skill.where(uid: self.skill_list).map(&:id))
 
+      # Remove skills now that object is going to be destroyed 
       self.skill_list = [] 
       self.save
     end 

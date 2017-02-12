@@ -72,8 +72,7 @@ class Problem < ActiveRecord::Base
                          examiner_id: self.examiner_id
 
       # Transfer skills to Question 
-      q.skill_list = self.reload.skill_list.join(',') # has to be a comma-separated list 
-      q.save 
+      q.set_skills(Skill.where(uid: self.skill_list).map(&:id))
 
       # Remove skills now that object is going to be destroyed 
       self.skill_list = [] 

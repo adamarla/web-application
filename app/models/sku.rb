@@ -14,12 +14,6 @@ class Sku < ActiveRecord::Base
 
   has_many :inventory, dependent: :destroy 
 
-  def repackage
-    Parcel.all.each do |parcel| 
-      parcel.can_have?(self) ? parcel.add(self) : parcel.remove(self) 
-    end # of each loop  
-  end # of method 
-
   def tag_modified_zips 
     return false unless self.has_svgs 
 
@@ -27,23 +21,6 @@ class Sku < ActiveRecord::Base
     Zip.where(id: zip_ids).each do |zip|
       zip.update_attribute :modified, true
     end 
-  end 
-
-  def tests_skill?(id) 
-    return false if id == 0 
-
-    obj = self.stockable
-    return false unless obj.is_a?( Riddle ) 
-
-    tested = obj.skill_list 
-    return false if tested.blank?
-
-    return Skill.where(uid: tested).map(&:id).include?(id) 
-  end 
-
-  def set_skills(ids)
-    obj = self.stockable 
-    obj.set_skills(ids) unless obj.nil?
   end 
 
   def chapter 

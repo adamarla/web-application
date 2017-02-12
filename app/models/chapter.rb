@@ -23,7 +23,7 @@ class Chapter < ActiveRecord::Base
   def inventory
     Parcel.where(chapter_id: self.id).each do |p| 
       num_skus = p.zips.map(&:sku_ids).flatten.count 
-      puts "# #{p.contains} = #{num_skus}"
+      # puts "# #{p.contains} = #{num_skus}"
     end 
   end 
 

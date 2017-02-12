@@ -37,6 +37,10 @@ class Skill < ActiveRecord::Base
     return true # do nothing 
   end 
 
+  def tests_skill?(id) 
+    return id == self.id 
+  end 
+
   private 
     def seal 
       is_generic = self.chapter_id == Chapter.generic.id 
@@ -59,7 +63,13 @@ class Skill < ActiveRecord::Base
 
       yield 
 
-      self.sku.repackage if self.has_svgs 
+      # Trigger re-packaging 
+      if self.has_svgs
+        Parcel.where(chapter_id: self.chapter_id, type: "Skill").each do |p| 
+          p.can_have?(self) ? p.add(self.sku) : p.remove(self.sku)
+        end 
+      end 
+
       Riddle.replace_skill_x_with_y(old_uid, self.uid) if chapter_changed
 
     end # of method  
