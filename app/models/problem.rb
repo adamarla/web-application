@@ -65,10 +65,13 @@ class Problem < ActiveRecord::Base
     end 
 
     def duplicate 
+      english = Language.named 'english' 
+      medium = Difficulty.named 'medium' 
+
       q = Question.create original_id: self.id, 
                          chapter_id: self.chapter_id, 
-                         language_id: self.language_id, 
-                         difficulty: self.difficulty, 
+                         language_id: self.language_id || english, 
+                         difficulty: self.difficulty || medium, 
                          examiner_id: self.examiner_id
 
       # Transfer skills to Question 

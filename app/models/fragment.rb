@@ -60,9 +60,13 @@ class Fragment < ActiveRecord::Base
     end 
 
     def duplicate 
+      english = Language.named 'english' 
+      medium = Difficulty.named 'medium' 
+
       snpt = Snippet.create original_id: self.id, 
                          chapter_id: self.chapter_id, 
-                         language_id: self.language_id, 
+                         language_id: self.language_id || english, 
+                         difficulty: medium,
                          examiner_id: self.examiner_id,
                          num_attempted: self.num_attempted,
                          num_completed: self.num_attempted,
