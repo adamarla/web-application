@@ -97,10 +97,8 @@ class Riddle < ActiveRecord::Base
         end 
 
         # Lastly, trigger repackaging 
-        if self.has_svgs
-          Parcel.where(chapter_id: self.chapter_id, contains: self.type).each do |p| 
-            p.can_have?(self) ? p.add(self.sku) : p.remove(self.sku)
-          end 
+        Parcel.where(contains: self.type).each do |p| 
+          p.can_have?(self) ? p.add(self.sku) : p.remove(self.sku)
         end 
       end # of method 
 

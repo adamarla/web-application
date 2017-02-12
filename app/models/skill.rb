@@ -64,10 +64,8 @@ class Skill < ActiveRecord::Base
       yield 
 
       # Trigger re-packaging 
-      if self.has_svgs
-        Parcel.where(chapter_id: self.chapter_id, type: "Skill").each do |p| 
-          p.can_have?(self) ? p.add(self.sku) : p.remove(self.sku)
-        end 
+      Parcel.where(contains: "Skill").each do |p| 
+        p.can_have?(self) ? p.add(self.sku) : p.remove(self.sku)
       end 
 
       Riddle.replace_skill_x_with_y(old_uid, self.uid) if chapter_changed

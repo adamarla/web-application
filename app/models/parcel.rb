@@ -68,7 +68,7 @@ class Parcel < ActiveRecord::Base
   end 
 
   def can_have?(obj) 
-    return false unless self.open 
+    return false unless (obj.has_svgs && self.open)
 
     # At the very least, language and chapter must match
     return false if obj.chapter_id != self.chapter_id 
