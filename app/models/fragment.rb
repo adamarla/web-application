@@ -3,11 +3,11 @@
 # Table name: fragments
 #
 #  id            :integer         not null, primary key
+#  chapter_id    :integer
+#  language_id   :integer         default(1)
 #  examiner_id   :integer
 #  num_attempted :integer         default(0)
 #  num_correct   :integer         default(0)
-#  chapter_id    :integer
-#  language_id   :integer         default(1)
 #
 
 class Fragment < ActiveRecord::Base

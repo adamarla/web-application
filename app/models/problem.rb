@@ -3,12 +3,10 @@
 # Table name: problems
 #
 #  id          :integer         not null, primary key
-#  created_at  :datetime
-#  updated_at  :datetime
-#  examiner_id :integer
-#  difficulty  :integer         default(20)
 #  chapter_id  :integer
 #  language_id :integer         default(1)
+#  difficulty  :integer         default(20)
+#  examiner_id :integer
 #
 
 
