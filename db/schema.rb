@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170209034557) do
+ActiveRecord::Schema.define(:version => 20170213045952) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -289,17 +289,6 @@ ActiveRecord::Schema.define(:version => 20170209034557) do
     t.integer "question_id"
   end
 
-  create_table "fragments", :force => true do |t|
-    t.integer "examiner_id"
-    t.integer "num_attempted", :default => 0
-    t.integer "num_correct",   :default => 0
-    t.integer "chapter_id"
-    t.integer "language_id",   :default => 1
-  end
-
-  add_index "fragments", ["chapter_id"], :name => "index_snippets_on_chapter_id"
-  add_index "fragments", ["examiner_id"], :name => "index_snippets_on_examiner_id"
-
   create_table "freebies", :force => true do |t|
     t.integer  "course_id"
     t.integer  "lesson_id"
@@ -402,18 +391,6 @@ ActiveRecord::Schema.define(:version => 20170209034557) do
     t.integer "num_failed",                  :default => 0
     t.integer "num_sent",                    :default => 0
   end
-
-  create_table "problems", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "examiner_id"
-    t.integer  "difficulty",  :default => 20
-    t.integer  "chapter_id"
-    t.integer  "language_id", :default => 1
-  end
-
-  add_index "problems", ["chapter_id"], :name => "index_questions_on_chapter_id"
-  add_index "problems", ["language_id"], :name => "index_questions_on_language_id"
 
   create_table "puzzles", :force => true do |t|
     t.text     "text"
