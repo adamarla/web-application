@@ -14,6 +14,8 @@
 #  num_correct      :integer         default(0)
 #  examiner_id      :integer
 #  has_svgs         :boolean         default(FALSE)
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 
 class Riddle < ActiveRecord::Base
@@ -23,6 +25,7 @@ class Riddle < ActiveRecord::Base
 
   after_update :repackage, if: :modified?
   after_create :add_sku
+  after_touch :repackage
 
   acts_as_taggable_on :skills
 
