@@ -138,8 +138,8 @@ class Parcel < ActiveRecord::Base
     return (zid.blank? ? nil : Zip.find(zid))
   end 
 
-  def to_json 
-    ret = { id: self.id, type: self.contains, name: self.name } 
+  def to_json
+    ret = { id: self.id, type: self.contains, name: self.name, chapter_id: self.chapter_id } 
 
     unless self.contains == "Skill"
       ret[:skill] = self.skill_id 
