@@ -45,11 +45,13 @@ class Riddle < ActiveRecord::Base
   end 
 
   def core_skills 
-    # Skills belonging to the same Chapter as this Riddle and tested by it
-
-    all = Skill.where(chapter_id: self.chapter_id).map(&:id) 
+    # Skills of the Chapter this Riddle belongs to. 
+    # Includes skills from any friends of the Chapter.
+    
+    chapter = Chapter.find self.chapter_id 
+    return [] if chapter.nil? 
     tested = Skill.where(uid: self.skill_list).map(&:id)
-    return Skill.where(id: all & tested) 
+    return Skill.where(id: (chapter.skills.map(&:id) & tested))
   end 
 
   def tests_skill?(id)
