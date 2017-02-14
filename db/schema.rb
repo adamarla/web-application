@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170213175558) do
+ActiveRecord::Schema.define(:version => 20170214070350) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -464,17 +464,19 @@ ActiveRecord::Schema.define(:version => 20170213175558) do
   end
 
   create_table "riddles", :force => true do |t|
-    t.string  "type",             :limit => 50
-    t.integer "original_id"
-    t.integer "chapter_id"
-    t.integer "parent_riddle_id"
-    t.integer "language_id",                    :default => 1
-    t.integer "difficulty",                     :default => 20
-    t.integer "num_attempted",                  :default => 0
-    t.integer "num_completed",                  :default => 0
-    t.integer "num_correct",                    :default => 0
-    t.integer "examiner_id"
-    t.boolean "has_svgs",                       :default => false
+    t.string   "type",             :limit => 50
+    t.integer  "original_id"
+    t.integer  "chapter_id"
+    t.integer  "parent_riddle_id"
+    t.integer  "language_id",                    :default => 1
+    t.integer  "difficulty",                     :default => 20
+    t.integer  "num_attempted",                  :default => 0
+    t.integer  "num_completed",                  :default => 0
+    t.integer  "num_correct",                    :default => 0
+    t.integer  "examiner_id"
+    t.boolean  "has_svgs",                       :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "riddles", ["chapter_id"], :name => "index_riddles_on_chapter_id"

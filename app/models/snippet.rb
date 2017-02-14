@@ -14,6 +14,8 @@
 #  num_correct      :integer         default(0)
 #  examiner_id      :integer
 #  has_svgs         :boolean         default(FALSE)
+#  created_at       :datetime
+#  updated_at       :datetime
 #
 
 class Snippet < Riddle
