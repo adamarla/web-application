@@ -13,7 +13,8 @@ class ChapterController < ApplicationController
 
   # To be called ** only ** by the bash script called 'syllabus'
   def parcels
-    parcels = Parcel.where(chapter_id: params[:c]) 
+    chapter = Chapter.find params[:c]
+    parcels = chapter.parcels  
     parcels = params[:skill] == "true" ? parcels.where('skill_id > ? OR contains = ?', 0, "Skill") : parcels 
 
     render json: parcels.map(&:to_json), status: :ok
