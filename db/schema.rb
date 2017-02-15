@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170214070350) do
+ActiveRecord::Schema.define(:version => 20170215200252) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -58,7 +58,8 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
     t.datetime "updated_at",                    :null => false
   end
 
-  create_table "analgesics", :force => true do |t|
+  create_table "analgesics", :id => false, :force => true do |t|
+    t.integer "id",                                         :null => false
     t.string  "uid",       :limit => 20
     t.integer "num_shown",               :default => 0
     t.boolean "disabled",                :default => false
@@ -257,7 +258,7 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
     t.datetime "updated_at"
     t.boolean  "publishable",                :default => false
     t.boolean  "takehome",                   :default => false
-    t.integer  "job_id",                     :default => -1
+    t.integer  "job_id"
     t.integer  "duration"
     t.datetime "grade_by"
     t.string   "uid",         :limit => 40
@@ -335,6 +336,13 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
   add_index "inventory", ["sku_id"], :name => "index_inventory_on_sku_id"
   add_index "inventory", ["zip_id"], :name => "index_inventory_on_zip_id"
 
+  create_table "jokes", :force => true do |t|
+    t.string  "uid",       :limit => 20
+    t.boolean "image",                   :default => false
+    t.integer "num_shown",               :default => 0
+    t.boolean "disabled",                :default => false
+  end
+
   create_table "kaagaz", :force => true do |t|
     t.string  "path",    :limit => 40
     t.integer "stab_id"
@@ -380,7 +388,7 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
     t.string   "contains",       :limit => 20
-    t.integer  "max_zip_size",                 :default => -1
+    t.integer  "max_zip_size"
     t.integer  "skill_id",                     :default => 0
     t.boolean  "open",                         :default => true
   end
@@ -393,6 +401,16 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
     t.integer "num_dismissed",               :default => 0
     t.integer "num_failed",                  :default => 0
     t.integer "num_sent",                    :default => 0
+  end
+
+  create_table "pupils", :force => true do |t|
+    t.string   "first_name", :limit => 50
+    t.string   "last_name",  :limit => 50
+    t.string   "email",      :limit => 100
+    t.integer  "gender"
+    t.string   "birthday",   :limit => 50
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "puzzles", :force => true do |t|
@@ -421,6 +439,30 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
   add_index "q_selections", ["question_id"], :name => "index_q_selections_on_question_id"
   add_index "q_selections", ["quiz_id"], :name => "index_q_selections_on_quiz_id"
 
+  create_table "questions", :force => true do |t|
+    t.string   "uid",             :limit => 20
+    t.integer  "n_picked",                      :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "examiner_id"
+    t.integer  "topic_id"
+    t.integer  "suggestion_id"
+    t.integer  "difficulty",                    :default => 1
+    t.integer  "marks"
+    t.float    "length"
+    t.integer  "answer_key_span"
+    t.integer  "calculation_aid",               :default => 0
+    t.integer  "auditor"
+    t.datetime "audited_on"
+    t.boolean  "available",                     :default => true
+    t.integer  "n_codices",                     :default => 0
+    t.string   "codices",         :limit => 5
+    t.boolean  "potd",                          :default => false
+    t.integer  "num_potd",                      :default => 0
+  end
+
+  add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"
+
   create_table "quizzes", :force => true do |t|
     t.integer  "teacher_id"
     t.datetime "created_at"
@@ -431,7 +473,7 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
     t.integer  "total"
     t.integer  "span"
     t.integer  "parent_id"
-    t.integer  "job_id",                              :default => -1
+    t.integer  "job_id"
     t.string   "uid",                   :limit => 40
     t.string   "version",               :limit => 10
     t.string   "shadows"
@@ -531,10 +573,20 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
 
   add_index "skus", ["stockable_id"], :name => "index_skus_on_stockable_id"
 
+  create_table "snippets", :force => true do |t|
+    t.integer "examiner_id"
+    t.integer "num_attempted", :default => 0
+    t.integer "num_correct",   :default => 0
+    t.integer "chapter_id"
+  end
+
+  add_index "snippets", ["chapter_id"], :name => "index_snippets_on_chapter_id"
+  add_index "snippets", ["examiner_id"], :name => "index_snippets_on_examiner_id"
+
   create_table "stabs", :force => true do |t|
     t.integer  "student_id"
     t.integer  "examiner_id"
-    t.integer  "quality",          :default => -1
+    t.integer  "quality"
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.integer  "uid"
@@ -694,15 +746,18 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
     t.integer "num_stats_loaded",      :default => 0
   end
 
-  create_table "users", :force => true do |t|
+  add_index "usages", ["date"], :name => "index_usages_on_date"
+  add_index "usages", ["user_id"], :name => "index_usages_on_user_id"
+
+  create_table "users", :id => false, :force => true do |t|
+    t.integer  "id",                                               :null => false
     t.string   "first_name",       :limit => 50
     t.string   "last_name",        :limit => 50
     t.string   "email",            :limit => 100
     t.integer  "gender"
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
     t.integer  "num_invites_sent",                :default => 0
-    t.boolean  "facebook_login",                  :default => false
     t.integer  "birthday",                        :default => 0
     t.float    "version",                         :default => 1.0
     t.string   "time_zone",        :limit => 50
@@ -743,7 +798,7 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
     t.boolean  "received",                        :default => false
     t.string   "signature"
     t.string   "uid",               :limit => 40
-    t.integer  "job_id",                          :default => -1
+    t.integer  "job_id"
     t.boolean  "billed",                          :default => false
     t.boolean  "orange_flag"
     t.boolean  "red_flag"
@@ -766,7 +821,7 @@ ActiveRecord::Schema.define(:version => 20170214070350) do
   create_table "zips", :force => true do |t|
     t.string  "name",      :limit => 50
     t.integer "parcel_id"
-    t.integer "max_size",                :default => -1
+    t.integer "max_size"
     t.boolean "open",                    :default => true
     t.string  "shasum",    :limit => 10
     t.boolean "modified",                :default => false
