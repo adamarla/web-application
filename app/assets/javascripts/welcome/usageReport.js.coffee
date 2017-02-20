@@ -1,4 +1,3 @@
-
 start_date = null
 getDate = (offset) ->
     y = parseInt(start_date.substr(0, 4))
@@ -11,23 +10,6 @@ getDate = (offset) ->
     y = thisDate.getFullYear()
     dd + '/' + mm
 
-getIntensity = (time, num_attempts) ->
-  time/num_attempts > 1800 ? 4 : (time/num_attempts) * 2
-
-getBucketDivisions = (counts, idx) ->
-  if idx == 0
-    [(counts.filter (c) -> c == 1), (counts.filter (c) -> c == 2), (counts.filter (c) -> c == 3)] 
-  else if idx == 1
-    [(counts.filter (c) -> c == 4), (counts.filter (c) -> c in [5..7]), (counts.filter (c) -> c in [8..10])] 
-  else if idx == 2
-    [(counts.filter (c) -> c in [11..15]), (counts.filter (c) -> c in [16..20])] 
-  else if idx == 3
-    [(counts.filter (c) -> c in [21..25]), (counts.filter (c) -> c in [26..30])] 
-  else if idx == 4
-    [(counts.filter (c) -> c in [31..40]), (counts.filter (c) -> c in [41..50])] 
-  else 
-    counts
-
 window.usageReport = {
 
   byBucket: (json, target) ->
@@ -36,16 +18,17 @@ window.usageReport = {
     data = json.data
     # buckets - 1, 2-5, 6-10, 11-20, 21-30, 31-50, 50+
     buckets = [[], [], [], [], [], [], []]
-
-    margin = { top: 50, right: 50, bottom: 50, left: 140 }
+    margin = { top: 50, right: 50, bottom: 50, left: 50 }
     width = 80 * buckets.length - margin.left - margin.right
     height = 400
 
     x = d3.scale.ordinal().rangeRoundBands([0, width], 0.1)
-    y = d3.scale.linear().range([height, 0])
+    y0 = d3.scale.linear().range([height, 0])
+    y1 = d3.scale.linear().range([height, 0])
 
     xAxis = d3.svg.axis().scale(x).orient("bottom")
-    yAxis = d3.svg.axis().scale(y).orient("left")
+    y0Axis = d3.svg.axis().scale(y0).orient("left")
+    y1Axis = d3.svg.axis().scale(y1).orient("right")
 
     svg = d3.select(chart).append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -55,58 +38,101 @@ window.usageReport = {
 
     zeros = 0
     data.forEach((u, i) ->
-      v = u.ns + u.nq
+      n = u.ns + u.nq
+      t = u.ts + u.tq + u.tt
+      nt = {"n": n, "t": t, "d": u.da, "s": u.sp}
       switch true
-        when v == 1 then buckets[0].push v
-        when v in [2..5] then buckets[1].push v
-        when v in [6..10] then buckets[2].push v
-        when v in [11..20] then buckets[3].push v
-        when v in [21..30] then buckets[4].push v
-        when v in [31..50] then buckets[5].push v
-        when v > 50 then buckets[6].push v 
+        when n == 1 then buckets[0].push nt
+        when n in [2..5] then buckets[1].push nt
+        when n in [6..10] then buckets[2].push nt
+        when n in [11..20] then buckets[3].push nt
+        when n in [21..30] then buckets[4].push nt
+        when n in [31..50] then buckets[5].push nt
+        when n > 50 then buckets[6].push nt
         else zeros++)
 
     names = ["1", "2-5", "6-10", "11-20", "21-30", "31-50", " > 50"]
     x.domain(names)
-    y.domain([0, d3.max(buckets, (d) -> d.length)])
+    y0.domain([0, d3.max(buckets, (d) -> d.length)])
+    y1.domain([0, d3.max(buckets, (d) -> d3.mean(d, (d) -> d.t)/60)])
 
     svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0, #{height})")
     .call(xAxis)
     .append("text")
-    .attr("x", width + 40)
-    .attr("y", 10)
+    .attr("x", width + 20)
+    .attr("y", 20)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
-    .text("Attempts")
+    .text("Num tries (range)")
 
     svg.append("g")
     .attr("class", "y axis")
-    .call(yAxis)
+    .call(y0Axis)
     .append("text")
+    .attr("x", 0)
+    .attr("y", -30)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .style("fill",  "#98abc5")
+    .text("Users")
+
+    y1g = svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(#{width}, 0)")
+    .call(y1Axis)
+
+    y1g.append("text")
+    .attr("x", 0)
+    .attr("y", -30)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .style("fill",  "#9acd32")
+    .text("Avg. time on app (per User in mins)")
+
+    y1g.append("text")
     .attr("x", 0)
     .attr("y", -20)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
-    .text("Users")
+    .style("fill",  "#ef2211")
+    .text("Avg. num tries (per User)")
 
-    bucket = svg.selectAll(".bucket")
+    bucket = svg.selectAll("bucket")
     .data(buckets)
     .enter().append("g")
     .attr("class", "bucket")
     .attr("transform", (d, i) -> "translate(#{x(names[i])})")
+    
+    bkt = bucket.selectAll("rect").data((d) -> [d]).enter()
 
-    bucket.selectAll("rect")
-    .data((d) -> [d.length]) 
-    .enter().append("rect")
+    bkt.append("rect")
     .attr("class", "bar")
     .attr("x", 0)
-    .attr("width", x.rangeBand())
-    .attr("y", (d) -> y(d))
-    .attr("height", (d) -> height - y(d))
+    .attr("width", x.rangeBand()/3)
+    .attr("y", (d) -> y0(d.length))
+    .attr("height", (d) -> height - y0(d.length))
     .style("fill",  "#98abc5")
-    .append("title").text((d) -> d)
+    .append("title").text((d) -> "#{d.length} users")
+
+    bkt.append("rect")
+    .attr("class", "bar")
+    .attr("x", x.rangeBand()/3)
+    .attr("width", x.rangeBand()/3)
+    .attr("y", (d) -> y1(d3.mean(d, (d) -> d.n)))
+    .attr("height", (d) -> height - y1(d3.mean(d, (d) -> d.n)))
+    .style("fill",  "#ef2211")
+    .append("title").text((d) -> "#{Math.round(d3.mean(d, (d) -> d.n))} tries")
+
+    bkt.append("rect")
+    .attr("class", "bar")
+    .attr("x", 2*x.rangeBand()/3)
+    .attr("width", x.rangeBand()/3)
+    .attr("y", (d) -> y1(d3.mean(d, (d) -> d.t)/60))
+    .attr("height", (d) -> height - y1(d3.mean(d, (d) -> d.t)/60))
+    .style("fill",  "#9acd32")
+    .append("title").text((d) -> "#{Math.round(d3.mean(d, (d) -> d.t)/60)} mins")
 
     return true
 
@@ -173,7 +199,8 @@ window.usageReport = {
     y = d3.scale.linear().range([height, 0])
 
     xAxis = d3.svg.axis().scale(x).orient("bottom")
-    yAxis = d3.svg.axis().scale(y).orient("left")
+    y0Axis = d3.svg.axis().scale(y).orient("left")
+    y1Axis = d3.svg.axis().scale(y).orient("right")
 
     target.empty()
     chart = target[0]

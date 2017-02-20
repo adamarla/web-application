@@ -89,17 +89,42 @@ class UsagesController < ApplicationController
   end # of method 
 
   def by_user
+
+    # epoch = "01/09/2016"
+    start_date = Date::strptime(params["input_date"], "%d/%m/%Y")
+
     count = 0
     json = []
-    User.where('id > 1491').each do |u|
+    User.where('created_at > (?)', start_date).each do |u|
       usages = Usage.where(user_id: u.id)
-      total_snippets = usages.sum(:num_snippets_done)
-      total_qsns = usages.sum(:num_questions_done)
-      if (total_snippets + total_qsns > 0)
+      if (usages.count == 0)
+        next
+      end
+      num_snippets = usages.map(&:num_snippets_done).inject(:+) 
+      num_questions = usages.map(&:num_questions_done).inject(:+) 
+      time_snippets = usages.map(&:time_on_snippets).inject(:+) 
+      time_questions = usages.map(&:time_on_questions).inject(:+) 
+      time_stats = usages.map(&:time_on_stats).inject(:+) 
+
+      days = usages.count
+      span = days
+      with_dates = usages.where("date <> 0")
+      if (with_dates.count > 1)
+          earliest = Date.parse(with_dates.minimum(:date).to_s)
+          latest = Date.parse(with_dates.maximum(:date).to_s)
+          span = (latest - earliest).to_i
+      end
+
+      if (num_snippets + num_questions > 0 && span > 0)
         json.push({
           id: u.id,
-          ns: total_snippets,
-          nq: total_qsns
+          ns: num_snippets,
+          nq: num_questions,
+          ts: time_snippets,
+          tq: time_questions,
+          tt: time_stats,
+          da: days,
+          sp: span
         })
       end
       count = count + 1
