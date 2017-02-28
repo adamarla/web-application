@@ -36,9 +36,11 @@ jQuery ->
     url = settings.url
     matched = true
 
-    target = $('#chart')
+    target = $('.chart')
     if url.match(/attempt\/by_day/)
       usageReport.byDay json, target
+    else if url.match(/wtp\/by_user/)
+      usageReport.byWtp json, target
     else if url.match(/usage\/by_user/)
       usageReport.byBucket json, target
     else if url.match(/attempt\/by_week/)
