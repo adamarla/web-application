@@ -1,9 +1,8 @@
 
-fetch_report = (offset) ->
-  reportDate = new Date()
-  reportDate.setDate(new Date().getDate() - offset)
-  $.get "../usage/by_user?input_date=#{reportDate.getDate()}/#{reportDate.getMonth()+1}/#{reportDate.getFullYear()}"
-  return true 
+get_input_date= (offset) ->
+  input_date = new Date()
+  input_date.setDate(new Date().getDate() - offset)
+  "#{input_date.getDate()}/#{input_date.getMonth()+1}/#{input_date.getFullYear()}"
 
 jQuery ->
   
@@ -14,17 +13,17 @@ jQuery ->
 
   $('#live-phone > .carousel').carousel { interval: 2200 }
 
-  $('#lastWeek').on 'click', (event) ->
-    fetch_report(7)
+  $('.bkt-btn').on 'click', (event) ->
+    offset = $(this).attr('days')
+    if (offset != '0')
+      input_date=get_input_date(+offset)
+    else
+      input_date='31/08/2016'
+    $.get "../usage/by_user?input_date=#{input_date}"
+    return true
 
-  $('#lastMonth').on 'click', (event) ->
-    fetch_report(30)
-
-  $('#last2Months').on 'click', (event) ->
-    fetch_report(60)
-
-  $('#allTime').on 'click', (event) ->
-    $.get '../usage/by_user?input_date=31/08/2016'
+  $('#wtp').on 'click', (event) ->
+    $.get '../wtp/by_user'
     return true
 
   $('#datepicker').datepicker(

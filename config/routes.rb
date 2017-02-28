@@ -15,6 +15,11 @@ Webapp::Application.routes.draw do
 
   match 'ping' => 'application#ping', via: :get
 
+  #### Needed on website
+
+    match 'measureapp' => 'welcome#index'
+    match 'measureapp/report' => 'welcome#report'
+
   #### NEEDED IN THE MOBILE APP  
 
     # Users 
@@ -45,6 +50,7 @@ Webapp::Application.routes.draw do
 
     # Willingness to Pay (WTP)
     match 'wtp/update' => 'wtp#update', via: [:get, :post]
+    match 'wtp/by_user' => 'wtp#get_by_user', via: :get
 
   #### NEEDED IN QUILL   
 
@@ -137,9 +143,6 @@ Webapp::Application.routes.draw do
     match 'analgesics/add' => 'analgesics#create', via: [:put, :post]
 
 
-    # Prepwell Reports
-    match 'prepwellapp' => 'welcome#index'
-    match 'prepwellapp/report' => 'welcome#report'
 
     # Account 
     match 'account' => 'accounts#update', via: :post

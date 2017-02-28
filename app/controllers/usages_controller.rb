@@ -108,10 +108,13 @@ class UsagesController < ApplicationController
 
       days = usages.count
       span = days
-      with_dates = usages.where("date <> 0")
+      with_dates = usages.select{|u| u.date != 0}
       if (with_dates.count > 1)
-          earliest = Date.parse(with_dates.minimum(:date).to_s)
-          latest = Date.parse(with_dates.maximum(:date).to_s)
+          minmax = with_dates.map(&:date).minmax
+          earliest = Date.parse(minmax[0].to_s)
+          # earliest = Date.parse(with_dates.minimum(:date).to_s)
+          latest = Date.parse(minmax[1].to_s)
+          # latest = Date.parse(with_dates.maximum(:date).to_s)
           span = (latest - earliest).to_i
       end
 

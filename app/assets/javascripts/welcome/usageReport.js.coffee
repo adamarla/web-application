@@ -136,6 +136,102 @@ window.usageReport = {
 
     return true
 
+  byWtp: (json, target) ->
+
+    target.empty()
+    chart = target[0]
+
+    byPrice = {}
+    for u in json
+      byPrice[u.pr] = [] unless (u.pr of byPrice)
+      byPrice[u.pr].push u
+
+    data = []
+    pricePoints = []
+    for k in Object.keys(byPrice).sort()
+      vals = byPrice[k]
+      ag = na = nr = 0
+      for v in vals
+        ag = ag+1 if v.wl
+        na = na+1 unless v.wl
+        nr = nr+v.nr
+      data.push ag
+      data.push na
+      data.push nr 
+      pricePoints.push k
+
+    thickness = 20
+    gap = 20
+    width = 350
+    height = pricePoints.length*(3*thickness + gap)
+
+    color = d3.scale.category20()
+    x = d3.scale.linear().range([0, width]).domain([0, d3.max(data)])
+    y = d3.scale.linear().range([height + gap, 0])
+
+    yAxis = d3.svg.axis().scale(y).tickFormat(' ').tickSize(0).orient("left")
+
+    # specify chart area and dimensions
+    chart = d3.select(chart).append("svg")
+      .attr("width", 150 + width + 150)
+      .attr("height", height)
+
+    # create bars
+    bar = chart.selectAll("g")
+      .data(data)
+      .enter().append("g")
+      .attr("transform", (d, i) -> "translate(150, #{i*thickness+gap*(0.5+Math.floor(i/3))})")
+
+    # create rectangles of correct width
+    bar.append("rect")
+      .style("fill", (d, i) -> "#{color(i%3)}")
+      .attr("class", "bar")
+      .attr("width", x)
+      .attr("height", thickness-1)
+
+    # add text label in bar
+    bar.append("text")
+      .attr("x", (d) -> if (d > 1) then x(d) - 15 else x(d))
+      .attr("y", thickness/2)
+      .attr("fill", "red")
+      .attr("dy", ".40em")
+      .text((d) -> d)
+
+    # draw labels
+    bar.append("text")
+      .attr("class", "label")
+      .attr("x", (d) -> -20)
+      .attr("y", thickness*3/2)
+      .text((d, i) -> if (i%3 == 0) then "Rs.#{pricePoints[Math.floor(i/3)]}" else "")
+
+    chart.append("g")
+      .attr("class", "y axis")
+      .attr("transform", "translate(150, #{-gap/2})")
+      .call(yAxis)
+
+    # legend
+    keys = ["Agreed to Pay", "Didn't Agree", "Times Asked"]
+    legend = chart.selectAll(".legend")
+      .data(keys)
+      .enter()
+      .append("g")
+      .attr("transform", (d, i) -> "translate(550, #{i*22})")
+
+    legend.append("rect")
+      .attr("width", 18)
+      .attr("height", 18)
+      .attr("class", "bar")
+      .style("fill", (d, i) -> color(i))
+      .style("stroke", (d, i) -> color(i))
+
+    legend.append("text")
+      .attr("class", "legend")
+      .attr("x", 18+4)
+      .attr("y", 18-4)
+      .text((d) -> d)
+
+    return true
+
   byUser: (json, target) ->
     chart = target
     data = json.data
