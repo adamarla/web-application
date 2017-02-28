@@ -215,7 +215,7 @@ window.usageReport = {
       .data(keys)
       .enter()
       .append("g")
-      .attr("transform", (d, i) -> "translate(550, #{i*22})")
+      .attr("transform", (d, i) -> "translate(525, #{i*22})")
 
     legend.append("rect")
       .attr("width", 18)
