@@ -97,7 +97,7 @@ class UsagesController < ApplicationController
     json = []
     User.where('created_at > (?)', start_date).each do |u|
       usages = Usage.where(user_id: u.id)
-      if (usages.count == 0)
+      if usages.empty?
         next
       end
       num_snippets = usages.map(&:num_snippets_done).inject(:+) 
@@ -106,17 +106,15 @@ class UsagesController < ApplicationController
       time_questions = usages.map(&:time_on_questions).inject(:+) 
       time_stats = usages.map(&:time_on_stats).inject(:+) 
 
-      days = usages.count
+      days = usages.size
       span = days
-      with_dates = usages.select{|u| u.date != 0}
-      if (with_dates.count > 1)
-          minmax = with_dates.map(&:date).minmax
-          earliest = Date.parse(minmax[0].to_s)
-          # earliest = Date.parse(with_dates.minimum(:date).to_s)
-          latest = Date.parse(minmax[1].to_s)
-          # latest = Date.parse(with_dates.maximum(:date).to_s)
-          span = (latest - earliest).to_i
-      end
+      # with_dates = usages.select{|u| u.date != 0}
+      # if (with_dates.size > 1)
+      #   minmax = with_dates.map(&:date).minmax
+      #   earliest = Date.parse(minmax[0].to_s)
+      #   latest = Date.parse(minmax[1].to_s)
+      #   span = (latest - earliest).to_i
+      # end
 
       if (num_snippets + num_questions > 0 && span > 0)
         json.push({
