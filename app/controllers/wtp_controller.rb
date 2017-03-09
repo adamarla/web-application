@@ -19,4 +19,20 @@ class WtpController < ApplicationController
     render json: wtp.decompile, status: :ok
   end 
 
+  def get_by_user
+
+    json = []
+    Wtp.all.each do |u|
+      json.push({
+        id: u.user_id,
+        pr: u.price_per_month,
+        wl: u.agreed,
+        nr: u.num_refusals,
+        sp: u.agreed ? (Date.parse(u.agreed_on.to_s) - Date.parse(u.first_asked_on.to_s)).to_i: 0
+      })
+    end # of each
+    render json: json, status: :ok
+  end # of by_wtp
+
 end # of controller 
+
