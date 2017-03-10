@@ -54,7 +54,12 @@ window.usageReport = {
     names = ["1", "2-5", "6-10", "11-20", "21-30", "31-50", " > 50"]
     x.domain(names)
     y0.domain([0, d3.max(buckets, (d) -> d.length)])
-    y1.domain([0, d3.max(buckets, (d) -> d3.mean(d, (d) -> d.t)/60)])
+    y1.domain([0, d3.max(buckets,
+      (d) ->
+        t_domain = d3.mean(d, (d) -> d.t)/60
+        n_domain = d3.mean(d, (d) -> d.n)
+        if t_domain > n_domain then t_domain else n_domain
+    )])
 
     svg.append("g")
     .attr("class", "x axis")
@@ -152,8 +157,7 @@ window.usageReport = {
       vals = byPrice[k]
       ag = na = nr = 0
       for v in vals
-        ag = ag+1 if v.wl
-        na = na+1 unless v.wl
+        if v.wl then ag = ag+1 else na = na +1
         nr = nr+v.nr
       data.push ag
       data.push na
