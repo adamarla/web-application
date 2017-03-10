@@ -157,8 +157,8 @@ window.usageReport = {
       vals = byPrice[k]
       ag = na = nr = 0
       for v in vals
-        if v.wl then ag = ag+1 else na = na +1
-        nr = nr+v.nr
+        if v.wl then ag=ag+1 else na=na+1
+        nr=nr+v.nr
       data.push ag
       data.push na
       data.push nr 
