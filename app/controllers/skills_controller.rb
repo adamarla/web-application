@@ -75,8 +75,10 @@ class SkillsController < ApplicationController
 
   def missing 
     ids = params[:ids].delete('[]').split(',').map(&:to_i)
-    sku_ids = Sku.where(stockable_type: Skill.name, stockable_id: ids, has_svgs: true).map(&:id)
-    zip_ids = Inventory.where(sku_id: sku_ids).map(&:zip_id).uniq
+
+    j = Skill.where(id: ids, has_svgs: true).map(&:id) 
+    sku_ids = Sku.where(stockable_id: j).map(&:id) 
+    zip_ids = Inventory.where(sku_id: sku_ids).map(&:zip_id).uniq 
     zips = Zip.where(id: zip_ids).where('shasum IS NOT ?', nil) 
 
     render json: zips.map{ |z| { 
