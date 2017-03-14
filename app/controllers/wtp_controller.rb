@@ -22,12 +22,12 @@ class WtpController < ApplicationController
   def get_by_user
 
     json = []
-    Wtp.all.each do |u|
+    Wtp.newcomers.all.each do |u|
       json.push({
         id: u.user_id,
         pr: u.price_per_month,
-        wl: u.agreed,
-        nr: u.num_refusals,
+        ag: u.agreed,
+        nr: u.num_refusals+1,
         sp: u.agreed ? (Date.parse(u.agreed_on.to_s) - Date.parse(u.first_asked_on.to_s)).to_i: 0
       })
     end # of each

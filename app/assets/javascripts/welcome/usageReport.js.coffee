@@ -157,11 +157,11 @@ window.usageReport = {
       vals = byPrice[k]
       ag = na = nr = 0
       for v in vals
-        if v.wl then ag=ag+1 else na=na+1
-        nr=nr+v.nr
+        if v.ag then ag=ag+1 else na=na+1
+        if v.ag then nr=nr+v.nr
       data.push ag
       data.push na
-      data.push nr 
+      data.push (nr/ag).toFixed(2)
       pricePoints.push k
 
     thickness = 20
@@ -169,22 +169,44 @@ window.usageReport = {
     width = 350
     height = pricePoints.length*(3*thickness + gap)
 
+    # specify chart area and dimensions
+    chart = d3.select(chart).append("svg")
+      .attr("width", 175 + width + 175)
+      .attr("height", height)
+
     color = d3.scale.category20()
+
+    # legend
+    keys = ["Agreed to Pay", "Didn't Agree", "Avg. #times asked (before agreeing)"]
+    legend = chart.selectAll(".legend")
+      .data(keys)
+      .enter()
+      .append("g")
+      .attr("transform", (d, i) -> "translate(#{i*120+20}, 0)")
+
+    legend.append("rect")
+      .attr("width", 18)
+      .attr("height", 18)
+      .attr("class", "bar")
+      .style("fill", (d, i) -> color(i))
+      .style("stroke", (d, i) -> color(i))
+
+    legend.append("text")
+      .attr("class", "legend")
+      .attr("x", 18+4)
+      .attr("y", 18-4)
+      .text((d) -> d)
+
     x = d3.scale.linear().range([0, width]).domain([0, d3.max(data)])
     y = d3.scale.linear().range([height + gap, 0])
 
     yAxis = d3.svg.axis().scale(y).tickFormat(' ').tickSize(0).orient("left")
 
-    # specify chart area and dimensions
-    chart = d3.select(chart).append("svg")
-      .attr("width", 150 + width + 150)
-      .attr("height", height)
-
     # create bars
     bar = chart.selectAll("g")
       .data(data)
       .enter().append("g")
-      .attr("transform", (d, i) -> "translate(150, #{i*thickness+gap*(0.5+Math.floor(i/3))})")
+      .attr("transform", (d, i) -> "translate(100, #{i*thickness+(gap*(0.5+Math.floor(i/3)))})")
 
     # create rectangles of correct width
     bar.append("rect")
@@ -210,29 +232,8 @@ window.usageReport = {
 
     chart.append("g")
       .attr("class", "y axis")
-      .attr("transform", "translate(150, #{-gap/2})")
+      .attr("transform", "translate(100, #{gap})")
       .call(yAxis)
-
-    # legend
-    keys = ["Agreed to Pay", "Didn't Agree", "Times Asked"]
-    legend = chart.selectAll(".legend")
-      .data(keys)
-      .enter()
-      .append("g")
-      .attr("transform", (d, i) -> "translate(525, #{i*22})")
-
-    legend.append("rect")
-      .attr("width", 18)
-      .attr("height", 18)
-      .attr("class", "bar")
-      .style("fill", (d, i) -> color(i))
-      .style("stroke", (d, i) -> color(i))
-
-    legend.append("text")
-      .attr("class", "legend")
-      .attr("x", 18+4)
-      .attr("y", 18-4)
-      .text((d) -> d)
 
     return true
 
