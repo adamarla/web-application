@@ -160,7 +160,7 @@ window.usageReport = {
         if v.ag then nr=nr+v.nr
       data.push ag
       data.push na
-      data.push 5 #(nr/ag).toFixed(2)
+      data.push (nr/ag).toFixed(2)
       pricePoints.push k
 
     thickness = 20
