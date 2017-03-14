@@ -144,7 +144,6 @@ window.usageReport = {
   byWtp: (json, target) ->
 
     target.empty()
-    chart = target[0]
 
     byPrice = {}
     for u in json
@@ -161,7 +160,7 @@ window.usageReport = {
         if v.ag then nr=nr+v.nr
       data.push ag
       data.push na
-      data.push (nr/ag).toFixed(2)
+      data.push 5 #(nr/ag).toFixed(2)
       pricePoints.push k
 
     thickness = 20
@@ -169,16 +168,15 @@ window.usageReport = {
     width = 350
     height = pricePoints.length*(3*thickness + gap)
 
-    # specify chart area and dimensions
-    chart = d3.select(chart).append("svg")
-      .attr("width", 175 + width + 175)
-      .attr("height", height)
-
     color = d3.scale.category20()
 
     # legend
+    leg = d3.select(target[0]).append("svg")
+      .attr("width", 175 + width + 175)
+      .attr("height", 20)
+
     keys = ["Agreed to Pay", "Didn't Agree", "Avg. #times asked (before agreeing)"]
-    legend = chart.selectAll(".legend")
+    legend = leg.selectAll(".legend")
       .data(keys)
       .enter()
       .append("g")
@@ -197,6 +195,10 @@ window.usageReport = {
       .attr("y", 18-4)
       .text((d) -> d)
 
+    # specify chart area and dimensions
+    chart = d3.select(target[0]).append("svg")
+      .attr("width", 175 + width + 175)
+      .attr("height", height)
     x = d3.scale.linear().range([0, width]).domain([0, d3.max(data)])
     y = d3.scale.linear().range([height + gap, 0])
 
@@ -206,7 +208,7 @@ window.usageReport = {
     bar = chart.selectAll("g")
       .data(data)
       .enter().append("g")
-      .attr("transform", (d, i) -> "translate(100, #{i*thickness+(gap*(0.5+Math.floor(i/3)))})")
+      .attr("transform", (d, i) -> "translate(100, #{i*thickness+gap*(0.5+Math.floor(i/3))})")
 
     # create rectangles of correct width
     bar.append("rect")
