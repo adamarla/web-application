@@ -160,7 +160,7 @@ window.usageReport = {
         if v.ag then nr=nr+v.nr
       data.push ag
       data.push na
-      data.push 5 #(nr/ag).toFixed(2)
+      data.push (nr/ag).toFixed(2)
       pricePoints.push k
 
     thickness = 20
@@ -219,7 +219,7 @@ window.usageReport = {
 
     # add text label in bar
     bar.append("text")
-      .attr("x", (d) -> if (d > 1) then x(d) - 15 else x(d))
+      .attr("x", (d, i) -> if ((i+1)%3!=0) then x(d) - 15 else x(d))
       .attr("y", thickness/2)
       .attr("fill", "red")
       .attr("dy", ".40em")
