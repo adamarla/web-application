@@ -132,15 +132,7 @@ Webapp::Application.routes.draw do
 
     # Account 
     match 'account' => 'accounts#update', via: :post
-    match 'exams/list' => 'accounts#exams', via: :get
-    match 'exams/pending' => 'accounts#pending_exams', via: :get
-    match 'grade/pending' => 'accounts#to_be_graded', via: :get
-    match 'scans/pending' => 'accounts#pending_scans', via: :get
-    match 'close/apprentice/audit' => 'accounts#audit_apprentice', via: [:put, :post]
     match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
-    match 'byCountry' => 'accounts#by_country', via: :get
-    match 'inCountry' => 'accounts#in_country', via: :get
-    match 'ask/question' => 'accounts#ask_question', via: :post
     match 'reset/password' => 'accounts#reset_password', via: :post
 
     # Admin 
