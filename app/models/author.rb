@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: examiners
+# Table name: authors
 #
 #  id         :integer         not null, primary key
 #  created_at :datetime
@@ -9,16 +9,12 @@
 #  first_name :string(30)
 #  last_name  :string(30)
 #  live       :boolean         default(FALSE)
+#  email      :string(255)
 #
 
-class Examiner < ActiveRecord::Base
-  # [:all] ~> [:admin]
-  # [:disputed] ~> [:student]
-  #attr_accessible :disputed
-
-  def self.available
-    where(live: true)
-  end
+class Author < ActiveRecord::Base
+  validates :email, presence: true 
+  validates :email, uniqueness: true
 
   def name 
     return self.last_name.nil? ? self.first_name : "#{self.first_name} #{self.last_name}"
@@ -51,10 +47,14 @@ class Examiner < ActiveRecord::Base
 
     # Now, make the DB entries for the slots that were created 
     slots.each do |s|
-      q = Question.new uid:  s, examiner_id: self.id
+      q = Question.new uid:  s, author_id: self.id
       slots.delete s unless q.save # return only those slots that got created
     end
     return slots
+  end
+
+  def self.available
+    where(live: true)
   end
 
 end # of class

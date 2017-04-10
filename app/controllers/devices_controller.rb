@@ -53,7 +53,7 @@ class DevicesController < ApplicationController
           if parent.nil? 
             potds = Question.where(potd: true) 
             min = potds.map(&:num_potd).min
-            parent = potds.where(num_potd: min).order(:examiner_id).first 
+            parent = potds.where(num_potd: min).order(:author_id).first 
           end 
           b = BundleQuestion.where(question_id: parent.id).first 
           parent.update_attribute(:num_potd, parent.num_potd + 1) unless targetted 

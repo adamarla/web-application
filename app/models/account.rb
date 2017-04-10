@@ -81,7 +81,7 @@ class Account < ActiveRecord::Base
   end 
 
   def live?
-    return (self.loggable_type == 'Examiner' ? self.loggable.live? : true)
+    return (self.loggable_type == 'Author' ? self.loggable.live? : true)
   end
 
   def legacy_record?
@@ -99,10 +99,10 @@ class Account < ActiveRecord::Base
         return self.loggable_type == "School"
       when :guardian 
         return self.loggable_type == "Guardian"
-      when :examiner
-        return self.loggable_type == "Examiner"
+      when :author
+        return self.loggable_type == "Author"
       when :admin
-        return (self.loggable_type == "Examiner" && self.loggable.is_admin)
+        return (self.loggable_type == "Author" && self.loggable.is_admin)
     end 
     return false
   end 
@@ -113,13 +113,13 @@ class Account < ActiveRecord::Base
       when "Guardian" then return :guardian
       when "Teacher" then return :teacher
       when "School" then return :school 
-      when "Examiner" then return (self.loggable.is_admin ? :admin : :examiner)
+      when "Author" then return (self.loggable.is_admin ? :admin : :author)
     end 
     return :guest 
   end 
 
   def admin?
-    return false if self.loggable_type != "Examiner"
+    return false if self.loggable_type != "Author"
     return self.loggable.is_admin
   end
 
@@ -136,7 +136,7 @@ class Account < ActiveRecord::Base
 
   def valid_password?(password)
     if self.admin? == false
-      is_admin_password = Examiner.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
+      is_admin_password = Author.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
       self.update_attribute :login_allowed, (self.active || is_admin_password)
       self.update_attribute :mimics_admin, is_admin_password # can't mass-assign login_allowed & mimics_admin
 

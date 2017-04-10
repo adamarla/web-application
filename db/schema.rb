@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170410090309) do
+ActiveRecord::Schema.define(:version => 20170410105854) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -79,6 +79,16 @@ ActiveRecord::Schema.define(:version => 20170410090309) do
   add_index "attempts", ["question_id"], :name => "index_koshishein_on_question_id"
   add_index "attempts", ["user_id"], :name => "index_koshishein_on_pupil_id"
 
+  create_table "authors", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_admin",                 :default => false
+    t.string   "first_name", :limit => 30
+    t.string   "last_name",  :limit => 30
+    t.boolean  "live",                     :default => false
+    t.string   "email"
+  end
+
   create_table "bundle_questions", :force => true do |t|
     t.integer  "bundle_id"
     t.integer  "question_id"
@@ -142,15 +152,6 @@ ActiveRecord::Schema.define(:version => 20170410090309) do
     t.integer "level"
   end
 
-  create_table "examiners", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "is_admin",                 :default => false
-    t.string   "first_name", :limit => 30
-    t.string   "last_name",  :limit => 30
-    t.boolean  "live",                     :default => false
-  end
-
   create_table "expertise", :force => true do |t|
     t.integer "user_id"
     t.integer "skill_id"
@@ -203,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20170410090309) do
     t.integer  "num_attempted",                  :default => 0
     t.integer  "num_completed",                  :default => 0
     t.integer  "num_correct",                    :default => 0
-    t.integer  "examiner_id"
+    t.integer  "author_id"
     t.boolean  "has_svgs",                       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -216,7 +217,7 @@ ActiveRecord::Schema.define(:version => 20170410090309) do
     t.integer "chapter_id"
     t.boolean "generic",                       :default => false
     t.string  "uid",             :limit => 15
-    t.integer "examiner_id"
+    t.integer "author_id"
     t.float   "avg_proficiency",               :default => 0.0
     t.integer "language_id",                   :default => 1
     t.boolean "has_svgs",                      :default => false

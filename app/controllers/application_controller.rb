@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
           @e = Exam.where(takehome: false).select{ |e| e.quiz.teacher_id == obj.id }.select{ |e| e.compiling? || e.created_at.to_date == Date.today }
           # @demos = quizzes.where(parent_id: PREFAB_QUIZ_IDS).where('uid IS NOT ?', nil).select{ |m| m.compiled? } 
         end
-      when "Examiner"
+      when "Author"
         @newbie = !obj.live? 
         @admin = obj.is_admin
       else

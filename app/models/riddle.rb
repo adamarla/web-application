@@ -12,7 +12,7 @@
 #  num_attempted    :integer         default(0)
 #  num_completed    :integer         default(0)
 #  num_correct      :integer         default(0)
-#  examiner_id      :integer
+#  author_id        :integer
 #  has_svgs         :boolean         default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
@@ -72,7 +72,7 @@ class Riddle < ActiveRecord::Base
 
   private 
       def add_sku 
-        prefix = self.is_a?(Question) ? "q/#{self.examiner_id}" : "snippets"
+        prefix = self.is_a?(Question) ? "q/#{self.author_id}" : "snippets"
         self.create_sku path: "#{prefix}/#{self.get_id}"
       end 
 

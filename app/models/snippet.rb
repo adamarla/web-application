@@ -12,7 +12,7 @@
 #  num_attempted    :integer         default(0)
 #  num_completed    :integer         default(0)
 #  num_correct      :integer         default(0)
-#  examiner_id      :integer
+#  author_id        :integer
 #  has_svgs         :boolean         default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime

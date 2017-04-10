@@ -6,7 +6,7 @@
 #  chapter_id      :integer
 #  generic         :boolean         default(FALSE)
 #  uid             :string(15)
-#  examiner_id     :integer
+#  author_id       :integer
 #  avg_proficiency :float           default(0.0)
 #  language_id     :integer         default(1)
 #  has_svgs        :boolean         default(FALSE)

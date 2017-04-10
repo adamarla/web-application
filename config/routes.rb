@@ -52,7 +52,7 @@ Webapp::Application.routes.draw do
   #### NEEDED IN QUILL   
 
     # Account 
-    match 'quill/signin' => 'accounts#authenticate_for_quill', via: :get
+    match 'quill/signin' => 'authors#authenticate', via: :get
 
     # Chapter 
     match 'chapter/list' => 'chapter#list', via: :get
@@ -131,9 +131,7 @@ Webapp::Application.routes.draw do
     match 'attempt/by_user' => 'attempts#by_user', via: [:get]
 
     # Account 
-    match 'account' => 'accounts#update', via: :post
     match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
-    match 'reset/password' => 'accounts#reset_password', via: :post
 
     # Admin 
     resource :admin, :controller => :admin 

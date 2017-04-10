@@ -5,10 +5,10 @@ class SkillsController < ApplicationController
   def create 
     proceed = !(params[:c].blank? || params[:e].blank?)
     if proceed
-      examiner = Examiner.find params[:e]
-      if examiner.is_admin
+      author = Author.find params[:e]
+      if author.is_admin
         cid = params[:c] || Chapter.generic.id 
-        s = Skill.create(chapter_id: cid, examiner_id: examiner.id)
+        s = Skill.create(chapter_id: cid, author_id: author.id)
         render json: { id: s.id, path: s.sku.path }, status: :created 
       else
         render json: { id: 0 }, status: :bad_request
@@ -37,7 +37,7 @@ class SkillsController < ApplicationController
 
     render json: { 
                     skills: skills.map{ |s| { id: s.id, path: s.sku.path,
-                        authorId: s.examiner_id, chapterId: cid.to_i, assetClass: "Skill" } },
+                        authorId: s.author_id, chapterId: cid.to_i, assetClass: "Skill" } },
                     zips: Zip.where(id: zip_ids).map(&:path)
                  }, status: :ok
   end 
@@ -45,7 +45,7 @@ class SkillsController < ApplicationController
   def all
     json = Skill.all.map{ |s| {
       id: s.id, path: s.sku.path, 
-        authorId: s.examiner_id, chapterId: s.chapter_id, assetClass: "Skill" }
+        authorId: s.author_id, chapterId: s.chapter_id, assetClass: "Skill" }
     }
     render json: json, status: :ok
   end

@@ -39,7 +39,7 @@ class SkuController < ApplicationController
     response = listing.map{ |sku| obj = sku.stockable ; 
                                   { id: obj.is_a?(Skill) ? obj.id : obj.get_id, 
                                     path: sku.path,
-                                    authorId: obj.examiner_id, 
+                                    authorId: obj.author_id, 
                                     chapterId: c, 
                                     assetClass: obj.class.name } }
 

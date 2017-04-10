@@ -34,9 +34,6 @@ class Ability
       when :admin 
         can :manage, :all 
       when :school
-      when :examiner
-        can :manage, Tryout, :examiner_id => account.loggable_id
-        cannot :destroy, Tryout
     end 
   end
 end

@@ -2,8 +2,8 @@ class WelcomeController < ApplicationController
   def index
     unless current_account.nil? 
       case current_account.role 
-        when :examiner
-          redirect_to '/examiner'
+        when :author
+          redirect_to '/author'
         when :admin 
           redirect_to '/admin'
         when :teacher 

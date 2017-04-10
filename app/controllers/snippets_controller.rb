@@ -5,7 +5,7 @@ class SnippetsController < ApplicationController
   def create 
     proceed = !(params[:e].blank? || params[:c].blank?)
     if proceed 
-      snip = Snippet.create(examiner_id: params[:e], chapter_id: params[:c])
+      snip = Snippet.create(author_id: params[:e], chapter_id: params[:c])
       render json: { id: snip.id, path: snip.sku.path }, status: :created 
     else 
       render json: { id: 0 }, status: :bad_request 
