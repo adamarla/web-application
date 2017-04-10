@@ -30,9 +30,6 @@ Webapp::Application.routes.draw do
     match 'device/add' => 'devices#create', via: [:put, :post]
     match 'device/post' => 'devices#post', via: :get
 
-    # NotifResponse 
-    match 'notif/update' => 'notif_response#update', via: [:put, :post]
-
     # Parcels 
     match 'next/zip' => 'parcels#next_zip', via: [:get, :post]
 
@@ -133,17 +130,6 @@ Webapp::Application.routes.draw do
     match 'attempt/by_week' => 'attempts#by_week', via: [:get]
     match 'attempt/by_user' => 'attempts#by_user', via: [:get]
 
-    # Prepwell per-attempt Podium
-    match 'podium/ping' => 'podium#ping', via: :post
-
-    # Prepwell POTD  
-    match 'potd/update' => 'potd#update', via: [:put, :post]
-
-    # Prepwell Analgesics 
-    match 'analgesics/add' => 'analgesics#create', via: [:put, :post]
-
-
-
     # Account 
     match 'account' => 'accounts#update', via: :post
     match 'exams/list' => 'accounts#exams', via: :get
@@ -164,14 +150,6 @@ Webapp::Application.routes.draw do
     resource :examiner, :except => [:new, :destroy]
     match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
     match 'examiner/list' => 'examiners#list', via: :get
-
-    # Topic 
-    resource :topic, :only => [:create, :update]
-    match 'topics/list' => 'topics#list', via: :get
-    match 'questions/on' => 'topics#questions', via: :get
-
-    # Videos 
-    match 'video/play' => 'videos#play'
 
     # Welcome
     match 'welcome/countries' => 'welcome#countries', via: :get

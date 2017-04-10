@@ -15,6 +15,11 @@ class DevicesController < ApplicationController
     render json: { user_id: params[:user_id] }, status: status 
   end 
 
+  def post 
+    render json: { success: true }, status: :ok
+  end 
+
+=begin
   def post
     dev_mode = params[:mode] == "dev" 
     targetted = !params[:id].blank?
@@ -104,5 +109,6 @@ class DevicesController < ApplicationController
     end 
     render json: { posted: num_posted }, status: :ok
   end 
+=end
 
 end

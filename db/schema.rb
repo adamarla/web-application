@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170410072208) do
+ActiveRecord::Schema.define(:version => 20170410090309) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -56,9 +56,6 @@ ActiveRecord::Schema.define(:version => 20170410072208) do
     t.integer  "attempts"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
-  end
-
-  create_table "analgesics", :force => true do |t|
   end
 
   create_table "attempts", :force => true do |t|
@@ -182,17 +179,6 @@ ActiveRecord::Schema.define(:version => 20170410072208) do
     t.string "name", :limit => 30
   end
 
-  create_table "notif_responses", :force => true do |t|
-    t.string  "category",      :limit => 10
-    t.string  "uid",           :limit => 20
-    t.integer "parent_id"
-    t.integer "num_sent",                    :default => 0
-    t.integer "num_received",                :default => 0
-    t.integer "num_failed",                  :default => 0
-    t.integer "num_dismissed",               :default => 0
-    t.integer "num_opened",                  :default => 0
-  end
-
   create_table "parcels", :force => true do |t|
     t.string   "name",           :limit => 50
     t.integer  "chapter_id"
@@ -205,16 +191,6 @@ ActiveRecord::Schema.define(:version => 20170410072208) do
     t.integer  "max_zip_size",                 :default => -1
     t.integer  "skill_id",                     :default => 0
     t.boolean  "open",                         :default => true
-  end
-
-  create_table "potd", :force => true do |t|
-    t.string  "uid",           :limit => 40
-    t.integer "question_id"
-    t.integer "num_received",                :default => 0
-    t.integer "num_opened",                  :default => 0
-    t.integer "num_dismissed",               :default => 0
-    t.integer "num_failed",                  :default => 0
-    t.integer "num_sent",                    :default => 0
   end
 
   create_table "riddles", :force => true do |t|
@@ -280,13 +256,6 @@ ActiveRecord::Schema.define(:version => 20170410072208) do
 
   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
-  create_table "topics", :force => true do |t|
-    t.string   "name",        :limit => 50
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "vertical_id"
-  end
-
   create_table "usages", :force => true do |t|
     t.integer "user_id"
     t.integer "time_on_snippets",      :default => 0
@@ -321,12 +290,6 @@ ActiveRecord::Schema.define(:version => 20170410072208) do
   end
 
   add_index "users", ["email"], :name => "index_pupils_on_email"
-
-  create_table "verticals", :force => true do |t|
-    t.string   "name",       :limit => 30
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "wtps", :force => true do |t|
     t.integer "user_id"
