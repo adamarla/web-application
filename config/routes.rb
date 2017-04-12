@@ -106,8 +106,7 @@ Webapp::Application.routes.draw do
     match 'skills/revaluate' => 'skills#revaluate', via: :get
 
     # SKU 
-    match 'sku/recompiled' => 'sku#recompiled', via: [:get]
-    match 'sku/set_skills' => 'sku#set_skills', via: [:get]
+    match 'sku/update' => 'sku#update', via: [:get]
 
     # User
     match 'users/csv' => 'users#csv_list', via: :get
