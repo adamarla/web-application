@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170410105854) do
+ActiveRecord::Schema.define(:version => 20170420171811) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(:version => 20170410105854) do
 
   create_table "chapters", :force => true do |t|
     t.string  "name",        :limit => 70
-    t.integer "level_id"
+    t.integer "grade_id"
     t.integer "subject_id"
     t.string  "uid",         :limit => 10
     t.integer "language_id",               :default => 1
@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(:version => 20170410105854) do
     t.integer "friend_id",                 :default => 0
   end
 
-  add_index "chapters", ["level_id"], :name => "index_chapters_on_level_id"
+  add_index "chapters", ["grade_id"], :name => "index_chapters_on_level_id"
   add_index "chapters", ["subject_id"], :name => "index_chapters_on_subject_id"
 
   create_table "delayed_jobs", :force => true do |t|
@@ -164,6 +164,10 @@ ActiveRecord::Schema.define(:version => 20170410105854) do
   add_index "expertise", ["skill_id"], :name => "index_expertise_on_skill_id"
   add_index "expertise", ["user_id"], :name => "index_expertise_on_pupil_id"
 
+  create_table "grades", :force => true do |t|
+    t.string "name", :limit => 30
+  end
+
   create_table "inventory", :force => true do |t|
     t.integer "zip_id"
     t.integer "sku_id"
@@ -173,10 +177,6 @@ ActiveRecord::Schema.define(:version => 20170410105854) do
   add_index "inventory", ["zip_id"], :name => "index_inventory_on_zip_id"
 
   create_table "languages", :force => true do |t|
-    t.string "name", :limit => 30
-  end
-
-  create_table "levels", :force => true do |t|
     t.string "name", :limit => 30
   end
 

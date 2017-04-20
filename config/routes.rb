@@ -49,7 +49,7 @@ Webapp::Application.routes.draw do
     match 'wtp/update' => 'wtp#update', via: [:get, :post]
     match 'wtp/by_user' => 'wtp#get_by_user', via: :get
 
-  #### NEEDED IN QUILL   
+  #### NEEDED IN QUILL / SCRIBBLER 
 
     # Account 
     match 'quill/signin' => 'authors#authenticate', via: :get
@@ -63,8 +63,8 @@ Webapp::Application.routes.draw do
     # Language 
     match 'language/list' => 'language#list', via: :get
 
-    # Level 
-    match 'level/list' => 'level#list', via: :get
+    # Grade 
+    match 'grades/list' => 'grades#list', via: :get
 
     # Question
     match 'question/add' => 'question#create', via: [:get, :post]

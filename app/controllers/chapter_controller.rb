@@ -3,10 +3,10 @@ class ChapterController < ApplicationController
   respond_to :json 
 
   def list 
-    level = params[:level].blank? ? Level.named('senior') : params[:level] 
+    grade = params[:grade].blank? ? Grade.named('senior') : params[:grade] 
     subject = params[:subject].blank? ? Subject.named('maths') : params[:subject]
 
-    list = Chapter.where(level_id: level, subject_id: subject).order(:name)
+    list = Chapter.where(grade_id: grade, subject_id: subject).order(:name)
     response = list.blank? ? [] : list.map{ |c| { id: c.id, name: c.name, friend_id: c.friend_id } } 
     render json: response, status: :ok
   end 
