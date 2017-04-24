@@ -15,6 +15,11 @@ class DevicesController < ApplicationController
     render json: { user_id: params[:user_id] }, status: status 
   end 
 
+  def post 
+    render json: { success: true }, status: :ok
+  end 
+
+=begin
   def post
     dev_mode = params[:mode] == "dev" 
     targetted = !params[:id].blank?
@@ -48,7 +53,7 @@ class DevicesController < ApplicationController
           if parent.nil? 
             potds = Question.where(potd: true) 
             min = potds.map(&:num_potd).min
-            parent = potds.where(num_potd: min).order(:examiner_id).first 
+            parent = potds.where(num_potd: min).order(:author_id).first 
           end 
           b = BundleQuestion.where(question_id: parent.id).first 
           parent.update_attribute(:num_potd, parent.num_potd + 1) unless targetted 
@@ -104,5 +109,6 @@ class DevicesController < ApplicationController
     end 
     render json: { posted: num_posted }, status: :ok
   end 
+=end
 
 end

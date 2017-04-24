@@ -7,7 +7,7 @@ class QuestionController < ApplicationController
     if proceed 
       language = params[:lang] || Language.named('english') 
       difficulty = params[:d] || Difficulty.named('medium')
-      q = Question.create examiner_id: params[:e], 
+      q = Question.create author_id: params[:e], 
                           chapter_id: params[:c],
                           language_id: language, 
                           difficulty: difficulty

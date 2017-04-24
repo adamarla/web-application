@@ -1,12 +1,12 @@
 # == Schema Information
 #
-# Table name: levels
+# Table name: grades
 #
 #  id   :integer         not null, primary key
 #  name :string(30)
 #
 
-class Level < ActiveRecord::Base
+class Grade < ActiveRecord::Base
   validates :name, presence: true 
   validates :name, uniqueness: true 
 

@@ -30,9 +30,6 @@ Webapp::Application.routes.draw do
     match 'device/add' => 'devices#create', via: [:put, :post]
     match 'device/post' => 'devices#post', via: :get
 
-    # NotifResponse 
-    match 'notif/update' => 'notif_response#update', via: [:put, :post]
-
     # Parcels 
     match 'next/zip' => 'parcels#next_zip', via: [:get, :post]
 
@@ -52,10 +49,10 @@ Webapp::Application.routes.draw do
     match 'wtp/update' => 'wtp#update', via: [:get, :post]
     match 'wtp/by_user' => 'wtp#get_by_user', via: :get
 
-  #### NEEDED IN QUILL   
+  #### NEEDED IN QUILL / SCRIBBLER 
 
     # Account 
-    match 'quill/signin' => 'accounts#authenticate_for_quill', via: :get
+    match 'quill/signin' => 'authors#authenticate', via: :get
 
     # Chapter 
     match 'chapter/list' => 'chapter#list', via: :get
@@ -66,8 +63,8 @@ Webapp::Application.routes.draw do
     # Language 
     match 'language/list' => 'language#list', via: :get
 
-    # Level 
-    match 'level/list' => 'level#list', via: :get
+    # Grade 
+    match 'grades/list' => 'grades#list', via: :get
 
     # Question
     match 'question/add' => 'question#create', via: [:get, :post]
@@ -109,8 +106,7 @@ Webapp::Application.routes.draw do
     match 'skills/revaluate' => 'skills#revaluate', via: :get
 
     # SKU 
-    match 'sku/recompiled' => 'sku#recompiled', via: [:get]
-    match 'sku/set_skills' => 'sku#set_skills', via: [:get]
+    match 'sku/update' => 'sku#update', via: [:get]
 
     # User
     match 'users/csv' => 'users#csv_list', via: :get
@@ -133,29 +129,8 @@ Webapp::Application.routes.draw do
     match 'attempt/by_week' => 'attempts#by_week', via: [:get]
     match 'attempt/by_user' => 'attempts#by_user', via: [:get]
 
-    # Prepwell per-attempt Podium
-    match 'podium/ping' => 'podium#ping', via: :post
-
-    # Prepwell POTD  
-    match 'potd/update' => 'potd#update', via: [:put, :post]
-
-    # Prepwell Analgesics 
-    match 'analgesics/add' => 'analgesics#create', via: [:put, :post]
-
-
-
     # Account 
-    match 'account' => 'accounts#update', via: :post
-    match 'exams/list' => 'accounts#exams', via: :get
-    match 'exams/pending' => 'accounts#pending_exams', via: :get
-    match 'grade/pending' => 'accounts#to_be_graded', via: :get
-    match 'scans/pending' => 'accounts#pending_scans', via: :get
-    match 'close/apprentice/audit' => 'accounts#audit_apprentice', via: [:put, :post]
     match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
-    match 'byCountry' => 'accounts#by_country', via: :get
-    match 'inCountry' => 'accounts#in_country', via: :get
-    match 'ask/question' => 'accounts#ask_question', via: :post
-    match 'reset/password' => 'accounts#reset_password', via: :post
 
     # Admin 
     resource :admin, :controller => :admin 
@@ -164,14 +139,6 @@ Webapp::Application.routes.draw do
     resource :examiner, :except => [:new, :destroy]
     match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
     match 'examiner/list' => 'examiners#list', via: :get
-
-    # Topic 
-    resource :topic, :only => [:create, :update]
-    match 'topics/list' => 'topics#list', via: :get
-    match 'questions/on' => 'topics#questions', via: :get
-
-    # Videos 
-    match 'video/play' => 'videos#play'
 
     # Welcome
     match 'welcome/countries' => 'welcome#countries', via: :get

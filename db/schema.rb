@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170215200252) do
+ActiveRecord::Schema.define(:version => 20170420171811) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -58,14 +58,6 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
     t.datetime "updated_at",                    :null => false
   end
 
-  create_table "analgesics", :id => false, :force => true do |t|
-    t.integer "id",                                         :null => false
-    t.string  "uid",       :limit => 20
-    t.integer "num_shown",               :default => 0
-    t.boolean "disabled",                :default => false
-    t.string  "category",  :limit => 20
-  end
-
   create_table "attempts", :force => true do |t|
     t.integer  "user_id"
     t.integer  "question_id"
@@ -87,6 +79,16 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
   add_index "attempts", ["question_id"], :name => "index_koshishein_on_question_id"
   add_index "attempts", ["user_id"], :name => "index_koshishein_on_pupil_id"
 
+  create_table "authors", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_admin",                 :default => false
+    t.string   "first_name", :limit => 30
+    t.string   "last_name",  :limit => 30
+    t.boolean  "live",                     :default => false
+    t.string   "email"
+  end
+
   create_table "bundle_questions", :force => true do |t|
     t.integer  "bundle_id"
     t.integer  "question_id"
@@ -107,7 +109,7 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
 
   create_table "chapters", :force => true do |t|
     t.string  "name",        :limit => 70
-    t.integer "level_id"
+    t.integer "grade_id"
     t.integer "subject_id"
     t.string  "uid",         :limit => 10
     t.integer "language_id",               :default => 1
@@ -115,57 +117,8 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
     t.integer "friend_id",                 :default => 0
   end
 
-  add_index "chapters", ["level_id"], :name => "index_chapters_on_level_id"
+  add_index "chapters", ["grade_id"], :name => "index_chapters_on_level_id"
   add_index "chapters", ["subject_id"], :name => "index_chapters_on_subject_id"
-
-  create_table "checklists", :force => true do |t|
-    t.integer "rubric_id"
-    t.integer "criterion_id"
-    t.integer "index"
-    t.boolean "active",       :default => false
-  end
-
-  add_index "checklists", ["criterion_id"], :name => "index_checklists_on_criterion_id"
-  add_index "checklists", ["rubric_id"], :name => "index_checklists_on_rubric_id"
-
-  create_table "commentaries", :force => true do |t|
-    t.integer "question_id"
-    t.integer "tex_comment_id"
-  end
-
-  add_index "commentaries", ["question_id"], :name => "index_commentaries_on_question_id"
-  add_index "commentaries", ["tex_comment_id"], :name => "index_commentaries_on_tex_comment_id"
-
-  create_table "courses", :force => true do |t|
-    t.string   "title",       :limit => 150
-    t.text     "description"
-    t.integer  "teacher_id"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.boolean  "live",                       :default => true
-  end
-
-  add_index "courses", ["teacher_id"], :name => "index_courses_on_teacher_id"
-
-  create_table "criteria", :force => true do |t|
-    t.string   "text"
-    t.integer  "penalty",                  :default => 0
-    t.integer  "account_id"
-    t.boolean  "standard",                 :default => true
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
-    t.boolean  "red_flag",                 :default => false
-    t.boolean  "orange_flag",              :default => false
-    t.string   "shortcut",    :limit => 1
-  end
-
-  add_index "criteria", ["account_id"], :name => "index_criteria_on_account_id"
-
-  create_table "daily_quizzes", :force => true do |t|
-    t.string   "qids"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -199,76 +152,6 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
     t.integer "level"
   end
 
-  create_table "disputes", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "tryout_id"
-    t.text     "text"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "disputes", ["student_id"], :name => "index_disputes_on_student_id"
-
-  create_table "doodles", :force => true do |t|
-    t.integer  "examiner_id"
-    t.integer  "feedback",    :default => 0
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-    t.integer  "tryout_id"
-  end
-
-  add_index "doodles", ["examiner_id"], :name => "index_doodles_on_examiner_id"
-
-  create_table "doubts", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "examiner_id"
-    t.string   "scan",        :limit => 30
-    t.string   "solution",    :limit => 30
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.boolean  "in_db",                     :default => false
-    t.boolean  "refunded",                  :default => false
-    t.integer  "price"
-  end
-
-  add_index "doubts", ["examiner_id"], :name => "index_doubts_on_examiner_id"
-  add_index "doubts", ["student_id"], :name => "index_doubts_on_student_id"
-
-  create_table "examiners", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "is_admin",                        :default => false
-    t.string   "first_name",        :limit => 30
-    t.string   "last_name",         :limit => 30
-    t.datetime "last_workset_on"
-    t.integer  "n_assigned",                      :default => 0
-    t.integer  "n_graded",                        :default => 0
-    t.boolean  "live",                            :default => false
-    t.integer  "mentor_id"
-    t.boolean  "mentor_is_teacher",               :default => false
-    t.boolean  "internal",                        :default => false
-  end
-
-  add_index "examiners", ["mentor_id"], :name => "index_examiners_on_mentor_id"
-
-  create_table "exams", :force => true do |t|
-    t.integer  "quiz_id"
-    t.string   "name",        :limit => 100
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "publishable",                :default => false
-    t.boolean  "takehome",                   :default => false
-    t.integer  "job_id"
-    t.integer  "duration"
-    t.datetime "grade_by"
-    t.string   "uid",         :limit => 40
-    t.boolean  "open",                       :default => true
-    t.datetime "submit_by"
-    t.datetime "regrade_by"
-    t.text     "dist_scheme"
-    t.integer  "rubric_id"
-  end
-
   create_table "expertise", :force => true do |t|
     t.integer "user_id"
     t.integer "skill_id"
@@ -281,52 +164,9 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
   add_index "expertise", ["skill_id"], :name => "index_expertise_on_skill_id"
   add_index "expertise", ["user_id"], :name => "index_expertise_on_pupil_id"
 
-  create_table "faculty_rosters", :force => true do |t|
-    t.integer  "sektion_id"
-    t.integer  "teacher_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "favourites", :force => true do |t|
-    t.integer "teacher_id"
-    t.integer "question_id"
-  end
-
-  create_table "freebies", :force => true do |t|
-    t.integer  "course_id"
-    t.integer  "lesson_id"
-    t.integer  "index",      :default => 0
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
-
-  add_index "freebies", ["course_id"], :name => "index_freebies_on_course_id"
-  add_index "freebies", ["lesson_id"], :name => "index_freebies_on_lesson_id"
-
   create_table "grades", :force => true do |t|
-    t.float    "allotment"
-    t.integer  "teacher_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "calibration_id"
+    t.string "name", :limit => 30
   end
-
-  create_table "guardians", :force => true do |t|
-    t.boolean  "is_mother"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "first_name", :limit => 30
-    t.string   "last_name",  :limit => 30
-  end
-
-  create_table "hints", :force => true do |t|
-    t.text    "text"
-    t.integer "index"
-    t.integer "subpart_id"
-  end
-
-  add_index "hints", ["subpart_id"], :name => "index_hints_on_subpart_id"
 
   create_table "inventory", :force => true do |t|
     t.integer "zip_id"
@@ -336,47 +176,8 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
   add_index "inventory", ["sku_id"], :name => "index_inventory_on_sku_id"
   add_index "inventory", ["zip_id"], :name => "index_inventory_on_zip_id"
 
-  create_table "jokes", :force => true do |t|
-    t.string  "uid",       :limit => 20
-    t.boolean "image",                   :default => false
-    t.integer "num_shown",               :default => 0
-    t.boolean "disabled",                :default => false
-  end
-
-  create_table "kaagaz", :force => true do |t|
-    t.string  "path",    :limit => 40
-    t.integer "stab_id"
-  end
-
-  add_index "kaagaz", ["stab_id"], :name => "index_kaagaz_on_stab_id"
-
   create_table "languages", :force => true do |t|
     t.string "name", :limit => 30
-  end
-
-  create_table "lessons", :force => true do |t|
-    t.string   "title",       :limit => 150
-    t.text     "description"
-    t.integer  "teacher_id"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-  end
-
-  add_index "lessons", ["teacher_id"], :name => "index_lessons_on_teacher_id"
-
-  create_table "levels", :force => true do |t|
-    t.string "name", :limit => 30
-  end
-
-  create_table "notif_responses", :force => true do |t|
-    t.string  "category",      :limit => 10
-    t.string  "uid",           :limit => 20
-    t.integer "parent_id"
-    t.integer "num_sent",                    :default => 0
-    t.integer "num_received",                :default => 0
-    t.integer "num_failed",                  :default => 0
-    t.integer "num_dismissed",               :default => 0
-    t.integer "num_opened",                  :default => 0
   end
 
   create_table "parcels", :force => true do |t|
@@ -388,121 +189,9 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
     t.datetime "created_at",                                     :null => false
     t.datetime "updated_at",                                     :null => false
     t.string   "contains",       :limit => 20
-    t.integer  "max_zip_size"
+    t.integer  "max_zip_size",                 :default => -1
     t.integer  "skill_id",                     :default => 0
     t.boolean  "open",                         :default => true
-  end
-
-  create_table "potd", :force => true do |t|
-    t.string  "uid",           :limit => 40
-    t.integer "question_id"
-    t.integer "num_received",                :default => 0
-    t.integer "num_opened",                  :default => 0
-    t.integer "num_dismissed",               :default => 0
-    t.integer "num_failed",                  :default => 0
-    t.integer "num_sent",                    :default => 0
-  end
-
-  create_table "pupils", :force => true do |t|
-    t.string   "first_name", :limit => 50
-    t.string   "last_name",  :limit => 50
-    t.string   "email",      :limit => 100
-    t.integer  "gender"
-    t.string   "birthday",   :limit => 50
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
-
-  create_table "puzzles", :force => true do |t|
-    t.text     "text"
-    t.integer  "question_id"
-    t.integer  "version",        :default => 0
-    t.integer  "n_picked",       :default => 0
-    t.boolean  "active",         :default => false
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
-    t.date     "last_picked_on"
-  end
-
-  add_index "puzzles", ["question_id"], :name => "index_puzzles_on_question_id"
-
-  create_table "q_selections", :force => true do |t|
-    t.integer  "quiz_id"
-    t.integer  "question_id"
-    t.integer  "start_page"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "index"
-    t.integer  "end_page"
-  end
-
-  add_index "q_selections", ["question_id"], :name => "index_q_selections_on_question_id"
-  add_index "q_selections", ["quiz_id"], :name => "index_q_selections_on_quiz_id"
-
-  create_table "questions", :force => true do |t|
-    t.string   "uid",             :limit => 20
-    t.integer  "n_picked",                      :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "examiner_id"
-    t.integer  "topic_id"
-    t.integer  "suggestion_id"
-    t.integer  "difficulty",                    :default => 1
-    t.integer  "marks"
-    t.float    "length"
-    t.integer  "answer_key_span"
-    t.integer  "calculation_aid",               :default => 0
-    t.integer  "auditor"
-    t.datetime "audited_on"
-    t.boolean  "available",                     :default => true
-    t.integer  "n_codices",                     :default => 0
-    t.string   "codices",         :limit => 5
-    t.boolean  "potd",                          :default => false
-    t.integer  "num_potd",                      :default => 0
-  end
-
-  add_index "questions", ["topic_id"], :name => "index_questions_on_topic_id"
-
-  create_table "quizzes", :force => true do |t|
-    t.integer  "teacher_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "num_questions"
-    t.string   "name",                  :limit => 70
-    t.integer  "subject_id"
-    t.integer  "total"
-    t.integer  "span"
-    t.integer  "parent_id"
-    t.integer  "job_id"
-    t.string   "uid",                   :limit => 40
-    t.string   "version",               :limit => 10
-    t.string   "shadows"
-    t.string   "page_breaks_after"
-    t.string   "switch_versions_after"
-  end
-
-  add_index "quizzes", ["parent_id"], :name => "index_quizzes_on_parent_id"
-  add_index "quizzes", ["teacher_id"], :name => "index_quizzes_on_teacher_id"
-
-  create_table "remarks", :force => true do |t|
-    t.integer  "x"
-    t.integer  "y"
-    t.integer  "tryout_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-    t.integer  "tex_comment_id"
-    t.integer  "doodle_id"
-    t.integer  "examiner_id"
-    t.integer  "kaagaz_id"
-  end
-
-  add_index "remarks", ["examiner_id"], :name => "index_remarks_on_examiner_id"
-  add_index "remarks", ["kaagaz_id"], :name => "index_remarks_on_stab_id"
-
-  create_table "revisions", :force => true do |t|
-    t.integer "question_id"
-    t.boolean "latex",       :default => false
-    t.boolean "hints",       :default => false
   end
 
   create_table "riddles", :force => true do |t|
@@ -515,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
     t.integer  "num_attempted",                  :default => 0
     t.integer  "num_completed",                  :default => 0
     t.integer  "num_correct",                    :default => 0
-    t.integer  "examiner_id"
+    t.integer  "author_id"
     t.boolean  "has_svgs",                       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -524,42 +213,11 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
   add_index "riddles", ["chapter_id"], :name => "index_riddles_on_chapter_id"
   add_index "riddles", ["language_id"], :name => "index_riddles_on_language_id"
 
-  create_table "rubrics", :force => true do |t|
-    t.string   "name",       :limit => 100
-    t.integer  "account_id"
-    t.boolean  "standard",                  :default => true
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.boolean  "active",                    :default => false
-  end
-
-  create_table "schools", :force => true do |t|
-    t.string   "name"
-    t.string   "phone",      :limit => 20
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "xls"
-    t.string   "uid",        :limit => 10
-  end
-
-  create_table "sektions", :force => true do |t|
-    t.string   "name",                 :limit => 40
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "teacher_id"
-    t.string   "uid",                  :limit => 10
-    t.date     "start_date"
-    t.date     "end_date"
-    t.boolean  "auto_renew",                         :default => true
-    t.boolean  "active"
-    t.boolean  "auto_renew_immediate",               :default => false
-  end
-
   create_table "skills", :force => true do |t|
     t.integer "chapter_id"
     t.boolean "generic",                       :default => false
     t.string  "uid",             :limit => 15
-    t.integer "examiner_id"
+    t.integer "author_id"
     t.float   "avg_proficiency",               :default => 0.0
     t.integer "language_id",                   :default => 1
     t.boolean "has_svgs",                      :default => false
@@ -573,82 +231,10 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
 
   add_index "skus", ["stockable_id"], :name => "index_skus_on_stockable_id"
 
-  create_table "snippets", :force => true do |t|
-    t.integer "examiner_id"
-    t.integer "num_attempted", :default => 0
-    t.integer "num_correct",   :default => 0
-    t.integer "chapter_id"
-  end
-
-  add_index "snippets", ["chapter_id"], :name => "index_snippets_on_chapter_id"
-  add_index "snippets", ["examiner_id"], :name => "index_snippets_on_examiner_id"
-
-  create_table "stabs", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "examiner_id"
-    t.integer  "quality"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
-    t.integer  "uid"
-    t.integer  "question_id"
-    t.integer  "version"
-    t.boolean  "puzzle",           :default => true
-    t.integer  "answer_deduct",    :default => 0
-    t.integer  "solution_deduct",  :default => 0
-    t.integer  "proofread_credit", :default => 0
-    t.integer  "first_shot"
-  end
-
-  add_index "stabs", ["examiner_id"], :name => "index_stabs_on_examiner_id"
-  add_index "stabs", ["question_id"], :name => "index_stabs_on_question_id"
-  add_index "stabs", ["student_id"], :name => "index_stabs_on_student_id"
-  add_index "stabs", ["uid"], :name => "index_stabs_on_uid"
-
-  create_table "student_rosters", :force => true do |t|
-    t.integer "student_id"
-    t.integer "sektion_id"
-  end
-
-  create_table "students", :force => true do |t|
-    t.integer  "guardian_id"
-    t.string   "first_name",     :limit => 30
-    t.string   "last_name",      :limit => 30
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "shell",                        :default => false
-    t.string   "phone",          :limit => 15
-    t.boolean  "indie"
-    t.integer  "reward_gredits",               :default => 100
-    t.integer  "paid_gredits",                 :default => 0
-  end
-
   create_table "subjects", :force => true do |t|
     t.string   "name",       :limit => 30
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "subparts", :force => true do |t|
-    t.integer "question_id"
-    t.boolean "mcq",           :default => false
-    t.boolean "half_page",     :default => false
-    t.boolean "full_page",     :default => true
-    t.integer "marks"
-    t.integer "index"
-    t.integer "relative_page"
-    t.boolean "few_lines",     :default => false
-  end
-
-  add_index "subparts", ["question_id"], :name => "index_subparts_on_question_id"
-
-  create_table "suggestions", :force => true do |t|
-    t.integer  "teacher_id"
-    t.integer  "examiner_id"
-    t.boolean  "completed",                 :default => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "signature",   :limit => 15
-    t.integer  "pages",                     :default => 1
   end
 
   create_table "taggings", :force => true do |t|
@@ -671,67 +257,6 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
 
   add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
-  create_table "takehomes", :force => true do |t|
-    t.integer  "course_id"
-    t.integer  "quiz_id"
-    t.integer  "index",      :default => 0
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
-    t.boolean  "live",       :default => true
-  end
-
-  create_table "teachers", :force => true do |t|
-    t.string   "first_name", :limit => 30
-    t.string   "last_name",  :limit => 30
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "school_id"
-    t.boolean  "indie",                    :default => true
-  end
-
-  create_table "tex_comments", :force => true do |t|
-    t.text     "text"
-    t.integer  "examiner_id"
-    t.boolean  "trivial"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-    t.integer  "n_used",      :default => 0
-  end
-
-  create_table "topics", :force => true do |t|
-    t.string   "name",        :limit => 50
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "vertical_id"
-  end
-
-  create_table "tryouts", :force => true do |t|
-    t.integer  "student_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "examiner_id"
-    t.integer  "q_selection_id"
-    t.float    "marks"
-    t.string   "scan",           :limit => 40
-    t.integer  "subpart_id"
-    t.integer  "page"
-    t.integer  "feedback",                     :default => 0
-    t.integer  "worksheet_id"
-    t.boolean  "mobile",                       :default => true
-    t.boolean  "disputed",                     :default => false
-    t.boolean  "resolved",                     :default => false
-    t.boolean  "orange_flag"
-    t.boolean  "red_flag"
-    t.boolean  "weak"
-    t.boolean  "medium"
-    t.boolean  "strong"
-    t.integer  "first_shot"
-  end
-
-  add_index "tryouts", ["q_selection_id"], :name => "index_graded_responses_on_q_selection_id"
-  add_index "tryouts", ["student_id"], :name => "index_graded_responses_on_student_id"
-  add_index "tryouts", ["worksheet_id"], :name => "index_graded_responses_on_worksheet_id"
-
   create_table "usages", :force => true do |t|
     t.integer "user_id"
     t.integer "time_on_snippets",      :default => 0
@@ -749,15 +274,15 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
   add_index "usages", ["date"], :name => "index_usages_on_date"
   add_index "usages", ["user_id"], :name => "index_usages_on_user_id"
 
-  create_table "users", :id => false, :force => true do |t|
-    t.integer  "id",                                               :null => false
+  create_table "users", :force => true do |t|
     t.string   "first_name",       :limit => 50
     t.string   "last_name",        :limit => 50
     t.string   "email",            :limit => 100
     t.integer  "gender"
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
     t.integer  "num_invites_sent",                :default => 0
+    t.boolean  "facebook_login",                  :default => false
     t.integer  "birthday",                        :default => 0
     t.float    "version",                         :default => 1.0
     t.string   "time_zone",        :limit => 50
@@ -766,48 +291,6 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
   end
 
   add_index "users", ["email"], :name => "index_pupils_on_email"
-
-  create_table "verticals", :force => true do |t|
-    t.string   "name",       :limit => 30
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "videos", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "active",                       :default => false
-    t.integer  "watchable_id"
-    t.string   "watchable_type", :limit => 20
-    t.string   "uid",            :limit => 20
-  end
-
-  create_table "watan", :force => true do |t|
-    t.string "name",         :limit => 50
-    t.string "alpha_2_code"
-  end
-
-  create_table "worksheets", :force => true do |t|
-    t.integer  "student_id"
-    t.integer  "exam_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float    "marks"
-    t.boolean  "graded",                          :default => false
-    t.integer  "honest"
-    t.boolean  "received",                        :default => false
-    t.string   "signature"
-    t.string   "uid",               :limit => 40
-    t.integer  "job_id"
-    t.boolean  "billed",                          :default => false
-    t.boolean  "orange_flag"
-    t.boolean  "red_flag"
-    t.integer  "num_views_student",               :default => 0
-    t.integer  "num_views_teacher",               :default => 0
-  end
-
-  add_index "worksheets", ["exam_id"], :name => "index_answer_sheets_on_testpaper_id"
-  add_index "worksheets", ["student_id"], :name => "index_answer_sheets_on_student_id"
 
   create_table "wtps", :force => true do |t|
     t.integer "user_id"
@@ -821,7 +304,7 @@ ActiveRecord::Schema.define(:version => 20170215200252) do
   create_table "zips", :force => true do |t|
     t.string  "name",      :limit => 50
     t.integer "parcel_id"
-    t.integer "max_size"
+    t.integer "max_size",                :default => -1
     t.boolean "open",                    :default => true
     t.string  "shasum",    :limit => 10
     t.boolean "modified",                :default => false

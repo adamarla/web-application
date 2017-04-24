@@ -17,7 +17,7 @@ class Mailbot < ActionMailer::Base
   def welcome(a)
     @obj = a.loggable
     @type = a.loggable_type
-    @self_registered = (@type != 'Examiner') ? true : !@obj.mentor_is_teacher 
+    @self_registered = (@type != 'Author') ? true : !@obj.mentor_is_teacher 
     @a = a
     mail to: a.email, subject: 'Welcome to Gradians.com'
   end
@@ -46,7 +46,7 @@ class Mailbot < ActionMailer::Base
   end
 
   def new_grading_work(eid)
-    examiner = Examiner.find eid
+    examiner = Author.find eid
     deadline = 3.business_days.from_now.in_time_zone("Kolkata") # IST 
     mail subject: "( Grading Deadline ):  #{deadline.strftime("%I:%M%p on %A, %b %d")}", to: examiner.account.email
   end
@@ -142,7 +142,7 @@ class Mailbot < ActionMailer::Base
     a = Tryout.find id
     quiz = a.worksheet.exam.quiz.name 
     ques = a.name?
-    e = Examiner.find eid
+    e = Author.find eid
     @exm = e.name
     @reason = reason
     mail to: a.student.account.email, subject: "(Dispute Rejected): #{ques} of '#{quiz}'"

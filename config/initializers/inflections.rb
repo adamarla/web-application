@@ -9,14 +9,7 @@
 #   inflect.uncountable %w( fish sheep )
    inflect.irregular 'syllabus', 'syllabi'
    inflect.irregular 'pending', 'pending'
-   inflect.irregular 'coursework', 'coursework'
-   inflect.irregular 'freebie', 'freebies'
    inflect.irregular 'criterion', 'criteria'
-   inflect.irregular 'watan', 'watan'
-   inflect.irregular 'kaagaz', 'kaagaz'
-   inflect.irregular 'codex', 'codices'
-   inflect.irregular 'koshish', 'koshishein'
-   inflect.irregular 'potd', 'potd'
    inflect.irregular 'inventory', 'inventory'
    inflect.irregular 'expertise', 'expertise'
  end

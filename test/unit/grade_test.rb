@@ -2,12 +2,8 @@
 #
 # Table name: grades
 #
-#  id             :integer         not null, primary key
-#  allotment      :float
-#  teacher_id     :integer
-#  created_at     :datetime
-#  updated_at     :datetime
-#  calibration_id :integer
+#  id   :integer         not null, primary key
+#  name :string(30)
 #
 
 require 'test_helper'

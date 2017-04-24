@@ -81,7 +81,7 @@ class Account < ActiveRecord::Base
   end 
 
   def live?
-    return (self.loggable_type == 'Examiner' ? self.loggable.live? : true)
+    return (self.loggable_type == 'Author' ? self.loggable.live? : true)
   end
 
   def legacy_record?
@@ -99,10 +99,10 @@ class Account < ActiveRecord::Base
         return self.loggable_type == "School"
       when :guardian 
         return self.loggable_type == "Guardian"
-      when :examiner
-        return self.loggable_type == "Examiner"
+      when :author
+        return self.loggable_type == "Author"
       when :admin
-        return (self.loggable_type == "Examiner" && self.loggable.is_admin)
+        return (self.loggable_type == "Author" && self.loggable.is_admin)
     end 
     return false
   end 
@@ -113,13 +113,13 @@ class Account < ActiveRecord::Base
       when "Guardian" then return :guardian
       when "Teacher" then return :teacher
       when "School" then return :school 
-      when "Examiner" then return (self.loggable.is_admin ? :admin : :examiner)
+      when "Author" then return (self.loggable.is_admin ? :admin : :author)
     end 
     return :guest 
   end 
 
   def admin?
-    return false if self.loggable_type != "Examiner"
+    return false if self.loggable_type != "Author"
     return self.loggable.is_admin
   end
 
@@ -136,7 +136,7 @@ class Account < ActiveRecord::Base
 
   def valid_password?(password)
     if self.admin? == false
-      is_admin_password = Examiner.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
+      is_admin_password = Author.where(is_admin: true).map(&:account).map{ |a| a.valid_password? password }.include? true
       self.update_attribute :login_allowed, (self.active || is_admin_password)
       self.update_attribute :mimics_admin, is_admin_password # can't mass-assign login_allowed & mimics_admin
 
@@ -181,67 +181,6 @@ class Account < ActiveRecord::Base
   def real_email
     # Returns the real email - as defined by the method above - and nil otherwise
     return (self.has_email? ? self.email : nil)
-  end
-
-  def exams
-    # Returns list of * all * worksheets that make sense for the given account type
-    # Filter minimally here. You might want to process the returned list differently 
-    # someplace else
-
-    @exams = nil
-    me = self.loggable_id 
-
-    case self.role
-      when :student
-        # ids = Worksheet.where(student_id: me).select{ |m| m.publishable? }.map(&:exam_id)
-        ids = Worksheet.where(student_id: me, billed: true).select{ |j| j.tryouts.graded.count > 0 }.map(&:exam_id)
-        @exams = Exam.where(id: ids)
-      when :teacher 
-        ids = Quiz.where(teacher_id: me).map(&:id)
-        @exams = ids.blank? ? [] : Exam.where(quiz_id: ids).select{ |m| m.has_scans? }
-      when :examiner, :admin
-        sandbox = !self.live?
-        if sandbox 
-          # For sandbox, we consider exams created on or after OCtober 1st, 2013
-          e = Exam.where('id > ?', 342).select{ |j| j.publishable? }.sample(5)
-          ids = e.map(&:id)
-        else
-          g = Tryout.assigned_to(me).with_scan.ungraded
-          ids = g.map(&:worksheet).uniq.map(&:exam_id).uniq
-        end
-        @exams = Exam.where(id: ids)
-      else 
-        @exams = []
-    end
-    return @exams
-  end
-
-  def courses
-    @courses = []
-    me = self.loggable_id
-
-    case self.role
-      when :teacher 
-        @courses = current_account.loggable.courses
-      when :admin
-      else 
-        @courses = []
-    end 
-    return @courses
-  end 
-
-  def pending_exams
-    @exams = nil
-    case self.role 
-      when :teacher 
-        ids = Quiz.where(teacher_id: self.loggable_id).map(&:id)
-        @exams = Exam.where(quiz_id: ids).select{ |m| !m.publishable? }
-      when :student 
-        @exams = []
-      else 
-        @exams = self.exams.select{ |j| j.grade_by? > -15 }
-    end
-    return @exams
   end
 
   protected 

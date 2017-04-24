@@ -4,7 +4,7 @@
 #
 #  id          :integer         not null, primary key
 #  name        :string(70)
-#  level_id    :integer
+#  grade_id    :integer
 #  subject_id  :integer
 #  uid         :string(10)
 #  language_id :integer         default(1)
@@ -18,11 +18,11 @@
 # Assumption: Chapters are first created for English and then duplicated 
 
 class Chapter < ActiveRecord::Base
-  belongs_to :level 
+  belongs_to :grade 
   belongs_to :subject 
 
   validates :name, presence: true 
-  validates :name, uniqueness: { scope: [:level_id, :subject_id, :language_id] }
+  validates :name, uniqueness: { scope: [:grade_id, :subject_id, :language_id] }
   validates :parent_id, numericality: { equal_to: 0 }, if: :in_english?
 
   before_validation :titleize, if: :name_changed? 
@@ -79,14 +79,14 @@ class Chapter < ActiveRecord::Base
 
     Chapter.create name: name, 
                    language_id: language, 
-                   level_id: self.level_id, 
+                   grade_id: self.grade_id, 
                    subject_id: self.subject_id, 
                    parent_id: self.id,
                    friend_id: (pal.nil? ? 0 : pal.id)
   end 
 
   def self.quick_add(name) 
-    Chapter.create name: name, level_id: Level.named('senior'), subject_id: Subject.named('maths') 
+    Chapter.create name: name, grade_id: Grade.named('senior'), subject_id: Subject.named('maths') 
   end 
 
   def self.generic
