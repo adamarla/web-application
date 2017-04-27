@@ -57,7 +57,8 @@ class SkuController < ApplicationController
                                     path: sku.path,
                                     authorId: obj.author_id, 
                                     chapterId: c, 
-                                    assetClass: obj.class.name } }
+                                    assetClass: obj.class.name,
+                                    hasSvgs: obj.has_svgs } }
 
     render json: response, status: :ok
   end 
