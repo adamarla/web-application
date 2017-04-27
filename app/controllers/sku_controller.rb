@@ -35,8 +35,7 @@ class SkuController < ApplicationController
     last = params[:last].blank? ? 0 : params[:last].to_i 
     list = Sku.where('id > ?', last) 
 
-    render json: list.map{ |sku| 
-      obj = sku.stockable ;
+    resp = list.map{ |sku| obj = sku.stockable ;
       {
         id: sku.id, 
         dbId: sku.stockable_id,  
@@ -44,7 +43,9 @@ class SkuController < ApplicationController
         chapter: obj.chapter_id, 
         author: obj.author_id, 
         path: sku.path, 
-        has_tex: obj.has_svgs } }, status: :ok 
+        has_tex: obj.has_svgs } }
+
+     render json: resp.select{ |j| !j.chapter.nil? }, status: :ok
   end 
 
 =begin
