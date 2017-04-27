@@ -45,7 +45,7 @@ class SkuController < ApplicationController
         path: sku.path, 
         has_tex: obj.has_svgs } }
 
-     render json: resp.select{ |j| !j.chapter.nil? }, status: :ok
+     render json: resp.select{ |j| !j[:chapter].nil? }, status: :ok
   end 
 
 =begin
