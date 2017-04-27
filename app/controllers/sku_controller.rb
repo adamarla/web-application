@@ -32,6 +32,23 @@ class SkuController < ApplicationController
   end # of method 
   
   def list 
+    last = params[:last].blank? ? 0 : params[:last].to_i 
+    list = Sku.where('id > ?', last) 
+
+    render json: list.map{ |sku| 
+      obj = sku.stockable ;
+      {
+        id: sku.id, 
+        dbId: sku.stockable_id,  
+        type: obj.is_a?(Question) ? 1 : (obj.is_a?(Snippet) ? 2 : 4),
+        chapter: obj.chapter_id, 
+        author: obj.author_id, 
+        path: sku.path, 
+        has_tex: obj.has_svgs } }, status: :ok 
+  end 
+
+=begin
+  def list 
     c = params[:c].blank? ? 0 : params[:c].to_i 
     listing = Sku.in_chapter(c) 
 
@@ -44,5 +61,6 @@ class SkuController < ApplicationController
 
     render json: response, status: :ok
   end 
+=end
 
 end # of class 

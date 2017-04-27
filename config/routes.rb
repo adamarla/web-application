@@ -54,6 +54,9 @@ Webapp::Application.routes.draw do
     # Account 
     match 'quill/signin' => 'authors#authenticate', via: :get
 
+    # Author 
+    match 'author/list' => 'authors#list', via: :get
+
     # Chapter 
     match 'chapter/list' => 'chapter#list', via: :get
 

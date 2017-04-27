@@ -3,12 +3,16 @@ class ChapterController < ApplicationController
   respond_to :json 
 
   def list 
-    grade = params[:grade].blank? ? Grade.named('senior') : params[:grade] 
-    subject = params[:subject].blank? ? Subject.named('maths') : params[:subject]
+    grd = params[:grade].blank? ? Grade.named('senior') : params[:grade] 
+    sbj = params[:subject].blank? ? Subject.named('maths') : params[:subject]
+    last = params[:last].blank? ? 0 : params[:last].to_i
 
-    list = Chapter.where(grade_id: grade, subject_id: subject).order(:name)
-    response = list.blank? ? [] : list.map{ |c| { id: c.id, name: c.name, friend_id: c.friend_id } } 
-    render json: response, status: :ok
+    chapters = Chapter.where(grade_id: grd, subject_id: sbj).where('id > ?', last)
+    render json: chapters.map{ |c| { 
+      id: c.id, 
+      name: c.name, 
+      grade: grd, 
+      friend_id: c.friend_id } }, status: :ok
   end 
 
   # To be called ** only ** by the bash script called 'syllabus'

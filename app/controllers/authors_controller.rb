@@ -15,8 +15,14 @@ class AuthorsController < ApplicationController
   end 
 
   def list
-    authors = Author.order(:id).map{ |e| { id: e.id, name: e.name } }
-    render json: authors, status: :ok
+    last = params[:last].blank? ? 0 : params[:last].to_i 
+    authors = Author.where('id > ?', last) 
+
+    render json: authors.map{ |a| {
+      id: a.id, 
+      name: a.name, 
+      email: a.email, 
+      is_admin: a.is_admin } }, status: :ok
   end
 
   def block_db_slots
