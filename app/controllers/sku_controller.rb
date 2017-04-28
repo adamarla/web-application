@@ -19,6 +19,11 @@ class SkuController < ApplicationController
     if obj.nil?
       render json: { id: 0 }, status: :bad_request 
     else 
+      # Are draft-scans available for this asset? 
+      draft_length = params[:pages].blank? ? 0 : params[:pages].to_i
+      obj.update_attribute(:on_paper, draft_length > 0) unless obj.on_paper
+      
+      # Asset compiled. Hence, mark it as having SVGs
       obj.has_svgs ? sku.tag_modified_zips : obj.update_attribute(:has_svgs, true)
 
       if obj.is_a?(Skill)
@@ -43,6 +48,7 @@ class SkuController < ApplicationController
         chapter: obj.chapter_id, 
         author: obj.author_id, 
         path: sku.path, 
+        on_paper: obj.on_paper,
         has_tex: obj.has_svgs } }
 
      render json: resp.select{ |j| !j[:chapter].nil? }, status: :ok

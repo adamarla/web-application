@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170420171811) do
+ActiveRecord::Schema.define(:version => 20170428090439) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(:version => 20170420171811) do
     t.boolean  "has_svgs",                       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "on_paper",                       :default => false
   end
 
   add_index "riddles", ["chapter_id"], :name => "index_riddles_on_chapter_id"
@@ -221,6 +222,7 @@ ActiveRecord::Schema.define(:version => 20170420171811) do
     t.float   "avg_proficiency",               :default => 0.0
     t.integer "language_id",                   :default => 1
     t.boolean "has_svgs",                      :default => false
+    t.boolean "on_paper",                      :default => false
   end
 
   create_table "skus", :force => true do |t|

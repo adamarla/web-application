@@ -10,6 +10,7 @@
 #  avg_proficiency :float           default(0.0)
 #  language_id     :integer         default(1)
 #  has_svgs        :boolean         default(FALSE)
+#  on_paper        :boolean         default(FALSE)
 #
 
 class Skill < ActiveRecord::Base
