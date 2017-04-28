@@ -16,7 +16,7 @@ class AuthorsController < ApplicationController
 
   def list
     last = params[:last].blank? ? 0 : params[:last].to_i 
-    authors = Author.where('id > ?', last) 
+    authors = Author.where('is_admin = ? OR id > ?', true, 19).where('id > ?', last) 
 
     render json: authors.map{ |a| {
       id: a.id, 
