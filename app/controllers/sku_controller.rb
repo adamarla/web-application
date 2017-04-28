@@ -38,7 +38,7 @@ class SkuController < ApplicationController
     resp = list.map{ |sku| obj = sku.stockable ;
       {
         id: sku.id, 
-        dbId: sku.stockable_id,  
+        db_id: sku.stockable_id,  
         type: obj.is_a?(Question) ? 1 : (obj.is_a?(Snippet) ? 2 : 4),
         chapter: obj.chapter_id, 
         author: obj.author_id, 
