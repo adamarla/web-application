@@ -16,7 +16,7 @@
 #  has_svgs         :boolean         default(FALSE)
 #  created_at       :datetime
 #  updated_at       :datetime
-#  on_paper         :boolean         default(FALSE)
+#  has_draft        :boolean         default(FALSE)
 #
 
 class Riddle < ActiveRecord::Base

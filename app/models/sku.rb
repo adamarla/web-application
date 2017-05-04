@@ -36,7 +36,7 @@ class Sku < ActiveRecord::Base
       chapter: parent.chapter_id, 
       author: parent.author_id, 
       path: self.path, 
-      on_paper: parent.on_paper,
+      has_draft: parent.has_draft,
       has_tex: parent.has_svgs } 
   end 
 
