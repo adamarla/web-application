@@ -85,6 +85,7 @@ Webapp::Application.routes.draw do
 
     # SKU
     match 'sku/list' => 'sku#list', via: [:get]
+    match 'sku/block' => 'sku#block', via: :get 
 
     # Subject 
     match 'subject/list' => 'subject#list', via: :get
@@ -134,14 +135,6 @@ Webapp::Application.routes.draw do
 
     # Account 
     match 'ping/queue' => 'accounts#poll_delayed_job_queue', via: :get
-
-    # Admin 
-    resource :admin, :controller => :admin 
-
-    # Examiner 
-    resource :examiner, :except => [:new, :destroy]
-    match 'examiner/block_db_slots' => 'examiners#block_db_slots', via: :get
-    match 'examiner/list' => 'examiners#list', via: :get
 
     # Welcome
     match 'welcome/countries' => 'welcome#countries', via: :get

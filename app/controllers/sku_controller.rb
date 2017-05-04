@@ -40,35 +40,41 @@ class SkuController < ApplicationController
     last = params[:last].blank? ? 0 : params[:last].to_i 
     list = Sku.where('id > ?', last) 
 
-    resp = list.map{ |sku| obj = sku.stockable ;
-      {
-        id: sku.id, 
-        db_id: sku.stockable_id,  
-        type: obj.is_a?(Question) ? 1 : (obj.is_a?(Snippet) ? 2 : 4),
-        chapter: obj.chapter_id, 
-        author: obj.author_id, 
-        path: sku.path, 
-        on_paper: obj.on_paper,
-        has_tex: obj.has_svgs } }
-
-     render json: resp.select{ |j| !j[:chapter].nil? }, status: :ok
+    resp = list.map{ |sku| sku.decompile }
+    render json: resp.select{ |j| !j[:chapter].nil? }, status: :ok
   end 
 
-=begin
-  def list 
-    c = params[:c].blank? ? 0 : params[:c].to_i 
-    listing = Sku.in_chapter(c) 
+  def block 
+    # Request comes from Scribbler. You can assume it 
+    # is formed correctly
 
-    response = listing.map{ |sku| obj = sku.stockable ; 
-                                  { id: obj.is_a?(Skill) ? obj.id : obj.get_id, 
-                                    path: sku.path,
-                                    authorId: obj.author_id, 
-                                    chapterId: c, 
-                                    assetClass: obj.class.name,
-                                    hasSvgs: obj.has_svgs } }
+    # Triggerred only *after* draft successfully scanned. 
+    # No draft => no slot!!
+    
+    type = params[:type].to_i 
+    author = params[:author].to_i 
+    chapter = params[:chapter].to_i 
 
-    render json: response, status: :ok
+    fields = { chapter_id: chapter, 
+               author_id: author, 
+               on_paper: true }
+
+    case type
+      when 1 
+        obj = Question.create(fields)
+      when 2 
+        obj = Snippet.create(fields)
+      when 4 
+        obj = Skill.create(fields)
+      else 
+        obj = nil 
+    end 
+
+    unless obj.nil?
+      render json: obj.sku.decompile, status: :ok 
+    else 
+      render json: { id: 0 }, status: :bad_request 
+    end 
   end 
-=end
 
 end # of class 

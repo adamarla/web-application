@@ -27,6 +27,19 @@ class Sku < ActiveRecord::Base
     return self.stockable.chapter 
   end 
 
+  def decompile 
+    parent = self.stockable 
+    return { 
+      id: self.id, 
+      db_id: self.stockable_id,  
+      type: parent.is_a?(Question) ? 1 : (parent.is_a?(Snippet) ? 2 : 4),
+      chapter: parent.chapter_id, 
+      author: parent.author_id, 
+      path: self.path, 
+      on_paper: parent.on_paper,
+      has_tex: parent.has_svgs } 
+  end 
+
   def self.with_path(path) 
     return nil if path.blank?
 
