@@ -67,9 +67,9 @@ class SkuController < ApplicationController
     end 
 
     unless obj.nil?
-      render json: obj.sku.decompile, status: :ok 
+      render json: [obj.sku.decompile], status: :ok 
     else 
-      render json: { id: 0 }, status: :bad_request 
+      render json: [{ id: 0 }], status: :bad_request 
     end 
   end 
 
