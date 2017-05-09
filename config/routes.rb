@@ -86,6 +86,7 @@ Webapp::Application.routes.draw do
     # SKU
     match 'sku/list' => 'sku#list', via: [:get]
     match 'sku/block' => 'sku#block', via: :get 
+    match 'sku/update_eps_count' => 'sku#update_eps_count', via: :get
 
     # Subject 
     match 'subject/list' => 'subject#list', via: :get

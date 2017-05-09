@@ -6,6 +6,8 @@
 #  stockable_type :string(255)
 #  stockable_id   :integer
 #  path           :string(255)
+#  has_draft      :boolean         default(FALSE)
+#  num_eps        :integer         default(0)
 #
 
 class Sku < ActiveRecord::Base
@@ -35,9 +37,10 @@ class Sku < ActiveRecord::Base
       type: parent.is_a?(Question) ? 1 : (parent.is_a?(Snippet) ? 2 : 4),
       chapter: parent.chapter_id, 
       author: parent.author_id, 
+      has_tex: parent.has_svgs,
       path: self.path, 
-      has_draft: parent.has_draft,
-      has_tex: parent.has_svgs } 
+      has_draft: self.has_draft,
+      num_eps: self.num_eps } 
   end 
 
   def self.with_path(path) 

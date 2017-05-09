@@ -51,9 +51,7 @@ class SkuController < ApplicationController
     author = params[:author].to_i 
     chapter = params[:chapter].to_i 
 
-    fields = { chapter_id: chapter, 
-               author_id: author, 
-               has_draft: true }
+    fields = { chapter_id: chapter, author_id: author }
 
     case type
       when 1 
@@ -67,9 +65,20 @@ class SkuController < ApplicationController
     end 
 
     unless obj.nil?
+      obj.sku.update_attributes(has_draft: true)
       render json: [obj.sku.decompile], status: :ok 
     else 
       render json: [{ id: 0 }], status: :bad_request 
+    end 
+  end 
+
+  def update_eps_count 
+    sku = Sku.where(path: params[:path]).first
+    unless sku.nil?
+      sku.update_attribute :num_eps, params[:num_eps].to_i
+      render json: { id: sku.id }, status: :ok
+    else
+      render json: { id: 0 }, status: :bad_request 
     end 
   end 
 

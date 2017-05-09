@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170504173402) do
+ActiveRecord::Schema.define(:version => 20170509110150) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -208,7 +208,6 @@ ActiveRecord::Schema.define(:version => 20170504173402) do
     t.boolean  "has_svgs",                       :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "has_draft",                      :default => false
   end
 
   add_index "riddles", ["chapter_id"], :name => "index_riddles_on_chapter_id"
@@ -222,13 +221,14 @@ ActiveRecord::Schema.define(:version => 20170504173402) do
     t.float   "avg_proficiency",               :default => 0.0
     t.integer "language_id",                   :default => 1
     t.boolean "has_svgs",                      :default => false
-    t.boolean "has_draft",                     :default => false
   end
 
   create_table "skus", :force => true do |t|
     t.string  "stockable_type"
     t.integer "stockable_id"
     t.string  "path"
+    t.boolean "has_draft",      :default => false
+    t.integer "num_eps",        :default => 0
   end
 
   add_index "skus", ["stockable_id"], :name => "index_skus_on_stockable_id"
