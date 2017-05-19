@@ -17,7 +17,7 @@ class Sku < ActiveRecord::Base
   has_many :inventory, dependent: :destroy 
 
   def tag_modified_zips 
-    return false unless self.has_svgs 
+    return false unless self.stockable.has_svgs 
 
     zip_ids = Inventory.where(sku_id: self.id).map(&:zip_id).uniq 
     Zip.where(id: zip_ids).each do |zip|
