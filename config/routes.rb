@@ -20,6 +20,9 @@ Webapp::Application.routes.draw do
     match 'measureapp' => 'welcome#index'
     match 'measureapp/report' => 'welcome#report'
 
+  #### Needed in experimental release 'evident'
+    match 'activity/update' => 'activity#update', via: :post
+
   #### NEEDED IN THE MOBILE APP  
 
     # Users 
