@@ -1,8 +1,7 @@
 class ActivityController < ApplicationController
+  respond_to :json
 
   def update
-        
-
     sku_type = params[:sku_type] == 1 ? "Question" : "Snippet"
     sku_id = Sku.where(stockable_id: params[:id]).select{|sku| sku.stockable.type == sku_type}
 
