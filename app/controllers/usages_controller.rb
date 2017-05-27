@@ -91,11 +91,12 @@ class UsagesController < ApplicationController
   def by_user
 
     # epoch = "01/09/2016"
-    start_date = Date::strptime(params["input_date"], "%d/%m/%Y")
+    start_date = Date::strptime(params["from_date"], "%Y-%m-%d")
+    end_date   = Date::strptime(params["to_date"], "%Y-%m-%d")
 
     count = 0
     json = []
-    User.where('created_at > (?)', start_date).each do |u|
+    User.where('created_at > (?) AND created_at < (?)', start_date, end_date).each do |u|
       usages = Usage.where(user_id: u.id)
       if usages.empty?
         next

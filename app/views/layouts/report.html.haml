@@ -31,10 +31,12 @@
       .g-panel.row-fluid.span12
         .navbar.navbar-inverse
           .navbar-inner
-            %button.btn.btn-primary.bkt-btn{ days: "7", type: :submit}= "Last Week"
-            %button.btn.btn-primary.bkt-btn{ days: "30", type: :submit }= "Last Month"
-            %button.btn.btn-primary.bkt-btn{ days: 60, type: :submit }= "Last 2 Months"
-            %button.btn.btn-primary.bkt-btn{ days: 0, type: :submit }= "All time"
+            %input{ id: "fromDate" }
+            %input{ id: "toDate" }
+            -# %button.btn.btn-primary.bkt-btn{ days: "7", type: :submit}= "Last Week"
+            -# %button.btn.btn-primary.bkt-btn{ days: "30", type: :submit }= "Last Month"
+            -# %button.btn.btn-primary.bkt-btn{ days: 60, type: :submit }= "Last 2 Months"
+            %button.btn.btn-primary.bkt-btn{ type: :submit }= "Activity"
             %button.btn.btn-inverse{ id: 'wtp', type: :submit }= "WTPay"
       .chart.row-fluid.span12
 
