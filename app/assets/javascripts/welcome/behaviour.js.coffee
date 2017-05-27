@@ -14,19 +14,22 @@ jQuery ->
   $('#live-phone > .carousel').carousel { interval: 2200 }
 
   $('.bkt-btn').on 'click', (event) ->
-    offset = $(this).attr('days')
-    if (offset != '0')
-      input_date=get_input_date(+offset)
-    else
-      input_date='31/08/2016'
-    $.get "../usage/by_user?input_date=#{input_date}"
+    from_date = $('#fromDate').datepicker("getDate").toISOString().substring(0, 10)
+    to_date = $('#toDate').datepicker("getDate").toISOString().substring(0, 10)
+    $.get "../usage/by_user?from_date=#{from_date}&to_date=#{to_date}"
     return true
 
   $('#wtp').on 'click', (event) ->
     $.get '../wtp/by_user'
     return true
 
-  $('#datepicker').datepicker(
+  $('#fromDate').datepicker(
+    dateFormat: "dd/mm/yy",
+  )
+  $('#fromDate').datepicker("setDate", new Date(2016, 8, 1))
+
+  $('#toDate').datepicker(
     dateFormat: "dd/mm/yy"
   )
+  $('#toDate').datepicker("setDate", new Date(2017, 2, 15))
 
