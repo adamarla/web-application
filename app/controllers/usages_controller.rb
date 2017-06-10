@@ -97,9 +97,8 @@ class UsagesController < ApplicationController
     count = 0
     json = []
     if start_date > 20170531 # the earliest start date for 'Evident'
-
-      Activity.where("date > (?) AND date < (?) ", start_date, end_date).group(:user_id).count.keys do |user_id|
-        # Usage for 'Evident' comes from Activity table
+      # Usage for 'Evident' comes from Activity table
+      Activity.where("date > (?) AND date < (?) ", start_date, end_date).group(:user_id).count.keys.each do |user_id|
         activities = Activity.where(user_id: user_id)
 
         num_snippets = activities.count
@@ -129,7 +128,9 @@ class UsagesController < ApplicationController
       end # for-each-user
     else 
       # this is usage for 'Measure'
-      Usage.where('date > (?) AND date < (?)',start_date, end_date).group(:user_id).count.keys do |user_id|
+      Usage.where('date > (?) AND date < (?)',start_date, end_date).group(:user_id).count.keys.each do |user_id|
+        next if ([1409, 4260, 6188, 6170].include? user_id or user_id < 538)
+
         usages = Usage.where(user_id: user_id)
 
         num_snippets = usages.map(&:num_snippets_done).inject(:+) 
