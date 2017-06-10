@@ -91,8 +91,8 @@ class UsagesController < ApplicationController
   def by_user
 
     # epoch 'Measure'  = "01/09/2016" | epoch 'Evident'  = "01/06/2017"
-    start_date = Date::strptime(params["from_date"], "%Y%m%d").to_i
-    end_date   = Date::strptime(params["to_date"], "%Y%m%d").to_i
+    start_date = params["from_date"].to_i
+    end_date = params["to_date"].to_i
 
     count = 0
     json = []
@@ -129,7 +129,7 @@ class UsagesController < ApplicationController
       end # for-each-user
     else 
       # this is usage for 'Measure'
-      Usages.where('date > (?) AND date < (?)',start_date, end_date).group(:user_id).count.keys do |user_id|
+      Usage.where('date > (?) AND date < (?)',start_date, end_date).group(:user_id).count.keys do |user_id|
         usages = Usage.where(user_id: user_id)
 
         num_snippets = usages.map(&:num_snippets_done).inject(:+) 
