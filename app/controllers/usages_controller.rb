@@ -90,47 +90,80 @@ class UsagesController < ApplicationController
 
   def by_user
 
-    # epoch = "01/09/2016"
-    start_date = Date::strptime(params["from_date"], "%Y-%m-%d")
-    end_date   = Date::strptime(params["to_date"], "%Y-%m-%d")
+    # epoch 'Measure'  = "01/09/2016" | epoch 'Evident'  = "01/06/2017"
+    start_date = Date::strptime(params["from_date"], "%Y%m%d").to_i
+    end_date   = Date::strptime(params["to_date"], "%Y%m%d").to_i
 
     count = 0
     json = []
-    User.where('created_at > (?) AND created_at < (?)', start_date, end_date).each do |u|
-      usages = Usage.where(user_id: u.id)
-      if usages.empty?
-        next
-      end
-      num_snippets = usages.map(&:num_snippets_done).inject(:+) 
-      num_questions = usages.map(&:num_questions_done).inject(:+) 
-      time_snippets = usages.map(&:time_on_snippets).inject(:+) 
-      time_questions = usages.map(&:time_on_questions).inject(:+) 
-      time_stats = usages.map(&:time_on_stats).inject(:+) 
+    if start_date > 20170531 # the earliest start date for 'Evident'
 
-      days = usages.size
-      span = days
-      # with_dates = usages.select{|u| u.date != 0}
-      # if (with_dates.size > 1)
-      #   minmax = with_dates.map(&:date).minmax
-      #   earliest = Date.parse(minmax[0].to_s)
-      #   latest = Date.parse(minmax[1].to_s)
-      #   span = (latest - earliest).to_i
-      # end
+      Activity.where("date > (?) AND date < (?) ", start_date, end_date).group(:user_id).count.keys do |user_id|
+        # Usage for 'Evident' comes from Activity table
+        activities = Activity.where(user_id: user_id)
 
-      if (num_snippets + num_questions > 0 && span > 0)
-        json.push({
-          id: u.id,
-          ns: num_snippets,
-          nq: num_questions,
-          ts: time_snippets,
-          tq: time_questions,
-          tt: time_stats,
-          da: days,
-          sp: span
-        })
-      end
-      count = count + 1
-    end # of each
+        num_snippets = activities.count
+        num_questions = 0
+        time_snippets = num_snippets
+        time_questions = 0
+        time_stats = 0
+
+        earliest = activities.minimum(:date)
+        latest = activities.maximum(:date)
+        days = latest - earliest + 1
+        span = days
+
+        if (num_snippets + num_questions > 0 && span > 0)
+          json.push({
+            id: user_id,
+            ns: num_snippets,
+            nq: num_questions,
+            ts: time_snippets,
+            tq: time_questions,
+            tt: time_stats,
+            da: days,
+            sp: span
+          })
+        end
+        count = count + 1
+      end # for-each-user
+    else 
+      # this is usage for 'Measure'
+      Usages.where('date > (?) AND date < (?)',start_date, end_date).group(:user_id).count.keys do |user_id|
+        usages = Usage.where(user_id: user_id)
+
+        num_snippets = usages.map(&:num_snippets_done).inject(:+) 
+        num_questions = usages.map(&:num_questions_done).inject(:+) 
+        time_snippets = usages.map(&:time_on_snippets).inject(:+) 
+        time_questions = usages.map(&:time_on_questions).inject(:+) 
+        time_stats = usages.map(&:time_on_stats).inject(:+) 
+  
+        days = usages.size
+        span = days
+        # with_dates = usages.select{|u| u.date != 0}
+        # if (with_dates.size > 1)
+        #   minmax = with_dates.map(&:date).minmax
+        #   earliest = Date.parse(minmax[0].to_s)
+        #   latest = Date.parse(minmax[1].to_s)
+        #   span = (latest - earliest).to_i
+        # end
+  
+        if (num_snippets + num_questions > 0 && span > 0)
+          json.push({
+            id: user_id,
+            ns: num_snippets,
+            nq: num_questions,
+            ts: time_snippets,
+            tq: time_questions,
+            tt: time_stats,
+            da: days,
+            sp: span
+          })
+        end
+        count = count + 1
+      end # of for-each-user
+    end # of if-else
+
     render json: {data: json, total: count}, status: :ok
   end # of method
 
