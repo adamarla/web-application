@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170519084344) do
+ActiveRecord::Schema.define(:version => 20170610165312) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -56,6 +56,9 @@ ActiveRecord::Schema.define(:version => 20170519084344) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
+
+  add_index "activities", ["date"], :name => "index_activities_on_date"
+  add_index "activities", ["user_id"], :name => "index_activities_on_user_id"
 
   create_table "aggr_by_topics", :force => true do |t|
     t.integer  "topic_id"
