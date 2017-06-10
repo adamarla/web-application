@@ -4,6 +4,9 @@ get_input_date= (offset) ->
   input_date.setDate(new Date().getDate() - offset)
   "#{input_date.getDate()}/#{input_date.getMonth()+1}/#{input_date.getFullYear()}"
 
+format_date = (rawDate) ->
+  rawDate.toISOString().substring(0,10).split("-").join("")
+
 jQuery ->
   
   $('#m-register').on 'show', (event) ->
@@ -14,8 +17,8 @@ jQuery ->
   $('#live-phone > .carousel').carousel { interval: 2200 }
 
   $('.bkt-btn').on 'click', (event) ->
-    from_date = $('#fromDate').datepicker("getDate").toISOString().substring(0, 10)
-    to_date = $('#toDate').datepicker("getDate").toISOString().substring(0, 10)
+    from_date = format_date($('#fromDate').datepicker("getDate"))
+    to_date = format_date($('#toDate').datepicker("getDate"))
     $.get "../usage/by_user?from_date=#{from_date}&to_date=#{to_date}"
     return true
 
