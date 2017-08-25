@@ -2,7 +2,7 @@
 #
 # Table name: users
 #
-#  id               :integer         not null, primary key
+#  id               :integer         not null
 #  first_name       :string(50)
 #  last_name        :string(50)
 #  email            :string(100)
@@ -10,7 +10,6 @@
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
 #  num_invites_sent :integer         default(0)
-#  facebook_login   :boolean         default(FALSE)
 #  birthday         :integer         default(0)
 #  version          :float           default(1.0)
 #  time_zone        :string(50)

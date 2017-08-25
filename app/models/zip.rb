@@ -5,7 +5,7 @@
 #  id        :integer         not null, primary key
 #  name      :string(50)
 #  parcel_id :integer
-#  max_size  :integer         default(-1)
+#  max_size  :integer
 #  open      :boolean         default(TRUE)
 #  shasum    :string(10)
 #  modified  :boolean         default(FALSE)

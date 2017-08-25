@@ -96,9 +96,10 @@ class UsagesController < ApplicationController
 
     count = 0
     json = []
-    if start_date > 20170531 # the earliest start date for 'Evident'
+    if start_date > 20170530 # the earliest start date for 'Evident'
       # Usage for 'Evident' comes from Activity table
       Activity.where("date > (?) AND date < (?) ", start_date, end_date).group(:user_id).count.keys.each do |user_id|
+        next if (user_id < 8250)
         activities = Activity.where(user_id: user_id)
 
         num_snippets = activities.count

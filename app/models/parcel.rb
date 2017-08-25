@@ -11,7 +11,7 @@
 #  created_at     :datetime        not null
 #  updated_at     :datetime        not null
 #  contains       :string(20)
-#  max_zip_size   :integer         default(-1)
+#  max_zip_size   :integer
 #  skill_id       :integer         default(0)
 #  open           :boolean         default(TRUE)
 #
