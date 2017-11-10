@@ -25,15 +25,14 @@
             #top-bar.navbar-inner
               = image_tag "prepwell/logo-prepwell.png", size: "50x50", class: :span1
               .span3
-                %h1= 'Prepwell'
+                %h1= 'Evident'
                 %h5= 'Partners in Practice'
               .span1.pull-right
-              = simple_link id: 'small-download-btn', for: 'Download', href: "https://play.google.com/store/apps/details?id=com.gradians.prepwell",
+              = simple_link id: 'small-download-btn', for: 'Download', href: "https://play.google.com/store/apps/details?id=com.gradians.measure",
               class: "btn pull-right", target: :blank
-              = simple_link id: 'a-founders', for: 'About Us', class: 'pull-right span2'
+              -# = simple_link id: 'a-founders', for: 'About Us', class: 'pull-right span2'
 
       = render partial: 'mobile/intro'
 
     = yield :toolbox
-
 

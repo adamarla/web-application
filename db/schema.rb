@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20170610165312) do
+ActiveRecord::Schema.define(:version => 20170825031859) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email",                                 :default => "",    :null => false
@@ -275,6 +275,7 @@ ActiveRecord::Schema.define(:version => 20170610165312) do
     t.float   "avg_proficiency",               :default => 0.0
     t.integer "language_id",                   :default => 1
     t.boolean "has_svgs",                      :default => false
+    t.integer "parent_skill_id"
   end
 
   create_table "skus", :force => true do |t|
